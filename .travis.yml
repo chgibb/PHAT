@@ -3,7 +3,7 @@ sudo: required
 node_js:
     - "6"
 install:
-    - sudo apt-get upgrade-dist
+    - sudo apt-get install libstdc++6
     - npm install
     - sh buildtests.sh
 script:
