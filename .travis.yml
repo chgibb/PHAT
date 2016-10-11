@@ -4,6 +4,7 @@ node_js:
     - "6"
 install:
     - sudo apt-get install libstdc++6
+    - sudo apt-get install gcc
     - npm install
     - sh buildtests.sh
 script:
