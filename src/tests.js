@@ -147,7 +147,7 @@ assert.assert(function(){
 	return true;
 },'--------------------------------------------------------');
 
-/*
+
 //fasta
 assert.assert(function(){
 	return true;
@@ -202,7 +202,7 @@ assert.assert(function(){
 assert.assert(function(){
 	return true;
 },'--------------------------------------------------------');
-*/
+
 //QC
 
 assert.assert(function(){
