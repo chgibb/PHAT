@@ -2,7 +2,6 @@ var fs = require('fs');
 var id = require('./../MakeValidID.js');
 module.exports = function(channel,arg,model)
 {
-	console.log(JSON.stringify(arg,undefined,4));
     //haven't completed building yet.
 	if(!arg.done)
 	{
@@ -61,7 +60,7 @@ module.exports = function(channel,arg,model)
                         model.postFastaInputs();
 						return;
 					}
-					catch(err){console.log(err);console.log(JSON.stringify(arg,undefined,4));}
+					catch(err){console.log(err);}
 				}
 				//actually 64 bit indexes
 				if(model.fastaInputs[i].size > 4294967096)
