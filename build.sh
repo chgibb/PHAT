@@ -27,7 +27,7 @@ cp src/*.html dist
 
 cp -R forDist/* dist
 
-
+sh buildFastQC.sh
 
 
 electron-packager ./dist/ --platform linux --arch x64 --overwrite --ignore=node_modules --ignore=.jsx --ignore=build.sh --ignore=src --ignore=vcs  --ignore=.sh --ignore=notes --ignore=manuscript --ignore=presentation
