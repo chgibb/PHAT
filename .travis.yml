@@ -3,11 +3,14 @@ sudo: required
 node_js:
     - "6"
 install:
+    #Ensure Travis has GLIBCXX 3.4.20 for use with Bowtie2
     - sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
     - sudo apt-get update -y
     - sudo apt-get install libstdc++6 -y
     - sudo apt-get install gcc -y
     - sudo apt-get install g++ -y
+    #End
+    - sudo apt-get install ant
     - npm install
     - sh buildtests.sh
 script:
