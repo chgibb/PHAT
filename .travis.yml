@@ -8,7 +8,6 @@ install:
     - sudo apt-get install libstdc++6 -y
     - sudo apt-get install gcc -y
     - sudo apt-get install g++ -y
-    - sudo apt-get install libstdc++ -y
     - npm install
     - sh buildtests.sh
 script:
