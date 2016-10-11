@@ -3,9 +3,12 @@ sudo: required
 node_js:
     - "6"
 install:
+    - sudo add-apt-repository ppa:ubuntu-toolchain-r/test
+    - sudo apt-get update
     - sudo apt-get install libstdc++6
     - sudo apt-get install gcc
     - sudo apt-get install g++
+    - sudo apt-get install libstdc++
     - npm install
     - sh buildtests.sh
 script:
