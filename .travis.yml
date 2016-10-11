@@ -1,10 +1,10 @@
 language: node_js
 node_js:
-	-  "6"
+    - "6"
 install:
-	-  npm install
-	-  sh buildtests.sh
+    - npm install
+    - sh buildtests.sh
 script:
-	 npm test
+    npm test
 
 
