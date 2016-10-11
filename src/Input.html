@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>	
+	<head>
+		<meta charset="UTF-8">
+		<title>Input</title>
+        <style>
+            table, th, td 
+			{
+    			border : 1px solid black;
+				background-color : rgba(163, 200, 255, 1);
+    			border-collapse : collapse;
+			}
+			th, td 
+			{
+    			padding : 5px;
+			}
+			.inputFilterBox
+			{
+				border : 1px solid black;
+				background-color : rgba(163, 200, 255, 1);
+    			border-collapse : collapse;
+				margin-top: 33px;
+				margin-left: -191px;
+				width : 12%;
+			}
+			.viewTab
+			{
+				float : left;
+				margin-top : 18px;
+			}
+        </style>
+    </head>
+    <body>
+        <script type="text/javascript" src="./InputRenderer.js"></script>
+        <img class='viewTab' id='fastqButton' src="../img/fastqButton.png" onClick="changeView('fastq')">
+		<img class='viewTab' id='refSeqButton' src="../img/refSeqButton.png" onClick="changeView('fasta')">
+	
+		<img class='viewTab' src="../img/browseButton.png" onClick="browse()">
+
+		<!--<input id='inputFilterBox' class='inputFilterBox' type='text' autofocus='autofocus' placeholder="Search" onchange="updateSearchFilter(this)" onkeypress="this.onchange()" onkeydown="this.onchange()" onpaste="this.onchange()" oninput="this.onchange()"  />-->
+		
+		<!--<button id="chooseFile" name="chooseFile" onClick="openInputPicker()">Select Files</button>-->
+		<br />
+		<div id="loadedFiles">
+		</div>
+    </body>
+</html>

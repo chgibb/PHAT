@@ -1,0 +1,26 @@
+{
+  "name": "phat",
+  "version": "1.0.0",
+  "description": "Beret",
+  "main": "main/main.js",
+  "scripts": {
+    "start": "electron main.js"
+  },
+  "author": "Chris Gibb",
+  "license": "",
+  "bugs": {
+    "url": ""
+  },
+  "homepage": "",
+  "devDependencies": {
+    "electron-prebuilt": "^1.1.2"
+  },
+  "dependencies": {
+    "browserify": "^13.1.0",
+    "electron-ipc-stream": "^0.2.0",
+    "pileup": "^0.6.6",
+    "react": "^15.1.0",
+    "react-desktop": "^0.2.0",
+    "react-dom": "^15.1.0"
+  }
+}

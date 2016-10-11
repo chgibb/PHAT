@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>P. H. A. T.</title>
+  </head>
+  <body>
+	 <script>
+		 const ipc = require('electron').ipcRenderer;
+		 ipc.send('keySub',{action : "keySub",channel : "input", key : "inputs", replyChannel : "toolBar"});
+		 ipc.on
+		 (
+			 "toolBar",function(event,arg)
+			 {
+				 if(arg.action == "keyChange")
+				 {
+					 //alert(arg.channel +" "+arg.key);
+					// alert(arg.val);
+				 }
+			 }
+		 );
+		 function SendOpenMessage(target)
+		 {
+			 console.log('clicked');
+			 ipc.send('toolBar',{action : "open",arg : target});
+		 }
+	 </script>
+	<img src="../img/input.png" name="input" onClick="SendOpenMessage('input')"></img>
+	<img src="../img/qc.png" name="QC" onClick="SendOpenMessage('QC')"></img>
+	<img src="../img/align.png" name="Align" onClick="SendOpenMessage('align')"></img>
+	<img src="../img/pathogenButton.png" name="Patho" onClick="SendOpenMessage('pathogen')"></img>
+	<img src="../img/hostButton.png" name="Host" onClick="SendOpenMessage('host')"></img>
+	<img src="../img/output.png" name="Output" onClick="SendOpenMessage('output')"></img>
+	</body>
+</html>
