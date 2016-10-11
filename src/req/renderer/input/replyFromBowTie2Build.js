@@ -2,6 +2,7 @@ var fs = require('fs');
 var id = require('./../MakeValidID.js');
 module.exports = function(channel,arg,model)
 {
+	console.log(JSON.stringify(arg,undefined,4));
     //haven't completed building yet.
 	if(!arg.done)
 	{
