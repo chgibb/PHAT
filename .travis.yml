@@ -3,7 +3,7 @@ sudo: required
 node_js:
     - "6"
 install:
-    - sudo apt-get install perl
+    - sudo apt-get upgrade-dist
     - npm install
     - sh buildtests.sh
 script:
