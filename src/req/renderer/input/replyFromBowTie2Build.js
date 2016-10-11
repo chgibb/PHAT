@@ -60,7 +60,7 @@ module.exports = function(channel,arg,model)
                         model.postFastaInputs();
 						return;
 					}
-					catch(err){console.log(err);}
+					catch(err){console.log(err);console.log(JSON.stringify(arg,undefined,4));}
 				}
 				//actually 64 bit indexes
 				if(model.fastaInputs[i].size > 4294967096)
