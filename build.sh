@@ -4,18 +4,6 @@ rm -rf dist
 
 mkdir dist
  
-#./node_modules/.bin/browserify src/main.js --node -o dist/main.js --ignore-missing
-
-for f in src/*.js
-do
-	printf "Bundling "
-	printf $f
-	printf "\n"
-	destination=$(echo $f | awk '{gsub("src/","dist/");print}')
-	./node_modules/.bin/browserify $f --node --debug -o $destination --ignore-missing
-done
-
-
 
 mkdir dist/img
 cp img/*.* dist/img
@@ -27,7 +15,10 @@ cp src/*.html dist
 
 cp -R forDist/* dist
 
-sh buildFastQC.sh
+for f in scripts/build/*.sh
+do
+	sh $f
+done
 
 
 electron-packager ./dist/ --platform linux --arch x64 --overwrite --ignore=node_modules --ignore=.jsx --ignore=build.sh --ignore=src --ignore=vcs  --ignore=.sh --ignore=notes --ignore=manuscript --ignore=presentation

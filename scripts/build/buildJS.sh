@@ -1,0 +1,8 @@
+for f in src/*.js
+do
+	printf "Bundling "
+	printf $f
+	printf "\n"
+	destination=$(echo $f | awk '{gsub("src/","dist/");print}')
+	./node_modules/.bin/browserify $f --node --debug -o $destination --ignore-missing
+done

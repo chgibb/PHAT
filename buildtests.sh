@@ -1,3 +1,5 @@
+sh clean.sh
+
 sh build.sh
 
 rm -rf tests
