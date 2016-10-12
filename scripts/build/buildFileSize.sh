@@ -5,3 +5,4 @@ printf "Bundling fileSize\n"
 rm main.o
 cp fileSize dist
 rm fileSize  
+chmod +x dist/fileSize
