@@ -13,3 +13,4 @@ cp -r testData/* tests/data
 
 cp dist/tests.js tests
 
+ls -R
