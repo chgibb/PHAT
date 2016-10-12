@@ -1,5 +1,3 @@
-
-
 module.exports.getStateIPC = function(channel,event,arg)
 {
 	if(arg.action === "getState")
