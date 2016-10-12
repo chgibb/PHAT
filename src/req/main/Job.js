@@ -73,7 +73,7 @@ module.exports = class
 	}
 	OnSpawnError(err)
 	{
-		throw new Error("Could not spawn process: "+this.processName);
+		throw new Error("Could not spawn process: "+this.processName+" "+err);
 	}
 	OnComplete(retCode)
 	{
