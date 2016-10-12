@@ -34,7 +34,7 @@ module.exports = function(arr,div)
                 );
                 parentView.data.searchFilter = buildInclusiveSearchFilter(parentView.data.filterString);
 
-                for(var i in parentView.data.fastqInputs)
+                for(let i = 0; i != parentView.data.fastqInputs.length; ++i)
                 {
                     if(parentView.data.searchFilter.test(parentView.data.fastqInputs[i].alias))
                     {
@@ -57,7 +57,7 @@ module.exports = function(arr,div)
                 if(parentView.data.filterString)
                     document.getElementById('fastqInputFilterBox').value = parentView.data.filterString;
                 var shouldCheckCheckAllBox = true;
-                for(var i in parentView.data.fastqInputs)
+                for(let i = 0; i != parentView.data.fastqInputs.length; ++i)
                 {
                     //restore state of checkboxes
                     if(parentView.data.fastqInputs[i].checked)
@@ -137,7 +137,7 @@ module.exports = function(arr,div)
                 if(event.target.id == 'fastqSelectAllBox')
                 {
                     parentView.data.searchFilter = buildInclusiveSearchFilter(parentView.data.filterString);
-                    for(var i in parentView.data.fastqInputs)
+                    for(let i = 0; i != parentView.data.fastqInputs.length; ++i)
                     {
                         //for anything currently visible
                         if(parentView.data.searchFilter.test(parentView.data.fastqInputs[i].alias))

@@ -76,7 +76,7 @@ module.exports = class extends model
     }
     indexFasta(name)
     {
-        for(var i in this.fastaInputs)
+        for(let i = 0; i != this.fastaInputs.length; ++i)
         {
             if(this.fastaInputs[i].name == name)
             {
@@ -103,7 +103,7 @@ module.exports = class extends model
     }
     fastqExists(name)
     {
-        for(var i in this.fastqInputs)
+        for(let i = 0; i != this.fastqInputs.length; ++i)
 	    {
 		    if(this.fastqInputs[i].name == name)
 			    return true;
@@ -112,7 +112,7 @@ module.exports = class extends model
     }
     fastaExists(name)
     {
-        for(var i in this.fastaInputs)
+        for(let i = 0; i != this.fastaInputs.length; ++i)
 	    {
 		    if(this.fastaInputs[i].name == name)
 			    return true;

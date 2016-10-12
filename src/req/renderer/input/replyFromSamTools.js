@@ -5,66 +5,6 @@ var faiParser = require('./../faiParser');
 
 module.exports = function(channel,arg,model)
 {
-	
-    /*if(arg.args[0] == "faidx")
-	{
-	    if(arg.done)
-		{
-		    var alias = "";
-			for(var i in model.fastaInputs)
-			{
-		        if(model.fastaInputs[i].name == arg.extraData)
-				{
-					var fai = model.fsAccess("resources/app/rt/indexes/"+alias+".fai");
-				    alias = model.fastaInputs[i].alias;
-					model.fastaInputs[i].fai = fai;
-					break;
-				}
-			}
-			var src = model.fsAccess(arg.extraData+".fai");
-			var dest = model.fsAccess("resources/app/rt/indexes/"+alias+".fai");
-			//samtools' stdout is sometime delayed until after it has exited for some reason.
-			//This will cause this function to trigger twice, resulting in a false failure.
-			try
-			{
-				if(canRead(dest))
-					return;
-			}
-			catch(err){}
-			try
-			{
-				fs.renameSync(src,dest);
-			}
-			catch(err)
-			{
-				sleep(1);
-				try
-				{
-					fs.renameSync(src,dest);
-				}
-				catch(err)
-				{
-					throw new Error("Could not copy fai index. Out of disk space.");
-				}
-			}
-			model.fastaInputs[i].contigs = require('./FaiParser.js').getContigs(dest);
-			console.log(JSON.stringify(model.fastaInputs[i].contigs,undefined,4));
-			var bowTieIndex = model.fsAccess('resources/app/rt/indexes/'+model.fastaInputs[i].alias);
-			model.spawnHandle
-            (
-			    'spawn',
-                {
-                    action : 'spawn',
-                    replyChannel : 'input',
-                    processName : model.bowTie2Build,
-                    args : [model.fastaInputs[i].name,bowTieIndex],
-                    unBuffer : true
-                }
-			);
-		}
-	}*/
-
-
 	if(arg.args[0] == "faidx")
 	{
 		if(arg.done)

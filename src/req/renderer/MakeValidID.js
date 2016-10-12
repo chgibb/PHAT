@@ -16,7 +16,7 @@ module.exports.makeValidID = function(str)
 }
 module.exports.findOriginalInput = function(str,inputs)
 {
-	for(i in inputs)
+	for(let i = 0; i != inputs.length; ++i)
 	{
 		if(module.exports.makeValidID(inputs[i].name) === str)
 			return inputs[i].name;

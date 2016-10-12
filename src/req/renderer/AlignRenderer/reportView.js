@@ -62,7 +62,7 @@ module.exports  = function(arr,div)
                     "<th>Use</th>",
                     "</tr>"
                 );
-                for(var i in parentView.data.fastqInputs)
+                for(let i = 0; i != parentView.data.fastqInputs.length; ++i)
                 {
                     if(parentView.data.fastqInputs[i].checked)
                     {
@@ -89,7 +89,7 @@ module.exports  = function(arr,div)
                     "<th>Align Against</th>",
                     "</tr>"   
                 );
-                for(var i in parentView.data.fastaInputs)
+                for(let i = 0; i != parentView.data.fastaInputs.length; ++i)
                 {
                     if(parentView.data.fastaInputs[i].indexed &&
                     parentView.data.fastaInputs[i].type == parentView.data.tab &&
@@ -114,7 +114,7 @@ module.exports  = function(arr,div)
             postRender(parentView)
             {
                 //restore checked state of checkboxs
-                for(var i in parentView.data.selectedFastqs)
+                for(let i = 0; i != parentView.data.selectedFastqs.length; ++i)
                 {
                     var elem = document.getElementById(parentView.data.selectedFastqs[i]);
                     if(elem)
@@ -132,7 +132,7 @@ module.exports  = function(arr,div)
             {
                 if(!event || !event.target || !event.target.id)
                     return;
-                for(var i in parentView.data.fastqInputs)
+                for(let i = 0; i != parentView.data.fastqInputs.length; ++i)
                 {
                     if(event.target.id == parentView.data.fastqInputs[i].validID)
                     {
@@ -151,7 +151,7 @@ module.exports  = function(arr,div)
                 }
                 if(event.target.id == "alignButton")
                 {
-                    for(var i in parentView.data.fastqInputs)
+                    for(let i = 0; i != parentView.data.fastqInputs.length; ++i)
                     {
                         if(parentView.data.selectedFastqs[0] == parentView.data.fastqInputs[i].validID)
                         {
@@ -163,7 +163,7 @@ module.exports  = function(arr,div)
                             break;
                         }
                     }
-                    for(var i in parentView.data.fastaInputs)
+                    for(let i = 0; i != parentView.data.fastaInputs.length; ++i)
                     {
                         if(parentView.data.selectedFasta == parentView.data.fastaInputs[i].validID)
                         {
@@ -185,7 +185,7 @@ module.exports  = function(arr,div)
             {
                 parentView.data.selectedFastqs = new Array();
                 //walk the table and save checked fastqs in selectedFastqs
-                for(var i in parentView.data.fastqInputs)
+                for(let i = 0; i != parentView.data.fastqInputs.length; ++i)
                 {
                     if(parentView.data.fastqInputs[i].checked &&
                     document.getElementById(parentView.data.fastqInputs[i].validID).checked)
@@ -200,7 +200,7 @@ module.exports  = function(arr,div)
             {
                 parentView.data.selectedFasta = "";
                 //walk the table and save checked fasta in selectedFasta
-                for(var i in parentView.data.fastaInputs)
+                for(let i = 0; i != parentView.data.fastaInputs.length; ++i)
                 {
                     var elem = document.getElementById(parentView.data.fastaInputs[i].validID);
                     if(elem && elem.checked)
@@ -218,7 +218,7 @@ module.exports  = function(arr,div)
                 var setFirst = false;
                 var setSecond = false;
                 //Selected items are saved by validID. Convert to alias for confirmOptions to render.
-                for(var i in parentView.data.fastqInputs)
+                for(let i = 0; i != parentView.data.fastqInputs.length; ++i)
                 {
                     if(parentView.data.fastqInputs[i].checked)
                     {
@@ -236,7 +236,7 @@ module.exports  = function(arr,div)
                             break;
                     }
                 }
-                for(var i in parentView.data.fastaInputs)
+                for(let i = 0; i != parentView.data.fastaInputs.length; ++i)
                 {
                     if(parentView.data.fastaInputs[i].checked)
                     {

@@ -37,7 +37,7 @@ module.exports = function(arr,div)
                     "</tr>"
                 );
                 parentView.data.searchFilter = buildInclusiveSearchFilter(parentView.data.filterString);
-                for(var i in parentView.data.fastaInputs)
+                for(let i = 0; i != parentView.data.fastaInputs.length; ++i)
                 {
                     if(parentView.data.searchFilter.test(parentView.data.fastaInputs[i].alias))
 				    {
@@ -62,7 +62,7 @@ module.exports = function(arr,div)
                 if(parentView.data.filterString)
                     document.getElementById('fastaInputFilterBox').value = parentView.data.filterString;
                 var shouldCheckCheckAllBox = true;
-                for(var i in parentView.data.fastaInputs)
+                for(let i = 0; i != parentView.data.fastaInputs.length; ++i)
                 {
                     if(parentView.data.fastaInputs[i].checked)
                     {
@@ -104,7 +104,7 @@ module.exports = function(arr,div)
                     {
                         if(event.target.checked)
                         {
-                            for(var i in parentView.data.fastaInputs)
+                            for(let i = 0; i != parentView.data.fastaInputs.length; ++i)
                             {
                                 if(parentView.data.fastaInputs[i].name == name)
                                 {
@@ -116,7 +116,7 @@ module.exports = function(arr,div)
                         }
                         if(!event.target.checked)
                         {
-                            for(var i in parentView.data.fastaInputs)
+                            for(let i = 0; i != parentView.data.fastaInputs.length; ++i)
                             {
                                 if(parentView.data.fastaInputs[i].name == name)
                                 {
@@ -131,7 +131,7 @@ module.exports = function(arr,div)
                 if(event.target.id == 'fastaSelectAllBox')
                 {
                     parentView.data.searchFilter = buildInclusiveSearchFilter(parentView.data.filterString);
-                    for(var i in parentView.data.fastaInputs)
+                    for(let i = 0; i != parentView.data.fastaInputs.length; ++i)
                     {
                         if(parentView.data.searchFilter.test(parentView.data.fastaInputs[i].alias))
                         {
@@ -144,11 +144,12 @@ module.exports = function(arr,div)
                 if(event.target.id == 'indexButton')
                 {
                     parentView.data.searchFilter = buildInclusiveSearchFilter(parentView.data.filterString);
-                    for(var i in parentView.data.fastaInputs)
+                    for(let i = 0; i != parentView.data.fastaInputs.length; ++i)
                     {
                         if(parentView.data.searchFilter.test(parentView.data.fastaInputs[i].alias))
                         {
-                            input.indexFasta(parentView.data.fastaInputs[i].name);
+                            if(parentView.data.fastaInputs[i].checked)
+                                input.indexFasta(parentView.data.fastaInputs[i].name);
                         }
                     }
                 }
@@ -161,7 +162,7 @@ module.exports = function(arr,div)
                     //the user clicked a host/patho radio button
                     //extract the id actual id of the item that was clicked
                     var ID = event.target.id.substr(0,event.target.id.length-5);
-                    for(var i in parentView.data.fastaInputs)
+                    for(let i = 0; i != parentView.data.fastaInputs.length; ++i)
                     {
                         if(parentView.data.fastaInputs[i].validID == ID)
                         {

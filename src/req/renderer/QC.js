@@ -28,7 +28,7 @@ module.exports = class extends model
     }
     QCDataItemExists(name)
     {
-        for(var i in this.QCData)
+        for(let i = 0; i != this.QCData.length; ++i)
         {
             if(this.QCData[i].name == name)
                 return true;
@@ -39,7 +39,7 @@ module.exports = class extends model
     {
         if(!this.QCDataItemExists(name))
             return false;
-        for(var i in this.QCData)
+        for(let i = 0; i != this.QCData.length; ++i)
         {
             if(this.QCData[i].name == name)
             {
@@ -69,7 +69,7 @@ module.exports = class extends model
     {
 	    var res = "";
 	    var str = "";
-	    for(var i in this.QCData[index].summary)
+        for(let i = 0; i != this.QCData[index].summary.length; ++i)
 	    {
 		    if(this.QCData[index].summary[i].name == summary)
 		    {

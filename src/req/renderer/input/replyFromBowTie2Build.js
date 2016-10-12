@@ -10,7 +10,7 @@ module.exports = function(channel,arg,model)
 	    {
 		    if(model.fastaInputs[i].name == name)
 			{
-			    //$("#"+model.fastaInputs[i].validID+"_p").text("Building Index For "+model.fastaInputs[i].alias);
+			    //update status
 			    return;
 			}
 		}
@@ -22,7 +22,6 @@ module.exports = function(channel,arg,model)
 		{
 		    if(model.fastaInputs[i].name == name)
 			{
-			    //$("#"+fastaInputs[i].validID+"_p").text(fastaInputs[i].alias);
 				/*
 				    bowtie may write either 32 bit(s) or 64 bit(l) indexes depending on the size of the input fasta.
 					Which type to output is given by the following in bowtie2-build.py:
