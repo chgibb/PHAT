@@ -4,6 +4,7 @@ rm -rf dist
 
 mkdir dist
  
+cp package.json dist
 
 mkdir dist/img
 cp img/*.* dist/img
