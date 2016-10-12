@@ -9,6 +9,7 @@ install:
     - sudo apt-get install libstdc++6 -y
     - sudo apt-get install gcc -y
     - sudo apt-get install g++ -y
+    - sudp apt-get install dmd
     #End
     - sudo apt-get install ant
     - npm install
