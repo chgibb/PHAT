@@ -1,7 +1,7 @@
 const electron = require('electron');
 const ipc = electron.ipcMain;
 const app = electron.app;
-const jsonFile = require('./req/main/jsonfile');
+const jsonFile = require('jsonfile');
 const BrowserWindow = electron.BrowserWindow;
 
 var Job = require('./req/main/Job');

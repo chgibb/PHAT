@@ -1,4 +1,4 @@
-var jsonFile = require('./jsonfile');
+var jsonFile = require('jsonfile');
 //tick # to persist at
 module.exports.persistTick = 5;
 //current ticks
