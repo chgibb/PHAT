@@ -18,6 +18,4 @@ script:
     npm test
 
 notifications:
-    email:
-        on_success: always
-        on_failure: always
+    slack: zehbelab:BuLG0b1qhVzAyihGf2XbQU4D
