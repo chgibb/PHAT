@@ -15,8 +15,7 @@
   "homepage": "",
   "devDependencies": {
     "browserify": "^13.1.0",
-    "electron-prebuilt": "^1.1.2",
-    "spectron": "^3.4.0"
+    "electron-prebuilt": "^1.1.2"
   },
   "dependencies": {
     "electron-ipc-stream": "^0.2.0",
