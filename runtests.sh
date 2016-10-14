@@ -17,7 +17,7 @@ do
 	cd ../
 	cd ../
 	cp $f phat-linux-x64/resources/app/main.js
-	printf "Replaced with $F"
+	printf "Replaced with $f\n"
 	cd phat-linux-x64
 	./phat
 	cd ../
