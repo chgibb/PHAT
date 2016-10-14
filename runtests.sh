@@ -1,4 +1,4 @@
-set -e
+
 cd tests
 
 node tests.js
