@@ -23,3 +23,5 @@ do
 	cd ../
 
 done
+
+ls -R -l phat-linux-x64
