@@ -9,11 +9,12 @@ install:
     - sudo apt-get install libstdc++6 -y
     - sudo apt-get install gcc -y
     - sudo apt-get install g++ -y
-    - sh install.sh
     #End
+    - sh install.sh
     - sudo apt-get install ant
     - npm install
     - sh buildtests.sh
+    - ./scripts/travis.sh
 script:
     npm test
 
