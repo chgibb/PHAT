@@ -1,3 +1,4 @@
+set -e
 cd tests
 
 node tests.js
@@ -11,10 +12,12 @@ do
 	cd resources
 	cd app
 	rm main.js
+	printf "Removed main\n"
 	cd ../
 	cd ../
 	cd ../
 	cp $f phat-linux-x64/resources/app/main.js
+	printf "Replaced with $F"
 	cd phat-linux-x64
 	./phat
 	cd ../
