@@ -2,6 +2,8 @@ cd tests
 
 node tests.js
 
+cd ../
+
 for f in guiTests/*.js
 do
 
