@@ -17,8 +17,11 @@ assert.runningEvents += 1;
 
 
 assert.assert(function(){
-    if(window.windows["input"])
-        return true;
+    for(let i = 0; i != window.windows.length; ++i)
+    {
+        if(window.windows[i].name == "input")
+            return true;
+    }
     return false;
 },"Opened Input window",0);
 
@@ -28,6 +31,6 @@ setTimeout(function(){
     window.windows["toolBar"].webContents.executeJavaScript("document.getElementById('input').click()");
     setTimeout(function(){
         assert.runningEvents -= 1;
-    },1000);
+    },10000);
 },3000);
 
