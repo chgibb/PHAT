@@ -20,7 +20,6 @@ install:
     - sudo apt-get install ant
     - npm install
     - sh buildtests.sh
-   # - ./scripts/travis.sh
 script:
     npm test
 
