@@ -2,7 +2,13 @@ language: node_js
 sudo: required
 node_js:
     - "6"
+addons:
+    apt:
+        packages:
+            - xvfb
 install:
+    - export DISPLAY=':99.0'
+    - Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
     #Ensure Travis has GLIBCXX 3.4.20 for use with Bowtie2
     - sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
     - sudo apt-get update -y
@@ -14,7 +20,7 @@ install:
     - sudo apt-get install ant
     - npm install
     - sh buildtests.sh
-    - ./scripts/travis.sh
+   # - ./scripts/travis.sh
 script:
     npm test
 
