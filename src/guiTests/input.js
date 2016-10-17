@@ -9,7 +9,7 @@ var window = require('./../req/main/window');
 
 require('./../req/main/main');
 
-
+console.log("Started test");
 
 setTimeout(function(){
 console.log(BrowserWindow.getAllWindows());
