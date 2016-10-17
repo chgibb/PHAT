@@ -7,6 +7,7 @@ cd ../
 
 for f in guiTests/*.js
 do
+	sh build.sh
 
 	cd phat-linux-x64
 	cd resources
