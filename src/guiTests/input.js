@@ -5,21 +5,27 @@ const app = electron.app;
 const jsonFile = require('jsonfile');
 const BrowserWindow = electron.BrowserWindow;
 
+var assert = require("./../req/tests/assert");
+
 var window = require('./../req/main/window');
 
 require('./../req/main/main');
 
 console.log("Started test");
+assert.runningEvents += 1;
+
+
+
+assert.assert(function(){
+    if(window.windows["input"])
+        return true;
+    return false;
+},"Opened Input window",0);
+
+assert.runAsserts();
 
 setTimeout(function(){
-console.log(BrowserWindow.getAllWindows());
-
-console.log(window.windows["toolBar"]);
 window.windows["toolBar"].webContents.executeJavaScript("document.getElementById('input').click()");
-console.log("Done");
-app.quit();
-
-},2000);
-
-
+assert.runningEvents -= 1;
+},3000);
 
