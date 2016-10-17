@@ -25,7 +25,9 @@ assert.assert(function(){
 assert.runAsserts();
 
 setTimeout(function(){
-window.windows["toolBar"].webContents.executeJavaScript("document.getElementById('input').click()");
-assert.runningEvents -= 1;
+    window.windows["toolBar"].webContents.executeJavaScript("document.getElementById('input').click()");
+    setTimeout(function(){
+        assert.runningEvents -= 1;
+    },1000);
 },3000);
 
