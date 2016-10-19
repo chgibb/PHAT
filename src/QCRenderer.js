@@ -40,6 +40,8 @@ $
         addSummaryView(views,'reports');
         addReportView(views,'reports');
 
+        views[view.getIndexOfViewByName(views,currView)].mount();
+
         ipc.send('keySub',{action : "keySub", channel : "input", key : "fastqInputs", replyChannel : "QC"});
 		ipc.send('keySub',{action : "keySub", channel : "input", key : "fastqInputs", replyChannel : "QC"});
 		ipc.send('keySub',{action : "keySub", channel : "QC", key : "QCData", replyChannel : "QC"});
@@ -102,8 +104,8 @@ $
 );
 function changeView(newView)
 {
-    views[view.getIndexOfViewByName(views,currView)].releaseDivEvents();
+    views[view.getIndexOfViewByName(views,currView)].unMount();
     currView = newView;
-    views[view.getIndexOfViewByName(views,currView)].reBindDivEvents();
+    views[view.getIndexOfViewByName(views,currView)].mount();
     render();
 }

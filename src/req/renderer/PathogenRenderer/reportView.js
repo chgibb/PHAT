@@ -30,7 +30,7 @@ module.exports = function(arr,div)
                     "<th>Date Ran</th>",
                     "</tr>"
                 );
-                for(var i in this.aligns)
+                for(let i = 0; i != this.aligns.length; ++i)
                 {
                     if(this.aligns[i].type == "path")
                     {
@@ -61,12 +61,16 @@ module.exports = function(arr,div)
             postRender(parentView){}
             divClickEvents(parentView,event)
             {
-                changeView();
                 if(!event || !event.target || !event.target.id)
                     return;
                 for(let i = 0; i != this.aligns.length; ++i)
                 {
-                    
+                    if(this.aligns[i].UUID == event.target.id)
+                    {
+                        views[view.getIndexOfViewByName(views,"pileUp")].report = this.aligns[i].UUID;
+                        changeView("pileUp");
+                        return;
+                    }
                 }
             }
             dataChanged(parentView){}
