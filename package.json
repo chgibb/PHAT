@@ -21,6 +21,6 @@
     "electron-ipc-stream": "^0.2.0",
     "electron-packager": "^8.0.0",
     "jsonfile": "^2.4.0",
-    "pileup": "^0.6.6"
+    "pileup": "^0.6.8"
   }
 }

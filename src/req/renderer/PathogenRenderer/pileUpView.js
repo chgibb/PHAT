@@ -17,7 +17,8 @@ module.exports = function(arr,div)
                 this.aligns = new Array();
             }
             onMount()
-            {   
+            {
+                console.log("CWD \""+process.cwd());   
                 var twoBit;
                 var refName;
                 var bam;
@@ -25,13 +26,13 @@ module.exports = function(arr,div)
                 var bamName;
                 var contig;
             
-                refName = this.report.split(';')[2];
+                refName = this.report.split(";")[2];
 
                 for(let i = 0; i != this.selectedFastaInputs.length; ++i)
                 {
-                    if(this.selectedFastaInputs[i].UUID == refName)
+                    if(this.selectedFastaInputs[i].alias == refName)
                     {
-                        twoBit = this.selectedFastaInputs[i].twoBit;
+                        twoBit = "resources/app/"+this.selectedFastaInputs[i].twoBit;
                         contig = this.selectedFastaInputs[i].contigs[0];
                         break;
                     }
@@ -41,8 +42,8 @@ module.exports = function(arr,div)
                 {
                     if(this.aligns[i].UUID == this.report)
                     {   
-                        bam = "rt/AlignmentArtifacts/"+this.report+"/out.sorted.bam";
-                        bai = "rt/AlignmentArtifacts/"+this.report+"/out.sorted.bam.bai";
+                        bam = "resources/app/rt/AlignmentArtifacts/"+this.report+"/out.sorted.bam";
+                        bai = "resources/app/rt/AlignmentArtifacts/"+this.report+"/out.sorted.bam.bai";
                         bamName = this.report.split(';')[0]+", "+this.report.split(';')[1];
                         break;
                     }
@@ -65,18 +66,18 @@ module.exports = function(arr,div)
                                 data : pileUp.formats.twoBit
                                 (
                                     {
-                                        url : twoBit
+                                        url : process.cwd()+"/"+twoBit
                                     }
                                 ),
                                 name : refName
                             },
                             {
-                                viz : pileUp.viz.pileUp(),
+                                viz : pileUp.viz.pileup(),
                                 data : pileUp.formats.bam
                                 (
                                     {
-                                        url : bam,
-                                        indexUrl : bai
+                                        url : process.cwd()+"/"+bam,
+                                        indexUrl : process.cwd()+"/"+bai
                                     }
                                 ),
                                 cssClass : 'normal',
@@ -85,22 +86,30 @@ module.exports = function(arr,div)
                         ]
                     }
                 );
+                var html = "";
+                html += "<button id='goBack'>Go Back</button><br/>";
+                
+                document.getElementById("goBackDiv").innerHTML = html;
+                var me = this;
+                document.getElementById("goBack").addEventListener
+                (
+                    "click",
+                    function(ev)
+                    {
+                        me.report = "";
+                        changeView('report');
+                    },
+                    false
+                );
             }
             onUnMount()
             {
                 this.viewer.destroy();
+                document.getElementById("goBack").innerHTML = "";
             }
             renderView(parentView)
             {
-                if(document.getElementById('pileUpIsOpen') || !this.report)
-                {
-                    return;
-                }
-                var html = "";
-                html += "<br /><button id='goBack'>Go Back</button><br/>";
-                
-                html += "<div id='pileUpIsOpen></div>"; 
-                return html;
+                return "";
             }
             postRender(parentView){}
             divClickEvents(parentView)
