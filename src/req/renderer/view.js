@@ -5,11 +5,10 @@ module.exports.View = class
         this.name = name;
         this.div = div;
         this.data = {};
-        this.reBindDivEvents();
+        //this.reBindDivEvents();
     }
     releaseDivEvents()
     {
-        this.onUnMount();
         $('#'+this.div).off();
     }
     reBindDivEvents()
@@ -23,6 +22,16 @@ module.exports.View = class
                 obj.divClickEvents(obj,event);
             }
         );
+        //this.onMount();
+    }
+    unMount()
+    {
+        this.releaseDivEvents();
+        this.onUnMount();
+    }
+    mount()
+    {
+        this.reBindDivEvents();
         this.onMount();
     }
     setData(data)
