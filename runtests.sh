@@ -24,4 +24,4 @@ do
 
 done
 
-ls -R -l .
+
