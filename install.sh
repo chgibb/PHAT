@@ -16,3 +16,4 @@ npm install
 cd ../
 cd ../
 
+npm install
