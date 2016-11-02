@@ -1,0 +1,4 @@
+node_modules
+dist
+phat-linux-x64
+*.*~
