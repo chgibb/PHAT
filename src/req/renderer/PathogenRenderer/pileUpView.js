@@ -105,7 +105,7 @@ module.exports = function(arr,div)
             onUnMount()
             {
                 this.viewer.destroy();
-                document.getElementById("goBack").innerHTML = "";
+                document.getElementById("goBackDiv").innerHTML = "";
             }
             renderView(parentView)
             {

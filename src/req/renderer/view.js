@@ -9,7 +9,6 @@ module.exports.View = class
     }
     releaseDivEvents()
     {
-        this.onUnMount();
         $('#'+this.div).off();
     }
     reBindDivEvents()
