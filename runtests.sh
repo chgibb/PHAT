@@ -24,4 +24,4 @@ do
 
 done
 
-ls -R -l phat-linux-x64
+ls -R -l src
