@@ -2,3 +2,5 @@ node_modules
 dist
 phat-linux-x64
 *.*~
+npm-debug.log
+.vscode

@@ -1,4 +1,4 @@
-var pileUp = require('pileup');
+var pileUp = require('./pileup');
 
 var view = require('./../view.js');
 var id = require('./../MakeValidID.js');
