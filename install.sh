@@ -9,11 +9,11 @@ sudo apt-get install libstdc++6 -y
 sudo apt-get install gcc -y
 sudo apt-get install g++ -y
 sudo apt-get install ant
-cd src
-git clone https://github.com/chgibb/pileup.js
-cd pileup.js
-npm install
-cd ../
-cd ../
+
+for f in scripts/install/*.sh
+do
+	sh $f
+done
+
 
 npm install
