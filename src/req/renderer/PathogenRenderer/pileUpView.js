@@ -18,7 +18,6 @@ module.exports = function(arr,div)
             }
             onMount()
             {
-                console.log("CWD \""+process.cwd());   
                 var twoBit;
                 var refName;
                 var bam;
@@ -101,6 +100,19 @@ module.exports = function(arr,div)
                     },
                     false
                 );
+                //fix a pileup.js bug where the reference track is hidden until a resize event.
+                //Pileup's loading routines are all async, so wait a second and then trigger a resize to show the reference track.
+                setTimeout
+			    (
+				    function()
+				    {
+					    window.dispatchEvent
+					    (
+						    new Event('resize')
+					    );
+				    },
+				    1000
+			    );
             }
             onUnMount()
             {
