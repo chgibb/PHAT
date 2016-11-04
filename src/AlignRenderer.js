@@ -40,6 +40,9 @@ $
     function()
     {
         addReportView(views,"container");
+
+        views[view.getIndexOfViewByName(views,currView)].mount();
+        
         ipc.send('align',{replyChannel : 'align', action : 'getState', key : 'aligns'});
         ipc.send('input',{replyChannel : 'align', action : 'getState', key : 'fastaInputs'});
 		ipc.send('input',{replyChannel : 'align', action : 'getState', key : 'fastqInputs'});
