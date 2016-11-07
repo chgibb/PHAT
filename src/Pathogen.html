@@ -2,6 +2,17 @@
 <html>	
 	<head>
 		<meta charset="UTF-8">
+        <script type="text/javascript">
+            //Temporary hack to load pileup's style sheet
+            //TODO: Modularize this function
+		    var head  = document.getElementsByTagName('head')[0];
+            var link  = document.createElement('link');
+            link.rel  = "stylesheet";
+            link.type = "text/css";
+            link.href = process.cwd()+"/resources/app/styles/pileup.css";
+            link.media = "all";
+            head.appendChild(link);
+	    </script>
 		<title>Pathogen</title>
         <style>
             div.Block
@@ -10,18 +21,18 @@
                 background-color : rgba(163, 200, 255, 1);
             }
             table, th, td 
-			      {
-    			    border : 1px solid black;
-				      background-color : rgba(163, 200, 255, 1);
-    			    border-collapse : collapse;
-			      }
+			{
+    		    border : 1px solid black;
+				background-color : rgba(163, 200, 255, 1);
+    		    border-collapse : collapse;
+			}
         </style>
     </head>
     <body>
-      <script type = "text/javascript" src = "./PathogenRenderer.js"></script> 
-        <div id='toggleView'>
-        </div>
-        <div id='reportView'>
+      <script type = "text/javascript" src = "./PathogenRenderer.js"></script>
+        <div id='goBackDiv'>
+        </div> 
+        <div id='view'>
         </div>
     </body>
 </html>

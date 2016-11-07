@@ -70,6 +70,8 @@ $
         addFastaView(views,'loadedFiles');
         addFastqView(views,'loadedFiles');
 
+        views[view.getIndexOfViewByName(views,currView)].mount();
+
         //point view data to corresponding model data
         views[view.getIndexOfViewByName(views,'fastq')].data.fastqInputs = input.fastqInputs;
         views[view.getIndexOfViewByName(views,'fasta')].data.fastaInputs = input.fastaInputs;
@@ -131,8 +133,8 @@ function browse()
 }
 function changeView(newView)
 {
-    views[view.getIndexOfViewByName(views,currView)].releaseDivEvents();
+    views[view.getIndexOfViewByName(views,currView)].unMount();
     currView = newView;
-    views[view.getIndexOfViewByName(views,currView)].reBindDivEvents();
+    views[view.getIndexOfViewByName(views,currView)].mount();
     render();
 }

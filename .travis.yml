@@ -9,16 +9,7 @@ addons:
 install:
     - export DISPLAY=':99.0'
     - Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
-    #Ensure Travis has GLIBCXX 3.4.20 for use with Bowtie2
-    - sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
-    - sudo apt-get update -y
-    - sudo apt-get install libstdc++6 -y
-    - sudo apt-get install gcc -y
-    - sudo apt-get install g++ -y
-    #End
     - sh install.sh
-    - sudo apt-get install ant
-    - npm install
     - sh buildtests.sh
 script:
     npm test
