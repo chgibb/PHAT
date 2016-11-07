@@ -3,6 +3,7 @@
 rm -rf dist
 
 mkdir dist
+mkdir dist/styles
  
 cp package.json dist
 
