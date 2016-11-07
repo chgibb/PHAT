@@ -3,7 +3,8 @@ const ipc = require("electron").ipcRenderer;
 var id = require("./req/renderer/MakeValidID");
 var fs = require("fs");
 var view = require("./req/renderer/view");
-
+var debug = require("./req/renderer/sendDebugMessage");
+debug.initialize("input");
 var views = new Array();
 var currView = "fastq";
 
