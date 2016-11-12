@@ -1,0 +1,4 @@
+uk/ac/babraham/FastQC/FastQCApplication.java
+uk/ac/babraham/FastQC/Report/HTMLReportArchive.java
+uk/ac/babraham/FastQC/Modules/ModuleFactory.java
+uk/ac/babraham/FastQC/Analysis/OfflineRunner.java
