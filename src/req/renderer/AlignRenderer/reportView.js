@@ -77,7 +77,7 @@ module.exports  = function(arr,div)
                 }
                 html.push("</table></div><br /><br />");
 
-                html.push("<img id='pathTab' src='../img/browseButton.png'>");
+                html.push("<img id='pathTab' src='../img/pathoButton.png'>");
                 html.push("<img id='hostTab' src='../img/browseButton.png'>");
                 //fasta table
                 html.push
