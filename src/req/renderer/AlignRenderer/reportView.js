@@ -17,7 +17,7 @@ module.exports  = function(arr,div)
                 this.data.selectedFasta = "";
 
                 this.data.tab = "path";
-                        
+
                 //view for confirm options
                 this.data.confirmOptions = new class extends view.View
                 {
@@ -87,7 +87,7 @@ module.exports  = function(arr,div)
                     "<tr>",
                     "<th>Name</th>",
                     "<th>Align Against</th>",
-                    "</tr>"   
+                    "</tr>"
                 );
                 for(let i = 0; i != parentView.data.fastaInputs.length; ++i)
                 {
@@ -108,7 +108,7 @@ module.exports  = function(arr,div)
                 //div for confirmOptions view
                 html.push("</table></div>");
                 html.push("<div id='confirmOptions'></div>");
-                html.push("<img id='alignButton' src='../img/browseButton.png'>");
+                html.push("<img id='alignButton' src='../img/align2.png'>");
                 return html.join('');
             }
             postRender(parentView)
@@ -126,7 +126,7 @@ module.exports  = function(arr,div)
                 $("#fastqs").css("height",$(window).height()/3+"px");
                 $("#fastas").css("height",$(window).height()/5+"px");
 
-                parentView.data.confirmOptions.render(); 
+                parentView.data.confirmOptions.render();
             }
             divClickEvents(parentView,object)
             {
@@ -176,7 +176,7 @@ module.exports  = function(arr,div)
                 }
                 parentView.populateSelectedFasta(parentView);
                 parentView.populateSelectedFastqs(parentView);
-                                    
+
                 parentView.setConfirmOptions(parentView);
 
                 render();
