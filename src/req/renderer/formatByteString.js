@@ -1,3 +1,4 @@
+//Adapted from https://jsfiddle.net/oy02axhh/
 module.exports = function(bytes)
 {
     var kb = 1000;
