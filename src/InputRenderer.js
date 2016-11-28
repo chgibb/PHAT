@@ -53,13 +53,13 @@ function render()
     //set buttons to bolded depending on the view
     if(currView == 'fastq')
     {
-        document.getElementById('fastqButton').src = '../img/fastqButtonActive.png';
-        document.getElementById('refSeqButton').src = '../img/refSeqButton.png';
+        document.getElementById('fastqButton').src = 'img/fastqButtonActive.png';
+        document.getElementById('refSeqButton').src = 'img/refSeqButton.png';
     }
     else if(currView == 'fasta')
     {
-        document.getElementById('fastqButton').src = '../img/fastqButton.png';
-        document.getElementById('refSeqButton').src = '../img/refSeqButtonActive.png';
+        document.getElementById('fastqButton').src = 'img/fastqButton.png';
+        document.getElementById('refSeqButton').src = 'img/refSeqButtonActive.png';
     }
     views[view.getIndexOfViewByName(views,currView)].render();
 }
