@@ -27,7 +27,7 @@ window.windowCreators["input"] =
 		(
 			{
 				name : "input",
-				window : window.createWithDefault("Input","input",inputWindow,928,300,'./../../Input.html',true)
+				window : window.createWithDefault("Input","input",inputWindow,928,300,'Input.html',true)
 			}
 		);
 	}

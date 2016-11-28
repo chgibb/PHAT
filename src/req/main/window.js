@@ -60,7 +60,7 @@ module.exports.createWithDefault = function(title,refName,ref,width,height,html,
 			//throw "Could Not Load Application Icon\n";
 		//ref.setIcon(image);
 
-		ref.loadURL('file://../'+__dirname+'/'+html);
+		ref.loadURL(html);
 		if(debug)
 			ref.webContents.openDevTools();
 	
