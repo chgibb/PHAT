@@ -4,3 +4,6 @@ phat-linux-x64
 *.*~
 npm-debug.log
 .vscode
+src/FastQC/bin/*
+src/pileup.js
+src/req/renderer/PathogenRenderer/pileup.js
