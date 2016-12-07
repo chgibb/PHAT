@@ -1,4 +1,4 @@
-
+cp src/pileup.js/style/pileup.css dist/styles/pileup.css
 
 for f in src/*.js
 do
