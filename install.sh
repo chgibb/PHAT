@@ -15,10 +15,12 @@ rm -rf dist
 mkdir dist
 mkdir dist/styles
 
+npm install
+
 for f in scripts/install/*.sh
 do
 	sh $f
 done
 
 
-npm install
+
