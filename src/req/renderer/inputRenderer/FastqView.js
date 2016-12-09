@@ -16,7 +16,7 @@ module.exports = function(arr,div,model)
             }
             onMount(){}
             onUnMount(){}
-            renderView(parentView)
+            renderView()
             {
                 if(document.getElementById('fastqInputFilterBox'))
                     this.data.filterString = document.getElementById('fastqInputFilterBox').value;
@@ -51,7 +51,7 @@ module.exports = function(arr,div,model)
 	            html.push("</table>");
                 return html.join('');
             }
-            postRender(parentView)
+            postRender()
             {
                 //restore text in search box
                 if(this.data.filterString)
@@ -93,7 +93,7 @@ module.exports = function(arr,div,model)
                 //No need to do so here.
                 this.model.postFastqInputs();
             }
-            divClickEvents(parentView,event)
+            divClickEvents(event)
             {
                 //potentially error or user clicked on something we're not interested in 
                 if(!event || !event.target || !event.target.id)
