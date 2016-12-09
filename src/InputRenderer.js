@@ -121,6 +121,18 @@ $
                 input.spawnReply(event,arg);
             }
         );
+        document.getElementById("fastqButton").onclick = function()
+        {
+            changeView("fastq");
+        }
+        document.getElementById("refSeqButton").onclick = function()
+        {
+            changeView("fasta");
+        }
+        document.getElementById("browseButton").onclick = function()
+        {
+            browse();
+        }
         render();
     }
 );
@@ -138,15 +150,4 @@ function changeView(newView)
     views[view.getIndexOfViewByName(views,currView)].mount();
     render();
 }
-document.getElementById("fastqButton").onclick = function()
-{
-    changeView("fastq");
-}
-document.getElementById("refSeqButton").onclick = function()
-{
-    changeView("fasta");
-}
-document.getElementById("browseButton").onclick = function()
-{
-    browse();
-}
+
