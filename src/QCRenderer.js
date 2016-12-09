@@ -65,7 +65,7 @@ $
                                 QC.addQCData(arg.val[i].name)
                             }
                             //views[view.getIndexOfViewByName(views,'summary')].data.QCData = QC.QCData;
-                            //views[view.getIndexOfViewByName(views,'summary')].data.fastqInputs = arg.val;
+                            views[view.getIndexOfViewByName(views,'summary')].data.fastqInputs = arg.val;
                             render();
                         }
                     }

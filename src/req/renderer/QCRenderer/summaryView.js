@@ -36,18 +36,18 @@ module.exports = function(arr,div,model)
 		            "</tr>"
 	            );
                 var change = false;
-	            for(let i = 0; i != this.model.fastqInputs.length; ++i)
+	            for(let i = 0; i != this.data.fastqInputs.length; ++i)
 	            {
-		    		if(this.model.fastqInputs[i].checked)
+		    		if(this.data.fastqInputs[i].checked)
 		            {
 			        	html.push
 			            (
 				        	"<tr>",
-				            "<td><p id='",this.model.fastqInputs[i].validID,"'>",this.model.fastqInputs[i].alias,"</p></td>"
+				            "<td><p id='",this.data.fastqInputs[i].validID,"'>",this.data.fastqInputs[i].alias,"</p></td>"
 			            );
 			            for(let k = 0; k != this.model.QCData.length; ++k)
 			            {
-				        	if(this.model.QCData[k].name == this.model.fastqInputs[i].name)
+				        	if(this.model.QCData[k].name == this.data.fastqInputs[i].name)
 				            {
 					        	html.push
 					            (
