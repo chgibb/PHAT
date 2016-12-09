@@ -19,7 +19,7 @@ module.exports = function(arr,div,model)
             renderView(parentView)
             {
                 if(document.getElementById('fastqInputFilterBox'))
-                    parentView.data.filterString = document.getElementById('fastqInputFilterBox').value;
+                    this.data.filterString = document.getElementById('fastqInputFilterBox').value;
                 var html = new Array();
                 html.push
                 (
@@ -32,11 +32,11 @@ module.exports = function(arr,div,model)
                     "<th>Size</th>",
                     "</tr>"
                 );
-                parentView.data.searchFilter = buildInclusiveSearchFilter(parentView.data.filterString);
+                this.data.searchFilter = buildInclusiveSearchFilter(this.data.filterString);
 
                 for(let i = 0; i != this.model.fastqInputs.length; ++i)
                 {
-                    if(parentView.data.searchFilter.test(this.model.fastqInputs[i].alias))
+                    if(this.data.searchFilter.test(this.model.fastqInputs[i].alias))
                     {
 		        	    html.push
 		        	    (
@@ -54,8 +54,8 @@ module.exports = function(arr,div,model)
             postRender(parentView)
             {
                 //restore text in search box
-                if(parentView.data.filterString)
-                    document.getElementById('fastqInputFilterBox').value = parentView.data.filterString;
+                if(this.data.filterString)
+                    document.getElementById('fastqInputFilterBox').value = this.data.filterString;
                 var shouldCheckCheckAllBox = true;
                 for(let i = 0; i != this.model.fastqInputs.length; ++i)
                 {
@@ -65,7 +65,7 @@ module.exports = function(arr,div,model)
                         $('#'+this.model.fastqInputs[i].validID).prop("checked",true);
                     }
                     //check the check all box if all visible items have been checked
-                    if(parentView.data.searchFilter.test(this.model.fastqInputs[i].alias))
+                    if(this.data.searchFilter.test(this.model.fastqInputs[i].alias))
                     {
                         if(!this.model.fastqInputs[i].checked)
                             shouldCheckCheckAllBox = false;
@@ -77,8 +77,8 @@ module.exports = function(arr,div,model)
                     'change keydown keyup paste',
                     function()
                     {
-                        parentView.data.filterString = document.getElementById('fastqInputFilterBox').value;
-                        parentView.render();
+                        this.data.filterString = document.getElementById('fastqInputFilterBox').value;
+                        this.render();
                     }
                 );
                 //apply prop to check all box
@@ -114,7 +114,7 @@ module.exports = function(arr,div,model)
                                 if(this.model.fastqInputs[i].name == name)
                                 {
                                     this.model.fastqInputs[i].checked = true;
-                                    parentView.dataChanged();
+                                    this.dataChanged();
                                     return;
                                 }
                             }
@@ -126,7 +126,7 @@ module.exports = function(arr,div,model)
                                 if(this.model.fastqInputs[i].name == name)
                                 {
                                     this.model.fastqInputs[i].checked = false;
-                                    parentView.dataChanged();
+                                    this.dataChanged();
                                     return;
                                 }
                             }
@@ -136,18 +136,18 @@ module.exports = function(arr,div,model)
                 //on user clicking the select all box
                 if(event.target.id == 'fastqSelectAllBox')
                 {
-                    parentView.data.searchFilter = buildInclusiveSearchFilter(parentView.data.filterString);
+                    this.data.searchFilter = buildInclusiveSearchFilter(this.data.filterString);
                     for(let i = 0; i != this.model.fastqInputs.length; ++i)
                     {
                         //for anything currently visible
-                        if(parentView.data.searchFilter.test(this.model.fastqInputs[i].alias))
+                        if(this.data.searchFilter.test(this.model.fastqInputs[i].alias))
                         {
                             //set the checked state to that of the select all checkbox
                             this.model.fastqInputs[i].checked = event.target.checked;
                         }
                     }
                     //inform the renderer of an update
-                    parentView.dataChanged();    
+                    this.dataChanged();    
                 }
             }
         }
