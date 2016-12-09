@@ -37,8 +37,8 @@ $
 (
     function()
     {
-        addSummaryView(views,'reports');
-        addReportView(views,'reports');
+        addSummaryView(views,'reports',QC);
+        addReportView(views,'reports',QC);
 
         views[view.getIndexOfViewByName(views,currView)].mount();
 
@@ -64,8 +64,8 @@ $
                             {
                                 QC.addQCData(arg.val[i].name)
                             }
-                            views[view.getIndexOfViewByName(views,'summary')].data.QCData = QC.QCData;
-                            views[view.getIndexOfViewByName(views,'summary')].data.fastqInputs = arg.val;
+                            //views[view.getIndexOfViewByName(views,'summary')].data.QCData = QC.QCData;
+                            //views[view.getIndexOfViewByName(views,'summary')].data.fastqInputs = arg.val;
                             render();
                         }
                     }
@@ -74,7 +74,7 @@ $
                         if(arg.val != 0 )
                         {
                             QC.QCData = arg.val;
-                            views[view.getIndexOfViewByName(views,'summary')].data.QCData = QC.QCData;
+                            //views[view.getIndexOfViewByName(views,'summary')].data.QCData = QC.QCData;
                         }
                     }
                 }
