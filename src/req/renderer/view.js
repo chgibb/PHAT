@@ -20,7 +20,7 @@ module.exports.View = class
         (
             function(event)
             {
-                obj.divClickEvents(obj,event);
+                obj.divClickEvents(event);
             }
         );
         //this.onMount();
@@ -41,7 +41,7 @@ module.exports.View = class
     }
     render()
     {
-        var html = this.renderView(this);
+        var html = this.renderView();
         if(html)
         {
             //prevent scrolling of the page on rerender.
@@ -51,7 +51,7 @@ module.exports.View = class
                 function()
                 {
                     document.getElementById(me.div).innerHTML = html;
-                    me.postRender(me);
+                    me.postRender();
                 },0
             );
         }
@@ -62,10 +62,10 @@ module.exports.View = class
     }
     onMount(){}
     onUnMount(){}
-    renderView(parentView){}
-    postRender(parentView){}
+    renderView(){}
+    postRender(){}
     dataChanged(){}
-    divClickEvents(parentView,event){}
+    divClickEvents(event){}
 }
 
 module.exports.getIndexOfViewByName = function(arr,name)
