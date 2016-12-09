@@ -71,14 +71,15 @@ module.exports = function(arr,div,model)
                             shouldCheckCheckAllBox = false;
                     }
                 }
+                var me = this;
                 //reset change handler to inputFilterBox
                 $('#fastqInputFilterBox').on
                 (
                     'change keydown keyup paste',
                     function()
                     {
-                        this.data.filterString = document.getElementById('fastqInputFilterBox').value;
-                        this.render();
+                        me.data.filterString = document.getElementById('fastqInputFilterBox').value;
+                        me.render();
                     }
                 );
                 //apply prop to check all box
