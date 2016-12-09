@@ -78,13 +78,14 @@ module.exports = function(arr,div,model)
                             shouldCheckCheckAllBox = false;
                     }
                 }
+                var me = this;
                 $('#fastaInputFilterBox').on
                 (
                     'change keydown keyup paste',
                     function()
                     {
-                        this.data.filterString = document.getElementById('fastaInputFilterBox').value;
-                        this.render();
+                        me.data.filterString = document.getElementById('fastaInputFilterBox').value;
+                        me.render();
                     }
                 );
                 $('#fastaSelectAllBox').prop("checked",shouldCheckCheckAllBox);
