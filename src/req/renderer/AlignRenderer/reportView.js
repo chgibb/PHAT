@@ -77,8 +77,8 @@ module.exports  = function(arr,div)
                 }
                 html.push("</table></div><br /><br />");
 
-                html.push("<img id='pathTab' src='../img/browseButton.png'>");
-                html.push("<img id='hostTab' src='../img/buttonHost.png'>");
+                html.push("<img id='pathTab' src='img/browseButton.png'>");
+                html.push("<img id='hostTab' src='img/buttonHost.png'>");
                 //fasta table
                 html.push
                 (
@@ -108,7 +108,7 @@ module.exports  = function(arr,div)
                 //div for confirmOptions view
                 html.push("</table></div>");
                 html.push("<div id='confirmOptions'></div>");
-                html.push("<img id='alignButton' src='../img/temporaryAlignButton.png'>");
+                html.push("<img id='alignButton' src='img/temporaryAlignButton.png'>");
                 return html.join('');
             }
             postRender(parentView)
