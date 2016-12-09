@@ -36,7 +36,7 @@ module.exports = function(arr,div,model)
 		            "</tr>"
 	            );
                 var change = false;
-	            for(var i in this.model.fastqInputs)
+	            for(let i = 0; i != this.model.fastqInputs.length; ++i)
 	            {
 		    		if(this.model.fastqInputs[i].checked)
 		            {
@@ -45,7 +45,7 @@ module.exports = function(arr,div,model)
 				        	"<tr>",
 				            "<td><p id='",this.model.fastqInputs[i].validID,"'>",this.model.fastqInputs[i].alias,"</p></td>"
 			            );
-			            for(var k in this.model.QCData)
+			            for(let k = 0; k != this.model.QCData.length; ++k)
 			            {
 				        	if(this.model.QCData[k].name == this.model.fastqInputs[i].name)
 				            {
@@ -77,7 +77,7 @@ module.exports = function(arr,div,model)
 				if(!event || !event.target || !event.target.id)
                 	return;
 
-				for(var i in this.model.QCData)
+				for(let i = 0; i != this.model.QCData.length; ++i)
 				{
 					if(this.model.QCData[i].validID == event.target.id)
 					{
