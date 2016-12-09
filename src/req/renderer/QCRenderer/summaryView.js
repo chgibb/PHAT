@@ -8,7 +8,7 @@ module.exports = function(arr,div)
         {
         	constructor()
             {
-            	super('summary',div);
+            	super('summary',div,model);
                 this.data.fastqInputs = new Array();
                 this.data.QCData = new Array();
             }
