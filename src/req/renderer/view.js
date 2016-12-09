@@ -1,10 +1,11 @@
 module.exports.View = class
 {
-    constructor(name,div,handlers)
+    constructor(name,div,model,handlers)
     {
         this.name = name;
         this.div = div;
         this.data = {};
+        this.model = model;
         //this.reBindDivEvents();
     }
     releaseDivEvents()
