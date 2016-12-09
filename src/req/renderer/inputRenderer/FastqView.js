@@ -1,7 +1,7 @@
 var view = require('./../view.js');
 var id = require('./../MakeValidID.js');
 var buildInclusiveSearchFilter = require('./../buildInclusiveSearchFilter.js');
-module.exports = function(arr,div)
+module.exports = function(arr,div,model)
 {
     arr.push
     (
@@ -9,7 +9,7 @@ module.exports = function(arr,div)
         {
             constructor()
             {
-                super('fastq',div);
+                super('fastq',div,model);
                 this.data.fastqInputs = new Array();
                 this.data.searchFilter = new RegExp("","i");
                 this.data.filterString = "";
