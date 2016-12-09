@@ -19,9 +19,9 @@ module.exports = function(arr,div)
 				var html = new Array();
 				html.push
 				(
-					"<img style='float:left;' src='../img/pass.png'><p style='float:left;'>Pass</p>",
-					"<img style='float:left;' src='../img/warn.png'><p style='float:left;' >Warning</p>",
-					"<img style='float:left;' src='../img/fail.png'><p style='float:left;'>Failure</p>"
+					"<img style='float:left;' src='img/pass.png'><p style='float:left;'>Pass</p>",
+					"<img style='float:left;' src='img/warn.png'><p style='float:left;' >Warning</p>",
+					"<img style='float:left;' src='img/fail.png'><p style='float:left;'>Failure</p>"
 				);
 	            html.push
 	            (
