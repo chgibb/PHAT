@@ -67,14 +67,14 @@ $
 (
     function()
     {
-        addFastaView(views,'loadedFiles');
-        addFastqView(views,'loadedFiles');
+        addFastaView(views,'loadedFiles',input);
+        addFastqView(views,'loadedFiles',input);
 
         views[view.getIndexOfViewByName(views,currView)].mount();
 
         //point view data to corresponding model data
-        views[view.getIndexOfViewByName(views,'fastq')].data.fastqInputs = input.fastqInputs;
-        views[view.getIndexOfViewByName(views,'fasta')].data.fastaInputs = input.fastaInputs;
+        //views[view.getIndexOfViewByName(views,'fastq')].data.fastqInputs = input.fastqInputs;
+        //views[view.getIndexOfViewByName(views,'fasta')].data.fastaInputs = input.fastaInputs;
 
         //get saved data
         ipc.send('input',{replyChannel : 'input', action : 'getState', key : 'fastqInputs'});
@@ -97,7 +97,7 @@ $
                         if(arg.val != 0)
                         {
                             input.fastqInputs = arg.val;
-                            views[view.getIndexOfViewByName(views,'fastq')].data.fastqInputs = input.fastqInputs;
+                            //views[view.getIndexOfViewByName(views,'fastq')].data.fastqInputs = input.fastqInputs;
                         }
                     }
                     if(arg.key == 'fastaInputs')
@@ -105,7 +105,7 @@ $
                         if(arg.val != 0)
                         {
                             input.fastaInputs = arg.val;
-                            views[view.getIndexOfViewByName(views,'fasta')].data.fastaInputs = input.fastaInputs;
+                            //views[view.getIndexOfViewByName(views,'fasta')].data.fastaInputs = input.fastaInputs;
                         }
                     }
                 }
