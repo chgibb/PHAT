@@ -1,7 +1,7 @@
 var view = require('./../view.js');
 var id = require('./../MakeValidID.js');
 var buildInclusiveSearchFilter = require('./../buildInclusiveSearchFilter.js');
-module.exports = function(arr,div)
+module.exports = function(arr,div,model)
 {
     arr.push
     (
@@ -9,17 +9,17 @@ module.exports = function(arr,div)
         {
             constructor()
             {
-                super('fasta',div);
-                this.data.fastaInputs = new Array();
+                super('fasta',div,model);
+                //this.data.fastaInputs = new Array();
                 this.data.searchFilter = new RegExp("","i");
                 this.data.filterString = "";
             }
             onMount(){}
             onUnMount(){}
-            renderView(parentView)
+            renderView()
             {
                 if(document.getElementById('fastaInputFilterBox'))
-                    parentView.data.filterString = document.getElementById('fastaInputFilterBox').value;
+                    this.data.filterString = document.getElementById('fastaInputFilterBox').value;
                 var html = new Array();
                 html.push
                 (
@@ -36,20 +36,20 @@ module.exports = function(arr,div)
                     "<th>Indexed</th>",
                     "</tr>"
                 );
-                parentView.data.searchFilter = buildInclusiveSearchFilter(parentView.data.filterString);
-                for(let i = 0; i != parentView.data.fastaInputs.length; ++i)
+                this.data.searchFilter = buildInclusiveSearchFilter(this.data.filterString);
+                for(let i = 0; i != this.model.fastaInputs.length; ++i)
                 {
-                    if(parentView.data.searchFilter.test(parentView.data.fastaInputs[i].alias))
+                    if(this.data.searchFilter.test(this.model.fastaInputs[i].alias))
 				    {
                         html.push
 		                (
-			                "<tr><td><input type='checkbox' id='",id.makeValidID(parentView.data.fastaInputs[i].name),"'></input></td>",
-			                "<td id='",id.makeValidID(parentView.data.fastaInputs[i].name)+"_p","'>",parentView.data.fastaInputs[i].alias,"</td>",
-			                "<td>",parentView.data.fastaInputs[i].name,"</td>",
-			                "<td>",parentView.data.fastaInputs[i].sizeString,"</td>",
-                            "<td>","<input type='radio' id='",id.makeValidID(parentView.data.fastaInputs[i].name)+"_path","' name='",id.makeValidID(parentView.data.fastaInputs[i].name),"'></input></td>",
-                            "<td>","<input type='radio' id='",id.makeValidID(parentView.data.fastaInputs[i].name)+"_host","' name='",id.makeValidID(parentView.data.fastaInputs[i].name),"'></input></td>",
-                            "<td>",parentView.data.fastaInputs[i].indexed,"</td>",
+			                "<tr><td><input type='checkbox' id='",id.makeValidID(this.model.fastaInputs[i].name),"'></input></td>",
+			                "<td id='",id.makeValidID(this.model.fastaInputs[i].name)+"_p","'>",this.model.fastaInputs[i].alias,"</td>",
+			                "<td>",this.model.fastaInputs[i].name,"</td>",
+			                "<td>",this.model.fastaInputs[i].sizeString,"</td>",
+                            "<td>","<input type='radio' id='",id.makeValidID(this.model.fastaInputs[i].name)+"_path","' name='",id.makeValidID(this.model.fastaInputs[i].name),"'></input></td>",
+                            "<td>","<input type='radio' id='",id.makeValidID(this.model.fastaInputs[i].name)+"_host","' name='",id.makeValidID(this.model.fastaInputs[i].name),"'></input></td>",
+                            "<td>",this.model.fastaInputs[i].indexed,"</td>",
 			                "</tr>"
 		                );
                     }
@@ -57,24 +57,24 @@ module.exports = function(arr,div)
                 html.push("</table>");
                 return html.join('');
             }
-            postRender(parentView)
+            postRender()
             {
-                if(parentView.data.filterString)
-                    document.getElementById('fastaInputFilterBox').value = parentView.data.filterString;
+                if(this.data.filterString)
+                    document.getElementById('fastaInputFilterBox').value = this.data.filterString;
                 var shouldCheckCheckAllBox = true;
-                for(let i = 0; i != parentView.data.fastaInputs.length; ++i)
+                for(let i = 0; i != this.model.fastaInputs.length; ++i)
                 {
-                    if(parentView.data.fastaInputs[i].checked)
+                    if(this.model.fastaInputs[i].checked)
                     {
-                        $('#'+parentView.data.fastaInputs[i].validID).prop("checked",true);
+                        $('#'+this.model.fastaInputs[i].validID).prop("checked",true);
                     }
-                    if(parentView.data.fastaInputs[i].host)
-                        $('#'+parentView.data.fastaInputs[i].validID+'_host').prop("checked",true);
-                    if(parentView.data.fastaInputs[i].pathogen)
-                        $('#'+parentView.data.fastaInputs[i].validID+'_path').prop("checked",true);
-                    if(parentView.data.searchFilter.test(parentView.data.fastaInputs[i].alias))
+                    if(this.model.fastaInputs[i].host)
+                        $('#'+this.model.fastaInputs[i].validID+'_host').prop("checked",true);
+                    if(this.model.fastaInputs[i].pathogen)
+                        $('#'+this.model.fastaInputs[i].validID+'_path').prop("checked",true);
+                    if(this.data.searchFilter.test(this.model.fastaInputs[i].alias))
                     {
-                        if(!parentView.data.fastaInputs[i].checked)
+                        if(!this.model.fastaInputs[i].checked)
                             shouldCheckCheckAllBox = false;
                     }
                 }
@@ -83,45 +83,46 @@ module.exports = function(arr,div)
                     'change keydown keyup paste',
                     function()
                     {
-                        parentView.data.filterString = document.getElementById('fastaInputFilterBox').value;
-                        parentView.render();
+                        this.data.filterString = document.getElementById('fastaInputFilterBox').value;
+                        this.render();
                     }
                 );
                 $('#fastaSelectAllBox').prop("checked",shouldCheckCheckAllBox);
                 document.getElementById('fastaInputFilterBox').focus();
             }
-            divClickEvents(parentView,event)
+            divClickEvents(event)
             {
+                //alert(JSON.stringify(event,undefined,4));
                 //potentially error or user clicked on something we're not interested in 
                 if(!event || !event.target || !event.target.id)
                     return;
                 //checkboxs are the most likely to be clicked
                 if(event.target.id != 'fastaSelectAllBox')
                 {
-                    var name = id.findOriginalInput(event.target.id,parentView.data.fastaInputs);
+                    var name = id.findOriginalInput(event.target.id,this.model.fastaInputs);
                     //checkbox was clicked
                     if(name !== undefined)
                     {
                         if(event.target.checked)
                         {
-                            for(let i = 0; i != parentView.data.fastaInputs.length; ++i)
+                            for(let i = 0; i != this.model.fastaInputs.length; ++i)
                             {
-                                if(parentView.data.fastaInputs[i].name == name)
+                                if(this.model.fastaInputs[i].name == name)
                                 {
-                                    parentView.data.fastaInputs[i].checked = true;
-                                    parentView.dataChanged();
+                                    this.model.fastaInputs[i].checked = true;
+                                    this.dataChanged();
                                     return;
                                 }
                             }
                         }
                         if(!event.target.checked)
                         {
-                            for(let i = 0; i != parentView.data.fastaInputs.length; ++i)
+                            for(let i = 0; i != this.model.fastaInputs.length; ++i)
                             {
-                                if(parentView.data.fastaInputs[i].name == name)
+                                if(this.model.fastaInputs[i].name == name)
                                 {
-                                    parentView.data.fastaInputs[i].checked = false;
-                                    parentView.dataChanged();
+                                    this.model.fastaInputs[i].checked = false;
+                                    this.dataChanged();
                                     return;
                                 }
                             }
@@ -130,26 +131,26 @@ module.exports = function(arr,div)
                 }
                 if(event.target.id == 'fastaSelectAllBox')
                 {
-                    parentView.data.searchFilter = buildInclusiveSearchFilter(parentView.data.filterString);
-                    for(let i = 0; i != parentView.data.fastaInputs.length; ++i)
+                    this.data.searchFilter = buildInclusiveSearchFilter(this.data.filterString);
+                    for(let i = 0; i != this.model.fastaInputs.length; ++i)
                     {
-                        if(parentView.data.searchFilter.test(parentView.data.fastaInputs[i].alias))
+                        if(this.data.searchFilter.test(this.model.fastaInputs[i].alias))
                         {
-                            parentView.data.fastaInputs[i].checked = event.target.checked;
+                            this.model.fastaInputs[i].checked = event.target.checked;
                         }
                     }
-                    parentView.dataChanged();
+                    this.dataChanged();
                     return;    
                 }
                 if(event.target.id == 'indexButton')
                 {
-                    parentView.data.searchFilter = buildInclusiveSearchFilter(parentView.data.filterString);
-                    for(let i = 0; i != parentView.data.fastaInputs.length; ++i)
+                    this.data.searchFilter = buildInclusiveSearchFilter(this.data.filterString);
+                    for(let i = 0; i != this.model.fastaInputs.length; ++i)
                     {
-                        if(parentView.data.searchFilter.test(parentView.data.fastaInputs[i].alias))
+                        if(this.data.searchFilter.test(this.model.fastaInputs[i].alias))
                         {
-                            if(parentView.data.fastaInputs[i].checked)
-                                input.indexFasta(parentView.data.fastaInputs[i].name);
+                            if(this.model.fastaInputs[i].checked)
+                                input.indexFasta(this.model.fastaInputs[i].name);
                         }
                     }
                 }
@@ -162,34 +163,34 @@ module.exports = function(arr,div)
                     //the user clicked a host/patho radio button
                     //extract the id actual id of the item that was clicked
                     var ID = event.target.id.substr(0,event.target.id.length-5);
-                    for(let i = 0; i != parentView.data.fastaInputs.length; ++i)
+                    for(let i = 0; i != this.model.fastaInputs.length; ++i)
                     {
-                        if(parentView.data.fastaInputs[i].validID == ID)
+                        if(this.model.fastaInputs[i].validID == ID)
                         {
                             console.log('found item');
                             if(type == "_host")
                             {
-                                parentView.data.fastaInputs[i].host = true;
-                                parentView.data.fastaInputs[i].pathogen = false;
-                                parentView.data.fastaInputs[i].type = "host";
-                                parentView.dataChanged();
+                                this.model.fastaInputs[i].host = true;
+                                this.model.fastaInputs[i].pathogen = false;
+                                this.model.fastaInputs[i].type = "host";
+                                this.dataChanged();
                                 return;
                             }
                             if(type == "_path")
                             {
-                                parentView.data.fastaInputs[i].host = false;
-                                parentView.data.fastaInputs[i].pathogen = true;
-                                parentView.data.fastaInputs[i].type = "path";
-                                parentView.dataChanged();
+                                this.model.fastaInputs[i].host = false;
+                                this.model.fastaInputs[i].pathogen = true;
+                                this.model.fastaInputs[i].type = "path";
+                                this.dataChanged();
                                 return;
                             }
                         }
                     }
                 }
             }
-            dataChanged(parentView)
+            dataChanged()
             {
-                input.postFastaInputs();
+                this.model.postFastaInputs();
             }
         }
     );
