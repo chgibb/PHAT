@@ -5,3 +5,5 @@ for f in scripts/clean/*.sh
 do
 	sh $f
 done
+
+rm -rf node_modules

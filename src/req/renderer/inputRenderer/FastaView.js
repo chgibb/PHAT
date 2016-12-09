@@ -23,7 +23,7 @@ module.exports = function(arr,div)
                 var html = new Array();
                 html.push
                 (
-                    "<img src='../img/indexButton.png' style='margin-top:0px;' class='viewTab' id='indexButton'>",
+                    "<img src='img/indexButton.png' style='margin-top:0px;' class='viewTab' id='indexButton'>",
                     "<input id='fastaInputFilterBox' style='margin-left:-255px;' class='inputFilterBox' type='text' autofocus='autofocus' placeholder='Search' />",
                     "<table style='width:100%'>",
                     "<tr>",
