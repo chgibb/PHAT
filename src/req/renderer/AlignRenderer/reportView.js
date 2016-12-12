@@ -179,7 +179,7 @@ module.exports  = function(arr,div)
 
                 this.setConfirmOptions();
 
-                render();
+                viewMgr.render();
             }
             populateSelectedFastqs()
             {
