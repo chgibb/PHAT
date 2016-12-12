@@ -1,10 +1,10 @@
-var view = require('./../viewMgr');
+var viewMgr = require('./../viewMgr');
 var id = require('./../MakeValidID');
 module.exports  = function(arr,div)
 {
     arr.push
     (
-        new class extends view.View
+        new class extends viewMgr.View
         {
             constructor()
             {
@@ -19,7 +19,7 @@ module.exports  = function(arr,div)
                 this.data.tab = "path";
 
                 //view for confirm options
-                this.data.confirmOptions = new class extends view.View
+                this.data.confirmOptions = new class extends viewMgr.View
                 {
                     constructor()
                     {
