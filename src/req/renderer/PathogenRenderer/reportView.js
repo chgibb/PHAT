@@ -67,8 +67,9 @@ module.exports = function(arr,div)
                 {
                     if(this.aligns[i].UUID == event.target.id)
                     {
-                        views[view.getIndexOfViewByName(views,"pileUp")].report = this.aligns[i].UUID;
-                        changeView("pileUp");
+                        //views[view.getIndexOfViewByName(views,"pileUp")].report = this.aligns[i].UUID;
+                        viewMgr.getViewByName("pileUp").report = this.aligns[i].UUID;
+                        viewMgr.changeView("pileUp");
                         return;
                     }
                 }
