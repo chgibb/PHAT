@@ -151,7 +151,7 @@ module.exports = function(arr,div,model)
                         if(this.data.searchFilter.test(this.model.fastaInputs[i].alias))
                         {
                             if(this.model.fastaInputs[i].checked)
-                                input.indexFasta(this.model.fastaInputs[i].name);
+                                this.model.indexFasta(this.model.fastaInputs[i].name);
                         }
                     }
                 }
