@@ -95,7 +95,7 @@ module.exports.getViewByName = function(name,targetArr)
 
 module.exports.render = function(preRender,postRender)
 {
-    let currViewRef = module.exports.getViewByName(module.exports.views,module.exports.currView);
+    let currViewRef = module.exports.getViewByName(module.exports.currView,module.exports.views);
     if(!module.exports.preRender)
     {
         if(preRender)

@@ -108,7 +108,7 @@ $
                         }
                     }
                 }
-                render();
+                viewMgr.render();
             }
         );
         ipc.on
