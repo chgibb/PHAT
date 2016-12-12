@@ -1,7 +1,7 @@
 const ipc = require('electron').ipcRenderer;
 
 var id = require("./req/renderer/MakeValidID");
-var viewMgr = require('./req/renderer/view');
+var viewMgr = require('./req/renderer/viewMgr');
 
 var addReportView = require('./req/renderer/PathogenRenderer/reportView');
 var addPileUpView = require('./req/renderer/PathogenRenderer/pileUpView');
