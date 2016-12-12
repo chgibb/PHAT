@@ -1,10 +1,7 @@
 const ipc = require('electron').ipcRenderer;
 
 var id = require("./req/renderer/MakeValidID");
-var view = require('./req/renderer/view');
-
-var views = new Array();
-var currView = "report";
+var viewMgr = require('./req/renderer/view');
 
 var addReportView = require('./req/renderer/PathogenRenderer/reportView');
 var addPileUpView = require('./req/renderer/PathogenRenderer/pileUpView');
@@ -22,10 +19,12 @@ $
 (
     function()
     {
-        addPileUpView(views,"view");
-        addReportView(views,"view");
+        addPileUpView(viewMgr.views,"view");
+        addReportView(viewMgr.views,"view");
 
-        views[view.getIndexOfViewByName(views,currView)].mount();
+        //views[view.getIndexOfViewByName(views,currView)].mount();
+
+        viewMgr.changeView("report");
 
 
 
@@ -39,44 +38,52 @@ $
                     {
                         if(arg.val != 0)
                         {
-                            views[view.getIndexOfViewByName(views,"pileUp")].aligns = arg.val;
-                            views[view.getIndexOfViewByName(views,"report")].aligns = arg.val;
+                            //views[view.getIndexOfViewByName(views,"pileUp")].aligns = arg.val;
+                            //views[view.getIndexOfViewByName(views,"report")].aligns = arg.val;
+                            viewMgr.getViewByName("pileUp").data.aligns = arg.val;
+                            viewMgr.getViewByName("report").data.aligns = arg.val;
                         }
-                        render();
+                        viewMgr.render();
                     }
                     if(arg.key == 'fastaInputs')
                     {
                         if(arg.val != 0)
                         {
-                            views[view.getIndexOfViewByName(views,"pileUp")].selectedFastaInputs = new Array();
-                            views[view.getIndexOfViewByName(views,"report")].selectedFastaInputs = new Array();
+                            //views[view.getIndexOfViewByName(views,"pileUp")].selectedFastaInputs = new Array();
+                            //views[view.getIndexOfViewByName(views,"report")].selectedFastaInputs = new Array();
+                            viewMgr.getViewByName("pileup").selectedFastaInputs = new Array();
+                            viewMgr.getViewByName("report").selectedFastaInputs = new Array();
                             for(var i in arg.val)
                             {
                                 if(arg.val[i].checked)
                                 {
-                                    views[view.getIndexOfViewByName(views,"pileUp")].selectedFastaInputs.push(arg.val[i]);
-                                    views[view.getIndexOfViewByName(views,"report")].selectedFastaInputs.push(arg.val[i].alias);
+                                    //views[view.getIndexOfViewByName(views,"pileUp")].selectedFastaInputs.push(arg.val[i]);
+                                    //views[view.getIndexOfViewByName(views,"report")].selectedFastaInputs.push(arg.val[i].alias);
+                                    viewMgr.getViewByName("pileUp").selectedFastaInputs.push(arg.val[i]);
+                                    viewMgr.getViewByName("report").selectedFastaInputs.push(arg.val[i].alias);
                                 }
                             }
-                            render();
+                            viewMgr.render();
                         }
                     }
                     if(arg.key == 'fastqInputs')
                     {
                         if(arg.val != 0)
                         {
-                            views[view.getIndexOfViewByName(views,"report")].selectedFastqInputs = new Array();
+                            //views[view.getIndexOfViewByName(views,"report")].selectedFastqInputs = new Array();
+                            viewMgr.getViewByName("report").selectedFastqInputs = new Array();
                             for(var i in arg.val)
                             {
                                 if(arg.val[i].checked)
                                 {
-                                    views[view.getIndexOfViewByName(views,"report")].selectedFastqInputs.push(arg.val[i].alias);
+                                    //views[view.getIndexOfViewByName(views,"report")].selectedFastqInputs.push(arg.val[i].alias);
+                                    viewMgr.selectedFastqInputs.push(arg.val[i].alias);
                                 }
                             }
-                            render();
+                            viewMgr.render();
                         }
                     }
-                    render();
+                    viewMgr.render();
                 }
             }
         );
