@@ -81,28 +81,37 @@ module.exports.getIndexOfViewByName = function(name,targetArr)
             return i;
     }
 }
+module.exports.getViewByName = function(name,targetArr)
+{
+    let arr;
+    if(targetArr)
+        arr = targetArr;
+    else
+        arr = module.exports.views;
+    return arr[module.exports.getIndexOfViewByName(name,targetArr)];
+}
 
 
 
 module.exports.render = function(preRender,postRender)
 {
-    let currViewRef = module.exports.getIndexOfViewByName(module.exports.views,module.exports.currView);
-    if(module.exports.preRender === null)
+    let currViewRef = module.exports.getViewByName(module.exports.views,module.exports.currView);
+    if(!module.exports.preRender)
     {
         if(preRender)
             preRender(currViewRef);
     }
-    else if(module.exports.preRender !== null)
+    else if(module.exports.preRender)
     {
         module.exports.preRender(currViewRef);
     }
     currViewRef.render();
-    if(module.exports.postRender === null)
+    if(!module.exports.postRender)
     {
         if(postRender)
             postRender(currViewRef);
     }
-    else if(module.exports.postRender !== null)
+    else if(module.exports.postRender)
     {
         module.exports.postRender(currViewRef);
     }
@@ -110,8 +119,8 @@ module.exports.render = function(preRender,postRender)
 
 module.exports.changeView = function(newView)
 {
-    let currViewRef = module.exports.getIndexOfViewByName(module.exports.currView);
-    let newViewRef = module.exports.getIndexOfViewByName(newView);
+    let currViewRef = module.exports.getViewByName(module.exports.currView);
+    let newViewRef = module.exports.getViewByName(newView);
     if(!newViewRef)
         throw new Error(newView+"is not defined");
     if(currViewRef)
