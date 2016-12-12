@@ -47,19 +47,24 @@ var input = new Input
 );
 
 window.$ = window.jQuery = require('./req/renderer/jquery-2.2.4.js');
-function render()
+function preRender(viewRef)
 {
-    //set buttons to bolded depending on the view
-    if(currView == 'fastq')
+    if(viewMgr.currView == 'fastq')
     {
         document.getElementById('fastqButton').src = 'img/fastqButtonActive.png';
         document.getElementById('refSeqButton').src = 'img/refSeqButton.png';
     }
-    else if(currView == 'fasta')
+    else if(viewMgr.currView == 'fasta')
     {
         document.getElementById('fastqButton').src = 'img/fastqButton.png';
         document.getElementById('refSeqButton').src = 'img/refSeqButtonActive.png';
     }
+}
+viewMgr.preRender = preRender;
+function render()
+{
+    //set buttons to bolded depending on the view
+    
     views[view.getIndexOfViewByName(views,currView)].render();
 }
 $
@@ -137,9 +142,9 @@ $
 );
 function browse()
 {
-    if(currView == 'fastq')
+    if(viewMgr.currView == 'fastq')
         fastqBrowseDialog(input);
-    if(currView == 'fasta')
+    if(viewMgr.currView == 'fasta')
         fastaBrowseDialog(input);
 }
 
