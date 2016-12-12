@@ -29,10 +29,7 @@ var QC = new QCClass
     }
 );
 window.$ = window.jQuery = require('./req/renderer/jquery-2.2.4.js');
-function render()
-{
-    views[view.getIndexOfViewByName(views,currView)].render();
-}
+
 $
 (
     function()
