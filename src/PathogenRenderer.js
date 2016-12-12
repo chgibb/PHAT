@@ -1,7 +1,7 @@
 const ipc = require('electron').ipcRenderer;
 
 var id = require("./req/renderer/MakeValidID");
-var view = require('./req/renderer/view');
+var viewMgr = require('./req/renderer/view');
 
 var views = new Array();
 var currView = "report";
