@@ -110,10 +110,18 @@ module.exports.render = function(preRender,postRender)
 
 module.exports.changeView = function(newView)
 {
-    module.exports.views[module.exports.getIndexOfViewByName(module.exports.views,module.exports.currView)].unMount();
-    currView = newView;
-    module.exports.views[module.exports.getIndexOfViewByName(module.exports.views,module.exports.currView)].mount();
-    render();
+    let currViewRef = module.exports.getIndexOfViewByName(module.exports.currView);
+    let newViewRef = module.exports.getIndexOfViewByName(newView);
+    if(!newViewRef)
+        throw new Error(newView+"is not defined");
+    if(currViewRef)
+        currViewRef.unMount();
+    module.exports.currView = newView;
+
+    
+    newViewRef.mount();
+
+    module.exports.render();
 }
 
 module.exports.views = new Array();
