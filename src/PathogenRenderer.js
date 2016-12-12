@@ -8,12 +8,7 @@ var addPileUpView = require('./req/renderer/PathogenRenderer/pileUpView');
 
 
 window.$ = window.jQuery = require('./req/renderer/jquery-2.2.4.js');
-function render()
-{
-    console.log("Called render");
-    console.log("currView is "+currView);
-    views[view.getIndexOfViewByName(views,currView)].render();
-}
+
 
 $
 (
@@ -98,14 +93,7 @@ $
 
         ipc.send('keySub',{action : "keySub", channel : "input", key : "fastqInputs", replyChannel : "pathogen"});
         ipc.send('input',{replyChannel : 'pathogen', action : 'getState', key : 'fastqInputs'});
-        render();
+        viewMgr.render();
     }
 );
 
-function changeView(newView)
-{
-    views[view.getIndexOfViewByName(views,currView)].unMount();
-    currView = newView;
-    views[view.getIndexOfViewByName(views,currView)].mount();
-    render();
-}
