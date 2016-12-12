@@ -1,6 +1,6 @@
 var viewMgr = require('./../viewMgr');
 var id = require('./../MakeValidID');
-module.exports  = function(arr,div)
+module.exports  = function(arr,div,model)
 {
     arr.push
     (
@@ -8,7 +8,7 @@ module.exports  = function(arr,div)
         {
             constructor()
             {
-                super('report',div);
+                super('report',div,model);
                 this.data.fastqInputs = new Array();
                 this.data.fastaInputs = new Array();
 
@@ -172,7 +172,7 @@ module.exports  = function(arr,div)
                         }
                     }
 
-                    align.runAlignment(this.data.selectedFastqs,this.data.selectedFasta,this.data.tab);
+                    this.model.runAlignment(this.data.selectedFastqs,this.data.selectedFasta,this.data.tab);
                 }
                 this.populateSelectedFasta();
                 this.populateSelectedFastqs();
