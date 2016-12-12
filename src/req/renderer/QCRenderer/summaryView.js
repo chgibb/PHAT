@@ -10,7 +10,6 @@ module.exports = function(arr,div,model)
             {
             	super('summary',div,model);
                 this.data.fastqInputs = new Array();
-                this.data.QCData = new Array();
             }
 			onMount(){}
 			onUnMount(){}
