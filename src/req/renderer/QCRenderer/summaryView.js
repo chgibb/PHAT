@@ -87,8 +87,8 @@ module.exports = function(arr,div,model)
 						}
 						else
 						{
-							views[view.getIndexOfViewByName(views,'report')].data.report = this.model.QCData[i].QCReport;
-							changeView('report');
+                            viewMgr.getViewByName("report").data.report = this.model.QCData[i].QCReport;
+							viewMgr.changeView('report');
 						}
 					}
 				}
