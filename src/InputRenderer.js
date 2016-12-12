@@ -91,7 +91,6 @@ $
                         if(arg.val != 0)
                         {
                             input.fastqInputs = arg.val;
-                            //views[view.getIndexOfViewByName(views,'fastq')].data.fastqInputs = input.fastqInputs;
                         }
                     }
                     if(arg.key == 'fastaInputs')
@@ -99,7 +98,6 @@ $
                         if(arg.val != 0)
                         {
                             input.fastaInputs = arg.val;
-                            //views[view.getIndexOfViewByName(views,'fasta')].data.fastaInputs = input.fastaInputs;
                         }
                     }
                 }
