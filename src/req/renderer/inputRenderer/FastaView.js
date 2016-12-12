@@ -1,4 +1,4 @@
-var view = require('./../view.js');
+var view = require('./../viewMgr');
 var id = require('./../MakeValidID.js');
 var buildInclusiveSearchFilter = require('./../buildInclusiveSearchFilter.js');
 module.exports = function(arr,div,model)
