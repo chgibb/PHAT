@@ -2,11 +2,10 @@ const ipc = require("electron").ipcRenderer;
             
 var id = require("./req/renderer/MakeValidID");
 var fs = require("fs");
-var view = require("./req/renderer/view");
+var viewMgr = require("./req/renderer/viewMgr");
 var debug = require("./req/renderer/sendDebugMessage");
 debug.initialize("input");
 var views = new Array();
-var currView = "fastq";
 
 var addFastaView = require("./req/renderer/inputRenderer/FastaView");
 var addFastqView = require("./req/renderer/inputRenderer/FastqView");
@@ -67,10 +66,10 @@ $
 (
     function()
     {
-        addFastaView(views,'loadedFiles',input);
-        addFastqView(views,'loadedFiles',input);
+        addFastaView(viewMgr.views,'loadedFiles',input);
+        addFastqView(viewMgr.views,'loadedFiles',input);
 
-        views[view.getIndexOfViewByName(views,currView)].mount();
+        viewMgr.changeView("fastq");
 
         //point view data to corresponding model data
         //views[view.getIndexOfViewByName(views,'fastq')].data.fastqInputs = input.fastqInputs;
@@ -123,17 +122,17 @@ $
         );
         document.getElementById("fastqButton").onclick = function()
         {
-            changeView("fastq");
+            viewMgr.changeView("fastq");
         }
         document.getElementById("refSeqButton").onclick = function()
         {
-            changeView("fasta");
+            viewMgr.changeView("fasta");
         }
         document.getElementById("browseButton").onclick = function()
         {
             browse();
         }
-        render();
+        viewMgr.render();
     }
 );
 function browse()
@@ -142,12 +141,5 @@ function browse()
         fastqBrowseDialog(input);
     if(currView == 'fasta')
         fastaBrowseDialog(input);
-}
-function changeView(newView)
-{
-    views[view.getIndexOfViewByName(views,currView)].unMount();
-    currView = newView;
-    views[view.getIndexOfViewByName(views,currView)].mount();
-    render();
 }
 
