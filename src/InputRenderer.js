@@ -24,7 +24,7 @@ var input = new Input
             //forward message to main process
             ipc.send(channel,arg);
             //rerender window with updated data
-            render();
+            viewMgr.render();
         },
         //on attempt to spawn a process
         spawnHandle : function(channel,arg)
