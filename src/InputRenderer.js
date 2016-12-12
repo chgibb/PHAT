@@ -70,10 +70,6 @@ $
 
         viewMgr.changeView("fastq");
 
-        //point view data to corresponding model data
-        //views[view.getIndexOfViewByName(views,'fastq')].data.fastqInputs = input.fastqInputs;
-        //views[view.getIndexOfViewByName(views,'fasta')].data.fastaInputs = input.fastaInputs;
-
         //get saved data
         ipc.send('input',{replyChannel : 'input', action : 'getState', key : 'fastqInputs'});
         ipc.send('input',{replyChannel : 'input', action : 'getState', key : 'fastaInputs'});
