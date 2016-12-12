@@ -64,7 +64,7 @@ $
                             //views[view.getIndexOfViewByName(views,'summary')].data.QCData = QC.QCData;
                             //views[view.getIndexOfViewByName(views,'summary')].data.fastqInputs = arg.val;
                             viewMgr.getViewByName("summary").data.fastqInputs = arg.val;
-                            render();
+                            viewMgr.render();
                         }
                     }
                     if(arg.key == 'QCData')
@@ -76,7 +76,7 @@ $
                         }
                     }
                 }
-                render();
+                viewMgr.render();
             }
         );
         ipc.on
@@ -97,6 +97,6 @@ $
                 QC.spawnReply(event,arg);
             }
         );
-        render();
+        viewMgr.render();
     }
 );
