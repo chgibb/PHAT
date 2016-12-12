@@ -68,8 +68,13 @@ module.exports.View = class
     divClickEvents(event){}
 }
 
-module.exports.getIndexOfViewByName = function(arr,name)
+module.exports.getIndexOfViewByName = function(name,targetArr)
 {
+    let arr;
+    if(targetArr)
+        arr = targetArr;
+    else
+        arr = module.exports.views;
     for(var i = arr.length - 1; i >= 0; --i)
     {
         if(arr[i].name == name)
