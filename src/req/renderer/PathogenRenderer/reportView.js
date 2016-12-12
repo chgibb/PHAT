@@ -16,7 +16,7 @@ module.exports = function(arr,div)
             }
             onMount(){}
             onUnMount(){}
-            renderView(parentView)
+            renderView()
             {
                 var html = new Array();
                 html.push
@@ -58,8 +58,8 @@ module.exports = function(arr,div)
                 html.push("</table>");
                 return html.join('');
             }
-            postRender(parentView){}
-            divClickEvents(parentView,event)
+            postRender(){}
+            divClickEvents(event)
             {
                 if(!event || !event.target || !event.target.id)
                     return;
@@ -73,7 +73,7 @@ module.exports = function(arr,div)
                     }
                 }
             }
-            dataChanged(parentView){}
+            dataChanged(){}
 
         }
         
