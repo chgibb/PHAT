@@ -122,7 +122,7 @@ module.exports.changeView = function(newView)
     let currViewRef = module.exports.getViewByName(module.exports.currView);
     let newViewRef = module.exports.getViewByName(newView);
     if(!newViewRef)
-        throw new Error(newView+"is not defined");
+        throw new Error(newView+" is not defined");
     if(currViewRef)
         currViewRef.unMount();
     module.exports.currView = newView;

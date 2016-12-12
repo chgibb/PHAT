@@ -1,10 +1,10 @@
-var view = require('./../view.js');
+var viewMgr = require('./../viewMgr');
 var id = require('./../MakeValidID.js');
 module.exports = function(arr,div,model)
 {
 	arr.push
     (
-    	new class extends view.View
+    	new class extends viewMgr.View
         {
         	constructor()
             {

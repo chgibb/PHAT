@@ -1,11 +1,11 @@
-var view = require('./../viewMgr');
+var viewMgr = require('./../viewMgr');
 var id = require('./../MakeValidID.js');
 var buildInclusiveSearchFilter = require('./../buildInclusiveSearchFilter.js');
 module.exports = function(arr,div,model)
 {
     arr.push
     (
-        new class extends view.View
+        new class extends viewMgr.View
         {
             constructor()
             {
