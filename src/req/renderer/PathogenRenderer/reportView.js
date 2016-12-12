@@ -1,4 +1,4 @@
-var view = require('./../view');
+var viewMgr = require('./../viewMgr');
 var id = require('./../MakeValidID');
 var contains = require('./../contains');
 module.exports = function(arr,div)

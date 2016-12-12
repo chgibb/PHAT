@@ -1,6 +1,6 @@
 var pileUp = require('./pileup');
 
-var view = require('./../view.js');
+var viewMgr = require('./../viewMgr');
 var id = require('./../MakeValidID.js');
 module.exports = function(arr,div)
 {
