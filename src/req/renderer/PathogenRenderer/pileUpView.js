@@ -6,7 +6,7 @@ module.exports = function(arr,div)
 {
     arr.push
     (
-        new class extends view.View
+        new class extends viewMgr.View
         {
             constructor()
             {
