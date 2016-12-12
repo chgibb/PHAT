@@ -1,5 +1,5 @@
-var view = require('./..//view');
-var id = require('./..//MakeValidID');
+var view = require('./../viewMgr');
+var id = require('./../MakeValidID');
 module.exports  = function(arr,div)
 {
     arr.push
