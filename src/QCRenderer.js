@@ -4,7 +4,7 @@ var id = require("./req/renderer/MakeValidID");
 var viewMgr = require('./req/renderer/viewMgr');
 var QCClass = require('./req/renderer/QC');
 
-var views = new Array();
+
 
 var addSummaryView = require('./req/renderer/QCRenderer/summaryView');
 var addReportView = require('./req/renderer/QCRenderer/reportView');
@@ -33,8 +33,8 @@ $
 (
     function()
     {
-        addSummaryView(views,'reports',QC);
-        addReportView(views,'reports',QC);
+        addSummaryView(viewMgr.views,'reports',QC);
+        addReportView(viewMgr.views,'reports',QC);
 
 
         viewMgr.changeView("summary");
