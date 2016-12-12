@@ -5,7 +5,7 @@ module.exports = function(arr,div)
 {
     arr.push
     (
-        new class extends view.View
+        new class extends viewMgr.View
         {
             constructor()
             {
@@ -37,9 +37,9 @@ module.exports = function(arr,div)
                         var sources = this.aligns[i].UUID.split(';');
                         if
                         (
-                            contains.containsElement(this.selectedFastqInputs,sources[0]) &&
-                            contains.containsElement(this.selectedFastqInputs,sources[1]) &&
-                            contains.containsElement(this.selectedFastaInputs,sources[2])
+                            contains(this.selectedFastqInputs,sources[0]) &&
+                            contains(this.selectedFastqInputs,sources[1]) &&
+                            contains(this.selectedFastaInputs,sources[2])
                         )
                         {
                             html.push

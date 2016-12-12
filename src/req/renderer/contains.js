@@ -1,4 +1,4 @@
-module.exports.containsElement = function(arr,val)
+module.exports = function(arr,val)
 {
     for(var i = arr.length; i != -1; --i)
     {
