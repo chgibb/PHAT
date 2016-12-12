@@ -61,12 +61,6 @@ function preRender(viewRef)
     }
 }
 viewMgr.preRender = preRender;
-function render()
-{
-    //set buttons to bolded depending on the view
-    
-    views[view.getIndexOfViewByName(views,currView)].render();
-}
 $
 (
     function()
