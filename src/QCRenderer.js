@@ -100,10 +100,3 @@ $
         render();
     }
 );
-function changeView(newView)
-{
-    views[view.getIndexOfViewByName(views,currView)].unMount();
-    currView = newView;
-    views[view.getIndexOfViewByName(views,currView)].mount();
-    render();
-}
