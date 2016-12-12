@@ -12,7 +12,7 @@ module.exports = function(arr,div)
                 super('report', div);
                 this.selectedFastaInputs = new Array();
                 this.selectedFastqInputs = new Array();
-                this.aligns = new Array();
+                this.data.aligns = new Array();
             }
             onMount(){}
             onUnMount(){}
@@ -30,11 +30,11 @@ module.exports = function(arr,div)
                     "<th>Date Ran</th>",
                     "</tr>"
                 );
-                for(let i = 0; i != this.aligns.length; ++i)
+                for(let i = 0; i != this.data.aligns.length; ++i)
                 {
-                    if(this.aligns[i].type == "path")
+                    if(this.data.aligns[i].type == "path")
                     {
-                        var sources = this.aligns[i].UUID.split(';');
+                        var sources = this.data.aligns[i].UUID.split(';');
                         if
                         (
                             contains(this.selectedFastqInputs,sources[0]) &&
@@ -45,11 +45,11 @@ module.exports = function(arr,div)
                             html.push
                             (
                                 "<tr>",
-                                "<td><p id='",this.aligns[i].UUID,"' >",this.aligns[i].alias,"</p></td>",
-                                "<td>",this.aligns[i].summary.reads,"</td>",
-                                "<td>",this.aligns[i].summary.mates,"</td>",
-                                "<td>",this.aligns[i].summary.overallAlignmentRate,"</td>",
-                                "<td>",this.aligns[i].dateStampString,"</td>",
+                                "<td><p id='",this.data.aligns[i].UUID,"' >",this.data.aligns[i].alias,"</p></td>",
+                                "<td>",this.data.aligns[i].summary.reads,"</td>",
+                                "<td>",this.data.aligns[i].summary.mates,"</td>",
+                                "<td>",this.data.aligns[i].summary.overallAlignmentRate,"</td>",
+                                "<td>",this.data.aligns[i].dateStampString,"</td>",
                                 "</tr>"
                             )
                         }
@@ -63,12 +63,12 @@ module.exports = function(arr,div)
             {
                 if(!event || !event.target || !event.target.id)
                     return;
-                for(let i = 0; i != this.aligns.length; ++i)
+                for(let i = 0; i != this.data.aligns.length; ++i)
                 {
-                    if(this.aligns[i].UUID == event.target.id)
+                    if(this.data.aligns[i].UUID == event.target.id)
                     {
-                        //views[view.getIndexOfViewByName(views,"pileUp")].report = this.aligns[i].UUID;
-                        viewMgr.getViewByName("pileUp").report = this.aligns[i].UUID;
+                        //views[view.getIndexOfViewByName(views,"pileUp")].report = this.data.aligns[i].UUID;
+                        viewMgr.getViewByName("pileUp").report = this.data.aligns[i].UUID;
                         viewMgr.changeView("pileUp");
                         return;
                     }

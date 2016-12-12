@@ -96,7 +96,7 @@ module.exports = function(arr,div)
                     function(ev)
                     {
                         me.report = "";
-                        changeView('report');
+                        viewMgr.changeView('report');
                     },
                     false
                 );

@@ -46,7 +46,7 @@ $
                         {
                             //views[view.getIndexOfViewByName(views,"pileUp")].selectedFastaInputs = new Array();
                             //views[view.getIndexOfViewByName(views,"report")].selectedFastaInputs = new Array();
-                            viewMgr.getViewByName("pileup").selectedFastaInputs = new Array();
+                            viewMgr.getViewByName("pileUp").selectedFastaInputs = new Array();
                             viewMgr.getViewByName("report").selectedFastaInputs = new Array();
                             for(var i in arg.val)
                             {
@@ -72,7 +72,7 @@ $
                                 if(arg.val[i].checked)
                                 {
                                     //views[view.getIndexOfViewByName(views,"report")].selectedFastqInputs.push(arg.val[i].alias);
-                                    viewMgr.selectedFastqInputs.push(arg.val[i].alias);
+                                    viewMgr.getViewByName("report").selectedFastqInputs.push(arg.val[i].alias);
                                 }
                             }
                             viewMgr.render();
