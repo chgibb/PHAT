@@ -5,7 +5,6 @@ var viewMgr = require('./req/renderer/viewMgr');
 var QCClass = require('./req/renderer/QC');
 
 var views = new Array();
-var currView = "summary";
 
 var addSummaryView = require('./req/renderer/QCRenderer/summaryView');
 var addReportView = require('./req/renderer/QCRenderer/reportView');
@@ -37,7 +36,8 @@ $
         addSummaryView(views,'reports',QC);
         addReportView(views,'reports',QC);
 
-        views[view.getIndexOfViewByName(views,currView)].mount();
+
+        viewMgr.changeView("summary");
 
         ipc.send('keySub',{action : "keySub", channel : "input", key : "fastqInputs", replyChannel : "QC"});
 		ipc.send('keySub',{action : "keySub", channel : "input", key : "fastqInputs", replyChannel : "QC"});
