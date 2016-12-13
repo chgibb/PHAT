@@ -2,6 +2,7 @@ const electron = require('electron');
 const ipc = electron.ipcMain;
 const app = electron.app;
 var window = require('./window');
+var fsAccess = require("./../fsAccess");
 var getState = require('./getState');
 var postState = require('./postState');
 let QCWindow;
@@ -21,7 +22,7 @@ window.windowCreators["QC"] =
 		(
 			{
 				name : "QC",
-				window : window.createWithDefault("Fastq QCs","QC",QCWindow,1000,800,'./../../QC.html',true)
+				window : window.createWithDefault("Fastq QCs","QC",QCWindow,1000,800,fsAccess("resources/app/QC.html"),true)
 			}
 		);
 	}

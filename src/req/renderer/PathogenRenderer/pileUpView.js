@@ -1,12 +1,14 @@
 var pileUp = require('./pileup');
 
-var view = require('./../view.js');
+var viewMgr = require('./../viewMgr');
 var id = require('./../MakeValidID.js');
+
+var fsAccess = require('./../../fsAccess');
 module.exports = function(arr,div)
 {
     arr.push
     (
-        new class extends view.View
+        new class extends viewMgr.View
         {
             constructor()
             {
@@ -65,7 +67,7 @@ module.exports = function(arr,div)
                                 data : pileUp.formats.twoBit
                                 (
                                     {
-                                        url : process.cwd()+"/"+twoBit
+                                        url : fsAccess(twoBit)
                                     }
                                 ),
                                 name : refName
@@ -75,8 +77,8 @@ module.exports = function(arr,div)
                                 data : pileUp.formats.bam
                                 (
                                     {
-                                        url : process.cwd()+"/"+bam,
-                                        indexUrl : process.cwd()+"/"+bai
+                                        url : fsAccess(bam),
+                                        indexUrl : fsAccess(bai)
                                     }
                                 ),
                                 cssClass : 'normal',
@@ -96,7 +98,7 @@ module.exports = function(arr,div)
                     function(ev)
                     {
                         me.report = "";
-                        changeView('report');
+                        viewMgr.changeView('report');
                     },
                     false
                 );
