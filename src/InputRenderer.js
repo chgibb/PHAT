@@ -2,11 +2,10 @@ const ipc = require("electron").ipcRenderer;
             
 var id = require("./req/renderer/MakeValidID");
 var fs = require("fs");
-var view = require("./req/renderer/view");
+var viewMgr = require("./req/renderer/viewMgr");
 var debug = require("./req/renderer/sendDebugMessage");
 debug.initialize("input");
 var views = new Array();
-var currView = "fastq";
 
 var addFastaView = require("./req/renderer/inputRenderer/FastaView");
 var addFastqView = require("./req/renderer/inputRenderer/FastqView");
@@ -25,7 +24,7 @@ var input = new Input
             //forward message to main process
             ipc.send(channel,arg);
             //rerender window with updated data
-            render();
+            viewMgr.render();
         },
         //on attempt to spawn a process
         spawnHandle : function(channel,arg)
@@ -48,33 +47,28 @@ var input = new Input
 );
 
 window.$ = window.jQuery = require('./req/renderer/jquery-2.2.4.js');
-function render()
+function preRender(viewRef)
 {
-    //set buttons to bolded depending on the view
-    if(currView == 'fastq')
+    if(viewMgr.currView == 'fastq')
     {
         document.getElementById('fastqButton').src = 'img/fastqButtonActive.png';
         document.getElementById('refSeqButton').src = 'img/refSeqButton.png';
     }
-    else if(currView == 'fasta')
+    else if(viewMgr.currView == 'fasta')
     {
         document.getElementById('fastqButton').src = 'img/fastqButton.png';
         document.getElementById('refSeqButton').src = 'img/refSeqButtonActive.png';
     }
-    views[view.getIndexOfViewByName(views,currView)].render();
 }
+viewMgr.preRender = preRender;
 $
 (
     function()
     {
-        addFastaView(views,'loadedFiles');
-        addFastqView(views,'loadedFiles');
+        addFastaView(viewMgr.views,'loadedFiles',input);
+        addFastqView(viewMgr.views,'loadedFiles',input);
 
-        views[view.getIndexOfViewByName(views,currView)].mount();
-
-        //point view data to corresponding model data
-        views[view.getIndexOfViewByName(views,'fastq')].data.fastqInputs = input.fastqInputs;
-        views[view.getIndexOfViewByName(views,'fasta')].data.fastaInputs = input.fastaInputs;
+        viewMgr.changeView("fastq");
 
         //get saved data
         ipc.send('input',{replyChannel : 'input', action : 'getState', key : 'fastqInputs'});
@@ -97,7 +91,6 @@ $
                         if(arg.val != 0)
                         {
                             input.fastqInputs = arg.val;
-                            views[view.getIndexOfViewByName(views,'fastq')].data.fastqInputs = input.fastqInputs;
                         }
                     }
                     if(arg.key == 'fastaInputs')
@@ -105,11 +98,10 @@ $
                         if(arg.val != 0)
                         {
                             input.fastaInputs = arg.val;
-                            views[view.getIndexOfViewByName(views,'fasta')].data.fastaInputs = input.fastaInputs;
                         }
                     }
                 }
-                render();
+                viewMgr.render();
             }
         );
         ipc.on
@@ -123,31 +115,24 @@ $
         );
         document.getElementById("fastqButton").onclick = function()
         {
-            changeView("fastq");
+            viewMgr.changeView("fastq");
         }
         document.getElementById("refSeqButton").onclick = function()
         {
-            changeView("fasta");
+            viewMgr.changeView("fasta");
         }
         document.getElementById("browseButton").onclick = function()
         {
             browse();
         }
-        render();
+        viewMgr.render();
     }
 );
 function browse()
 {
-    if(currView == 'fastq')
+    if(viewMgr.currView == 'fastq')
         fastqBrowseDialog(input);
-    if(currView == 'fasta')
+    if(viewMgr.currView == 'fasta')
         fastaBrowseDialog(input);
-}
-function changeView(newView)
-{
-    views[view.getIndexOfViewByName(views,currView)].unMount();
-    currView = newView;
-    views[view.getIndexOfViewByName(views,currView)].mount();
-    render();
 }
 
