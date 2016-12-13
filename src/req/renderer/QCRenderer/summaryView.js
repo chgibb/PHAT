@@ -1,27 +1,26 @@
-var view = require('./../view.js');
+var viewMgr = require('./../viewMgr');
 var id = require('./../MakeValidID.js');
-module.exports = function(arr,div)
+module.exports = function(arr,div,model)
 {
 	arr.push
     (
-    	new class extends view.View
+    	new class extends viewMgr.View
         {
         	constructor()
             {
-            	super('summary',div);
+            	super('summary',div,model);
                 this.data.fastqInputs = new Array();
-                this.data.QCData = new Array();
             }
 			onMount(){}
 			onUnMount(){}
-			renderView(parentView)
+			renderView()
 			{
 				var html = new Array();
 				html.push
 				(
-					"<img style='float:left;' src='../img/pass.png'><p style='float:left;'>Pass</p>",
-					"<img style='float:left;' src='../img/warn.png'><p style='float:left;' >Warning</p>",
-					"<img style='float:left;' src='../img/fail.png'><p style='float:left;'>Failure</p>"
+					"<img style='float:left;' src='img/pass.png'><p style='float:left;'>Pass</p>",
+					"<img style='float:left;' src='img/warn.png'><p style='float:left;' >Warning</p>",
+					"<img style='float:left;' src='img/fail.png'><p style='float:left;'>Failure</p>"
 				);
 	            html.push
 	            (
@@ -36,26 +35,26 @@ module.exports = function(arr,div)
 		            "</tr>"
 	            );
                 var change = false;
-	            for(var i in parentView.data.fastqInputs)
+	            for(let i = 0; i != this.data.fastqInputs.length; ++i)
 	            {
-		    		if(parentView.data.fastqInputs[i].checked)
+		    		if(this.data.fastqInputs[i].checked)
 		            {
 			        	html.push
 			            (
 				        	"<tr>",
-				            "<td><p id='",parentView.data.fastqInputs[i].validID,"'>",parentView.data.fastqInputs[i].alias,"</p></td>"
+				            "<td><p id='",this.data.fastqInputs[i].validID,"'>",this.data.fastqInputs[i].alias,"</p></td>"
 			            );
-			            for(var k in parentView.data.QCData)
+			            for(let k = 0; k != this.model.QCData.length; ++k)
 			            {
-				        	if(parentView.data.QCData[k].name == parentView.data.fastqInputs[i].name)
+				        	if(this.model.QCData[k].name == this.data.fastqInputs[i].name)
 				            {
 					        	html.push
 					            (
-						        	"<td style='text-align:center;'>","<img src='../img/",QC.getQCSummaryByNameOfReportByIndex(k,"Per base sequence quality"),".png' style='text-align:center;'>","</td>",
-						            "<td style='text-align:center;'>","<img src='../img/",QC.getQCSummaryByNameOfReportByIndex(k,"Per sequence quality scores"),".png' style='text-align:center;'>","</td>",
-						            "<td style='text-align:center;'>","<img src='../img/",QC.getQCSummaryByNameOfReportByIndex(k,"Per sequence GC content"),".png' style='text-align:center;'>","</td>",
-						            "<td style='text-align:center;'>","<img src='../img/",QC.getQCSummaryByNameOfReportByIndex(k,"Sequence Duplication Levels"),".png' style='text-align:center;'>","</td>",
-						            "<td style='text-align:center;'>","<img src='../img/",QC.getQCSummaryByNameOfReportByIndex(k,"Overrepresented sequences"),".png' style='text-align:center;'>","</td>"
+						        	"<td style='text-align:center;'>","<img src='img/",this.model.getQCSummaryByNameOfReportByIndex(k,"Per base sequence quality"),".png' style='text-align:center;'>","</td>",
+						            "<td style='text-align:center;'>","<img src='img/",this.model.getQCSummaryByNameOfReportByIndex(k,"Per sequence quality scores"),".png' style='text-align:center;'>","</td>",
+						            "<td style='text-align:center;'>","<img src='img/",this.model.getQCSummaryByNameOfReportByIndex(k,"Per sequence GC content"),".png' style='text-align:center;'>","</td>",
+						            "<td style='text-align:center;'>","<img src='img/",this.model.getQCSummaryByNameOfReportByIndex(k,"Sequence Duplication Levels"),".png' style='text-align:center;'>","</td>",
+						            "<td style='text-align:center;'>","<img src='img/",this.model.getQCSummaryByNameOfReportByIndex(k,"Overrepresented sequences"),".png' style='text-align:center;'>","</td>"
 					            );
 				            }
 			            }
@@ -71,30 +70,30 @@ module.exports = function(arr,div)
 	            );
                 return html.join('');
 			}
-			postRender(parentView){}
-			divClickEvents(parentView,event)
+			postRender(){}
+			divClickEvents(event)
 			{
 				if(!event || !event.target || !event.target.id)
                 	return;
 
-				for(var i in parentView.data.QCData)
+				for(let i = 0; i != this.model.QCData.length; ++i)
 				{
-					if(parentView.data.QCData[i].validID == event.target.id)
+					if(this.model.QCData[i].validID == event.target.id)
 					{
-						if(parentView.data.QCData[i].QCReport == "")
+						if(this.model.QCData[i].QCReport == "")
 						{
-							QC.generateQCReport(parentView.data.QCData[i].name);
+							this.model.generateQCReport(this.model.QCData[i].name);
 							return;
 						}
 						else
 						{
-							views[view.getIndexOfViewByName(views,'report')].data.report = parentView.data.QCData[i].QCReport;
-							changeView('report');
+                            viewMgr.getViewByName("report").data.report = this.model.QCData[i].QCReport;
+							viewMgr.changeView('report');
 						}
 					}
 				}
 			}
-			dataChanged(parentView){}
+			dataChanged(){}
         }
     );
 }

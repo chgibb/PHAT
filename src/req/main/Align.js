@@ -2,6 +2,7 @@ const electron = require('electron');
 const ipc = electron.ipcMain;
 const app = electron.app;
 var window = require('./window');
+var fsAccess = require("./../fsAccess");
 var getState = require('./getState');
 var postState = require('./postState');
 let alignWindow;
@@ -21,7 +22,7 @@ window.windowCreators["align"] =
 		(
 			{
 				name : "align",
-				window : window.createWithDefault("Align","align",alignWindow,1000,800,'./../../Align.html',true)
+				window : window.createWithDefault("Align","align",alignWindow,1000,800,fsAccess("resources/app/Align.html"),true)
 			}
 		);
 	}

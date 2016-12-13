@@ -1,22 +1,22 @@
-var view = require('./../view');
+var viewMgr = require('./../viewMgr');
 var id = require('./../MakeValidID');
 var contains = require('./../contains');
 module.exports = function(arr,div)
 {
     arr.push
     (
-        new class extends view.View
+        new class extends viewMgr.View
         {
             constructor()
             {
                 super('report', div);
                 this.selectedFastaInputs = new Array();
                 this.selectedFastqInputs = new Array();
-                this.aligns = new Array();
+                this.data.aligns = new Array();
             }
             onMount(){}
             onUnMount(){}
-            renderView(parentView)
+            renderView()
             {
                 var html = new Array();
                 html.push
@@ -30,26 +30,26 @@ module.exports = function(arr,div)
                     "<th>Date Ran</th>",
                     "</tr>"
                 );
-                for(let i = 0; i != this.aligns.length; ++i)
+                for(let i = 0; i != this.data.aligns.length; ++i)
                 {
-                    if(this.aligns[i].type == "path")
+                    if(this.data.aligns[i].type == "path")
                     {
-                        var sources = this.aligns[i].UUID.split(';');
+                        var sources = this.data.aligns[i].UUID.split(';');
                         if
                         (
-                            contains.containsElement(this.selectedFastqInputs,sources[0]) &&
-                            contains.containsElement(this.selectedFastqInputs,sources[1]) &&
-                            contains.containsElement(this.selectedFastaInputs,sources[2])
+                            contains(this.selectedFastqInputs,sources[0]) &&
+                            contains(this.selectedFastqInputs,sources[1]) &&
+                            contains(this.selectedFastaInputs,sources[2])
                         )
                         {
                             html.push
                             (
                                 "<tr>",
-                                "<td><p id='",this.aligns[i].UUID,"' >",this.aligns[i].alias,"</p></td>",
-                                "<td>",this.aligns[i].summary.reads,"</td>",
-                                "<td>",this.aligns[i].summary.mates,"</td>",
-                                "<td>",this.aligns[i].summary.overallAlignmentRate,"</td>",
-                                "<td>",this.aligns[i].dateStampString,"</td>",
+                                "<td><p id='",this.data.aligns[i].UUID,"' >",this.data.aligns[i].alias,"</p></td>",
+                                "<td>",this.data.aligns[i].summary.reads,"</td>",
+                                "<td>",this.data.aligns[i].summary.mates,"</td>",
+                                "<td>",this.data.aligns[i].summary.overallAlignmentRate,"</td>",
+                                "<td>",this.data.aligns[i].dateStampString,"</td>",
                                 "</tr>"
                             )
                         }
@@ -58,22 +58,23 @@ module.exports = function(arr,div)
                 html.push("</table>");
                 return html.join('');
             }
-            postRender(parentView){}
-            divClickEvents(parentView,event)
+            postRender(){}
+            divClickEvents(event)
             {
                 if(!event || !event.target || !event.target.id)
                     return;
-                for(let i = 0; i != this.aligns.length; ++i)
+                for(let i = 0; i != this.data.aligns.length; ++i)
                 {
-                    if(this.aligns[i].UUID == event.target.id)
+                    if(this.data.aligns[i].UUID == event.target.id)
                     {
-                        views[view.getIndexOfViewByName(views,"pileUp")].report = this.aligns[i].UUID;
-                        changeView("pileUp");
+                        //views[view.getIndexOfViewByName(views,"pileUp")].report = this.data.aligns[i].UUID;
+                        viewMgr.getViewByName("pileUp").report = this.data.aligns[i].UUID;
+                        viewMgr.changeView("pileUp");
                         return;
                     }
                 }
             }
-            dataChanged(parentView){}
+            dataChanged(){}
 
         }
         

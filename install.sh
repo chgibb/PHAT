@@ -10,10 +10,17 @@ sudo apt-get install gcc -y
 sudo apt-get install g++ -y
 sudo apt-get install ant
 
+rm -rf dist
+
+mkdir dist
+mkdir dist/styles
+
+npm install
+
 for f in scripts/install/*.sh
 do
 	sh $f
 done
 
 
-npm install
+

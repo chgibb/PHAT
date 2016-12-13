@@ -2,6 +2,7 @@ const electron = require('electron');
 const ipc = electron.ipcMain;
 const app = electron.app;
 var window = require('./window');
+var fsAccess = require("./../fsAccess");
 var getState = require('./getState');
 var postState = require('./postState');
 let pathogenWindow;
@@ -21,7 +22,7 @@ window.windowCreators["pathogen"] =
 		(
 			{
 				name : "pathogen",
-				window : window.createWithDefault("Pathogen","pathogen",pathogenWindow,1000,800,'./../../Pathogen.html',true)
+				window : window.createWithDefault("Pathogen","pathogen",pathogenWindow,1000,800,fsAccess("resources/app/Pathogen.html"),true)
 			}
 		);
 	}
