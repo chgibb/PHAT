@@ -1,14 +1,14 @@
-var view = require('./..//view');
-var id = require('./..//MakeValidID');
-module.exports  = function(arr,div)
+var viewMgr = require('./../viewMgr');
+var id = require('./../MakeValidID');
+module.exports  = function(arr,div,model)
 {
     arr.push
     (
-        new class extends view.View
+        new class extends viewMgr.View
         {
             constructor()
             {
-                super('report',div);
+                super('report',div,model);
                 this.data.fastqInputs = new Array();
                 this.data.fastaInputs = new Array();
 
@@ -17,9 +17,9 @@ module.exports  = function(arr,div)
                 this.data.selectedFasta = "";
 
                 this.data.tab = "path";
-                        
+
                 //view for confirm options
-                this.data.confirmOptions = new class extends view.View
+                this.data.confirmOptions = new class extends viewMgr.View
                 {
                     constructor()
                     {
@@ -27,29 +27,29 @@ module.exports  = function(arr,div)
                         this.data.selectedFastqs = new Array();
                         this.data.selectedFasta = "";
                     }
-                    renderView(parentView)
+                    renderView()
                     {
                         var html = new Array();
-                        if(parentView.data.selectedFastqs && parentView.data.selectedFasta)
+                        if(this.data.selectedFastqs && this.data.selectedFasta)
                         {
                             html.push
                             (
-                                "<p>Align <b>",parentView.data.selectedFastqs[0],"</b>,<b> ",parentView.data.selectedFastqs[1],"</b></p>",
-                                "<p>Against <b>",parentView.data.selectedFasta,"</b></p>"
+                                "<p>Align <b>",this.data.selectedFastqs[0],"</b>,<b> ",this.data.selectedFastqs[1],"</b></p>",
+                                "<p>Against <b>",this.data.selectedFasta,"</b></p>"
                             );
                         }
                         return html.join('');
                     }
                     onMount(){}
                     onUnMount(){}
-                    postRender(parentView){}
-                    divClickEvents(parentView,event){}
-                    dataChanged(parentView){}
+                    postRender(){}
+                    divClickEvents(event){}
+                    dataChanged(){}
                 }
             }
             onMount(){}
             onUnMount(){}
-            renderView(parentView)
+            renderView()
             {
                 var html = new Array();
                 //fastq table
@@ -62,23 +62,23 @@ module.exports  = function(arr,div)
                     "<th>Use</th>",
                     "</tr>"
                 );
-                for(let i = 0; i != parentView.data.fastqInputs.length; ++i)
+                for(let i = 0; i != this.data.fastqInputs.length; ++i)
                 {
-                    if(parentView.data.fastqInputs[i].checked)
+                    if(this.data.fastqInputs[i].checked)
                     {
                         html.push
                         (
                             "<tr>",
-                            "<td>",parentView.data.fastqInputs[i].alias,"</td>",
-                            "<td>","<input type='checkbox' id='",parentView.data.fastqInputs[i].validID,"'></input></td>",
+                            "<td>",this.data.fastqInputs[i].alias,"</td>",
+                            "<td>","<input type='checkbox' id='",this.data.fastqInputs[i].validID,"'></input></td>",
                             "</tr>"
                         );
                     }
                 }
                 html.push("</table></div><br /><br />");
 
-                html.push("<img id='pathTab' src='../img/browseButton.png'>");
-                html.push("<img id='hostTab' src='../img/buttonHost.png'>");
+                html.push("<img id='pathTab' src='img/browseButton.png'>");
+                html.push("<img id='hostTab' src='img/buttonHost.png'>");
                 //fasta table
                 html.push
                 (
@@ -87,19 +87,19 @@ module.exports  = function(arr,div)
                     "<tr>",
                     "<th>Name</th>",
                     "<th>Align Against</th>",
-                    "</tr>"   
+                    "</tr>"
                 );
-                for(let i = 0; i != parentView.data.fastaInputs.length; ++i)
+                for(let i = 0; i != this.data.fastaInputs.length; ++i)
                 {
-                    if(parentView.data.fastaInputs[i].indexed &&
-                    parentView.data.fastaInputs[i].type == parentView.data.tab &&
-                    parentView.data.fastaInputs[i].checked)
+                    if(this.data.fastaInputs[i].indexed &&
+                    this.data.fastaInputs[i].type == this.data.tab &&
+                    this.data.fastaInputs[i].checked)
                     {
                         html.push
                         (
                             "<tr>",
-                            "<td>",parentView.data.fastaInputs[i].alias,"</td>",
-                            "<td>","<input type='radio' name='fasta' id='",parentView.data.fastaInputs[i].validID,"'></input></td>",
+                            "<td>",this.data.fastaInputs[i].alias,"</td>",
+                            "<td>","<input type='radio' name='fasta' id='",this.data.fastaInputs[i].validID,"'></input></td>",
                             "</tr>"
                         );
                     }
@@ -108,141 +108,141 @@ module.exports  = function(arr,div)
                 //div for confirmOptions view
                 html.push("</table></div>");
                 html.push("<div id='confirmOptions'></div>");
-                html.push("<img id='alignButton' src='../img/browseButton.png'>");
+                html.push("<img id='alignButton' src='img/temporaryAlignButton.png'>");
                 return html.join('');
             }
-            postRender(parentView)
+            postRender()
             {
                 //restore checked state of checkboxs
-                for(let i = 0; i != parentView.data.selectedFastqs.length; ++i)
+                for(let i = 0; i != this.data.selectedFastqs.length; ++i)
                 {
-                    var elem = document.getElementById(parentView.data.selectedFastqs[i]);
+                    var elem = document.getElementById(this.data.selectedFastqs[i]);
                     if(elem)
                         elem.checked = true;
                 }
-                var elem = document.getElementById(parentView.data.selectedFasta);
+                var elem = document.getElementById(this.data.selectedFasta);
                 if(elem)
                     elem.checked = true;
                 $("#fastqs").css("height",$(window).height()/3+"px");
                 $("#fastas").css("height",$(window).height()/5+"px");
 
-                parentView.data.confirmOptions.render(); 
+                this.data.confirmOptions.render();
             }
-            divClickEvents(parentView,object)
+            divClickEvents(object)
             {
                 if(!event || !event.target || !event.target.id)
                     return;
-                for(let i = 0; i != parentView.data.fastqInputs.length; ++i)
+                for(let i = 0; i != this.data.fastqInputs.length; ++i)
                 {
-                    if(event.target.id == parentView.data.fastqInputs[i].validID)
+                    if(event.target.id == this.data.fastqInputs[i].validID)
                     {
-                        if(parentView.data.selectedFastqs.length >= 2)
+                        if(this.data.selectedFastqs.length >= 2)
                             document.getElementById(event.target.id).checked = false;
-                        parentView.populateSelectedFastqs(parentView);
+                        this.populateSelectedFastqs();
                     }
                 }
                 if(event.target.id == "pathTab")
                 {
-                    parentView.data.tab = "path";
+                    this.data.tab = "path";
                 }
                 if(event.target.id == "hostTab")
                 {
-                    parentView.data.tab = "host";
+                    this.data.tab = "host";
                 }
                 if(event.target.id == "alignButton")
                 {
-                    for(let i = 0; i != parentView.data.fastqInputs.length; ++i)
+                    for(let i = 0; i != this.data.fastqInputs.length; ++i)
                     {
-                        if(parentView.data.selectedFastqs[0] == parentView.data.fastqInputs[i].validID)
+                        if(this.data.selectedFastqs[0] == this.data.fastqInputs[i].validID)
                         {
-                            parentView.data.selectedFastqs[0] = parentView.data.fastqInputs[i];
+                            this.data.selectedFastqs[0] = this.data.fastqInputs[i];
                         }
-                        if(parentView.data.selectedFastqs[1] == parentView.data.fastqInputs[i].validID)
+                        if(this.data.selectedFastqs[1] == this.data.fastqInputs[i].validID)
                         {
-                            parentView.data.selectedFastqs[1] = parentView.data.fastqInputs[i];
+                            this.data.selectedFastqs[1] = this.data.fastqInputs[i];
                             break;
                         }
                     }
-                    for(let i = 0; i != parentView.data.fastaInputs.length; ++i)
+                    for(let i = 0; i != this.data.fastaInputs.length; ++i)
                     {
-                        if(parentView.data.selectedFasta == parentView.data.fastaInputs[i].validID)
+                        if(this.data.selectedFasta == this.data.fastaInputs[i].validID)
                         {
-                            parentView.data.selectedFasta = parentView.data.fastaInputs[i];
+                            this.data.selectedFasta = this.data.fastaInputs[i];
                             break;
                         }
                     }
 
-                    align.runAlignment(parentView.data.selectedFastqs,parentView.data.selectedFasta,parentView.data.tab);
+                    this.model.runAlignment(this.data.selectedFastqs,this.data.selectedFasta,this.data.tab);
                 }
-                parentView.populateSelectedFasta(parentView);
-                parentView.populateSelectedFastqs(parentView);
-                                    
-                parentView.setConfirmOptions(parentView);
+                this.populateSelectedFasta();
+                this.populateSelectedFastqs();
 
-                render();
+                this.setConfirmOptions();
+
+                viewMgr.render();
             }
-            populateSelectedFastqs(parentView)
+            populateSelectedFastqs()
             {
-                parentView.data.selectedFastqs = new Array();
+                this.data.selectedFastqs = new Array();
                 //walk the table and save checked fastqs in selectedFastqs
-                for(let i = 0; i != parentView.data.fastqInputs.length; ++i)
+                for(let i = 0; i != this.data.fastqInputs.length; ++i)
                 {
-                    if(parentView.data.fastqInputs[i].checked &&
-                    document.getElementById(parentView.data.fastqInputs[i].validID).checked)
+                    if(this.data.fastqInputs[i].checked &&
+                    document.getElementById(this.data.fastqInputs[i].validID).checked)
                     {
-                        parentView.data.selectedFastqs.push(parentView.data.fastqInputs[i].validID);
+                        this.data.selectedFastqs.push(this.data.fastqInputs[i].validID);
                     }
-                    if(parentView.data.selectedFastqs.length >= 2)
+                    if(this.data.selectedFastqs.length >= 2)
                         break;
                 }
             }
-            populateSelectedFasta(parentView)
+            populateSelectedFasta()
             {
-                parentView.data.selectedFasta = "";
+                this.data.selectedFasta = "";
                 //walk the table and save checked fasta in selectedFasta
-                for(let i = 0; i != parentView.data.fastaInputs.length; ++i)
+                for(let i = 0; i != this.data.fastaInputs.length; ++i)
                 {
-                    var elem = document.getElementById(parentView.data.fastaInputs[i].validID);
+                    var elem = document.getElementById(this.data.fastaInputs[i].validID);
                     if(elem && elem.checked)
                     {
-                        parentView.data.selectedFasta = parentView.data.fastaInputs[i].validID;
+                        this.data.selectedFasta = this.data.fastaInputs[i].validID;
                         return;
                     }
                 }
             }
-            setConfirmOptions(parentView)
+            setConfirmOptions()
             {
                 //set confirmOptions' selected arrays to be equal to this' selected arrays
-                //parentView.data.confirmOptions.data.selectedFastqs = parentView.data.selectedFastqs;
-                //parentView.data.confirmOptions.data.selectedFasta = parentView.data.selectedFasta;
+                //this.data.confirmOptions.data.selectedFastqs = this.data.selectedFastqs;
+                //this.data.confirmOptions.data.selectedFasta = this.data.selectedFasta;
                 var setFirst = false;
                 var setSecond = false;
                 //Selected items are saved by validID. Convert to alias for confirmOptions to render.
-                for(let i = 0; i != parentView.data.fastqInputs.length; ++i)
+                for(let i = 0; i != this.data.fastqInputs.length; ++i)
                 {
-                    if(parentView.data.fastqInputs[i].checked)
+                    if(this.data.fastqInputs[i].checked)
                     {
-                        if(parentView.data.selectedFastqs[0] == parentView.data.fastqInputs[i].validID)
+                        if(this.data.selectedFastqs[0] == this.data.fastqInputs[i].validID)
                         {
-                            parentView.data.confirmOptions.data.selectedFastqs[0] = parentView.data.fastqInputs[i].alias;
+                            this.data.confirmOptions.data.selectedFastqs[0] = this.data.fastqInputs[i].alias;
                             setFirst = true;
                         }
-                        if(parentView.data.selectedFastqs[1] == parentView.data.fastqInputs[i].validID)
+                        if(this.data.selectedFastqs[1] == this.data.fastqInputs[i].validID)
                         {
-                            parentView.data.confirmOptions.data.selectedFastqs[1] = parentView.data.fastqInputs[i].alias;
+                            this.data.confirmOptions.data.selectedFastqs[1] = this.data.fastqInputs[i].alias;
                             setSecond = true;
                         }
                         if(setSecond && setFirst)
                             break;
                     }
                 }
-                for(let i = 0; i != parentView.data.fastaInputs.length; ++i)
+                for(let i = 0; i != this.data.fastaInputs.length; ++i)
                 {
-                    if(parentView.data.fastaInputs[i].checked)
+                    if(this.data.fastaInputs[i].checked)
                     {
-                        if(parentView.data.selectedFasta == parentView.data.fastaInputs[i].validID)
+                        if(this.data.selectedFasta == this.data.fastaInputs[i].validID)
                         {
-                            parentView.data.confirmOptions.data.selectedFasta = parentView.data.fastaInputs[i].alias;
+                            this.data.confirmOptions.data.selectedFasta = this.data.fastaInputs[i].alias;
                             break;
                         }
                     }

@@ -2,6 +2,7 @@ const electron = require('electron');
 const ipc = electron.ipcMain;
 const app = electron.app;
 var window = require('./window');
+var fsAccess = require("./../fsAccess");
 var getState = require('./getState');
 var postState = require('./postState');
 let inputWindow;
@@ -27,7 +28,7 @@ window.windowCreators["input"] =
 		(
 			{
 				name : "input",
-				window : window.createWithDefault("Input","input",inputWindow,928,300,'./../../Input.html',true)
+				window : window.createWithDefault("Input","input",inputWindow,928,300,fsAccess("resources/app/Input.html"),true)
 			}
 		);
 	}

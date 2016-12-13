@@ -1,11 +1,10 @@
 const ipc = require('electron').ipcRenderer;
 
 var id = require("./req/renderer/MakeValidID");
-var view = require('./req/renderer/view');
+var viewMgr = require('./req/renderer/viewMgr');
 var QCClass = require('./req/renderer/QC');
 
-var views = new Array();
-var currView = "summary";
+
 
 var addSummaryView = require('./req/renderer/QCRenderer/summaryView');
 var addReportView = require('./req/renderer/QCRenderer/reportView');
@@ -29,18 +28,16 @@ var QC = new QCClass
     }
 );
 window.$ = window.jQuery = require('./req/renderer/jquery-2.2.4.js');
-function render()
-{
-    views[view.getIndexOfViewByName(views,currView)].render();
-}
+
 $
 (
     function()
     {
-        addSummaryView(views,'reports');
-        addReportView(views,'reports');
+        addSummaryView(viewMgr.views,'reports',QC);
+        addReportView(viewMgr.views,'reports',QC);
 
-        views[view.getIndexOfViewByName(views,currView)].mount();
+
+        viewMgr.changeView("summary");
 
         ipc.send('keySub',{action : "keySub", channel : "input", key : "fastqInputs", replyChannel : "QC"});
 		ipc.send('keySub',{action : "keySub", channel : "input", key : "fastqInputs", replyChannel : "QC"});
@@ -64,9 +61,10 @@ $
                             {
                                 QC.addQCData(arg.val[i].name)
                             }
-                            views[view.getIndexOfViewByName(views,'summary')].data.QCData = QC.QCData;
-                            views[view.getIndexOfViewByName(views,'summary')].data.fastqInputs = arg.val;
-                            render();
+                            //views[view.getIndexOfViewByName(views,'summary')].data.QCData = QC.QCData;
+                            //views[view.getIndexOfViewByName(views,'summary')].data.fastqInputs = arg.val;
+                            viewMgr.getViewByName("summary").data.fastqInputs = arg.val;
+                            viewMgr.render();
                         }
                     }
                     if(arg.key == 'QCData')
@@ -74,11 +72,11 @@ $
                         if(arg.val != 0 )
                         {
                             QC.QCData = arg.val;
-                            views[view.getIndexOfViewByName(views,'summary')].data.QCData = QC.QCData;
+                            //views[view.getIndexOfViewByName(views,'summary')].data.QCData = QC.QCData;
                         }
                     }
                 }
-                render();
+                viewMgr.render();
             }
         );
         ipc.on
@@ -99,13 +97,6 @@ $
                 QC.spawnReply(event,arg);
             }
         );
-        render();
+        viewMgr.render();
     }
 );
-function changeView(newView)
-{
-    views[view.getIndexOfViewByName(views,currView)].unMount();
-    currView = newView;
-    views[view.getIndexOfViewByName(views,currView)].mount();
-    render();
-}
