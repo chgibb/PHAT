@@ -96,4 +96,11 @@ $
         viewMgr.render();
     }
 );
+$(window).resize
+(
+	function()
+	{
+        document.getElementById("view").style.height = $(window).height()+"px";
+    }
+);
 
