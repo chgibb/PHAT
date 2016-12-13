@@ -1,25 +1,25 @@
-var view = require('./../view.js');
+var viewMgr = require('./../viewMgr');
 var id = require('./../MakeValidID.js');
 var buildInclusiveSearchFilter = require('./../buildInclusiveSearchFilter.js');
-module.exports = function(arr,div)
+module.exports = function(arr,div,model)
 {
     arr.push
     (
-        new class extends view.View
+        new class extends viewMgr.View
         {
             constructor()
             {
-                super('fastq',div);
+                super('fastq',div,model);
                 this.data.fastqInputs = new Array();
                 this.data.searchFilter = new RegExp("","i");
                 this.data.filterString = "";
             }
             onMount(){}
             onUnMount(){}
-            renderView(parentView)
+            renderView()
             {
                 if(document.getElementById('fastqInputFilterBox'))
-                    parentView.data.filterString = document.getElementById('fastqInputFilterBox').value;
+                    this.data.filterString = document.getElementById('fastqInputFilterBox').value;
                 var html = new Array();
                 html.push
                 (
@@ -32,18 +32,18 @@ module.exports = function(arr,div)
                     "<th>Size</th>",
                     "</tr>"
                 );
-                parentView.data.searchFilter = buildInclusiveSearchFilter(parentView.data.filterString);
+                this.data.searchFilter = buildInclusiveSearchFilter(this.data.filterString);
 
-                for(let i = 0; i != parentView.data.fastqInputs.length; ++i)
+                for(let i = 0; i != this.model.fastqInputs.length; ++i)
                 {
-                    if(parentView.data.searchFilter.test(parentView.data.fastqInputs[i].alias))
+                    if(this.data.searchFilter.test(this.model.fastqInputs[i].alias))
                     {
 		        	    html.push
 		        	    (
-			        	    "<tr><td><input type='checkbox' id='",parentView.data.fastqInputs[i].validID,"'></input></td>",
-			        	    "<td>",parentView.data.fastqInputs[i].alias,"</td>",
-			        	    "<td>",parentView.data.fastqInputs[i].name,"</td>",
-			        	    "<td>",parentView.data.fastqInputs[i].sizeString,"</td>",
+			        	    "<tr><td><input type='checkbox' id='",this.model.fastqInputs[i].validID,"'></input></td>",
+			        	    "<td>",this.model.fastqInputs[i].alias,"</td>",
+			        	    "<td>",this.model.fastqInputs[i].name,"</td>",
+			        	    "<td>",this.model.fastqInputs[i].sizeString,"</td>",
 			        	    "</tr>"
                         );
                     }
@@ -51,34 +51,35 @@ module.exports = function(arr,div)
 	            html.push("</table>");
                 return html.join('');
             }
-            postRender(parentView)
+            postRender()
             {
                 //restore text in search box
-                if(parentView.data.filterString)
-                    document.getElementById('fastqInputFilterBox').value = parentView.data.filterString;
+                if(this.data.filterString)
+                    document.getElementById('fastqInputFilterBox').value = this.data.filterString;
                 var shouldCheckCheckAllBox = true;
-                for(let i = 0; i != parentView.data.fastqInputs.length; ++i)
+                for(let i = 0; i != this.model.fastqInputs.length; ++i)
                 {
                     //restore state of checkboxes
-                    if(parentView.data.fastqInputs[i].checked)
+                    if(this.model.fastqInputs[i].checked)
                     {
-                        $('#'+parentView.data.fastqInputs[i].validID).prop("checked",true);
+                        $('#'+this.model.fastqInputs[i].validID).prop("checked",true);
                     }
                     //check the check all box if all visible items have been checked
-                    if(parentView.data.searchFilter.test(parentView.data.fastqInputs[i].alias))
+                    if(this.data.searchFilter.test(this.model.fastqInputs[i].alias))
                     {
-                        if(!parentView.data.fastqInputs[i].checked)
+                        if(!this.model.fastqInputs[i].checked)
                             shouldCheckCheckAllBox = false;
                     }
                 }
+                var me = this;
                 //reset change handler to inputFilterBox
                 $('#fastqInputFilterBox').on
                 (
                     'change keydown keyup paste',
                     function()
                     {
-                        parentView.data.filterString = document.getElementById('fastqInputFilterBox').value;
-                        parentView.render();
+                        me.data.filterString = document.getElementById('fastqInputFilterBox').value;
+                        me.render();
                     }
                 );
                 //apply prop to check all box
@@ -91,9 +92,9 @@ module.exports = function(arr,div)
                 //The renderer window will recieve a reply from the main process
                 //after input posts the updated data and trigger a rerender with the new data.
                 //No need to do so here.
-                input.postFastqInputs();
+                this.model.postFastqInputs();
             }
-            divClickEvents(parentView,event)
+            divClickEvents(event)
             {
                 //potentially error or user clicked on something we're not interested in 
                 if(!event || !event.target || !event.target.id)
@@ -103,30 +104,30 @@ module.exports = function(arr,div)
                 if(event.target.id != 'fastqSelectAllBox')
                 {
                     //if name is defined then a checkbox was actually clicked
-                    var name = id.findOriginalInput(event.target.id,parentView.data.fastqInputs);
+                    var name = id.findOriginalInput(event.target.id,this.model.fastqInputs);
                     //checkbox was clicked
                     if(name !== undefined)
                     {
                         if(event.target.checked)
                         {
-                            for(var i in parentView.data.fastqInputs)
+                            for(var i in this.model.fastqInputs)
                             {
-                                if(parentView.data.fastqInputs[i].name == name)
+                                if(this.model.fastqInputs[i].name == name)
                                 {
-                                    parentView.data.fastqInputs[i].checked = true;
-                                    parentView.dataChanged();
+                                    this.model.fastqInputs[i].checked = true;
+                                    this.dataChanged();
                                     return;
                                 }
                             }
                         }
                         if(!event.target.checked)
                         {
-                            for(var i in parentView.data.fastqInputs)
+                            for(var i in this.model.fastqInputs)
                             {
-                                if(parentView.data.fastqInputs[i].name == name)
+                                if(this.model.fastqInputs[i].name == name)
                                 {
-                                    parentView.data.fastqInputs[i].checked = false;
-                                    parentView.dataChanged();
+                                    this.model.fastqInputs[i].checked = false;
+                                    this.dataChanged();
                                     return;
                                 }
                             }
@@ -136,18 +137,18 @@ module.exports = function(arr,div)
                 //on user clicking the select all box
                 if(event.target.id == 'fastqSelectAllBox')
                 {
-                    parentView.data.searchFilter = buildInclusiveSearchFilter(parentView.data.filterString);
-                    for(let i = 0; i != parentView.data.fastqInputs.length; ++i)
+                    this.data.searchFilter = buildInclusiveSearchFilter(this.data.filterString);
+                    for(let i = 0; i != this.model.fastqInputs.length; ++i)
                     {
                         //for anything currently visible
-                        if(parentView.data.searchFilter.test(parentView.data.fastqInputs[i].alias))
+                        if(this.data.searchFilter.test(this.model.fastqInputs[i].alias))
                         {
                             //set the checked state to that of the select all checkbox
-                            parentView.data.fastqInputs[i].checked = event.target.checked;
+                            this.model.fastqInputs[i].checked = event.target.checked;
                         }
                     }
                     //inform the renderer of an update
-                    parentView.dataChanged();    
+                    this.dataChanged();    
                 }
             }
         }
