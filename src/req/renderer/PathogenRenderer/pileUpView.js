@@ -2,6 +2,8 @@ var pileUp = require('./pileup');
 
 var viewMgr = require('./../viewMgr');
 var id = require('./../MakeValidID.js');
+
+var fsAccess = require('./../../fsAccess');
 module.exports = function(arr,div)
 {
     arr.push
@@ -65,7 +67,7 @@ module.exports = function(arr,div)
                                 data : pileUp.formats.twoBit
                                 (
                                     {
-                                        url : process.cwd()+"/"+twoBit
+                                        url : fsAccess(twoBit)
                                     }
                                 ),
                                 name : refName
@@ -75,8 +77,8 @@ module.exports = function(arr,div)
                                 data : pileUp.formats.bam
                                 (
                                     {
-                                        url : process.cwd()+"/"+bam,
-                                        indexUrl : process.cwd()+"/"+bai
+                                        url : fsAccess(bam),
+                                        indexUrl : fsAccess(bai)
                                     }
                                 ),
                                 cssClass : 'normal',

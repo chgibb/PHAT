@@ -35,7 +35,7 @@ $
                         {
                             //views[view.getIndexOfViewByName(views,"pileUp")].aligns = arg.val;
                             //views[view.getIndexOfViewByName(views,"report")].aligns = arg.val;
-                            viewMgr.getViewByName("pileUp").data.aligns = arg.val;
+                            viewMgr.getViewByName("pileUp").aligns = arg.val;
                             viewMgr.getViewByName("report").data.aligns = arg.val;
                         }
                         viewMgr.render();
