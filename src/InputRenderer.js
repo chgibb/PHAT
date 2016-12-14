@@ -5,6 +5,7 @@ var fs = require("fs");
 var viewMgr = require("./req/renderer/viewMgr");
 var debug = require("./req/renderer/sendDebugMessage");
 debug.initialize("input");
+require("./req/renderer/commonKeys");
 var views = new Array();
 
 var addFastaView = require("./req/renderer/inputRenderer/FastaView");
