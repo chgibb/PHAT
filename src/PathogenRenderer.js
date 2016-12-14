@@ -5,7 +5,7 @@ var viewMgr = require('./req/renderer/viewMgr');
 
 var addReportView = require('./req/renderer/PathogenRenderer/reportView');
 var addPileUpView = require('./req/renderer/PathogenRenderer/pileUpView');
-require("./req/renderer/commonKeys");
+require("./req/renderer/commonBehaviour");
 
 
 window.$ = window.jQuery = require('./req/renderer/jquery-2.2.4.js');

@@ -8,7 +8,7 @@ var QCClass = require('./req/renderer/QC');
 
 var addSummaryView = require('./req/renderer/QCRenderer/summaryView');
 var addReportView = require('./req/renderer/QCRenderer/reportView');
-require("./req/renderer/commonKeys");
+require("./req/renderer/commonBehaviour");
 
 var QC = new QCClass
 (
