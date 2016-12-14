@@ -28,7 +28,7 @@ window.windowCreators["input"] =
 		(
 			{
 				name : "input",
-				window : window.createWithDefault("Input","input",inputWindow,928,300,fsAccess("resources/app/Input.html"),true)
+				window : window.createWithDefault("Input","input",inputWindow,928,300,fsAccess("resources/app/Input.html"),false)
 			}
 		);
 	}
