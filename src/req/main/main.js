@@ -23,7 +23,7 @@ require('./Pathogen');
 
 try
 {
-	state = jsonFile.readFileSync('rt/rt.json');
+	state = jsonFile.readFileSync('resources/app/rt/rt.json');
 	console.log("loading");
 	if(!state)
 		state = {};
@@ -55,7 +55,6 @@ app.on
 	{
 		try
 		{
-			fs.mkdirSync("rt");
 			fs.mkdirSync("resources/app/rt");
 			fs.mkdirSync("resources/app/rt/QCReports");
 			fs.mkdirSync("resources/app/rt/indexes");
