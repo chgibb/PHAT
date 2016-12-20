@@ -4,6 +4,7 @@ var id = require("./req/renderer/MakeValidID.js");
 var fs = require('fs');
 var viewMgr = require('./req/renderer/viewMgr');
 var addReportView = require('./req/renderer/AlignRenderer/reportView');
+require("./req/renderer/commonBehaviour");
 
 var views = new Array();
 

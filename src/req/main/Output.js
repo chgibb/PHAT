@@ -21,7 +21,7 @@ window.windowCreators["output"] =
 		(
 			{
 				name : "output",
-				window : window.createWithDefault("Output","output",outputWindow,1379,649,'./../../Output.html',true)
+				window : window.createWithDefault("Output","output",outputWindow,1379,649,'./../../Output.html',false)
 			}
 		);
 	}
