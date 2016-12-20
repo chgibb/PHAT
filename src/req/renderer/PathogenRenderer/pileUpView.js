@@ -1,4 +1,4 @@
-var pileUp = require('./pileup');
+
 
 var viewMgr = require('./../viewMgr');
 var id = require('./../MakeValidID.js');
@@ -20,6 +20,7 @@ module.exports = function(arr,div)
             }
             onMount()
             {
+                var pileUp = require('./pileup');
                 var twoBit;
                 var refName;
                 var bam;
