@@ -1,4 +1,5 @@
 var jsonFile = require('jsonfile');
+var fsAccess = require('./../fsAccess');
 //tick # to persist at
 module.exports.persistTick = 5;
 //current ticks
@@ -15,9 +16,16 @@ module.exports.persistState = function(force)
 	}*/
 	try
 	{
-		var fs = require("fs").mkdirSync("rt");
+		var fs = require("fs").mkdirSync("resources/app/rt");
 	}
 	catch(err){}
-	jsonFile.writeFileSync('rt/rt.json',state,{spaces : 4});
+    try
+    {
+	    jsonFile.writeFileSync("resources/app/rt/rt.json",state,{spaces : 4});
+    }
+    catch(err)
+    {
+        console.log(err);
+    }
 	module.exports.persistTicks = 0;
 }
