@@ -19,9 +19,13 @@ module.exports.persistState = function(force)
 		var fs = require("fs").mkdirSync("resources/app/rt");
 	}
 	catch(err){}
-    try{
-	jsonFile.writeFileSync("resources/app/rt/rt.json",state,{spaces : 4});
+    try
+    {
+	    jsonFile.writeFileSync("resources/app/rt/rt.json",state,{spaces : 4});
     }
-    catch(err){console.log(err);}
+    catch(err)
+    {
+        console.log(err);
+    }
 	module.exports.persistTicks = 0;
 }
