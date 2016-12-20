@@ -1,3 +1,4 @@
+var fs = require("fs");
 const electron = require('electron');
 const ipc = electron.ipcMain;
 const app = electron.app;
@@ -54,7 +55,6 @@ app.on
 	{
 		try
 		{
-			var fs = require("fs");
 			fs.mkdirSync("rt");
 			fs.mkdirSync("resources/app/rt");
 			fs.mkdirSync("resources/app/rt/QCReports");
