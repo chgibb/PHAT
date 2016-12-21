@@ -24,5 +24,5 @@ window.onerror = function(message,file,line,col,error)
     {
         alert("Error:\n\t" + message + "\nLine:\n\t" + line + "\nFile:\n\t" + file);
     }
-    remote.getCurrentWindow().toggleDevTools();
+    remote.getCurrentWindow().openDevTools();
 }

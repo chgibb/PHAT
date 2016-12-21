@@ -1,9 +1,10 @@
-var pileUp = require('./pileup');
+
 
 var viewMgr = require('./../viewMgr');
 var id = require('./../MakeValidID.js');
 
 var fsAccess = require('./../../fsAccess');
+var requireDyn = require('./../../requireDyn');
 module.exports = function(arr,div)
 {
     arr.push
@@ -20,6 +21,7 @@ module.exports = function(arr,div)
             }
             onMount()
             {
+                var pileUp = requireDyn('./pileup');
                 var twoBit;
                 var refName;
                 var bam;
