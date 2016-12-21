@@ -16,3 +16,5 @@ cd ../
 cp src/pileup.js/dist/pileup.js forDist
 cp src/pileup.js/style/pileup.css forDist/styles/pileup.css
 
+rm -rf src/pileup.js
+
