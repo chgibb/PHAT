@@ -22,7 +22,7 @@ window.windowCreators["pathogen"] =
 		(
 			{
 				name : "pathogen",
-				window : window.createWithDefault("Pathogen","pathogen",pathogenWindow,1000,800,fsAccess("resources/app/Pathogen.html"),true)
+				window : window.createWithDefault("Pathogen","pathogen",pathogenWindow,1000,800,fsAccess("resources/app/Pathogen.html"),false)
 			}
 		);
 	}
