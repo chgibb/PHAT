@@ -14,7 +14,7 @@ module.exports.addView = function(arr,div,models)
 {
     arr.push
     (
-        new class extends viewMgr.view
+        new class extends viewMgr.View
         {
             constructor()
             {

@@ -10,5 +10,10 @@ $
 (
     function()
     {
+        addReportView.addView(viewMgr.views,"report");
+        viewMgr.changeView("report");
+
+
+        viewMgr.render();
     }
 );
