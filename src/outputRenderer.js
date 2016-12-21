@@ -6,12 +6,13 @@ var viewMgr = require("./req/renderer/viewMgr");
 require("./req/renderer/commonBehaviour");
 
 var addReportView = require("./req/renderer/OutputRenderer/reportView");
+var addMasterView = require("./req/renderer/OutputRenderer/masterView");
 $
 (
     function()
     {
-        addReportView.addView(viewMgr.views,"report");
-        viewMgr.changeView("report");
+        addMasterView.addView(viewMgr.views,"view");
+        viewMgr.changeView("masterView");
 
 
         viewMgr.render();
