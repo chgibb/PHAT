@@ -13,6 +13,8 @@ npm run build
 
 cd ../
 cd ../
-cp src/pileup.js/dist/pileup.js src/req/renderer/PathogenRenderer
+cp src/pileup.js/dist/pileup.js forDist
 cp src/pileup.js/style/pileup.css forDist/styles/pileup.css
+
+rm -rf src/pileup.js
 
