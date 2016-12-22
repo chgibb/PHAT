@@ -28,6 +28,7 @@ module.exports.addView = function(arr,div,models)
                 {
                     this.firstRender = false;
                     return `
+                        <button id="optionsButton" class="optionsButton">Options</button>
                         <div id="report">
                         </div>
                         <div id="rightSlideOutPanel" class="rightSlideOutPanel">

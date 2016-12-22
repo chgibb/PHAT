@@ -22,7 +22,7 @@ window.windowCreators["output"] =
 		(
 			{
 				name : "output",
-				window : window.createWithDefault("Output","output",outputWindow,1379,649,fsAccess("resources/app/Output.html"),false)
+				window : window.createWithDefault("Output","output",outputWindow,1379,649,fsAccess("resources/app/Output.html"),true)
 			}
 		);
 	}

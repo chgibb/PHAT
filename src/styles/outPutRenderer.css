@@ -7,3 +7,7 @@ div.leftSlideOutPanel
 	height : 215px;
 	position : fixed;
 }
+button.optionsButton
+{
+    float : right;
+}
