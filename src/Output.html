@@ -25,34 +25,7 @@
 	<body>
 		<script type = "text/javascript" src = "outputRenderer.js"></script>
 		<button id="leftSlideOutPanelButton" onclick="leftSlideOutPanelButtonOnClick()">Options</button>
-		<div id="leftSlideOutPanel" class="leftSlideOutPanel">
-			<input onclick="OnOptionChange(this)" type="checkbox" id="FullName">Full Name</input>
-			<br />
-			<input onclick="OnOptionChange(this)"  type="checkbox" id="Alias">Alias</input>
-			<br />
-			<input onclick="OnOptionChange(this)"  type="checkbox" id="SizeInBytes">Size in Bytes</input>
-			<br />
-			<input onclick="OnOptionChange(this)"  type="checkbox" id="FormattedSize">Formatted Size</input>
-			<br />
-			<input onclick="OnOptionChange(this)"  type="checkbox" id="NumberOfSequences">Number of Sequences</input>
-			<br />
-			<input onclick="OnOptionChange(this)"  type="checkbox" id="QCInformation">QC Information</input>
-			<br />
-				<input onclick="OnOptionChange(this)"  type="checkbox" class="QCOption" id="PBSQ"><p class="QCOption" style= >PBSQ</p></input>
-
-				<input onclick="OnOptionChange(this)"  type="checkbox" class="QCOption" id="PSQS"><p class="QCOption" >PSQS</p></input>
-				
-				<input onclick="OnOptionChange(this)"  type="checkbox" class="QCOption" id="PSGCC"><p class="QCOption" >PSGCC</p></input>
-			
-				<input onclick="OnOptionChange(this)"  type="checkbox" class="QCOption" id="SDL"><p class="QCOption" >SDL</p></input>
-			
-				<input onclick="OnOptionChange(this)"  type="checkbox" class="QCOption" id="ORS"><p class="QCOption" >ORS</p></input>
-			<br />
-			<p>Export To:</p>
-			<input type="radio" name="exportOptions" id="exportToXLS">XLS</input>
-			<input type="radio" name="exportOptions" id="exportToCSV">CSV</input>
-			<button onclick="exportTable()">Export</button>
-		</div>
+		
 		<div id="view">
 		</div>
     </body>

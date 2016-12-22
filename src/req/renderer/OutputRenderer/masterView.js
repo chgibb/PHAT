@@ -1,4 +1,6 @@
 var viewMgr = require('./../viewMgr');
+
+var addReportView = require("./reportView");
 module.exports.addView = function(arr,div,models)
 {
     arr.push
@@ -7,13 +9,31 @@ module.exports.addView = function(arr,div,models)
         {
             constructor()
             {
-                super("masterView",div,models)
+                super("masterReportView",div,models);
+                this.views = new Array();
+                this.firstRender = true;
             }
-            onMount(){}
+            onMount()
+            {
+                addReportView.addView(this.views,"report");
+                for(let i = 0; i != this.views.length; ++i)
+                {
+                    this.views[i].onMount();
+                }
+            }
             onUnMount(){}
             renderView()
             {
-
+                for(let i = 0; i != this.views.length; ++i)
+                {
+                    this.views[i].render();
+                }
+                if(this.firstRender)
+                {
+                    this.firstRender = false;
+                    return;
+                }
+                
             }
             postRender(){}
             dataChanged(){}
