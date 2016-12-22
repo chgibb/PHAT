@@ -30,7 +30,7 @@ module.exports.addView = function(arr,div,models)
                     return `
                         <div id="report">
                         </div>
-                        <div id="leftSlideOutPanel" class="leftSlideOutPanel">
+                        <div id="rightSlideOutPanel" class="rightSlideOutPanel">
                     `;
                 }
                 for(let i = 0; i != this.views.length; ++i)
