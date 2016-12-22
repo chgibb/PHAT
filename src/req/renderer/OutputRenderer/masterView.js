@@ -24,15 +24,20 @@ module.exports.addView = function(arr,div,models)
             onUnMount(){}
             renderView()
             {
+                if(this.firstRender)
+                {
+                    this.firstRender = false;
+                    return `
+                        <div id="report">
+                        </div>
+                        <div id="leftSlideOutPanel" class="leftSlideOutPanel">
+                    `;
+                }
                 for(let i = 0; i != this.views.length; ++i)
                 {
                     this.views[i].render();
                 }
-                if(this.firstRender)
-                {
-                    this.firstRender = false;
-                    return;
-                }
+                
                 
             }
             postRender(){}
