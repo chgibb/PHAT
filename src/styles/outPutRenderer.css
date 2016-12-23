@@ -1,10 +1,11 @@
-div.leftSlideOutPanel
+div.rightSlideOutPanel
 {
     margin-right: -50%;
 	margin-top : +25%; 
-	background-color : #d9d9d9;
+	background-color : black;
 	width : 45%;
 	height : 215px;
+    right : 0px;
 	position : fixed;
 }
 button.optionsButton

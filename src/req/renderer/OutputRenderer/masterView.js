@@ -12,6 +12,7 @@ module.exports.addView = function(arr,div,models)
                 super("masterReportView",div,models);
                 this.views = new Array();
                 this.firstRender = true;
+                this.righPanelOpen = false;
             }
             onMount()
             {
@@ -32,6 +33,10 @@ module.exports.addView = function(arr,div,models)
                         <div id="report">
                         </div>
                         <div id="rightSlideOutPanel" class="rightSlideOutPanel">
+                            <br />
+                            <br />
+                            <button>options</button>
+                        </div>
                     `;
                 }
                 for(let i = 0; i != this.views.length; ++i)
@@ -43,7 +48,36 @@ module.exports.addView = function(arr,div,models)
             }
             postRender(){}
             dataChanged(){}
-            divClickEvents(event){}
+            divClickEvents(event)
+            {
+                if(!event || !event.target || !event.target.id)
+                    return;
+                if(event.target.id == "optionsButton")
+                {
+                    let me = this;
+                    $("#rightSlideOutPanel").animate
+                    (
+                        {
+                            "margin-right" : 
+                            (
+                                function()
+                                {
+                                    if(!me.rightPanelOpen)
+                                    {
+                                        me.rightPanelOpen = true;
+                                        return "+=50%";
+                                    }
+                                    if(me.rightPanelOpen)
+                                    {
+                                        me.rightPanelOpen = false;
+                                        return "-=50%";
+                                    }
+                                }
+                            )()
+                        }
+                    );
+                }
+            }
         }
     );
 }
