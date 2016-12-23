@@ -30,8 +30,7 @@ module.exports.addView = function(arr,div,models)
                     this.firstRender = false;
                     return `
                         <button id="optionsButton" class="optionsButton">Options</button>
-                        <div id="report">
-                        </div>
+                        
                         <div id="rightSlideOutPanel" class="rightSlideOutPanel">
                             <input type="checkbox" id="alias">Alias</input>
                             <input type="checkbox" id="fullName">Full Path</input>
@@ -49,6 +48,8 @@ module.exports.addView = function(arr,div,models)
                             <input type="checkbox" id="SDL">Sequence Duplication Levels</input>
                             <br />
                             <input type="checkbox" id="ORS">Over Represented Sequences</input>
+                        </div>
+                        <div id="report">
                         </div>
                     `;
                 }
