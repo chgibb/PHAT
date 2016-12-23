@@ -16,7 +16,7 @@ module.exports.addView = function(arr,div,models)
                 this.numberOfSequences = false;
                 this.PBSQ = false;
                 this.PSQS = false;
-                this.SGCC = false;
+                this.PSGCC = false;
                 this.SDL = false;
                 this.ORS = false;
             }
@@ -24,35 +24,22 @@ module.exports.addView = function(arr,div,models)
             onUnMount(){}
             renderView()
             {
-                var html = new Array();
-                html.push
-                (
-                    "<table style='width:100%'>",
-                    "<tr>"
-                );
-                if(this.alias)
-                    html.push("<th>","Alias","</th>");
-                if(this.fullName)
-                    html.push("<th>","Directory","</th>");
-                if(this.sizeInBytes)
-                    html.push("<th>","Size In Bytes","</th>");
-                if(this.formattedSize)
-                    html.push("<th>","Formatted Size","</th>");
-                if(this.numberOfSequences)
-                    html.push("<th>","Number of Sequences","</th>");
-                if(this.PBSQ)
-                    html.push("<th>","Per Base Sequence Quality","</th>");
-                if(this.PSQS)
-                    html.push("<th>","Per Sequence Quality Score","</th>");
-                if(this.PSGCC)
-                    html.push("<th>","Per Sequence GC Content","</th>");
-                if(this.SDL)
-                    html.push("<th>","Sequence Duplication Levels","</th>");
-                if(this.ORS)
-                    html.push("<th>","Over Represented Sequences","</th>");
-                html.push("</tr>");
-                html.push("</table>");
-                return html.join('');
+                return `
+                    <table style='width:100%'>
+                    <tr>
+                        ${this.alias != false ? "<th>Alias</th>" : ""}
+                        ${this.fullName != false ? "<th>Directory</th>" : ""}
+                        ${this.sizeInBytes != false ? "<th>Size In Bytes</th>" : ""}
+                        ${this.formattedSize != false ? "<th>Formatted Size</th>" : ""}
+                        ${this.numberOfSequences != false ? "<th>Number of Sequences</th>" : ""}
+                        ${this.PBSQ != false ? "<th>Per Base Sequence Quality</th>" : ""}
+                        ${this.PSQS != false ? "<th>Per Sequence Quality Score</th>" : ""}
+                        ${this.PSGCC != false ? "<th>Per Sequence GC Content</th>" : ""}
+                        ${this.SDL != false ? "<th>Sequence Duplication Levels</th>" : ""}
+                        ${this.ORS != false ? "<th>Over Represented Sequences</th>" : ""}
+                    </tr>
+                    </table>
+                `;
             }
             postRender(){}
             dataChanged(){}
