@@ -50,6 +50,14 @@ module.exports.addView = function(arr,div,models)
                                     res += "<tr>";
                                     if(this.alias)
                                         res += `<td>${this.fastqInputs[i].alias}</td>`;
+                                    if(this.fullName)
+                                        res += `<td>${this.fastqInputs[i].name}</td>`;
+                                    if(this.sizeInBytes)
+                                        res += `<td>${parseInt(this.fastqInputs[i].size)}</td>`;
+                                    if(this.formattedSize)
+                                        res += `<td>${this.fastqInputs[i].sizeString}</td>`;
+                                    if(this.numberOfSequences)
+                                        res += `<td>${this.fastqInputs[i].sequences}</td>`;
                                     res += "</tr>";
                                 }
                             }
