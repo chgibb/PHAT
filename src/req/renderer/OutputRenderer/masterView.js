@@ -77,7 +77,7 @@ module.exports.addView = function(arr,div,models)
                 }
                 if(event.target.id == "fullName")
                 {
-                    viewMgr.getViewByName("report",this.views).fullName = true;
+                    viewMgr.getViewByName("report",this.views).fullName = $("#fullName").is(":checked");
                     viewMgr.render();
                 }
             }

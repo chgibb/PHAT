@@ -1,15 +1,5 @@
 var viewMgr = require('./../viewMgr');
 
-module.exports.alias = false;
-module.exports.fullName = false;
-module.exports.sizeInBytes = false;
-module.exports.formattedSize = false;
-module.exports.numberOfSequences = false;
-module.exports.PBSQ = false;
-module.exports.PSQS = false;
-module.exports.SGCC = false;
-module.exports.SDL = false;
-module.exports.ORS = false;
 module.exports.addView = function(arr,div,models)
 {
     arr.push
@@ -18,7 +8,17 @@ module.exports.addView = function(arr,div,models)
         {
             constructor()
             {
-                super("report",div,models)
+                super("report",div,models);
+                this.alias = false;
+                this.fullName = false;
+                this.sizeInBytes = false;
+                this.formattedSize = false;
+                this.numberOfSequences = false;
+                this.PBSQ = false;
+                this.PSQS = false;
+                this.SGCC = false;
+                this.SDL = false;
+                this.ORS = false;
             }
             onMount(){}
             onUnMount(){}
@@ -30,25 +30,25 @@ module.exports.addView = function(arr,div,models)
                     "<table style='width:100%'>",
                     "<tr>"
                 );
-                if(module.exports.alias)
+                if(this.alias)
                     html.push("<th>","Alias","</th>");
-                if(module.exports.fullName)
+                if(this.fullName)
                     html.push("<th>","Directory","</th>");
-                if(module.exports.sizeInBytes)
+                if(this.sizeInBytes)
                     html.push("<th>","Size In Bytes","</th>");
-                if(module.exports.formattedSize)
+                if(this.formattedSize)
                     html.push("<th>","Formatted Size","</th>");
-                if(module.exports.numberOfSequences)
+                if(this.numberOfSequences)
                     html.push("<th>","Number of Sequences","</th>");
-                if(module.exports.PBSQ)
+                if(this.PBSQ)
                     html.push("<th>","Per Base Sequence Quality","</th>");
-                if(module.exports.PSQS)
+                if(this.PSQS)
                     html.push("<th>","Per Sequence Quality Score","</th>");
-                if(module.exports.PSGCC)
+                if(this.PSGCC)
                     html.push("<th>","Per Sequence GC Content","</th>");
-                if(module.exports.SDL)
+                if(this.SDL)
                     html.push("<th>","Sequence Duplication Levels","</th>");
-                if(module.exports.ORS)
+                if(this.ORS)
                     html.push("<th>","Over Represented Sequences","</th>");
                 html.push("</tr>");
                 html.push("</table>");
