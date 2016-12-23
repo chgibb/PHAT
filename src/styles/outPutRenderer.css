@@ -14,3 +14,13 @@ button.optionsButton
 {
     float : right;
 }
+table, th, td 
+{
+    border : 1px solid black;
+    border-collapse : collapse;
+	background-color : rgba(163, 200, 255, 1);
+}
+th, td 
+{
+    padding : 5px;
+}
