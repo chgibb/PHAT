@@ -36,7 +36,19 @@ module.exports.addView = function(arr,div,models)
                             <input type="checkbox" id="alias">Alias</input>
                             <input type="checkbox" id="fullName">Full Path</input>
                             <input type="checkbox" id="sizeInBytes">Size In Bytes</input>
+                            <br />
                             <input type="checkbox" id="formattedSize">Formatted Size</input>
+                            <input type="checkbox" id="numberOfSequences">Number of Sequences</input>
+                            <br />
+                            <input type="checkbox" id="PBSQ">Per Base Sequence Quality</input>
+                            <br />
+                            <input type="checkbox" id="PSQS">Per Sequence Quality Score</input>
+                            <br />
+                            <input type="checkbox" id="PSGCC">Per Sequence GC Content</input>
+                            <br />
+                            <input type="checkbox" id="SDL">Sequence Duplication Levels</input>
+                            <br />
+                            <input type="checkbox" id="ORS">Over Represented Sequences</input>
                         </div>
                     `;
                 }

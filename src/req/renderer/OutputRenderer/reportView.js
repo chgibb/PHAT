@@ -19,6 +19,9 @@ module.exports.addView = function(arr,div,models)
                 this.PSGCC = false;
                 this.SDL = false;
                 this.ORS = false;
+
+                this.fastqInputs = {};
+                this.QCData = {};
             }
             onMount(){}
             onUnMount(){}
@@ -38,6 +41,23 @@ module.exports.addView = function(arr,div,models)
                         ${this.SDL != false ? "<th>Sequence Duplication Levels</th>" : ""}
                         ${this.ORS != false ? "<th>Over Represented Sequences</th>" : ""}
                     </tr>
+                    ${
+                        ()=>
+                        {
+                            let res = "";
+                            for(let i = 0; i != this.fastqInputs.length; ++i)
+                            {
+                                if(this.fastqInputs[i].checked)
+                                {
+                                    res += "<tr>";
+                                    if(this.alias)
+                                        res += `<td>${this.fastqInputs[i].alias}</td>`;
+                                    res += "</tr>";
+                                }
+                            }
+                            return res;
+                        }
+                    }
                     </table>
                 `;
             }
