@@ -23,7 +23,7 @@ $
                 if(arg.action === "getState" || arg.action === "keyChange")
                 {
                     if(arg.key == "fastqInputs" && arg.val != 0)
-                        viewMgr.getViewByName("masterReportView").fastqInputs = arg.val;
+                        viewMgr.getViewByName("report",viewMgr.getViewByName("masterReportView").views).fastqInputs = arg.val;
                 }
                 viewMgr.render();
             }
