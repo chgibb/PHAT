@@ -29,6 +29,8 @@ $
             }
         );
         ipc.send('keySub',{action : "keySub", channel : "input", key : "fastqInputs", replyChannel : "output"});
+        ipc.send('keySub',{action : "keySub", channel : "QC", key : "QCData", replyChannel : "output"});
         ipc.send('input',{replyChannel : 'output', action : 'getState', key : 'fastqInputs'});
+        ipc.send('QC',{replyChannel : 'output', action : 'getState', key : 'QCData'});
     }
 );
