@@ -2,7 +2,9 @@ div.rightSlideOutPanel
 {
     margin-right: -50%;
 	margin-top : +25%; 
-	background-color : black;
+	border : 1px solid black;
+    border-collapse : collapse;
+	background-color : rgba(163, 200, 255, 1);
 	width : 45%;
 	height : 215px;
     right : 0px;

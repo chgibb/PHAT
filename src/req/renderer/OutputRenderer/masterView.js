@@ -33,9 +33,7 @@ module.exports.addView = function(arr,div,models)
                         <div id="report">
                         </div>
                         <div id="rightSlideOutPanel" class="rightSlideOutPanel">
-                            <br />
-                            <br />
-                            <button>options</button>
+                            <input type="checkbox" id="fullName">Full Path</input>
                         </div>
                     `;
                 }
@@ -76,6 +74,11 @@ module.exports.addView = function(arr,div,models)
                             )()
                         }
                     );
+                }
+                if(event.target.id == "fullName")
+                {
+                    viewMgr.getViewByName("report",this.views).fullName = true;
+                    viewMgr.render();
                 }
             }
         }
