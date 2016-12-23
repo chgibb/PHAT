@@ -75,10 +75,11 @@ module.exports.addView = function(arr,div,models)
                         }
                     );
                 }
-                if(event.target.id == "fullName")
+                if(document.getElementById(event.target.id) && 
+                   document.getElementById(event.target.id).type == "checkbox")
                 {
-                    viewMgr.getViewByName("report",this.views).fullName = $("#fullName").is(":checked");
-                    viewMgr.render();
+                     viewMgr.getViewByName("report",this.views)[event.target.id] = $("#"+event.target.id).is(":checked");
+                     viewMgr.render();
                 }
             }
         }
