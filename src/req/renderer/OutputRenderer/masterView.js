@@ -33,7 +33,10 @@ module.exports.addView = function(arr,div,models)
                         <div id="report">
                         </div>
                         <div id="rightSlideOutPanel" class="rightSlideOutPanel">
+                            <input type="checkbox" id="alias">Alias</input>
                             <input type="checkbox" id="fullName">Full Path</input>
+                            <input type="checkbox" id="sizeInBytes">Size In Bytes</input>
+                            <input type="checkbox" id="formattedSize">Formatted Size</input>
                         </div>
                     `;
                 }
