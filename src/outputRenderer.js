@@ -16,5 +16,19 @@ $
 
 
         viewMgr.render();
+        ipc.on
+        (
+            "output",function(event,arg)
+            {
+                if(arg.action === "getState" || arg.action === "keyChange")
+                {
+                    if(arg.key == "fastqInputs" && arg.val != 0)
+                        viewMgr.getViewByName("masterReportView").fastqInputs = arg.val;
+                }
+                viewMgr.render();
+            }
+        );
+        ipc.send('keySub',{action : "keySub", channel : "input", key : "fastqInputs", replyChannel : "output"});
+        ipc.send('input',{replyChannel : 'output', action : 'getState', key : 'fastqInputs'});
     }
 );

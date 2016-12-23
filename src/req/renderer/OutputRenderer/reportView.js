@@ -20,7 +20,7 @@ module.exports.addView = function(arr,div,models)
                 this.SDL = false;
                 this.ORS = false;
 
-                this.fastqInputs = {};
+                this.fastqInputs = new Array();
                 this.QCData = {};
             }
             onMount(){}
@@ -41,9 +41,7 @@ module.exports.addView = function(arr,div,models)
                         ${this.SDL != false ? "<th>Sequence Duplication Levels</th>" : ""}
                         ${this.ORS != false ? "<th>Over Represented Sequences</th>" : ""}
                     </tr>
-                    ${
-                        ()=>
-                        {
+                    ${(()=>{
                             let res = "";
                             for(let i = 0; i != this.fastqInputs.length; ++i)
                             {
@@ -56,8 +54,7 @@ module.exports.addView = function(arr,div,models)
                                 }
                             }
                             return res;
-                        }
-                    }
+                        })()}
                     </table>
                 `;
             }
