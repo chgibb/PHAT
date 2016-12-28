@@ -48,6 +48,11 @@ module.exports.addView = function(arr,div,models)
                             <input type="checkbox" id="SDL">Sequence Duplication Levels</input>
                             <br />
                             <input type="checkbox" id="ORS">Over Represented Sequences</input>
+                            <br />
+                            <p>Export To:</p>
+			                <input type="radio" name="exportOptions" id="exportToXLS">Excel</input>
+			                <input type="radio" name="exportOptions" id="exportToCSV">CSV</input>
+			                <button id="exportData">Export</button>
                         </div>
                         <div id="report">
                         </div>
