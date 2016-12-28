@@ -1,4 +1,5 @@
 var viewMgr = require('./../viewMgr');
+var QCClass = require("./../QC");
 
 module.exports.addView = function(arr,div,models)
 {
@@ -21,7 +22,15 @@ module.exports.addView = function(arr,div,models)
                 this.ORS = false;
 
                 this.fastqInputs = new Array();
-                this.QCData = {};
+                this.QC = new QCClass
+                (
+                    "output",
+                    {
+                        postStateHandle : function(channel,args){},
+                        spawnHandle : function(channel,arg){},
+                        fsAccess : function(str){}
+                    }
+                );
             }
             onMount(){}
             onUnMount(){}
@@ -47,6 +56,18 @@ module.exports.addView = function(arr,div,models)
                             {
                                 if(this.fastqInputs[i].checked)
                                 {
+                                    let QCDataIndex;
+                                    //if(this.QC.QCData)
+                                    //{
+                                        for(let k = 0; k != this.QC.QCData.length; ++k)
+                                        {
+                                            if(this.QC.QCData[k].name == this.fastqInputs[i].name)
+                                            {
+                                                QCDataIndex = k;
+                                                break;
+                                            }
+                                        }
+                                    //}
                                     res += "<tr>";
                                     if(this.alias)
                                         res += `<td>${this.fastqInputs[i].alias}</td>`;
@@ -58,6 +79,8 @@ module.exports.addView = function(arr,div,models)
                                         res += `<td>${this.fastqInputs[i].sizeString}</td>`;
                                     if(this.numberOfSequences)
                                         res += `<td>${this.fastqInputs[i].sequences}</td>`;
+                                    if(this.PBSQ)
+                                        res += `<td>${this.QC.getQCSummaryByNameOfReportByIndex(QCDataIndex,"Per base sequence quality")}</td>`;
                                     res += "</tr>";
                                 }
                             }
