@@ -1,6 +1,8 @@
 var viewMgr = require('./../viewMgr');
 
 var addReportView = require("./reportView");
+
+var XLSExportDialog = require("./XLSExportDialog");
 module.exports.addView = function(arr,div,models)
 {
     arr.push
@@ -101,6 +103,13 @@ module.exports.addView = function(arr,div,models)
                 {
                      viewMgr.getViewByName("report",this.views)[event.target.id] = $("#"+event.target.id).is(":checked");
                      viewMgr.render();
+                }
+                if(event.target.id == "exportData")
+                {
+                    if($("#exportToXLS").is(":checked"))
+                    {
+                        XLSExportDialog(viewMgr.getViewByName("report",this.views).renderView());
+                    }
                 }
             }
         }
