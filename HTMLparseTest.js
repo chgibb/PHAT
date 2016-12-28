@@ -44,7 +44,7 @@ function tokenizeHTMLString(html)
 }
 function tokenizedHTMLArrayToXLS(html)
 {
-    let isTable = new RegExp("(<table>)","i");
+    let isTable = new RegExp("(<table)","i");
     let isTableEnd = new RegExp("(</table>)","i");
 
     let isTableRow = new RegExp("(<tr>)","i");
@@ -60,8 +60,7 @@ function tokenizedHTMLArrayToXLS(html)
     let isTBodyEnd = new RegExp("</tbody>","i");
 
     let hasNewLine = new RegExp("\\n","i");
-    let xls = `
-        <?xml version="1.0"?>
+    let xls = `<?xml version="1.0"?>
         <Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
         xmlns:o="urn:schemas-microsoft-com:office:office"
         xmlns:x="urn:schemas-microsoft-com:office:excel"
@@ -69,7 +68,8 @@ function tokenizedHTMLArrayToXLS(html)
         xmlns:html="http://www.w3.org/TR/REC-html40">
         <Worksheet ss:Name="Sheet1">
         ${(()=>{
-            let res;
+            let res = "";
+            let inCell = false;
             for(let i = 0; i != html.length; ++i)
             {
                 if(isTBody.test(html[i]) ||
@@ -102,24 +102,28 @@ function tokenizedHTMLArrayToXLS(html)
                 else if(isTableData.test(html[i]))
                 {
                     res += `<Cell>`;
+                    inCell = true;
                     continue;
                 }
                 else if(isTableDataEnd.test(html[i]))
                 {
                     res += `</Data></Cell>`;
+                    inCell = false;
                     continue;
                 }
                 else if(isTableHeader.test(html[i]))
                 {
                     res += `<Cell>`;
+                    inCell = true;
                     continue;
                 }
                 else if(isTableHeaderEnd.test(html[i]))
                 {
                     res += `</Data></Cell>`;
+                    inCell = false;
                     continue;
                 }
-                else if(html[i] && i != 0)
+                else if(html[i] && i != 0 && inCell)
                 {
                     res += `<Data ss:Type="String">${html[i]}`;
                     continue;
