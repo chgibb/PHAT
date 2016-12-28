@@ -78,6 +78,14 @@ module.exports.addView = function(arr,div,models)
                                         res += `<td>${this.fastqInputs[i].sequences}</td>`;
                                     if(this.PBSQ)
                                         res += `<td>${this.QC.getQCSummaryByNameOfReportByIndex(QCDataIndex,"Per base sequence quality")}</td>`;
+                                    if(this.PSQS)
+                                        res += `<td>${this.QC.getQCSummaryByNameOfReportByIndex(QCDataIndex,"Per sequence quality scores")}</td>`;
+                                    if(this.PSGCC)
+                                        res += `<td>${this.QC.getQCSummaryByNameOfReportByIndex(QCDataIndex,"Per sequence GC content")}</td>`;
+                                    if(this.SDL)
+                                        res += `<td>${this.QC.getQCSummaryByNameOfReportByIndex(QCDataIndex,"Sequence Duplication Levels")}</td>`;
+                                    if(this.ORS)
+                                        res += `<td>${this.QC.getQCSummaryByNameOfReportByIndex(QCDataIndex,"Overrepresented sequences")}</td>`;
                                     res += "</tr>";
                                 }
                             }
