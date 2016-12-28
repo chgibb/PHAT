@@ -2,6 +2,7 @@ const electron = require('electron');
 const ipc = electron.ipcMain;
 const app = electron.app;
 var window = require('./window');
+var fsAccess = require("./../fsAccess");
 var getState = require('./getState');
 var postState = require('./postState');
 let outputWindow;
@@ -21,7 +22,7 @@ window.windowCreators["output"] =
 		(
 			{
 				name : "output",
-				window : window.createWithDefault("Output","output",outputWindow,1379,649,'./../../Output.html',false)
+				window : window.createWithDefault("Output","output",outputWindow,1379,649,fsAccess("resources/app/Output.html"),false)
 			}
 		);
 	}
