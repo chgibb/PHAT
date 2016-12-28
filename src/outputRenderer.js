@@ -24,6 +24,8 @@ $
                 {
                     if(arg.key == "fastqInputs" && arg.val != 0)
                         viewMgr.getViewByName("report",viewMgr.getViewByName("masterReportView").views).fastqInputs = arg.val;
+                    if(arg.key == "QCData" && arg.val != 0)
+                        viewMgr.getViewByName("report",viewMgr.getViewByName("masterReportView").views).QC.QCData = arg.val;
                 }
                 viewMgr.render();
             }
