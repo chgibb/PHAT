@@ -57,17 +57,14 @@ module.exports.addView = function(arr,div,models)
                                 if(this.fastqInputs[i].checked)
                                 {
                                     let QCDataIndex;
-                                    //if(this.QC.QCData)
-                                    //{
-                                        for(let k = 0; k != this.QC.QCData.length; ++k)
+                                    for(let k = 0; k != this.QC.QCData.length; ++k)
+                                    {
+                                        if(this.QC.QCData[k].name == this.fastqInputs[i].name)
                                         {
-                                            if(this.QC.QCData[k].name == this.fastqInputs[i].name)
-                                            {
-                                                QCDataIndex = k;
-                                                break;
-                                            }
+                                            QCDataIndex = k;
+                                            break;
                                         }
-                                    //}
+                                    }
                                     res += "<tr>";
                                     if(this.alias)
                                         res += `<td>${this.fastqInputs[i].alias}</td>`;
