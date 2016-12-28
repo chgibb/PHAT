@@ -20,7 +20,17 @@ module.exports = function(htmlString)
         {
             if(fileName === undefined) 
                 return;
-            fs.writeFileSync(fileName,tokenizedHTMLArrayToXLS(tokenizeHTMLString(htmlString)));
+            fs.writeFileSync
+            (
+                fileName,
+                tokenizedHTMLArrayToXLS
+                (
+                    tokenizeHTMLString
+                    (
+                        htmlString
+                    )
+                )
+            );
         }
     ); 
 }
