@@ -69,13 +69,17 @@ module.exports = class extends model
     {
 	    var res = "";
 	    var str = "";
-        for(let i = 0; i != this.QCData[index].summary.length; ++i)
-	    {
-		    if(this.QCData[index].summary[i].name == summary)
-		    {
-			    return this.QCData[index].summary[i].status;
-		    }
-	    }
+        try
+        {
+            for(let i = 0; i != this.QCData[index].summary.length; ++i)
+	        {
+		        if(this.QCData[index].summary[i].name == summary)
+		        {
+			        return this.QCData[index].summary[i].status;
+		        }
+	        }
+        }
+        catch(err){}
 	    return "No Data";
     }
     spawnReply(channel,arg)
