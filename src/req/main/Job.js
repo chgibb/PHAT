@@ -3,13 +3,12 @@
  *	Automatically pipes a process' stdout and stderr to a renderer window defined by callBackObj,
  *	to channel callBackChannel. Also notifies renderer window upon process completion with process'
  *	return code. Optionally unbuffers process' output streams before forwarding to window.
+ * @see module:req/main/JobMgr
  * @module req/main/Job
 */
-/** Exported class */
 module.exports = class
 {
     /**  
-     * @alias module:req/main/Job#new
      * @param {string} processName - the name of the executable to invoke
      * @param {Array<string>} args - an array of strings to pass to the executable as CL arguments
      * @param {string} callBackChannel - channel to forward data over on callBackObj
