@@ -1,15 +1,22 @@
-/*
-	Part of the PHAT Project
-	Author: gibbc@tbh.net
+/** 
+ *	A class wrapper around node's spawn_process facilities.
+ *	Automatically pipes a process' stdout and stderr to a renderer window defined by callBackObj,
+ *	to channel callBackChannel. Also notifies renderer window upon process completion with process'
+ *	return code. Optionally unbuffers process' output streams before forwarding to window.
+ * @module req/main/Job
 */
-/*
-	A class wrapper around node's spawn_process facilities.
-	Automatically pipes a process' stdout and stderr to a renderer window defined by callBackObj,
-	to channel callBackChannel. Also notifies renderer window upon process completion with process'
-	return code. Optionally unbuffers process' output streams before forwarding to window.
-*/
+/** Exported class */
 module.exports = class
 {
+    /**  
+     * @alias module:req/main/Job#new
+     * @param {string} processName - the name of the executable to invoke
+     * @param {Array<string>} args - an array of strings to pass to the executable as CL arguments
+     * @param {string} callBackChannel - channel to forward data over on callBackObj
+     * @param {bool} unBuffer - un buffer stdout and stderr before forwarding
+     * @param {any} callBackObj - some object with a method send(string) : void.
+     * @param {any} extraData - JSON object to be forwarded to originator on every callback
+    */
 	constructor(processName,args,callBackChannel,unBuffer,callBackObj,extraData)
 	{
 		this.processName = processName;
@@ -21,6 +28,10 @@ module.exports = class
 		this.unBuffer = unBuffer;
 		this.extraData = extraData;
 	}
+    /**
+     * @param {Buffer} data - data buffer to unbuffer to string
+     * @returns {string} unbuffered data
+     */
 	unBufferBufferedData(data)
 	{ 
 		var unBufferedData = "";
@@ -36,6 +47,10 @@ module.exports = class
 		unBufferedData = unBufferedData.replace(new RegExp("\\u0000","g"),"");
 		return unBufferedData;
 	}
+    /**
+     * On output over stderr. Forwards data from stderr.
+     * @param {string} data - stderr output from process
+     */
 	OnErr(data)
 	{
 		if(!this.unBuffer)
