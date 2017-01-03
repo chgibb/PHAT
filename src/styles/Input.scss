@@ -1,0 +1,17 @@
+@import "common/colors";
+@import "common/table";
+@import "common/td";
+@import "common/th";
+@import "common/tableCell";
+.inputFilterBox
+{
+    @extend .tableCell;
+	margin-top: 33px;
+	margin-left: -191px;
+	width : 12%;
+}
+.viewTab
+{
+    float : left;
+	margin-top : 18px;
+}
