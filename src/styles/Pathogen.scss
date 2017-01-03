@@ -1,0 +1,12 @@
+@import "common/colors";
+div.Block
+{
+    border : 1px solid $border-color;
+    background-color : $bg-color;
+}
+table, th, td 
+{
+    border : 1px solid black;
+	background-color : rgba(163, 200, 255, 1);
+    border-collapse : collapse;
+}
