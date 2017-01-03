@@ -1,0 +1,6 @@
+@import "tableCell";
+th
+{
+    @extend .tableCell;
+    padding : 5px;
+}
