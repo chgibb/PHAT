@@ -1,0 +1,7 @@
+@import "colors";
+.tableCell
+{
+    border : 1px solid $border-color;
+    background-color : $bg-color;
+    border-collapse : collapse;
+}
