@@ -9,3 +9,4 @@ src/pileup.js
 src/req/renderer/PathogenRenderer/pileup.js
 pileup.css
 pileup.js
+sassc
