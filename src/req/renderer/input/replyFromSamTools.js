@@ -49,6 +49,7 @@ module.exports = function(channel,arg,model)
                 catch(err)
                 {
                     model.fastaInputs[idx].indexing = false;
+                    alert(err);
 				    throw new Error(`Could not move "${src}" to "${fai}"`);
                 }
 			}
