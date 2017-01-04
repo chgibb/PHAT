@@ -2,6 +2,8 @@ var fs = require('fs');
 
 var canRead = require('./../canRead');
 var faiParser = require('./../faiParser');
+var fsAccess = require("./../../fsAccess");
+var sleep = require("./../../sleep");
 
 module.exports = function(channel,arg,model)
 {
@@ -20,7 +22,7 @@ module.exports = function(channel,arg,model)
 			}
 			if(idx == -1)
 				throw new Error("Can not create faidx index for fasta which does not exist!");
-			var fai = model.fsAccess("resources/app/rt/indexes/"+model.fastaInputs[idx].alias+".fai");
+			var fai = fsAccess("resources/app/rt/indexes/"+model.fastaInputs[idx].alias+".fai",false);
 			//samtools will place artifact in same dir as input file
 			var src = model.fsAccess(arg.extraData+".fai");
 			//samtools' stdout is sometimes delayed until after it has exited.
@@ -28,7 +30,7 @@ module.exports = function(channel,arg,model)
 			try
 			{
 				if(canRead(fai))
-					return
+					return;
 			}
 			catch(err){}
 			try
@@ -37,7 +39,18 @@ module.exports = function(channel,arg,model)
 			}
 			catch(err)
 			{
-				throw new Error("Could not copy fai index. Out of disk space.");
+                //Potential issue with disk I/O. Wait a second and try again.
+                sleep(1);
+                try
+                {
+                    fs.renameSync(src,fai);
+                }
+                //Probably not an issue with disk I/O. Reset the indexing state of the item and print an error.
+                catch(err)
+                {
+                    model.fastaInputs[idx].indexing = false;
+				    throw new Error(`Could not move "${src}" to "${fai}"`);
+                }
 			}
 			model.fastaInputs[idx].contigs = faiParser.getContigs(fai);
 			var bowTieIndex = model.fsAccess('resources/app/rt/indexes/'+model.fastaInputs[idx].alias);
