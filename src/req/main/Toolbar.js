@@ -10,17 +10,7 @@ ipc.on
 	{
 		if(arg.action === "open")
 		{
-			//disallow multi windows
-			if(!window.windows[arg.arg])
-			{
-				window.windowCreators[arg.arg].Create();
-				return;
-			}
-			//allow multi windows for QC
-			if(arg.arg == "QC")
-				window.windowCreators[arg.arg].Create();
-			if(arg.arg == "Output")
-				window.windowCreators[arg.arg].Create();
+			window.windowCreators[arg.arg].Create();
 		}
 	}
 );
