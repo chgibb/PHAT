@@ -15,7 +15,7 @@ windowCreators["host"] =
 		(
 			{
 				name : "host",
-				window : createWithDefault("Host","host",alignWindow,1000,800,'../Host.html',false)
+				window : createWithDefault("Host","host",1000,800,'../Host.html',false)
 			}
 		);
 	}
