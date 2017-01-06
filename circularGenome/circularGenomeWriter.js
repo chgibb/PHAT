@@ -64,6 +64,7 @@ class CircularGenomeWriter extends EventEmitter
                 self.contigs[self.contigIndex].loaded = true;
                 self.emit("loadedContig",self.contigs[self.contigIndex]);
                 self.emit("doneLoadingContigs");
+                self.refStream = null;
             }
         )
     }
