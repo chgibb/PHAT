@@ -50,7 +50,7 @@ console.log
     (
         {
             trackStyle : "fill:rgba(225,225,225,0.5)",
-            radius : "110"
+            radius : "120"
         }
     )+
     plasmidTrack.end()+
