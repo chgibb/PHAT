@@ -43,7 +43,6 @@ console.log
             labelStyle : "font-size:20px;font-weight:400"
         }
     )+
-        
     trackLabel.end()+
     plasmidTrack.end()+
     plasmidTrack.add
