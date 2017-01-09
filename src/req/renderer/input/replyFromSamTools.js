@@ -38,7 +38,7 @@ module.exports = function(channel,arg,model)
 				fs.renameSync(src,fai);
 			}
 			catch(err)
-			{
+			{ 
                 //Potential issue with disk I/O. Wait a second and try again.
                 sleep(1);
                 try
@@ -54,7 +54,7 @@ module.exports = function(channel,arg,model)
                 }
 			}
 			model.fastaInputs[idx].contigs = faiParser.getContigs(fai);
-			var bowTieIndex = model.fsAccess('resources/app/rt/indexes/'+model.fastaInputs[idx].alias);
+			var bowTieIndex = fsAccess('resources/app/rt/indexes/'+model.fastaInputs[idx].alias,false);
 			model.fastaInputs[idx].fai = fai;
 			model.spawnHandle
             (
