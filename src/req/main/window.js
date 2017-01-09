@@ -20,7 +20,7 @@ var postState = require('./postState');
 
 module.exports.windows = new Array;
 module.exports.windowCreators = {};
-module.exports.createWithDefault = function(title,refName,ref,width,height,html,debug,alwaysOnTop)
+module.exports.createWithDefault = function(title,refName,width,height,html,debug,alwaysOnTop)
 {
 		var windowOptions = {};
 		
@@ -54,7 +54,7 @@ module.exports.createWithDefault = function(title,refName,ref,width,height,html,
 		}
 		
 		
-		ref = new BrowserWindow(windowOptions);
+		var ref = new BrowserWindow(windowOptions);
 		//let image = require('electron').nativeImage.createFromPath('./../64x64.png');
 		//if(image.isEmpty())
 			//throw "Could Not Load Application Icon\n";

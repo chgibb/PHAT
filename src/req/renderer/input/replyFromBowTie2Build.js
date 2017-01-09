@@ -17,6 +17,8 @@ module.exports = function(channel,arg,model)
 	}
 	if(arg.done)
 	{
+        if(arg.retCode != 0)
+            alert(JSON.stringify(arg,undefined,4));
 	    var name = id.findOriginalInput(id.makeValidID(arg.args[0]),model.fastaInputs);
 		for(let i = 0; i != model.fastaInputs.length; ++i)
 		{
@@ -91,10 +93,10 @@ module.exports = function(channel,arg,model)
 					}
 					catch(err)
 					{
-					    //alert("Could Not Generate Index For "+model.fastaInputs[i].alias);
+					    alert("Could Not Generate Index For "+model.fastaInputs[i].alias);
 					}
 				}
-				//alert("Could Not Generate Index For "+model.fastaInputs[i].alias);
+				alert("Could Not Generate Index For "+model.fastaInputs[i].alias);
 			}
 		}
 	}
