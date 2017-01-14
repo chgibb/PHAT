@@ -5,7 +5,7 @@ var window = require('./window');
 var fsAccess = require("./../fsAccess");
 var getState = require('./getState');
 var postState = require('./postState');
-let alignWindow;
+
 ipc.on
 (
 	"align" ,function(event,arg)

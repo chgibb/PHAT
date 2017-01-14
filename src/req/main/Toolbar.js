@@ -3,7 +3,7 @@ const ipc = electron.ipcMain;
 const app = electron.app;
 var window = require('./window');
 var fsAccess = require("./../fsAccess");
-let toolBarWindow;
+
 ipc.on
 (
 	"toolBar",function(event,arg)
@@ -18,7 +18,7 @@ window.windowCreators["toolBar"] =
 {
 	Create : function()
 	{
-		window.windows["toolBar"] = toolBarWindow = window.createWithDefault("P. H. A. T.","toolBar",420,86,fsAccess("resources/app/ToolBar.html"),true,true);
+		window.windows["toolBar"] = toolBarWindow = window.createWithDefault("P. H. A. T.","toolBar",450,86,fsAccess("resources/app/ToolBar.html"),false,false);
 		toolBarWindow.on
 		(
 			'closed',function()
