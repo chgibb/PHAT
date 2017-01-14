@@ -3,6 +3,8 @@ var viewMgr = require('./req/renderer/viewMgr');
 
 require("./req/renderer/commonBehaviour");
 
+require('./angularplasmid.complete.min.js');
+
 window.$ = window.jQuery = require('./req/renderer/jquery-2.2.4.js');
 
 $
