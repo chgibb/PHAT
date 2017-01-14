@@ -41,7 +41,7 @@ module.exports.generateFixedSizeDateStamp = function()
 {
     var date = new Date();
     return date.getFullYear().toString() + 
-    //date.getMonth() starts January at month 0 for some reaon.
+    //date.getMonth() starts January at month 0 for some reason.
     module.exports.insertLeadingPadToSize((parseInt(date.getMonth().toString())+1).toString(),2,"0") + 
     module.exports.insertLeadingPadToSize(date.getDate().toString(),2,"0") + 
     module.exports.insertLeadingPadToSize(date.getHours().toString(),2,"0") + 
