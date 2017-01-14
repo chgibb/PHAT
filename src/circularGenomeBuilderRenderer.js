@@ -1,6 +1,6 @@
 const ipc = require('electron').ipcRenderer;
 var viewMgr = require('./req/renderer/viewMgr');
-
+var addMasterView = require("./circularGenomeBuilderRenderer/masterView");
 
 require("./req/renderer/commonBehaviour");
 
@@ -12,9 +12,9 @@ $
 (
     function()
     {
+        addMasterView.addView(viewMgr.views,"view");
+        viewMgr.render();
         ipc.send('keySub',{action : "keySub", channel : "input", key : "fastqInputs", replyChannel : "circularGenomeBuilder"});
         ipc.send('input',{replyChannel : 'circularGenomeBuilder', action : 'getState', key : 'fastqInputs'});
-
-        viewMgr.render();
     }
 );
