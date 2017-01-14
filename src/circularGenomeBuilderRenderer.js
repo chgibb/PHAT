@@ -1,6 +1,7 @@
 const ipc = require('electron').ipcRenderer;
 var viewMgr = require('./req/renderer/viewMgr');
 
+
 require("./req/renderer/commonBehaviour");
 
 require('./angularplasmid.complete.min.js');

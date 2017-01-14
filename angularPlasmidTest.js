@@ -14,7 +14,6 @@ genomeWriter.on
         console.log(genomeWriter.contigs);
     }
 )
-//genomeWriter.beginRefStream("/home/gibbsticks/refs/3HumanGenomic_Loci.fasta");
 
 let plasmidTrack = require("./circularGenome/plasmidTrack");
 let plasmid = require("./circularGenome/plasmid");
