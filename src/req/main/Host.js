@@ -5,7 +5,6 @@ var window = require('./window');
 var fsAccess = require("./../fsAccess");
 var getState = require('./getState');
 var postState = require('./postState');
-let hostWindow;
 
 ipc.on
 (

@@ -3,7 +3,7 @@ const ipc = electron.ipcMain;
 const app = electron.app;
 var window = require('./window');
 var fsAccess = require("./../fsAccess");
-let toolBarWindow;
+
 ipc.on
 (
 	"toolBar",function(event,arg)
