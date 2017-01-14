@@ -20,6 +20,7 @@ require('./QC');
 require('./Align');
 require('./Output');
 require('./Pathogen');
+require('./circularGenomeBuilder');
 
 try
 {

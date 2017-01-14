@@ -24,6 +24,7 @@
 			 console.log('clicked');
 			 ipc.send('toolBar',{action : "open",arg : target});
 		 }
+         SendOpenMessage("circularGenomeBuilder");
 	 </script>
 	<img src="img/input.png" id="input" name="input" onClick="SendOpenMessage('input')"></img>
 	<img src="img/qc.png" name="QC" onClick="SendOpenMessage('QC')"></img>
