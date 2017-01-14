@@ -1,4 +1,8 @@
 @import "common/colors";
+@import "common/table";
+@import "common/td";
+@import "common/th";
+@import "common/tableCell";
 div.Block
 {
     border : 1px solid $border-color;
