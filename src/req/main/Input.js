@@ -18,12 +18,6 @@ window.windowCreators["input"] =
 {
 	Create : function() 
 	{
-		//disallow multiple input windows
-		for(var i in window.windows)
-		{
-			if(window.windows[i].name == "input" && window.windows[i])
-				return;
-		}
 		window.windows.push
 		(
 			{
