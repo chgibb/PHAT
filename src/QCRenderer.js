@@ -91,7 +91,9 @@ $
                         if(arg.unBufferedData)
                         {
                             if(arg.unBufferedData.match(new RegExp("[0-9]|[.]","g")))
-						        $('#'+id.makeValidID(arg.args[0])).text(arg.unBufferedData);
+                                var regger = /[0-9][0-9][%]|[0-9][%]/g;
+                                var regResult = regger.exec(arg.unBufferedData);
+                                $('#'+id.makeValidID(arg.args[0])).text(regResult);
                         }
                     }
                 }

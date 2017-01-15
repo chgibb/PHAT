@@ -18,7 +18,6 @@ module.exports = function(arr,div,model)
 				var html = new Array();
 				html.push
 				(
-					"<img style='float:left;' src='img/analysis.png'><p style='float:left;'>Click to Analyze</p>",
 					"<img style='float:left;' src='img/done_Analysis.png'><p style='float:left;'>View Report</p>",
 					"<p style='float:right;'>Failure</p><img style='float:right;' src='img/fail.png'>",
 					"<p style='float:right;' >Warning</p><img style='float:right;' src='img/warn.png'>",
@@ -28,7 +27,7 @@ module.exports = function(arr,div,model)
 	            (
 		        	"<table style='width:100%'>",
 		            "<tr>",
-					"<th>Analysis</th>",
+					"<th>Report</th>",
 		            "<th>Sample</th>",
 		            "<th>Per Base Sequence Quality</th>",
 		            "<th>Per Sequence Quality Scores</th>",
@@ -51,20 +50,20 @@ module.exports = function(arr,div,model)
 						{
 							html.push
 			        		(
-				        	"<td style='text-align:center;'>","<img id='",this.data.fastqInputs[i].validID,"' src='img/analysis.png' style='text-align:center;'>","</td>"   
+				        	"<td style='text-align:center;'><b id='",this.data.fastqInputs[i].validID,"'>",'click to analyze',"</b></td>" 
 			           		);
 						}
 						else
 						{
 							html.push
 			        		(
-				        	"<td style='text-align:center;'>","<img id='",this.data.fastqInputs[i].validID,"' src='img/done_Analysis.png' style='text-align:center;'>","</td>"   
+				        	"<td style='text-align:center;'><p>","<img id='",this.data.fastqInputs[i].validID,"' src='img/done_Analysis.png' style='text-align:center;'>","</p></td>"   
 			           		);
 						}
 
 						html.push
 			        	(
-				        	"<td>",this.data.fastqInputs[i].alias,"</td>"   
+				        	"<td>",this.data.fastqInputs[i].alias,"</td>" 
 			           	);
 
 
