@@ -18,12 +18,11 @@ module.exports = function(arr,div,model)
 				var html = new Array();
 				html.push
 				(
-					"<img style='float:left;' src='img/analysis.png'><p style='float:left;'>Analyze</p>",
+					"<img style='float:left;' src='img/analysis.png'><p style='float:left;'>Click to Analyze</p>",
 					"<img style='float:left;' src='img/done_Analysis.png'><p style='float:left;'>View Report</p>",
-					"<img style='float:left;' src='img/pass.png'><p style='float:left;'>Pass</p>",
-					"<img style='float:left;' src='img/warn.png'><p style='float:left;' >Warning</p>",
-					"<img style='float:left;' src='img/fail.png'><p style='float:left;'>Failure</p>"
-					
+					"<p style='float:right;'>Failure</p><img style='float:right;' src='img/fail.png'>",
+					"<p style='float:right;' >Warning</p><img style='float:right;' src='img/warn.png'>",
+					"<p style='float:right;'>Pass</p><img style='float:right;' src='img/pass.png'>"
 				);
 	            html.push
 	            (
