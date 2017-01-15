@@ -20,10 +20,11 @@ module.exports = function(arr,div)
                 if(document.getElementById('reportIsOpen') || !this.data.report)
                     return;
                 var html = "";
-                html += "<br /><button id='goBack'>Go Back</button><br/>";  
+                html += "<div id='gobackbutton'><br /><img id='goBack' src='img/GoBackTemporary.png'></div>";
+                //html += "<br /><button id='goBack'>Go Back</button><br/>";
                 var report = fs.readFileSync("resources/app/"+this.data.report+"/fastqc_report.html").toString();
                 //add a hidden div that we can test for to determine if a report is open or not.
-                report += "<div id='reportIsOpen'></div>"; 
+                report += "<div id='reportIsOpen'></div>";
                 html += report;
                 return html;
             }
