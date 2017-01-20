@@ -42,7 +42,9 @@ module.exports = function(arr,div,model)
 			        	html.push
 			            (
 				        	"<tr>",
-				            "<td><p id='",this.data.fastqInputs[i].validID,"'>",this.data.fastqInputs[i].alias,"</p></td>"
+				            "<td>",
+							"<button id = 'runQC'>Run QC</button>",
+							"<p id='",this.data.fastqInputs[i].validID,"'>",this.data.fastqInputs[i].alias,"</p></td>"
 			            );
 			            for(let k = 0; k != this.model.QCData.length; ++k)
 			            {
