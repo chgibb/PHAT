@@ -13,6 +13,7 @@ $
     function()
     {
         addMasterView.addView(viewMgr.views,"view");
+        viewMgr.changeView("masterView");
         viewMgr.render();
         ipc.send('keySub',{action : "keySub", channel : "input", key : "fastqInputs", replyChannel : "circularGenomeBuilder"});
         ipc.send('input',{replyChannel : 'circularGenomeBuilder', action : 'getState', key : 'fastqInputs'});
