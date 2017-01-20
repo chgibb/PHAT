@@ -21,7 +21,7 @@ window.windowCreators["circularGenomeBuilder"] =
 		(
 			{
 				name : "circularGenomeBuilder",
-				window : window.createWithDefault("circularGenomeBuilder","circularGenomeBuilder",1000,800,fsAccess("resources/app/circularGenomeBuilder.html"),false)
+				window : window.createWithDefault("circularGenomeBuilder","circularGenomeBuilder",1000,800,fsAccess("resources/app/circularGenomeBuilder.html"),true)
 			}
 		);
 	}

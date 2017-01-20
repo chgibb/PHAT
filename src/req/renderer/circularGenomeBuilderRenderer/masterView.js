@@ -41,7 +41,31 @@ module.exports.addView = function(arr,div,models)
             }
             postRender(){}
             dataChanged(){}
-            divClickEvents(event){}
+            divClickEvents(event)
+            {
+                let me = this;
+                    $("#rightSlideOutPanel").animate
+                    (
+                        {
+                            "margin-right" : 
+                            (
+                                function()
+                                {
+                                    if(!me.rightPanelOpen)
+                                    {
+                                        me.rightPanelOpen = true;
+                                        return "+=50%";
+                                    }
+                                    if(me.rightPanelOpen)
+                                    {
+                                        me.rightPanelOpen = false;
+                                        return "-=50%";
+                                    }
+                                }
+                            )()
+                        }
+                    );
+            }
         }
     );
 }

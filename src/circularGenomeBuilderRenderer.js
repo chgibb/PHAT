@@ -1,6 +1,6 @@
 const ipc = require('electron').ipcRenderer;
 var viewMgr = require('./req/renderer/viewMgr');
-var addMasterView = require("./circularGenomeBuilderRenderer/masterView");
+var addMasterView = require("./req/renderer/circularGenomeBuilderRenderer/masterView");
 
 require("./req/renderer/commonBehaviour");
 
