@@ -9,7 +9,7 @@ module.exports.addView = function(arr,div,models)
             constructor()
             {
                 super("masterView",div,models);
-                this.view = new Array();
+                this.views = new Array();
                 this.firstRender = true;
             }
             onMount()
