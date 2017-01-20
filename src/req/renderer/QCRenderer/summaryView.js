@@ -18,14 +18,16 @@ module.exports = function(arr,div,model)
 				var html = new Array();
 				html.push
 				(
-					"<img style='float:left;' src='img/pass.png'><p style='float:left;'>Pass</p>",
-					"<img style='float:left;' src='img/warn.png'><p style='float:left;' >Warning</p>",
-					"<img style='float:left;' src='img/fail.png'><p style='float:left;'>Failure</p>"
+					"<img style='float:left;' src='img/done_Analysis.png'><p style='float:left;'>View Report</p>",
+					"<p style='float:right;'>Failure</p><img style='float:right;' src='img/fail.png'>",
+					"<p style='float:right;' >Warning</p><img style='float:right;' src='img/warn.png'>",
+					"<p style='float:right;'>Pass</p><img style='float:right;' src='img/pass.png'>"
 				);
 	            html.push
 	            (
 		        	"<table style='width:100%'>",
 		            "<tr>",
+					"<th>Report</th>",
 		            "<th>Sample</th>",
 		            "<th>Per Base Sequence Quality</th>",
 		            "<th>Per Sequence Quality Scores</th>",
@@ -46,6 +48,29 @@ module.exports = function(arr,div,model)
 							"<button id = 'runQC'>Run QC</button>",
 							"<p id='",this.data.fastqInputs[i].validID,"'>",this.data.fastqInputs[i].alias,"</p></td>"
 			            );
+
+						if(this.model.QCData[i].QCReport == "")
+						{
+							html.push
+			        		(
+				        	"<td style='text-align:center;'><b id='",this.data.fastqInputs[i].validID,"'>",'click to analyze',"</b></td>" 
+			           		);
+						}
+						else
+						{
+							html.push
+			        		(
+				        	"<td style='text-align:center;'><p>","<img id='",this.data.fastqInputs[i].validID,"' src='img/done_Analysis.png' style='text-align:center;'>","</p></td>"   
+			           		);
+						}
+
+						html.push
+			        	(
+				        	"<td>",this.data.fastqInputs[i].alias,"</td>" 
+			           	);
+
+
+
 			            for(let k = 0; k != this.model.QCData.length; ++k)
 			            {
 				        	if(this.model.QCData[k].name == this.data.fastqInputs[i].name)
@@ -60,6 +85,7 @@ module.exports = function(arr,div,model)
 					            );
 				            }
 			            }
+
 			            html.push
 			            (
 				        	"</tr>"
