@@ -26,7 +26,19 @@ module.exports.addView = function(arr,div,models)
                     this.views[i].onUnMount();
                 }
             }
-            renderView(){}
+            renderView()
+            {
+                if(this.firstRender)
+                {
+                    this.firstRender = false;
+                    return `
+                        <div id="rightSlideOutPanel" class="rightSlideOutPanel">
+                        </div>
+                        <div id="leftSlideOutPanel" class="leftSlideOutPanel">
+                        </div>
+                    `;
+                }
+            }
             postRender(){}
             dataChanged(){}
             divClickEvents(event){}
