@@ -23,7 +23,8 @@ module.exports = function(arr,div,model)
                 var html = new Array();
                 html.push
                 (
-                    "<input id='fastqInputFilterBox' class='inputFilterBox' type='text' autofocus='autofocus' placeholder='Search' />",
+                    "<button id = 'removeSelected'>Remove selected</button><br>",
+                    "<input id='fastqInputFilterBox' class='inputFilterBox' type='text' autofocus='autofocus' placeholder='Search...' />",
                     "<table id='fastqTable' style='width:100%'>",
                     "<tr>",
                     "<td><input type='checkbox' id='fastqSelectAllBox'></input></td>",
@@ -131,6 +132,34 @@ module.exports = function(arr,div,model)
                                     return;
                                 }
                             }
+                        }
+                    }
+                    else { //checkbox was not clicked, must be some other element
+                        //if the element was the "removeSelected" button, act on it
+                        if (event.target.id == "removeSelected")
+                        {
+                            //loop through all fastQ inputs and count the unchecked ones
+                            var unselected_count = 0;
+                            for (var i in this.model.fastqInputs) 
+                            {
+                                if (this.model.fastqInputs[i].checked == false)
+                                {
+                                    unselected_count++;
+                                }
+                            }
+                            //then create a new array to fit, and add all the unchecked elements to it
+                            var unselected_fastqs = new Array(unselected_count);
+                            for (var i in this.model.fastqInputs) 
+                            {
+                                if (this.model.fastqInputs[i].checked == false)
+                                {
+                                    unselected_fastqs[i] = this.model.fastqInputs[i];
+                                }
+                            }
+                            //then set the original to be the new
+                            this.model.fastqInputs = new Array(unselected_count++);
+                            //and refresh
+                            this.dataChanged();
                         }
                     }
                 }
