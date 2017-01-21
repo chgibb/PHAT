@@ -4,8 +4,6 @@ var id = require("./req/renderer/MakeValidID");
 var viewMgr = require('./req/renderer/viewMgr');
 var QCClass = require('./req/renderer/QC');
 
-
-
 var addSummaryView = require('./req/renderer/QCRenderer/summaryView');
 var addReportView = require('./req/renderer/QCRenderer/reportView');
 require("./req/renderer/commonBehaviour");
