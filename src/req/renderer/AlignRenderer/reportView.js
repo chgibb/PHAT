@@ -172,7 +172,14 @@ module.exports  = function(arr,div,model)
                         }
                     }
 
-                    this.model.runAlignment(this.data.selectedFastqs,this.data.selectedFasta,this.data.tab);
+                    /*
+                        Only run the alignment (bowtie2) if a fasta was selected
+                    */
+                    if (this.data.selectedFasta != "" && this.data.selectedFasta != null) {
+                        this.model.runAlignment(this.data.selectedFastqs,this.data.selectedFasta,this.data.tab);
+                    } else {
+                        alert("You need to select a Fasta file!");
+                    }
                 }
                 this.populateSelectedFasta();
                 this.populateSelectedFastqs();
