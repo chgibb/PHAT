@@ -130,6 +130,9 @@ module.exports = function(arr,div,model)
                         }
                     }
                 }
+                /*
+                    Click event for the "Select All" checkbox (Fasta).
+                */
                 if(event.target.id == 'fastaSelectAllBox')
                 {
                     this.data.searchFilter = buildInclusiveSearchFilter(this.data.filterString);
@@ -143,8 +146,12 @@ module.exports = function(arr,div,model)
                     this.dataChanged();
                     return;    
                 }
+                /*
+                    Handle the index button click event.
+                */
                 if(event.target.id == 'indexButton')
                 {
+                    //alert("P.H.A.T will now begin indexing.\nThis may take a few minutes.");
                     this.data.searchFilter = buildInclusiveSearchFilter(this.data.filterString);
                     for(let i = 0; i != this.model.fastaInputs.length; ++i)
                     {
@@ -154,6 +161,7 @@ module.exports = function(arr,div,model)
                                 this.model.indexFasta(this.model.fastaInputs[i].name);
                         }
                     }
+                    //alert("Indexing complete!");
                 }
                 //host/patho radios are identified by _host or _path appended to the end 
                 //of the item's .validID property
