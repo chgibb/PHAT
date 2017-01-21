@@ -62,6 +62,7 @@ $
                             {
                                 QC.addQCData(arg.val[i].name)
                             }
+                            QC.postQCData();
                             //views[view.getIndexOfViewByName(views,'summary')].data.QCData = QC.QCData;
                             //views[view.getIndexOfViewByName(views,'summary')].data.fastqInputs = arg.val;
                             viewMgr.getViewByName("summary").data.fastqInputs = arg.val;
@@ -80,6 +81,8 @@ $
                 viewMgr.render();
             }
         );
+        let validFastQCOut = new RegExp("[0-9]|[.]","g");
+        let trimOutFastQCPercentage = new RegExp("[0-9][0-9][%]|[0-9][%]","g");
         ipc.on
         (
             "spawnReply",function(event,arg)
@@ -90,10 +93,12 @@ $
                     {
                         if(arg.unBufferedData)
                         {
-                            if(arg.unBufferedData.match(new RegExp("[0-9]|[.]","g")))
-                                var regger = /[0-9][0-9][%]|[0-9][%]/g;
-                                var regResult = regger.exec(arg.unBufferedData);
-                                $('#'+id.makeValidID(arg.args[0])).text(regResult);
+                            if(validFastQCOut.test(arg.unBufferedData))
+                            {
+                                let regResult = trimOutFastQCPercentage.exec(arg.unBufferedData);
+                                if(regResult && regResult[0])
+                                    $('#'+id.makeValidID(arg.args[0])).text(regResult[0]);
+                            }
                         }
                     }
                 }
