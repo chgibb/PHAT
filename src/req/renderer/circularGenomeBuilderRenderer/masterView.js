@@ -43,6 +43,7 @@ module.exports.addView = function(arr,div,models)
             dataChanged(){}
             divClickEvents(event)
             {
+                console.log("called");
                 let me = this;
                     $("#rightSlideOutPanel").animate
                     (
