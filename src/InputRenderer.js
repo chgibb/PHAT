@@ -85,7 +85,7 @@ $
 		    'input',function(event,arg)
 			{
                 //reply from call to getState
-			    if(arg.action === "getState")
+			    if(arg.action == "getState" || arg.action == "keyChange")
 				{
 					if(arg.key == 'fastqInputs')
 					{

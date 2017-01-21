@@ -5,7 +5,7 @@ var window = require('./window');
 var fsAccess = require("./../fsAccess");
 var getState = require('./getState');
 var postState = require('./postState');
-let inputWindow;
+
 ipc.on
 (
 	"input" ,function(event,arg)
@@ -18,12 +18,6 @@ window.windowCreators["input"] =
 {
 	Create : function() 
 	{
-		//disallow multiple input windows
-		for(var i in window.windows)
-		{
-			if(window.windows[i].name == "input" && window.windows[i])
-				return;
-		}
 		window.windows.push
 		(
 			{

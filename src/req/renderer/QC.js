@@ -23,7 +23,6 @@ module.exports = class extends model
         if(this.QCDataItemExists(name) || !canRead(name))
             return false;
         this.QCData.push(new QCData.Data(name));
-        this.postQCData();
         return true;
     }
     QCDataItemExists(name)

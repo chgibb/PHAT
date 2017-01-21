@@ -5,7 +5,7 @@ var window = require('./window');
 var fsAccess = require("./../fsAccess");
 var getState = require('./getState');
 var postState = require('./postState');
-let pathogenWindow;
+
 ipc.on
 (
 	"pathogen" ,function(event,arg)
