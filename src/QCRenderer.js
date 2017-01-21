@@ -62,6 +62,7 @@ $
                             {
                                 QC.addQCData(arg.val[i].name)
                             }
+                            QC.postQCData();
                             //views[view.getIndexOfViewByName(views,'summary')].data.QCData = QC.QCData;
                             //views[view.getIndexOfViewByName(views,'summary')].data.fastqInputs = arg.val;
                             viewMgr.getViewByName("summary").data.fastqInputs = arg.val;
