@@ -151,7 +151,14 @@ module.exports = function(arr,div,model)
                 */
                 if(event.target.id == 'indexButton')
                 {
-                    //alert("P.H.A.T will now begin indexing.\nThis may take a few minutes.");
+                    var c_count = 0;
+                    for(let i = 0; i != this.model.fastaInputs.length; ++i)
+                    {
+                        if (this.model.fastaInputs[i].checked) c_count++;
+                    }
+                    var valid = c_count > 0;
+                    alert(valid == true ? "P.H.A.T. will now begin indexing.\nThis may take a few minutes." 
+                        : "You need to make a selection first!");
                     this.data.searchFilter = buildInclusiveSearchFilter(this.data.filterString);
                     for(let i = 0; i != this.model.fastaInputs.length; ++i)
                     {
@@ -161,7 +168,7 @@ module.exports = function(arr,div,model)
                                 this.model.indexFasta(this.model.fastaInputs[i].name);
                         }
                     }
-                    //alert("Indexing complete!");
+                    if (valid == true) alert("Indexing complete!");
                 }
                 //host/patho radios are identified by _host or _path appended to the end 
                 //of the item's .validID property
@@ -170,7 +177,7 @@ module.exports = function(arr,div,model)
                 {
                     console.log('identified radio');
                     //the user clicked a host/patho radio button
-                    //extract the id actual id of the item that was clicked
+                    //extract the actual id of the item that was clicked
                     var ID = event.target.id.substr(0,event.target.id.length-5);
                     for(let i = 0; i != this.model.fastaInputs.length; ++i)
                     {
@@ -203,4 +210,5 @@ module.exports = function(arr,div,model)
             }
         }
     );
+
 }
