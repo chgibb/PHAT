@@ -14,8 +14,7 @@ module.exports = function(arr,div,model)
 			onMount(){}
 			onUnMount(){}
 			renderView()
-			{
-				var html = new Array();
+			{var html = new Array();
 				html.push
 				(
 					"<img style='float:left;' src='img/done_Analysis.png'><p style='float:left;'>View Report</p>",
@@ -41,15 +40,11 @@ module.exports = function(arr,div,model)
 	            {
 		    		if(this.data.fastqInputs[i].checked)
 		            {
-			        	html.push
-			            (
-				        	"<tr>",
-				            "<td>",
-							"<button id = 'runQC'>Run QC</button>",
-							"<p id='",this.data.fastqInputs[i].validID,"'>",this.data.fastqInputs[i].alias,"</p></td>"
-			            );
-
-						if(this.model.QCData[i].QCReport == "")
+                        html.push
+                        (
+                            "<tr>"
+                        );
+                        if(this.model.QCData[i].QCReport == "")
 						{
 							html.push
 			        		(
@@ -63,11 +58,12 @@ module.exports = function(arr,div,model)
 				        	"<td style='text-align:center;'><p>","<img id='",this.data.fastqInputs[i].validID,"' src='img/done_Analysis.png' style='text-align:center;'>","</p></td>"   
 			           		);
 						}
+			        	html.push
+			            (
+				        	"<td>",this.data.fastqInputs[i].alias,"</td>"
+			            );
 
-						html.push
-			        	(
-				        	"<td>",this.data.fastqInputs[i].alias,"</td>" 
-			           	);
+						
 
 
 
