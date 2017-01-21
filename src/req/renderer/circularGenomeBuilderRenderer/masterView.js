@@ -34,6 +34,22 @@ module.exports.addView = function(arr,div,models)
                     return `
                         <div id="rightSlideOutPanel" class="rightSlideOutPanel">
                         </div>
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
                         <div id="leftSlideOutPanel" class="leftSlideOutPanel">
                         </div>
                     `;
