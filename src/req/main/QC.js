@@ -5,7 +5,7 @@ var window = require('./window');
 var fsAccess = require("./../fsAccess");
 var getState = require('./getState');
 var postState = require('./postState');
-let QCWindow;
+
 ipc.on
 (
 	"QC" ,function(event,arg)
@@ -22,7 +22,7 @@ window.windowCreators["QC"] =
 		(
 			{
 				name : "QC",
-				window : window.createWithDefault("Fastq QCs","QC",QCWindow,1000,800,fsAccess("resources/app/QC.html"),false)
+				window : window.createWithDefault("Fastq QCs","QC",1000,800,fsAccess("resources/app/QC.html"),false)
 			}
 		);
 	}

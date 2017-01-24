@@ -2,7 +2,10 @@
 <html>
 	<head>
 		<meta charset="UTF-8">
-		<title>P. H. A. T.</title>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+		<link rel="stylesheet" type="text/css" href="styles/ToolBar.css">
+		<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+		<title>Pathogen Host Analysis Tool</title>
   </head>
   <body>
 	 <script>
@@ -25,11 +28,33 @@
 			 ipc.send('toolBar',{action : "open",arg : target});
 		 }
 	 </script>
-	<img src="img/input.png" id="input" name="input" onClick="SendOpenMessage('input')"></img>
-	<img src="img/qc.png" name="QC" onClick="SendOpenMessage('QC')"></img>
-	<img src="img/align.png" name="Align" onClick="SendOpenMessage('align')"></img>
-	<img src="img/pathogenButton.png" name="Patho" onClick="SendOpenMessage('pathogen')"></img>
-	<img src="img/hostButton.png" name="Host" onClick="SendOpenMessage('host')"></img>
-	<img src="img/output.png" name="Output" onClick="SendOpenMessage('output')"></img>
+	 	<div class="container-fluid"  id="container1">
+		 	<div class="row" id="toolbar1">
+				<div id="button" class="col-xs-2">
+					<img src="img/input.png" alt="input" id="input" name="input" onClick="SendOpenMessage('input')"></img>
+					<caption>Input</caption>
+				</div>
+				<div id="button" class="col-xs-2">
+					<img src="img/qc.png" alt="qc" name="QC" onClick="SendOpenMessage('QC')"></img>
+					<caption>QC</caption>
+				</div>
+				<div id="button" class="col-xs-2">
+					<img src="img/align.png" alt="align" name="Align" onClick="SendOpenMessage('align')"></img>
+					<caption>Align</caption>
+				</div>
+				<div id="button" class="col-xs-2">
+					<img src="img/pathogenButton.png" alt="pathogen" name="Patho" onClick="SendOpenMessage('pathogen')"></img>
+					<caption>Pathogen</caption>
+				</div>
+				<div id="button" class="col-xs-2">
+					<img src="img/hostButton.png" alt="host" name="Host" onClick="SendOpenMessage('host')"></img>
+					<caption>Host</caption>
+				</div>
+				<div id="button" class="col-xs-2">
+					<img src="img/output.png" alt="output" name="Output" onClick="SendOpenMessage('output')"></img>
+					<caption>Output</caption>
+				</div>
+			</div>
+		</div>
 	</body>
 </html>

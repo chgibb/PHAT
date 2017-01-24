@@ -16,6 +16,8 @@ var Job = require('./Job.js');
 */
 module.exports.runJobs = function()
 {
+    //console.log('\033[2J');
+    //console.log(jobs);
 	var maxJobs = 4;
 	var runningJobs = 0;
 	for(var i in jobs)

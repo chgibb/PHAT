@@ -5,7 +5,7 @@ var window = require('./window');
 var fsAccess = require("./../fsAccess");
 var getState = require('./getState');
 var postState = require('./postState');
-let outputWindow;
+
 ipc.on
 (
 	"output" ,function(event,arg)
@@ -22,7 +22,7 @@ window.windowCreators["output"] =
 		(
 			{
 				name : "output",
-				window : window.createWithDefault("Output","output",outputWindow,1379,649,fsAccess("resources/app/Output.html"),false)
+				window : window.createWithDefault("Output","output",1379,649,fsAccess("resources/app/Output.html"),false)
 			}
 		);
 	}

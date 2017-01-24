@@ -1,14 +1,19 @@
 var url = require('url')
 var path = require('path');
 
-module.exports = function(filePath)
+module.exports = function(filePath,addProtocol = true)
 {
-    return url.format
-    (
-        {
-            protocol: 'file',
-            slashes: true,
-            pathname: path.join(process.cwd(), filePath)
-        }
-    );
+    if(addProtocol)
+    {
+        return url.format
+        (
+            {
+                protocol: 'file',
+                slashes: true,
+                pathname: path.join(process.cwd(),filePath)
+            }
+        );
+    }
+    else
+        return path.join(process.cwd(),filePath);
 }

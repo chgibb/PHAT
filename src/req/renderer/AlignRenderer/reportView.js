@@ -75,7 +75,8 @@ module.exports  = function(arr,div,model)
                         );
                     }
                 }
-                html.push("</table></div><br /><br />");
+                html.push("</table></div><br /><br />",
+                    "<br><p>Select FastA files in Input, mark them as Host/Pathogen, then select them here.</p><br>");
 
                 html.push("<img id='pathTab' src='img/browseButton.png'>");
                 html.push("<img id='hostTab' src='img/buttonHost.png'>");
@@ -151,15 +152,18 @@ module.exports  = function(arr,div,model)
                 }
                 if(event.target.id == "alignButton")
                 {
+                    var selected_fastq_count = 0;
                     for(let i = 0; i != this.data.fastqInputs.length; ++i)
                     {
                         if(this.data.selectedFastqs[0] == this.data.fastqInputs[i].validID)
                         {
                             this.data.selectedFastqs[0] = this.data.fastqInputs[i];
+                            selected_fastq_count++;
                         }
                         if(this.data.selectedFastqs[1] == this.data.fastqInputs[i].validID)
                         {
                             this.data.selectedFastqs[1] = this.data.fastqInputs[i];
+                            selected_fastq_count++;
                             break;
                         }
                     }
@@ -172,7 +176,16 @@ module.exports  = function(arr,div,model)
                         }
                     }
 
-                    this.model.runAlignment(this.data.selectedFastqs,this.data.selectedFasta,this.data.tab);
+                    /*
+                        Only run the alignment (bowtie2) if two fastQ's have been selected, 
+                        AND a Fasta has been selected.
+                    */
+                    if (this.data.selectedFasta != "" && selected_fastq_count >= 2) {
+                        alert("P.H.A.T will now align your selection.\nThis may take a few minutes.")
+                        this.model.runAlignment(this.data.selectedFastqs,this.data.selectedFasta,this.data.tab);
+                    } else {
+                        alert(selected_fastq_count >= 2 ? "You need to select a Fasta file!" : "You need to select two FastQ files!");
+                    }
                 }
                 this.populateSelectedFasta();
                 this.populateSelectedFastqs();

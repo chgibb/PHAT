@@ -5,7 +5,7 @@ var window = require('./window');
 var fsAccess = require("./../fsAccess");
 var getState = require('./getState');
 var postState = require('./postState');
-let inputWindow;
+
 ipc.on
 (
 	"input" ,function(event,arg)
@@ -18,17 +18,11 @@ window.windowCreators["input"] =
 {
 	Create : function() 
 	{
-		//disallow multiple input windows
-		for(var i in window.windows)
-		{
-			if(window.windows[i].name == "input" && window.windows[i])
-				return;
-		}
 		window.windows.push
 		(
 			{
 				name : "input",
-				window : window.createWithDefault("Input","input",inputWindow,928,300,fsAccess("resources/app/Input.html"),false)
+				window : window.createWithDefault("Input","input",928,300,fsAccess("resources/app/Input.html"),false)
 			}
 		);
 	}

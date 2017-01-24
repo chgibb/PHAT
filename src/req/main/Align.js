@@ -5,7 +5,7 @@ var window = require('./window');
 var fsAccess = require("./../fsAccess");
 var getState = require('./getState');
 var postState = require('./postState');
-let alignWindow;
+
 ipc.on
 (
 	"align" ,function(event,arg)
@@ -22,7 +22,7 @@ window.windowCreators["align"] =
 		(
 			{
 				name : "align",
-				window : window.createWithDefault("Align","align",alignWindow,1000,800,fsAccess("resources/app/Align.html"),false)
+				window : window.createWithDefault("Align","align",1000,800,fsAccess("resources/app/Align.html"),false)
 			}
 		);
 	}

@@ -22,16 +22,26 @@ module.exports = class extends model
     }
     runAlignment(fastqs,refIndex,type)
     {
+        /*
+            If you are not passing an array, or you
+            are passing more than 2 FastQs, return false.
+        */
         if(!Array.isArray(fastqs))
             return false;
         if(fastqs.length > 2)
             return false;
-        
+        /*
+            Determine whether the two are paired?
+        */
         var paired = false;
         if(fastqs.length == 2)
             paired = true;
+        /*
+            If either of the fastQ files are unreadable, return false.
+        */
         if(!canRead(fastqs[0].name) || !canRead(fastqs[1].name))
             return false;
+        
         var alignReport = {};
         try
         {

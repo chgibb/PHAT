@@ -1,21 +1,28 @@
-let hostWindow;
+const electron = require('electron');
+const ipc = electron.ipcMain;
+const app = electron.app;
+var window = require('./window');
+var fsAccess = require("./../fsAccess");
+var getState = require('./getState');
+var postState = require('./postState');
+
 ipc.on
 (
 	"host" ,function(event,arg)
 	{
-		postStateIPC("host",event,arg);
-		getStateIPC("host",event,arg);
+		postState.postStateIPC("host",event,arg);
+		getState.getStateIPC("host",event,arg);
 	}
 );
-windowCreators["host"] = 
+window.windowCreators["host"] = 
 {
 	Create : function() 
 	{
-		windows.push
+		window.windows.push
 		(
 			{
 				name : "host",
-				window : createWithDefault("Host","host",alignWindow,1000,800,'../Host.html',false)
+				window : window.createWithDefault("Host","host",1000,800,fsAccess("resources/app/Host.html"),false)
 			}
 		);
 	}

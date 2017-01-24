@@ -24,6 +24,7 @@ require('./QC');
 require('./Align');
 require('./Output');
 require('./Pathogen');
+require('./Host')
 
 try
 {
