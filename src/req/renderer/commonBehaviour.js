@@ -26,3 +26,20 @@ window.onerror = function(message,file,line,col,error)
     }
     remote.getCurrentWindow().openDevTools();
 }
+
+document.addEventListener
+(
+    'drop',function(e)
+    {
+        e.preventDefault();
+        e.stopPropagation();
+    }
+);
+document.addEventListener
+(
+    'dragover',function(e)
+    {
+        e.preventDefault();
+        e.stopPropagation();
+    }
+);
