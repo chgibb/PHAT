@@ -2,14 +2,6 @@
  * Shared window management objects and methods.
  * @module req/main/window
  */
-/*
-	Creates a new renderer window with default events attached.
-	Also initializes a state channel with refName if it does not already exist.
-	If a state channel already exists with refName, then the new window will be initalized
-	with the saved windowOptions on that channel.
-	If a state channel does not already exist then the window's width, height,title and alwaysOnTop
-	attributes will be taken from the function's paramaters.
-*/
 const electron = require('electron');
 const BrowserWindow = electron.BrowserWindow;
 
