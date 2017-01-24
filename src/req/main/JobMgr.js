@@ -1,20 +1,18 @@
-/*
-	Process management functions. Provides wrapper over Job class.
-	Maintains a job queue which gets worked on from both ends simultaneously to prevent starving 
-	of one end. Jobs get added to the bottom of the queue with addJob. runJobs must be run 
-	periodically in order to update the queue and spawn new jobs.
-
-	TODO: maxJobs is currently hardcoded. This should be togglable through a state channel
-
-	Part of the PHAT Project
-	Author: gibbc@tbh.net
+/**
+ *	Process management functions. Provides wrapper over Job class.
+ *	Maintains a job queue which gets worked on from both ends simultaneously to prevent starving 
+ *	of one end. Jobs get added to the bottom of the queue with addJob. runJobs must be run 
+ *	periodically in order to update the queue and spawn new jobs.
+ *	TODO: maxJobs is currently hardcoded. This should be togglable through a state channel
+ * @see module:req/main/Job
+ * @module req/main/JobMgr
 */
 var jobs = new Array();
 var switchEnds = false;
 var Job = require('./Job.js');
-/*
-	Updates job queue.
-	Removes completed jobs and starts new ones.
+/** 
+ * Updates job queue.
+ * Removes completed jobs and starts new ones.
 */
 module.exports.runJobs = function()
 {
@@ -73,9 +71,10 @@ module.exports.runJobs = function()
 		return;
 	}
 }
-/*
-	Wrapper over Job creation. See Job.js for more details.
-*/
+/**
+ * Wrapper over Job creation.
+ * @see module:req/main/Job#constructor
+ */
 module.exports.addJob = function(processName,args,callBackChannel,unBuffer,callBackObj,extraData)
 {
     jobs.push(new Job(processName,args,callBackChannel,unBuffer,callBackObj,extraData));
