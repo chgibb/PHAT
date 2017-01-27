@@ -1,3 +1,7 @@
+/**
+ * Main entry point for the main application process.
+ * @module main
+ */
 const electron = require('electron');
 const ipc = electron.ipcMain;
 const app = electron.app;
