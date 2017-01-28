@@ -168,7 +168,6 @@ module.exports = function(arr,div,model)
                                 this.model.indexFasta(this.model.fastaInputs[i].name);
                         }
                     }
-                    if (fasta_is_checked == true) alert("Indexing complete!");
                 }
                 //host/patho radios are identified by _host or _path appended to the end 
                 //of the item's .validID property
