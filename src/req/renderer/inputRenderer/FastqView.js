@@ -138,26 +138,13 @@ module.exports = function(arr,div,model)
                         //if the element was the "removeSelected" button, act on it
                         if (event.target.id == "removeSelected")
                         {
-                            //loop through all fastQ inputs and count the unchecked ones
-                            var unselected_count = 0;
                             for (var i in this.model.fastqInputs) 
                             {
-                                if (this.model.fastqInputs[i].checked == false)
+                                if (this.model.fastqInputs[i].checked)
                                 {
-                                    unselected_count++;
+                                    this.model.fastqInputs.splice(i, 1);                                    
                                 }
                             }
-                            //then create a new array to fit, and add all the unchecked elements to it
-                            var unselected_fastqs = new Array(unselected_count);
-                            for (var i in this.model.fastqInputs) 
-                            {
-                                if (this.model.fastqInputs[i].checked == false)
-                                {
-                                    unselected_fastqs[i] = this.model.fastqInputs[i];
-                                }
-                            }
-                            //then set the original to be the new
-                            this.model.fastqInputs = new Array(unselected_count++);
                             //and refresh
                             this.dataChanged();
                         }
