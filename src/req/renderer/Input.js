@@ -12,7 +12,6 @@ var fs = require('fs');
 var model = require('./model');
 var replyFromBowTie2Build = require('./input/replyFromBowTie2Build');
 var replyFromFaToTwoBit = require('./input/replyFromFaToTwoBit');
-var replyFromFileSize = require('./input/replyFromFileSize');
 var replyFromSamTools = require('./input/replyFromSamTools');
 
 console.log("input.js "+__dirname);
@@ -25,7 +24,6 @@ module.exports = class extends model
         this.fastaInputs = new Array();
         
         //allow the environment to change default paths for required foreign modules
-        this.fileSize = this.fsAccess('resources/app/fileSize');
         this.faToTwoBit = this.fsAccess('resources/app/faToTwoBit');
         this.samTools = this.fsAccess('resources/app/samtools');
         this.bowTie2Build = this.fsAccess('resources/app/bowtie2-build');
@@ -43,17 +41,18 @@ module.exports = class extends model
         if(!canRead(this.fsAccess(name)))
             return false;
         this.fastqInputs.push(new fastq(this.fsAccess(name)));
-        this.spawnHandle
-        (
-            'spawn',
+
+        //use Node's statSync to get filesize
+        var stats = fs.statSync(name);
+
+        for(let i = 0; i != this.fastqInputs.length; ++i)
+	    {
+		    if(this.fastqInputs[i].name == name) 
             {
-                action : 'spawn',
-				replyChannel : this.channel,
-				processName : this.fileSize,
-				args : [name],
-				unBuffer : true
+                this.fastqInputs[i].size = parseInt(stats["size"]);
+                this.fastqInputs[i].sizeString = formatByteString(parseInt(stats["size"]));
             }
-        );
+	    }
         return true;
     }
     addFasta(name)
@@ -61,17 +60,17 @@ module.exports = class extends model
         if(!canRead(this.fsAccess(name)))
             return false;
         this.fastaInputs.push(new fasta(this.fsAccess(name)));
-        this.spawnHandle
-        (
-            'spawn',
+
+        //use Node's statSync to get filesize
+        var stats = fs.statSync(name);
+        for(let i = 0; i != this.fastaInputs.length; ++i)
+	    {
+		    if(this.fastaInputs[i].name == name) 
             {
-                action : 'spawn',
-				replyChannel : this.channel,
-				processName : this.fileSize,
-				args : [name],
-				unBuffer : true
+                this.fastaInputs[i].size = parseInt(stats["size"]);
+                this.fastaInputs[i].sizeString = formatByteString(parseInt(stats["size"]));
             }
-        );
+	    }
         return true;
     }
     indexFasta(name)
@@ -121,8 +120,6 @@ module.exports = class extends model
     }
     spawnReply(channel,arg)
     {
-        if(arg.processName == this.fileSize)
-            replyFromFileSize(channel,arg,this);
         if(arg.processName == this.faToTwoBit)
             replyFromFaToTwoBit(channel,arg,this);
         if(arg.processName == this.samTools)

@@ -10,7 +10,6 @@ chmod +x bowtie2-inspect
 chmod +x bowtie2-inspect-l
 chmod +x bowtie2-inspect-s
 chmod +x faToTwoBit
-chmod +x fileSize
 chmod +x QCReportCopy
 chmod +x reportCopy
 chmod +x samtools
