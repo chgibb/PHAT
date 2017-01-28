@@ -26,3 +26,23 @@ window.onerror = function(message,file,line,col,error)
     }
     remote.getCurrentWindow().openDevTools();
 }
+/*
+ Adapted from answer by zcbenz
+ https://github.com/electron/electron/issues/908
+*/
+document.addEventListener
+(
+    'drop',function(e)
+    {
+        e.preventDefault();
+        e.stopPropagation();
+    }
+);
+document.addEventListener
+(
+    'dragover',function(e)
+    {
+        e.preventDefault();
+        e.stopPropagation();
+    }
+);

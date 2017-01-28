@@ -15,7 +15,8 @@
   "homepage": "",
   "devDependencies": {
     "browserify": "^13.1.0",
-    "electron-prebuilt": "^1.1.2"
+    "electron-prebuilt": "^1.1.2",
+    "jsdoc": "^3.4.3"
   },
   "dependencies": {
     "electron-ipc-stream": "^0.2.0",
