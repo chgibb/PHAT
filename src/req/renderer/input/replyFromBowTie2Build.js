@@ -33,17 +33,19 @@ module.exports = function(channel,arg,model)
 
 					which gives approximately 4294967096 bytes
 				*/
-				var size_of = model.fastaInputs[i].size;
-				var size_threshold = 4294967096;
+				var fasta_size = model.fastaInputs[i].size; //the size of the current fasta in bits
+				var size_threshold = 4294967096; //the size threshold between being 32-bit and being 64-bit
+				var indexes_folder = "resources/app/rt/indexes/"; //the indexes folder url
+				var x64 = (fasta_size > size_threshold ? "1" : ""); //if 64-bit, add a 1 to the file extension
 
 				var sIndexes = 
 				[
-					model.fsAccess('resources/app/rt/indexes/'+model.fastaInputs[i].alias+".1.bt2"+(size_of > size_threshold ? "1" : "")),
-					model.fsAccess('resources/app/rt/indexes/'+model.fastaInputs[i].alias+".2.bt2"+(size_of > size_threshold ? "1" : "")),
-					model.fsAccess('resources/app/rt/indexes/'+model.fastaInputs[i].alias+".3.bt2"+(size_of > size_threshold ? "1" : "")),
-					model.fsAccess('resources/app/rt/indexes/'+model.fastaInputs[i].alias+".4.bt2"+(size_of > size_threshold ? "1" : "")),
-					model.fsAccess('resources/app/rt/indexes/'+model.fastaInputs[i].alias+".rev.1.bt2"+(size_of > size_threshold ? "1" : "")),
-					model.fsAccess('resources/app/rt/indexes/'+model.fastaInputs[i].alias+".rev.2.bt2"+(size_of > size_threshold ? "1" : "")),
+					model.fsAccess(indexes_folder+model.fastaInputs[i].alias+".1.bt2"+x64),
+					model.fsAccess(indexes_folder+model.fastaInputs[i].alias+".2.bt2"+x64),
+					model.fsAccess(indexes_folder+model.fastaInputs[i].alias+".3.bt2"+x64),
+					model.fsAccess(indexes_folder+model.fastaInputs[i].alias+".4.bt2"+x64),
+					model.fsAccess(indexes_folder+model.fastaInputs[i].alias+".rev.1.bt2"+x64),
+					model.fsAccess(indexes_folder+model.fastaInputs[i].alias+".rev.2.bt2"+x64),
 				];
 
 				try
