@@ -1,10 +1,11 @@
 /**
- * Dynamically require a module. Used to trick Browserify into not bundling a module passed to this method.
- * Exports a single method, returning the result of Node.require
  * @module req/requireDyn
 */
 /** 
-* @param target the module to require 
+ * Dynamically require a module. Used to trick Browserify into not bundling a module passed to this method.
+ * @function requireDyn
+ * @param {string} target - the module to require 
+ * @returns {any} - result of require(target)
 */
 module.exports = function(target)
 {
