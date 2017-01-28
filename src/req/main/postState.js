@@ -1,26 +1,28 @@
-/*
-	Functions for dealing with state saving. Deals with save requests whose origins are inside
-	or outside the same process.
-
-	Part of the PHAT Project
-	Author: gibbc@tbh.net
+/**
+ * Functions for dealing with state saving. Deals with save requests whose origins are inside
+ * or outside the same process.
+ * @module req/main/postState
 */
 
-/*
-	Saves state coming from an ipc message.
-	Assumes state to be saved is in arg.val and will be saved in state[channel][arg.key]
-	Also broadcasts a change event with a copy of the new data over ipc to all renderer windows
-	who subscribed to changes on state[channel][arg.key]. Will delete subscription entries for windows 
-	that have been closed as they're encountered. Will also delete closed window handles as they're encountered.
-*/
+
 var persistState = require('./persistState');
 var keySub = require('./keySub');
 var window = require('./window');
+/**
+ * Saves state coming from an ipc message.
+ * assumes state to be saved is in arg.val and will be saved in state[channel][arg.key]
+ * Also broadcasts a change event with a copy of the new data over ipc to all renderer windows
+ * who subscribed to changes on state[channel][arg.key]. Will delete subscription entries for windows 
+ * that have been closed as they're encountered. Will also delete closed window handles as they're encountered.
+ * @param {string} channel - channel to save to
+ * @param {any} event - event object form ipc event
+ * @param {any} arg - 
+*/
 module.exports.postStateIPC = function(channel,event,arg)
 {
 	if(arg.action === "postState")
 	{
-		console.log('\033[2J');
+		//console.log('\033[2J');
 		if(state[channel])
 		{
 			state[channel][arg.key] = arg.val;
@@ -87,8 +89,11 @@ module.exports.postStateIPC = function(channel,event,arg)
 		}
 	}
 }
-/*
-	Saves state coming from another function/thread in the same process.
+/**
+ * Saves state coming from another function/thread in the same process.
+ * @param {string} channel
+ * @param {string} key
+ * @param {any} val
 */
 module.exports.postState = function(channel,key,val)
 {

@@ -33,69 +33,40 @@ module.exports = function(channel,arg,model)
 
 					which gives approximately 4294967096 bytes
 				*/
-				if(model.fastaInputs[i].size <= 4294967096)
+				var fasta_size = model.fastaInputs[i].size; //the size of the current fasta in bits
+				var size_threshold = 4294967096; //the size threshold between being 32-bit and being 64-bit
+				var indexes_folder = "resources/app/rt/indexes/"; //the indexes folder url
+				var x64 = (fasta_size > size_threshold ? "1" : ""); //if 64-bit, add a 1 to the file extension
+
+				var sIndexes = 
+				[
+					model.fsAccess(indexes_folder+model.fastaInputs[i].alias+".1.bt2"+x64),
+					model.fsAccess(indexes_folder+model.fastaInputs[i].alias+".2.bt2"+x64),
+					model.fsAccess(indexes_folder+model.fastaInputs[i].alias+".3.bt2"+x64),
+					model.fsAccess(indexes_folder+model.fastaInputs[i].alias+".4.bt2"+x64),
+					model.fsAccess(indexes_folder+model.fastaInputs[i].alias+".rev.1.bt2"+x64),
+					model.fsAccess(indexes_folder+model.fastaInputs[i].alias+".rev.2.bt2"+x64),
+				];
+
+				try
 				{
-				    var sIndexes = 
-					[
-					    model.fsAccess('resources/app/rt/indexes/'+model.fastaInputs[i].alias+".1.bt2"),
-						model.fsAccess('resources/app/rt/indexes/'+model.fastaInputs[i].alias+".2.bt2"),
-						model.fsAccess('resources/app/rt/indexes/'+model.fastaInputs[i].alias+".3.bt2"),
-						model.fsAccess('resources/app/rt/indexes/'+model.fastaInputs[i].alias+".4.bt2"),
-						model.fsAccess('resources/app/rt/indexes/'+model.fastaInputs[i].alias+".rev.1.bt2"),
-						model.fsAccess('resources/app/rt/indexes/'+model.fastaInputs[i].alias+".rev.2.bt2"),
-					];
-				    try
-			        {
-						for(let k = 0; k != sIndexes.length; ++k)
-						{
-						    fs.accessSync(sIndexes[k],fs.FS_OK | fs.R_OK);
-						}
-						//everything exist
-						for(let k = 0; k != sIndexes.length; ++k)
-						{
-						    model.fastaInputs[i].indexes.push(sIndexes[k]);
-						}
-						model.fastaInputs[i].indexed = true;
-						model.fastaInputs[i].indexing = false;
-						//ipc.send('input',{action : 'postState', key : 'fastaInputs', val : fastaInputs});
-                        model.postFastaInputs();
-						return;
-					}
-					catch(err){console.log(err);}
-				}
-				//actually 64 bit indexes
-				if(model.fastaInputs[i].size > 4294967096)
-				{
-				    var lIndexes = 
-					[
-					    model.fsAccess('resources/app/rt/indexes/'+model.fastaInputs[i].alias+".1.bt21"),
-						model.fsAccess('resources/app/rt/indexes/'+model.fastaInputs[i].alias+".2.bt21"),
-						model.fsAccess('resources/app/rt/indexes/'+model.fastaInputs[i].alias+".3.bt21"),
-						model.fsAccess('resources/app/rt/indexes/'+model.fastaInputs[i].alias+".4.bt21"),
-						model.fsAccess('resources/app/rt/indexes/'+model.fastaInputs[i].alias+".rev.1.bt21"),
-						model.fsAccess('resources/app/rt/indexes/'+model.fastaInputs[i].alias+".rev.2.bt21"),
-					];
-					try
-					{ 
-						for(let k = 0; k != lIndexes.length; ++k)
-						{
-						    fs.accessSync(lIndexes[k],fs.FS_OK | fs.R_OK);
-						}
-						for(let k = 0; k != lIndexes.length; ++k)
-						{
-						    model.fastaInputs[i].indexes.push(lIndexes[k]);
-						}
-						model.fastaInputs[i].indexed = true;
-						model.fastaInputs[i].indexing = false;
-						//ipc.send('input',{action : 'postState', key : 'fastaInputs', val : fastaInputs});
-                        model.postFastaInputs();
-						return;
-					}
-					catch(err)
+					for(let k = 0; k != sIndexes.length; ++k)
 					{
-					    alert("Could Not Generate Index For "+model.fastaInputs[i].alias);
+						fs.accessSync(sIndexes[k],fs.FS_OK | fs.R_OK);
 					}
+					//everything exist
+					for(let k = 0; k != sIndexes.length; ++k)
+					{
+						model.fastaInputs[i].indexes.push(sIndexes[k]);
+					}
+					model.fastaInputs[i].indexed = true;
+					model.fastaInputs[i].indexing = false;
+					//ipc.send('input',{action : 'postState', key : 'fastaInputs', val : fastaInputs});
+					model.postFastaInputs();
+					return;
 				}
+				catch(err){console.log(err);}
+			
 				alert("Could Not Generate Index For "+model.fastaInputs[i].alias);
 			}
 		}

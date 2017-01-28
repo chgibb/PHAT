@@ -1,15 +1,7 @@
-/*
-	Part of the PHAT Project
-	Author: gibbc@tbh.net
-*/
-/*
-	Creates a new renderer window with default events attached.
-	Also initializes a state channel with refName if it does not already exist.
-	If a state channel already exists with refName, then the new window will be initalized
-	with the saved windowOptions on that channel.
-	If a state channel does not already exist then the window's width, height,title and alwaysOnTop
-	attributes will be taken from the function's paramaters.
-*/
+/**
+ * Shared window management objects and methods.
+ * @module req/main/window
+ */
 const electron = require('electron');
 const BrowserWindow = electron.BrowserWindow;
 
@@ -20,6 +12,23 @@ var postState = require('./postState');
 
 module.exports.windows = new Array;
 module.exports.windowCreators = {};
+
+/**
+ * Creates a new renderer window with default events attached.
+ * Also initializes a state channel with refName if it does not already exist.
+ * If a state channel already exists with refName, then the new window will be initalized
+ * with the saved windowOptions on that channel.
+ * If a state channel does not already exist then the window's width, height,title and alwaysOnTop
+ * attributes will be taken from the function's paramaters.
+ * @param {string} title - Text to display on window border
+ * @param {string} refName - State channel for this window to save it's bounds and position to / load from
+ * @param {number} width - Width to initialize window with
+ * @param {number} height - Height to initialize window with
+ * @param {string} html - Path to HTML file to load into window
+ * @param {boolean} debug - Turn on dev tools on window open
+ * @param {boolean} alwaysOnTop - Window will always be ontop of all other windows
+ * @returns {Electron.BrowserWindow} - Reference to created window object
+ */
 module.exports.createWithDefault = function(title,refName,width,height,html,debug,alwaysOnTop)
 {
 		var windowOptions = {};
@@ -88,9 +97,11 @@ module.exports.createWithDefault = function(title,refName,width,height,html,debu
 		return ref;
 }
 
-/*
-	On any change to a windows dimensions or position, save the changes.
-*/
+/**
+ * On any change to a windows dimensions or position, save the changes.
+ * @param {Electron.BrowserWindow} ref - Reference to the window object whose bounds are to be saved
+ * @param {string} refName - State channel to save onto
+ */
 module.exports.saveBounds = function(ref,refName)
 {
 	var bounds = ref.getBounds();
