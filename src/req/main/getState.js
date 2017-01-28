@@ -1,3 +1,17 @@
+/**
+ * Functions for dealing with retrieving state. Deals with retrieval requests whose origins aer inside or 
+ * outside the same process.
+ * @module req/main/getState
+ */
+
+
+/**
+ * Retrieves state in response to a request from an IPC message.
+ * Returns the object in state[channel][arg.key]
+ * @param {string} channel - channel state is stored on
+ * @param {event} - event object from IPC event
+ * @param {any} arg - IPC object from IPC event
+ */
 module.exports.getStateIPC = function(channel,event,arg)
 {
 	if(arg.action === "getState")
@@ -18,6 +32,13 @@ module.exports.getStateIPC = function(channel,event,arg)
 		}
 	}
 }
+
+/**
+ * Retrieves state in response to a request from an IPC message.
+ * Returns the object in state[channel][arg.key]
+ * @param {string} channel - channel state is stored on
+ * @param {event} - event object from IPC event
+ */
 module.exports.getState = function(channel,key)
 {
 	if(state[channel])
