@@ -32,6 +32,7 @@ module.exports.addView = function(arr,div,models)
                 {
                     this.firstRender = false;
                     return `
+                        <button id="leftPanel" class="leftSlideOutPanel">Left Panel</button>
                         <button id="rightPanel" class="rightSlideOutPanel">Right Panel</button>
                         <div id="rightSlideOutPanel" class="rightSlideOutPanel">
                         </div>
