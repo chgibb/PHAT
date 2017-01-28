@@ -97,9 +97,11 @@ module.exports.createWithDefault = function(title,refName,width,height,html,debu
 		return ref;
 }
 
-/*
-	On any change to a windows dimensions or position, save the changes.
-*/
+/**
+ * On any change to a windows dimensions or position, save the changes.
+ * @param {Electron.BrowserWindow} ref - Reference to the window object whose bounds are to be saved
+ * @param {string} refName - State channel to save onto
+ */
 module.exports.saveBounds = function(ref,refName)
 {
 	var bounds = ref.getBounds();
