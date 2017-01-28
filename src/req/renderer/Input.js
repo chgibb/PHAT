@@ -43,17 +43,17 @@ module.exports = class extends model
         if(!canRead(this.fsAccess(name)))
             return false;
         this.fastqInputs.push(new fastq(this.fsAccess(name)));
-        this.spawnHandle
-        (
-            'spawn',
+
+        var stats = fs.statSync(name);
+
+        for(let i = 0; i != this.fastqInputs.length; ++i)
+	    {
+		    if(this.fastqInputs[i].name == name) 
             {
-                action : 'spawn',
-				replyChannel : this.channel,
-				processName : this.fileSize,
-				args : [name],
-				unBuffer : true
+                this.fastqInputs[i].size = parseInt(stats["size"]);
+                this.fastqInputs[i].sizeString = formatByteString(parseInt(stats["size"]));
             }
-        );
+	    }
         return true;
     }
     addFasta(name)
@@ -61,17 +61,17 @@ module.exports = class extends model
         if(!canRead(this.fsAccess(name)))
             return false;
         this.fastaInputs.push(new fasta(this.fsAccess(name)));
-        this.spawnHandle
-        (
-            'spawn',
+
+        var stats = fs.statSync(name);
+
+        for(let i = 0; i != this.fastaInputs.length; ++i)
+	    {
+		    if(this.fastaInputs[i].name == name) 
             {
-                action : 'spawn',
-				replyChannel : this.channel,
-				processName : this.fileSize,
-				args : [name],
-				unBuffer : true
+                this.fastaInputs[i].size = parseInt(stats["size"]);
+                this.fastaInputs[i].sizeString = formatByteString(parseInt(stats["size"]));
             }
-        );
+	    }
         return true;
     }
     indexFasta(name)
