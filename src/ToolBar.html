@@ -7,7 +7,8 @@
 		<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
 		<title>Pathogen Host Analysis Tool</title>
   </head>
-  <body>
+  <body style="background-color: #3b85c5">
+ 	 <div id="mainToolbar" class="Toolbar2">
 	 <script>
 		 const ipc = require('electron').ipcRenderer;
 		 ipc.send('keySub',{action : "keySub",channel : "input", key : "inputs", replyChannel : "toolBar"});
@@ -28,25 +29,32 @@
 			 ipc.send('toolBar',{action : "open",arg : target});
 		 }
 	 </script>
-	 	<div class="container-fluid"  id="container1">
-		 	<div class="row" id="toolbar1">
-				<div id="button" class="col-xs-2">
-					<img src="img/input.png" alt="input" id="input" name="input" onClick="SendOpenMessage('input')"></img>
+	 		<div class="row" id="heading">
+				<div class="col-xs-12">
+					<h1 id="title1">PATHOGEN HOST ANALYSIS TOOL<h1>
 				</div>
-				<div id="button" class="col-xs-2">
-					<img src="img/qc.png" alt="qc" name="QC" onClick="SendOpenMessage('QC')"></img>
-				</div>
-				<div id="button" class="col-xs-2">
-					<img src="img/align.png" alt="align" name="Align" onClick="SendOpenMessage('align')"></img>
-				</div>
-				<div id="button" class="col-xs-2">
-					<img src="img/pathogenButton.png" alt="pathogen" name="Patho" onClick="SendOpenMessage('pathogen')"></img>
-				</div>
-				<div id="button" class="col-xs-2">
-					<img src="img/hostButton.png" alt="host" name="Host" onClick="SendOpenMessage('host')"></img>
-				</div>
-				<div id="button" class="col-xs-2">
-					<img src="img/output.png" alt="output" name="Output" onClick="SendOpenMessage('output')"></img>
+			</div>
+			<hr>
+			<div class="container-fluid"  id="container1">
+			 	<div class="row" id="toolbar1">
+					<div id="button" class="col-xs-2">
+						<img src="img/input.png" alt="input" id="input" name="input" onClick="SendOpenMessage('input')"></img>
+					</div>
+					<div id="button" class="col-xs-2">
+						<img src="img/qc.png" alt="qc" name="QC" onClick="SendOpenMessage('QC')"></img>
+					</div>
+					<div id="button" class="col-xs-2">
+						<img src="img/align.png" alt="align" name="Align" onClick="SendOpenMessage('align')"></img>
+					</div>
+					<div id="button" class="col-xs-2">
+						<img src="img/pathogenButton.png" alt="pathogen" name="Patho" onClick="SendOpenMessage('pathogen')"></img>
+					</div>
+					<div id="button" class="col-xs-2">
+						<img src="img/hostButton.png" alt="host" name="Host" onClick="SendOpenMessage('host')"></img>
+					</div>
+					<div id="button" class="col-xs-2">
+						<img src="img/output.png" alt="output" name="Output" onClick="SendOpenMessage('output')"></img>
+					</div>
 				</div>
 			</div>
 		</div>

@@ -14,11 +14,11 @@ ipc.on
 		}
 	}
 );
-window.windowCreators["toolBar"] = 
+window.windowCreators["toolBar"] =
 {
 	Create : function()
 	{
-		window.windows["toolBar"] = toolBarWindow = window.createWithDefault("P. H. A. T.","toolBar",450,86,fsAccess("resources/app/ToolBar.html"),false,false);
+		window.windows["toolBar"] = toolBarWindow = window.createWithDefault("P. H. A. T.","toolBar",450,86,fsAccess("resources/app/ToolBar.html"),true,false);
 		toolBarWindow.on
 		(
 			'closed',function()
