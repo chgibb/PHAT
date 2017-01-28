@@ -75,8 +75,7 @@ module.exports  = function(arr,div,model)
                         );
                     }
                 }
-                html.push("</table></div><br /><br />",
-                    "<br><p>Select FastA files in Input, mark them as Host/Pathogen, then select them here.</p><br>");
+                html.push("</table></div><br /><br />");
 
                 html.push("<img id='pathTab' src='img/browseButton.png'>");
                 html.push("<img id='hostTab' src='img/buttonHost.png'>");
