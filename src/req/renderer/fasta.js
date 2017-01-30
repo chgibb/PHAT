@@ -1,7 +1,13 @@
+/**
+ * @module req/renderer/fasta
+ */
 var id = require('./MakeValidID.js');
 var trimPath = require('./trimPath.js');
 module.exports = class
 {
+    /**
+     * @param {string} name - Path to fasta file 
+     */
     constructor(name)
     {
         this.name = name;
