@@ -10,6 +10,14 @@ module.exports = class
      */
     constructor(name)
     {
+        /**
+         * @prop {string} name - Path to file
+         * @prop {string} alias - File name without path
+         * @prop {number} size - Size in bytes of file
+         * @prop {string} sizeString - Formatted size of file
+         * @prop {string} validID - Escapped ID for use as a valid HTML ID
+         * @prop {boolean} checked - Whether this file is selected or not
+         */
         this.name = name;
         this.alias = trimPath(name);
         this.size = 0;
