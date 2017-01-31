@@ -15,7 +15,6 @@ var replyFromFaToTwoBit = require('./input/replyFromFaToTwoBit');
 var replyFromFileSize = require('./input/replyFromFileSize');
 var replyFromSamTools = require('./input/replyFromSamTools');
 
-console.log("input.js "+__dirname);
 module.exports = class extends model
 {
     constructor(channel,handlers)
