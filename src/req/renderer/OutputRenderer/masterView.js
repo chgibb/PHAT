@@ -83,16 +83,8 @@ module.exports.addView = function(arr,div,models)
                             (
                                 function()
                                 {
-                                    if(!me.rightPanelOpen)
-                                    {
-                                        me.rightPanelOpen = true;
-                                        return "+=50%";
-                                    }
-                                    if(me.rightPanelOpen)
-                                    {
-                                        me.rightPanelOpen = false;
-                                        return "-=50%";
-                                    }
+                                    me.rightPanelOpen = !me.rightPanelOpen;
+                                    return (me.rightPanelOpen == true ? "+" : "-")+"=50%";
                                 }
                             )()
                         }
