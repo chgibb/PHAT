@@ -40,7 +40,7 @@ module.exports.addView = function(arr,div,models)
                     <table style='width:100%'>
                     <tr>
                         ${this.alias != false ? "<th>Alias</th>" : ""}
-                        ${this.fullName != false ? "<th>Directory</th>" : ""}
+                        ${this.fullName != false ? "<th>Full Path</th>" : ""}
                         ${this.sizeInBytes != false ? "<th>Size In Bytes</th>" : ""}
                         ${this.formattedSize != false ? "<th>Formatted Size</th>" : ""}
                         ${this.numberOfSequences != false ? "<th>Number of Sequences</th>" : ""}

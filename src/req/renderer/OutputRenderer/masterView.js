@@ -3,6 +3,7 @@ var viewMgr = require('./../viewMgr');
 var addReportView = require("./reportView");
 
 var XLSExportDialog = require("./XLSExportDialog");
+var CSVExportDialog = require("./CSVExportDialog");
 module.exports.addView = function(arr,div,models)
 {
     arr.push
@@ -102,6 +103,12 @@ module.exports.addView = function(arr,div,models)
                     {
                         XLSExportDialog(viewMgr.getViewByName("report",this.views).renderView());
                     }
+
+                    if($("#exportToCSV").is(":checked"))
+                    {
+                        CSVExportDialog(viewMgr.getViewByName("report", this.views).renderView());
+                    }
+
                 }
             }
         }
