@@ -15,8 +15,8 @@ $
         addMasterView.addView(viewMgr.views,"view");
         viewMgr.changeView("masterView");
         viewMgr.render();
-        ipc.send('keySub',{action : "keySub", channel : "input", key : "fastqInputs", replyChannel : "circularGenomeBuilder"});
-        ipc.send('input',{replyChannel : 'circularGenomeBuilder', action : 'getState', key : 'fastqInputs'});
+        ipc.send('keySub',{action : "keySub", channel : "input", key : "fastaInputs", replyChannel : "circularGenomeBuilder"});
+        ipc.send('input',{replyChannel : 'circularGenomeBuilder', action : 'getState', key : 'fastaInputs'});
 
         ipc.on
         (
@@ -24,11 +24,11 @@ $
             {
                 if(arg.action == "getState" || arg.action == "keyChange")
                 {
-                    if(arg.key == "fastqInputs")
+                    if(arg.key == "fastaInputs")
                     {
                         if(arg.val != 0)
                         {
-                            
+
                         }
                     }
                 }
