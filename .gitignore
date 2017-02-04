@@ -10,4 +10,5 @@ src/req/renderer/PathogenRenderer/pileup.js
 pileup.css
 pileup.js
 sassc
-forDist/angularplasmid.complete.min.js
+docs
+

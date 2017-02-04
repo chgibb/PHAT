@@ -35,6 +35,7 @@ module.exports = function(input)
                         input.addFastq(files[i]);
 					}
                 }
+				input.postFastqInputs();
 			}
 		}
 	);
