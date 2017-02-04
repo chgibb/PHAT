@@ -35,7 +35,6 @@ module.exports = function(input)
                     	input.addFasta(files[i]);
 					}
                 }
-				input.postFastaInputs();
 			}
 		}
 	);
