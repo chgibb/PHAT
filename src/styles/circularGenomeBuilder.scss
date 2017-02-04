@@ -1,0 +1,21 @@
+@import "common/colors";
+@import "common/table";
+@import "common/td";
+@import "common/th";
+@import "common/tableCell";
+div.rightSlideOutPanel
+{
+    margin-right: -50%;
+	margin-top : +25%; 
+	border : 1px solid $border-color;
+    border-collapse : collapse;
+	background-color : $bg-color;
+	width : 45%;
+	height : 215px;
+    right : 0px;
+	position : fixed;
+}
+button.rightSlideOutPanel
+{
+    float : right;
+}
