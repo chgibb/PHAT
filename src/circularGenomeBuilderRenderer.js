@@ -17,5 +17,22 @@ $
         viewMgr.render();
         ipc.send('keySub',{action : "keySub", channel : "input", key : "fastqInputs", replyChannel : "circularGenomeBuilder"});
         ipc.send('input',{replyChannel : 'circularGenomeBuilder', action : 'getState', key : 'fastqInputs'});
+
+        ipc.on
+        (
+            'circularGenomeBuilder',function(event,arg)
+            {
+                if(arg.action == "getState" || arg.action == "keyChange")
+                {
+                    if(arg.key == "fastqInputs")
+                    {
+                        if(arg.val != 0)
+                        {
+                            
+                        }
+                    }
+                }
+            }
+        );
     }
 );
