@@ -28,6 +28,14 @@ $
                     {
                         if(arg.val != 0)
                         {
+                            let totalChecked = 0;
+                            for(let i = 0; i != arg.val.length; ++i)
+                            {
+                                if(arg.val.checked)
+                                    totalChecked++;
+                                if(totalChecked >= 1)
+                                    return;
+                            }
                             viewMgr.getViewByName("masterView").fastaInputs = arg.val;
                         }
                     }
