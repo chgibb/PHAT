@@ -11,6 +11,8 @@ module.exports.addView = function(arr,div,models)
                 super("masterView",div,models);
                 this.views = new Array();
                 this.firstRender = true;
+                this.leftPanelOpen = false;
+                this.rightPanelOpen = false;
             }
             onMount()
             {
