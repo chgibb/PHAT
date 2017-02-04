@@ -6,12 +6,12 @@
 div.rightSlideOutPanel
 {
     margin-right: -50%;
-	margin-top : +25%; 
+	margin-top : +5%; 
 	border : 1px solid $border-color;
     border-collapse : collapse;
 	background-color : $bg-color;
 	width : 45%;
-	height : 215px;
+	height : 515px;
     right : 0px;
 	position : fixed;
 }
@@ -23,12 +23,12 @@ button.rightSlideOutPanel
 div.leftSlideOutPanel
 {
 	margin-left : -50%;
-	margin-top : +25%; 
+	margin-top : +5%; 
 	border : 1px solid $border-color;
     border-collapse : collapse;
 	background-color : $bg-color;
 	width : 45%;
-	height : 215px;
+	height : 515px;
     left : 0%;
 	position : fixed;
 }
