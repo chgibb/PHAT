@@ -46,6 +46,9 @@ $
 		ipc.send('QC',{replyChannel : 'QC', action : 'getState', key : 'QCData'});
 		ipc.send('input',{replyChannel : 'QC', action : 'getState', key : 'fastqInputs'});
 
+        /*
+            ipc.on is where windows handle new messages from ipc
+        */
         ipc.on
         (
             'QC',function(event,arg)
@@ -56,9 +59,19 @@ $
                     {
                         if(arg.val != 0)
                         {
-                            for(var i in arg.val)
+                            
+                            for(var i = 0; i < arg.val.length; i++)
                             {
-                                QC.addQCData(arg.val[i].name)
+                                QC.addQCData(arg.val[i].name);
+                            }
+                            for(var i = 0; i < QC.QCData.length; i++)
+                            {
+                                var arg_val_name = i > -1 && i < arg.val.length ? arg.val[i].name : "";
+                                if (QC.QCData[i].name != arg_val_name) 
+                                {
+                                    QC.QCData.splice(i, 0);
+                                    i--;
+                                }
                             }
                             QC.postQCData();
                             //views[view.getIndexOfViewByName(views,'summary')].data.QCData = QC.QCData;
