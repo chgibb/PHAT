@@ -1,14 +1,3 @@
-/**
- * Functions for formatting (primarily bowtie2) dates.
- * @module req/renderer/dateFormat
- */
-/**
- * Pads a string to reach a designated size.
- * @param {string} str - String to pad
- * @param {number} digits - Size to expand string to
- * @param {string} padChar - Character to use to pad string
- * @returns {string} - Padded string
- */
 module.exports.insertLeadingPadToSize = function(str,digits,padChar)
 {
     if(str.length == digits)
@@ -24,11 +13,6 @@ module.exports.insertLeadingPadToSize = function(str,digits,padChar)
     res += str;
     return res;
 }
-
-/**
- * @param {string} str - Takes in a string of the format YYYYMMDDHHMMSSmSmSmS were mS is one digit, representing milliseconds
- * @returns {string} - String of the form YYYY-MM-DD HH:MM:SS:mSmSmS
- */
 module.exports.formatDateStamp = function(str)
 {
     //assuming a string of the format YYYYMMDDHHMMSSmSmSmS
@@ -53,9 +37,6 @@ module.exports.formatDateStamp = function(str)
     }
     return res;
 }
-/**
- * @returns {string} - Date stamp of size 17 of the format YYYYMMDDHHMMSSmSmSmS
- */
 module.exports.generateFixedSizeDateStamp = function()
 {
     var date = new Date();

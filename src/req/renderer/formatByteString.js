@@ -1,12 +1,3 @@
-/**
- * @module req/renderer/formatByteString
- */
-/**
- * Takes a number representing some number of bytes, returns a formatted string with the correct measurement
- * @function formatByteString
- * @param {number} bytes - Number of bytes 
- * @returns {string} - Formatted byte string
- */
 //Adapted from https://jsfiddle.net/oy02axhh/
 module.exports = function(bytes)
 {

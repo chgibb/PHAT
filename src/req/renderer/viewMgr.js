@@ -1,14 +1,5 @@
-/**
- * Functions for managing one or more instances of class View
- * @module req/renderer/viewMgr
- */
 module.exports.View = class
 {
-    /**
-     * @param {string} name - Name to assign to view
-     * @param {string} div - ID of div to bind view to
-     * @param {any} model - Data model object to bind to view
-     */
     constructor(name,div,model,handlers)
     {
         this.name = name;
@@ -17,16 +8,10 @@ module.exports.View = class
         this.model = model;
         //this.reBindDivEvents();
     }
-    /**
-     * Removes event handlers for this view from its div
-     */
     releaseDivEvents()
     {
         $('#'+this.div).off();
     }
-    /**
-     * Adds event handlers for this view to its div
-     */
     reBindDivEvents()
     {
         var obj = this;
@@ -40,17 +25,11 @@ module.exports.View = class
         );
         //this.onMount();
     }
-    /**
-     * Un mount view from its div
-     */
     unMount()
     {
         this.releaseDivEvents();
         this.onUnMount();
     }
-    /**
-     * Mount view to its div
-     */
     mount()
     {
         this.reBindDivEvents();
@@ -60,9 +39,6 @@ module.exports.View = class
     {
         this.data = data;
     }
-    /**
-     * Render this view to its div
-     */
     render()
     {
         var html = this.renderView();
@@ -84,30 +60,11 @@ module.exports.View = class
     {
         this.onChangeFunc = func;
     }
-    /**
-     * Meant to be overriden. Called during mounting
-     */
     onMount(){}
-    /**
-     * Meant to be overriden. Called during unmounting
-     */
     onUnMount(){}
-    /**
-     * Meant to be overriden. Called during rendering
-     * @returns {string} - HTML string to render into div
-     */
     renderView(){}
-    /**
-     * Meant to be overriden. Called after rendering has completed.
-     */
     postRender(){}
-    /**
-     * Meant to be overriden. Called when this view's data has changed
-     */
     dataChanged(){}
-    /**
-     * Meant to be overriden. Called when a user click inside of this view's div
-     */
     divClickEvents(event){}
 }
 

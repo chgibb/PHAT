@@ -47,7 +47,7 @@ var input = new Input
     }
 );
 
-window.$ = window.jQuery = require('jquery');
+window.$ = window.jQuery = require('./req/renderer/jquery-2.2.4.js');
 function preRender(viewRef)
 {
     if(viewMgr.currView == 'fastq')

@@ -1,18 +1,9 @@
-/**
- * Utility functions for creating a valid HTML ID from a string
- * @module req/renderer/makeValidID
- */
 module.exports.replace = function(str,oldt,newt)
 {
 	var res = str;
 	res = res.replace(new RegExp(oldt,"g"),newt);
 	return res;
 }
-/**
- * Creates a valid HTML ID from a string
- * @param {string} str - String to create ID for
- * @returns {string} - Valid HTML ID of str
- */
 module.exports.makeValidID = function(str)
 {
 	res = str;
