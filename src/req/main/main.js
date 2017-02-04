@@ -25,7 +25,6 @@ require('./Align');
 require('./Output');
 require('./Pathogen');
 require('./Host')
-require('./circularGenomeBuilder');
 
 try
 {

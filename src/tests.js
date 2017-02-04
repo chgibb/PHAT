@@ -57,7 +57,8 @@ var alignReplyObject =
 		if(args.retCode !== undefined)
 		{
 			assert.runningEvents -= 1;
-		}		
+		}
+		
 	}
 }
 var defaultHandles = 
