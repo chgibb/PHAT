@@ -1,5 +1,5 @@
 const ipc = require('electron').ipcRenderer;
-window.$ = window.jQuery = require('./req/renderer/jquery-2.2.4.js');
+window.$ = window.jQuery = require('jquery');
 var id = require("./req/renderer/MakeValidID.js");
 var fs = require('fs');
 var viewMgr = require('./req/renderer/viewMgr');
