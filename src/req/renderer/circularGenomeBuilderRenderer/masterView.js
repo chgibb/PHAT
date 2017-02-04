@@ -13,6 +13,7 @@ module.exports.addView = function(arr,div,models)
                 this.firstRender = true;
                 this.leftPanelOpen = false;
                 this.rightPanelOpen = false;
+                this.fastaInputs = new Array();
             }
             onMount()
             {

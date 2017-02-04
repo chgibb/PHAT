@@ -28,7 +28,7 @@ $
                     {
                         if(arg.val != 0)
                         {
-
+                            viewMgr.getIndexOfViewByName("masterView").fastaInputs = arg;
                         }
                     }
                 }
