@@ -37,6 +37,7 @@ $
                                     return;
                             }
                             viewMgr.getViewByName("masterView").fastaInputs = arg.val;
+                            viewMgr.getViewByName("masterView").dataChanged();
                         }
                     }
                 }
