@@ -1,5 +1,5 @@
 var viewMgr = require('./../viewMgr');
-
+let CircularGenomeWriter = require("./../circularGenome/circularGenomeWriter");
 module.exports.addView = function(arr,div,models)
 {
     arr.push
@@ -14,6 +14,8 @@ module.exports.addView = function(arr,div,models)
                 this.leftPanelOpen = false;
                 this.rightPanelOpen = false;
                 this.fastaInputs = new Array();
+
+                this.genomeWriters = new Array();
             }
             onMount()
             {
@@ -46,11 +48,25 @@ module.exports.addView = function(arr,div,models)
             }
             postRender(){}
             dataChanged(){}
+            loadedContig()
+            {
+                alert("done loading "+JSON.stringify(this.genomeWriters[this.genomeWriters.length - 1],undefined,4));
+            }
             divClickEvents(event)
             {
-                let me = this;
+                var me = this;
                 if(event.target.id == "rightPanel")
                 {
+                    this.genomeWriters.push(new CircularGenomeWriter());
+                    this.genomeWriters[this.genomeWriters.length - 1].on
+                    (
+                        "doneLoadingContigs",function()
+                        {
+                            me.loadedContig();
+                        }
+                    );
+                    this.genomeWriters[this.genomeWriters.length - 1].beginRefStream(this.fastaInputs[0].name);
+                
                     $("#rightSlideOutPanel").animate
                     (
                         {
