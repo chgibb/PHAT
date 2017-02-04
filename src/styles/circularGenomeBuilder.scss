@@ -19,3 +19,16 @@ button.rightSlideOutPanel
 {
     float : right;
 }
+
+div.leftSlideOutPanel
+{
+	margin-left : -50%;
+	margin-top : +25%; 
+	border : 1px solid $border-color;
+    border-collapse : collapse;
+	background-color : $bg-color;
+	width : 45%;
+	height : 215px;
+    left : 0%;
+	position : fixed;
+}

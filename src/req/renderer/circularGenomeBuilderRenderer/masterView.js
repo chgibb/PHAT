@@ -36,22 +36,6 @@ module.exports.addView = function(arr,div,models)
                         <button id="rightPanel" class="rightSlideOutPanel">Right Panel</button>
                         <div id="rightSlideOutPanel" class="rightSlideOutPanel">
                         </div>
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
                         <div id="leftSlideOutPanel" class="leftSlideOutPanel">
                         </div>
                     `;
@@ -62,6 +46,8 @@ module.exports.addView = function(arr,div,models)
             divClickEvents(event)
             {
                 let me = this;
+                if(event.target.id == "rightPanel")
+                {
                     $("#rightSlideOutPanel").animate
                     (
                         {
@@ -83,6 +69,31 @@ module.exports.addView = function(arr,div,models)
                             )()
                         }
                     );
+                }
+                if(event.target.id == "leftPanel")
+                {
+                    $("#leftSlideOutPanel").animate
+                    (
+                        {
+                            "margin-left" : 
+                            (
+                                function()
+                                {
+                                    if(!me.leftPanelOpen)
+                                    {
+                                        me.leftPanelOpen = true;
+                                        return "+=50%";
+                                    }
+                                    if(me.leftPanelOpen)
+                                    {
+                                        me.leftPanelOpen = false;
+                                        return "-=50%";
+                                    }
+                                }
+                            )()
+                        }
+                    );
+                }
             }
         }
     );
