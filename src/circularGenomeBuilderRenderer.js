@@ -31,9 +31,9 @@ $
                             let totalChecked = 0;
                             for(let i = 0; i != arg.val.length; ++i)
                             {
-                                if(arg.val.checked)
+                                if(arg.val[i].checked)
                                     totalChecked++;
-                                if(totalChecked >= 1)
+                                if(totalChecked > 1)
                                     return;
                             }
                             if(totalChecked == 0)
