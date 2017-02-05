@@ -15,7 +15,6 @@ module.exports.addView = function(arr,div,models)
                 this.firstRender = true;
                 this.leftPanelOpen = false;
                 this.rightPanelOpen = false;
-                this.fastaInputs = new Array();
                 this.circularGenomes = new Array();
                 this.genomeWriters = new Array();
             }
@@ -51,6 +50,10 @@ module.exports.addView = function(arr,div,models)
                         </div>
                     `;
                 }
+                for(let i = 0; i != this.views.length; ++i)
+                {
+                    this.views[i].render();
+                }
             }
             postRender(){}
             dataChanged()
@@ -58,7 +61,7 @@ module.exports.addView = function(arr,div,models)
                 let genomeIndex = -1;
                 for(let i = 0; i != this.circularGenomes.length; ++i)
                 {
-                    if(this.circularGenomes[i].alias == this.fastaInputs[0].alias)
+                    if(this.circularGenomes[i].alias == this.fastaInput.alias)
                     {
                         genomeIndex = i;
                         break;
@@ -74,14 +77,15 @@ module.exports.addView = function(arr,div,models)
                 (
                     "doneLoadingContigs",function()
                     {
-                        self.loadedContig(genomeIndex);
+                        self.doneLoadingContig(genomeIndex);
                     }
                 );
-                this.genomeWriters[genomeIndex].beginRefStream(this.fastaInputs[0].name);
+                this.genomeWriters[genomeIndex].beginRefStream(this.fastaInput.name);
             }
-            loadedContig(genomeIndex)
+            doneLoadingContig(genomeIndex)
             {
-                alert("done loading "+JSON.stringify(this.genomeWriters[genomeIndex],undefined,4));
+                viewMgr.getViewByName("genomeView",this.views).genome = this.genomeWriters[genomeIndex];
+                this.render();
             }
             divClickEvents(event)
             {

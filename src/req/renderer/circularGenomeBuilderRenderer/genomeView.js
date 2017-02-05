@@ -14,8 +14,12 @@ module.exports.addView = function(arr,div,models)
             onUnMount(){}
             renderView()
             {
-                return `
-                `;
+                if(this.genome)
+                {
+                    return `
+                        ${this.genome.contigs[0].name}
+                    `;
+                }
             }
             postRender(){}
             dataChanged(){}

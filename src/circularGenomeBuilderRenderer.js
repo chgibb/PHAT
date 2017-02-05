@@ -38,8 +38,15 @@ $
                             }
                             if(totalChecked == 0)
                                 return;
-                            viewMgr.getViewByName("masterView").fastaInputs = arg.val;
-                            viewMgr.getViewByName("masterView").dataChanged();
+                            for(let i = 0; i != arg.val.length; ++i)
+                            {
+                                if(arg.val[i].checked)
+                                {
+                                    viewMgr.getViewByName("masterView").fastaInput = arg.val[i];
+                                    viewMgr.getViewByName("masterView").dataChanged();
+                                    break;
+                                }
+                            }
                         }
                     }
                 }
