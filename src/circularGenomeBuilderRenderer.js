@@ -36,6 +36,8 @@ $
                                 if(totalChecked >= 1)
                                     return;
                             }
+                            if(totalChecked == 0)
+                                return;
                             viewMgr.getViewByName("masterView").fastaInputs = arg.val;
                             viewMgr.getViewByName("masterView").dataChanged();
                         }

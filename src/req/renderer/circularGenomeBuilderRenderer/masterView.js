@@ -14,7 +14,7 @@ module.exports.addView = function(arr,div,models)
                 this.leftPanelOpen = false;
                 this.rightPanelOpen = false;
                 this.fastaInputs = new Array();
-
+                this.circularGenomes = new Array();
                 this.genomeWriters = new Array();
             }
             onMount()
@@ -47,26 +47,41 @@ module.exports.addView = function(arr,div,models)
                 }
             }
             postRender(){}
-            dataChanged(){}
-            loadedContig()
+            dataChanged()
             {
-                alert("done loading "+JSON.stringify(this.genomeWriters[this.genomeWriters.length - 1],undefined,4));
+                let genomeIndex = -1;
+                for(let i = 0; i != this.circularGenomes.length; ++i)
+                {
+                    if(this.circularGenomes[i].alias == this.fastaInputs[0].alias)
+                    {
+                        genomeIndex = i;
+                        break;
+                    }
+                }
+                if(genomeIndex == -1)
+                {
+                    this.genomeWriters.push(new CircularGenomeWriter());
+                    genomeIndex = this.genomeWriters.length - 1;
+                }
+                let self = this;
+                this.genomeWriters[genomeIndex].on
+                (
+                    "doneLoadingContigs",function()
+                    {
+                        self.loadedContig(genomeIndex);
+                    }
+                );
+                this.genomeWriters[genomeIndex].beginRefStream(this.fastaInputs[0].name);
+            }
+            loadedContig(genomeIndex)
+            {
+                alert("done loading "+JSON.stringify(this.genomeWriters[genomeIndex],undefined,4));
             }
             divClickEvents(event)
             {
                 var me = this;
                 if(event.target.id == "rightPanel")
                 {
-                    this.genomeWriters.push(new CircularGenomeWriter());
-                    this.genomeWriters[this.genomeWriters.length - 1].on
-                    (
-                        "doneLoadingContigs",function()
-                        {
-                            me.loadedContig();
-                        }
-                    );
-                    this.genomeWriters[this.genomeWriters.length - 1].beginRefStream(this.fastaInputs[0].name);
-                
                     $("#rightSlideOutPanel").animate
                     (
                         {
