@@ -1,5 +1,7 @@
 var viewMgr = require('./../viewMgr');
 let CircularGenomeWriter = require("./../circularGenome/circularGenomeWriter");
+
+var addGenomeView = require("./genomeView");
 module.exports.addView = function(arr,div,models)
 {
     arr.push
@@ -19,6 +21,7 @@ module.exports.addView = function(arr,div,models)
             }
             onMount()
             {
+                addGenomeView.addView(this.views,"genomeView");
                 for(let i = 0; i != this.views.length; ++i)
                 {
                     this.views[i].onMount();
@@ -42,6 +45,9 @@ module.exports.addView = function(arr,div,models)
                         <div id="rightSlideOutPanel" class="rightSlideOutPanel">
                         </div>
                         <div id="leftSlideOutPanel" class="leftSlideOutPanel">
+                        </div>
+
+                        <div id="genomeView">
                         </div>
                     `;
                 }
