@@ -143,9 +143,7 @@ module.exports = function(arr,div,model)
                                 if (this.model.fastqInputs[i].checked)
                                 {
                                     this.model.fastqInputs[i].checked = false;
-                                    this.dataChanged();
-                                    this.model.fastqInputs.splice(i, 1);
-                                    this.dataChanged();                                 
+                                    this.model.fastqInputs.splice(i, 1);                               
                                 }
                             }
                             //and refresh
