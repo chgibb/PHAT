@@ -111,7 +111,8 @@ module.exports = function(arr,div,model)
                     {
                         if(event.target.checked)
                         {
-                            for(var i in this.model.fastqInputs)
+                            //for(var i in this.model.fastqInputs)
+                            for(let i = 0; i != this.model.fastqInputs.length; ++i)
                             {
                                 if(this.model.fastqInputs[i].name == name)
                                 {
@@ -123,7 +124,8 @@ module.exports = function(arr,div,model)
                         }
                         if(!event.target.checked)
                         {
-                            for(var i in this.model.fastqInputs)
+                            //for(var i in this.model.fastqInputs)
+                            for(let i = 0; i != this.model.fastqInputs.length; ++i)
                             {
                                 if(this.model.fastqInputs[i].name == name)
                                 {
