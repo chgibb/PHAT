@@ -15,11 +15,13 @@
   "homepage": "",
   "devDependencies": {
     "browserify": "^13.1.0",
-    "electron-prebuilt": "^1.1.2"
+    "electron-prebuilt": "^1.1.2",
+    "jsdoc": "^3.4.3"
   },
   "dependencies": {
     "electron-ipc-stream": "^0.2.0",
     "electron-packager": "^8.0.0",
+    "jquery": "^2.2.4",
     "jsonfile": "^2.4.0"
   }
 }

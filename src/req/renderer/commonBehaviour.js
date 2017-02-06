@@ -1,3 +1,8 @@
+/**
+ * Attaches event handlers to the window and document objects. Allows a window to activate dev tools on F12,
+ * report a runtime error in an alert box and open the dev tools, and disables dragging and dropping of foreign content into the window.
+ * @module req/renderer/commonBehaviour
+ */
 let remote = require("electron").remote;
 document.addEventListener
 (
@@ -26,3 +31,23 @@ window.onerror = function(message,file,line,col,error)
     }
     remote.getCurrentWindow().openDevTools();
 }
+/*
+ Adapted from answer by zcbenz
+ https://github.com/electron/electron/issues/908
+*/
+document.addEventListener
+(
+    'drop',function(e)
+    {
+        e.preventDefault();
+        e.stopPropagation();
+    }
+);
+document.addEventListener
+(
+    'dragover',function(e)
+    {
+        e.preventDefault();
+        e.stopPropagation();
+    }
+);
