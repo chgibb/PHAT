@@ -138,12 +138,11 @@ module.exports = function(arr,div,model)
                         //if the element was the "removeSelected" button, act on it
                         if (event.target.id == "removeSelected")
                         {
-                            for (var i in this.model.fastqInputs) 
+                            for (let i = 0; i != this.model.fastqInputs.length; ++i) 
                             {
                                 if (this.model.fastqInputs[i].checked)
                                 {
-                                    this.model.fastqInputs[i].checked = false;
-                                    this.model.fastqInputs.splice(i, 1);                               
+                                    this.model.fastqInputs.splice(i, 1);                            
                                 }
                             }
                             //and refresh
