@@ -45,9 +45,6 @@ module.exports.addView = function(arr,div,models)
                         </div>
                         <div id="leftSlideOutPanel" class="leftSlideOutPanel">
                         </div>
-
-                        <div id="genomeView">
-                        </div>
                     `;
                 }
                 for(let i = 0; i != this.views.length; ++i)

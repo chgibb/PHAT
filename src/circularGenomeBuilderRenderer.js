@@ -4,8 +4,6 @@ var addMasterView = require("./req/renderer/circularGenomeBuilderRenderer/master
 
 require("./req/renderer/commonBehaviour");
 
-require('./angularplasmid.complete.min.js');
-
 window.$ = window.jQuery = require('jquery');
 
 $
