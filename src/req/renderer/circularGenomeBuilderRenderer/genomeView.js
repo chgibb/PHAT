@@ -61,6 +61,16 @@ module.exports.addView = function(arr,div,models)
                                         }
                                     )
                                 }
+                                    ${
+                                        trackLabel.add
+                                        (
+                                            {
+                                                text : this.genome.contigs[0].name,
+                                                labelStyle : "font-size:20px;font-weight:400"
+                                            }
+                                        )
+                                    }
+                                    ${trackLabel.end()}
                                 ${plasmidTrack.end()}
                             ${plasmid.end()}
                         </div>
