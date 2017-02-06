@@ -111,7 +111,6 @@ module.exports = function(arr,div,model)
                     {
                         if(event.target.checked)
                         {
-                            //for(var i in this.model.fastqInputs)
                             for(let i = 0; i != this.model.fastqInputs.length; ++i)
                             {
                                 if(this.model.fastqInputs[i].name == name)
@@ -124,7 +123,6 @@ module.exports = function(arr,div,model)
                         }
                         if(!event.target.checked)
                         {
-                            //for(var i in this.model.fastqInputs)
                             for(let i = 0; i != this.model.fastqInputs.length; ++i)
                             {
                                 if(this.model.fastqInputs[i].name == name)
@@ -140,7 +138,6 @@ module.exports = function(arr,div,model)
                         //if the element was the "removeSelected" button, act on it
                         if (event.target.id == "removeSelected")
                         {
-                            //for (let i = 0; i != this.model.fastqInputs.length; ++i) 
                             for(let i = this.model.fastqInputs.length - 1; i >= 0; --i)
                             {
                                 if (this.model.fastqInputs[i].checked)
