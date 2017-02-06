@@ -41,35 +41,22 @@ module.exports.addView = function(arr,div,models)
                     let $div = $
                     (
                         `<div id="${this.div}">
-                            ${
-                                plasmid.add
-                                (
+                            ${plasmid.add(
+                            {
+                                sequenceLength : totalBP.toString(),
+                                plasmidHeight : "300",
+                                plasmidWidth : "300"
+                            })}
+                                ${plasmidTrack.add(
+                                {
+                                    trackStyle : "fill:#f0f0f0;stroke:#ccc",
+                                    radius : "120"
+                                })}
+                                    ${trackLabel.add(
                                     {
-                                        sequenceLength : totalBP.toString(),
-                                        plasmidHeight : "300",
-                                        plasmidWidth : "300"
-                                    }
-                                )
-                            
-                            }
-                                ${
-                                    plasmidTrack.add
-                                    (
-                                        {
-                                            trackStyle : "fill:#f0f0f0;stroke:#ccc",
-                                            radius : "120"
-                                        }
-                                    )
-                                }
-                                    ${
-                                        trackLabel.add
-                                        (
-                                            {
-                                                text : this.genome.contigs[0].name,
-                                                labelStyle : "font-size:20px;font-weight:400"
-                                            }
-                                        )
-                                    }
+                                        text : this.genome.contigs[0].name,
+                                        labelStyle : "font-size:20px;font-weight:400"
+                                    })}
                                     ${trackLabel.end()}
                                 ${plasmidTrack.end()}
                             ${plasmid.end()}
