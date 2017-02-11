@@ -14,7 +14,7 @@ ipc.on
 		}
 	}
 );
-window.windowCreators["toolBar"] = 
+window.windowCreators["toolBar"] =
 {
 	Create : function()
 	{

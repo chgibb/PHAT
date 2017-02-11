@@ -2,12 +2,11 @@
 <html>
 	<head>
 		<meta charset="UTF-8">
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 		<link rel="stylesheet" type="text/css" href="styles/ToolBar.css">
-		<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
 		<title>Pathogen Host Analysis Tool</title>
   </head>
-  <body>
+  <body style="background-color: #3b85c5">
+ 	 <div id="mainToolbar" class="Toolbar2">
 	 <script>
 		 const ipc = require('electron').ipcRenderer;
 		 ipc.send('keySub',{action : "keySub",channel : "input", key : "inputs", replyChannel : "toolBar"});
@@ -27,28 +26,17 @@
 			 console.log('clicked');
 			 ipc.send('toolBar',{action : "open",arg : target});
 		 }
-	 </script>
-	 	<div class="container-fluid"  id="container1">
-		 	<div class="row" id="toolbar1">
-				<div id="button" class="col-xs-2">
-					<img src="img/input.png" alt="input" id="input" name="input" onClick="SendOpenMessage('input')"></img>
-				</div>
-				<div id="button" class="col-xs-2">
-					<img src="img/qc.png" alt="qc" name="QC" onClick="SendOpenMessage('QC')"></img>
-				</div>
-				<div id="button" class="col-xs-2">
-					<img src="img/align.png" alt="align" name="Align" onClick="SendOpenMessage('align')"></img>
-				</div>
-				<div id="button" class="col-xs-2">
-					<img src="img/pathogenButton.png" alt="pathogen" name="Patho" onClick="SendOpenMessage('pathogen')"></img>
-				</div>
-				<div id="button" class="col-xs-2">
-					<img src="img/hostButton.png" alt="host" name="Host" onClick="SendOpenMessage('host')"></img>
-				</div>
-				<div id="button" class="col-xs-2">
-					<img src="img/output.png" alt="output" name="Output" onClick="SendOpenMessage('output')"></img>
-				</div>
-			</div>
+		</script>
+		<div id="title">
+				<h1>Pathogen Host Analysis Tool</h1>
+		</div>
+		<div id="toolbar">
+					<img src="img/input.png" id="input" alt="Input" name="input" onClick="SendOpenMessage('input')"></img>
+					<img src="img/qc.png" id="qc" name="QC" alt="FastQC" onClick="SendOpenMessage('QC')"></img>
+					<img src="img/align.png" id="align" name="Align" alt="Align" onClick="SendOpenMessage('align')"></img>
+					<img src="img/pathogenButton.png" id="patho" name="Patho" alt="Patho" onClick="SendOpenMessage('pathogen')"></img>
+					<img src="img/hostButton.png" id="host" name="Host" alt="Host" onClick="SendOpenMessage('host')"></img>
+					<img src="img/output.png" id="output" name="Output" alt="Output" onClick="SendOpenMessage('output')"></img>
 		</div>
 	</body>
 </html>
