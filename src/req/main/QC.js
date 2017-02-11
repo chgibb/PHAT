@@ -22,7 +22,7 @@ window.windowCreators["QC"] =
 		(
 			{
 				name : "QC",
-				window : window.createWithDefault("Fastq QCs","QC",1000,800,fsAccess("resources/app/QC.html"),false)
+				window : window.createWithDefault("Fastq QCs","QC",1000,800,fsAccess("resources/app/QC.html"),false, false, 550, 150)
 			}
 		);
 	}
