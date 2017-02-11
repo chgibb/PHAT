@@ -7,7 +7,6 @@
 		<title>Pathogen Host Analysis Tool</title>
   </head>
   <body class="window-color">
- 	 <div id="mainToolbar">
 	 <script>
 		 const ipc = require('electron').ipcRenderer;
 		 ipc.send('keySub',{action : "keySub",channel : "input", key : "inputs", replyChannel : "toolBar"});
@@ -40,6 +39,5 @@
 						<img class="buttonshadow" src="img/output.png" id="output" name="Output" alt="Output" onClick="SendOpenMessage('output')"></img>
 						<button typ e="button" class="btn btn-default" onClick="SendOpenMessage('circularGenomeBuilder')">Genome Builder</button>
 					</div>
-		</div>
 	</body>
 </html>
