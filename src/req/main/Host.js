@@ -22,7 +22,7 @@ window.windowCreators["host"] =
 		(
 			{
 				name : "host",
-				window : window.createWithDefault("Host","host",1000,800,fsAccess("resources/app/Host.html"),false)
+				window : window.createWithDefault("Host","host",1000,800,fsAccess("resources/app/Host.html"),false, false, 500, 300)
 			}
 		);
 	}

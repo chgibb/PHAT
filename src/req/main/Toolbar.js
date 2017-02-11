@@ -18,7 +18,7 @@ window.windowCreators["toolBar"] =
 {
 	Create : function()
 	{
-		window.windows["toolBar"] = toolBarWindow = window.createWithDefault("P. H. A. T.","toolBar",790,64,fsAccess("resources/app/ToolBar.html"),false,false);
+		window.windows["toolBar"] = toolBarWindow = window.createWithDefault("P. H. A. T.","toolBar",790,64,fsAccess("resources/app/ToolBar.html"),false,false, 500, 64);
 		toolBarWindow.on
 		(
 			'closed',function()
