@@ -3,6 +3,7 @@ var viewMgr = require('./../viewMgr');
 var addReportView = require("./reportView");
 
 var XLSExportDialog = require("./XLSExportDialog");
+var CSVExportDialog = require("./CSVExportDialog");
 module.exports.addView = function(arr,div,models)
 {
     arr.push
@@ -83,16 +84,8 @@ module.exports.addView = function(arr,div,models)
                             (
                                 function()
                                 {
-                                    if(!me.rightPanelOpen)
-                                    {
-                                        me.rightPanelOpen = true;
-                                        return "+=50%";
-                                    }
-                                    if(me.rightPanelOpen)
-                                    {
-                                        me.rightPanelOpen = false;
-                                        return "-=50%";
-                                    }
+                                    me.rightPanelOpen = !me.rightPanelOpen;
+                                    return (me.rightPanelOpen == true ? "+" : "-")+"=50%";
                                 }
                             )()
                         }
@@ -110,6 +103,12 @@ module.exports.addView = function(arr,div,models)
                     {
                         XLSExportDialog(viewMgr.getViewByName("report",this.views).renderView());
                     }
+
+                    if($("#exportToCSV").is(":checked"))
+                    {
+                        CSVExportDialog(viewMgr.getViewByName("report", this.views).renderView());
+                    }
+
                 }
             }
         }
