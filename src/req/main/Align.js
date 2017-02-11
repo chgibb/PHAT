@@ -22,7 +22,7 @@ window.windowCreators["align"] =
 		(
 			{
 				name : "align",
-				window : window.createWithDefault("Align","align",1000,800,fsAccess("resources/app/Align.html"),false)
+				window : window.createWithDefault("Align","align",1000,800,fsAccess("resources/app/Align.html"),false, false, 500, 300)
 			}
 		);
 	}
