@@ -40,6 +40,13 @@ module.exports.add = function(options)
                         (
                         ()=>
                         {
+                            if(options && options.vAdjust)
+                                return `vadjust="${options.vAdjust}"`;
+                            return "";
+                        })()} ${
+                        (
+                        ()=>
+                        {
                             if(options && options.labelStyle)
                                 return `labelstyle="${options.labelStyle}"`;
                             return "";
