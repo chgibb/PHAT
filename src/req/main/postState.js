@@ -103,6 +103,10 @@ module.exports.postState = function(channel,key,val)
 		persistState.persistState();
 	}
 	else
-		console.log("state is undefined in call to postState on channel "+channel+" with "+key+" "+val);
+	{
+			state[channel] = {};
+			state[channel][key] = val;
+			persistState.persistState();
+	}
 
 }

@@ -22,7 +22,7 @@ window.windowCreators["input"] =
 		(
 			{
 				name : "input",
-				window : window.createWithDefault("Input","input",928,300,fsAccess("resources/app/Input.html"),false)
+				window : window.createWithDefault("Input","input",928,300,fsAccess("resources/app/Input.html"),false, false, 500, 150)
 			}
 		);
 	}
