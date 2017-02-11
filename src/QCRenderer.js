@@ -59,18 +59,25 @@ $
                     {
                         if(arg.val != 0)
                         {
-                            
+                            /**
+                             * Add QC data for each fasta input.
+                             */
                             for(var i = 0; i < arg.val.length; i++)
                             {
                                 QC.addQCData(arg.val[i].name);
                             }
-                            for(var i = 0; i < QC.QCData.length; i++)
+
+                            /**
+                             * Remove the entries from QC that are no longer in Input.
+                             */
+                            for(var i = QC.QCData.length-1; i > -1; i--)
                             {
                                 var arg_val_name = i > -1 && i < arg.val.length ? arg.val[i].name : "";
+                                console.log(arg_val_name+" | "+QC.QCData[i].name+"\n");
                                 if (QC.QCData[i].name != arg_val_name) 
                                 {
                                     QC.QCData.splice(i, 0);
-                                    i--;
+                                    console.log("Spliced "+i+"\n");
                                 }
                             }
                             QC.postQCData();
