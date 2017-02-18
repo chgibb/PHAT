@@ -19,6 +19,8 @@ module.exports.makeValidID = function(str)
 	res = module.exports.replace(res," ","_");
 	res = module.exports.replace(res,"[.]","_");
 	res = module.exports.replace(res,"/","a");
+	res = module.exports.replace(res,"\\\\","a");
+	res = module.exports.replace(res,":","a");
 	res = module.exports.replace(res,"[(]","_");
 	res = module.exports.replace(res,"[)]","_");
 	return res;
