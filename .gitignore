@@ -11,6 +11,7 @@ src/req/renderer/PathogenRenderer/pileup.js
 pileup.css
 pileup.js
 sassc
+sassc.exe
 docs
 
 \.idea/
