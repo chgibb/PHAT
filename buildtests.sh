@@ -1,5 +1,5 @@
 
-sh build.sh
+bash build.bash
 
 rm -rf tests
 mkdir tests
