@@ -4,7 +4,7 @@ rm -rf dist
 
 mkdir dist
 mkdir dist/styles
- 
+ #!/bin/bash
 cp package.json dist
 
 mkdir dist/img
