@@ -1,4 +1,5 @@
-set -e
+(set -o igncr) 2>/dev/null && set -o igncr; # For Cygwin on Windows compaibility
+#set -e
 
 sudo dpkg -R -i scripts/install
 
