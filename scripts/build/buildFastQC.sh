@@ -1,3 +1,4 @@
+(set -o igncr) 2>/dev/null && set -o igncr; # For Cygwin on Windows compaibility
 sh scripts/clean/cleanFastQC.sh
 
 printf "Building FastQC\n"
