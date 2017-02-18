@@ -7,5 +7,8 @@ for f in scripts/clean/*.sh
 do
 	sh $f
 done
-
+for f in scripts/clean/*.bash
+do
+	bash $f
+done
 rm -rf node_modules
