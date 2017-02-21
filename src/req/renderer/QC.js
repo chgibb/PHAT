@@ -14,7 +14,7 @@ module.exports = class extends model
         if(process.platform == "linux")
             this.fastQC = this.fsAccess('resources/app/FastQC/fastqc');
         else if(process.platform == "win32")
-            this.fastQC = this.fsAccess('resources/app/perlwin32/perl/bin/perl.exe');
+            this.fastQC = this.fsAccess('resources/app/perl/perl/bin/perl.exe');
         this.QCReportCopy = this.fsAccess('resources/app/QCReportCopy');
     }
     postQCData()
