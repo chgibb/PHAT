@@ -6,11 +6,15 @@ mkdir tests
 mkdir tests/data
 mkdir tests/resources
 
-cp -r phat-linux-x64/resources/* tests/resources
-
+if [[ "$OSTYPE" == "linux-gnu" ]]; then
+    cp -r phat-linux-x64/resources/* tests/resources
+    cp phat-linux-x64/resources/app/tests.js tests
+fi
+if [[ "$OSTYPE" == "cygwin" ]]; then
+    cp -r phat-win32-x64/resources/* tests/resources
+    cp phat-win32-x64/resources/app/tests.js tests
+fi
 cp -r testData/* tests/data
-
-cp dist/tests.js tests
 
 mkdir guiTests
 
