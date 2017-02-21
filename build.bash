@@ -16,7 +16,7 @@ cp icons/*.* dist/icons
 
 cp src/*.html dist
 
-cp -R forDist/* dist
+
 
 for f in scripts/build/*.sh
 do
@@ -28,12 +28,14 @@ do
 done
 
 if [[ "$OSTYPE" == "linux-gnu" ]]; then
-	./node_modules/.bin/electron-packager ./dist/ --platform linux --arch x64 --overwrite --ignore=node_modules --ignore=.jsx --ignore=build.sh --ignore=src --ignore=vcs  --ignore=.sh --ignore=notes --ignore=manuscript --ignore=presentation
+cp -R -v dist/** phat-linux-x64/resources/app
+rm -rf dist
 fi
 
+
 if [[ "$OSTYPE" == "cygwin" ]]; then
-	./node_modules/.bin/electron-packager ./dist/ --platform win32 --arch x64 --overwrite --ignore=node_modules --ignore=.jsx --ignore=build.sh --ignore=src --ignore=vcs  --ignore=.sh --ignore=notes --ignore=manuscript --ignore=presentation
+cp -R -v dist/** phat-win32-x64/resources/app
+rm -rf dist
 fi
-cp package.json phat-linux-x64/resources/app
 
 

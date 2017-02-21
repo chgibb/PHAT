@@ -30,4 +30,4 @@ do
 done
 
 
-
+bash package.bash
