@@ -24,5 +24,10 @@ do
 	sh $f
 done
 
+for f in scripts/install/*.bash
+do
+	bash $f
+done
+
 
 
