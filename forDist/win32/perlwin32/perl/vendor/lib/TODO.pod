@@ -1,0 +1,87 @@
+=head1 Use Sub::Quote
+
+One attempt at this exists in the sub-quotify branch.
+
+This has several parts.
+
+First, type constraints should accept a single C<constraint> parameter, rather
+than both a constraint and an C<inline_generator>. If the C<constraint> is a
+Sub::Quote sub, we can use that for inlining. This greatly simplified the API.
+
+The same should be done for the C<coercion> & C<inline_generator> parameters for
+coercions.
+
+Finally, the message_generator should be allow for a Sub::Quote sub and use
+that for inlining if possible.
+
+I'm not sure what the best API for the Sub::Quote subs is. Unlike with the
+existing generators, Sub::Quote expects that parameters are always passed via
+C<@_>. This probably means that the sub you write should always look at
+C<$_[0]>, which is a little gross when inlining, as it means we have to jam
+things into C<@_> with something like:
+
+  local @_ = ($value);
+
+Note that this also means B<not> passing in the type constraint/coercion as
+the first argument. In other words, these subs are no longer methods. This is
+probably better for inlining anyway. Anything you wanted from the object
+should be something you can inline anyway (I hope).
+
+Note that parameterizable types I<still> need to provide a
+parameterized_inline_generator sub (not a Sub::Quote). This sub shoudl
+I<return> a quoted sub based on the type parameter. Sub::Quote makes this
+harder than it should be because it doesn't have a very nice API. Oh well.
+
+=head1 Union types and other set operations?
+
+I'm not a huge fan of unions, they really confuse the notion of parent type,
+for one thing. However, set operations on types are pretty useful.
+
+=head1 Better integration with Moose
+
+Make Moose support inlining coercions and message generation with Specio objects.
+
+Also, define a real API for type objects and have Moose just use duck typing
+internally. However, this should I<not> be the existing Moose TC API, since
+it's quite broken. In particular, the relationship between constraint &
+coercion objects is backwards. A constraint should have many coercions, not
+vice versa. Specio gets this right.
+
+=head1 Support MooseX::Types barewords and string types with SpecioX modules
+
+For barewords:
+
+  use SpecioX::Declare::Barewords => qw( Specio::Library::Builtins My::Library );
+
+  use Moose;
+
+  has foo => ( isa => Str );
+
+For string types:
+
+  use SpecioX::StringTypes => qw( Specio::Library::Builtins My::Library );
+
+  use Moose;
+
+  has foo => ( isa => 'Str' );
+
+Or something like that.
+
+Internally these can both provide an attr trait and class trait that together
+look up a registry for the class by name, something like:
+
+  use Specio::Registry qw( registry_for_package );
+
+  my $registry = registry_for_package($package);
+
+To parse things like C<"ArrayRef[Str]"> we need to separate the type string
+parsing into its module that can return a data structure like:
+
+  %parsed = (
+      name      => 'ArrayRef',
+      parameter => 'Str',
+  );
+
+Then we can look these up with:
+
+  my $type = t( $parsed{name}, of => t( $parsed{parameter} ) );
