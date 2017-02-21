@@ -25,7 +25,7 @@ if [[ "$OSTYPE" == "linux-gnu" ]]; then
     ./node_modules/.bin/electron-packager ./dist/ --platform linux --arch x64 --overwrite --ignore=node_modules --ignore=.jsx --ignore=build.sh --ignore=src --ignore=vcs  --ignore=.sh --ignore=notes --ignore=manuscript --ignore=presentation
     
     #copy in all 3rd party linux dependencies
-    cp -R -v forDist/linux/** phat-linux-x64/resources/app
+    tar -xzvf forDist/linux.tar.gz -C phat-linux-x64/resources/app
 fi
 
 #if windows
@@ -35,7 +35,7 @@ if [[ "$OSTYPE" == "cygwin" ]]; then
     ./node_modules/.bin/electron-packager ./dist/ --platform win32 --arch x64 --overwrite --ignore=node_modules --ignore=.jsx --ignore=build.sh --ignore=src --ignore=vcs  --ignore=.sh --ignore=notes --ignore=manuscript --ignore=presentation
     
     #copy in all 3rd party windows dependencies
-    cp -R -v forDist/win32/** phat-win32-x64/resources/app
+    tar -xzvf forDist/win32.tar.gz -C phat-win32-x64/resources/app
 fi
 
 #for everything in the top level of forDist (should be cross platform stuff only in the top level)
