@@ -11,7 +11,7 @@ if [[ "$OSTYPE" == "linux-gnu" ]]; then
     do
         chmod +x $f
     done
-    chomx +x src/FastQC/fastqc
+    chmod +x src/FastQC/fastqc
     ./node_modules/.bin/electron-packager ./dist/ --platform linux --arch x64 --overwrite --ignore=node_modules --ignore=.jsx --ignore=build.sh --ignore=src --ignore=vcs  --ignore=.sh --ignore=notes --ignore=manuscript --ignore=presentation
     cp -R -v forDist/linux/** phat-linux-x64/resources/app
 fi
