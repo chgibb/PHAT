@@ -1,4 +1,6 @@
-set -e
+ #!/bin/bash
+(set -o igncr) 2>/dev/null && set -o igncr; # For Cygwin on Windows compaibility
+
 cd tests
 
 node tests.js
