@@ -20,6 +20,13 @@ if [[ "$OSTYPE" == "linux-gnu" ]]; then
     
     #copy in all 3rd party linux dependencies
     tar -xzvf forDist/linux/linux.tar.gz -C phat-linux-x64/resources/app
+    for f in forDist/linux/*
+    do
+        if [ "$f" == "forDist/linux/linux.tar.gz" ]; then
+            continue
+        fi
+        cp $f phat-linux-x64/resources/app
+    done
 fi
 
 #if windows
