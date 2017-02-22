@@ -1,3 +1,4 @@
+(set -o igncr) 2>/dev/null && set -o igncr; # For Cygwin on Windows compaibility
 cp src/pileup.js/style/pileup.css dist/styles/pileup.css
 
 for f in src/*.js

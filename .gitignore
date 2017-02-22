@@ -1,6 +1,7 @@
 node_modules
 dist
 phat-linux-x64
+phat-win32-x64
 *.*~
 npm-debug.log
 .vscode
@@ -10,6 +11,7 @@ src/req/renderer/PathogenRenderer/pileup.js
 pileup.css
 pileup.js
 sassc
+sassc.exe
 docs
 
 \.idea/

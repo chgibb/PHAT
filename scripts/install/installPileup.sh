@@ -1,3 +1,4 @@
+(set -o igncr) 2>/dev/null && set -o igncr; # For Cygwin on Windows compaibility
 cd src
 git clone https://github.com/chgibb/pileup.js
 cd pileup.js
