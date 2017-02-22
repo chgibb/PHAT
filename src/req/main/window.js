@@ -27,9 +27,11 @@ module.exports.windowCreators = {};
  * @param {string} html - Path to HTML file to load into window
  * @param {boolean} debug - Turn on dev tools on window open
  * @param {boolean} alwaysOnTop - Window will always be ontop of all other windows
+ * @param {number} minWidth - Minimum width for window
+ * @param {number} minHeight - Minimum height for window
  * @returns {Electron.BrowserWindow} - Reference to created window object
  */
-module.exports.createWithDefault = function(title,refName,width,height,html,debug,alwaysOnTop)
+module.exports.createWithDefault = function(title,refName,width,height,html,debug,alwaysOnTop, minWidth, minHeight)
 {
 		var windowOptions = {};
 		
@@ -46,8 +48,8 @@ module.exports.createWithDefault = function(title,refName,width,height,html,debu
 				height : height,
 				useContentSize : false,
 				center : true,
-				minWidth : 0,
-				minHeight : 0,
+				minWidth: minWidth,
+				minHeight: minHeight,
 				resizable : true,
 				movable : true,
 				minimizable : true,
