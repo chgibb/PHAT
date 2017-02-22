@@ -11,12 +11,6 @@ cp package.json dist
 
 #if linux
 if [[ "$OSTYPE" == "linux-gnu" ]]; then
-
-    #set executable bits on all 3rd party linux binaries
-    for f in forDist/linux/**
-    do
-        chmod +x $f
-    done
     
     #set fastqc to be executable
     chmod +x src/FastQC/fastqc
