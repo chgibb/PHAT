@@ -2,12 +2,11 @@
 <html>
 	<head>
 		<meta charset="UTF-8">
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 		<link rel="stylesheet" type="text/css" href="styles/ToolBar.css">
-		<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+		<link rel="stylesheet" type="text/css" href="bootstrap.min.css">
 		<title>Pathogen Host Analysis Tool</title>
   </head>
-  <body>
+  <body class="window-color">
 	 <script>
 		 const ipc = require('electron').ipcRenderer;
 		 ipc.send('keySub',{action : "keySub",channel : "input", key : "inputs", replyChannel : "toolBar"});
@@ -27,28 +26,18 @@
 			 console.log('clicked');
 			 ipc.send('toolBar',{action : "open",arg : target});
 		 }
-	 </script>
-	 	<div class="container-fluid"  id="container1">
-		 	<div class="row" id="toolbar1">
-				<div id="button" class="col-xs-2">
-					<img src="img/input.png" alt="input" id="input" name="input" onClick="SendOpenMessage('input')"></img>
-				</div>
-				<div id="button" class="col-xs-2">
-					<img src="img/qc.png" alt="qc" name="QC" onClick="SendOpenMessage('QC')"></img>
-				</div>
-				<div id="button" class="col-xs-2">
-					<img src="img/align.png" alt="align" name="Align" onClick="SendOpenMessage('align')"></img>
-				</div>
-				<div id="button" class="col-xs-2">
-					<img src="img/pathogenButton.png" alt="pathogen" name="Patho" onClick="SendOpenMessage('pathogen')"></img>
-				</div>
-				<div id="button" class="col-xs-2">
-					<img src="img/hostButton.png" alt="host" name="Host" onClick="SendOpenMessage('host')"></img>
-				</div>
-				<div id="button" class="col-xs-2">
-					<img src="img/output.png" alt="output" name="Output" onClick="SendOpenMessage('output')"></img>
-				</div>
-			</div>
+		</script>
+		<div class="container-fluid">
+				<h1 id="title">Pathogen Host Analysis Tool</h1>
 		</div>
+					<div id="toolbar">
+						<img class="buttonshadow" src="img/input.png" id="input" alt="Input" name="input" onClick="SendOpenMessage('input')"></img>
+						<img class="buttonshadow" src="img/qc.png" id="qc" name="QC" alt="FastQC" onClick="SendOpenMessage('QC')"></img>
+						<img class="buttonshadow" src="img/align.png" id="align" name="Align" alt="Align" onClick="SendOpenMessage('align')"></img>
+						<img class="buttonshadow" src="img/pathogenButton.png" id="patho" name="Patho" alt="Patho" onClick="SendOpenMessage('pathogen')"></img>
+						<img class="buttonshadow" src="img/hostButton.png" id="host" name="Host" alt="Host" onClick="SendOpenMessage('host')"></img>
+						<img class="buttonshadow" src="img/output.png" id="output" name="Output" alt="Output" onClick="SendOpenMessage('output')"></img>
+						<button typ e="button" class="btn btn-default" onClick="SendOpenMessage('circularGenomeBuilder')">Genome Builder</button>
+					</div>
 	</body>
 </html>
