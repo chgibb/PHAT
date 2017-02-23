@@ -10,7 +10,7 @@ rm src/req/renderer/PathogenRenderer/pileup.js
 cd src
 cd pileup.js
 
-npm run build
+bash scripts/build.sh
 
 cd ../
 cd ../
