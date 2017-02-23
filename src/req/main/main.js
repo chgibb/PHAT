@@ -24,7 +24,8 @@ require('./QC');
 require('./Align');
 require('./Output');
 require('./Pathogen');
-require('./Host')
+require('./Host');
+require('./circularGenomeBuilder');
 
 try
 {
