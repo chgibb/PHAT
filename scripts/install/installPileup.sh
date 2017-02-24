@@ -1,5 +1,6 @@
+(set -o igncr) 2>/dev/null && set -o igncr; # For Cygwin on Windows compaibility
 cd src
-git clone https://github.com/chgibb/pileup.js
+git clone --depth=1 https://github.com/chgibb/pileup.js
 cd pileup.js
 npm install
 cd ../
@@ -9,7 +10,7 @@ rm src/req/renderer/PathogenRenderer/pileup.js
 cd src
 cd pileup.js
 
-npm run build
+bash scripts/build.sh
 
 cd ../
 cd ../

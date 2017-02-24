@@ -1,0 +1,20 @@
+@import "common/buttonshadow";
+@import "common/colors";
+
+.window-color{
+  background-color: $windowbg-color;
+}
+#title{
+  text-align: left;
+}
+
+#toolbar{
+  margin-left: auto;
+	margin-right: auto;
+	display: block;
+}
+
+.toolBarButton{
+  border-radius: 30%;
+  margin: 10px 10px 10px 10px;
+}
