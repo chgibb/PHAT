@@ -23,8 +23,8 @@ module.exports = function(arr,div,model)
                 var html = new Array();
                 html.push
                 (
-                    "<img src='img/indexButton.png' style='margin-top:0px;' class='viewTab' id='indexButton'>",
-                    "<input id='fastaInputFilterBox' style='margin-left:-255px;' class='inputFilterBox' type='text' autofocus='autofocus' placeholder='Search' />",
+                    "<img src='img/indexButton.png' style='margin:0px 18px 18px 18px;' class='viewTab' id='indexButton'>",
+                    "<input id='fastaInputFilterBox' style='margin-left:-400px;' class='inputFilterBox' type='text' autofocus='autofocus' placeholder='Search' />",
                     "<table style='width:100%'>",
                     "<tr>",
                     "<td><input type='checkbox' id='fastaSelectAllBox'></input></td>",
@@ -94,7 +94,7 @@ module.exports = function(arr,div,model)
             divClickEvents(event)
             {
                 //alert(JSON.stringify(event,undefined,4));
-                //potentially error or user clicked on something we're not interested in 
+                //potentially error or user clicked on something we're not interested in
                 if(!event || !event.target || !event.target.id)
                     return;
                 //checkboxs are the most likely to be clicked
@@ -141,7 +141,7 @@ module.exports = function(arr,div,model)
                         }
                     }
                     this.dataChanged();
-                    return;    
+                    return;
                 }
                 if(event.target.id == 'indexButton')
                 {
@@ -155,7 +155,7 @@ module.exports = function(arr,div,model)
                         }
                     }
                 }
-                //host/patho radios are identified by _host or _path appended to the end 
+                //host/patho radios are identified by _host or _path appended to the end
                 //of the item's .validID property
                 var type = event.target.id.substr(event.target.id.length-5,event.target.id.length);
                 if(type == "_host" || type == "_path" && event.target.checked)

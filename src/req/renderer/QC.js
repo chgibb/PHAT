@@ -10,8 +10,11 @@ module.exports = class extends model
     {
         super(channel,handlers);
         this.QCData = new Array();
-
-        this.fastQC = this.fsAccess('resources/app/FastQC/fastqc');
+        
+        if(process.platform == "linux")
+            this.fastQC = this.fsAccess('resources/app/FastQC/fastqc');
+        else if(process.platform == "win32")
+            this.fastQC = this.fsAccess('resources/app/perl/perl/bin/perl.exe');
         this.QCReportCopy = this.fsAccess('resources/app/QCReportCopy');
     }
     postQCData()
@@ -50,6 +53,11 @@ module.exports = class extends model
                 break;
             }
         }
+        let args;
+        if(process.platform == "linux")
+            args = [name];
+        else if(process.platform == "win32")
+            args = [this.fsAccess('resources/app/FastQC/fastqc'),name];
         this.spawnHandle
 	    (
 		    'spawn',
@@ -57,7 +65,7 @@ module.exports = class extends model
 			    action : 'spawn', 
 			    replyChannel : this.channel, 
 			    processName : this.fastQC,
-			    args : [name],
+			    args : args,
 			    unBuffer : true
 		    }
 	    );
