@@ -27,17 +27,14 @@
 			 ipc.send('toolBar',{action : "open",arg : target});
 		 }
 		</script>
-		<div class="container-fluid">
-				<h1 id="title">Pathogen Host Analysis Tool</h1>
-		</div>
 					<div id="toolbar">
-						<img class="buttonshadow" src="img/input.png" id="input" alt="Input" name="input" onClick="SendOpenMessage('input')"></img>
-						<img class="buttonshadow" src="img/qc.png" id="qc" name="QC" alt="FastQC" onClick="SendOpenMessage('QC')"></img>
-						<img class="buttonshadow" src="img/align.png" id="align" name="Align" alt="Align" onClick="SendOpenMessage('align')"></img>
-						<img class="buttonshadow" src="img/pathogenButton.png" id="patho" name="Patho" alt="Patho" onClick="SendOpenMessage('pathogen')"></img>
-						<img class="buttonshadow" src="img/hostButton.png" id="host" name="Host" alt="Host" onClick="SendOpenMessage('host')"></img>
-						<img class="buttonshadow" src="img/output.png" id="output" name="Output" alt="Output" onClick="SendOpenMessage('output')"></img>
-						<button typ e="button" class="btn btn-default" onClick="SendOpenMessage('circularGenomeBuilder')">Genome Builder</button>
+						<img class="buttonshadow toolBarButton" src="img/input.png" id="input" alt="Input" name="input" onClick="SendOpenMessage('input')"></img>
+						<img class="buttonshadow toolBarButton" src="img/qc.png" id="QC" name="QC" alt="FastQC" onClick="SendOpenMessage('QC')"></img>
+						<img class="buttonshadow toolBarButton" src="img/align.png" id="align" name="Align" alt="Align" onClick="SendOpenMessage('align')"></img>
+						<img class="buttonshadow toolBarButton" src="img/pathogenButton.png" id="pathogen" name="Patho" alt="Patho" onClick="SendOpenMessage('pathogen')"></img>
+						<img class="buttonshadow toolBarButton" src="img/hostButton.png" id="host" name="Host" alt="Host" onClick="SendOpenMessage('host')"></img>
+						<img class="buttonshadow toolBarButton" src="img/output.png" id="output" name="Output" alt="Output" onClick="SendOpenMessage('output')"></img>
+						<button type="button" class="btn btn-default" id="circularGenomeBuilder" onClick="SendOpenMessage('circularGenomeBuilder')">Genome Builder</button>
 					</div>
 	</body>
 </html>
