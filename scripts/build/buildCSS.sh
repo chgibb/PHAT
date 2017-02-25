@@ -7,3 +7,4 @@ do
 done
 cp src/styles/*.css dist/styles
 rm src/styles/*.css
+cp forDist/styles/*.css dist/styles
