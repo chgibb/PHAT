@@ -13,7 +13,10 @@ module.exports = class extends model
     {
         super(channel,handlers);
         this.aligns = new Array();
-        this.bowTie2 = this.fsAccess('resources/app/bowtie2');
+        if(process.platform == "linux")
+            this.bowTie2 = this.fsAccess('resources/app/bowtie2');
+        else if(process.platform == "win32")
+             this.bowTie2 = this.fsAccess('resources/app/perl/perl/bin/perl.exe')
         this.samTools = this.fsAccess('resources/app/samtools');
     }
     postAligns()
@@ -66,6 +69,8 @@ module.exports = class extends model
 
 
         var args = new Array();
+        if(process.platform == "win32")
+            args.push(this.fsAccess("resources/app/bowtie2"));
         args.push
         (
             "-x",
