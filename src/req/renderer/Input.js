@@ -88,7 +88,7 @@ module.exports = class extends model
                             action : 'spawn',
                             replyChannel : 'input',
                             processName : this.faToTwoBit,
-                            args : [this.fastaInputs[i].name,this.fsAccess('resources/app/rt/indexes/'+this.fastaInputs[i].alias+'.2Ffbit')],
+                            args : [this.fastaInputs[i].name,this.fsAccess('resources/app/rt/indexes/'+this.fastaInputs[i].alias+'.2bit')],
                             unBuffer : true,
                             extraData : this.fastaInputs[i].alias
                         }
