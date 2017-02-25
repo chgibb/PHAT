@@ -84,7 +84,7 @@ module.exports = class extends model
                 if(!this.fastaInputs[i].indexing && !this.fastaInputs[i].indexed)
                 {
                     this.fastaInputs[i].indexing = true;
-                    args = [this.fastaInputs[i].name,this.fsAccess('resources/app/rt/indexes/'+this.fastaInputs[i].alias+'.2bit')];
+                    let args = [this.fastaInputs[i].name,this.fsAccess('resources/app/rt/indexes/'+this.fastaInputs[i].alias+'.2bit')];
                     this.spawnHandle
                     (
                         'spawn',

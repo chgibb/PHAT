@@ -56,6 +56,11 @@ module.exports = function(channel,arg,model)
 			model.fastaInputs[idx].contigs = faiParser.getContigs(fai);
 			var bowTieIndex = fsAccess('resources/app/rt/indexes/'+model.fastaInputs[idx].alias,false);
 			model.fastaInputs[idx].fai = fai;
+			let args = [];
+			if(process.platform == "linux")
+				args = [model.fastaInputs[idx].name,bowTieIndex];
+			else if(process.platform == "win32")
+				args = [model.fsAccess("resources/app/bowtie2-build"), model.fastaInputs[idx].name,bowTieIndex]
 			model.spawnHandle
             (
 			    'spawn',
@@ -63,7 +68,7 @@ module.exports = function(channel,arg,model)
                     action : 'spawn',
                     replyChannel : 'input',
                     processName : model.bowTie2Build,
-                    args : [model.fastaInputs[idx].name,bowTieIndex],
+                    args : arg,
                     unBuffer : true
                 }
 			);
