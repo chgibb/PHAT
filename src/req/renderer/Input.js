@@ -28,7 +28,7 @@ module.exports = class extends model
         if(process.platform == "linux")
             this.bowTie2Build = this.fsAccess('resources/app/bowtie2-build');
         else if(process.platform == "win32")
-            this.bowTie2Build = this.fsAccess('resources/app/python/python');
+            this.bowTie2Build = this.fsAccess('resources/app/python/python.exe');
     }
     postFastqInputs()
     {

@@ -68,7 +68,7 @@ module.exports = function(channel,arg,model)
                     action : 'spawn',
                     replyChannel : 'input',
                     processName : model.bowTie2Build,
-                    args : arg,
+                    args : args,
                     unBuffer : true
                 }
 			);
