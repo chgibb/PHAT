@@ -36,7 +36,10 @@ if [[ "$OSTYPE" == "cygwin" ]]; then
     ./node_modules/.bin/electron-packager ./dist/ --platform win32 --arch x64 --overwrite --ignore=node_modules --ignore=.jsx --ignore=build.sh --ignore=src --ignore=vcs  --ignore=.sh --ignore=notes --ignore=manuscript --ignore=presentation
     
     #copy in all 3rd party windows dependencies
-    tar -xzvf forDist/win32/win32.tar.gz -C phat-win32-x64/resources/app
+    for f in forDist/win32/*.tar.gz
+    do
+        tar -xzvf $f -C phat-win32-x64/resources/app
+    done
 fi
 
 #for everything in the top level of forDist (should be cross platform stuff only in the top level)
