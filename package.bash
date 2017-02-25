@@ -58,3 +58,8 @@ do
         cp $f phat-win32-x64/resources/app
     fi
 done
+
+if [[ "$OSTYPE" == "cygwin" ]]; then
+    icacls phat-win32-x64 /grant "Users:(OI)(CI)F"
+    icacls phat-win32-x64\* /q /c /t /reset
+fi
