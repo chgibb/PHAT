@@ -113,6 +113,22 @@ $
                 //update from spawned process.
                 //forward to handler.
                 input.spawnReply(event,arg);
+                if(arg.processname==this.bowTie2Build){
+                    if (process.platform=='win32'){
+                        var notification = new Notification("File has been indexed");
+                    }
+                    else if(process.platform=='linux'){
+                        var notification = new Notification("File "+ arg.args[0] + " has been indexed");
+                    }
+                }
+                if(arg[0] == "bowTie2Build"){
+                    if (process.platform=='win32'){
+                        var notification = new Notification("File has been indexed");
+                    }
+                    else if(process.platform=='linux'){
+                        var notification = new Notification("File "+ arg.args[0] + " has been indexed");
+                    }
+                }
             }
         );
         document.getElementById("fastqButton").onclick = function()

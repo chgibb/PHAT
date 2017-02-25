@@ -88,7 +88,7 @@ module.exports = class extends model
                             action : 'spawn',
                             replyChannel : 'input',
                             processName : this.faToTwoBit,
-                            args : [this.fastaInputs[i].name,this.fsAccess('resources/app/rt/indexes/'+this.fastaInputs[i].alias+'.2bit')],
+                            args : [this.fastaInputs[i].name,this.fsAccess('resources/app/rt/indexes/'+this.fastaInputs[i].alias+'.2Ffbit')],
                             unBuffer : true,
                             extraData : this.fastaInputs[i].alias
                         }
@@ -120,10 +120,10 @@ module.exports = class extends model
     spawnReply(channel,arg)
     {
         if(arg.processName == this.faToTwoBit)
-            replyFromFaToTwoBit(channel,arg,this);
+            return replyFromFaToTwoBit(channel,arg,this);
         if(arg.processName == this.samTools)
-            replyFromSamTools(channel,arg,this);
+            return replyFromSamTools(channel,arg,this);
         if(arg.processName == this.bowTie2Build)
-            replyFromBowTie2Build(channel,arg,this);
+            return replyFromBowTie2Build(channel,arg,this);
     }
 }
