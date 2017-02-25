@@ -82,6 +82,7 @@ $
         (
             "spawnReply",function(event,arg)
             {
+                console.log(JSON.stringify(arg,undefined,4));
                 //update from spawned process.
                 //forward to handler.
                 align.spawnReply(event,arg);
