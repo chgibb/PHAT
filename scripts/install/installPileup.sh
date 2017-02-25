@@ -15,7 +15,7 @@ bash scripts/build.sh
 cd ../
 cd ../
 cp src/pileup.js/dist/pileup.js forDist
-cp src/pileup.js/style/pileup.css forDist/styles/pileup.css
+cp src/pileup.js/style/pileup.css forDist/pileup.css
 
 rm -rf src/pileup.js
 
