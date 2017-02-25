@@ -84,11 +84,7 @@ module.exports = class extends model
                 if(!this.fastaInputs[i].indexing && !this.fastaInputs[i].indexed)
                 {
                     this.fastaInputs[i].indexing = true;
-                    let args = [];
-                    if(process.platform == "linux")
-                        args = [this.fastaInputs[i].name,this.fsAccess('resources/app/rt/indexes/'+this.fastaInputs[i].alias+'.2bit')];
-                    else if(process.platform =="win32")
-                        args = [this.fsAccess("resources/app/bowtie2-build"),this.fastaInputs[i].name,this.fsAccess('resources/app/rt/indexes/'+this.fastaInputs[i].alias+'.2bit')];
+                    args = [this.fastaInputs[i].name,this.fsAccess('resources/app/rt/indexes/'+this.fastaInputs[i].alias+'.2bit')];
                     this.spawnHandle
                     (
                         'spawn',
@@ -96,7 +92,7 @@ module.exports = class extends model
                             action : 'spawn',
                             replyChannel : 'input',
                             processName : this.faToTwoBit,
-                            args : [this.fastaInputs[i].name,this.fsAccess('resources/app/rt/indexes/'+this.fastaInputs[i].alias+'.2bit')],
+                            args : args,
                             unBuffer : true,
                             extraData : this.fastaInputs[i].alias
                         }
