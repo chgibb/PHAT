@@ -2,10 +2,14 @@ var fs = require('fs');
 var id = require('./../MakeValidID.js');
 module.exports = function(channel,arg,model)
 {
+	let name = "";
+	if(process.platform == "linux")
+		name = id.findOriginalInput(id.makeValidID(arg.args[0]),model.fastaInputs);
+	else if(process.platform == "win32")
+		name = id.findOriginalInput(id.makeValidID(arg.args[1]),model.fastaInputs);
     //haven't completed building yet.
 	if(!arg.done)
 	{
-	    var name = id.findOriginalInput(id.makeValidID(arg.args[0]),model.fastaInputs);
 		for(let i = 0; i != model.fastaInputs.length; ++i)
 	    {
 		    if(model.fastaInputs[i].name == name)
@@ -19,7 +23,6 @@ module.exports = function(channel,arg,model)
 	{
         if(arg.retCode != 0)
             alert(JSON.stringify(arg,undefined,4));
-	    var name = id.findOriginalInput(id.makeValidID(arg.args[0]),model.fastaInputs);
 		for(let i = 0; i != model.fastaInputs.length; ++i)
 		{
 		    if(model.fastaInputs[i].name == name)
