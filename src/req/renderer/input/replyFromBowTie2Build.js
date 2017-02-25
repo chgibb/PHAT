@@ -66,7 +66,7 @@ module.exports = function(channel,arg,model)
 					model.fastaInputs[i].indexing = false;
 					//ipc.send('input',{action : 'postState', key : 'fastaInputs', val : fastaInputs});
 					model.postFastaInputs();
-					return;
+					return true;
 				}
 				catch(err){console.log(err);}
 			

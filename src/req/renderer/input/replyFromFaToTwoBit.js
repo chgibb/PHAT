@@ -26,7 +26,7 @@ module.exports = function(channel,arg,model)
 							extraData : model.fastaInputs[i].name
 						}
 					);
-					return;
+					return true;
 				}
 			}
 		}

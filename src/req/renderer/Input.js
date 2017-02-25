@@ -124,10 +124,10 @@ module.exports = class extends model
     spawnReply(channel,arg)
     {
         if(arg.processName == this.faToTwoBit)
-            replyFromFaToTwoBit(channel,arg,this);
+            return replyFromFaToTwoBit(channel,arg,this);
         if(arg.processName == this.samTools)
-            replyFromSamTools(channel,arg,this);
+            return replyFromSamTools(channel,arg,this);
         if(arg.processName == this.bowTie2Build)
-            replyFromBowTie2Build(channel,arg,this);
+            return replyFromBowTie2Build(channel,arg,this);
     }
 }
