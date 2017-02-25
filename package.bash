@@ -60,6 +60,6 @@ do
 done
 
 if [[ "$OSTYPE" == "cygwin" ]]; then
-    icacls phat-win32-x64 /grant "Users:(OI)(CI)F"
-    icacls phat-win32-x64\* /q /c /t /reset
+    cmd /c "icacls phat-win32-x64 /grant \"Users:(OI)(CI)F\""
+    cmd /c "icacls phat-win32-x64\* /q /c /t /reset"
 fi
