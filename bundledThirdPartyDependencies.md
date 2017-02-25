@@ -26,6 +26,8 @@
     - perl/
 - FastQC
     - FastQC/
+- WinPython
+    - python/
 
 
 ## Linux
