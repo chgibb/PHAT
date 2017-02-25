@@ -19,7 +19,10 @@ if [[ "$OSTYPE" == "linux-gnu" ]]; then
     ./node_modules/.bin/electron-packager ./dist/ --platform linux --arch x64 --overwrite --ignore=node_modules --ignore=.jsx --ignore=build.sh --ignore=src --ignore=vcs  --ignore=.sh --ignore=notes --ignore=manuscript --ignore=presentation
     
     #copy in all 3rd party linux dependencies
-    tar -xzvf forDist/linux/linux.tar.gz -C phat-linux-x64/resources/app
+    for f in forDist/linux/*.tar.gz
+    do
+        tar -xzvf $f -C phat-linux-x64/resources/app
+    done
     for f in forDist/linux/*
     do
         if [ "$f" == "forDist/linux/linux.tar.gz" ]; then
