@@ -68,7 +68,7 @@ module.exports = function(channel,arg,model)
 					model.postFastaInputs();
 					return;
 				}
-				catch(err){console.log(err);}
+				catch(err){throw new Error(err);}
 			
 				alert("Could Not Generate Index For "+model.fastaInputs[i].alias);
 			}
