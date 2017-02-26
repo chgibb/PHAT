@@ -35,7 +35,7 @@ var inputReplyObject =
 			assert.runningEvents -= 1;
 		}
 	}
-}
+};
 var QCReplyObject = 
 {
 	send : function(channel,args)
@@ -48,7 +48,7 @@ var QCReplyObject =
 		}
 		
 	}
-}
+};
 var alignReplyObject = 
 {
 	send : function(channel,args)
@@ -60,7 +60,7 @@ var alignReplyObject =
 		}
 		
 	}
-}
+};
 var defaultHandles = 
 {
     //on attempt to save state
@@ -98,7 +98,7 @@ var defaultHandles =
         console.log(str);
         return str;
     }
-}
+};
 var input = new Input('input',defaultHandles);
 var QC = new QCClass('QC',defaultHandles);
 var align = new Align('align',defaultHandles);
