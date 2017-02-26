@@ -25,15 +25,27 @@ var inputReplyObject =
 		//patch directly to object
 		input.spawnReply(undefined,args);
 		
-		//if retCode is defined then the process has ended
-		if(args.retCode !== undefined)
-		{
-			if(args.done && args.retCode != 0)
-				console.log(JSON.stringify(args,undefined,4));
-			//Update event system
-			//console.log("reply from "+args.processName);
-			assert.runningEvents -= 1;
-		}
+		//Input's handling of replys from bowtie2 are delayed by 5 seconds on purpose
+		//in order to allow time for winPython on Windows to properly buffer and send all of its output.
+		//winPython is causing output to get forwarded in chunks with its retCode coming first which is causing
+		//issues in the usual logic to detect for a closed process.
+		//This issue does not exist on Linux but the delay remains in order to keep the response times consistent.
+		//Delaying checking the retCode here by 6 seconds will allow enough time for input.spawnReply to process all replies.
+		setTimeout
+		(
+			function()
+			{
+				//if retCode is defined then the process has ended
+				if(args.retCode !== undefined)
+				{
+					if(args.done && args.retCode != 0)
+						console.log(JSON.stringify(args,undefined,4));
+					//Update event system
+					//console.log("reply from "+args.processName);
+					assert.runningEvents -= 1;
+				}
+			},6000
+		);
 	}
 };
 var QCReplyObject = 
@@ -204,7 +216,7 @@ assert.assert(function(){
 },'--------------------------------------------------------');
 
 //QC
-
+/*
 assert.assert(function(){
 	return true;
 },'--------------------------------------------------------');
@@ -250,7 +262,7 @@ assert.assert(function(){
 assert.assert(function(){
 	return true;
 },'--------------------------------------------------------');
-
+*/
 
 
 //align
