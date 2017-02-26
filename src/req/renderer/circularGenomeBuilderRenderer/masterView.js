@@ -39,6 +39,8 @@ module.exports.addView = function(arr,div,model)
             {
                 if(this.firstRender)
                 {
+                    this.leftPanelOpen = false;
+                    this.rightPanelOpen = false;
                     this.firstRender = false;
                     return `
                         <button id="leftPanel" class="leftSlideOutPanel">Left Panel</button>
