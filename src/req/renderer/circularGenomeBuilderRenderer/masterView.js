@@ -57,6 +57,7 @@ module.exports.addView = function(arr,div,model)
             postRender(){}
             dataChanged()
             {
+                this.firstRender = true;
                 if(!this.circularGenomeMgr.isCached(this.fastaInput))
                     this.circularGenomeMgr.cacheFasta(this.fastaInput);
                 /*
