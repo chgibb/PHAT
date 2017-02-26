@@ -1,5 +1,5 @@
 var viewMgr = require('./../viewMgr');
-let CircularGenomeWriter = require("./../circularGenome/circularGenomeWriter");
+let FastaContigLoader = require("./../circularGenome/fastaContigLoader");
 
 var addGenomeView = require("./genomeView");
 module.exports.addView = function(arr,div,models)
@@ -66,7 +66,7 @@ module.exports.addView = function(arr,div,models)
                 }
                 if(genomeIndex == -1)
                 {
-                    this.genomeWriters.push(new CircularGenomeWriter());
+                    this.genomeWriters.push(new FastaContigLoader());
                     genomeIndex = this.genomeWriters.length - 1;
                 }
                 let self = this;

@@ -9,7 +9,7 @@ class Contig
         this.loaded = false;
     }
 }
-class CircularGenomeWriter extends EventEmitter
+class FastaContigLoader extends EventEmitter
 {
     constructor()
     {

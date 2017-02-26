@@ -1,5 +1,5 @@
 var viewMgr = require('./../viewMgr');
-let CircularGenomeWriter = require("./../circularGenome/circularGenomeWriter");
+let FastaContigLoader = require("./../circularGenome/fastaContigLoader");
 let plasmidTrack = require("./../circularGenome/plasmidTrack");
 let plasmid = require("./../circularGenome/plasmid");
 let trackLabel = require("./../circularGenome/trackLabel");
