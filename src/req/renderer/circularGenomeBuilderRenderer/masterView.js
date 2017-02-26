@@ -1,8 +1,9 @@
 var viewMgr = require('./../viewMgr');
 let FastaContigLoader = require("./../circularGenome/fastaContigLoader");
+let CircularGenomeMgr = require("./../circularGenomeMgr");
 
 var addGenomeView = require("./genomeView");
-module.exports.addView = function(arr,div,models)
+module.exports.addView = function(arr,div,model)
 {
     arr.push
     (
@@ -10,13 +11,14 @@ module.exports.addView = function(arr,div,models)
         {
             constructor()
             {
-                super("masterView",div,models);
+                super("masterView",div,model);
                 this.views = new Array();
                 this.firstRender = true;
                 this.leftPanelOpen = false;
                 this.rightPanelOpen = false;
                 this.circularGenomes = new Array();
                 this.genomeWriters = new Array();
+                this.circularGenomeMgr = model;
             }
             onMount()
             {
@@ -55,6 +57,9 @@ module.exports.addView = function(arr,div,models)
             postRender(){}
             dataChanged()
             {
+                if(!this.circularGenomeMgr.isCached(this.fastaInput))
+                    this.circularGenomeMgr.cacheFasta(this.fastaInput);
+                /*
                 let genomeIndex = -1;
                 for(let i = 0; i != this.circularGenomes.length; ++i)
                 {
@@ -77,7 +82,7 @@ module.exports.addView = function(arr,div,models)
                         self.doneLoadingContig(genomeIndex);
                     }
                 );
-                this.genomeWriters[genomeIndex].beginRefStream(this.fastaInput.name);
+                this.genomeWriters[genomeIndex].beginRefStream(this.fastaInput.name);*/
             }
             doneLoadingContig(genomeIndex)
             {

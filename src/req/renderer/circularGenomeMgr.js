@@ -18,8 +18,17 @@ class ManagedFasta
         this.alias = fasta.alias;
         this.name = fasta.name;
         this.loaded = false;
-        this.contigLoader = new FastaContigLoader();
         this.circularFigures = new Array();
+    }
+}
+class RunningLoader
+{
+    constructor(fasta,onComplete)
+    {
+        this.fasta = fasta;
+        this.loader = new FastaContigLoader();
+        this.loader.on("doneLoadingContigs",onComplete);
+        this.loader.beginRefStream(fasta.name);
     }
 }
 module.exports = class extends model
@@ -28,31 +37,38 @@ module.exports = class extends model
     {
         super(channel,handlers);
         this.managedFastas = new Array();
+        this.runningLoaders = new Array();
     }
     cacheFasta(fasta)
     {
         for(let i = 0; i != this.managedFastas.length; ++i)
         {
-            if(this.managedFastas[i].name == name)
+            if(this.managedFastas[i].name == fasta.name)
                 return false;
         }
-        this.managedFastas.push(new ManagedFasta(fasta.name,fasta.alias));
+        this.managedFastas.push(new ManagedFasta(fasta));
         let self = this;
-        let idx = self.managedFastas.length - 1
-        this.managedFastas[idx].on
+        this.runningLoaders.push
         (
-            "doneLoadContigs",function()
+            new RunningLoader(fasta,function()
             {
-                self.managedFastas[idx].loaded = true;
-            }
+                for(let i = 0; i != self.managedFastas.length; ++i)
+                {
+                    if(self.managedFastas[i].name == fasta.name)
+                    {
+                        self.managedFastas[i].loaded = true;
+                        self.postManagedFastas();
+                        return;
+                    }
+                }
+            })
         );
-        this.managedFastas[idx].beginRefStream(fasta.name);
     }
     isCached(fasta)
     {
         for(let i = 0; i != this.managedFastas.length; ++i)
         {
-            if(this.managedFastas[i].name == name)
+            if(this.managedFastas[i].name == fasta.name)
             {
                 if(this.managedFastas[i].loaded)
                     return true;
@@ -61,6 +77,9 @@ module.exports = class extends model
         }
         return false;
     }
-
+    postManagedFastas()
+    {
+        this.postHandle(this.channel,{action : "postState", key : "managedFastas",val : this.managedFastas});
+    }
     spawnReply(channel,arg){}
 }
