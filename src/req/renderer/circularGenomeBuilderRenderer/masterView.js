@@ -58,7 +58,9 @@ module.exports.addView = function(arr,div,model)
                                     for(let i = 0; i != this.fastaInputs.length; ++i)
                                     {
                                         if(this.fastaInputs[i].checked)
-                                            res += `<h3>${this.fastaInputs[i].alias}</h3>`;
+                                            res += `<h3>${this.fastaInputs[i].alias}</h3>
+                                            <button id="${this.fastaInputs[i].validID}_newFigure" style="float:right;">New Figure</button>
+                                                `;
                                     }
                                 }
                                 return res;
