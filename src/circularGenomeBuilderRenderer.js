@@ -59,6 +59,7 @@ $
                         }
                     }
                 }
+                viewMgr.render();
             }
         );
     }
