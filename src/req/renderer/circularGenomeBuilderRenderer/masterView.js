@@ -50,6 +50,16 @@ module.exports.addView = function(arr,div,model)
                         (
                             ()=>
                             {
+                                let res = "\n";
+                                if(this.fastaInputs)
+                                {
+                                    for(let i = 0; i != this.fastaInputs.length; ++i)
+                                    {
+                                        if(this.fastaInputs[i].checked)
+                                            res += `<h3>${this.fastaInputs[i].alias}</h3><br />`;
+                                    }
+                                }
+                                return res;
                             }
                         )()}
                         </div>
