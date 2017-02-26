@@ -18,6 +18,7 @@ class ManagedFasta
         this.alias = fasta.alias;
         this.name = fasta.name;
         this.loaded = false;
+        this.contigs = {};
         this.circularFigures = new Array();
     }
 }
@@ -57,6 +58,7 @@ module.exports = class extends model
                     if(self.managedFastas[i].name == fasta.name)
                     {
                         self.managedFastas[i].loaded = true;
+                        self.managedFastas[i].contigs = this.contigs;
                         self.postManagedFastas();
                         return;
                     }
