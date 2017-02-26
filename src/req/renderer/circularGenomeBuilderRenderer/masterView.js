@@ -64,8 +64,11 @@ module.exports.addView = function(arr,div,model)
             dataChanged()
             {
                 this.firstRender = true;
-                if(!this.circularGenomeMgr.isCached(this.fastaInput))
-                    this.circularGenomeMgr.cacheFasta(this.fastaInput);
+                for(let i = 0; i != this.fastaInputs.length; ++i)
+                {
+                    if(!this.circularGenomeMgr.isCached(this.fastaInputs[i]))
+                        this.circularGenomeMgr.cacheFasta(this.fastaInputs[i]);
+                }
                 /*
                 let genomeIndex = -1;
                 for(let i = 0; i != this.circularGenomes.length; ++i)
