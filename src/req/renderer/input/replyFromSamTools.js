@@ -30,7 +30,7 @@ module.exports = function(channel,arg,model)
 			try
 			{
 				if(canRead(fai))
-					return;
+					return true;
 			}
 			catch(err){}
 			try
