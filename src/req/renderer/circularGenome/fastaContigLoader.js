@@ -69,4 +69,4 @@ class FastaContigLoader extends EventEmitter
         )
     }
 }
-module.exports = CircularGenomeWriter;
+module.exports = FastaContigLoader;
