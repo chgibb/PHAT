@@ -46,26 +46,8 @@ $
                     {
                         if(arg.val != 0)
                         {
-                            let totalChecked = 0;
-                            for(let i = 0; i != arg.val.length; ++i)
-                            {
-                                if(arg.val[i].checked)
-                                    totalChecked++;
-                                if(totalChecked > 1)
-                                    return;
-                            }
-                            if(totalChecked == 0)
-                                return;
-                            for(let i = 0; i != arg.val.length; ++i)
-                            {
-                                if(arg.val[i].checked)
-                                {
-                                    viewMgr.getViewByName("masterView").fastaInput = arg.val[i];
-                                    viewMgr.getViewByName("masterView").dataChanged();
-                                    break;
-                                }
-                            }
-                        }
+                            viewMgr.getViewByName("masterView").fastaInputs = arg.val;
+                            viewMgr.getViewByName("masterView").dataChanged();
                     }
                     if(arg.key == "managedFastas")
                     {
