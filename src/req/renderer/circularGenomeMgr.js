@@ -63,7 +63,7 @@ module.exports = class extends model
                         return;
                     }
                 }
-            });
+            })
         );
     }
     isCached(fasta)
