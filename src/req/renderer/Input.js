@@ -25,7 +25,10 @@ module.exports = class extends model
         //allow the environment to change default paths for required foreign modules
         this.faToTwoBit = this.fsAccess('resources/app/faToTwoBit');
         this.samTools = this.fsAccess('resources/app/samtools');
-        this.bowTie2Build = this.fsAccess('resources/app/bowtie2-build');
+        if(process.platform == "linux")
+            this.bowTie2Build = this.fsAccess('resources/app/bowtie2-build');
+        else if(process.platform == "win32")
+            this.bowTie2Build = this.fsAccess('resources/app/python/python.exe');
     }
     postFastqInputs()
     {
@@ -81,6 +84,7 @@ module.exports = class extends model
                 if(!this.fastaInputs[i].indexing && !this.fastaInputs[i].indexed)
                 {
                     this.fastaInputs[i].indexing = true;
+                    let args = [this.fastaInputs[i].name,this.fsAccess('resources/app/rt/indexes/'+this.fastaInputs[i].alias+'.2bit')];
                     this.spawnHandle
                     (
                         'spawn',
@@ -88,7 +92,7 @@ module.exports = class extends model
                             action : 'spawn',
                             replyChannel : 'input',
                             processName : this.faToTwoBit,
-                            args : [this.fastaInputs[i].name,this.fsAccess('resources/app/rt/indexes/'+this.fastaInputs[i].alias+'.2bit')],
+                            args : args,
                             unBuffer : true,
                             extraData : this.fastaInputs[i].alias
                         }
