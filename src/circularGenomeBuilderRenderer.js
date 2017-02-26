@@ -67,7 +67,7 @@ $
                             }
                         }
                     }
-                    if(arg.key == "cachedFastas")
+                    if(arg.key == "managedFastas")
                     {
                         if(arg.val != 0)
                         {
