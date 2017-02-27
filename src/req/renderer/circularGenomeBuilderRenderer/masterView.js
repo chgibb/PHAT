@@ -201,11 +201,14 @@ module.exports.addView = function(arr,div,model)
                     }
                 }
                 let parentID = event.target.parentElement.id;
-                for(let i = 0; i != this.fastaInputs.length; ++i)
+                for(let i = 0; i != this.circularGenomeMgr.managedFastas.length; ++i)
                 {
-                    if(parentID == this.fastaInputs[i].validID)
+                    console.log(this.circularGenomeMgr.managedFastas[i].validID+" "+parentID);
+                    if(this.circularGenomeMgr.managedFastas[i].validID == parentID)
                     {
-
+                        viewMgr.getViewByName("genomeView",this.views).genome = this.circularGenomeMgr.managedFastas[i].circularFigures[event.target.id];
+                        viewMgr.render();
+                        return;
                     }
                 }
             }
