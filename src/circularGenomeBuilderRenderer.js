@@ -7,7 +7,7 @@ let CircularGenomeMgr = require("./req/renderer/circularGenomeMgr");
 require("./req/renderer/commonBehaviour");
 
 window.$ = window.jQuery = require('jquery');
-let circularGenomeMgr = new CircularGenomeMgr
+let circularGenomeMgr = new CircularGenomeMgr.Mgr
 (
     'circularGenomeBuilder',
     {
