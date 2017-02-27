@@ -76,7 +76,6 @@ module.exports.addView = function(arr,div,models)
                                             let lastLocation = 0;
                                             for(let i = 0; i != this.genome.contigs.length; ++i)
                                             {
-                                                console.log(this.genome.contigs[i].name+" "+lastLocation.toString()+" "+this.genome.contigs[i].bp+" "+this.genome.contigs[i].bp.toString());
                                                 res += `
                                                     ${trackMarker.add(
                                                     {
