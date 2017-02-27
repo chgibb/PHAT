@@ -59,8 +59,9 @@ module.exports.addView = function(arr,div,model)
                                     {
                                         if(this.fastaInputs[i].checked)
                                         {
-                                            res += `<h3>${this.fastaInputs[i].alias}</h3>
-                                            <button id="${this.fastaInputs[i].validID}_newFigure" style="float:right;">New Figure</button>
+                                            res += `<div id ="${this.fastaInputs[i].validID}">
+                                                        <h3>${this.fastaInputs[i].alias}</h3>
+                                                        <button id="${this.fastaInputs[i].validID}_newFigure" style="float:right;">New Figure</button>
                                                 `;
                                             for(let k = 0; k != this.circularGenomeMgr.managedFastas.length; ++k)
                                             {
@@ -68,11 +69,12 @@ module.exports.addView = function(arr,div,model)
                                                 {
                                                     for(let j = 0; j != this.circularGenomeMgr.managedFastas[k].circularFigures.length; ++j)
                                                     {
-                                                        res += `<p>${this.circularGenomeMgr.managedFastas[k].circularFigures[j].name}</p>`;
+                                                        res += `<input type="radio" id="${j}" name="selectedFigure" /><p>${this.circularGenomeMgr.managedFastas[k].circularFigures[j].name}</p>`;
                                                     }
                                                     break;
                                                 }
                                             }
+                                            res += `</div>`;
                                         }
                                     }
                                 }
@@ -196,6 +198,14 @@ module.exports.addView = function(arr,div,model)
                                 }
                             }
                         }
+                    }
+                }
+                let parentID = event.target.parentElement.id;
+                for(let i = 0; i != this.fastaInputs.length; ++i)
+                {
+                    if(parentID == this.fastaInputs[i].validID)
+                    {
+
                     }
                 }
             }
