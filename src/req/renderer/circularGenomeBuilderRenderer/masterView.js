@@ -164,6 +164,27 @@ module.exports.addView = function(arr,div,model)
                         }
                     );
                 }
+                for(let i = 0; i != this.fastaInputs.length; ++i)
+                {
+                    if(event.target.id == this.fastaInputs[i].validID+"_newFigure")
+                    {
+                        if(this.circularGenomeMgr.isCached(this.fastaInputs[i]))
+                        {
+                            for(let k = 0; k != this.circularGenomeMgr.managedFastas.length; ++k)
+                            {
+                                if(this.circularGenomeMgr.managedFastas[k].name == this.fastaInputs[i].name)
+                                {
+                                    this.circularGenomeMgr.managedFastas[k].circularFigures.push
+                                    (
+                                        new CircularGenomeMgr.circularFigure(this.circularGenomeMgr.managedFastas.contigs,"New Figure")
+                                    );
+                                    this.circularGenomeMgr.postManagedFastas();
+                                    return;
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
     );
