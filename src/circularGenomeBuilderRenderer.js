@@ -35,7 +35,7 @@ $
         ipc.send('keySub',{action : "keySub", channel : "input", key : "fastaInputs", replyChannel : "circularGenomeBuilder"});
         ipc.send('input',{replyChannel : 'circularGenomeBuilder', action : 'getState', key : 'fastaInputs'});
         ipc.send('keySub',{action : "keySub", channel : "circularGenomeBuilder", key : "managedFastas", replyChannel : "circularGenomeBuilder"});
-        ipc.send("circularGenomeBuilder",{replyChannel : "circularGenomeBuilder", replyChannel : "getState", key : "managedFastas"});
+        ipc.send("circularGenomeBuilder",{replyChannel : "circularGenomeBuilder", action : "getState", key : "managedFastas"});
         ipc.on
         (
             'circularGenomeBuilder',function(event,arg)
