@@ -115,7 +115,7 @@ module.exports.addView = function(arr,div,model)
             }
             divClickEvents(event)
             {
-                var me = this;
+                let me = this;
                 if(event.target.id == "rightPanel")
                 {
                     $("#rightSlideOutPanel").animate
