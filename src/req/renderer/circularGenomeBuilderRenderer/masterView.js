@@ -176,7 +176,7 @@ module.exports.addView = function(arr,div,model)
                                 {
                                     this.circularGenomeMgr.managedFastas[k].circularFigures.push
                                     (
-                                        new CircularGenomeMgr.circularFigure(this.circularGenomeMgr.managedFastas.contigs,"New Figure")
+                                        new CircularGenomeMgr.circularFigure("New Figure",this.circularGenomeMgr.managedFastas[i].contigs)
                                     );
                                     this.circularGenomeMgr.postManagedFastas();
                                     return;
