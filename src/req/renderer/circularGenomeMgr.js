@@ -5,7 +5,7 @@ let FastaContigLoader = require("./circularGenome/fastaContigLoader");
 let fasta = require("./fasta");
 module.exports.circularFigure = class
 {
-    constructor(contigs,name)
+    constructor(name,contigs)
     {
         this.name = name;
         this.contigs = contigs;
