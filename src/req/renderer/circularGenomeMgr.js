@@ -3,10 +3,11 @@ let model = require("./model");
 let canRead = require("./canRead");
 let FastaContigLoader = require("./circularGenome/fastaContigLoader");
 let fasta = require("./fasta");
-class circularFigure
+module.exports.circularFigure = class
 {
-    constructor(contigs)
+    constructor(contigs,name)
     {
+        this.name = name;
         this.contigs = contigs;
         this.radius = 300;
     }
@@ -32,7 +33,7 @@ class RunningLoader
         this.loader.beginRefStream(fasta.name);
     }
 }
-module.exports = class extends model
+module.exports.Mgr = class extends model
 {
     constructor(channel,handlers)
     {
