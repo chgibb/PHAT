@@ -203,7 +203,6 @@ module.exports.addView = function(arr,div,model)
                 let parentID = event.target.parentElement.id;
                 for(let i = 0; i != this.circularGenomeMgr.managedFastas.length; ++i)
                 {
-                    console.log(this.circularGenomeMgr.managedFastas[i].validID+" "+parentID);
                     if(this.circularGenomeMgr.managedFastas[i].validID == parentID)
                     {
                         viewMgr.getViewByName("genomeView",this.views).genome = this.circularGenomeMgr.managedFastas[i].circularFigures[event.target.id];
