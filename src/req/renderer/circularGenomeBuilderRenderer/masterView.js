@@ -98,30 +98,6 @@ module.exports.addView = function(arr,div,model)
                     if(!this.circularGenomeMgr.isCached(this.fastaInputs[i]))
                         this.circularGenomeMgr.cacheFasta(this.fastaInputs[i]);
                 }
-                /*
-                let genomeIndex = -1;
-                for(let i = 0; i != this.circularGenomes.length; ++i)
-                {
-                    if(this.circularGenomes[i].alias == this.fastaInput.alias)
-                    {
-                        genomeIndex = i;
-                        break;
-                    }
-                }
-                if(genomeIndex == -1)
-                {
-                    this.genomeWriters.push(new FastaContigLoader());
-                    genomeIndex = this.genomeWriters.length - 1;
-                }
-                let self = this;
-                this.genomeWriters[genomeIndex].on
-                (
-                    "doneLoadingContigs",function()
-                    {
-                        self.doneLoadingContig(genomeIndex);
-                    }
-                );
-                this.genomeWriters[genomeIndex].beginRefStream(this.fastaInput.name);*/
             }
             doneLoadingContig(genomeIndex)
             {
