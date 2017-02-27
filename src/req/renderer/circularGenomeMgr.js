@@ -18,6 +18,7 @@ class ManagedFasta
     {
         this.alias = fasta.alias;
         this.name = fasta.name;
+        this.validID = fasta.validID;
         this.loaded = false;
         this.contigs = {};
         this.circularFigures = new Array();
