@@ -8,7 +8,8 @@ module.exports = function(str)
         str.includes("/") ||
         str.includes("\\") ||
         str.includes("(") ||
-        str.includes(")")
+        str.includes(")") ||
+        str.includes(":")
     )
         return true;
     return false;

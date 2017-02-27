@@ -19,7 +19,10 @@ if [[ "$OSTYPE" == "linux-gnu" ]]; then
     ./node_modules/.bin/electron-packager ./dist/ --platform linux --arch x64 --overwrite --ignore=node_modules --ignore=.jsx --ignore=build.sh --ignore=src --ignore=vcs  --ignore=.sh --ignore=notes --ignore=manuscript --ignore=presentation
     
     #copy in all 3rd party linux dependencies
-    tar -xzvf forDist/linux/linux.tar.gz -C phat-linux-x64/resources/app
+    for f in forDist/linux/*.tar.gz
+    do
+        tar -xzvf $f -C phat-linux-x64/resources/app
+    done
     for f in forDist/linux/*
     do
         if [ "$f" == "forDist/linux/linux.tar.gz" ]; then
@@ -36,7 +39,10 @@ if [[ "$OSTYPE" == "cygwin" ]]; then
     ./node_modules/.bin/electron-packager ./dist/ --platform win32 --arch x64 --overwrite --ignore=node_modules --ignore=.jsx --ignore=build.sh --ignore=src --ignore=vcs  --ignore=.sh --ignore=notes --ignore=manuscript --ignore=presentation
     
     #copy in all 3rd party windows dependencies
-    tar -xzvf forDist/win32/win32.tar.gz -C phat-win32-x64/resources/app
+    for f in forDist/win32/*.tar.gz
+    do
+        tar -xzvf $f -C phat-win32-x64/resources/app
+    done
 fi
 
 #for everything in the top level of forDist (should be cross platform stuff only in the top level)
@@ -52,3 +58,8 @@ do
         cp $f phat-win32-x64/resources/app
     fi
 done
+
+if [[ "$OSTYPE" == "cygwin" ]]; then
+    cmd /c "icacls phat-win32-x64 /grant \"Users:(OI)(CI)F\""
+    cmd /c "icacls phat-win32-x64\* /q /c /t /reset"
+fi
