@@ -62,6 +62,17 @@ module.exports.addView = function(arr,div,model)
                                             res += `<h3>${this.fastaInputs[i].alias}</h3>
                                             <button id="${this.fastaInputs[i].validID}_newFigure" style="float:right;">New Figure</button>
                                                 `;
+                                            for(let k = 0; k != this.circularGenomeMgr.managedFastas.length; ++k)
+                                            {
+                                                if(this.circularGenomeMgr.managedFastas[k].name == this.fastaInputs[i].name)
+                                                {
+                                                    for(let j = 0; j != this.circularGenomeMgr.managedFastas[k].circularFigures.length; ++j)
+                                                    {
+                                                        res += `<p>${this.circularGenomeMgr.managedFastas[k].circularFigures[j].name}</p>`;
+                                                    }
+                                                    break;
+                                                }
+                                            }
                                         }
                                     }
                                 }
