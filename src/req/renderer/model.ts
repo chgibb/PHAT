@@ -2,6 +2,7 @@
  * Standardizes passing of handlers to data models
  * @module res/renderer/model
  */
+import {SpawnRequestParams} from "./../JobIPC";
 export interface DataModelHandlers
 {
     postStateHandle : (channel : string,arg : any) => void;
@@ -37,5 +38,5 @@ export abstract class DataModel
      * @param {any} arg
      * @return {void}
      */
-    public abstract spawnReply(channel : string, arg : any) : void;
+    public abstract spawnReply(channel : string, arg : SpawnRequestParams) : void;
 }
