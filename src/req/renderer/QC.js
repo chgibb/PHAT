@@ -4,7 +4,7 @@ var model = require('./model');
 var canRead = require('./canRead');
 var replyFromQCReportCopy = require('./QC/replyFromQCReportCopy');
 var replyFromFastQC = require('./QC/replyFromFastQC');
-module.exports = class extends model
+module.exports = class extends model.DataModelMgr
 {
     constructor(channel,handlers)
     {

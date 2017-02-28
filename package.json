@@ -14,9 +14,11 @@
   },
   "homepage": "",
   "devDependencies": {
+    "@types/node": "^7.0.5",
     "browserify": "^13.1.0",
     "electron-prebuilt": "^1.1.2",
-    "jsdoc": "^3.4.3"
+    "jsdoc": "^3.4.3",
+    "typescript": "^2.2.1"
   },
   "dependencies": {
     "angular": "^1.6.1",

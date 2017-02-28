@@ -1,5 +1,5 @@
 var viewMgr = require('./../viewMgr');
-let CircularGenomeWriter = require("./../circularGenome/circularGenomeWriter");
+let FastaContigLoader = require("./../circularGenome/fastaContigLoader");
 let plasmidTrack = require("./../circularGenome/plasmidTrack");
 let plasmid = require("./../circularGenome/plasmid");
 let trackLabel = require("./../circularGenome/trackLabel");
@@ -76,7 +76,6 @@ module.exports.addView = function(arr,div,models)
                                             let lastLocation = 0;
                                             for(let i = 0; i != this.genome.contigs.length; ++i)
                                             {
-                                                console.log(this.genome.contigs[i].name+" "+lastLocation.toString()+" "+this.genome.contigs[i].bp+" "+this.genome.contigs[i].bp.toString());
                                                 res += `
                                                     ${trackMarker.add(
                                                     {

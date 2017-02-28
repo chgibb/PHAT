@@ -1,8 +1,9 @@
 var viewMgr = require('./../viewMgr');
-let CircularGenomeWriter = require("./../circularGenome/circularGenomeWriter");
+let FastaContigLoader = require("./../circularGenome/fastaContigLoader");
+let CircularGenomeMgr = require("./../circularGenomeMgr");
 
 var addGenomeView = require("./genomeView");
-module.exports.addView = function(arr,div,models)
+module.exports.addView = function(arr,div,model)
 {
     arr.push
     (
@@ -10,13 +11,14 @@ module.exports.addView = function(arr,div,models)
         {
             constructor()
             {
-                super("masterView",div,models);
+                super("masterView",div,model);
                 this.views = new Array();
                 this.firstRender = true;
                 this.leftPanelOpen = false;
                 this.rightPanelOpen = false;
                 this.circularGenomes = new Array();
                 this.genomeWriters = new Array();
+                this.circularGenomeMgr = model;
             }
             onMount()
             {
@@ -37,6 +39,8 @@ module.exports.addView = function(arr,div,models)
             {
                 if(this.firstRender)
                 {
+                    this.leftPanelOpen = false;
+                    this.rightPanelOpen = false;
                     this.firstRender = false;
                     return `
                         <button id="leftPanel" class="leftSlideOutPanel">Left Panel</button>
@@ -44,6 +48,39 @@ module.exports.addView = function(arr,div,models)
                         <div id="rightSlideOutPanel" class="rightSlideOutPanel">
                         </div>
                         <div id="leftSlideOutPanel" class="leftSlideOutPanel">
+                        ${
+                        (
+                            ()=>
+                            {
+                                let res = "\n";
+                                if(this.fastaInputs)
+                                {
+                                    for(let i = 0; i != this.fastaInputs.length; ++i)
+                                    {
+                                        if(this.fastaInputs[i].checked)
+                                        {
+                                            res += `<div id ="${this.fastaInputs[i].validID}">
+                                                        <h3>${this.fastaInputs[i].alias}</h3>
+                                                        <button id="${this.fastaInputs[i].validID}_newFigure" style="float:right;">New Figure</button>
+                                                `;
+                                            for(let k = 0; k != this.circularGenomeMgr.managedFastas.length; ++k)
+                                            {
+                                                if(this.circularGenomeMgr.managedFastas[k].name == this.fastaInputs[i].name)
+                                                {
+                                                    for(let j = 0; j != this.circularGenomeMgr.managedFastas[k].circularFigures.length; ++j)
+                                                    {
+                                                        res += `<input type="radio" id="${j}" name="selectedFigure" /><p>${this.circularGenomeMgr.managedFastas[k].circularFigures[j].name}</p>`;
+                                                    }
+                                                    break;
+                                                }
+                                            }
+                                            res += `</div>`;
+                                        }
+                                    }
+                                }
+                                return res;
+                            }
+                        )()}
                         </div>
                     `;
                 }
@@ -55,29 +92,12 @@ module.exports.addView = function(arr,div,models)
             postRender(){}
             dataChanged()
             {
-                let genomeIndex = -1;
-                for(let i = 0; i != this.circularGenomes.length; ++i)
+                this.firstRender = true;
+                for(let i = 0; i != this.fastaInputs.length; ++i)
                 {
-                    if(this.circularGenomes[i].alias == this.fastaInput.alias)
-                    {
-                        genomeIndex = i;
-                        break;
-                    }
+                    if(!this.circularGenomeMgr.isCached(this.fastaInputs[i]))
+                        this.circularGenomeMgr.cacheFasta(this.fastaInputs[i]);
                 }
-                if(genomeIndex == -1)
-                {
-                    this.genomeWriters.push(new CircularGenomeWriter());
-                    genomeIndex = this.genomeWriters.length - 1;
-                }
-                let self = this;
-                this.genomeWriters[genomeIndex].on
-                (
-                    "doneLoadingContigs",function()
-                    {
-                        self.doneLoadingContig(genomeIndex);
-                    }
-                );
-                this.genomeWriters[genomeIndex].beginRefStream(this.fastaInput.name);
             }
             doneLoadingContig(genomeIndex)
             {
@@ -86,7 +106,7 @@ module.exports.addView = function(arr,div,models)
             }
             divClickEvents(event)
             {
-                var me = this;
+                let me = this;
                 if(event.target.id == "rightPanel")
                 {
                     $("#rightSlideOutPanel").animate
@@ -134,6 +154,40 @@ module.exports.addView = function(arr,div,models)
                             )()
                         }
                     );
+                }
+                if(this.fastaInputs)
+                {
+                    for(let i = 0; i != this.fastaInputs.length; ++i)
+                    {
+                        if(event.target.id == this.fastaInputs[i].validID+"_newFigure")
+                        {
+                            if(this.circularGenomeMgr.isCached(this.fastaInputs[i]))
+                            {
+                                for(let k = 0; k != this.circularGenomeMgr.managedFastas.length; ++k)
+                                {
+                                    if(this.circularGenomeMgr.managedFastas[k].name == this.fastaInputs[i].name)
+                                    {
+                                        this.circularGenomeMgr.managedFastas[k].circularFigures.push
+                                        (
+                                            new CircularGenomeMgr.circularFigure("New Figure",this.circularGenomeMgr.managedFastas[i].contigs)
+                                        );
+                                        this.circularGenomeMgr.postManagedFastas();
+                                        return;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                let parentID = event.target.parentElement.id;
+                for(let i = 0; i != this.circularGenomeMgr.managedFastas.length; ++i)
+                {
+                    if(this.circularGenomeMgr.managedFastas[i].validID == parentID)
+                    {
+                        viewMgr.getViewByName("genomeView",this.views).genome = this.circularGenomeMgr.managedFastas[i].circularFigures[event.target.id];
+                        viewMgr.render();
+                        return;
+                    }
                 }
             }
         }
