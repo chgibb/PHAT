@@ -1,5 +1,5 @@
-var viewMgr = require('./../viewMgr');
-let FastaContigLoader = require("./../circularGenome/fastaContigLoader");
+import * as viewMgr from "./../viewMgr";
+import {Contig,FastaContigLoader} from "./../circularGenome/fastaContigLoader";
 let plasmidTrack = require("./../circularGenome/plasmidTrack");
 let plasmid = require("./../circularGenome/plasmid");
 let trackLabel = require("./../circularGenome/trackLabel");
@@ -20,6 +20,13 @@ function getRandColor(brightness)
     return "rgb(" + mixedrgb.join(",") + ")";
 }
 let app = angular.module('myApp',['angularplasmid']);
+export class GenomeView extends viewMgr.View
+{
+    public constructor()
+    {
+        
+    }
+}
 module.exports.addView = function(arr,div,models)
 {
     arr.push
