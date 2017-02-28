@@ -3,6 +3,8 @@
  * @module req/renderer/viewMgr
  */
 
+///// <reference path="jquery.d.ts" />
+
 import {DataModelMgr} from "./model";
 export abstract class View
 {
@@ -86,10 +88,10 @@ export abstract class View
             );
         }
     }
-    onChange(func)
+    /*onChange(func)
     {
         this.onChangeFunc = func;
-    }
+    }*/
     /**
      * Meant to be overriden. Called during mounting
      */
@@ -114,7 +116,7 @@ export abstract class View
     /**
      * Meant to be overriden. Called when a user click inside of this view's div
      */
-    public abstract divClickEvents(event) : void
+    public abstract divClickEvents(event : JQueryEventObject) : void
 }
 
 export function getIndexOfViewByName(name : string,targetArr : Array<View>) : number
