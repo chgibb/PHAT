@@ -2,13 +2,23 @@
  * Standardizes passing of handlers to data models
  * @module res/renderer/model
  */
-module.exports = class
+export interface DataModelHandlers
 {
+    postStateHandle : (channel : string,arg : any) => void;
+    spawnHandle : (channel : string,arg : any) => void;
+    fsAccess : (path : string) => string;
+}
+export abstract class DataModel
+{
+    public channel : string;
+    public postHandle : (channel : string,arg : any) => void;
+    public spawnHandle : (channel : string,arg : any) => void;
+    public fsAccess : (path : string) => string;
     /**
      * @param {string} channel - IPC channel to operate one
      * @param {any} handlers - object containing handler functions
      */
-    constructor(channel,handlers)
+    constructor(channel : string,handlers : DataModelHandlers)
     {
         /**
          * @prop {function(string,any)} postHandle - Function to pass IPC messages related to saving data through 
@@ -27,5 +37,5 @@ module.exports = class
      * @param {any} arg
      * @return {void}
      */
-    spawnReply(channel,arg){}
+    public abstract spawnReply(channel : string, arg : any) : void;
 }
