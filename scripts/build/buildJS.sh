@@ -2,6 +2,16 @@
 cp src/pileup.js/style/pileup.css dist/styles/pileup.css
 
 ./node_modules/.bin/tsc
+#Compilation failed somewhere
+if [ $? != 0 ]; then
+	#Clean artifacts and abort
+    for f in $(find src -name '*.ts'); 
+	do 
+		artifact=$(echo $f | awk '{gsub(".ts",".js");print}')
+		rm $artifact
+	done
+	exit 1
+fi
 for f in src/*.js
 do
 	printf "Bundling "
