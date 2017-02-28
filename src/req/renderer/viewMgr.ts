@@ -104,7 +104,7 @@ export abstract class View
      * Meant to be overriden. Called during rendering
      * @returns {string} - HTML string to render into div
      */
-    public abstract renderView() : string
+    public abstract renderView() : string | undefined;
     /**
      * Meant to be overriden. Called after rendering has completed.
      */
