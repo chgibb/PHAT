@@ -34,7 +34,7 @@ class RunningLoader
         this.loader.beginRefStream(fasta.name);
     }
 }
-module.exports.Mgr = class extends model
+module.exports.Mgr = class extends model.DataModelMgr
 {
     constructor(channel,handlers)
     {

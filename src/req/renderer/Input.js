@@ -14,7 +14,7 @@ var replyFromBowTie2Build = require('./input/replyFromBowTie2Build');
 var replyFromFaToTwoBit = require('./input/replyFromFaToTwoBit');
 var replyFromSamTools = require('./input/replyFromSamTools');
 
-module.exports = class extends model
+module.exports = class extends model.DataModelMgr
 {
     constructor(channel,handlers)
     {

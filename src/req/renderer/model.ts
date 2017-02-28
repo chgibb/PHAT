@@ -9,7 +9,7 @@ export interface DataModelHandlers
     spawnHandle : (channel : string,arg : any) => void;
     fsAccess : (path : string) => string;
 }
-export abstract class DataModel
+export abstract class DataModelMgr
 {
     public channel : string;
     public postHandle : (channel : string,arg : any) => void;

@@ -7,7 +7,7 @@ var alignData = require('./alignData');
 var replyFromBowTie2Align = require('./Align/replyFromBowTie2Align');
 var replyFromSamTools = require('./Align/replyFromSamTools');
 
-module.exports = class extends model
+module.exports = class extends model.DataModelMgr
 {
     constructor(channel,handlers)
     {
