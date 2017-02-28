@@ -11,8 +11,8 @@ do
 	./node_modules/.bin/browserify $f --node --debug -o $destination --ignore-missing
 done
 
-for f in src/**/*.js
-	artifact=$(echo $f | awk 'gsub(".ts",".js");print')
-	printf $artifact
-	printf "\n"
+for f in $(find src -name '*.ts'); 
+do 
+	artifact=$(echo $f | awk '{gsub(".ts",".js");print}')
+	rm $artifact
 done
