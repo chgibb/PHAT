@@ -14,6 +14,7 @@
   },
   "homepage": "",
   "devDependencies": {
+    "@types/node": "^7.0.5",
     "browserify": "^13.1.0",
     "electron-prebuilt": "^1.1.2",
     "jsdoc": "^3.4.3",
