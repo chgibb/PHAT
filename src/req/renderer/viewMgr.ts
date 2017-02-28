@@ -145,7 +145,7 @@ export function getViewByName(name : string,targetArr? : Array<View>) : View
 export let preRender : (view : View) => void = null;
 export let postRender : (view : View) => void = null;
 
-export function render(preRenderArg : (view : View) => void,postRenderArg : (view : View) => void) : void
+export function render(preRenderArg? : (view : View) => void,postRenderArg? : (view : View) => void) : void
 {
     let currViewRef = getViewByName(currView,views);
     if(!preRender)
