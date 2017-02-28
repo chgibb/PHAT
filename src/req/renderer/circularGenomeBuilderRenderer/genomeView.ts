@@ -1,4 +1,5 @@
 //// <reference path="jquery.d.ts" />
+/// <reference path="./../angularStub.d.ts" />
 import * as viewMgr from "./../viewMgr";
 import {Contig,FastaContigLoader} from "./../circularGenome/fastaContigLoader";
 import {DataModelMgr} from "./../model";
@@ -9,7 +10,6 @@ let trackMarker = require("./../circularGenome/trackMarker");
 let markerLabel = require("./../circularGenome/markerLabel");
 let trackScale = require("./../circularGenome/trackScale");
 
-let angular : any;
 require("angular");
 require("angularplasmid");
 //adapted from answer by letronje and edited by Peter Mortensen
