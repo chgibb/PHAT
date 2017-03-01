@@ -1,25 +1,26 @@
-const ipc = require('electron').ipcRenderer;
-var viewMgr = require('./req/renderer/viewMgr');
-var addMasterView = require("./req/renderer/circularGenomeBuilderRenderer/masterView");
-let CircularGenomeMgr = require("./req/renderer/circularGenomeMgr");
-
-
+import {ipcRenderer} from "electron";
+let ipc = ipcRenderer;
+import * as viewMgr from "./req/renderer/viewMgr";
+import * as addMasterView from "./req/renderer/circularGenomeBuilderRenderer/masterView";
+import {CircularGenomeMgr} from "./req/renderer/circularGenomeMgr";
+import {SpawnRequestParams} from "./req/JobIPC";
 require("./req/renderer/commonBehaviour");
 
-window.$ = window.jQuery = require('jquery');
-let circularGenomeMgr = new CircularGenomeMgr.Mgr
+import * as $ from "jquery";
+(<any>window).$ = $;
+let circularGenomeMgr = new CircularGenomeMgr
 (
     'circularGenomeBuilder',
     {
-        postStateHandle : function(channel,arg)
+        postStateHandle : function(channel : string,arg : any) : void
         {
             ipc.send(channel,arg);
         },
-        spawnHandle : function(channel,arg)
+        spawnHandle : function(channel,arg : SpawnRequestParams) : void
         {
             ipc.send(channel,arg);
         },
-        fsAccess : function(str)
+        fsAccess : function(str : string) : string
         {
             return str;
         }
@@ -46,7 +47,8 @@ $
                     {
                         if(arg.val != 0)
                         {
-                            viewMgr.getViewByName("masterView").fastaInputs = arg.val;
+                            let ref = <any>viewMgr.getViewByName("masterView");
+                            ref.fastaInputs = arg.val;
                             viewMgr.getViewByName("masterView").dataChanged();
                         }
                     }
