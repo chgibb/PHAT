@@ -6,7 +6,7 @@ import {SpawnRequestParams} from "./../JobIPC";
 export interface DataModelHandlers
 {
     postStateHandle : (channel : string,arg : any) => void;
-    spawnHandle : (channel : string,arg : any) => void;
+    spawnHandle : (channel : string,arg : SpawnRequestParams) => void;
     fsAccess : (path : string) => string;
 }
 export abstract class DataModelMgr

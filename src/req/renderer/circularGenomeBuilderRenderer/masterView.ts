@@ -1,41 +1,52 @@
-var viewMgr = require('./../viewMgr');
-let FastaContigLoader = require("./../circularGenome/fastaContigLoader");
-let CircularGenomeMgr = require("./../circularGenomeMgr");
+//// <reference path="jquery.d.ts" />
 
-var addGenomeView = require("./genomeView");
-module.exports.addView = function(arr,div,model)
+import * as viewMgr from "./../viewMgr";
+import {DataModelMgr} from "./../model";
+import {FastaContigLoader,Contig} from "./../circularGenome/fastaContigLoader";
+import {CircularGenomeMgr,CircularFigure,} from "./../circularGenomeMgr";
+
+import * as GenomeView from "./genomeView";
+export function addView(arr : Array<viewMgr.View>,div : string,model : CircularGenomeMgr)
 {
     arr.push
     (
         new class extends viewMgr.View
         {
-            constructor()
+            public views : Array<viewMgr.View>;
+            public firstRender : boolean;
+            public leftPanelOpen : boolean;
+            public rightPanelOpen : boolean;
+            public circularGenomes : any;
+            public genomeWriters : any;
+            public circularGenomeMgr : CircularGenomeMgr;
+            public fastaInputs : any;
+            public constructor()
             {
                 super("masterView",div,model);
-                this.views = new Array();
+                this.views = new Array<viewMgr.View>();
                 this.firstRender = true;
                 this.leftPanelOpen = false;
                 this.rightPanelOpen = false;
-                this.circularGenomes = new Array();
-                this.genomeWriters = new Array();
+                this.circularGenomes = new Array<any>();
+                this.genomeWriters = new Array<any>();
                 this.circularGenomeMgr = model;
             }
-            onMount()
+            public onMount() : void
             {
-                addGenomeView.addView(this.views,"genomeView");
+                GenomeView.addView(this.views,"genomeView",undefined);
                 for(let i = 0; i != this.views.length; ++i)
                 {
                     this.views[i].onMount();
                 }
             }
-            onUnMount()
+            public onUnMount() : void
             {
                 for(let i = 0; i != this.views.length; ++i)
                 {
                     this.views[i].onUnMount();
                 }
             }
-            renderView()
+            public renderView() : string
             {
                 if(this.firstRender)
                 {
@@ -89,8 +100,8 @@ module.exports.addView = function(arr,div,model)
                     this.views[i].render();
                 }
             }
-            postRender(){}
-            dataChanged()
+            public postRender() : void{}
+            public dataChanged() : void
             {
                 this.firstRender = true;
                 for(let i = 0; i != this.fastaInputs.length; ++i)
@@ -99,12 +110,13 @@ module.exports.addView = function(arr,div,model)
                         this.circularGenomeMgr.cacheFasta(this.fastaInputs[i]);
                 }
             }
-            doneLoadingContig(genomeIndex)
+            public doneLoadingContig(genomeIndex : number) : void
             {
-                viewMgr.getViewByName("genomeView",this.views).genome = this.genomeWriters[genomeIndex];
+                let ref = <GenomeView.GenomeView>viewMgr.getViewByName("genomeView",this.views);
+                ref.genome = this.genomeWriters[genomeIndex];
                 this.render();
             }
-            divClickEvents(event)
+            public divClickEvents(event : JQueryEventObject) : void
             {
                 let me = this;
                 if(event.target.id == "rightPanel")
@@ -169,7 +181,7 @@ module.exports.addView = function(arr,div,model)
                                     {
                                         this.circularGenomeMgr.managedFastas[k].circularFigures.push
                                         (
-                                            new CircularGenomeMgr.circularFigure("New Figure",this.circularGenomeMgr.managedFastas[i].contigs)
+                                            new CircularFigure("New Figure",this.circularGenomeMgr.managedFastas[i].contigs)
                                         );
                                         this.circularGenomeMgr.postManagedFastas();
                                         return;
@@ -184,7 +196,8 @@ module.exports.addView = function(arr,div,model)
                 {
                     if(this.circularGenomeMgr.managedFastas[i].validID == parentID)
                     {
-                        viewMgr.getViewByName("genomeView",this.views).genome = this.circularGenomeMgr.managedFastas[i].circularFigures[event.target.id];
+                        let ref = <GenomeView.GenomeView>viewMgr.getViewByName("genomeView",this.views);
+                        ref.genome = this.circularGenomeMgr.managedFastas[i].circularFigures[<any>event.target.id];
                         viewMgr.render();
                         return;
                     }
