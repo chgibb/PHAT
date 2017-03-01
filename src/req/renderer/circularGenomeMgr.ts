@@ -1,11 +1,15 @@
 let fs = require("fs");
-let model = require("./model");
+import {DataModelMgr,DataModelHandlers} from "./model";
+import {SpawnRequestParams} from "./../JobIPC";
 let canRead = require("./canRead");
-let FastaContigLoader = require("./circularGenome/fastaContigLoader");
+import {Contig,FastaContigLoader} from "./circularGenome/fastaContigLoader" ;
 let fasta = require("./fasta");
-module.exports.circularFigure = class
+export class CircularFigure
 {
-    constructor(name,contigs)
+    public name : string;
+    public contigs : any;
+    public radius : number;
+    constructor(name : string,contigs : any)
     {
         this.name = name;
         this.contigs = contigs;
@@ -14,19 +18,28 @@ module.exports.circularFigure = class
 }
 class ManagedFasta
 {
-    constructor(fasta)
+    public alias : string;
+    public name : string;
+    public validID : string;
+    public loaded : boolean;
+    public contigs : any;
+    public circularFigures : Array<CircularFigure>;
+    constructor(fasta : any)
     {
         this.alias = fasta.alias;
         this.name = fasta.name;
         this.validID = fasta.validID;
         this.loaded = false;
         this.contigs = {};
-        this.circularFigures = new Array();
+        this.circularFigures = new Array<CircularFigure>();
     }
 }
 class RunningLoader
 {
-    constructor(fasta,onComplete)
+    public fasta : any;
+    public loader : FastaContigLoader;
+
+    constructor(fasta : any,onComplete : () => void)
     {
         this.fasta = fasta;
         this.loader = new FastaContigLoader();
@@ -34,15 +47,17 @@ class RunningLoader
         this.loader.beginRefStream(fasta.name);
     }
 }
-module.exports.Mgr = class extends model.DataModelMgr
+export class CircularGenomeMgr extends DataModelMgr
 {
-    constructor(channel,handlers)
+    public managedFastas : Array<ManagedFasta>;
+    public runningLoaders : Array<RunningLoader>;
+    public constructor(channel : string,handlers : DataModelHandlers)
     {
         super(channel,handlers);
-        this.managedFastas = new Array();
-        this.runningLoaders = new Array();
+        this.managedFastas = new Array<ManagedFasta>();
+        this.runningLoaders = new Array<RunningLoader>();
     }
-    cacheFasta(fasta)
+    public cacheFasta(fasta : any) : boolean
     {
         for(let i = 0; i != this.managedFastas.length; ++i)
         {
@@ -68,7 +83,7 @@ module.exports.Mgr = class extends model.DataModelMgr
             })
         );
     }
-    isCached(fasta)
+    public isCached(fasta : any) : boolean
     {
         for(let i = 0; i != this.managedFastas.length; ++i)
         {
@@ -81,9 +96,9 @@ module.exports.Mgr = class extends model.DataModelMgr
         }
         return false;
     }
-    postManagedFastas()
+    public postManagedFastas() : void
     {
         this.postHandle(this.channel,{action : "postState", key : "managedFastas",val : this.managedFastas});
     }
-    spawnReply(channel,arg){}
+    spawnReply(channel : string,arg : SpawnRequestParams) : void{}
 }

@@ -2,14 +2,22 @@
  * Functions for managing one or more instances of class View
  * @module req/renderer/viewMgr
  */
-module.exports.View = class
+
+///// <reference path="jquery.d.ts" />
+
+import {DataModelMgr} from "./model";
+export abstract class View
 {
+    public name : string;
+    public div : string;
+    public data : any;
+    public model : DataModelMgr;
     /**
      * @param {string} name - Name to assign to view
      * @param {string} div - ID of div to bind view to
      * @param {any} model - Data model object to bind to view
      */
-    constructor(name,div,model,handlers)
+    public constructor(name : string,div : string,model : DataModelMgr)
     {
         this.name = name;
         this.div = div;
@@ -20,14 +28,14 @@ module.exports.View = class
     /**
      * Removes event handlers for this view from its div
      */
-    releaseDivEvents()
+    public releaseDivEvents() : void
     {
         $('#'+this.div).off();
     }
     /**
      * Adds event handlers for this view to its div
      */
-    reBindDivEvents()
+    public reBindDivEvents() : void
     {
         var obj = this;
 
@@ -43,7 +51,7 @@ module.exports.View = class
     /**
      * Un mount view from its div
      */
-    unMount()
+    public unMount() : void
     {
         this.releaseDivEvents();
         this.onUnMount();
@@ -51,67 +59,67 @@ module.exports.View = class
     /**
      * Mount view to its div
      */
-    mount()
+    public mount() : void
     {
         this.reBindDivEvents();
         this.onMount();
     }
-    setData(data)
+    public setData(data : any) : void
     {
         this.data = data;
     }
     /**
      * Render this view to its div
      */
-    render()
+    public render() : void
     {
-        var html = this.renderView();
+        let html : string = this.renderView();
         if(html)
         {
             //prevent scrolling of the page on rerender.
-            var me = this;
+            let self = this;
             setTimeout
             (
                 function()
                 {
-                    document.getElementById(me.div).innerHTML = html;
-                    me.postRender();
+                    document.getElementById(self.div).innerHTML = html;
+                    self.postRender();
                 },0
             );
         }
     }
-    onChange(func)
+    /*onChange(func)
     {
         this.onChangeFunc = func;
-    }
+    }*/
     /**
      * Meant to be overriden. Called during mounting
      */
-    onMount(){}
+    public abstract onMount() : void
     /**
      * Meant to be overriden. Called during unmounting
      */
-    onUnMount(){}
+    public abstract onUnMount() : void
     /**
      * Meant to be overriden. Called during rendering
      * @returns {string} - HTML string to render into div
      */
-    renderView(){}
+    public abstract renderView() : string | undefined;
     /**
      * Meant to be overriden. Called after rendering has completed.
      */
-    postRender(){}
+    public abstract postRender() : void
     /**
      * Meant to be overriden. Called when this view's data has changed
      */
-    dataChanged(){}
+    public abstract dataChanged() : void
     /**
      * Meant to be overriden. Called when a user click inside of this view's div
      */
-    divClickEvents(event){}
+    public abstract divClickEvents(event : JQueryEventObject) : void
 }
 
-module.exports.getIndexOfViewByName = function(name,targetArr)
+export function getIndexOfViewByName(name : string,targetArr : Array<View>) : number
 {
     let arr;
     if(targetArr)
@@ -124,51 +132,52 @@ module.exports.getIndexOfViewByName = function(name,targetArr)
             return i;
     }
 }
-module.exports.getViewByName = function(name,targetArr)
+export function getViewByName(name : string,targetArr? : Array<View>) : View
 {
     let arr;
     if(targetArr)
         arr = targetArr;
     else
-        arr = module.exports.views;
-    return arr[module.exports.getIndexOfViewByName(name,targetArr)];
+        arr = views;
+    return arr[getIndexOfViewByName(name,targetArr)];
 }
 
+export let preRender : (view : View) => void = null;
+export let postRender : (view : View) => void = null;
 
-
-module.exports.render = function(preRender,postRender)
+export function render(preRenderArg? : (view : View) => void,postRenderArg? : (view : View) => void) : void
 {
-    let currViewRef = module.exports.getViewByName(module.exports.currView,module.exports.views);
-    if(!module.exports.preRender)
+    let currViewRef = getViewByName(currView,views);
+    if(!preRender)
     {
-        if(preRender)
-            preRender(currViewRef);
+        if(preRenderArg)
+            preRenderArg(currViewRef);
     }
-    else if(module.exports.preRender)
+    else if(preRender)
     {
-        module.exports.preRender(currViewRef);
+        preRender(currViewRef);
     }
     currViewRef.render();
-    if(!module.exports.postRender)
+    if(!postRender)
     {
-        if(postRender)
-            postRender(currViewRef);
+        if(postRenderArg)
+            postRenderArg(currViewRef);
     }
-    else if(module.exports.postRender)
+    else if(postRender)
     {
-        module.exports.postRender(currViewRef);
+        postRender(currViewRef);
     }
 }
 
-module.exports.changeView = function(newView)
+export function changeView(newView : string) : void
 {
-    let currViewRef = module.exports.getViewByName(module.exports.currView);
-    let newViewRef = module.exports.getViewByName(newView);
+    let currViewRef = getViewByName(currView);
+    let newViewRef = getViewByName(newView);
     if(!newViewRef)
         throw new Error(newView+" is not defined");
     if(currViewRef)
         currViewRef.unMount();
-    module.exports.currView = newView;
+    currView = newView;
 
     
     newViewRef.mount();
@@ -176,5 +185,5 @@ module.exports.changeView = function(newView)
     module.exports.render();
 }
 
-module.exports.views = new Array();
-module.exports.currView = "";
+export let views : Array<View> = new Array<View>();
+export let currView : string = "";

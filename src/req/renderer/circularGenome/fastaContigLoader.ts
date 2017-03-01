@@ -1,30 +1,36 @@
-let fs = require("fs");
-let EventEmitter = require("events");
-class Contig
+import * as fs from "fs";
+import {EventEmitter} from "events";
+export class Contig
 {
-    constructor()
+    public bp : number;
+    public name : string;
+    public loaded : boolean;
+    public constructor()
     {
         this.bp = 0;
         this.name = "";
         this.loaded = false;
     }
 }
-class FastaContigLoader extends EventEmitter
+export class FastaContigLoader extends EventEmitter
 {
-    constructor()
+    public refStream : fs.ReadStream;
+    public contigs : Array<Contig>;
+    public contigIndex : number;
+    public constructor()
     {
         super();
         this.refStream;
-        this.contigs = new Array();
+        this.contigs = new Array<Contig>();
         this.contigIndex = -1;
     }
-    beginRefStream(path)
+    public beginRefStream(path : string) : void
     {
         this.refStream = fs.createReadStream(path,{encoding : "UTF8"});
         let self = this;
         this.refStream.on
         (
-            "data",function(data)
+            "data",function(data : string)
             {
                 for(let i = 0; i != data.length; ++i)
                 {
@@ -69,4 +75,3 @@ class FastaContigLoader extends EventEmitter
         )
     }
 }
-module.exports = FastaContigLoader;
