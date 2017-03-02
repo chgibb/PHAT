@@ -58,55 +58,6 @@ module.exports = function(channel,arg,model)
 					);
 				}
 			);
-			/*
-			//samtools' stdout is sometimes delayed until after it has exited.
-			//check to see if we've already moved the artifact and exit if so.
-			try
-			{
-				if(canRead(fai))
-					return;
-			}
-			catch(err){}
-			try
-			{
-				fs.renameSync(src,fai);
-			}
-			catch(err)
-			{ 
-                //Potential issue with disk I/O. Wait a second and try again.
-                sleep(1);
-                try
-                {
-                    fs.renameSync(src,fai);
-                }
-                //Probably not an issue with disk I/O. Reset the indexing state of the item and print an error.
-                catch(err)
-                {
-                    model.fastaInputs[idx].indexing = false;
-                    alert(err);
-				    throw new Error(`Could not move "${src}" to "${fai}"`);
-                }
-			}
-			model.fastaInputs[idx].contigs = faiParser.getContigs(fai);
-			var bowTieIndex = fsAccess('resources/app/rt/indexes/'+model.fastaInputs[idx].alias,false);
-			model.fastaInputs[idx].fai = fai;
-			let args = [];
-			if(process.platform == "linux")
-				args = [model.fastaInputs[idx].name,bowTieIndex];
-			else if(process.platform == "win32")
-				args = [model.fsAccess("resources/app/bowtie2-build"), model.fastaInputs[idx].name,bowTieIndex]
-			model.spawnHandle
-            (
-			    'spawn',
-                {
-                    action : 'spawn',
-                    replyChannel : 'input',
-                    processName : model.bowTie2Build,
-                    args : args,
-                    unBuffer : true
-                }
-			);
-			*/
 		}
 	}
 }
