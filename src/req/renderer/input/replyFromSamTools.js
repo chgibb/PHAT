@@ -28,7 +28,7 @@ module.exports = function(channel,arg,model)
 			//samtools will place artifact in same dir as input file
 			let src = model.fsAccess(arg.extraData+".fai");
 
-			fse.copy
+			fse.move
 			(
 				src,fai,{overwrite : true},function(err)
 				{
