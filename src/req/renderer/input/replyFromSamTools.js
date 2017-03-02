@@ -1,3 +1,4 @@
+let fse = require('fs-extra');
 var fs = require('fs');
 
 var canRead = require('./../canRead');
