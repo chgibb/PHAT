@@ -23,10 +23,11 @@ module.exports = function(channel,arg,model)
 			}
 			if(idx == -1)
 				throw new Error("Can not create faidx index for fasta which does not exist!");
-				/*
+				
 			var fai = fsAccess("resources/app/rt/indexes/"+model.fastaInputs[idx].alias+".fai",false);
 			//samtools will place artifact in same dir as input file
 			var src = model.fsAccess(arg.extraData+".fai");
+			/*
 			//samtools' stdout is sometimes delayed until after it has exited.
 			//check to see if we've already moved the artifact and exit if so.
 			try
