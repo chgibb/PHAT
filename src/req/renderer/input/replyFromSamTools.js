@@ -24,9 +24,40 @@ module.exports = function(channel,arg,model)
 			if(idx == -1)
 				throw new Error("Can not create faidx index for fasta which does not exist!");
 				
-			var fai = fsAccess("resources/app/rt/indexes/"+model.fastaInputs[idx].alias+".fai",false);
+			let fai = fsAccess("resources/app/rt/indexes/"+model.fastaInputs[idx].alias+".fai",false);
 			//samtools will place artifact in same dir as input file
-			var src = model.fsAccess(arg.extraData+".fai");
+			let src = model.fsAccess(arg.extraData+".fai");
+
+			fse.copy
+			(
+				src,fai,{overwrite : true},function(err)
+				{
+					if(err)
+					{
+						model.fastaInputs[idx].indexing = false;
+						throw new Error(err);
+					}
+					model.fastaInputs[idx].contigs = faiParser.getContigs(fai);
+					var bowTieIndex = fsAccess('resources/app/rt/indexes/'+model.fastaInputs[idx].alias,false);
+					model.fastaInputs[idx].fai = fai;
+					let args = [];
+					if(process.platform == "linux")
+						args = [model.fastaInputs[idx].name,bowTieIndex];
+					else if(process.platform == "win32")
+						args = [model.fsAccess("resources/app/bowtie2-build"), model.fastaInputs[idx].name,bowTieIndex]
+					model.spawnHandle
+            		(
+			    		'spawn',
+                		{
+                    		action : 'spawn',
+                    		replyChannel : 'input',
+                    		processName : model.bowTie2Build,
+                    		args : args,
+                    		unBuffer : true
+                		}
+					);
+				}
+			);
 			/*
 			//samtools' stdout is sometimes delayed until after it has exited.
 			//check to see if we've already moved the artifact and exit if so.
