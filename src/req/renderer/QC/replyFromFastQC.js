@@ -5,6 +5,9 @@ module.exports = function(channel,arg,model)
     
     if(arg.done)
     {
+
+        
+        /*
         //trim the file name off of the full path
         var trimmed = trimPath(arg.args[0]);
         //extract just the full path up to the  last slash
@@ -25,6 +28,6 @@ module.exports = function(channel,arg,model)
                 ],
                 unBuffer : true
             }
-        );
+        );*/
     }
 }
