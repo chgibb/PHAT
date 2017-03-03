@@ -1,3 +1,5 @@
+let fse = require('fs-extra');
+
 var id = require('./../MakeValidID.js');
 var trimPath = require('./../trimPath.js');
 module.exports = function(channel,arg,model)
@@ -6,7 +8,7 @@ module.exports = function(channel,arg,model)
     if(arg.done)
     {
 
-        
+
         /*
         //trim the file name off of the full path
         var trimmed = trimPath(arg.args[0]);
