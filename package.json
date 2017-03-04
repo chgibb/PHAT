@@ -5,7 +5,7 @@
   "main": "main.js",
   "scripts": {
     "start": "electron main.js",
-    "test": " sh runtests.sh"
+    "test": "bash runtests.bash"
   },
   "author": "Chris Gibb",
   "license": "",
@@ -19,6 +19,8 @@
     "jsdoc": "^3.4.3"
   },
   "dependencies": {
+    "angular": "^1.6.1",
+    "angularplasmid": "^1.0.5",
     "electron-ipc-stream": "^0.2.0",
     "electron-packager": "^8.0.0",
     "jquery": "^2.2.4",

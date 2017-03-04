@@ -87,7 +87,7 @@ module.exports = class
 	}
 	OnSpawnError(err)
 	{
-		throw new Error("Could not spawn process: "+this.processName+" "+err);
+		throw new Error("\nCould not spawn process: "+this.processName+" "+err+"\n CWD: "+process.cwd()+"\n");
 	}
 	OnComplete(retCode)
 	{
