@@ -32,7 +32,7 @@ module.exports = function(channel,arg,model)
                 if(err)
                 {
                     model.runningReport = false;
-                    throw new Error("Could not move "+srcDir+"/fastqc_report.html");
+                    throw new Error("Could not move "+srcDir+"/fastqc_report.html "+err);
                 }
                 fse.removeSync(srcDir+"/fastqc_report.html"); 
                 fse.copy
@@ -42,7 +42,7 @@ module.exports = function(channel,arg,model)
                         if(err)
                         {
                             model.runningReport = false;
-                            throw new Error("Could not move "+srcDir+"/summary.txt");
+                            throw new Error("Could not move "+srcDir+"/summary.txt "+err);
                         }
                         fse.removeSync(srcDir+"/summary.txt");
                         fse.copy
@@ -52,7 +52,7 @@ module.exports = function(channel,arg,model)
                                 if(err)
                                 {
                                     model.runningReport = false;
-                                    throw new Error("Could not move "+srcDir+"/fastqc_data.txt");
+                                    throw new Error("Could not move "+srcDir+"/fastqc_data.txt "+err);
                                 }
                                 fse.removeSync(srcDir+"/fastqc_data.txt");
                                 for(let i = 0; i != model.QCData.length; ++i)
