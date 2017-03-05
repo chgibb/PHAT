@@ -25,6 +25,7 @@ module.exports = class extends model.DataModelMgr
         //allow the environment to change default paths for required foreign modules
         this.faToTwoBit = this.fsAccess('resources/app/faToTwoBit');
         this.samTools = this.fsAccess('resources/app/samtools');
+        this.copy = this.fsAccess('resources/app/copy');
         if(process.platform == "linux")
             this.bowTie2Build = this.fsAccess('resources/app/bowtie2-build');
         else if(process.platform == "win32")
