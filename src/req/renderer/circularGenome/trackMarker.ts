@@ -1,13 +1,13 @@
 export function add(
     options? : {
-        start : string,
-        end : string,
-        markerStyle : string,
-        class : string,
-        arrowStartLength : string,
-        arrowEndLength : string,
-        vAdjust : string,
-        wAdjust : string
+        start? : string,
+        end? : string,
+        markerStyle? : string,
+        class? : string,
+        arrowStartLength? : string,
+        arrowEndLength? : string,
+        vAdjust? : string,
+        wAdjust? : string
     }
 ) : string
 {
