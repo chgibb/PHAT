@@ -1,4 +1,11 @@
-module.exports.add = function(options)
+export function add(
+    options : {
+        text : string,
+        labelStyle : string,
+        vAdjust : string,
+        wAdjust : string
+    }
+) : string
 {
     let res = `
         <tracklabel ${
@@ -35,7 +42,7 @@ module.exports.add = function(options)
     return res;
 }
 
-module.exports.end = function()
+export function end() : string
 {
     return `</tracklabel>`;
 }
