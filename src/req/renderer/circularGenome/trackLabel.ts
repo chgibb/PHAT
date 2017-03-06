@@ -1,9 +1,9 @@
 export function add(
-    options : {
-        text : string,
-        labelStyle : string,
-        vAdjust : string,
-        wAdjust : string
+    options? : {
+        text? : string,
+        labelStyle? : string,
+        vAdjust? : string,
+        wAdjust? : string
     }
 ) : string
 {
