@@ -1,5 +1,5 @@
 var jsonFile = require('jsonfile');
-var fsAccess = require('./../fsAccess');
+var fsAccess = require('./../fsAccess').default;
 //tick # to persist at
 module.exports.persistTick = 5;
 //current ticks
