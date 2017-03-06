@@ -57,8 +57,7 @@ var QCReplyObject =
 		{
 			//Update event system
 			assert.runningEvents -= 1;
-		}
-		
+		}	
 	}
 };
 var alignReplyObject = 

@@ -87,15 +87,19 @@ $
             {
                 if(arg.processName == QC.fastQC)
                 {
-                    if(!arg.done)
+                    if(arg.unBufferedData)
                     {
-                        if(arg.unBufferedData)
+                        if(validFastQCOut.test(arg.unBufferedData))
                         {
-                            if(validFastQCOut.test(arg.unBufferedData))
+                            let regResult = trimOutFastQCPercentage.exec(arg.unBufferedData);
+                            if(regResult && regResult[0])
                             {
-                                let regResult = trimOutFastQCPercentage.exec(arg.unBufferedData);
-                                if(regResult && regResult[0])
-                                    $('#'+id.makeValidID(arg.args[0])).text(regResult[0]);
+                                let idx = -1;
+                                if(process.platform == "linux")
+                                    idx = 0;
+                                else if(process.platform == "win32")
+                                    idx = 1;
+                                $('#'+id.makeValidID(arg.args[idx])).text(regResult[0]);
                             }
                         }
                     }
