@@ -139,6 +139,7 @@ export class View extends viewMgr.View
                                 me.rightPanelOpen = false;
                                 return "-=50%";
                             }
+                            return "";
                         }
                     )()
                 }
@@ -163,6 +164,7 @@ export class View extends viewMgr.View
                                 me.leftPanelOpen = false;
                                 return "-=50%";
                             }
+                            return "";
                         }
                     )()
                 }
