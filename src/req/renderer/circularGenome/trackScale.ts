@@ -1,4 +1,14 @@
-module.exports.add = function(options)
+export function add(
+    options? : {
+        interval? : string,
+        style? : string,
+        direction? : string,
+        tickSize? : string,
+        showLabels? : string,
+        vAdjust? : string,
+        labelStyle? : string
+    }
+) : string
 {
     let res = `
         <trackscale ${
@@ -33,8 +43,8 @@ module.exports.add = function(options)
                         (
                         ()=>
                         {
-                            if(options && options.showlabels)
-                                return `showlabels="${options.showlabels}"`;
+                            if(options && options.showLabels)
+                                return `showlabels="${options.showLabels}"`;
                             return "";
                         })()} ${
                         (
@@ -56,7 +66,7 @@ module.exports.add = function(options)
     return res;
 }
 
-module.exports.end = function()
+export function end() : string
 {
     return `</trackscale>`;
 }

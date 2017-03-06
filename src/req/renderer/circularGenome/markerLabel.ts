@@ -1,19 +1,34 @@
-module.exports.add = function(options)
+export function add(
+    options? : {
+        type? : string,
+        class? : string,
+        text? : string,
+        vAdjust? : string,
+        wAdjust? : string
+    }
+) : string
 {
     let res = `
-        <tracklabel ${
+        <markerlabel ${
             (
                 ()=>
                 {
-                    if(options && options.text)
-                        return `text="${options.text}"`;
+                    if(options && options.type)
+                        return `type="${options.type}"`;
                     return "";
                 })()} ${
                     (
                         ()=>
                         {
-                            if(options && options.labelStyle)
-                                return `labelstyle="${options.labelStyle}"`;
+                            if(options && options.class)
+                                return `class="${options.class}"`;
+                            return "";
+                        })()} ${
+                        (
+                        ()=>
+                        {
+                            if(options && options.text)
+                                return `text="${options.text}"`;
                             return "";
                         })()} ${
                         (
@@ -35,7 +50,7 @@ module.exports.add = function(options)
     return res;
 }
 
-module.exports.end = function()
+export function end() : string
 {
-    return `</tracklabel>`;
+    return `</markerlabel>`;
 }

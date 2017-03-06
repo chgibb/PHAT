@@ -3,12 +3,13 @@
 import * as viewMgr from "./../viewMgr";
 import {Contig,FastaContigLoader} from "./../circularGenome/fastaContigLoader";
 import {DataModelMgr} from "./../model";
-let plasmidTrack = require("./../circularGenome/plasmidTrack");
-let plasmid = require("./../circularGenome/plasmid");
-let trackLabel = require("./../circularGenome/trackLabel");
-let trackMarker = require("./../circularGenome/trackMarker");
-let markerLabel = require("./../circularGenome/markerLabel");
-let trackScale = require("./../circularGenome/trackScale");
+import {GenomeFigure} from "./../circularGenome/genomeFigure";
+import * as plasmid from "./../circularGenome/plasmid";
+import * as plasmidTrack from "./../circularGenome/plasmidTrack";
+import * as trackLabel from "./../circularGenome/trackLabel";
+import * as trackMarker from "./../circularGenome/trackMarker";
+import * as markerLabel from "./../circularGenome/markerLabel";
+import * as trackScale from "./../circularGenome/trackScale";
 
 require("angular");
 require("angularplasmid");
@@ -17,15 +18,15 @@ require("angularplasmid");
 function getRandColor(brightness : number)
 {
     // Six levels of brightness from 0 to 5, 0 being the darkest
-    var rgb = [Math.random() * 256, Math.random() * 256, Math.random() * 256];
-    var mix = [brightness*51, brightness*51, brightness*51]; //51 => 255/5
-    var mixedrgb = [rgb[0] + mix[0], rgb[1] + mix[1], rgb[2] + mix[2]].map(function(x){return Math.round(x/2.0)});
+    let rgb = [Math.random() * 256, Math.random() * 256, Math.random() * 256];
+    let mix = [brightness*51, brightness*51, brightness*51]; //51 => 255/5
+    let mixedrgb = [rgb[0] + mix[0], rgb[1] + mix[1], rgb[2] + mix[2]].map(function(x){return Math.round(x/2.0)});
     return "rgb(" + mixedrgb.join(",") + ")";
 }
-let app = angular.module('myApp',['angularplasmid']);
+let app : any = angular.module('myApp',['angularplasmid']);
 export class GenomeView extends viewMgr.View
 {
-    public genome : any;
+    public genome : GenomeFigure;
     public constructor(name : string,div : string, model : DataModelMgr)
     {
         super(name,div,model);
@@ -98,8 +99,7 @@ export class GenomeView extends viewMgr.View
                             ${trackScale.add(
                             {
                                 interval : "100",
-                                vAdjust : "5",
-                                showLabels : "1"
+                                vAdjust : "5"
                             }
                             )}
                             ${trackScale.end()}
