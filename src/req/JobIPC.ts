@@ -4,5 +4,7 @@ export interface SpawnRequestParams
     args : Array<string>;
     callBackChannel : string;
     unBuffer : boolean;
-    extraData : any;
+    extraData? : any;
+    done? : boolean;
+    retCode? : number;
 }
