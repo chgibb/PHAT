@@ -24,4 +24,5 @@ export function findOriginalInput(str : string,inputs : Array<any>) : string
 		if(makeValidID(inputs[i].name) === str)
 			return inputs[i].name;
 	}
+	return "";
 }
