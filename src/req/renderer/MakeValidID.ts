@@ -1,35 +1,27 @@
-/**
- * Utility functions for creating a valid HTML ID from a string
- * @module req/renderer/makeValidID
- */
-module.exports.replace = function(str,oldt,newt)
+export function replace(str : string,oldt : string,newt : string) : string
 {
-	var res = str;
+	let res = str;
 	res = res.replace(new RegExp(oldt,"g"),newt);
 	return res;
 }
-/**
- * Creates a valid HTML ID from a string
- * @param {string} str - String to create ID for
- * @returns {string} - Valid HTML ID of str
- */
-module.exports.makeValidID = function(str)
+
+export function makeValidID(str : string) : string
 {
-	res = str;
-	res = module.exports.replace(res," ","_");
-	res = module.exports.replace(res,"[.]","_");
-	res = module.exports.replace(res,"/","a");
-	res = module.exports.replace(res,"\\\\","a");
-	res = module.exports.replace(res,":","a");
-	res = module.exports.replace(res,"[(]","_");
-	res = module.exports.replace(res,"[)]","_");
+	let res = str;
+	res = replace(res," ","_");
+	res = replace(res,"[.]","_");
+	res = replace(res,"/","a");
+	res = replace(res,"\\\\","a");
+	res = replace(res,":","a");
+	res = replace(res,"[(]","_");
+	res = replace(res,"[)]","_");
 	return res;
 }
-module.exports.findOriginalInput = function(str,inputs)
+export function findOriginalInput(str : string,inputs : Array<any>) : string
 {
 	for(let i = 0; i != inputs.length; ++i)
 	{
-		if(module.exports.makeValidID(inputs[i].name) === str)
+		if(makeValidID(inputs[i].name) === str)
 			return inputs[i].name;
 	}
 }
