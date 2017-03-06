@@ -2,7 +2,7 @@ import * as fs from "fs";
 import {makeValidID,findOriginalInput} from "./../MakeValidID";
 import {SpawnRequestParams} from "./../../JobIPC";
 import Input from "./../Input";
-module.exports = function(channel : string,arg : SpawnRequestParams,model : Input)
+export default function replyFromBowTie2Build(channel : string,arg : SpawnRequestParams,model : Input)
 {
 	let name : string = "";
 	if(process.platform == "linux")

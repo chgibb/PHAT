@@ -14,7 +14,8 @@ import formatByteString from "./formatByteString";
 import canRead from "./canRead";
 //var fs = require('fs');
 //var model = require('./model');
-var replyFromBowTie2Build = require('./input/replyFromBowTie2Build');
+//var replyFromBowTie2Build = require('./input/replyFromBowTie2Build');
+import replyFromBowTie2Build from "./input/replyFromBowTie2Build";
 var replyFromFaToTwoBit = require('./input/replyFromFaToTwoBit');
 var replyFromSamTools = require('./input/replyFromSamTools');
 
