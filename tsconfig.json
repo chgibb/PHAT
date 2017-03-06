@@ -5,6 +5,10 @@
         "moduleResolution": "node",
         "target" : "es6",
         "noImplicitAny" : true,
+        "noImplicitReturns" : true,
+        "noImplicitThis" : true,
+        "noUnusedLocals" : true,
+        "noUnusedParameters" : true,
         "removeComments": true,
         "sourceMap" : false,
 	    "listFiles" : true
