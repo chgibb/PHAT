@@ -16,6 +16,8 @@ export default class Fasta
     public pathogen : boolean;
     public type : string;
     public twoBit : string;
+    public contigs : Array<string>;
+    public fai : string;
     public constructor(name : string)
     {
         /**
@@ -46,5 +48,7 @@ export default class Fasta
         this.pathogen = false;
         this.type = "";
         this.twoBit = "";
+        this.contigs = new Array<string>();
+        this.fai = "";
     }
 }
