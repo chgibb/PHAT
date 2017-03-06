@@ -1,5 +1,5 @@
 import {makeValidID} from "./MakeValidID";
-import {trimPath} from "./trimPath";
+import trimPath from "./trimPath";
 export default class Fasta
 {
     public name : string;
