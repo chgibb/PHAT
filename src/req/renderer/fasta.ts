@@ -1,8 +1,5 @@
-/**
- * @module req/renderer/fasta
- */
-var id = require('./MakeValidID.js');
-var trimPath = require('./trimPath.js');
+import {makeValidID} from "./MakeValidID";
+import {trimPath} from "./trimPath";
 module.exports = class
 {
     /**
