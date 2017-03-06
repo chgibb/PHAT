@@ -1,6 +1,5 @@
-//var id = require('./MakeValidID.js');
 import {makeValidID} from "./MakeValidID";
-var trimPath = require('./trimPath.js');
+import {trimPath} from "./trimPath";
 export default class Fastq
 {
     public name : string;

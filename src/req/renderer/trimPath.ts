@@ -1,4 +1,4 @@
-export default function trimPath(str : string) : string
+export function trimPath(str : string) : string
 {
 	let rev : string = "";
 	let res : string = "";
