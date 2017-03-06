@@ -1,12 +1,12 @@
 export function add(
-    options : {
-        interval : string,
-        style : string,
-        direction : string,
-        tickSize : string,
-        showLabels : string,
-        vAdjust : string,
-        labelStyle : string
+    options? : {
+        interval? : string,
+        style? : string,
+        direction? : string,
+        tickSize? : string,
+        showLabels? : string,
+        vAdjust? : string,
+        labelStyle? : string
     }
 ) : string
 {
