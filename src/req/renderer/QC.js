@@ -1,7 +1,7 @@
 var QCData = require('./QCData');
 var fs = require('fs');
 var model = require('./model');
-var canRead = require('./canRead');
+var canRead = require('./canRead').default;
 var replyFromQCReportCopy = require('./QC/replyFromQCReportCopy');
 var replyFromFastQC = require('./QC/replyFromFastQC');
 module.exports = class extends model.DataModelMgr

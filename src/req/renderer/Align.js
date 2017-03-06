@@ -1,6 +1,6 @@
 var fs = require('fs');
 var model = require('./model');
-var canRead = require('./canRead');
+var canRead = require('./canRead').default;
 var fastq = require('./fastq');
 var fasta = require('./fasta');
 var alignData = require('./alignData');
