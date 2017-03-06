@@ -1,19 +1,19 @@
-let fse = require('fs-extra');
-var fs = require('fs');
-
-var canRead = require('./../canRead');
-var faiParser = require('./../faiParser');
-var fsAccess = require("./../../fsAccess");
-var sleep = require("./../../sleep");
-
-module.exports = function(channel,arg,model)
+/// <reference types="fs-extra" />
+import * as fse from "fs-extra";
+import * as fs from "fs";
+import canRead from "./../canRead";
+import getContigs from "./../faiParser";
+import fsAccess from "./../../fsAccess";
+import {SpawnRequestParams} from "./../../JobIPC";
+import Input from "./../Input";
+export default function replyFromSamTools(channel : string,arg : SpawnRequestParams,model : Input) : void
 {
 	if(arg.args[0] == "faidx")
 	{
 		if(arg.done)
 		{
-			var idx = -1;
-			for(let i = 0; i != model.fastaInputs.length; ++i)
+			let idx : number = -1;
+			for(let i : number = 0; i != model.fastaInputs.length; ++i)
 			{
 				if(model.fastaInputs[i].name == arg.extraData)
 				{
@@ -24,23 +24,23 @@ module.exports = function(channel,arg,model)
 			if(idx == -1)
 				throw new Error("Can not create faidx index for fasta which does not exist!");
 				
-			let fai = fsAccess("resources/app/rt/indexes/"+model.fastaInputs[idx].alias+".fai",false);
+			let fai : string = fsAccess("resources/app/rt/indexes/"+model.fastaInputs[idx].alias+".fai",false);
 			//samtools will place artifact in same dir as input file
-			let src = model.fsAccess(arg.extraData+".fai");
+			let src : string = model.fsAccess(arg.extraData+".fai");
 
 			fse.move
 			(
-				src,fai,{overwrite : true},function(err)
+				src,fai,{clobber : true},function(err : Error)
 				{
 					if(err)
 					{
 						model.fastaInputs[idx].indexing = false;
-						throw new Error(err);
+						throw new Error(err.toString());
 					}
-					model.fastaInputs[idx].contigs = faiParser.getContigs(fai);
-					var bowTieIndex = fsAccess('resources/app/rt/indexes/'+model.fastaInputs[idx].alias,false);
+					model.fastaInputs[idx].contigs = getContigs(fai);
+					let bowTieIndex : string = fsAccess('resources/app/rt/indexes/'+model.fastaInputs[idx].alias,false);
 					model.fastaInputs[idx].fai = fai;
-					let args = [];
+					let args : Array<string> = <Array<string>>[];
 					if(process.platform == "linux")
 						args = [model.fastaInputs[idx].name,bowTieIndex];
 					else if(process.platform == "win32")
