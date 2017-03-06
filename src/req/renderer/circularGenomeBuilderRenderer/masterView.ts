@@ -184,6 +184,9 @@ export class View extends viewMgr.View
                                     new CircularFigure("New Figure",this.circularGenomeMgr.managedFastas[i].contigs)
                                 );
                                 this.circularGenomeMgr.postManagedFastas();
+                                let ref = <GenomeView.GenomeView>viewMgr.getViewByName("genomeView",this.views);
+                                ref.genome = this.circularGenomeMgr.managedFastas[k].circularFigures[this.circularGenomeMgr.managedFastas[k].circularFigures.length - 1];
+                                viewMgr.render();
                                 return;
                             }
                         }
