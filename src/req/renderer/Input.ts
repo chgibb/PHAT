@@ -16,7 +16,8 @@ import canRead from "./canRead";
 //var model = require('./model');
 //var replyFromBowTie2Build = require('./input/replyFromBowTie2Build');
 import replyFromBowTie2Build from "./input/replyFromBowTie2Build";
-var replyFromFaToTwoBit = require('./input/replyFromFaToTwoBit');
+//var replyFromFaToTwoBit = require('./input/replyFromFaToTwoBit');
+import replyFromFaToTwoBit from "./input/replyFromFaToTwoBit";
 var replyFromSamTools = require('./input/replyFromSamTools');
 
 import * as fs from "fs";
