@@ -75,8 +75,6 @@ module.exports = function(channel : string,arg : SpawnRequestParams,model : Inpu
 							return;
 						}
 						catch(err){throw new Error(err);}
-			
-						alert("Could Not Generate Index For "+model.fastaInputs[i].alias);
 					}
 				}
 			}
