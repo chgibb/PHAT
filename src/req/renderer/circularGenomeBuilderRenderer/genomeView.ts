@@ -4,12 +4,12 @@ import * as viewMgr from "./../viewMgr";
 import {Contig,FastaContigLoader} from "./../circularGenome/fastaContigLoader";
 import {DataModelMgr} from "./../model";
 import {GenomeFigure} from "./../circularGenome/genomeFigure";
-let plasmidTrack = require("./../circularGenome/plasmidTrack");
-let plasmid = require("./../circularGenome/plasmid");
-let trackLabel = require("./../circularGenome/trackLabel");
-let trackMarker = require("./../circularGenome/trackMarker");
-let markerLabel = require("./../circularGenome/markerLabel");
-let trackScale = require("./../circularGenome/trackScale");
+import * as plasmid from "./../circularGenome/plasmid";
+import * as plasmidTrack from "./../circularGenome/plasmidTrack";
+import * as trackLabel from "./../circularGenome/trackLabel";
+import * as trackMarker from "./../circularGenome/trackMarker";
+import * as markerLabel from "./../circularGenome/markerLabel";
+import * as trackScale from "./../circularGenome/trackScale";
 
 require("angular");
 require("angularplasmid");
