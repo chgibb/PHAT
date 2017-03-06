@@ -6,7 +6,8 @@
 */
 //var fastq = require('./fastq');
 import Fastq from "./fastq";
-var fasta = require('./fasta');
+//var fasta = require('./fasta');
+import Fasta from "./fasta";
 var formatByteString = require('./formatByteString');
 var canRead = require('./canRead');
 //var fs = require('fs');
