@@ -15,6 +15,7 @@ export default class Fasta
     public host : boolean;
     public pathogen : boolean;
     public type : string;
+    public twoBit : string;
     public constructor(name : string)
     {
         /**
@@ -44,5 +45,6 @@ export default class Fasta
         this.host = false;
         this.pathogen = false;
         this.type = "";
+        this.twoBit = "";
     }
 }
