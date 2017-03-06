@@ -55,7 +55,7 @@ export default class Input extends DataModelMgr
         this.fastqInputs.push(new Fastq(this.fsAccess(name)));
 
         //use Node's statSync to get filesize
-        var stats = fs.statSync(name);
+        let stats : fs.Stats = fs.statSync(name);
 
         for(let i = 0; i != this.fastqInputs.length; ++i)
 	    {
