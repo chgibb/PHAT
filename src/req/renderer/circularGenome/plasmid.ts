@@ -1,4 +1,12 @@
-module.exports.add = function(options)
+export function add
+(
+    options : 
+    {
+        sequenceLength : string,
+        plasmidHeight : string,
+        plasmidWidth : string
+    }
+) : string
 {
     let res = `
         <plasmid ${
@@ -28,7 +36,7 @@ module.exports.add = function(options)
     return res;
 }
 
-module.exports.end = function()
+export function end() : string
 {
     return `</plasmid>`;
 }
