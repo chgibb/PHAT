@@ -42,15 +42,15 @@ export default class Input extends DataModelMgr
         else if(process.platform == "win32")
             this.bowTie2Build = this.fsAccess('resources/app/python/python.exe');
     }
-    postFastqInputs()
+    postFastqInputs() : void
     {
         this.postHandle(this.channel,{action : 'postState', key : 'fastqInputs', val : this.fastqInputs});
     }
-    postFastaInputs()
+    postFastaInputs() : void
     { 
         this.postHandle(this.channel,{action : 'postState', key : 'fastaInputs', val : this.fastaInputs});
     }
-    addFastq(name : string)
+    addFastq(name : string) : boolean
     {
         if(!canRead(this.fsAccess(name)))
             return false;
@@ -69,7 +69,7 @@ export default class Input extends DataModelMgr
 	    }
         return true;
     }
-    addFasta(name : string)
+    addFasta(name : string) : boolean
     {
         if(!canRead(this.fsAccess(name)))
             return false;
@@ -87,7 +87,7 @@ export default class Input extends DataModelMgr
 	    }
         return true;
     }
-    indexFasta(name : string)
+    indexFasta(name : string) : boolean
     {
         for(let i = 0; i != this.fastaInputs.length; ++i)
         {
@@ -115,7 +115,7 @@ export default class Input extends DataModelMgr
         }
         return false;
     }
-    fastqExists(name : string)
+    fastqExists(name : string) : boolean
     {
         for(let i = 0; i != this.fastqInputs.length; ++i)
 	    {
@@ -124,7 +124,7 @@ export default class Input extends DataModelMgr
 	    }
 	    return false;
     }
-    fastaExists(name : string)
+    fastaExists(name : string) : boolean
     {
         for(let i = 0; i != this.fastaInputs.length; ++i)
 	    {
@@ -133,7 +133,7 @@ export default class Input extends DataModelMgr
 	    }
 	    return false;
     }
-    spawnReply(channel : string,arg : SpawnRequestParams)
+    spawnReply(channel : string,arg : SpawnRequestParams) : void
     {
         if(arg.processName == this.faToTwoBit)
             replyFromFaToTwoBit(channel,arg,this);
