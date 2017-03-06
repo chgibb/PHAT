@@ -1,4 +1,10 @@
-module.exports.add = function(options)
+export function add(
+    options : {
+        trackStyle : string,
+        width : string,
+        radius : string
+    }
+) : string
 {
     let res = `
         <plasmidtrack ${
@@ -28,7 +34,7 @@ module.exports.add = function(options)
     return res;
 }
 
-module.exports.end = function()
+export function end() : string
 {
     return `</plasmidtrack>`;
 }
