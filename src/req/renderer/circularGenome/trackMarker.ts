@@ -74,7 +74,7 @@ export function add(
     return res;
 }
 
-export function end()string
+export function end() : string
 {
     return `</trackmarker>`;
 }
