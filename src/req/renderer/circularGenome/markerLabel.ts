@@ -1,7 +1,5 @@
-export function add
-(
-    options? : 
-    {
+export function add(
+    options? : {
         type : string,
         class : string,
         text : string,
