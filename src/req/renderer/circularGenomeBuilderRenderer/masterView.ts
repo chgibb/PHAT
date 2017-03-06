@@ -1,4 +1,4 @@
-//// <reference path="jquery.d.ts" />
+/// <reference types="jquery" />
 
 import * as viewMgr from "./../viewMgr";
 import {DataModelMgr} from "./../model";
