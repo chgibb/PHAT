@@ -1,10 +1,10 @@
 export function add(
     options? : {
-        type : string,
-        class : string,
-        text : string,
-        vAdjust : string,
-        wAdjust : string
+        type? : string,
+        class? : string,
+        text? : string,
+        vAdjust? : string,
+        wAdjust? : string
     }
 ) : string
 {
