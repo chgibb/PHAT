@@ -1,5 +1,5 @@
 export function add(
-    options : {
+    options? : {
         trackStyle : string,
         width : string,
         radius : string
