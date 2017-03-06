@@ -4,7 +4,8 @@
 	Part of the PHAT Project
 	Author : gibbc@tbh.net
 */
-var fastq = require('./fastq');
+//var fastq = require('./fastq');
+import Fastq from "./fastq";
 var fasta = require('./fasta');
 var formatByteString = require('./formatByteString');
 var canRead = require('./canRead');
@@ -21,7 +22,7 @@ import {SpawnRequestParams} from "./../JobIPC";
 
 export default class Input extends DataModelMgr
 {
-    public fastqInputs : Array<any>;
+    public fastqInputs : Array<Fastq>;
     public fastaInputs : Array<any>;
     public faToTwoBit : string;
     public samTools : string;
@@ -30,7 +31,7 @@ export default class Input extends DataModelMgr
     public constructor(channel : string,handlers : DataModelHandlers)
     {
         super(channel,handlers);
-        this.fastqInputs = new Array();
+        this.fastqInputs = new Array<Fastq>();
         this.fastaInputs = new Array();
         
         //allow the environment to change default paths for required foreign modules
@@ -54,7 +55,7 @@ export default class Input extends DataModelMgr
     {
         if(!canRead(this.fsAccess(name)))
             return false;
-        this.fastqInputs.push(new fastq(this.fsAccess(name)));
+        this.fastqInputs.push(new Fastq(this.fsAccess(name)));
 
         //use Node's statSync to get filesize
         var stats = fs.statSync(name);
