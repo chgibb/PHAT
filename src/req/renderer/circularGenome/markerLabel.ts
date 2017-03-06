@@ -1,4 +1,14 @@
-module.exports.add = function(options)
+export function add
+(
+    options? : 
+    {
+        type : string,
+        class : string,
+        text : string,
+        vAdjust : string,
+        wAdjust : string
+    }
+) : string
 {
     let res = `
         <markerlabel ${
@@ -42,7 +52,7 @@ module.exports.add = function(options)
     return res;
 }
 
-module.exports.end = function()
+export function end()
 {
     return `</markerlabel>`;
 }
