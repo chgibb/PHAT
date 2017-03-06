@@ -1,4 +1,15 @@
-module.exports.add = function(options)
+export function add(
+    options? : {
+        start : string,
+        end : string,
+        markerStyle : string,
+        class : string,
+        arrowStartLength : string,
+        arrowEndLength : string,
+        vAdjust : string,
+        wAdjust : string
+    }
+) : string
 {
     let res = `
         <trackmarker ${
@@ -63,7 +74,7 @@ module.exports.add = function(options)
     return res;
 }
 
-module.exports.end = function()
+export function end()string
 {
     return `</trackmarker>`;
 }
