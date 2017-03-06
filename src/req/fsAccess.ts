@@ -1,8 +1,8 @@
 /**
  * @module req/fsAccess
  */
-var url = require('url')
-var path = require('path');
+import * as url from "url";
+import * as path from "path";
 /**
  * Converts a local path to an absolute path.
  * @function fsAccess
@@ -10,7 +10,7 @@ var path = require('path');
  * @param {boolean} addProtocol - add "file://" protocal to start of returned absolute path. (Defaults to true)
  * @returns {string} - absolute path to filePath
  */
-module.exports = function(filePath,addProtocol = true)
+export default function fsAccess(filePath : string,addProtocol : boolean = true) : string
 {
     if(addProtocol)
     {
