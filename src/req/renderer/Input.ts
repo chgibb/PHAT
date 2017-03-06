@@ -17,6 +17,7 @@ var replyFromSamTools = require('./input/replyFromSamTools');
 import * as fs from "fs";
 
 import {DataModelHandlers,DataModelMgr} from "./model";
+import {SpawnRequestParams} from "./../JobIPC";
 
 export default class Input extends DataModelMgr
 {
@@ -49,7 +50,7 @@ export default class Input extends DataModelMgr
     { 
         this.postHandle(this.channel,{action : 'postState', key : 'fastaInputs', val : this.fastaInputs});
     }
-    addFastq(name)
+    addFastq(name : string)
     {
         if(!canRead(this.fsAccess(name)))
             return false;
@@ -68,7 +69,7 @@ export default class Input extends DataModelMgr
 	    }
         return true;
     }
-    addFasta(name)
+    addFasta(name : string)
     {
         if(!canRead(this.fsAccess(name)))
             return false;
@@ -86,7 +87,7 @@ export default class Input extends DataModelMgr
 	    }
         return true;
     }
-    indexFasta(name)
+    indexFasta(name : string)
     {
         for(let i = 0; i != this.fastaInputs.length; ++i)
         {
@@ -114,7 +115,7 @@ export default class Input extends DataModelMgr
         }
         return false;
     }
-    fastqExists(name)
+    fastqExists(name : string)
     {
         for(let i = 0; i != this.fastqInputs.length; ++i)
 	    {
@@ -123,7 +124,7 @@ export default class Input extends DataModelMgr
 	    }
 	    return false;
     }
-    fastaExists(name)
+    fastaExists(name : string)
     {
         for(let i = 0; i != this.fastaInputs.length; ++i)
 	    {
@@ -132,7 +133,7 @@ export default class Input extends DataModelMgr
 	    }
 	    return false;
     }
-    spawnReply(channel,arg)
+    spawnReply(channel : string,arg : SpawnRequestParams)
     {
         if(arg.processName == this.faToTwoBit)
             replyFromFaToTwoBit(channel,arg,this);
