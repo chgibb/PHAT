@@ -4,21 +4,13 @@
 	Part of the PHAT Project
 	Author : gibbc@tbh.net
 */
-//var fastq = require('./fastq');
 import Fastq from "./fastq";
-//var fasta = require('./fasta');
 import Fasta from "./fasta";
-//var formatByteString = require('./formatByteString');
 import formatByteString from "./formatByteString";
-//var canRead = require('./canRead');
 import canRead from "./canRead";
-//var fs = require('fs');
-//var model = require('./model');
-//var replyFromBowTie2Build = require('./input/replyFromBowTie2Build');
 import replyFromBowTie2Build from "./input/replyFromBowTie2Build";
-//var replyFromFaToTwoBit = require('./input/replyFromFaToTwoBit');
 import replyFromFaToTwoBit from "./input/replyFromFaToTwoBit";
-var replyFromSamTools = require('./input/replyFromSamTools');
+import replyFromSamTools from "./input/replyFromSamTools";
 
 import * as fs from "fs";
 
