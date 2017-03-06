@@ -52,7 +52,7 @@ export function add
     return res;
 }
 
-export function end()
+export function end() : string
 {
     return `</markerlabel>`;
 }
