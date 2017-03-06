@@ -22,7 +22,7 @@ function getRandColor(brightness : number)
     var mixedrgb = [rgb[0] + mix[0], rgb[1] + mix[1], rgb[2] + mix[2]].map(function(x){return Math.round(x/2.0)});
     return "rgb(" + mixedrgb.join(",") + ")";
 }
-let app = angular.module('myApp',['angularplasmid']);
+let app : any = angular.module('myApp',['angularplasmid']);
 export class GenomeView extends viewMgr.View
 {
     public genome : any;
