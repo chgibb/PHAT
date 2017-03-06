@@ -1,7 +1,5 @@
-export function add
-(
-    options : 
-    {
+export function add(
+    options : {
         sequenceLength : string,
         plasmidHeight : string,
         plasmidWidth : string
