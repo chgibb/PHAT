@@ -76,7 +76,7 @@ export default class Input extends DataModelMgr
         this.fastaInputs.push(new fasta(this.fsAccess(name)));
 
         //use Node's statSync to get filesize
-        var stats = fs.statSync(name);
+        let stats = fs.statSync(name);
         for(let i = 0; i != this.fastaInputs.length; ++i)
 	    {
 		    if(this.fastaInputs[i].name == name) 
