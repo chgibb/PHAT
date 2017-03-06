@@ -99,8 +99,7 @@ export class GenomeView extends viewMgr.View
                             ${trackScale.add(
                             {
                                 interval : "100",
-                                vAdjust : "5",
-                                showLabels : "1"
+                                vAdjust : "5"
                             }
                             )}
                             ${trackScale.end()}
