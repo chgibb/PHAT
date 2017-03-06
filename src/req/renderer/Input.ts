@@ -8,15 +8,25 @@ var fastq = require('./fastq');
 var fasta = require('./fasta');
 var formatByteString = require('./formatByteString');
 var canRead = require('./canRead');
-var fs = require('fs');
-var model = require('./model');
+//var fs = require('fs');
+//var model = require('./model');
 var replyFromBowTie2Build = require('./input/replyFromBowTie2Build');
 var replyFromFaToTwoBit = require('./input/replyFromFaToTwoBit');
 var replyFromSamTools = require('./input/replyFromSamTools');
 
-module.exports = class extends model.DataModelMgr
+import * as fs from "fs";
+
+import {DataModelHandlers,DataModelMgr} from "./model";
+
+export default class Input extends DataModelMgr
 {
-    constructor(channel,handlers)
+    public fastqInputs : Array<any>;
+    public fastaInputs : Array<any>;
+    public faToTwoBit : string;
+    public samTools : string;
+    public copy : string;
+    public bowTie2Build : string;
+    public constructor(channel : string,handlers : DataModelHandlers)
     {
         super(channel,handlers);
         this.fastqInputs = new Array();
