@@ -99,6 +99,7 @@ export class View extends viewMgr.View
             {
                 this.views[i].render();
             }
+            return undefined;
     }
     public postRender() : void{}
     public dataChanged() : void
