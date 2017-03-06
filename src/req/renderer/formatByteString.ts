@@ -8,7 +8,7 @@
  * @returns {string} - Formatted byte string
  */
 //Adapted from https://jsfiddle.net/oy02axhh/
-export function formatByteString(bytes : number) : string
+export default function formatByteString(bytes : number) : string
 {
     let kb = 1000;
     let ndx = Math.floor(Math.log(bytes) / Math.log(kb));
