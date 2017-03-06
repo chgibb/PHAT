@@ -82,6 +82,7 @@ export class CircularGenomeMgr extends DataModelMgr
                 }
             })
         );
+        return true;
     }
     public isCached(fasta : any) : boolean
     {
