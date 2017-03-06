@@ -24,7 +24,7 @@ import {SpawnRequestParams} from "./../JobIPC";
 export default class Input extends DataModelMgr
 {
     public fastqInputs : Array<Fastq>;
-    public fastaInputs : Array<any>;
+    public fastaInputs : Array<Fasta>;
     public faToTwoBit : string;
     public samTools : string;
     public copy : string;
@@ -75,7 +75,7 @@ export default class Input extends DataModelMgr
     {
         if(!canRead(this.fsAccess(name)))
             return false;
-        this.fastaInputs.push(new fasta(this.fsAccess(name)));
+        this.fastaInputs.push(new Fasta(this.fsAccess(name)));
 
         //use Node's statSync to get filesize
         let stats = fs.statSync(name);
