@@ -1,156 +1,157 @@
-var viewMgr = require('./../viewMgr');
-var id = require('./../MakeValidID.js');
+import {View} from "./../viewMgr";
+import {makeValidID,findOriginalInput} from "./../MakeValidID";
+import Input from "./../Input";
 var buildInclusiveSearchFilter = require('./../buildInclusiveSearchFilter.js');
-module.exports = function(arr,div,model)
+export class FastqView extends View
 {
-    arr.push
-    (
-        new class extends viewMgr.View
-        {
-            constructor()
-            {
-                super('fastq',div,model);
-                this.data.fastqInputs = new Array();
-                this.data.searchFilter = new RegExp("","i");
-                this.data.filterString = "";
-            }
-            onMount(){}
-            onUnMount(){}
-            renderView()
-            {
-                if(document.getElementById('fastqInputFilterBox'))
-                    this.data.filterString = document.getElementById('fastqInputFilterBox').value;
-                var html = new Array();
-                html.push
-                (
-                    "<input id='fastqInputFilterBox' class='inputFilterBox' type='text' autofocus='autofocus' placeholder='Search' />",
-                    "<table id='fastqTable' style='width:100%'>",
-                    "<tr>",
-                    "<td><input type='checkbox' id='fastqSelectAllBox'></input></td>",
-                    "<th>Sample Name</th>",
-                    "<th>Directory</th>",
-                    "<th>Size</th>",
-                    "</tr>"
-                );
-                this.data.searchFilter = buildInclusiveSearchFilter(this.data.filterString);
+    public searchFilter : RegExp;
+    public filterString : string;
+    public model : Input;
+    public constructor(div : string,model : Input)
+    {
+        super('fastq',div,model);
+        this.searchFilter = new RegExp("","i");
+        this.filterString = "";
+    }
+    onMount(){}
+    onUnMount(){}
+    renderView() : string
+    {
+        if(document.getElementById('fastqInputFilterBox'))
+            this.filterString = (<HTMLInputElement>document.getElementById('fastqInputFilterBox')).value;
+        var html = new Array();
+        html.push
+        (
+            "<input id='fastqInputFilterBox' class='inputFilterBox' type='text' autofocus='autofocus' placeholder='Search' />",
+            "<table id='fastqTable' style='width:100%'>",
+            "<tr>",
+            "<td><input type='checkbox' id='fastqSelectAllBox'></input></td>",
+            "<th>Sample Name</th>",
+            "<th>Directory</th>",
+            "<th>Size</th>",
+            "</tr>"
+        );
+        this.searchFilter = buildInclusiveSearchFilter(this.filterString);
 
-                for(let i = 0; i != this.model.fastqInputs.length; ++i)
-                {
-                    if(this.data.searchFilter.test(this.model.fastqInputs[i].alias))
-                    {
-		        	    html.push
-		        	    (
-			        	    "<tr><td><input type='checkbox' id='",this.model.fastqInputs[i].validID,"'></input></td>",
-			        	    "<td>",this.model.fastqInputs[i].alias,"</td>",
-			        	    "<td>",this.model.fastqInputs[i].name,"</td>",
-			        	    "<td>",this.model.fastqInputs[i].sizeString,"</td>",
-			        	    "</tr>"
-                        );
-                    }
-	            }
-	            html.push("</table>");
-                return html.join('');
-            }
-            postRender()
+        for(let i = 0; i != this.model.fastqInputs.length; ++i)
+        {
+            if(this.searchFilter.test(this.model.fastqInputs[i].alias))
             {
-                //restore text in search box
-                if(this.data.filterString)
-                    document.getElementById('fastqInputFilterBox').value = this.data.filterString;
-                var shouldCheckCheckAllBox = true;
-                for(let i = 0; i != this.model.fastqInputs.length; ++i)
-                {
-                    //restore state of checkboxes
-                    if(this.model.fastqInputs[i].checked)
-                    {
-                        $('#'+this.model.fastqInputs[i].validID).prop("checked",true);
-                    }
-                    //check the check all box if all visible items have been checked
-                    if(this.data.searchFilter.test(this.model.fastqInputs[i].alias))
-                    {
-                        if(!this.model.fastqInputs[i].checked)
-                            shouldCheckCheckAllBox = false;
-                    }
-                }
-                var me = this;
-                //reset change handler to inputFilterBox
-                $('#fastqInputFilterBox').on
-                (
-                    'change keydown keyup paste',
-                    function()
-                    {
-                        me.data.filterString = document.getElementById('fastqInputFilterBox').value;
-                        me.render();
-                    }
+		        html.push
+		        (
+			        "<tr><td><input type='checkbox' id='",this.model.fastqInputs[i].validID,"'></input></td>",
+			        "<td>",this.model.fastqInputs[i].alias,"</td>",
+			        "<td>",this.model.fastqInputs[i].name,"</td>",
+			        "<td>",this.model.fastqInputs[i].sizeString,"</td>",
+			        "</tr>"
                 );
-                //apply prop to check all box
-                $('#fastqSelectAllBox').prop("checked",shouldCheckCheckAllBox);
-                //refocus search box if the user is using it
-                document.getElementById('fastqInputFilterBox').focus();
             }
-            dataChanged()
+	    }
+	    html.push("</table>");
+        return html.join('');
+    }
+    postRender()
+    {
+        //restore text in search box
+        if(this.filterString)
+            (<HTMLInputElement>document.getElementById('fastqInputFilterBox')).value = this.filterString;
+        var shouldCheckCheckAllBox = true;
+        for(let i = 0; i != this.model.fastqInputs.length; ++i)
+        {
+            //restore state of checkboxes
+            if(this.model.fastqInputs[i].checked)
             {
-                //The renderer window will recieve a reply from the main process
-                //after input posts the updated data and trigger a rerender with the new data.
-                //No need to do so here.
-                this.model.postFastqInputs();
+                $('#'+this.model.fastqInputs[i].validID).prop("checked",true);
             }
-            divClickEvents(event)
+            //check the check all box if all visible items have been checked
+            if(this.searchFilter.test(this.model.fastqInputs[i].alias))
             {
-                //potentially error or user clicked on something we're not interested in 
-                if(!event || !event.target || !event.target.id)
-                    return;
-                //instead of immediately looping to figure out if a checkbox was even clicked,
-                //this is a reasonable check to ensure a checkbox was (maybe) clicked
-                if(event.target.id != 'fastqSelectAllBox')
+                if(!this.model.fastqInputs[i].checked)
+                    shouldCheckCheckAllBox = false;
+            }
+        }
+        var me = this;
+        //reset change handler to inputFilterBox
+        $('#fastqInputFilterBox').on
+        (
+            'change keydown keyup paste',
+            function()
+            {
+                me.data.filterString = (<HTMLInputElement>document.getElementById('fastqInputFilterBox')).value;
+                me.render();
+            }
+        );
+        //apply prop to check all box
+        $('#fastqSelectAllBox').prop("checked",shouldCheckCheckAllBox);
+        //refocus search box if the user is using it
+        document.getElementById('fastqInputFilterBox').focus();
+    }
+    dataChanged()
+    {
+        //The renderer window will recieve a reply from the main process
+        //after input posts the updated data and trigger a rerender with the new data.
+        //No need to do so here.
+        this.model.postFastqInputs();
+    }
+    divClickEvents(event : JQueryEventObject) : void
+    {
+        //potentially error or user clicked on something we're not interested in 
+        if(!event || !event.target || !event.target.id)
+            return;
+        //instead of immediately looping to figure out if a checkbox was even clicked,
+        //this is a reasonable check to ensure a checkbox was (maybe) clicked
+        if(event.target.id != 'fastqSelectAllBox')
+        {
+            //if name is defined then a checkbox was actually clicked
+            var name = findOriginalInput(event.target.id,this.model.fastqInputs);
+            //checkbox was clicked
+            if(name !== undefined)
+            {
+                if((<HTMLInputElement>event.target).checked)
                 {
-                    //if name is defined then a checkbox was actually clicked
-                    var name = id.findOriginalInput(event.target.id,this.model.fastqInputs);
-                    //checkbox was clicked
-                    if(name !== undefined)
+                    for(var i in this.model.fastqInputs)
                     {
-                        if(event.target.checked)
+                        if(this.model.fastqInputs[i].name == name)
                         {
-                            for(var i in this.model.fastqInputs)
-                            {
-                                if(this.model.fastqInputs[i].name == name)
-                                {
-                                    this.model.fastqInputs[i].checked = true;
-                                    this.dataChanged();
-                                    return;
-                                }
-                            }
-                        }
-                        if(!event.target.checked)
-                        {
-                            for(var i in this.model.fastqInputs)
-                            {
-                                if(this.model.fastqInputs[i].name == name)
-                                {
-                                    this.model.fastqInputs[i].checked = false;
-                                    this.dataChanged();
-                                    return;
-                                }
-                            }
+                            this.model.fastqInputs[i].checked = true;
+                            this.dataChanged();
+                            return;
                         }
                     }
                 }
-                //on user clicking the select all box
-                if(event.target.id == 'fastqSelectAllBox')
+                if(!(<HTMLInputElement>event.target).checked)
                 {
-                    this.data.searchFilter = buildInclusiveSearchFilter(this.data.filterString);
-                    for(let i = 0; i != this.model.fastqInputs.length; ++i)
+                    for(var i in this.model.fastqInputs)
                     {
-                        //for anything currently visible
-                        if(this.data.searchFilter.test(this.model.fastqInputs[i].alias))
+                        if(this.model.fastqInputs[i].name == name)
                         {
-                            //set the checked state to that of the select all checkbox
-                            this.model.fastqInputs[i].checked = event.target.checked;
+                            this.model.fastqInputs[i].checked = false;
+                            this.dataChanged();
+                            return;
                         }
                     }
-                    //inform the renderer of an update
-                    this.dataChanged();    
                 }
             }
         }
-    );
+        //on user clicking the select all box
+        if(event.target.id == 'fastqSelectAllBox')
+        {
+            this.searchFilter = buildInclusiveSearchFilter(this.filterString);
+            for(let i = 0; i != this.model.fastqInputs.length; ++i)
+            {
+                //for anything currently visible
+                if(this.searchFilter.test(this.model.fastqInputs[i].alias))
+                {
+                    //set the checked state to that of the select all checkbox
+                    this.model.fastqInputs[i].checked = (<HTMLInputElement>event.target).checked;
+                }
+            }
+            //inform the renderer of an update
+            this.dataChanged();    
+        }
+    }
+}
+export function addView(arr : Array<View>,div : string,model : Input) : void
+{
+    arr.push(new FastqView(div,model));
 }
