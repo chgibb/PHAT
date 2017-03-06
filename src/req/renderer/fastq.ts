@@ -1,23 +1,16 @@
-/**
- * @module req/renderer/fastq
- */
 var id = require('./MakeValidID.js');
 var trimPath = require('./trimPath.js');
 export default class Fastq
 {
-    /**
-     * @param {string} name - Path to fastq file
-     */
-    constructor(name)
+    public name : string;
+    public alias : string;
+    public size : number;
+    public sizeString : string;
+    public sequences : number;
+    public validID : string;
+    public checked : boolean;
+    public constructor(name : string)
     {
-        /**
-         * @prop {string} name - Path to file
-         * @prop {string} alias - File name without path
-         * @prop {number} size - Size in bytes of file
-         * @prop {string} sizeString - Formatted size of file
-         * @prop {string} validID - Escapped ID for use as a valid HTML ID
-         * @prop {boolean} checked - Whether this file is selected or not
-         */
         this.name = name;
         this.alias = trimPath(name);
         this.size = 0;
