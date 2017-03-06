@@ -1,7 +1,7 @@
 import {ipcRenderer} from "electron";
 let ipc = ipcRenderer;
 import * as viewMgr from "./req/renderer/viewMgr";
-import * as addMasterView from "./req/renderer/circularGenomeBuilderRenderer/masterView";
+import * as masterView from "./req/renderer/circularGenomeBuilderRenderer/masterView";
 import {CircularGenomeMgr} from "./req/renderer/circularGenomeMgr";
 import {SpawnRequestParams} from "./req/JobIPC";
 require("./req/renderer/commonBehaviour");
@@ -30,7 +30,7 @@ $
 (
     function()
     {
-        addMasterView.addView(viewMgr.views,"view",circularGenomeMgr);
+        masterView.addView(viewMgr.views,"view",circularGenomeMgr);
         viewMgr.changeView("masterView");
         viewMgr.render();
         ipc.send('keySub',{action : "keySub", channel : "input", key : "fastaInputs", replyChannel : "circularGenomeBuilder"});
@@ -47,7 +47,7 @@ $
                     {
                         if(arg.val != 0)
                         {
-                            let ref = <any>viewMgr.getViewByName("masterView");
+                            let ref = <masterView.View>viewMgr.getViewByName("masterView");
                             ref.fastaInputs = arg.val;
                             viewMgr.getViewByName("masterView").dataChanged();
                         }
