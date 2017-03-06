@@ -131,6 +131,7 @@ export function getIndexOfViewByName(name : string,targetArr : Array<View>) : nu
         if(arr[i].name == name)
             return i;
     }
+    return -1;
 }
 export function getViewByName(name : string,targetArr? : Array<View>) : View
 {
