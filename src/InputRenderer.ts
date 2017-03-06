@@ -1,19 +1,23 @@
-const ipc = require("electron").ipcRenderer;
-            
-var id = require("./req/renderer/MakeValidID");
-var fs = require("fs");
-var viewMgr = require("./req/renderer/viewMgr");
-var debug = require("./req/renderer/sendDebugMessage");
+import * as fs from "fs";
+
+import * as electron from "electron";
+const ipc = electron.ipcRenderer;
+
+import {makeValidID} from "./req/renderer/MakeValidID";
+import * as viewMgr from "./req/renderer/viewMgr";
+let debug = require("./req/renderer/sendDebugMessage");
 debug.initialize("input");
+
+import * as fastaView from "./req/renderer/inputRenderer/FastaView";
+import * as fastqView from "./req/renderer/inputRenderer/FastqView";
+
+import showFastaBrowseDialog from "./req/renderer/inputRenderer/fastaBrowseDialog";
+import showFastqBrowseDialog from "./req/renderer/inputRenderer/fastqBrowseDialog";
+import Input from "./req/renderer/Input";
+
+import * as $ from "jquery";
+(<any>window).$ = $;
 require("./req/renderer/commonBehaviour");
-var views = new Array();
-
-var addFastaView = require("./req/renderer/inputRenderer/FastaView");
-var addFastqView = require("./req/renderer/inputRenderer/FastqView");
-
-var fastaBrowseDialog = require("./req/renderer/inputRenderer/fastaBrowseDialog");
-var fastqBrowseDialog = require("./req/renderer/inputRenderer/fastqBrowseDialog");
-var Input = require("./req/renderer/Input");
 var input = new Input
 (
     //state channel to operate on
@@ -47,27 +51,26 @@ var input = new Input
     }
 );
 
-window.$ = window.jQuery = require('jquery');
-function preRender(viewRef)
+function preRender(viewRef : viewMgr.View)
 {
     if(viewMgr.currView == 'fastq')
     {
-        document.getElementById('fastqButton').src = 'img/fastqButtonActive.png';
-        document.getElementById('refSeqButton').src = 'img/refSeqButton.png';
+        (<HTMLImageElement>document.getElementById('fastqButton')).src = 'img/fastqButtonActive.png';
+        (<HTMLImageElement>document.getElementById('refSeqButton')).src = 'img/refSeqButton.png';
     }
     else if(viewMgr.currView == 'fasta')
     {
-        document.getElementById('fastqButton').src = 'img/fastqButton.png';
-        document.getElementById('refSeqButton').src = 'img/refSeqButtonActive.png';
+        (<HTMLImageElement>document.getElementById('fastqButton')).src = 'img/fastqButton.png';
+        (<HTMLImageElement>document.getElementById('refSeqButton')).src = 'img/refSeqButtonActive.png';
     }
 }
-viewMgr.preRender = preRender;
+viewMgr.setPreRender(preRender);
 $
 (
     function()
     {
-        addFastaView(viewMgr.views,'loadedFiles',input);
-        addFastqView(viewMgr.views,'loadedFiles',input);
+        fastaView.addView(viewMgr.views,'loadedFiles',input);
+        fastqView.addView(viewMgr.views,'loadedFiles',input);
 
         viewMgr.changeView("fastq");
 
@@ -112,7 +115,7 @@ $
                 console.log(JSON.stringify(arg,undefined,4));
                 //update from spawned process.
                 //forward to handler.
-                input.spawnReply(event,arg);
+                input.spawnReply("spawnReply",arg);
             }
         );
         document.getElementById("fastqButton").onclick = function()
@@ -133,8 +136,8 @@ $
 function browse()
 {
     if(viewMgr.currView == 'fastq')
-        fastqBrowseDialog(input);
+        showFastqBrowseDialog(input);
     if(viewMgr.currView == 'fasta')
-        fastaBrowseDialog(input);
+        showFastaBrowseDialog(input);
 }
 
