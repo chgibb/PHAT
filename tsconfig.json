@@ -7,7 +7,6 @@
         "noImplicitAny" : true,
         "noImplicitReturns" : true,
         "noImplicitThis" : true,
-        "noUnusedParameters" : true,
         "removeComments": true,
         "sourceMap" : false,
 	    "listFiles" : true
