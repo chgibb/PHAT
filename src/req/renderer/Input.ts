@@ -67,7 +67,7 @@ export default class Input extends DataModelMgr
 		    if(this.fastqInputs[i].name == name) 
             {
                 this.fastqInputs[i].size = stats.size;
-                this.fastqInputs[i].sizeString = formatByteString(stats.size.toString());
+                this.fastqInputs[i].sizeString = formatByteString(stats.size);
             }
 	    }
         return true;
@@ -85,7 +85,7 @@ export default class Input extends DataModelMgr
 		    if(this.fastaInputs[i].name == name) 
             {
                 this.fastaInputs[i].size = stats.size;
-                this.fastaInputs[i].sizeString = formatByteString(stats.size.toString());
+                this.fastaInputs[i].sizeString = formatByteString(stats.size);
             }
 	    }
         return true;
