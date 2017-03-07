@@ -2,12 +2,19 @@
  * Bootstrap module for the main process. Requires helper modules and sets up event handlers.
  * @module req/main/main
  */
-var fs = require("fs");
+/*var fs = require("fs");
 const electron = require('electron');
 const ipc = electron.ipcMain;
 const app = electron.app;
 const jsonFile = require('jsonfile');
+const BrowserWindow = electron.BrowserWindow;*/
+import * as fs from "fs";
+import * as electron from "electron";
+const ipc = electron.ipcMain;
+const app = electron.app;
 const BrowserWindow = electron.BrowserWindow;
+const jsonFile = require("jsonfile");
+
 
 var Job = require('./Job');
 var jobMgr = require('./JobMgr');
