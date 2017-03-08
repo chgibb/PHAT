@@ -150,6 +150,18 @@ export function removeSubscriberFromKey(sub : KeySubObj)
 	}
 }
 
+export function pushKeyTo(
+    channel : string,
+    key : string,
+    refName : string,
+    send : (channel : string,...args : any[]) => void) :void
+{
+    if(getChannel(channel))
+    {
+        send(refName,getKey(channel,key));
+    }
+}
+
 export function publishChangeForKey(channe : string,key : string) : void
 {
 
