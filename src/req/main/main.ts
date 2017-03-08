@@ -28,7 +28,7 @@ var persistState = require('./persistState');
 (<any>global).state = {};
 
 require('./toolBar');
-//require('./Input');
+require('./Input');
 //require('./QC');
 //require('./Align');
 //require('./Output');
@@ -109,7 +109,12 @@ app.on
 
 
 
-
+ipc.on
+(
+	"getKey",function(event,arg)
+	{
+	}
+);
 
 
 
