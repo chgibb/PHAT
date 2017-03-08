@@ -13,7 +13,7 @@ module.exports.persistState = function(force)
 			module.exports.persistTicks++;
 			return;
 		}
-	}*/
+	}
 	try
 	{
 		var fs = require("fs").mkdirSync("resources/app/rt");
@@ -27,5 +27,5 @@ module.exports.persistState = function(force)
     {
         console.log(err);
     }
-	module.exports.persistTicks = 0;
+	module.exports.persistTicks = 0;*/
 }
