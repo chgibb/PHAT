@@ -21,6 +21,7 @@ export function loadData(path : string) : boolean
 
 export function saveData() : void
 {
+    console.log("Called save"+dataPath);
     try
     {
 	    jsonFile.writeFileSync(dataPath,data,{spaces : 4});
@@ -52,12 +53,14 @@ export function createChannel(channel : string) : boolean
     }
     catch(err)
     {
+        console.log("Could not get"+channel);
         console.log(err);
         return false;
     }
 }
 export function getKey(channel : string,key : string) : any | undefined
 {
+    console.log(stringifyData());
     try
     {
         return data[channel][key];
@@ -94,6 +97,11 @@ export function setKey(channel : string,key : string,val : any) : boolean
         if(!getKey(channel,key))
             createKey(channel,key);
         data[channel][key] = val;
+        saveData();
+
+        if(event)
+            publishChangeForKey(channel,key);
+
         return true;
     }
     catch(err)
@@ -109,4 +117,40 @@ export function stringifyData(
 ) : string
 {
     return JSON.stringify(data,replacer,space);
+}
+
+export interface KeySubObj
+{
+	channel : string;
+	key : string;
+	replyChannel : string
+}
+let keySubs = new Array<KeySubObj>();
+
+export function addSubscriberToKey(sub : KeySubObj) : void
+{
+	keySubs.push(
+		{
+			channel : sub.channel,
+			key : sub.key,
+			replyChannel : sub.replyChannel
+		}
+	);
+}
+export function removeSubscriberFromKey(sub : KeySubObj)
+{
+	for(let i : number = keySubs.length - 1; i >= 0; --i)
+	{
+		if(keySubs[i].channel == sub.channel &&
+		   keySubs[i].key == sub.key &&
+		   keySubs[i].replyChannel == sub.replyChannel)
+		{
+			keySubs.splice(i,1);
+		}
+	}
+}
+
+export function publishChangeForKey(channe : string,key : string) : void
+{
+
 }
