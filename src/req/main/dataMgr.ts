@@ -4,10 +4,19 @@ const jsonFile = require("jsonfile");
 let data : any = {};
 let dataPath : string = "";
 
-export function loadData(path : string) : void
+export function loadData(path : string) : boolean
 {
-    dataPath = path;
-    data = jsonFile.readFileSync(path);
+    try
+    {
+        dataPath = path;
+        data = jsonFile.readFileSync(path);
+        return true;
+    }
+    catch(err)
+    {
+        console.log(err);
+        return false;
+    }
 }
 
 export function saveData() : void
