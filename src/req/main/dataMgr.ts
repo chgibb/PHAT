@@ -85,6 +85,23 @@ export function createKey(channel : string,key : string) : boolean
         return false;
     }
 }
+export function setKey(channel : string,key : string,val : any) : boolean
+{
+    try
+    {
+        if(!getChannel(channel))
+            createChannel(channel);
+        if(!getKey(channel,key))
+            createKey(channel,key);
+        data[channel][key] = val;
+        return true;
+    }
+    catch(err)
+    {
+        console.log(err);
+        return false;
+    }
+}
 
 export function stringifyData(
     replacer?: (key: string, value: any) => any,
