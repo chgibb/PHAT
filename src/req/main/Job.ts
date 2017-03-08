@@ -6,7 +6,14 @@
  * @see module:req/main/JobMgr
  * @module req/main/Job
 */
-module.exports = class
+import {SpawnRequestParams} from "./../JobIPC";
+export interface JobCallBackObject
+{
+	send : (
+		callBackChannel : string,params : SpawnRequestParams
+	) => void;
+}
+export class Job
 {
     /**  
      * @param {string} processName - the name of the executable to invoke
@@ -16,7 +23,22 @@ module.exports = class
      * @param {any} callBackObj - some object with a method send(string) : void.
      * @param {any} extraData - JSON object to be forwarded to originator on every callback
     */
-	constructor(processName,args,callBackChannel,unBuffer,callBackObj,extraData)
+	public processName : string;
+	public args : Array<string>;
+	public callBackChannel : string;
+	public unBuffer : boolean;
+	public callBackObj : JobCallBackObject;
+	public done : boolean;
+	public running : boolean;
+	public extraData : any;
+	public constructor(
+		processName : string,
+		args : Array<string>,
+		callBackChannel : string,
+		unBuffer : boolean,
+		callBackObj : JobCallBackObject,
+		extraData : any
+		)
 	{
 		this.processName = processName;
 		this.args = args;
@@ -31,14 +53,14 @@ module.exports = class
      * @param {Buffer} data - data buffer to unbuffer to string
      * @returns {string} unbuffered data
      */
-	unBufferBufferedData(data)
+	unBufferBufferedData(data : Buffer) : string
 	{ 
-		var unBufferedData = "";
-		for(var i in data)
+		let unBufferedData : string = "";
+		for(let i in data)
 		{
 			if(data[i] != 0 && data[i] != undefined)
 			{
-				var char = String.fromCharCode(data[i]);
+				let char = String.fromCharCode(data[i]);
 				if(char && char != undefined)
 					unBufferedData += char;
 			}
@@ -50,7 +72,7 @@ module.exports = class
      * On output over stderr. Forwards data from stderr.
      * @param {string} data - stderr output from process
      */
-	OnErr(data)
+	OnErr(data : Buffer) : void
 	{
 		if(!this.unBuffer)
 		{
