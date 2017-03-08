@@ -7,6 +7,7 @@
  * @module req/main/Job
 */
 import {SpawnRequestParams} from "./../JobIPC";
+import * as spawn from "child_process";
 export interface JobCallBackObject
 {
 	send : (
@@ -23,6 +24,7 @@ export class Job
      * @param {any} callBackObj - some object with a method send(string) : void.
      * @param {any} extraData - JSON object to be forwarded to originator on every callback
     */
+	private process : spawn.ChildProcess;
 	public processName : string;
 	public args : Array<string>;
 	public callBackChannel : string;
@@ -103,15 +105,15 @@ export class Job
 			);
 		}
 	}
-	OnOut(data)
+	OnOut(data : Buffer) : void
 	{
 		this.OnErr(data);
 	}
-	OnSpawnError(err)
+	OnSpawnError(err : string) : void
 	{
 		throw new Error("\nCould not spawn process: "+this.processName+" "+err+"\n CWD: "+process.cwd()+"\n");
 	}
-	OnComplete(retCode)
+	OnComplete(retCode : number) : void
 	{
 		this.done = true;
 		this.running = false;
@@ -129,34 +131,33 @@ export class Job
 	}
 	Run()
 	{
-		var spawn = require('child_process');
 		this.process = spawn.spawn(this.processName,this.args);
 		this.running = true;
 		var obj = this;
 		this.process.stderr.on
 		(
-			'data',function(data)
+			'data',function(data : Buffer)
 			{
 				obj.OnErr(data);
 			}
 		);
 		this.process.stdout.on
 		(
-			'data',function(data)
+			'data',function(data : Buffer)
 			{
 				obj.OnOut(data);
 			}
 		)
 		this.process.on
 		(
-			'exit',function(retCode)
+			'exit',function(retCode : number)
 			{
 				obj.OnComplete(retCode);
 			}
 		);
 		this.process.on
 		(
-			'error',function(err)
+			'error',function(err : string)
 			{
 				obj.OnSpawnError(err);
 			}
