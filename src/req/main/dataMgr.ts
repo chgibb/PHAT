@@ -157,7 +157,6 @@ export function pushKeyTo(
     key : string,
     refName : string,
     sender : Electron.WebContents) : void
-    //send : (channel : string,...args : any[]) => void) :void
 {
     if(getChannel(channel))
     {
