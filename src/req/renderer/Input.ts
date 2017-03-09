@@ -4,6 +4,8 @@
 	Part of the PHAT Project
 	Author : gibbc@tbh.net
 */
+import {SaveKeyEvent} from "./../ipcEvents";
+
 import Fastq from "./fastq";
 import Fasta from "./fasta";
 import formatByteString from "./formatByteString";
@@ -42,11 +44,28 @@ export default class Input extends DataModelMgr
     }
     postFastqInputs() : void
     {
-        this.postHandle(this.channel,{action : 'postState', key : 'fastqInputs', val : this.fastqInputs});
+        this.postHandle(
+            "saveKey",
+            <SaveKeyEvent>{
+                action : "saveKey",
+                channel : this.channel,
+                key : "fastqInputs",
+                val : this.fastqInputs 
+            }
+        );
     }
     postFastaInputs() : void
     { 
-        this.postHandle(this.channel,{action : 'postState', key : 'fastaInputs', val : this.fastaInputs});
+        //this.postHandle(this.channel,{action : 'postState', key : 'fastaInputs', val : this.fastaInputs});
+        this.postHandle(
+            "saveKey",
+            <SaveKeyEvent>{
+                action : "saveKey",
+                channel : this.channel,
+                key : "fastaInputs",
+                val : this.fastaInputs
+            }
+        );
     }
     addFastq(name : string) : boolean
     {
