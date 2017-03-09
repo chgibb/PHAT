@@ -1,6 +1,9 @@
 import * as fs from "fs";
 
-import {GetKeyEvent} from "../ipcEvents";
+import {GetKeyEvent} from "./../ipcEvents";
+
+import * as winMgr from "./winMgr";
+
 const jsonFile = require("jsonfile");
 
 let data : any = {};
@@ -101,9 +104,6 @@ export function setKey(channel : string,key : string,val : any) : boolean
         data[channel][key] = val;
         saveData();
 
-        if(event)
-            publishChangeForKey(channel,key);
-
         return true;
     }
     catch(err)
@@ -174,7 +174,7 @@ export function pushKeyTo(
     }
 }
 
-export function publishChangeForKey(channe : string,key : string) : void
+export function publishChangeForKey(channel : string,key : string) : void
 {
 
 }
