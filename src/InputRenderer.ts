@@ -3,6 +3,8 @@ import * as fs from "fs";
 import * as electron from "electron";
 const ipc = electron.ipcRenderer;
 
+import {GetKeyEvent} from "./req/ipcEvents";
+
 import {makeValidID} from "./req/renderer/MakeValidID";
 import * as viewMgr from "./req/renderer/viewMgr";
 let debug = require("./req/renderer/sendDebugMessage");
@@ -75,8 +77,26 @@ $
         viewMgr.changeView("fastq");
 
         //get saved data
-        ipc.send('input',{replyChannel : 'input', action : 'getState', key : 'fastqInputs'});
-        ipc.send('input',{replyChannel : 'input', action : 'getState', key : 'fastaInputs'});
+        //ipc.send('input',{replyChannel : 'input', action : 'getState', key : 'fastqInputs'});
+        //ipc.send('input',{replyChannel : 'input', action : 'getState', key : 'fastaInputs'});
+        ipc.send(
+            "getKey",
+            <GetKeyEvent>{
+                channel : "input",
+                key : "fastqInputs",
+                replyChannel : "input",
+                action : "getKey"
+            }
+        );
+        ipc.send(
+            "getKey",
+            <GetKeyEvent>{
+                channel : "input",
+                key : "fastaInputs",
+                replyChannel : "input",
+                action : "getKey"
+            }
+        );
 
         //subscribe to changes in data
         ipc.send('keySub',{action : "keySub", channel : "input", key : "fastqInputs", replyChannel : "input"});
@@ -88,18 +108,18 @@ $
 		    'input',function(event,arg)
 			{
                 //reply from call to getState
-			    if(arg.action == "getState" || arg.action == "keyChange")
+			    if(arg.action == "getKey" || arg.action == "keyChange")
 				{
 					if(arg.key == 'fastqInputs')
 					{
-                        if(arg.val != 0)
+                        if(arg.val !== undefined)
                         {
                             input.fastqInputs = arg.val;
                         }
                     }
                     if(arg.key == 'fastaInputs')
 					{
-                        if(arg.val != 0)
+                        if(arg.val !== undefined)
                         {
                             input.fastaInputs = arg.val;
                         }
