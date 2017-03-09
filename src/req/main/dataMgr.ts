@@ -1,4 +1,6 @@
 import * as fs from "fs";
+
+import {GetKeyEvent} from "../ipcEvents";
 const jsonFile = require("jsonfile");
 
 let data : any = {};
@@ -154,11 +156,21 @@ export function pushKeyTo(
     channel : string,
     key : string,
     refName : string,
-    send : (channel : string,...args : any[]) => void) :void
+    sender : Electron.WebContents) : void
+    //send : (channel : string,...args : any[]) => void) :void
 {
     if(getChannel(channel))
     {
-        send(refName,getKey(channel,key));
+        sender.send(
+            refName,
+            <GetKeyEvent>{
+                replyChannel : refName,
+                channel : refName,
+                key : key,
+                val : getKey(channel,key),
+                action : "getKey"
+            }
+        );
     }
 }
 
