@@ -19,8 +19,9 @@ const jsonFile = require("jsonfile");
 import {Job} from "./Job";
 import * as dataMgr from "./dataMgr";
 var jobMgr = require('./JobMgr');
-//var window = require('./window');
 import * as winMgr from "./winMgr";
+
+import {GetKeyEvent,SaveKeyEvent} from "./../ipcEvents";
 var keySub = require('./keySub');
 
 var persistState = require('./persistState');
@@ -111,11 +112,28 @@ app.on
 
 ipc.on
 (
-	"getKey",function(event,arg)
+	"getKey",function(event: Electron.IpcMainEvent,arg : GetKeyEvent)
 	{
+		dataMgr.pushKeyTo(
+			arg.channel,
+			arg.key,
+			arg.replyChannel,
+			event.sender
+		);
 	}
 );
 
+ipc.on
+(
+	"saveKey",function(event : Electron.IpcMainEvent,arg : SaveKeyEvent)
+	{
+		dataMgr.setKey(
+			arg.channel,
+			arg.key,
+			arg.val
+		);
+	}
+)
 
 
 ipc.on
@@ -125,7 +143,7 @@ ipc.on
 		if(arg.action == "keySub")
 		{
 			dataMgr.addSubscriberToKey(
-				{
+				<dataMgr.KeySubObj>{
 					channel : arg.channel,
 					key : arg.key,
 					replyChannel : arg.replyChannel
