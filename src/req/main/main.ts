@@ -132,6 +132,8 @@ ipc.on
 			arg.key,
 			arg.val
 		);
+
+		dataMgr.publishChangeForKey(arg.channel,arg.key);
 	}
 )
 
