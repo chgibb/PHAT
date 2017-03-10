@@ -30,7 +30,7 @@ var persistState = require('./persistState');
 
 require('./toolBar');
 require('./Input');
-//require('./QC');
+require('./QC');
 //require('./Align');
 //require('./Output');
 //require('./Pathogen');
