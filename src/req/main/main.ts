@@ -21,7 +21,7 @@ import * as dataMgr from "./dataMgr";
 var jobMgr = require('./JobMgr');
 import * as winMgr from "./winMgr";
 
-import {GetKeyEvent,SaveKeyEvent} from "./../ipcEvents";
+import {GetKeyEvent,SaveKeyEvent,KeySubEvent} from "./../ipcEvents";
 var keySub = require('./keySub');
 
 var persistState = require('./persistState');
@@ -145,7 +145,7 @@ ipc.on
 		if(arg.action == "keySub")
 		{
 			dataMgr.addSubscriberToKey(
-				<dataMgr.KeySubObj>{
+				<KeySubEvent>{
 					channel : arg.channel,
 					key : arg.key,
 					replyChannel : arg.replyChannel

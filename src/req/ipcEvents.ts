@@ -13,3 +13,10 @@ export interface SaveKeyEvent
     key : string;
     val : any;
 }
+export interface KeySubEvent
+{
+    action : "keySub";
+    channel : string;
+    key : string;
+    replyChannel : string;
+}
