@@ -65,7 +65,7 @@ export function createChannel(channel : string) : boolean
 }
 export function getKey(channel : string,key : string) : any | undefined
 {
-    console.log(stringifyData());
+    console.log(stringifyData(undefined,4));
     try
     {
         return data[channel][key];
