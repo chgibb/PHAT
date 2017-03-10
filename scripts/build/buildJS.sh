@@ -23,6 +23,6 @@ done
 
 for f in $(find src -name '*.ts'); 
 do 
-	artifact=$(echo $f | awk '{gsub(".ts",".js");print}')
+	artifact=$(echo $f | awk '{gsub("\.ts",".js");print}')
 	rm $artifact
 done
