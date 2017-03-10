@@ -20,3 +20,9 @@ export interface KeySubEvent
     key : string;
     replyChannel : string;
 }
+export interface KeyChangeEvent
+{
+    action : "keyChange";
+    channel : string;
+    key : any;
+}
