@@ -1,5 +1,5 @@
 console.log("started GUI test for input");
-const electron = require('electron');
+/*const electron = require('electron');
 const ipc = electron.ipcMain;
 const app = electron.app;
 const jsonFile = require('jsonfile');
@@ -33,4 +33,4 @@ setTimeout(function(){
         assert.runningEvents -= 1;
     },10000);
 },3000);
-
+*/
