@@ -25,7 +25,7 @@ export default function replyFromBowTie2Build(channel : string,arg : SpawnReques
 	(
 		function()
 		{
-			if(arg.done)
+			if(arg.done && arg.retCode !== undefined)
 			{
         		if(arg.retCode !== undefined && arg.retCode != 0)
             		alert(JSON.stringify(arg,undefined,4));
