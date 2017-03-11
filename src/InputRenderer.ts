@@ -3,7 +3,7 @@ import * as fs from "fs";
 import * as electron from "electron";
 const ipc = electron.ipcRenderer;
 
-import {GetKeyEvent} from "./req/ipcEvents";
+import {GetKeyEvent,KeySubEvent} from "./req/ipcEvents";
 
 import {makeValidID} from "./req/renderer/MakeValidID";
 import * as viewMgr from "./req/renderer/viewMgr";
@@ -99,14 +99,25 @@ $
         );
 
         //subscribe to changes in data
-        ipc.send('keySub',{action : "keySub", channel : "input", key : "fastqInputs", replyChannel : "input"});
-        ipc.send('keySub',{action : "keySub", channel : "input", key : "fastaInputs", replyChannel : "input"});
+        //ipc.send('keySub',{action : "keySub", channel : "input", key : "fastqInputs", replyChannel : "input"});
+        //ipc.send('keySub',{action : "keySub", channel : "input", key : "fastaInputs", replyChannel : "input"});
+
+        ipc.send(
+            "keySub",
+            <KeySubEvent>{
+                action : "keySub",
+                channel : "input",
+                key : "fastqInputs",
+                replyChannel : "input"
+            }
+        );
 
         //on message from main process
         ipc.on
 		(	
 		    'input',function(event,arg)
 			{
+                console.log(JSON.stringify(arg,undefined,4));
                 //reply from call to getState
 			    if(arg.action == "getKey" || arg.action == "keyChange")
 				{
