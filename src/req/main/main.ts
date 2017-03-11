@@ -32,7 +32,7 @@ require('./toolBar');
 require('./Input');
 require('./QC');
 require('./Align');
-//require('./Output');
+require('./Output');
 //require('./Pathogen');
 //require('./Host');
 //require('./circularGenomeBuilder');
