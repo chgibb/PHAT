@@ -59,27 +59,37 @@ $
                     {
                         if(arg.val != 0)
                         {
-
+                            
                             /**
-                             * Remove the entries from QC that are no longer in Input.
+                             * RemoveSelected button clears the fastaInput array, so if it is empty,
+                             * clear the QC.QCData list (edge case).
                              */
-                            for(var i = QC.QCData.length-1; i > -1; i--)
-                            {
-                                var arg_val_name = i > -1 && i < arg.val.length ? arg.val[i].name : "";
-                                console.log(arg_val_name+" <-> "+QC.QCData[i].name+"\n");
-                                if (QC.QCData[i].name != arg_val_name) 
+                            console.log(arg.val.length+" = arg val length");
+                            if (arg.val.length == 0) {
+                                console.log("clearing QC Data!!!!!!!!!");
+                                for (var d = 0; d < QC.QCData.length; d++) { QC.QCData.pop(); }
+                            } else {
+                                /**
+                                 * Remove the entries from QC that are no longer in Input.
+                                 */
+                                for(var i = QC.QCData.length-1; i > -1; i--)
                                 {
-                                    QC.QCData.splice(i, 1);
-                                    console.log("Spliced "+i+"\n");
+                                    var arg_val_name = i > -1 && i < arg.val.length ? arg.val[i].name : "";
+                                    console.log(arg_val_name+" <-> "+QC.QCData[i].name+"\n");
+                                    if (QC.QCData[i].name != arg_val_name) 
+                                    {
+                                        QC.QCData.splice(i, 1);
+                                    }
                                 }
-                            }
 
-                            /**
-                             * For every input that does not have associated QC data, create QC data.
-                             */
-                            for(var i = 0; i < arg.val.length; i++)
-                            {
-                                QC.addQCData(arg.val[i].name);
+                                /**
+                                 * For every input that does not have associated QC data, create QC data.
+                                 */
+                                for(var i = 0; i < arg.val.length; i++)
+                                {
+                                    QC.addQCData(arg.val[i].name);
+                                }
+
                             }
 
                             /**
