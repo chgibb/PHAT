@@ -34,6 +34,7 @@ module.exports = function(arr,div,model)
                     "<th>Pathogen</th>",
                     "<th>Host</th>",
                     "<th>Indexed</th>",
+                    "<button id = 'removeSelected'>Remove selected</button><br>",
                     "</tr>"
                 );
                 this.data.searchFilter = buildInclusiveSearchFilter(this.data.filterString);
@@ -154,6 +155,18 @@ module.exports = function(arr,div,model)
                                 this.model.indexFasta(this.model.fastaInputs[i].name);
                         }
                     }
+                }
+                if (event.target.id == "removeSelected")
+                {
+                    for(let i = this.model.fastaInputs.length - 1; i >= 0; --i)
+                        {
+                            if (this.model.fastaInputs[i].checked)
+                            {
+                                this.model.fastaInputs.splice(i, 1);                            
+                            }
+                        }
+                    //and refresh
+                    this.dataChanged();
                 }
                 //host/patho radios are identified by _host or _path appended to the end
                 //of the item's .validID property
