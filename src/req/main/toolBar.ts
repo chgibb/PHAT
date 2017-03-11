@@ -8,7 +8,7 @@ const ipc = electron.ipcMain;
 const app = electron.app;
 import * as winMgr from "./winMgr";
 import fsAccess from "./../fsAccess";
-
+import* as dataMgr from "./dataMgr";
 ipc.on
 (
 	"toolBar",function(event,arg)
@@ -49,6 +49,7 @@ winMgr.windowCreators["toolBar"] =
 			toolBarWindow[0].on(
 				"closed",function()
 				{
+					dataMgr.saveData();
 					app.quit();
 				}
 			)
