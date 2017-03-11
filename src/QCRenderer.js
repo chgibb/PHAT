@@ -92,7 +92,7 @@ $
                 {
                     if(arg.key == "fastqInputs")
                     {
-                        if(arg.val != 0)
+                        if(arg.val !== undefined)
                         {
                             for(var i in arg.val)
                             {
