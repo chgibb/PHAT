@@ -1,6 +1,6 @@
 import * as fs from "fs";
 
-import {GetKeyEvent} from "./../ipcEvents";
+import {GetKeyEvent,KeyChangeEvent} from "./../ipcEvents";
 
 import * as winMgr from "./winMgr";
 
@@ -131,6 +131,13 @@ let keySubs = new Array<KeySubObj>();
 
 export function addSubscriberToKey(sub : KeySubObj) : void
 {
+    for(let i : number = 0; i != keySubs.length; ++i)
+    {
+        if(keySubs[i].replyChannel == sub.replyChannel &&
+        keySubs[i].channel == sub.channel &&
+        keySubs[i].key == sub.key)
+            return;
+    }
 	keySubs.push(
 		{
 			channel : sub.channel,
@@ -175,5 +182,23 @@ export function pushKeyTo(
 
 export function publishChangeForKey(channel : string,key : string) : void
 {
-
+    for(let i : number = 0; i != keySubs.length; ++i)
+    {
+        if(keySubs[i].channel == channel)
+        {
+            let windows = winMgr.getWindowsByName(keySubs[i].replyChannel);
+            for(let k : number = 0; k != windows.length; ++k)
+            {
+                windows[k].webContents.send(
+                    keySubs[i].replyChannel,
+                    <KeyChangeEvent>{
+                        action : "keyChange",
+                        channel : channel,
+                        key : key,
+                        val : getKey(channel,key)
+                    }
+                );
+            }
+        }
+    }
 }
