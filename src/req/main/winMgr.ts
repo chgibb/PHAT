@@ -35,6 +35,18 @@ export function pushWindow(refName : string,ref : Electron.BrowserWindow) : void
 export function getWindowsByName(refName : string) : Array<Electron.BrowserWindow>
 {
 	let res : Array<Electron.BrowserWindow> = new Array<Electron.BrowserWindow>();
+	for(let i : number = windows.length - 1; i >= 0; --i)
+	{
+		try
+		{
+			windows[i].window.isResizable();
+		}
+		catch(err)
+		{
+			windows.splice(i,1);
+			console.log("\n\n\nSPLICED "+windows[i].name+"\n\n\n");
+		}
+	}
 	for(let i = 0; i != windows.length; ++i)
 	{
 		if(windows[i].name == refName)
