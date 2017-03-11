@@ -65,7 +65,6 @@ export function createChannel(channel : string) : boolean
 }
 export function getKey(channel : string,key : string) : any | undefined
 {
-    console.log(stringifyData(undefined,4));
     try
     {
         return data[channel][key];
@@ -95,6 +94,7 @@ export function createKey(channel : string,key : string) : boolean
 }
 export function setKey(channel : string,key : string,val : any) : boolean
 {
+    console.log(stringifyData(undefined,4));
     try
     {
         if(!getChannel(channel))
@@ -102,7 +102,7 @@ export function setKey(channel : string,key : string,val : any) : boolean
         if(!getKey(channel,key))
             createKey(channel,key);
         data[channel][key] = val;
-        saveData();
+        //saveData();
 
         return true;
     }
