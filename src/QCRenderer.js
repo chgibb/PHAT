@@ -87,6 +87,7 @@ $
         (
             'QC',function(event,arg)
             {
+                console.log(JSON.stringify(arg,undefined,4));
                 if(arg.action == "getKey" || arg.action == "keyChange")
                 {
                     if(arg.key == "fastqInputs")
@@ -106,7 +107,7 @@ $
                     }
                     if(arg.key == 'QCData')
                     {
-                        if(arg.val != 0 )
+                        if(arg.val !== undefined )
                         {
                             QC.QCData = arg.val;
                             //views[view.getIndexOfViewByName(views,'summary')].data.QCData = QC.QCData;
