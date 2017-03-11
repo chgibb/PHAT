@@ -24,5 +24,6 @@ export interface KeyChangeEvent
 {
     action : "keyChange";
     channel : string;
-    key : any;
+    key : string;
+    val : any
 }
