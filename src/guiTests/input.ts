@@ -40,7 +40,7 @@ const app = electron.app;
 import * as winMgr from "./../req/main/winMgr";
 const jsonFile = require("jsonfile");
 const BrowserWindow = electron.BrowserWindow;
-require("./req/main/main");
+require("./../req/main/main");
 
 let assert = require("./../req/tests/assert");
 
