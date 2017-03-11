@@ -33,7 +33,7 @@ require('./Input');
 require('./QC');
 require('./Align');
 require('./Output');
-//require('./Pathogen');
+require('./Pathogen');
 //require('./Host');
 //require('./circularGenomeBuilder');
 

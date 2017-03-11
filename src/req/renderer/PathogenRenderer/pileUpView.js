@@ -3,7 +3,7 @@
 var viewMgr = require('./../viewMgr');
 var id = require('./../MakeValidID.js');
 
-var fsAccess = require('./../../fsAccess');
+var fsAccess = require('./../../fsAccess').default;
 var requireDyn = require('./../../requireDyn');
 module.exports = function(arr,div)
 {
