@@ -111,6 +111,15 @@ $
                 replyChannel : "input"
             }
         );
+        ipc.send(
+            "keySub",
+            <KeySubEvent>{
+                action : "keySub",
+                channel : "input",
+                key : "fastaInputs",
+                replyChannel : "input"
+            }
+        );
 
         //on message from main process
         ipc.on
