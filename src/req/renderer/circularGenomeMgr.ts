@@ -2,7 +2,8 @@ let fs = require("fs");
 import {DataModelMgr,DataModelHandlers} from "./model";
 import {SpawnRequestParams} from "./../JobIPC";
 let canRead = require("./canRead");
-import {Contig,FastaContigLoader} from "./circularGenome/fastaContigLoader" ;
+import {Contig,FastaContigLoader} from "./circularGenome/fastaContigLoader";
+import {SaveKeyEvent} from "../ipcEvents";
 let fasta = require("./fasta");
 export class CircularFigure
 {
@@ -99,7 +100,16 @@ export class CircularGenomeMgr extends DataModelMgr
     }
     public postManagedFastas() : void
     {
-        this.postHandle(this.channel,{action : "postState", key : "managedFastas",val : this.managedFastas});
+        //this.postHandle(this.channel,{action : "postState", key : "managedFastas",val : this.managedFastas});
+        this.postHandle(
+            "saveKey",
+            <SaveKeyEvent>{
+                action : "saveKey",
+                channel : this.channel,
+                key : "managedFastas",
+                val : this.managedFastas
+            }
+        );
     }
     spawnReply(channel : string,arg : SpawnRequestParams) : void{}
 }
