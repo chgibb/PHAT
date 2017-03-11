@@ -14,7 +14,12 @@ for f in guiTests/*.js
 do
 	bash build.bash
 
-	cd phat-linux-x64
+	if [[ "$OSTYPE" == "linux-gnu" ]]; then
+		cd phat-linux-x64
+	fi
+	if [[ "$OSTYPE" == "cygwin" ]]; then
+		cd phat-win32-x64
+	fi
 	cd resources
 	cd app
 	rm main.js
@@ -22,9 +27,19 @@ do
 	cd ../
 	cd ../
 	cd ../
-	cp $f phat-linux-x64/resources/app/main.js
+	if [[ "$OSTYPE" == "linux-gnu" ]]; then
+		cp $f phat-linux-x64/resources/app/main.js
+	fi
+	if [[ "$OSTYPE" == "cygwin" ]]; then
+		cp $f phat-win32-x64/resources/app/main.js
+	fi
 	printf "Replaced with $f\n"
-	cd phat-linux-x64
+	if [[ "$OSTYPE" == "linux-gnu" ]]; then
+		cd phat-linux-x64
+	fi
+	if [[ "$OSTYPE" == "cygwin" ]]; then
+		cd phat-win32-x64
+	fi
 	./phat
 	cd ../
 
