@@ -1,24 +1,36 @@
 var fs = require('fs');
 var model = require('./model');
-var canRead = require('./canRead');
+var canRead = require('./canRead').default;
 var fastq = require('./fastq');
 var fasta = require('./fasta');
 var alignData = require('./alignData');
 var replyFromBowTie2Align = require('./Align/replyFromBowTie2Align');
 var replyFromSamTools = require('./Align/replyFromSamTools');
 
-module.exports = class extends model
+module.exports = class extends model.DataModelMgr
 {
     constructor(channel,handlers)
     {
         super(channel,handlers);
         this.aligns = new Array();
-        this.bowTie2 = this.fsAccess('resources/app/bowtie2');
+        if(process.platform == "linux")
+            this.bowTie2 = this.fsAccess('resources/app/bowtie2');
+        else if(process.platform == "win32")
+             this.bowTie2 = this.fsAccess('resources/app/perl/perl/bin/perl.exe')
         this.samTools = this.fsAccess('resources/app/samtools');
     }
     postAligns()
     {
-        this.postHandle(this.channel,{action : 'postState', key : 'aligns', val : this.aligns});
+        //this.postHandle(this.channel,{action : 'postState', key : 'aligns', val : this.aligns});
+        this.postHandle(
+            "saveKey",
+            {
+                action : "saveKey",
+                channel : this.channel,
+                key : "aligns",
+                val : this.aligns
+            }
+        );
     }
     runAlignment(fastqs,refIndex,type)
     {
@@ -66,6 +78,8 @@ module.exports = class extends model
 
 
         var args = new Array();
+        if(process.platform == "win32")
+            args.push(this.fsAccess("resources/app/bowtie2"));
         args.push
         (
             "-x",

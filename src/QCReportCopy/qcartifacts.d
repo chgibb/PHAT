@@ -37,9 +37,9 @@ bool makeDestDir(ref string destination)
 		{
 			std.file.mkdir(destination);
 		}
-		catch(std.window.syserror.WindowsException e)
+		catch(std.windows.syserror.WindowsException e)
 		{
-			std.file.rmdirRecurse(dest);
+			std.file.rmdirRecurse(destination);
 			makeDestDir(destination);
 			return false;
 		}

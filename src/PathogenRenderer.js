@@ -28,11 +28,11 @@ $
         (
             'pathogen',function(event,arg)
             {
-                if(arg.action === "getState" || arg.action === "keyChange")
+                if(arg.action === "getKey" || arg.action === "keyChange")
                 {
                     if(arg.key == 'aligns')
                     {
-                        if(arg.val != 0)
+                        if(arg.val !== undefined)
                         {
                             //views[view.getIndexOfViewByName(views,"pileUp")].aligns = arg.val;
                             //views[view.getIndexOfViewByName(views,"report")].aligns = arg.val;
@@ -43,7 +43,7 @@ $
                     }
                     if(arg.key == 'fastaInputs')
                     {
-                        if(arg.val != 0)
+                        if(arg.val !== undefined)
                         {
                             //views[view.getIndexOfViewByName(views,"pileUp")].selectedFastaInputs = new Array();
                             //views[view.getIndexOfViewByName(views,"report")].selectedFastaInputs = new Array();
@@ -64,7 +64,7 @@ $
                     }
                     if(arg.key == 'fastqInputs')
                     {
-                        if(arg.val != 0)
+                        if(arg.val !== undefined)
                         {
                             //views[view.getIndexOfViewByName(views,"report")].selectedFastqInputs = new Array();
                             viewMgr.getViewByName("report").selectedFastqInputs = new Array();
@@ -86,7 +86,7 @@ $
 
 
 
-        ipc.send('keySub',{action : "keySub", channel : "align", key : "aligns", replyChannel : "pathogen"});
+        /*ipc.send('keySub',{action : "keySub", channel : "align", key : "aligns", replyChannel : "pathogen"});
         ipc.send('align',{replyChannel : 'pathogen', action : 'getState', key : 'aligns'});
 
         ipc.send('keySub',{action : "keySub", channel : "input", key : "fastaInputs", replyChannel : "pathogen"});
@@ -94,6 +94,67 @@ $
 
         ipc.send('keySub',{action : "keySub", channel : "input", key : "fastqInputs", replyChannel : "pathogen"});
         ipc.send('input',{replyChannel : 'pathogen', action : 'getState', key : 'fastqInputs'});
+        */
+
+
+        ipc.send(
+            "getKey",
+            {
+                action : "getKey",
+                channel : "input",
+                key : "fastqInputs",
+                replyChannel : "pathogen"
+            }
+        );
+        ipc.send(
+            "getKey",
+            {
+                action : "getKey",
+                channel : "input",
+                key : "fastaInputs",
+                replyChannel : "pathogen"
+            }
+        );
+        ipc.send(
+            "getKey",
+            {
+                action : "getKey",
+                channel : "align",
+                key : "aligns",
+                replyChannel : "pathogen"
+            }
+        );
+
+
+        ipc.send(
+            "keySub",
+            {
+                action : "keySub",
+                channel : "input",
+                key : "fastqInputs",
+                replyChannel : "pathogen"
+            }
+        );
+        ipc.send(
+            "keySub",
+            {
+                action : "keySub",
+                channel : "input",
+                key : "fastaInputs",
+                replyChannel : "pathogen"
+            }
+        );
+        ipc.send(
+            "keySub",
+            {
+                action : "keySub",
+                channel : "align",
+                key : "aligns",
+                replyChannel : "pathogen"
+            }
+        );
+
+        
         viewMgr.render();
     }
 );
