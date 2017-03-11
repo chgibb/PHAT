@@ -38,19 +38,56 @@ $
 
         viewMgr.changeView("summary");
 
-        ipc.send('keySub',{action : "keySub", channel : "input", key : "fastqInputs", replyChannel : "QC"});
-		ipc.send('keySub',{action : "keySub", channel : "input", key : "fastqInputs", replyChannel : "QC"});
-		ipc.send('keySub',{action : "keySub", channel : "QC", key : "QCData", replyChannel : "QC"});
-	
+        //ipc.send('keySub',{action : "keySub", channel : "input", key : "fastqInputs", replyChannel : "QC"});
+		//ipc.send('keySub',{action : "keySub", channel : "input", key : "fastqInputs", replyChannel : "QC"});
+		//ipc.send('keySub',{action : "keySub", channel : "QC", key : "QCData", replyChannel : "QC"});
+        ipc.send(
+            "keySub",
+            {
+                action : "keySub",
+                channel : "input",
+                key : "fastqInputs",
+                replyChannel : "QC"
+            }
+        );
+        ipc.send(
+            "keySub",
+            {
+                action : "keySub",
+                channel : "QC",
+                key : "QCData",
+                replyChannel : "QC"
+            }
+        );
+
+
+        ipc.send(
+            "getKey",
+            {
+                action : "keySub",
+                channel : "input",
+                key : "fastqInputs",
+                replyChannel : "QC"
+            }
+        );
+        ipc.send(
+            "getKey",
+            {
+                action : "keySub",
+                channel : "QC",
+                key : "QCData",
+                replyChannel : "QC"
+            }
+        );
 		
-		ipc.send('QC',{replyChannel : 'QC', action : 'getState', key : 'QCData'});
-		ipc.send('input',{replyChannel : 'QC', action : 'getState', key : 'fastqInputs'});
+		//ipc.send('QC',{replyChannel : 'QC', action : 'getState', key : 'QCData'});
+		//ipc.send('input',{replyChannel : 'QC', action : 'getState', key : 'fastqInputs'});
 
         ipc.on
         (
             'QC',function(event,arg)
             {
-                if(arg.action == "getState" || arg.action == "keyChange")
+                if(arg.action == "getKey" || arg.action == "keyChange")
                 {
                     if(arg.key == "fastqInputs")
                     {

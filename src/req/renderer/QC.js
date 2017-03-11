@@ -19,7 +19,16 @@ module.exports = class extends model.DataModelMgr
     }
     postQCData()
     {
-        this.postHandle(this.channel,{action : 'postState', key : 'QCData', val : this.QCData});
+        //this.postHandle(this.channel,{action : 'postState', key : 'QCData', val : this.QCData});
+        this.postHandle(
+            "saveKey",
+            {
+                action : "saveKey",
+                channel : this.channel,
+                key : "QCData",
+                val : this.QCData
+            }
+        );
     }
     addQCData(name)
     {
