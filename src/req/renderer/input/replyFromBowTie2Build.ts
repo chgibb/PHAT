@@ -1,12 +1,14 @@
-var fs = require('fs');
-var id = require('./../MakeValidID.js');
-module.exports = function(channel,arg,model)
+import * as fs from "fs";
+import {makeValidID,findOriginalInput} from "./../MakeValidID";
+import {SpawnRequestParams} from "./../../JobIPC";
+import Input from "./../Input";
+export default function replyFromBowTie2Build(channel : string,arg : SpawnRequestParams,model : Input) : void
 {
-	let name = "";
+	let name : string = "";
 	if(process.platform == "linux")
-		name = id.findOriginalInput(id.makeValidID(arg.args[0]),model.fastaInputs);
+		name = findOriginalInput(makeValidID(arg.args[0]),model.fastaInputs);
 	else if(process.platform == "win32")
-		name = id.findOriginalInput(id.makeValidID(arg.args[1]),model.fastaInputs);
+		name = findOriginalInput(makeValidID(arg.args[1]),model.fastaInputs);
     //haven't completed building yet.
 	if(!arg.done)
 	{
@@ -40,12 +42,12 @@ module.exports = function(channel,arg,model)
 
 							which gives approximately 4294967096 bytes
 						*/
-						var fasta_size = model.fastaInputs[i].size; //the size of the current fasta in bits
-						var size_threshold = 4294967096; //the size threshold between being 32-bit and being 64-bit
-						var indexes_folder = "resources/app/rt/indexes/"; //the indexes folder url
-						var x64 = (fasta_size > size_threshold ? "1" : ""); //if 64-bit, add a 1 to the file extension
+						let fasta_size : number = model.fastaInputs[i].size; //the size of the current fasta in bits
+						let size_threshold : number = 4294967096; //the size threshold between being 32-bit and being 64-bit
+						let indexes_folder : string = "resources/app/rt/indexes/"; //the indexes folder url
+						let x64 : string = (fasta_size > size_threshold ? "1" : ""); //if 64-bit, add a 1 to the file extension
 
-						var sIndexes = 
+						let sIndexes = 
 						[
 							model.fsAccess(indexes_folder+model.fastaInputs[i].alias+".1.bt2"+x64),
 							model.fsAccess(indexes_folder+model.fastaInputs[i].alias+".2.bt2"+x64),
@@ -57,12 +59,12 @@ module.exports = function(channel,arg,model)
 
 						try
 						{
-							for(let k = 0; k != sIndexes.length; ++k)
+							for(let k : number = 0; k != sIndexes.length; ++k)
 							{
-								fs.accessSync(sIndexes[k],fs.FS_OK | fs.R_OK);
+								fs.accessSync(sIndexes[k],fs.constants.F_OK | fs.constants.R_OK);
 							}
 							//everything exist
-							for(let k = 0; k != sIndexes.length; ++k)
+							for(let k : number = 0; k != sIndexes.length; ++k)
 							{
 								model.fastaInputs[i].indexes.push(sIndexes[k]);
 							}
@@ -73,8 +75,6 @@ module.exports = function(channel,arg,model)
 							return;
 						}
 						catch(err){throw new Error(err);}
-			
-						alert("Could Not Generate Index For "+model.fastaInputs[i].alias);
 					}
 				}
 			}

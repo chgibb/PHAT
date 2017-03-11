@@ -5,13 +5,57 @@
 const electron = require('electron');
 const BrowserWindow = electron.BrowserWindow;
 
-var getState = require('./getState');
-var postState = require('./postState');
+import * as dataMgr from "./dataMgr";
 
 
+export class WindowRef
+{
+	public name : string;
+	public window : Electron.BrowserWindow;
+	public constructor(name : string, window : Electron.BrowserWindow)
+	{
+		this.name = name;
+		this.window = window;
+	}
+}
+export interface WindowCreator
+{	
+	Create : () => void;
+}
+let windows = new Array<WindowRef>();
+export let windowCreators : {
+	[index : string] : WindowCreator;
+} = {};
 
-module.exports.windows = new Array;
-module.exports.windowCreators = {};
+export function pushWindow(refName : string,ref : Electron.BrowserWindow) : void
+{
+	windows.push(new WindowRef(refName,ref));
+}
+
+export function getWindowsByName(refName : string) : Array<Electron.BrowserWindow>
+{
+	let res : Array<Electron.BrowserWindow> = new Array<Electron.BrowserWindow>();
+	for(let i : number = windows.length - 1; i >= 0; --i)
+	{
+		try
+		{
+			windows[i].window.isResizable();
+		}
+		catch(err)
+		{
+			windows.splice(i,1);
+		}
+	}
+	for(let i = 0; i != windows.length; ++i)
+	{
+		if(windows[i].name == refName)
+		{
+			res.push(windows[i].window);
+		}
+	}
+	return res;
+}
+
 
 /**
  * Creates a new renderer window with default events attached.
@@ -31,15 +75,24 @@ module.exports.windowCreators = {};
  * @param {number} minHeight - Minimum height for window
  * @returns {Electron.BrowserWindow} - Reference to created window object
  */
-module.exports.createWithDefault = function(title,refName,width,height,html,debug,alwaysOnTop, minWidth, minHeight)
+export function createWithDefault(
+	title : string,
+	refName : string,
+	width : number,
+	height : number,
+	html : string,
+	debug? : boolean,
+	alwaysOnTop? : boolean,
+	minWidth? : number,
+	minHeight? : number
+) : Electron.BrowserWindow
 {
-		var windowOptions = {};
+		let windowOptions = {};
 		
-		windowOptions = getState.getState(refName,"windowOptions");
+		//windowOptions = getState.getState(refName,"windowOptions");
+		windowOptions = dataMgr.getKey(refName,"windowOptions");
 		if(!windowOptions)
 		{
-			if(!state[refName])
-				state[refName] = {};
 			windowOptions = 
 			{
 				x : 736,
@@ -61,11 +114,12 @@ module.exports.createWithDefault = function(title,refName,width,height,html,debu
 				icon : './../icon.png'
 			};
 			
-			postState.postState(refName,"windowOptions",windowOptions);
+			//postState.postState(refName,"windowOptions",windowOptions);
+			dataMgr.setKey(refName,"windowOptions",windowOptions);
 		}
 		
 		
-		var ref = new BrowserWindow(windowOptions);
+		let ref = new BrowserWindow(windowOptions);
 		//let image = require('electron').nativeImage.createFromPath('./../64x64.png');
 		//if(image.isEmpty())
 			//throw "Could Not Load Application Icon\n";
@@ -79,21 +133,21 @@ module.exports.createWithDefault = function(title,refName,width,height,html,debu
 		(
 			'close',function()
 			{
-				module.exports.saveBounds(ref,refName);
+				saveBounds(ref,refName);
 			}
 		);
 		ref.on
 		(
 			'move',function()
 			{
-				module.exports.saveBounds(ref,refName);
+				saveBounds(ref,refName);
 			}
 		);
 		ref.on
 		(
 			'resize',function()
 			{
-				module.exports.saveBounds(ref,refName);
+				saveBounds(ref,refName);
 			}
 		);
 		return ref;
@@ -104,17 +158,18 @@ module.exports.createWithDefault = function(title,refName,width,height,html,debu
  * @param {Electron.BrowserWindow} ref - Reference to the window object whose bounds are to be saved
  * @param {string} refName - State channel to save onto
  */
-module.exports.saveBounds = function(ref,refName)
+export function saveBounds(ref : Electron.BrowserWindow,refName : string) : void
 {
-	var bounds = ref.getBounds();
+	let bounds = ref.getBounds();
 	//Get old saved values.
-	var windowOptions = getState.getState(refName,"windowOptions");
+	//let windowOptions = getState.getState(refName,"windowOptions");
+	let windowOptions = dataMgr.getKey(refName,"windowOptions");
 	if(!windowOptions)
 	{
 		return;
 	}
 	//Determine simple diff
-	var change = false;
+	let change = false;
 	if(windowOptions.x != bounds.x)
 	{
 		windowOptions.x = bounds.x;
@@ -136,6 +191,8 @@ module.exports.saveBounds = function(ref,refName)
 		change = true;
 	}
 	//Save changes if any.
+	//if(change)
+	//	postState.postState(refName,"windowOptions",windowOptions);
 	if(change)
-		postState.postState(refName,"windowOptions",windowOptions);
+		dataMgr.setKey(refName,"windowOptions",windowOptions);
 }

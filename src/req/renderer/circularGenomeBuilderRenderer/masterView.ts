@@ -1,4 +1,4 @@
-//// <reference path="jquery.d.ts" />
+/// <reference types="jquery" />
 
 import * as viewMgr from "./../viewMgr";
 import {DataModelMgr} from "./../model";
@@ -99,6 +99,7 @@ export class View extends viewMgr.View
             {
                 this.views[i].render();
             }
+            return undefined;
     }
     public postRender() : void{}
     public dataChanged() : void
@@ -138,6 +139,7 @@ export class View extends viewMgr.View
                                 me.rightPanelOpen = false;
                                 return "-=50%";
                             }
+                            return "";
                         }
                     )()
                 }
@@ -162,6 +164,7 @@ export class View extends viewMgr.View
                                 me.leftPanelOpen = false;
                                 return "-=50%";
                             }
+                            return "";
                         }
                     )()
                 }

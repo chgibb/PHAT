@@ -6,12 +6,12 @@
  * @param {string} file - Path to file to load
  * @returns {Array<string>} - Array of contig names
  */
-module.exports.getContigs = function(file)
+import * as fs from "fs";
+export default function getContigs(file : string) : Array<string>
 {
-    var res = new Array();
-    var fs = require('fs');
-    var tokens = fs.readFileSync(file).toString().split(new RegExp("[ ]|[\t]|[\n]"));
-    for(var i = 0; i <= tokens.length; i += 5)
+    let res : Array<string> = new Array<string>();
+    let tokens : Array<string> = fs.readFileSync(file).toString().split(new RegExp("[ ]|[\t]|[\n]"));
+    for(let i : number = 0; i <= tokens.length; i += 5)
     {
         if(tokens[i])
             res.push(tokens[i]);

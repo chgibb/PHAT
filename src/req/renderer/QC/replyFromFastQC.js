@@ -1,5 +1,5 @@
 var id = require('./../MakeValidID.js');
-var trimPath = require('./../trimPath.js');
+var trimPath = require('./../trimPath.js').default;
 module.exports = function(channel,arg,model)
 {
     

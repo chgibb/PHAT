@@ -38,23 +38,61 @@ $
 
         viewMgr.changeView("summary");
 
-        ipc.send('keySub',{action : "keySub", channel : "input", key : "fastqInputs", replyChannel : "QC"});
-		ipc.send('keySub',{action : "keySub", channel : "input", key : "fastqInputs", replyChannel : "QC"});
-		ipc.send('keySub',{action : "keySub", channel : "QC", key : "QCData", replyChannel : "QC"});
-	
+        //ipc.send('keySub',{action : "keySub", channel : "input", key : "fastqInputs", replyChannel : "QC"});
+		//ipc.send('keySub',{action : "keySub", channel : "input", key : "fastqInputs", replyChannel : "QC"});
+		//ipc.send('keySub',{action : "keySub", channel : "QC", key : "QCData", replyChannel : "QC"});
+        ipc.send(
+            "keySub",
+            {
+                action : "keySub",
+                channel : "input",
+                key : "fastqInputs",
+                replyChannel : "QC"
+            }
+        );
+        ipc.send(
+            "keySub",
+            {
+                action : "keySub",
+                channel : "QC",
+                key : "QCData",
+                replyChannel : "QC"
+            }
+        );
+
+
+        ipc.send(
+            "getKey",
+            {
+                action : "keySub",
+                channel : "input",
+                key : "fastqInputs",
+                replyChannel : "QC"
+            }
+        );
+        ipc.send(
+            "getKey",
+            {
+                action : "keySub",
+                channel : "QC",
+                key : "QCData",
+                replyChannel : "QC"
+            }
+        );
 		
-		ipc.send('QC',{replyChannel : 'QC', action : 'getState', key : 'QCData'});
-		ipc.send('input',{replyChannel : 'QC', action : 'getState', key : 'fastqInputs'});
+		//ipc.send('QC',{replyChannel : 'QC', action : 'getState', key : 'QCData'});
+		//ipc.send('input',{replyChannel : 'QC', action : 'getState', key : 'fastqInputs'});
 
         ipc.on
         (
             'QC',function(event,arg)
             {
-                if(arg.action == "getState" || arg.action == "keyChange")
+                console.log(JSON.stringify(arg,undefined,4));
+                if(arg.action == "getKey" || arg.action == "keyChange")
                 {
                     if(arg.key == "fastqInputs")
                     {
-                        if(arg.val != 0)
+                        if(arg.val !== undefined)
                         {
                             for(var i in arg.val)
                             {
@@ -69,7 +107,7 @@ $
                     }
                     if(arg.key == 'QCData')
                     {
-                        if(arg.val != 0 )
+                        if(arg.val !== undefined )
                         {
                             QC.QCData = arg.val;
                             //views[view.getIndexOfViewByName(views,'summary')].data.QCData = QC.QCData;

@@ -11,7 +11,7 @@ catch(err){}
 var assert = require('./req/tests/assert');
 
 
-var Input = require('./req/renderer/Input.js');
+var Input = require('./req/renderer/Input.js').default;
 var QCClass = require('./req/renderer/QC.js');
 var Align = require('./req/renderer/Align');
 

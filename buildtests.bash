@@ -17,7 +17,7 @@ fi
 cp -r testData/* tests/data
 
 mkdir guiTests
-
+./node_modules/.bin/tsc
 for f in src/guiTests/*.js
 do
 	printf "Bundling "
@@ -26,4 +26,15 @@ do
 	destination=$(echo $f | awk '{gsub("src/","guiTests/"); gsub("guiTests/guiTests/","guiTests/");print}')
 	printf $destination
 	./node_modules/.bin/browserify $f --node --debug -o $destination --ignore-missing
+done
+
+for f in $(find src -name '*.ts'); 
+do
+	if [[ "$OSTYPE" == "linux-gnu" ]]; then
+		artifact=$(echo $f | awk '{gsub("\.ts",".js");print}')
+	fi
+	if [[ "$OSTYPE" == "cygwin" ]]; then
+		artifact=$(echo $f | awk '{gsub("\\.ts",".js");print}')
+	fi
+	rm $artifact
 done

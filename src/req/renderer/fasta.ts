@@ -1,14 +1,24 @@
-/**
- * @module req/renderer/fasta
- */
-var id = require('./MakeValidID.js');
-var trimPath = require('./trimPath.js');
-module.exports = class
+import {makeValidID} from "./MakeValidID";
+import trimPath from "./trimPath";
+export default class Fasta
 {
-    /**
-     * @param {string} name - Path to fasta file 
-     */
-    constructor(name)
+    public name : string;
+    public alias : string;
+    public checked : boolean;
+    public size : number;
+    public sizeString : string;
+    public sequences : number;
+    public validID : string;
+    public indexed : boolean;
+    public indexing : boolean;
+    public indexes : Array<any>;
+    public host : boolean;
+    public pathogen : boolean;
+    public type : string;
+    public twoBit : string;
+    public contigs : Array<string>;
+    public fai : string;
+    public constructor(name : string)
     {
         /**
          * @prop {string} name - Path to file
@@ -30,12 +40,15 @@ module.exports = class
         this.size = 0;
         this.sizeString = "0";
         this.sequences = 0;
-        this.validID = id.makeValidID(name);
+        this.validID = makeValidID(name);
         this.indexed = false;
         this.indexing = false;
         this.indexes = new Array();
         this.host = false;
         this.pathogen = false;
         this.type = "";
+        this.twoBit = "";
+        this.contigs = new Array<string>();
+        this.fai = "";
     }
 }

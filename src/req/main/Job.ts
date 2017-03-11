@@ -6,7 +6,15 @@
  * @see module:req/main/JobMgr
  * @module req/main/Job
 */
-module.exports = class
+import {SpawnRequestParams} from "./../JobIPC";
+import * as spawn from "child_process";
+export interface JobCallBackObject
+{
+	send : (
+		callBackChannel : string,params : SpawnRequestParams
+	) => void;
+}
+export class Job
 {
     /**  
      * @param {string} processName - the name of the executable to invoke
@@ -16,7 +24,23 @@ module.exports = class
      * @param {any} callBackObj - some object with a method send(string) : void.
      * @param {any} extraData - JSON object to be forwarded to originator on every callback
     */
-	constructor(processName,args,callBackChannel,unBuffer,callBackObj,extraData)
+	private process : spawn.ChildProcess;
+	public processName : string;
+	public args : Array<string>;
+	public callBackChannel : string;
+	public unBuffer : boolean;
+	public callBackObj : JobCallBackObject;
+	public done : boolean;
+	public running : boolean;
+	public extraData : any;
+	public constructor(
+		processName : string,
+		args : Array<string>,
+		callBackChannel : string,
+		unBuffer : boolean,
+		callBackObj : JobCallBackObject,
+		extraData : any
+		)
 	{
 		this.processName = processName;
 		this.args = args;
@@ -31,14 +55,14 @@ module.exports = class
      * @param {Buffer} data - data buffer to unbuffer to string
      * @returns {string} unbuffered data
      */
-	unBufferBufferedData(data)
+	unBufferBufferedData(data : Buffer) : string
 	{ 
-		var unBufferedData = "";
-		for(var i in data)
+		let unBufferedData : string = "";
+		for(let i in data)
 		{
 			if(data[i] != 0 && data[i] != undefined)
 			{
-				var char = String.fromCharCode(data[i]);
+				let char = String.fromCharCode(data[i]);
 				if(char && char != undefined)
 					unBufferedData += char;
 			}
@@ -50,7 +74,7 @@ module.exports = class
      * On output over stderr. Forwards data from stderr.
      * @param {string} data - stderr output from process
      */
-	OnErr(data)
+	OnErr(data : Buffer) : void
 	{
 		if(!this.unBuffer)
 		{
@@ -81,15 +105,15 @@ module.exports = class
 			);
 		}
 	}
-	OnOut(data)
+	OnOut(data : Buffer) : void
 	{
 		this.OnErr(data);
 	}
-	OnSpawnError(err)
+	OnSpawnError(err : string) : void
 	{
 		throw new Error("\nCould not spawn process: "+this.processName+" "+err+"\n CWD: "+process.cwd()+"\n");
 	}
-	OnComplete(retCode)
+	OnComplete(retCode : number) : void
 	{
 		this.done = true;
 		this.running = false;
@@ -107,34 +131,33 @@ module.exports = class
 	}
 	Run()
 	{
-		var spawn = require('child_process');
 		this.process = spawn.spawn(this.processName,this.args);
 		this.running = true;
 		var obj = this;
 		this.process.stderr.on
 		(
-			'data',function(data)
+			'data',function(data : Buffer)
 			{
 				obj.OnErr(data);
 			}
 		);
 		this.process.stdout.on
 		(
-			'data',function(data)
+			'data',function(data : Buffer)
 			{
 				obj.OnOut(data);
 			}
 		)
 		this.process.on
 		(
-			'exit',function(retCode)
+			'exit',function(retCode : number)
 			{
 				obj.OnComplete(retCode);
 			}
 		);
 		this.process.on
 		(
-			'error',function(err)
+			'error',function(err : string)
 			{
 				obj.OnSpawnError(err);
 			}

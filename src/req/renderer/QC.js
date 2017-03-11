@@ -1,7 +1,7 @@
 var QCData = require('./QCData');
 var fs = require('fs');
 var model = require('./model');
-var canRead = require('./canRead');
+var canRead = require('./canRead').default;
 var replyFromQCReportCopy = require('./QC/replyFromQCReportCopy');
 var replyFromFastQC = require('./QC/replyFromFastQC');
 module.exports = class extends model.DataModelMgr
@@ -19,7 +19,16 @@ module.exports = class extends model.DataModelMgr
     }
     postQCData()
     {
-        this.postHandle(this.channel,{action : 'postState', key : 'QCData', val : this.QCData});
+        //this.postHandle(this.channel,{action : 'postState', key : 'QCData', val : this.QCData});
+        this.postHandle(
+            "saveKey",
+            {
+                action : "saveKey",
+                channel : this.channel,
+                key : "QCData",
+                val : this.QCData
+            }
+        );
     }
     addQCData(name)
     {

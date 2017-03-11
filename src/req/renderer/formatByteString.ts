@@ -8,13 +8,13 @@
  * @returns {string} - Formatted byte string
  */
 //Adapted from https://jsfiddle.net/oy02axhh/
-module.exports = function(bytes)
+export default function formatByteString(bytes : number) : string
 {
-    var kb = 1000;
-    var ndx = Math.floor(Math.log(bytes) / Math.log(kb));
-    var fileSizeTypes = ["bytes", "kb", "mb", "gb", "tb", "pb", "eb", "zb", "yb"];
+    let kb = 1000;
+    let ndx = Math.floor(Math.log(bytes) / Math.log(kb));
+    let fileSizeTypes = ["bytes", "kb", "mb", "gb", "tb", "pb", "eb", "zb", "yb"];
 
-    var res = "";
+    let res = "";
     //more than a megabyte
     if(bytes >= 1000000)
         res += +(bytes/kb/kb).toFixed(2)+fileSizeTypes[ndx];

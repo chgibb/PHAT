@@ -20,6 +20,7 @@ var window = require('./window');
 */
 module.exports.postStateIPC = function(channel,event,arg)
 {
+	/*
 	if(arg.action === "postState")
 	{
 		//console.log('\033[2J');
@@ -87,7 +88,7 @@ module.exports.postStateIPC = function(channel,event,arg)
 				}
 			}
 		}
-	}
+	}*/
 }
 /**
  * Saves state coming from another function/thread in the same process.
@@ -97,6 +98,7 @@ module.exports.postStateIPC = function(channel,event,arg)
 */
 module.exports.postState = function(channel,key,val)
 {
+	/*
 	if(state[channel])
 	{
 		state[channel][key] = val;
@@ -107,6 +109,6 @@ module.exports.postState = function(channel,key,val)
 			state[channel] = {};
 			state[channel][key] = val;
 			persistState.persistState();
-	}
+	}*/
 
 }

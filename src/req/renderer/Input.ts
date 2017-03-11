@@ -4,22 +4,33 @@
 	Part of the PHAT Project
 	Author : gibbc@tbh.net
 */
-var fastq = require('./fastq');
-var fasta = require('./fasta');
-var formatByteString = require('./formatByteString');
-var canRead = require('./canRead');
-var fs = require('fs');
-var model = require('./model');
-var replyFromBowTie2Build = require('./input/replyFromBowTie2Build');
-var replyFromFaToTwoBit = require('./input/replyFromFaToTwoBit');
-var replyFromSamTools = require('./input/replyFromSamTools');
+import {SaveKeyEvent} from "./../ipcEvents";
 
-module.exports = class extends model.DataModelMgr
+import Fastq from "./fastq";
+import Fasta from "./fasta";
+import formatByteString from "./formatByteString";
+import canRead from "./canRead";
+import replyFromBowTie2Build from "./input/replyFromBowTie2Build";
+import replyFromFaToTwoBit from "./input/replyFromFaToTwoBit";
+import replyFromSamTools from "./input/replyFromSamTools";
+
+import * as fs from "fs";
+
+import {DataModelHandlers,DataModelMgr} from "./model";
+import {SpawnRequestParams} from "./../JobIPC";
+
+export default class Input extends DataModelMgr
 {
-    constructor(channel,handlers)
+    public fastqInputs : Array<Fastq>;
+    public fastaInputs : Array<Fasta>;
+    public faToTwoBit : string;
+    public samTools : string;
+    public copy : string;
+    public bowTie2Build : string;
+    public constructor(channel : string,handlers : DataModelHandlers)
     {
         super(channel,handlers);
-        this.fastqInputs = new Array();
+        this.fastqInputs = new Array<Fastq>();
         this.fastaInputs = new Array();
         
         //allow the environment to change default paths for required foreign modules
@@ -31,52 +42,69 @@ module.exports = class extends model.DataModelMgr
         else if(process.platform == "win32")
             this.bowTie2Build = this.fsAccess('resources/app/python/python.exe');
     }
-    postFastqInputs()
+    postFastqInputs() : void
     {
-        this.postHandle(this.channel,{action : 'postState', key : 'fastqInputs', val : this.fastqInputs});
+        this.postHandle(
+            "saveKey",
+            <SaveKeyEvent>{
+                action : "saveKey",
+                channel : this.channel,
+                key : "fastqInputs",
+                val : this.fastqInputs 
+            }
+        );
     }
-    postFastaInputs()
+    postFastaInputs() : void
     { 
-        this.postHandle(this.channel,{action : 'postState', key : 'fastaInputs', val : this.fastaInputs});
+        //this.postHandle(this.channel,{action : 'postState', key : 'fastaInputs', val : this.fastaInputs});
+        this.postHandle(
+            "saveKey",
+            <SaveKeyEvent>{
+                action : "saveKey",
+                channel : this.channel,
+                key : "fastaInputs",
+                val : this.fastaInputs
+            }
+        );
     }
-    addFastq(name)
+    addFastq(name : string) : boolean
     {
         if(!canRead(this.fsAccess(name)))
             return false;
-        this.fastqInputs.push(new fastq(this.fsAccess(name)));
+        this.fastqInputs.push(new Fastq(this.fsAccess(name)));
 
         //use Node's statSync to get filesize
-        var stats = fs.statSync(name);
+        let stats : fs.Stats = fs.statSync(name);
 
         for(let i = 0; i != this.fastqInputs.length; ++i)
 	    {
 		    if(this.fastqInputs[i].name == name) 
             {
-                this.fastqInputs[i].size = parseInt(stats["size"]);
-                this.fastqInputs[i].sizeString = formatByteString(parseInt(stats["size"]));
+                this.fastqInputs[i].size = stats.size;
+                this.fastqInputs[i].sizeString = formatByteString(stats.size);
             }
 	    }
         return true;
     }
-    addFasta(name)
+    addFasta(name : string) : boolean
     {
         if(!canRead(this.fsAccess(name)))
             return false;
-        this.fastaInputs.push(new fasta(this.fsAccess(name)));
+        this.fastaInputs.push(new Fasta(this.fsAccess(name)));
 
         //use Node's statSync to get filesize
-        var stats = fs.statSync(name);
+        let stats = fs.statSync(name);
         for(let i = 0; i != this.fastaInputs.length; ++i)
 	    {
 		    if(this.fastaInputs[i].name == name) 
             {
-                this.fastaInputs[i].size = parseInt(stats["size"]);
-                this.fastaInputs[i].sizeString = formatByteString(parseInt(stats["size"]));
+                this.fastaInputs[i].size = stats.size;
+                this.fastaInputs[i].sizeString = formatByteString(stats.size);
             }
 	    }
         return true;
     }
-    indexFasta(name)
+    indexFasta(name : string) : boolean
     {
         for(let i = 0; i != this.fastaInputs.length; ++i)
         {
@@ -104,7 +132,7 @@ module.exports = class extends model.DataModelMgr
         }
         return false;
     }
-    fastqExists(name)
+    fastqExists(name : string) : boolean
     {
         for(let i = 0; i != this.fastqInputs.length; ++i)
 	    {
@@ -113,7 +141,7 @@ module.exports = class extends model.DataModelMgr
 	    }
 	    return false;
     }
-    fastaExists(name)
+    fastaExists(name : string) : boolean
     {
         for(let i = 0; i != this.fastaInputs.length; ++i)
 	    {
@@ -122,7 +150,7 @@ module.exports = class extends model.DataModelMgr
 	    }
 	    return false;
     }
-    spawnReply(channel,arg)
+    spawnReply(channel : string,arg : SpawnRequestParams) : void
     {
         if(arg.processName == this.faToTwoBit)
             replyFromFaToTwoBit(channel,arg,this);
