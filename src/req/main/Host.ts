@@ -1,19 +1,19 @@
 import * as winMgr from "./winMgr";
 import fsAccess from "./../fsAccess";
 
-winMgr.windowCreators["output"] = 
+winMgr.windowCreators["host"] = 
 {
 	Create : function() 
 	{
 		winMgr.pushWindow(
-			"output",
+			"host",
 			winMgr.createWithDefault(
-				"Output",
-				"output",
-				1379,649,
-				fsAccess("resources/app/Output.html"),
+				"Host",
+				"host",
+				1000,800,
+				fsAccess("resources/app/host.html"),
 				false,false,
-				650,420
+				500,300
 			)
 		);
 	}

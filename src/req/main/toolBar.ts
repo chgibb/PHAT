@@ -8,7 +8,8 @@ const ipc = electron.ipcMain;
 const app = electron.app;
 import * as winMgr from "./winMgr";
 import fsAccess from "./../fsAccess";
-import* as dataMgr from "./dataMgr";
+import * as dataMgr from "./dataMgr";
+
 ipc.on
 (
 	"toolBar",function(event,arg)
@@ -23,15 +24,6 @@ winMgr.windowCreators["toolBar"] =
 {
 	Create : function()
 	{
-		/*window.windows["toolBar"] = toolBarWindow = window.createWithDefault("P. H. A. T.","toolBar",790,64,fsAccess("resources/app/ToolBar.html"),false,false, 500, 64);
-		toolBarWindow.on
-		(
-			'closed',function()
-			{
-				toolBarWindow = null;
-				app.quit();
-			}
-		);*/
 		winMgr.pushWindow(
 			"toolBar",
 			winMgr.createWithDefault(
