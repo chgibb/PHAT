@@ -44,7 +44,6 @@ export function getWindowsByName(refName : string) : Array<Electron.BrowserWindo
 		catch(err)
 		{
 			windows.splice(i,1);
-			console.log("\n\n\nSPLICED "+windows[i].name+"\n\n\n");
 		}
 	}
 	for(let i = 0; i != windows.length; ++i)
