@@ -21,7 +21,16 @@ module.exports = class extends model.DataModelMgr
     }
     postAligns()
     {
-        this.postHandle(this.channel,{action : 'postState', key : 'aligns', val : this.aligns});
+        //this.postHandle(this.channel,{action : 'postState', key : 'aligns', val : this.aligns});
+        this.postHandle(
+            "saveKey",
+            {
+                action : "saveKey",
+                channel : this.channel,
+                key : "aligns",
+                val : this.aligns
+            }
+        );
     }
     runAlignment(fastqs,refIndex,type)
     {
