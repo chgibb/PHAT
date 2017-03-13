@@ -9,7 +9,7 @@
 */
 var jobs = new Array();
 var switchEnds = false;
-var Job = require('./Job.js');
+var Job = require('./Job.js').Job;
 /** 
  * Updates job queue.
  * Removes completed jobs and starts new ones.

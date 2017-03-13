@@ -1,4 +1,4 @@
-var canRead = require('./../canRead');
+var canRead = require('./../canRead').default;
 var alignmentSummary = require('./../bowTie2AlignmentReportParser');
 module.exports = function(channel,arg,model)
 {

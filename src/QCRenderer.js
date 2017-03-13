@@ -38,27 +38,77 @@ $
 
         viewMgr.changeView("summary");
 
-        ipc.send('keySub',{action : "keySub", channel : "input", key : "fastqInputs", replyChannel : "QC"});
-		ipc.send('keySub',{action : "keySub", channel : "input", key : "fastqInputs", replyChannel : "QC"});
-		ipc.send('keySub',{action : "keySub", channel : "QC", key : "QCData", replyChannel : "QC"});
-	
+        //ipc.send('keySub',{action : "keySub", channel : "input", key : "fastqInputs", replyChannel : "QC"});
+		//ipc.send('keySub',{action : "keySub", channel : "input", key : "fastqInputs", replyChannel : "QC"});
+		//ipc.send('keySub',{action : "keySub", channel : "QC", key : "QCData", replyChannel : "QC"});
+        ipc.send(
+            "keySub",
+            {
+                action : "keySub",
+                channel : "input",
+                key : "fastqInputs",
+                replyChannel : "QC"
+            }
+        );
+        ipc.send(
+            "keySub",
+            {
+                action : "keySub",
+                channel : "QC",
+                key : "QCData",
+                replyChannel : "QC"
+            }
+        );
+
+        ipc.send(
+            "getKey",
+            {
+                action : "getKey",
+                channel : "QC",
+                key : "QCData",
+                replyChannel : "QC"
+            }
+        );
+        ipc.send(
+            "getKey",
+            {
+                action : "getKey",
+                channel : "input",
+                key : "fastqInputs",
+                replyChannel : "QC"
+            }
+        );
+        
 		
-		ipc.send('QC',{replyChannel : 'QC', action : 'getState', key : 'QCData'});
-		ipc.send('input',{replyChannel : 'QC', action : 'getState', key : 'fastqInputs'});
+		//ipc.send('QC',{replyChannel : 'QC', action : 'getState', key : 'QCData'});
+		//ipc.send('input',{replyChannel : 'QC', action : 'getState', key : 'fastqInputs'});
 
         ipc.on
         (
             'QC',function(event,arg)
             {
-                if(arg.action == "getState" || arg.action == "keyChange")
+                console.log(JSON.stringify(arg,undefined,4));
+                if(arg.action == "getKey" || arg.action == "keyChange")
                 {
+                    if(arg.key == 'QCData')
+                    {
+                        if(arg.val !== undefined )
+                        {
+                            QC.QCData = arg.val;
+                            //views[view.getIndexOfViewByName(views,'summary')].data.QCData = QC.QCData;
+                        }
+                    }
                     if(arg.key == "fastqInputs")
                     {
-                        if(arg.val != 0)
+                        if(arg.val !== undefined)
                         {
-                            for(var i in arg.val)
+                            /*for(var i in arg.val)
                             {
                                 QC.addQCData(arg.val[i].name)
+                            }*/
+                            for(let i = 0; i != arg.val.length; ++i)
+                            {
+                                QC.addQCData(arg.val[i].name);
                             }
                             QC.postQCData();
                             //views[view.getIndexOfViewByName(views,'summary')].data.QCData = QC.QCData;
@@ -67,14 +117,7 @@ $
                             viewMgr.render();
                         }
                     }
-                    if(arg.key == 'QCData')
-                    {
-                        if(arg.val != 0 )
-                        {
-                            QC.QCData = arg.val;
-                            //views[view.getIndexOfViewByName(views,'summary')].data.QCData = QC.QCData;
-                        }
-                    }
+                    
                 }
                 viewMgr.render();
             }
@@ -87,15 +130,19 @@ $
             {
                 if(arg.processName == QC.fastQC)
                 {
-                    if(!arg.done)
+                    if(arg.unBufferedData)
                     {
-                        if(arg.unBufferedData)
+                        if(validFastQCOut.test(arg.unBufferedData))
                         {
-                            if(validFastQCOut.test(arg.unBufferedData))
+                            let regResult = trimOutFastQCPercentage.exec(arg.unBufferedData);
+                            if(regResult && regResult[0])
                             {
-                                let regResult = trimOutFastQCPercentage.exec(arg.unBufferedData);
-                                if(regResult && regResult[0])
-                                    $('#'+id.makeValidID(arg.args[0])).text(regResult[0]);
+                                let idx = -1;
+                                if(process.platform == "linux")
+                                    idx = 0;
+                                else if(process.platform == "win32")
+                                    idx = 1;
+                                $('#'+id.makeValidID(arg.args[idx])).text(regResult[0]);
                             }
                         }
                     }

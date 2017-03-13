@@ -20,19 +20,58 @@ $
         (
             "output",function(event,arg)
             {
-                if(arg.action === "getState" || arg.action === "keyChange")
+                if(arg.action === "getKey" || arg.action === "keyChange")
                 {
-                    if(arg.key == "fastqInputs" && arg.val != 0)
+                    if(arg.key == "fastqInputs" && arg.val !== undefined)
                         viewMgr.getViewByName("report",viewMgr.getViewByName("masterReportView").views).fastqInputs = arg.val;
-                    if(arg.key == "QCData" && arg.val != 0)
+                    if(arg.key == "QCData" && arg.val !== undefined)
                         viewMgr.getViewByName("report",viewMgr.getViewByName("masterReportView").views).QC.QCData = arg.val;
                 }
                 viewMgr.render();
             }
         );
-        ipc.send('keySub',{action : "keySub", channel : "input", key : "fastqInputs", replyChannel : "output"});
-        ipc.send('keySub',{action : "keySub", channel : "QC", key : "QCData", replyChannel : "output"});
-        ipc.send('input',{replyChannel : 'output', action : 'getState', key : 'fastqInputs'});
-        ipc.send('QC',{replyChannel : 'output', action : 'getState', key : 'QCData'});
+        //ipc.send('keySub',{action : "keySub", channel : "input", key : "fastqInputs", replyChannel : "output"});
+        //ipc.send('keySub',{action : "keySub", channel : "QC", key : "QCData", replyChannel : "output"});
+        //ipc.send('input',{replyChannel : 'output', action : 'getState', key : 'fastqInputs'});
+        //ipc.send('QC',{replyChannel : 'output', action : 'getState', key : 'QCData'});
+
+        ipc.send(
+            "keySub",
+            {
+                action : "keySub",
+                channel : "input",
+                key : "fastqInputs",
+                replyChannel : "output"
+            }
+        );
+        ipc.send(
+            "keySub",
+            {
+                action : "keySub",
+                channel : "QC",
+                key : "QCData",
+                replyChannel : "output"
+            }
+        );
+
+
+        ipc.send(
+            "getKey",
+            {
+                action : "keySub",
+                channel : "input",
+                key : "fastqInputs",
+                replyChannel : "output"
+            }
+        );
+        ipc.send(
+            "getKey",
+            {
+                action : "keySub",
+                channel : "QC",
+                key : "QCData",
+                replyChannel : "output"
+            }
+        );
     }
 );

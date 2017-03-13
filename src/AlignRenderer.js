@@ -44,22 +44,69 @@ $
 
         viewMgr.changeView("report");
         
-        ipc.send('align',{replyChannel : 'align', action : 'getState', key : 'aligns'});
-        ipc.send('input',{replyChannel : 'align', action : 'getState', key : 'fastaInputs'});
-		ipc.send('input',{replyChannel : 'align', action : 'getState', key : 'fastqInputs'});
+        //ipc.send('align',{replyChannel : 'align', action : 'getState', key : 'aligns'});
+        //ipc.send('input',{replyChannel : 'align', action : 'getState', key : 'fastaInputs'});
+		//ipc.send('input',{replyChannel : 'align', action : 'getState', key : 'fastqInputs'});
 
-        ipc.send('keySub',{action : "keySub",channel : "input", key : "fastqInputs", replyChannel : "align"});
-		ipc.send('keySub',{action : "keySub",channel : "input", key : "fastaInputs", replyChannel : "align"});
+        ipc.send(
+            "getKey",
+            {
+                action : "getKey",
+                channel : "align",
+                key : "aligns",
+                replyChannel : "align"
+            }
+        );
+        ipc.send(
+            "getKey",
+            {
+                action : "getKey",
+                channel : "input",
+                key : "fastqInputs",
+                replyChannel : "align"
+            }
+        );
+        ipc.send(
+            "getKey",
+            {
+                action : "getKey",
+                channel : "input",
+                key : "fastaInputs",
+                replyChannel : "align"
+            }
+        );
+
+        //ipc.send('keySub',{action : "keySub",channel : "input", key : "fastqInputs", replyChannel : "align"});
+		//ipc.send('keySub',{action : "keySub",channel : "input", key : "fastaInputs", replyChannel : "align"});
+
+        ipc.send(
+            "keySub",
+            {
+                action : "keySub",
+                channel : "input",
+                key : "fastqInputs",
+                replyChannel : "align"
+            }
+        );
+        ipc.send(
+            "keySub",
+            {
+                action : "keySub",
+                channel : "input",
+                key : "fastaInputs",
+                replyChannel : "align"
+            }
+        );
 
         ipc.on
         (
             'align',function(event,arg)
             {
-                if(arg.action == "getState" || arg.action == "keyChange")
+                if(arg.action == "getKey" || arg.action == "keyChange")
                 {
                     if(arg.key == "fastqInputs")
                     {
-                        if(arg.val != 0)
+                        if(arg.val !== undefined)
                         {
                             //views[view.getIndexOfViewByName(views,"report")].data.fastqInputs = arg.val;
                             viewMgr.getViewByName("report").data.fastqInputs = arg.val;
@@ -67,7 +114,7 @@ $
                     }
                     if(arg.key == "fastaInputs")
                     {
-                        if(arg.val != 0)
+                        if(arg.val !== undefined)
                         {
                             //views[view.getIndexOfViewByName(views,"report")].data.fastaInputs = arg.val;
                             viewMgr.getViewByName("report").data.fastaInputs = arg.val;

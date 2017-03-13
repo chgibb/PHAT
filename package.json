@@ -14,15 +14,21 @@
   },
   "homepage": "",
   "devDependencies": {
+    "@types/electron": "^1.4.33",
+    "@types/fs-extra": "0.0.37",
+    "@types/jquery": "^2.0.40",
+    "@types/node": "^7.0.5",
     "browserify": "^13.1.0",
     "electron-prebuilt": "^1.1.2",
-    "jsdoc": "^3.4.3"
+    "jsdoc": "^3.4.3",
+    "typescript": "^2.2.1"
   },
   "dependencies": {
     "angular": "^1.6.1",
     "angularplasmid": "^1.0.5",
     "electron-ipc-stream": "^0.2.0",
     "electron-packager": "^8.0.0",
+    "fs-extra": "^2.0.0",
     "jquery": "^2.2.4",
     "jsonfile": "^2.4.0"
   }

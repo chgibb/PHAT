@@ -1,13 +1,13 @@
 var fs = require('fs');
 var model = require('./model');
-var canRead = require('./canRead');
+var canRead = require('./canRead').default;
 var fastq = require('./fastq');
 var fasta = require('./fasta');
 var alignData = require('./alignData');
 var replyFromBowTie2Align = require('./Align/replyFromBowTie2Align');
 var replyFromSamTools = require('./Align/replyFromSamTools');
 
-module.exports = class extends model
+module.exports = class extends model.DataModelMgr
 {
     constructor(channel,handlers)
     {
@@ -21,7 +21,16 @@ module.exports = class extends model
     }
     postAligns()
     {
-        this.postHandle(this.channel,{action : 'postState', key : 'aligns', val : this.aligns});
+        //this.postHandle(this.channel,{action : 'postState', key : 'aligns', val : this.aligns});
+        this.postHandle(
+            "saveKey",
+            {
+                action : "saveKey",
+                channel : this.channel,
+                key : "aligns",
+                val : this.aligns
+            }
+        );
     }
     runAlignment(fastqs,refIndex,type)
     {
