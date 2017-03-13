@@ -60,16 +60,6 @@ $
             }
         );
 
-
-        ipc.send(
-            "getKey",
-            {
-                action : "getKey",
-                channel : "input",
-                key : "fastqInputs",
-                replyChannel : "QC"
-            }
-        );
         ipc.send(
             "getKey",
             {
@@ -79,6 +69,16 @@ $
                 replyChannel : "QC"
             }
         );
+        ipc.send(
+            "getKey",
+            {
+                action : "getKey",
+                channel : "input",
+                key : "fastqInputs",
+                replyChannel : "QC"
+            }
+        );
+        
 		
 		//ipc.send('QC',{replyChannel : 'QC', action : 'getState', key : 'QCData'});
 		//ipc.send('input',{replyChannel : 'QC', action : 'getState', key : 'fastqInputs'});
@@ -90,21 +90,6 @@ $
                 console.log(JSON.stringify(arg,undefined,4));
                 if(arg.action == "getKey" || arg.action == "keyChange")
                 {
-                    if(arg.key == "fastqInputs")
-                    {
-                        if(arg.val !== undefined)
-                        {
-                            for(var i in arg.val)
-                            {
-                                QC.addQCData(arg.val[i].name)
-                            }
-                            QC.postQCData();
-                            //views[view.getIndexOfViewByName(views,'summary')].data.QCData = QC.QCData;
-                            //views[view.getIndexOfViewByName(views,'summary')].data.fastqInputs = arg.val;
-                            viewMgr.getViewByName("summary").data.fastqInputs = arg.val;
-                            viewMgr.render();
-                        }
-                    }
                     if(arg.key == 'QCData')
                     {
                         if(arg.val !== undefined )
@@ -113,6 +98,26 @@ $
                             //views[view.getIndexOfViewByName(views,'summary')].data.QCData = QC.QCData;
                         }
                     }
+                    if(arg.key == "fastqInputs")
+                    {
+                        if(arg.val !== undefined)
+                        {
+                            /*for(var i in arg.val)
+                            {
+                                QC.addQCData(arg.val[i].name)
+                            }*/
+                            for(let i = 0; i != arg.val.length; ++i)
+                            {
+                                QC.addQCData(arg.val[i].name);
+                            }
+                            QC.postQCData();
+                            //views[view.getIndexOfViewByName(views,'summary')].data.QCData = QC.QCData;
+                            //views[view.getIndexOfViewByName(views,'summary')].data.fastqInputs = arg.val;
+                            viewMgr.getViewByName("summary").data.fastqInputs = arg.val;
+                            viewMgr.render();
+                        }
+                    }
+                    
                 }
                 viewMgr.render();
             }

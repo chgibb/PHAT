@@ -171,7 +171,7 @@ export function pushKeyTo(
             refName,
             <GetKeyEvent>{
                 replyChannel : refName,
-                channel : refName,
+                channel : channel,
                 key : key,
                 val : getKey(channel,key),
                 action : "getKey"
