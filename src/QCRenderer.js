@@ -83,6 +83,9 @@ $
 		//ipc.send('QC',{replyChannel : 'QC', action : 'getState', key : 'QCData'});
 		//ipc.send('input',{replyChannel : 'QC', action : 'getState', key : 'fastqInputs'});
 
+        /*
+            ipc.on is where windows handle new messages from ipc
+        */
         ipc.on
         (
             'QC',function(event,arg)
@@ -92,28 +95,62 @@ $
                 {
                     if(arg.key == "fastqInputs")
                     {
-                        if(arg.val !== undefined)
-                        {
-                            for(var i in arg.val)
+                        /**
+                         * RemoveSelected button clears the fastaInput array, so if it is empty,
+                         * clear the QC.QCData list (edge case).
+                         */
+                        console.log(arg.val.length+" = arg val length");
+                        if (arg.val === undefined) { //if empty
+                            console.log("clearing QC Data!!!!!!!!!");
+                            for (var d = 0; d < QC.QCData.length; d++) { QC.QCData.pop(); }
+                            arg.val = [];
+                        } else {
+                            /**
+                             * Remove the entries from QC that are no longer in Input.
+                             */
+                            for(var i = QC.QCData.length-1; i > -1; i--)
                             {
-                                QC.addQCData(arg.val[i].name)
+                                var arg_val_name = i > -1 && i < arg.val.length ? arg.val[i].name : "";
+                                console.log(arg_val_name+" <-> "+QC.QCData[i].name+"\n");
+                                if (QC.QCData[i].name != arg_val_name) 
+                                {
+                                    QC.QCData.splice(i, 1);
+                                }
                             }
-                            QC.postQCData();
-                            //views[view.getIndexOfViewByName(views,'summary')].data.QCData = QC.QCData;
-                            //views[view.getIndexOfViewByName(views,'summary')].data.fastqInputs = arg.val;
-                            viewMgr.getViewByName("summary").data.fastqInputs = arg.val;
-                            viewMgr.render();
+
+                            /**
+                             * For every input that does not have associated QC data, create QC data.
+                             */
+                            for(var i = 0; i < arg.val.length; i++)
+                            {
+                                QC.addQCData(arg.val[i].name);
+                            }
+
                         }
+
+                        /**
+                         * Post the data to the window?
+                         */
+                        QC.postQCData();
+                        //views[view.getIndexOfViewByName(views,'summary')].data.QCData = QC.QCData;
+                        //views[view.getIndexOfViewByName(views,'summary')].data.fastqInputs = arg.val;
+                        viewMgr.getViewByName("summary").data.fastqInputs = arg.val;
+                        viewMgr.render();
+
                     }
-                    if(arg.key == 'QCData')
+                if(arg.key == 'QCData')
+                {
+                    if(arg.val != 0 )
                     {
                         if(arg.val !== undefined )
                         {
                             QC.QCData = arg.val;
                             //views[view.getIndexOfViewByName(views,'summary')].data.QCData = QC.QCData;
                         }
+                        QC.QCData = arg.val;
+                        //views[view.getIndexOfViewByName(views,'summary')].data.QCData = QC.QCData;
                     }
-                }
+                }}
                 viewMgr.render();
             }
         );
