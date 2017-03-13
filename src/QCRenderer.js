@@ -64,7 +64,7 @@ $
         ipc.send(
             "getKey",
             {
-                action : "keySub",
+                action : "getKey",
                 channel : "input",
                 key : "fastqInputs",
                 replyChannel : "QC"
@@ -73,7 +73,7 @@ $
         ipc.send(
             "getKey",
             {
-                action : "keySub",
+                action : "getKey",
                 channel : "QC",
                 key : "QCData",
                 replyChannel : "QC"
