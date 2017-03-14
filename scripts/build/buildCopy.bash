@@ -4,10 +4,11 @@ if [ $? != 0 ]; then
     printf "Failed building copy\n"
     exit 1
 fi
-g++ -o dist/copy main.o -s
+g++ -o copy main.o -s
 if [ $? != 0 ]; then
     printf "Failed linking copy\n"
     rm main.o
     exit 1
 fi
+cp copy dist
 rm main.o
