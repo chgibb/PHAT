@@ -7,3 +7,4 @@ cp QCReportCopy dist
 
 rm QCReportCopy
 rm QCReportCopy.o
+rm QCReportCopy.obj
