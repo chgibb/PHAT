@@ -1,5 +1,3 @@
-import * as electron from "electron";
-const ipc = electron.ipcMain;
 import * as winMgr from "./winMgr";
 import fsAccess from "./../fsAccess";
 
