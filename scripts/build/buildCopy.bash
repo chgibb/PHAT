@@ -12,3 +12,4 @@ if [ $? != 0 ]; then
 fi
 cp copy dist
 rm main.o
+rm copy
