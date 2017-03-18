@@ -13,7 +13,7 @@ export class QCData
         this.checked = false;
         this.name = name;
         this.runningReport = false;
-        this.summary = new Array();
+        this.summary = new Array<QCSummary>();
         this.validID = makeValidID(name);
     }
 }
