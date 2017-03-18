@@ -91,7 +91,7 @@ export default class QCClass extends DataModelMgr
         return true;
     }
     //returns 'pass', 'warn', 'fail', or 'No Data'
-    getQCSummaryByNameOfReportByIndex(index : number,summary : QCSummary) : string
+    getQCSummaryByNameOfReportByIndex(index : number,summary : string) : string
     {
 	    let res = "";
 	    let str = "";
