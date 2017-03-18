@@ -1,11 +1,18 @@
-const ipc = require('electron').ipcRenderer;
+/*const ipc = require('electron').ipcRenderer;
 
 let id = require("./req/renderer/MakeValidID");
 let viewMgr = require('./req/renderer/viewMgr');
 let QCClass = require('./req/renderer/QC');
 
 let addSummaryView = require('./req/renderer/QCRenderer/summaryView');
-let addReportView = require('./req/renderer/QCRenderer/reportView');
+let addReportView = require('./req/renderer/QCRenderer/reportView');*/
+
+import * as electron from "electron";
+const ipc = electron.ipcRenderer;
+
+import * as viewMgr from "./req/renderer/viewMgr";
+import {makeValidID} from "./req/renderer/MakeValidID";
+
 require("./req/renderer/commonBehaviour");
 
 let QC = new QCClass
@@ -26,7 +33,10 @@ let QC = new QCClass
         }
     }
 );
-window.$ = window.jQuery = require('jquery');
+//window.$ = window.jQuery = require('jquery');
+import * as $ from "jquery";
+(<any>window).$ = $;
+require("./req/renderer/commonBehaviour");
 
 $
 (
