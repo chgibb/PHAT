@@ -1,9 +1,9 @@
-var QCData = require('./QCData');
-var fs = require('fs');
-var model = require('./model');
-var canRead = require('./canRead').default;
-var replyFromQCReportCopy = require('./QC/replyFromQCReportCopy');
-var replyFromFastQC = require('./QC/replyFromFastQC');
+let QCData = require('./QCData');
+let fs = require('fs');
+let model = require('./model');
+let canRead = require('./canRead').default;
+let replyFromQCReportCopy = require('./QC/replyFromQCReportCopy');
+let replyFromFastQC = require('./QC/replyFromFastQC');
 module.exports = class extends model.DataModelMgr
 {
     constructor(channel,handlers)
@@ -83,8 +83,8 @@ module.exports = class extends model.DataModelMgr
     //returns 'pass', 'warn', 'fail', or 'No Data'
     getQCSummaryByNameOfReportByIndex(index,summary)
     {
-	    var res = "";
-	    var str = "";
+	    let res = "";
+	    let str = "";
         try
         {
             for(let i = 0; i != this.QCData[index].summary.length; ++i)
