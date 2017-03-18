@@ -1,14 +1,14 @@
 const ipc = require('electron').ipcRenderer;
 
-var id = require("./req/renderer/MakeValidID");
-var viewMgr = require('./req/renderer/viewMgr');
-var QCClass = require('./req/renderer/QC');
+let id = require("./req/renderer/MakeValidID");
+let viewMgr = require('./req/renderer/viewMgr');
+let QCClass = require('./req/renderer/QC');
 
-var addSummaryView = require('./req/renderer/QCRenderer/summaryView');
-var addReportView = require('./req/renderer/QCRenderer/reportView');
+let addSummaryView = require('./req/renderer/QCRenderer/summaryView');
+let addReportView = require('./req/renderer/QCRenderer/reportView');
 require("./req/renderer/commonBehaviour");
 
-var QC = new QCClass
+let QC = new QCClass
 (
     'QC',
     {
@@ -102,7 +102,7 @@ $
                     {
                         if(arg.val !== undefined)
                         {
-                            /*for(var i in arg.val)
+                            /*for(let i in arg.val)
                             {
                                 QC.addQCData(arg.val[i].name)
                             }*/
