@@ -1,4 +1,4 @@
-var QCReportSummary = require('./QCReportSummary.js');
+let QCReportSummary = require('./QCReportSummary.js');
 module.exports = function(channel,arg,model)
 {
 	if(arg.retCode != 0)
@@ -7,7 +7,7 @@ module.exports = function(channel,arg,model)
     if(arg.done)
 	{
         //fastqc artifact -> fastq filename
-		var name = arg.args[0].replace(new RegExp('(_fastqc)','g'),'.fastq');
+		let name = arg.args[0].replace(new RegExp('(_fastqc)','g'),'.fastq');
 		for(let i = 0; i != model.QCData.length; ++i)
 		{
 		    if(model.QCData[i].name == name)
