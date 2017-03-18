@@ -10,7 +10,8 @@ import canRead from "./canRead";
 import {QCData,QCSummary} from "./QCData";
 import {DataModelHandlers,DataModelMgr} from "./model";
 import {SpawnRequestParams} from "./../JobIPC";
-
+import replyFromFastQC from "./QC/replyFromFastQC";
+import replyFromQCReportCopy from "./QC/replyFromQCReportCopy";
 export default class QCClass extends DataModelMgr
 {
     public QCData : Array<QCData>;

@@ -1,7 +1,7 @@
 import {getQCReportSummaries} from "./QCReportSummary";
 import QCClass from "./../QC";
 import {SpawnRequestParams} from "./../../JobIPC";
-export function replyFromQCReportCopy(channel : string,arg : SpawnRequestParams,model : QCClass) : void
+export default function replyFromQCReportCopy(channel : string,arg : SpawnRequestParams,model : QCClass) : void
 {
 	if(arg.retCode != 0)
 		alert(JSON.stringify(arg,undefined,4));

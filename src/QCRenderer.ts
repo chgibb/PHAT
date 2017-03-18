@@ -159,7 +159,7 @@ $
                         }
                     }
                 }
-                QC.spawnReply(event,arg);
+                QC.spawnReply("spawnReply",arg);
             }
         );
         viewMgr.render();
