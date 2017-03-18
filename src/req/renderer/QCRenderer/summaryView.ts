@@ -4,6 +4,7 @@ import * as viewMgr from "./../viewMgr";
 import {makeValidID,findOriginalInput} from "./../MakeValidID";
 import QCClass from "./../QC";
 
+import {ReportView} from "./reportView";
 import Fastq from "./../fastq";
 export class SummaryView extends viewMgr.View
 {
@@ -112,7 +113,7 @@ export class SummaryView extends viewMgr.View
 				}
 				else
 				{
-                	viewMgr.getViewByName("report").report = this.model.QCData[i].QCReport;
+                	(<ReportView>viewMgr.getViewByName("report")).report = this.model.QCData[i].QCReport;
 					viewMgr.changeView('report');
 				}
 			}

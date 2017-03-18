@@ -16,6 +16,9 @@ import {makeValidID} from "./req/renderer/MakeValidID";
 
 import QCClass from "./req/renderer/QC";
 
+import * as summary from "./req/renderer/QCRenderer/summaryView";
+import * as report from "./req/renderer/QCRenderer/reportView";
+
 require("./req/renderer/commonBehaviour");
 
 let QC = new QCClass
@@ -36,7 +39,6 @@ let QC = new QCClass
         }
     }
 );
-//window.$ = window.jQuery = require('jquery');
 import * as $ from "jquery";
 (<any>window).$ = $;
 require("./req/renderer/commonBehaviour");
@@ -45,8 +47,8 @@ $
 (
     function()
     {
-        addSummaryView(viewMgr.views,'reports',QC);
-        addReportView(viewMgr.views,'reports',QC);
+        summary.addView(viewMgr.views,'reports',QC);
+        report.addView(viewMgr.views,'reports',QC);
 
 
         viewMgr.changeView("summary");
@@ -126,7 +128,7 @@ $
                             QC.postQCData();
                             //views[view.getIndexOfViewByName(views,'summary')].data.QCData = QC.QCData;
                             //views[view.getIndexOfViewByName(views,'summary')].data.fastqInputs = arg.val;
-                            viewMgr.getViewByName("summary").data.fastqInputs = arg.val;
+                            (<summary.SummaryView>viewMgr.getViewByName("summary")).fastqInputs = arg.val;
                             viewMgr.render();
                         }
                     }
