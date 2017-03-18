@@ -1,4 +1,7 @@
-function getStatus(token)
+import * as fs from "fs";
+
+import {QCData,QCSummary} from "./../QCData";
+export function getStatus(token : string) : string | undefined
 {
     if(token.match(new RegExp("(pass)")))
         return "pass";
@@ -6,13 +9,14 @@ function getStatus(token)
         return "warn";
     if(token.match(new RegExp("(fail)")))
         return "fail";
+    return undefined;
 }
 //Parse fastqc report and return status codes for analyses we're interested in.
-module.exports.getQCReportSummaries = function(report)
+export function getQCReportSummaries(report : string) : Array<QCSummary>
 {
-    var res = new Array();
-    var tokens = require('fs').readFileSync(report).toString().split(new RegExp("[\n]"));
-    for(let i = 0; i != tokens.length; ++i)
+    let res = new Array<QCSummary>();
+    let tokens = fs.readFileSync(report).toString().split(new RegExp("[\n]"));
+    for(let i : number = 0; i != tokens.length; ++i)
     {
         //all analyses start and end with ">>"
         if(tokens[i].match(new RegExp("(>>)")))
