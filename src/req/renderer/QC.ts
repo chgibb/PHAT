@@ -1,12 +1,21 @@
-let QCData = require('./QCData');
+/*let QCData = require('./QCData');
 let fs = require('fs');
 let model = require('./model');
 let canRead = require('./canRead').default;
 let replyFromQCReportCopy = require('./QC/replyFromQCReportCopy');
-let replyFromFastQC = require('./QC/replyFromFastQC');
-module.exports = class extends model.DataModelMgr
+let replyFromFastQC = require('./QC/replyFromFastQC');*/
+//module.exports = class extends model.DataModelMgr
+
+import canRead from "./canRead";
+import {DataModelHandlers,DataModelMgr} from "./model";
+import {SpawnRequestParams} from "./../JobIPC";
+
+export default class QCClass extends DataModelMgr
 {
-    constructor(channel,handlers)
+    public QCData;
+    public fastQC : string;
+    public QCReportCopy : string;
+    public constructor(channel : string,handlers : DataModelHandlers)
     {
         super(channel,handlers);
         this.QCData = new Array();
@@ -17,7 +26,7 @@ module.exports = class extends model.DataModelMgr
             this.fastQC = this.fsAccess('resources/app/perl/perl/bin/perl.exe');
         this.QCReportCopy = this.fsAccess('resources/app/QCReportCopy');
     }
-    postQCData()
+    postQCData() : void
     {
         //this.postHandle(this.channel,{action : 'postState', key : 'QCData', val : this.QCData});
         this.postHandle(
@@ -30,14 +39,14 @@ module.exports = class extends model.DataModelMgr
             }
         );
     }
-    addQCData(name)
+    addQCData(name : string) : boolean
     {
         if(this.QCDataItemExists(name) || !canRead(name))
             return false;
         this.QCData.push(new QCData.Data(name));
         return true;
     }
-    QCDataItemExists(name)
+    QCDataItemExists(name : string) : boolean
     {
         for(let i = 0; i != this.QCData.length; ++i)
         {
@@ -46,7 +55,7 @@ module.exports = class extends model.DataModelMgr
         }
         return false;
     }
-    generateQCReport(name)
+    generateQCReport(name : string) : boolean
     {
         if(!this.QCDataItemExists(name))
             return false;
@@ -81,7 +90,7 @@ module.exports = class extends model.DataModelMgr
         return true;
     }
     //returns 'pass', 'warn', 'fail', or 'No Data'
-    getQCSummaryByNameOfReportByIndex(index,summary)
+    getQCSummaryByNameOfReportByIndex(index : number,summary) : string
     {
 	    let res = "";
 	    let str = "";
@@ -98,7 +107,7 @@ module.exports = class extends model.DataModelMgr
         catch(err){}
 	    return "No Data";
     }
-    spawnReply(channel,arg)
+    spawnReply(channel : string,arg : SpawnRequestParams) : void
     {
         if(arg.processName == this.fastQC)
             replyFromFastQC(channel,arg,this);

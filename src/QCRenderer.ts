@@ -13,6 +13,8 @@ const ipc = electron.ipcRenderer;
 import * as viewMgr from "./req/renderer/viewMgr";
 import {makeValidID} from "./req/renderer/MakeValidID";
 
+import QCClass from "./req/renderer/QC";
+
 require("./req/renderer/commonBehaviour");
 
 let QC = new QCClass
@@ -152,7 +154,7 @@ $
                                     idx = 0;
                                 else if(process.platform == "win32")
                                     idx = 1;
-                                $('#'+id.makeValidID(arg.args[idx])).text(regResult[0]);
+                                $('#'+makeValidID(arg.args[idx])).text(regResult[0]);
                             }
                         }
                     }
