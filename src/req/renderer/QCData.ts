@@ -1,19 +1,27 @@
-var id = require('./MakeValidID.js');
-module.exports.Data = class
+import {makeValidID} from "./MakeValidID";
+export class QCData
 {
-    constructor(name)
+    public QCReport : string;
+    public checked : boolean;
+    public name : string;
+    public runningReport : boolean;
+    public summary : Array<QCSummary>;
+    public validID : string;
+    public constructor(name : string)
     {
         this.QCReport = "";
         this.checked = false;
         this.name = name;
         this.runningReport = false;
         this.summary = new Array();
-        this.validID = id.makeValidID(name);
+        this.validID = makeValidID(name);
     }
 }
-module.exports.summary = class
+export class QCSummary
 {
-    constructor(name,status)
+    public name : string;
+    public status : string;
+    public constructor(name : string,status : string)
     {
         if(name)
             this.name = name;
