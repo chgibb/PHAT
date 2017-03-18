@@ -1,6 +1,9 @@
-var id = require('./../MakeValidID.js');
-var trimPath = require('./../trimPath.js').default;
-module.exports = function(channel,arg,model)
+import QCClass from "./../QC";
+import {SpawnRequestParams} from "./../../JobIPC";
+
+import trimPath from "./../trimPath";
+import {makeValidID} from "./../MakeValidID";
+export default function replyFromFastQC(channel : string,arg : SpawnRequestParams,model : QCClass) : void
 {
     
     //if(arg.unBufferedData && new RegExp("99","g").test(arg.unBufferedData))
@@ -29,7 +32,7 @@ module.exports = function(channel,arg,model)
                 args : 
                 [
                     remainder+trimmed,
-                    model.fsAccess('resources/app/rt/QCReports/'+id.makeValidID(arg.args[idx]))
+                    model.fsAccess('resources/app/rt/QCReports/'+makeValidID(arg.args[idx]))
                 ],
                 unBuffer : true
             }

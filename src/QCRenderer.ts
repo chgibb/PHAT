@@ -1,14 +1,27 @@
-const ipc = require('electron').ipcRenderer;
+/*const ipc = require('electron').ipcRenderer;
 
-var id = require("./req/renderer/MakeValidID");
-var viewMgr = require('./req/renderer/viewMgr');
-var QCClass = require('./req/renderer/QC');
+let id = require("./req/renderer/MakeValidID");
+let viewMgr = require('./req/renderer/viewMgr');
+let QCClass = require('./req/renderer/QC');
 
-var addSummaryView = require('./req/renderer/QCRenderer/summaryView');
-var addReportView = require('./req/renderer/QCRenderer/reportView');
+let addSummaryView = require('./req/renderer/QCRenderer/summaryView');
+let addReportView = require('./req/renderer/QCRenderer/reportView');*/
+
+import * as electron from "electron";
+const ipc = electron.ipcRenderer;
+
+import {GetKeyEvent,KeySubEvent} from "./req/ipcEvents";
+import * as viewMgr from "./req/renderer/viewMgr";
+import {makeValidID} from "./req/renderer/MakeValidID";
+
+import QCClass from "./req/renderer/QC";
+
+import * as summary from "./req/renderer/QCRenderer/summaryView";
+import * as report from "./req/renderer/QCRenderer/reportView";
+
 require("./req/renderer/commonBehaviour");
 
-var QC = new QCClass
+let QC = new QCClass
 (
     'QC',
     {
@@ -26,14 +39,16 @@ var QC = new QCClass
         }
     }
 );
-window.$ = window.jQuery = require('jquery');
+import * as $ from "jquery";
+(<any>window).$ = $;
+require("./req/renderer/commonBehaviour");
 
 $
 (
     function()
     {
-        addSummaryView(viewMgr.views,'reports',QC);
-        addReportView(viewMgr.views,'reports',QC);
+        summary.addView(viewMgr.views,'reports',QC);
+        report.addView(viewMgr.views,'reports',QC);
 
 
         viewMgr.changeView("summary");
@@ -43,7 +58,7 @@ $
 		//ipc.send('keySub',{action : "keySub", channel : "QC", key : "QCData", replyChannel : "QC"});
         ipc.send(
             "keySub",
-            {
+            <KeySubEvent>{
                 action : "keySub",
                 channel : "input",
                 key : "fastqInputs",
@@ -52,7 +67,7 @@ $
         );
         ipc.send(
             "keySub",
-            {
+            <KeySubEvent>{
                 action : "keySub",
                 channel : "QC",
                 key : "QCData",
@@ -62,7 +77,7 @@ $
 
         ipc.send(
             "getKey",
-            {
+            <GetKeyEvent>{
                 action : "getKey",
                 channel : "QC",
                 key : "QCData",
@@ -71,7 +86,7 @@ $
         );
         ipc.send(
             "getKey",
-            {
+            <GetKeyEvent>{
                 action : "getKey",
                 channel : "input",
                 key : "fastqInputs",
@@ -102,7 +117,7 @@ $
                     {
                         if(arg.val !== undefined)
                         {
-                            /*for(var i in arg.val)
+                            /*for(let i in arg.val)
                             {
                                 QC.addQCData(arg.val[i].name)
                             }*/
@@ -113,7 +128,7 @@ $
                             QC.postQCData();
                             //views[view.getIndexOfViewByName(views,'summary')].data.QCData = QC.QCData;
                             //views[view.getIndexOfViewByName(views,'summary')].data.fastqInputs = arg.val;
-                            viewMgr.getViewByName("summary").data.fastqInputs = arg.val;
+                            (<summary.SummaryView>viewMgr.getViewByName("summary")).fastqInputs = arg.val;
                             viewMgr.render();
                         }
                     }
@@ -142,12 +157,12 @@ $
                                     idx = 0;
                                 else if(process.platform == "win32")
                                     idx = 1;
-                                $('#'+id.makeValidID(arg.args[idx])).text(regResult[0]);
+                                $('#'+makeValidID(arg.args[idx])).text(regResult[0]);
                             }
                         }
                     }
                 }
-                QC.spawnReply(event,arg);
+                QC.spawnReply("spawnReply",arg);
             }
         );
         viewMgr.render();
