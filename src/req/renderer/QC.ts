@@ -7,12 +7,13 @@ let replyFromFastQC = require('./QC/replyFromFastQC');*/
 //module.exports = class extends model.DataModelMgr
 
 import canRead from "./canRead";
+import {QCData,QCSummary} from "./QCData";
 import {DataModelHandlers,DataModelMgr} from "./model";
 import {SpawnRequestParams} from "./../JobIPC";
 
 export default class QCClass extends DataModelMgr
 {
-    public QCData;
+    public QCData : Array<QCData>;
     public fastQC : string;
     public QCReportCopy : string;
     public constructor(channel : string,handlers : DataModelHandlers)
@@ -43,7 +44,7 @@ export default class QCClass extends DataModelMgr
     {
         if(this.QCDataItemExists(name) || !canRead(name))
             return false;
-        this.QCData.push(new QCData.Data(name));
+        this.QCData.push(new QCData(name));
         return true;
     }
     QCDataItemExists(name : string) : boolean
@@ -90,7 +91,7 @@ export default class QCClass extends DataModelMgr
         return true;
     }
     //returns 'pass', 'warn', 'fail', or 'No Data'
-    getQCSummaryByNameOfReportByIndex(index : number,summary) : string
+    getQCSummaryByNameOfReportByIndex(index : number,summary : QCSummary) : string
     {
 	    let res = "";
 	    let str = "";
