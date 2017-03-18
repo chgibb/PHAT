@@ -10,6 +10,7 @@ let addReportView = require('./req/renderer/QCRenderer/reportView');*/
 import * as electron from "electron";
 const ipc = electron.ipcRenderer;
 
+import {GetKeyEvent,KeySubEvent} from "./req/ipcEvents";
 import * as viewMgr from "./req/renderer/viewMgr";
 import {makeValidID} from "./req/renderer/MakeValidID";
 
@@ -55,7 +56,7 @@ $
 		//ipc.send('keySub',{action : "keySub", channel : "QC", key : "QCData", replyChannel : "QC"});
         ipc.send(
             "keySub",
-            {
+            <KeySubEvent>{
                 action : "keySub",
                 channel : "input",
                 key : "fastqInputs",
@@ -64,7 +65,7 @@ $
         );
         ipc.send(
             "keySub",
-            {
+            <KeySubEvent>{
                 action : "keySub",
                 channel : "QC",
                 key : "QCData",
@@ -74,7 +75,7 @@ $
 
         ipc.send(
             "getKey",
-            {
+            <GetKeyEvent>{
                 action : "getKey",
                 channel : "QC",
                 key : "QCData",
@@ -83,7 +84,7 @@ $
         );
         ipc.send(
             "getKey",
-            {
+            <GetKeyEvent>{
                 action : "getKey",
                 channel : "input",
                 key : "fastqInputs",
