@@ -1,5 +1,7 @@
-let QCReportSummary = require('./QCReportSummary.js');
-module.exports = function(channel,arg,model)
+import {getQCReportSummaries} from "./QCReportSummary";
+import QCClass from "./../QC";
+import {SpawnRequestParams} from "./../../JobIPC";
+export function replyFromQCReportCopy(channel : string,arg : SpawnRequestParams,model : QCClass) : void
 {
 	if(arg.retCode != 0)
 		alert(JSON.stringify(arg,undefined,4));
@@ -14,7 +16,7 @@ module.exports = function(channel,arg,model)
 			{
 				model.QCData[i].QCReport = model.fsAccess("rt/QCReports/"+model.QCData[i].validID);
 				//invoke report summmary to generate a report summary
-				model.QCData[i].summary = QCReportSummary.getQCReportSummaries(model.fsAccess(arg.args[1]+"/fastqc_data.txt"));
+				model.QCData[i].summary = getQCReportSummaries(model.fsAccess(arg.args[1]+"/fastqc_data.txt"));
 				model.QCData[i].runningReport = false;
 				//save changes
                 model.postQCData();
