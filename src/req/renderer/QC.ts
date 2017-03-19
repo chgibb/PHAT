@@ -1,11 +1,3 @@
-/*let QCData = require('./QCData');
-let fs = require('fs');
-let model = require('./model');
-let canRead = require('./canRead').default;
-let replyFromQCReportCopy = require('./QC/replyFromQCReportCopy');
-let replyFromFastQC = require('./QC/replyFromFastQC');*/
-//module.exports = class extends model.DataModelMgr
-
 import canRead from "./canRead";
 import {QCData,QCSummary} from "./QCData";
 import {DataModelHandlers,DataModelMgr} from "./model";
@@ -30,7 +22,6 @@ export default class QCClass extends DataModelMgr
     }
     postQCData() : void
     {
-        //this.postHandle(this.channel,{action : 'postState', key : 'QCData', val : this.QCData});
         this.postHandle(
             "saveKey",
             {
