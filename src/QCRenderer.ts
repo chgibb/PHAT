@@ -1,12 +1,3 @@
-/*const ipc = require('electron').ipcRenderer;
-
-let id = require("./req/renderer/MakeValidID");
-let viewMgr = require('./req/renderer/viewMgr');
-let QCClass = require('./req/renderer/QC');
-
-let addSummaryView = require('./req/renderer/QCRenderer/summaryView');
-let addReportView = require('./req/renderer/QCRenderer/reportView');*/
-
 import * as electron from "electron";
 const ipc = electron.ipcRenderer;
 
@@ -53,9 +44,6 @@ $
 
         viewMgr.changeView("summary");
 
-        //ipc.send('keySub',{action : "keySub", channel : "input", key : "fastqInputs", replyChannel : "QC"});
-		//ipc.send('keySub',{action : "keySub", channel : "input", key : "fastqInputs", replyChannel : "QC"});
-		//ipc.send('keySub',{action : "keySub", channel : "QC", key : "QCData", replyChannel : "QC"});
         ipc.send(
             "keySub",
             <KeySubEvent>{
@@ -94,10 +82,6 @@ $
             }
         );
         
-		
-		//ipc.send('QC',{replyChannel : 'QC', action : 'getState', key : 'QCData'});
-		//ipc.send('input',{replyChannel : 'QC', action : 'getState', key : 'fastqInputs'});
-
         ipc.on
         (
             'QC',function(event,arg)
@@ -110,24 +94,17 @@ $
                         if(arg.val !== undefined )
                         {
                             QC.QCData = arg.val;
-                            //views[view.getIndexOfViewByName(views,'summary')].data.QCData = QC.QCData;
                         }
                     }
                     if(arg.key == "fastqInputs")
                     {
                         if(arg.val !== undefined)
                         {
-                            /*for(let i in arg.val)
-                            {
-                                QC.addQCData(arg.val[i].name)
-                            }*/
                             for(let i = 0; i != arg.val.length; ++i)
                             {
                                 QC.addQCData(arg.val[i].name);
                             }
                             QC.postQCData();
-                            //views[view.getIndexOfViewByName(views,'summary')].data.QCData = QC.QCData;
-                            //views[view.getIndexOfViewByName(views,'summary')].data.fastqInputs = arg.val;
                             (<summary.SummaryView>viewMgr.getViewByName("summary")).fastqInputs = arg.val;
                             viewMgr.render();
                         }
