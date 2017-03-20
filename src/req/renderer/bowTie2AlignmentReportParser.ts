@@ -6,7 +6,11 @@ export interface Bowtie2Report
 }
 export function parseBowTie2AlignmentReport(report : string) : Bowtie2Report
 {
-    let res : Bowtie2Report;
+    let res : Bowtie2Report = {
+        reads : 0,
+        mates : 0,
+        overallAlignmentRate : 0
+    };
     let tokens : Array<string>;
 
     //There's a bug in JobIPC's unbuffering of Bowtie2's output.
