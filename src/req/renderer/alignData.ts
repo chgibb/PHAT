@@ -34,7 +34,7 @@ export default class alignData
             this.UUID += fastqs[i].alias+";";
         }
         this.refIndex = refIndex;
-        this.UUID += refIndex+";";
+        this.UUID += refIndex.alias+";";
         this.dateStamp = dFormat.generateFixedSizeDateStamp();
         this.UUID += this.dateStamp;
         this.dateStampString = dFormat.formatDateStamp(this.dateStamp);
