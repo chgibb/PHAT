@@ -11,13 +11,13 @@ export abstract class View
     public name : string;
     public div : string;
     public data : any;
-    public model : DataModelMgr;
+    public model : DataModelMgr | undefined;
     /**
      * @param {string} name - Name to assign to view
      * @param {string} div - ID of div to bind view to
      * @param {any} model - Data model object to bind to view
      */
-    public constructor(name : string,div : string,model : DataModelMgr)
+    public constructor(name : string,div : string,model? : DataModelMgr)
     {
         this.name = name;
         this.div = div;

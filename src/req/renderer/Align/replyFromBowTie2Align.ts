@@ -1,6 +1,8 @@
-var canRead = require('./../canRead').default;
-var alignmentSummary = require('./../bowTie2AlignmentReportParser');
-module.exports = function(channel,arg,model)
+import canRead from "./../canRead";
+import {SpawnRequestParams} from "./../../JobIPC";
+import AlignMgr from "./../Align";
+import {parseBowTie2AlignmentReport} from "./../bowTie2AlignmentReportParser";
+export default function replyFromBowTie2Align(channel : string,arg : SpawnRequestParams,model : AlignMgr) : void
 {
     if(arg.done && arg.retCode)
         throw new Error(JSON.stringify(arg,undefined,4));
@@ -24,7 +26,7 @@ module.exports = function(channel,arg,model)
                 
                 if(!canRead(model.fsAccess("resources/app/rt/AlignmentArtifacts/"+model.aligns[i].UUID+"/out.sam")))
                     throw new Error("Could not write "+model.fsAccess("resources/app/rt/AlignmentArtifacts/"+model.aligns[i].UUID+"/out.sam"));
-                model.aligns[i].summary = alignmentSummary.parseBowTie2AlignmentReport(model.aligns[i].summaryText);
+                model.aligns[i].summary = parseBowTie2AlignmentReport(model.aligns[i].summaryText);
                 model.spawnHandle
                 (
                     'spawn',

@@ -1,15 +1,20 @@
-var fs = require('fs');
-var model = require('./model');
-var canRead = require('./canRead').default;
-var fastq = require('./fastq');
-var fasta = require('./fasta');
-var alignData = require('./alignData');
-var replyFromBowTie2Align = require('./Align/replyFromBowTie2Align');
-var replyFromSamTools = require('./Align/replyFromSamTools');
+import * as fs from "fs";
 
-module.exports = class extends model.DataModelMgr
+import canRead from "./canRead";
+import Fastq from "./fastq";
+import Fasta from "./fasta";
+import alignData from "./alignData";
+import {DataModelHandlers,DataModelMgr} from "./model";
+import {SpawnRequestParams} from "./../JobIPC";
+
+import replyFromBowTie2Align from "./Align/replyFromBowTie2Align";
+import replyFromSamTools from "./Align/replyFromSamTools";
+export default class AlignMgr extends DataModelMgr
 {
-    constructor(channel,handlers)
+    public aligns : Array<alignData>;
+    public bowTie2 : string;
+    public samTools : string;
+    public constructor(channel : string,handlers : DataModelHandlers)
     {
         super(channel,handlers);
         this.aligns = new Array();
@@ -32,20 +37,12 @@ module.exports = class extends model.DataModelMgr
             }
         );
     }
-    runAlignment(fastqs,refIndex,type)
+    runAlignment(fastqs : Array<Fastq>,refIndex : Fasta,type : string) : boolean
     {
-        /*
-            If you are not passing an array, or you
-            are passing more than 2 FastQs, return false.
-        */
-        if(!Array.isArray(fastqs))
-            return false;
-        if(fastqs.length > 2)
-            return false;
         /*
             Determine whether the two are paired?
         */
-        var paired = false;
+        let paired = false;
         if(fastqs.length == 2)
             paired = true;
         /*
@@ -54,18 +51,18 @@ module.exports = class extends model.DataModelMgr
         if(!canRead(fastqs[0].name) || !canRead(fastqs[1].name))
             return false;
         
-        var alignReport = {};
+        let alignReport : alignData;
         try
         {
             if(paired)
             {
-                alignReport = new alignData.Data
+                alignReport = new alignData
                 (
                     [
-                        fastqs[0].alias,
-                        fastqs[1].alias
+                        fastqs[0],
+                        fastqs[1]
                     ],
-                    refIndex.alias
+                    refIndex
                 );
             }
         }
@@ -73,11 +70,11 @@ module.exports = class extends model.DataModelMgr
         alignReport.type = type;
 
 
-        var inref = this.fsAccess("resources/app/rt/indexes/"+refIndex.alias);
-        var outsam = this.fsAccess("resources/app/rt/AlignmentArtifacts/"+alignReport.UUID+"/out.sam");
+        let inref = this.fsAccess("resources/app/rt/indexes/"+refIndex.alias);
+        let outsam = this.fsAccess("resources/app/rt/AlignmentArtifacts/"+alignReport.UUID+"/out.sam");
 
 
-        var args = new Array();
+        let args = new Array();
         if(process.platform == "win32")
             args.push(this.fsAccess("resources/app/bowtie2"));
         args.push
@@ -102,7 +99,7 @@ module.exports = class extends model.DataModelMgr
             this.fsAccess("resources/app/rt/AlignmentArtifacts/"+alignReport.UUID+"/out.sam")
         );
 
-        var invokeString = "";
+        let invokeString = "";
         for(let i = 0; i != args.length; ++i)
         {
             invokeString += args[i];
@@ -131,7 +128,7 @@ module.exports = class extends model.DataModelMgr
 
         return true;
     }
-    spawnReply(channel,arg)
+    spawnReply(channel : string,arg : SpawnRequestParams) : void
     {
         if(arg.processName == this.bowTie2)
             replyFromBowTie2Align(channel,arg,this);
