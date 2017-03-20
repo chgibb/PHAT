@@ -1,6 +1,8 @@
-var canRead = require('./../canRead').default;
-var alignmentSummary = require('./../bowTie2AlignmentReportParser');
-module.exports = function(channel,arg,model)
+import canRead from "./../canRead";
+import {SpawnRequestParams} from "./../../JobIPC";
+import AlignMgr from "./../Align";
+let alignmentSummary = require('./../bowTie2AlignmentReportParser');
+export default function replyFromBowTie2Align(channel : string,arg : SpawnRequestParams,model : AlignMgr) : void
 {
     if(arg.done && arg.retCode)
         throw new Error(JSON.stringify(arg,undefined,4));
