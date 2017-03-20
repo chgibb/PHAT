@@ -1,5 +1,7 @@
-var canRead = require('./../canRead').default;
-module.exports = function(channel,arg,model)
+import canRead from "./../canRead";
+import {SpawnRequestParams} from "./../../JobIPC";
+import AlignMgr from "./../Align";
+export default function replyFromSamToolsView(channel : string,arg : SpawnRequestParams,model : AlignMgr) : void
 {
     if(arg.done)
     {
@@ -7,7 +9,7 @@ module.exports = function(channel,arg,model)
         {
             if(!canRead(model.fsAccess("resources/app/rt/AlignmentArtifacts/"+arg.extraData+"/out.bam")))
                 throw new Error("Could not write "+model.fsAccess("resources/app/rt/AlignmentArtifacts/"+arg.extraData+"/out.bam"));
-            let args = [];
+            let args : Array<string> = new Array<string>;
             if(process.platform == "linux")
             {
                 args = [
