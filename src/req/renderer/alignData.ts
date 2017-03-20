@@ -1,8 +1,20 @@
-var dFormat = require('./dateFormat');
-module.exports.Data = class
+let dFormat = require('./dateFormat');
+import Fastq from "./fastq";
+import Fasta from "./fasta";
+export default class alignData
 {
-    //Where fastq is an array of aliases and refIndex is a string
-    constructor(fastqs,refIndex)
+    public aligned : boolean;
+    public UUID : string;
+    public fastq : Array<Fastq>;
+    public dateStampString : string;
+    public dateStamp : string;
+    public alias : string;
+    public invokeString : string;
+    public refIndex : Fasta;
+    public type : string;
+    public summary : Array<string>;
+    public summaryText : string;
+    public constructor(fastqs : Array<Fastq>,refIndex : Fasta)
     {
         this.aligned = false;
         this.UUID = "";
@@ -11,18 +23,15 @@ module.exports.Data = class
         this.dateStamp = "";
         this.alias = "";
         this.invokeString = "";
-        this.refIndex = "";
         this.type = "";
         this.summary = new Array();
         this.summaryText = "";
-        if(!Array.isArray(fastqs))
-            throw new Error("Type of first argument must be array");
-        for(var i = 0; i < fastqs.length; ++i)
+        for(let i = 0; i < fastqs.length; ++i)
         {
             if(i >= 2)
                 break;
             this.fastq.push(fastqs[i]);
-            this.UUID += fastqs[i]+";";
+            this.UUID += fastqs[i].alias+";";
         }
         this.refIndex = refIndex;
         this.UUID += refIndex+";";
