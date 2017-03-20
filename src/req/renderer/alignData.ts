@@ -1,6 +1,7 @@
 let dFormat = require('./dateFormat');
 import Fastq from "./fastq";
 import Fasta from "./fasta";
+import {Bowtie2Report} from "./bowTie2AlignmentReportParser";
 export default class alignData
 {
     public aligned : boolean;
@@ -12,7 +13,7 @@ export default class alignData
     public invokeString : string;
     public refIndex : Fasta;
     public type : string;
-    public summary : Array<string>;
+    public summary : Bowtie2Report;
     public summaryText : string;
     public constructor(fastqs : Array<Fastq>,refIndex : Fasta)
     {
@@ -24,7 +25,6 @@ export default class alignData
         this.alias = "";
         this.invokeString = "";
         this.type = "";
-        this.summary = new Array();
         this.summaryText = "";
         for(let i = 0; i < fastqs.length; ++i)
         {
