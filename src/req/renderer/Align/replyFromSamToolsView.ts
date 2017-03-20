@@ -9,7 +9,7 @@ export default function replyFromSamToolsView(channel : string,arg : SpawnReques
         {
             if(!canRead(model.fsAccess("resources/app/rt/AlignmentArtifacts/"+arg.extraData+"/out.bam")))
                 throw new Error("Could not write "+model.fsAccess("resources/app/rt/AlignmentArtifacts/"+arg.extraData+"/out.bam"));
-            let args : Array<string> = new Array<string>;
+            let args : Array<string> = new Array<string>();
             if(process.platform == "linux")
             {
                 args = [
