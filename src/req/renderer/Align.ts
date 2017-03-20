@@ -1,12 +1,3 @@
-/*let fs = require('fs');
-let model = require('./model');
-let canRead = require('./canRead').default;
-let fastq = require('./fastq');
-let fasta = require('./fasta');
-let alignData = require('./alignData');
-let replyFromBowTie2Align = require('./Align/replyFromBowTie2Align');
-let replyFromSamTools = require('./Align/replyFromSamTools');*/
-
 import * as fs from "fs";
 
 import canRead from "./canRead";
@@ -15,9 +6,12 @@ import Fasta from "./fasta";
 import alignData from "./alignData";
 import {DataModelHandlers,DataModelMgr} from "./model";
 import {SpawnRequestParams} from "./../JobIPC";
+
+import replyFromBowTie2Align from "./Align/replyFromBowTie2Align";
+import replyFromSamTools from "./Align/replyFromSamTools";
 export default class AlignMgr extends DataModelMgr
 {
-    public aligns : Array<any>;
+    public aligns : Array<alignData>;
     public bowTie2 : string;
     public samTools : string;
     public constructor(channel : string,handlers : DataModelHandlers)
