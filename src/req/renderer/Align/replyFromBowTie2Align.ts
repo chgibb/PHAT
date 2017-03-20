@@ -1,7 +1,7 @@
 import canRead from "./../canRead";
 import {SpawnRequestParams} from "./../../JobIPC";
 import AlignMgr from "./../Align";
-let alignmentSummary = require('./../bowTie2AlignmentReportParser');
+import {parseBowTie2AlignmentReport} from "./../bowTie2AlignmentReportParser";
 export default function replyFromBowTie2Align(channel : string,arg : SpawnRequestParams,model : AlignMgr) : void
 {
     if(arg.done && arg.retCode)
@@ -26,7 +26,7 @@ export default function replyFromBowTie2Align(channel : string,arg : SpawnReques
                 
                 if(!canRead(model.fsAccess("resources/app/rt/AlignmentArtifacts/"+model.aligns[i].UUID+"/out.sam")))
                     throw new Error("Could not write "+model.fsAccess("resources/app/rt/AlignmentArtifacts/"+model.aligns[i].UUID+"/out.sam"));
-                model.aligns[i].summary = alignmentSummary.parseBowTie2AlignmentReport(model.aligns[i].summaryText);
+                model.aligns[i].summary = parseBowTie2AlignmentReport(model.aligns[i].summaryText);
                 model.spawnHandle
                 (
                     'spawn',
