@@ -56,7 +56,6 @@ export default class Input extends DataModelMgr
     }
     postFastaInputs() : void
     { 
-        //this.postHandle(this.channel,{action : 'postState', key : 'fastaInputs', val : this.fastaInputs});
         this.postHandle(
             "saveKey",
             <SaveKeyEvent>{

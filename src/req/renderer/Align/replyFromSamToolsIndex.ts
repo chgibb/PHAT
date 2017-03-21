@@ -1,5 +1,7 @@
-var canRead = require('./../canRead').default;
-module.exports = function(channel,arg,model)
+import canRead from "./../canRead";
+import {SpawnRequestParams} from "./../../JobIPC";
+import AlignMgr from "./../Align";
+export default function replyFromSamToolsIndex(channel : string,arg : SpawnRequestParams,model : AlignMgr) : void
 {
     
     if(!canRead(model.fsAccess("resources/app/rt/AlignmentArtifacts/"+arg.extraData+"/out.sorted.bam.bai")))

@@ -111,8 +111,8 @@ var defaultHandles =
     }
 };
 var input = new Input('input',defaultHandles);
-var QC = new QCClass('QC',defaultHandles);
-var align = new Align('align',defaultHandles);
+var QC = new QCClass.default('QC',defaultHandles);
+var align = new Align.default('align',defaultHandles);
 
 var containsInvalidIDChars = require('./req/tests/containsInvalidIDChars.js');
 

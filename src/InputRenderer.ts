@@ -77,8 +77,6 @@ $
         viewMgr.changeView("fastq");
 
         //get saved data
-        //ipc.send('input',{replyChannel : 'input', action : 'getState', key : 'fastqInputs'});
-        //ipc.send('input',{replyChannel : 'input', action : 'getState', key : 'fastaInputs'});
         ipc.send(
             "getKey",
             <GetKeyEvent>{
@@ -99,9 +97,6 @@ $
         );
 
         //subscribe to changes in data
-        //ipc.send('keySub',{action : "keySub", channel : "input", key : "fastqInputs", replyChannel : "input"});
-        //ipc.send('keySub',{action : "keySub", channel : "input", key : "fastaInputs", replyChannel : "input"});
-
         ipc.send(
             "keySub",
             <KeySubEvent>{

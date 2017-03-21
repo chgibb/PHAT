@@ -5,7 +5,7 @@
  *	return code. Optionally unbuffers process' output streams before forwarding to window.
  * @see module:req/main/JobMgr
  * @module req/main/Job
-*/
+ */
 import {SpawnRequestParams} from "./../JobIPC";
 import * as spawn from "child_process";
 export interface JobCallBackObject
@@ -23,7 +23,7 @@ export class Job
      * @param {bool} unBuffer - un buffer stdout and stderr before forwarding
      * @param {any} callBackObj - some object with a method send(string) : void.
      * @param {any} extraData - JSON object to be forwarded to originator on every callback
-    */
+     */
 	private process : spawn.ChildProcess;
 	public processName : string;
 	public args : Array<string>;
