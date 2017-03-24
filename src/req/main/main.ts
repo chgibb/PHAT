@@ -67,6 +67,101 @@ app.on
 
 		}
 		catch(err){}
+
+		const menuTemplate:any = [
+		{
+			label: 'File',
+			submenu: [
+			{
+				label: 'Preferences...',
+				accelerator: 'Control+,'
+			},
+			{
+				type: 'separator'
+			},
+			{
+				label: 'Quit PHAT',
+				role: 'quit'
+			}
+			]
+		},
+		{
+			label: 'View',
+			submenu: [
+			{
+				role: 'resetzoom'
+			},
+			{
+				role: 'zoomin'
+			},
+			{
+				role: 'zoomout'
+			},
+			{
+				type: 'separator'
+			},
+			{
+				role: 'togglefullscreen'
+			},
+			{
+				role: 'toggledevtools'
+			}
+			]
+		},
+		{
+			role: 'window',
+			submenu: [
+			{
+				role: 'minimize'
+			},
+			{
+				role: 'close'
+			}
+			]
+		},
+		{
+			role: 'help',
+			submenu: [
+			{
+				label: 'About PHAT'
+
+			},
+			{
+				label: 'Version 0.1.0 (64-bit)',
+				enabled: false
+
+			},
+			{
+				label: 'View release notes'
+
+			},
+			{
+				type: 'separator'
+
+			},
+			{
+				label: 'Send us feedback'
+
+			},
+			{
+				label: 'Get support'
+
+			},
+			{
+				type: 'separator'
+
+			},	
+			{
+				label: 'Learn More',
+				click () { electron.shell.openExternal('http://zehbelab.weebly.com/') }
+			}
+			]
+		}
+		]
+
+		const menu = electron.Menu.buildFromTemplate(menuTemplate)
+		electron.Menu.setApplicationMenu(menu)
+
 		winMgr.windowCreators["toolBar"].Create();
 		setInterval(function(){jobMgr.runJobs();},200);
 	}
