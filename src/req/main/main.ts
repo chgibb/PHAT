@@ -17,6 +17,8 @@ import * as winMgr from "./winMgr";
 import {GetKeyEvent,SaveKeyEvent,KeySubEvent} from "./../ipcEvents";
 var keySub = require('./keySub');
 
+var pjson = require('./package.json');
+
 var persistState = require('./persistState');
 
 (<any>global).state = {};
@@ -64,11 +66,10 @@ app.on
 			fs.mkdirSync("resources/app/rt/QCReports");
 			fs.mkdirSync("resources/app/rt/indexes");
 			fs.mkdirSync("resources/app/rt/AlignmentArtifacts");
-
 		}
 		catch(err){}
 
-		const menuTemplate:any = [
+		const menuTemplate: Array<Electron.MenuItemOptions> = [
 		{
 			label: 'File',
 			submenu: [
@@ -123,16 +124,32 @@ app.on
 			role: 'help',
 			submenu: [
 			{
-				label: 'About PHAT'
+				label: 'About PHAT',
+				click () 
+					{ electron.dialog.showMessageBox({
+						type: "info",
+						title: 'About PHAT',
+						message: 'PHAT version '+pjson.version+'',
+						detail: 'PHAT is built in Thunder Bay, Ontario',
+						buttons: ['OK', 'End User License Agreement', 'Dependent Open Source Licenses' ]
+					},function(response: number) 
+					{
+						if (response == 1)
+							electron.shell.openExternal('https://github.com/chgibb/PHAT/blob/license-patch/TERMS')
+						else if (response == 2)
+							electron.shell.openExternal('https://github.com/chgibb/PHAT/blob/license-patch/LICENSE')
+					}) 
+				}
 
 			},
 			{
-				label: 'Version 0.1.0 (64-bit)',
+				label: 'Version '+pjson.version+' (64-bit)',
 				enabled: false
 
 			},
 			{
-				label: 'View release notes'
+				label: 'View release notes', 
+				click () { electron.shell.openExternal(''+pjson.repository.url+'/releases/tag/'+pjson.version+'') }
 
 			},
 			{
@@ -140,20 +157,44 @@ app.on
 
 			},
 			{
-				label: 'Send us feedback'
+				label: 'Send us feedback',
+				click () { electron.shell.openExternal('mailto:'+pjson.author.email+'?subject=PHAT%20Feedback') }
 
 			},
 			{
-				label: 'Get support'
-
+				label: 'Get support',
+				click () { electron.shell.openExternal('mailto:'+pjson.author.email+'?subject=PHAT%20Support') }
 			},
 			{
 				type: 'separator'
-
 			},	
 			{
 				label: 'Learn More',
 				click () { electron.shell.openExternal('http://zehbelab.weebly.com/') }
+			},
+			{
+				type: 'separator'
+			},	
+			{
+				label: 'Powered by ZehbeLab',
+				submenu: [
+					{
+						label: ''+pjson.author.name+'',
+						click () { electron.shell.openExternal(''+pjson.author.url+'') }
+					},
+					{
+						label: ''+pjson.contributors[0].name+'',
+						click () { electron.shell.openExternal(''+pjson.contributors[0].url+'') }
+					},
+					{
+						label: ''+pjson.contributors[1].name+'',
+						click () { electron.shell.openExternal(''+pjson.contributors[1].url+'') }
+					},
+					{
+						label: ''+pjson.contributors[2].name+'',
+						click () { electron.shell.openExternal(''+pjson.contributors[2].url+'') }
+					}
+				]
 			}
 			]
 		}
