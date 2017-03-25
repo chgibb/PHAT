@@ -74,7 +74,7 @@ app.on
 			label: 'File',
 			submenu: [
 			{
-				label: 'Preferences...',
+				label: 'Preferences',
 				accelerator: 'Control+,'
 			},
 			{
@@ -126,7 +126,9 @@ app.on
 			{
 				label: 'About PHAT',
 				click () 
-					{ electron.dialog.showMessageBox({
+				{ 	
+					electron.dialog.showMessageBox(
+					{
 						type: "info",
 						title: 'About PHAT',
 						message: 'PHAT version '+pjson.version+'',
@@ -135,12 +137,11 @@ app.on
 					},function(response: number) 
 					{
 						if (response == 1)
-							electron.shell.openExternal('https://github.com/chgibb/PHAT/blob/license-patch/TERMS')
+							electron.shell.openExternal(''+pjson.repository.url+'/blob/master/TERMS')
 						else if (response == 2)
-							electron.shell.openExternal('https://github.com/chgibb/PHAT/blob/license-patch/LICENSE')
+							electron.shell.openExternal(''+pjson.repository.url+'/blob/master/LICENSE')
 					}) 
 				}
-
 			},
 			{
 				label: 'Version '+pjson.version+' (64-bit)',
@@ -148,8 +149,11 @@ app.on
 
 			},
 			{
-				label: 'View release notes', 
-				click () { electron.shell.openExternal(''+pjson.repository.url+'/releases/tag/'+pjson.version+'') }
+				label: 'View Release Notes', 
+				click () 
+				{ 
+					electron.shell.openExternal(''+pjson.repository.url+'/releases/tag/'+pjson.version+'') 
+				}
 
 			},
 			{
@@ -158,19 +162,28 @@ app.on
 			},
 			{
 				label: 'Send us feedback',
-				click () { electron.shell.openExternal('mailto:'+pjson.author.email+'?subject=PHAT%20Feedback') }
+				click () 
+				{ 
+					electron.shell.openExternal('mailto:'+pjson.author.email+'?subject=PHAT%20Feedback') 
+				}
 
 			},
 			{
-				label: 'Get support',
-				click () { electron.shell.openExternal('mailto:'+pjson.author.email+'?subject=PHAT%20Support') }
+				label: 'Get Support',
+				click () 
+				{ 
+					electron.shell.openExternal('mailto:'+pjson.author.email+'?subject=PHAT%20Support') 
+				}
 			},
 			{
 				type: 'separator'
 			},	
 			{
 				label: 'Learn More',
-				click () { electron.shell.openExternal('http://zehbelab.weebly.com/') }
+				click () 
+				{ 
+					electron.shell.openExternal('http://zehbelab.weebly.com/') 
+				}
 			},
 			{
 				type: 'separator'
@@ -180,19 +193,31 @@ app.on
 				submenu: [
 					{
 						label: ''+pjson.author.name+'',
-						click () { electron.shell.openExternal(''+pjson.author.url+'') }
+						click () 
+						{ 
+							electron.shell.openExternal(''+pjson.author.url+'') 
+						}
 					},
 					{
 						label: ''+pjson.contributors[0].name+'',
-						click () { electron.shell.openExternal(''+pjson.contributors[0].url+'') }
+						click () 
+						{ 
+							electron.shell.openExternal(''+pjson.contributors[0].url+'') 
+						}
 					},
 					{
 						label: ''+pjson.contributors[1].name+'',
-						click () { electron.shell.openExternal(''+pjson.contributors[1].url+'') }
+						click () 
+						{ 
+							electron.shell.openExternal(''+pjson.contributors[1].url+'') 
+						}
 					},
 					{
 						label: ''+pjson.contributors[2].name+'',
-						click () { electron.shell.openExternal(''+pjson.contributors[2].url+'') }
+						click () 
+						{ 
+							electron.shell.openExternal(''+pjson.contributors[2].url+'') 
+						}
 					}
 				]
 			}

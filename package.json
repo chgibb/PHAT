@@ -8,28 +8,32 @@
     "test": "bash runtests.bash"
   },
   "author": { 
-      "name" : "Chris Gibb",
-      "email" : "gibb@email.com",
-      "url" : "gibb@website.com"
+      "name": "Chris Gibb",
+      "email": "gibb@email.com",
+      "url": "gibb@website.com"
   },
   "contributors": [
-    { "name" : "Mitchell Pynn",
-      "email" : "mpynn@lakeheadu.ca",
-      "url" : "https://mitchellpynn.com"
+    { "name": "Mitchell Pynn",
+      "email": "mpynn@lakeheadu.ca",
+      "url": "https://mitchellpynn.com"
     },
-    { "name" : "Shane Liu",
-      "email" : "shane@email.com",
-      "url" : "shane@website.com"
+    { "name": "Shane Liu",
+      "email": "shane@email.com",
+      "url": "shane@website.com"
     },
     { "name" : "Jeremy Braun",
-      "email" : "jeremy@email.com",
-      "url" : "jeremy@website.com"
+      "email": "jeremy@email.com",
+      "url": "jeremy@website.com"
     }
   ],
   "license": "GPL-3.0",
   "repository": {
-    "type" : "git",
-    "url" : "https://github.com/chgibb/PHAT" 
+    "type": "git",
+    "url": "https://github.com/chgibb/PHAT" 
+  },
+  "bugs": {
+    "url": "https://github.com/chgibb/PHAT/issues",
+    "email": "gibb@email.com"
   },
   "homepage": "",
   "devDependencies": {
