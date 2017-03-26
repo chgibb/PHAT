@@ -18,7 +18,6 @@ $
         addPileUpView(viewMgr.views,"view");
         addReportView(viewMgr.views,"view");
 
-        //views[view.getIndexOfViewByName(views,currView)].mount();
 
         viewMgr.changeView("report");
 
