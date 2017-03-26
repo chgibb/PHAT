@@ -74,6 +74,24 @@ app.on
 			label: 'File',
 			submenu: [
 			{
+				label: 'Clear workspace', 
+				accelerator: 'Control+Shift+Q', 
+				click ()  
+				{    
+					electron.shell.moveItemToTrash("resources/app/rt"); 
+					electron.dialog.showMessageBox( 
+					{ 
+						type: "info", 
+						title: 'Important', 
+						message: 'You will need to restart PHAT.', 
+						detail: 'The workspace data was cleared and will be refreshed on next load.', 
+						buttons: ['OK'] 
+					}) 
+				} 
+			}, 
+			{ 
+			},
+			{
 				label: 'Preferences',
 				accelerator: 'Control+,'
 			},
