@@ -91,7 +91,7 @@ export class ReportView extends viewMgr.View
     }
     dataChanged(){}
 }
-export function addView(arr : Array<viewMgr.View>,div : string,model : DataModelMgr) : void
+export function addView(arr : Array<viewMgr.View>,div : string,model? : DataModelMgr) : void
 {
     arr.push(new ReportView(div,model));
 }
