@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html>
 	<head>
+		<script>
+			var startUp = performance.now();
+		</script>
 		<meta charset="UTF-8">
 		<title>Circular Genome Builder</title>
         <link rel="stylesheet" type="text/css" href="styles/circularGenomeBuilder.css">
@@ -11,5 +14,8 @@
 		</div>
 		<div id="genomeView">
 		</div>
+		<script>
+			console.log("Start up took "+(performance.now()-startUp+"ms"));
+		</script>
     </body>
 </html>

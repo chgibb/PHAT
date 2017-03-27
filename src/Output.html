@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html>
 	<head>
+		<script>
+			var startUp = performance.now();
+		</script>
 		<meta charset="UTF-8">
 		<title>Output</title>
         <link rel="stylesheet" type="text/css" href="styles/Output.css">
@@ -9,5 +12,8 @@
 		<script type = "text/javascript" src = "outputRenderer.js"></script>
 		<div id="view">
 		</div>
+		<script>
+			console.log("Start up took "+(performance.now()-startUp+"ms"));
+		</script>
     </body>
 </html>
