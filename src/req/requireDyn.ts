@@ -7,7 +7,7 @@
  * @param {string} target - the module to require 
  * @returns {any} - result of require(target)
 */
-module.exports = function(target)
+export default function (target : string) : any
 {
     return require(target);
 }																																							
