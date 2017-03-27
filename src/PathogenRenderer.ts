@@ -1,22 +1,22 @@
-const ipc = require('electron').ipcRenderer;
+import * as electron from "electron";
+const ipc = electron.ipcRenderer;
+import * as viewMgr from "./req/renderer/viewMgr";
 
-var id = require("./req/renderer/MakeValidID");
-var viewMgr = require('./req/renderer/viewMgr');
+import * as pileUpView from "./req/renderer/PathogenRenderer/pileUpView";
+import * as reportView from "./req/renderer/PathogenRenderer/reportView";
 
-var addReportView = require('./req/renderer/PathogenRenderer/reportView');
-var addPileUpView = require('./req/renderer/PathogenRenderer/pileUpView');
+import Fastq from "./req/renderer/fastq";
+import Fasta from "./req/renderer/fasta";
+
+import * as $ from "jquery";
+(<any>window).$ = $;
 require("./req/renderer/commonBehaviour");
-
-
-window.$ = window.jQuery = require('jquery');
-
-
 $
 (
     function()
     {
-        addPileUpView(viewMgr.views,"view");
-        addReportView(viewMgr.views,"view");
+        pileUpView.addView(viewMgr.views,"view");
+        reportView.addView(viewMgr.views,"view");
 
 
         viewMgr.changeView("report");
@@ -33,10 +33,8 @@ $
                     {
                         if(arg.val !== undefined)
                         {
-                            //views[view.getIndexOfViewByName(views,"pileUp")].aligns = arg.val;
-                            //views[view.getIndexOfViewByName(views,"report")].aligns = arg.val;
-                            viewMgr.getViewByName("pileUp").aligns = arg.val;
-                            viewMgr.getViewByName("report").data.aligns = arg.val;
+                            (<pileUpView.PileUpView>viewMgr.getViewByName("pileUp")).aligns = arg.val;
+                            (<reportView.ReportView>viewMgr.getViewByName("report")).aligns = arg.val;
                         }
                         viewMgr.render();
                     }
@@ -44,18 +42,14 @@ $
                     {
                         if(arg.val !== undefined)
                         {
-                            //views[view.getIndexOfViewByName(views,"pileUp")].selectedFastaInputs = new Array();
-                            //views[view.getIndexOfViewByName(views,"report")].selectedFastaInputs = new Array();
-                            viewMgr.getViewByName("pileUp").selectedFastaInputs = new Array();
-                            viewMgr.getViewByName("report").selectedFastaInputs = new Array();
+                            (<pileUpView.PileUpView>viewMgr.getViewByName("pileUp")).selectedFastaInputs = new Array<Fasta>();
+                            (<reportView.ReportView>viewMgr.getViewByName("report")).selectedFastaInputs = new Array<Fasta>();
                             for(var i in arg.val)
                             {
                                 if(arg.val[i].checked)
                                 {
-                                    //views[view.getIndexOfViewByName(views,"pileUp")].selectedFastaInputs.push(arg.val[i]);
-                                    //views[view.getIndexOfViewByName(views,"report")].selectedFastaInputs.push(arg.val[i].alias);
-                                    viewMgr.getViewByName("pileUp").selectedFastaInputs.push(arg.val[i]);
-                                    viewMgr.getViewByName("report").selectedFastaInputs.push(arg.val[i].alias);
+                                    (<pileUpView.PileUpView>viewMgr.getViewByName("pileUp")).selectedFastaInputs.push(arg.val[i]);
+                                    (<reportView.ReportView>viewMgr.getViewByName("report")).selectedFastaInputs.push(arg.val[i]);
                                 }
                             }
                             viewMgr.render();
@@ -65,14 +59,12 @@ $
                     {
                         if(arg.val !== undefined)
                         {
-                            //views[view.getIndexOfViewByName(views,"report")].selectedFastqInputs = new Array();
-                            viewMgr.getViewByName("report").selectedFastqInputs = new Array();
+                            (<reportView.ReportView>viewMgr.getViewByName("report")).selectedFastqInputs = new Array<Fastq>();
                             for(var i in arg.val)
                             {
                                 if(arg.val[i].checked)
                                 {
-                                    //views[view.getIndexOfViewByName(views,"report")].selectedFastqInputs.push(arg.val[i].alias);
-                                    viewMgr.getViewByName("report").selectedFastqInputs.push(arg.val[i].alias);
+                                    (<reportView.ReportView>viewMgr.getViewByName("report")).selectedFastqInputs.push(arg.val[i].alias);
                                 }
                             }
                             viewMgr.render();
@@ -82,19 +74,6 @@ $
                 }
             }
         );
-
-
-
-        /*ipc.send('keySub',{action : "keySub", channel : "align", key : "aligns", replyChannel : "pathogen"});
-        ipc.send('align',{replyChannel : 'pathogen', action : 'getState', key : 'aligns'});
-
-        ipc.send('keySub',{action : "keySub", channel : "input", key : "fastaInputs", replyChannel : "pathogen"});
-        ipc.send('input',{replyChannel : 'pathogen', action : 'getState', key : 'fastaInputs'});
-
-        ipc.send('keySub',{action : "keySub", channel : "input", key : "fastqInputs", replyChannel : "pathogen"});
-        ipc.send('input',{replyChannel : 'pathogen', action : 'getState', key : 'fastqInputs'});
-        */
-
 
         ipc.send(
             "getKey",
