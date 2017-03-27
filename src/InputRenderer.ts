@@ -121,7 +121,6 @@ $
 		(	
 		    'input',function(event,arg)
 			{
-                console.log(JSON.stringify(arg,undefined,4));
                 //reply from call to getState
 			    if(arg.action == "getKey" || arg.action == "keyChange")
 				{
@@ -147,7 +146,6 @@ $
         (
             "spawnReply",function(event,arg)
             {
-                console.log(JSON.stringify(arg,undefined,4));
                 //update from spawned process.
                 //forward to handler.
                 input.spawnReply("spawnReply",arg);
