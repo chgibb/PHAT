@@ -1,8 +1,3 @@
-/*var viewMgr = require('./../viewMgr');
-var id = require('./../MakeValidID.js');
-
-var fsAccess = require('./../../fsAccess').default;
-var requireDyn = require('./../../requireDyn');*/
 /// <reference types="jquery" />
 
 import fsAccess from "./../../fsAccess";
