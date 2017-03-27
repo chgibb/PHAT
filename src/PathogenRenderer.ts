@@ -44,7 +44,7 @@ $
                         {
                             (<pileUpView.PileUpView>viewMgr.getViewByName("pileUp")).selectedFastaInputs = new Array<Fasta>();
                             (<reportView.ReportView>viewMgr.getViewByName("report")).selectedFastaInputs = new Array<Fasta>();
-                            for(var i in arg.val)
+                            for(let i : number = 0; i != arg.val.length; ++i)
                             {
                                 if(arg.val[i].checked)
                                 {
@@ -60,11 +60,11 @@ $
                         if(arg.val !== undefined)
                         {
                             (<reportView.ReportView>viewMgr.getViewByName("report")).selectedFastqInputs = new Array<Fastq>();
-                            for(var i in arg.val)
+                            for(let i : number = 0; i != arg.val.length; ++i)
                             {
                                 if(arg.val[i].checked)
                                 {
-                                    (<reportView.ReportView>viewMgr.getViewByName("report")).selectedFastqInputs.push(arg.val[i].alias);
+                                    (<reportView.ReportView>viewMgr.getViewByName("report")).selectedFastqInputs.push(arg.val[i]);
                                 }
                             }
                             viewMgr.render();
