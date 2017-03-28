@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html>	
 	<head>
+        <script>
+			var startUp = performance.now();
+		</script>
 		<meta charset="UTF-8">
 		<title>Alignment</title>
         <link rel="stylesheet" type="text/css" href="styles/Align.css">
@@ -9,5 +12,8 @@
         <script type = "text/javascript" src = "./AlignRenderer.js"></script>
         <div id="container" style="width:100%;">
         </div>
+        <script>
+			console.log("Start up took "+(performance.now()-startUp+"ms"));
+		</script>
     </body>
 </html>
