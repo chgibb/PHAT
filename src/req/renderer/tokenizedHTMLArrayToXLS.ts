@@ -1,4 +1,4 @@
-module.exports = function(html)
+export default function tokenizedHTMLArrayToXLS(html : Array<string>) : string
 {
     let isTable = new RegExp("(<table)","i");
     let isTableEnd = new RegExp("(</table>)","i");
@@ -29,10 +29,9 @@ module.exports = function(html)
             for(let i = 0; i != html.length; ++i)
             {
                 if(isTBody.test(html[i]) ||
-                    isTBodyEnd.test(html[i] ||
+                    isTBodyEnd.test(html[i]) ||
                     html[i] == "\n") 
-                )
-                    continue;
+                        continue;
                 if(hasNewLine.test(html[i]))
                     continue;
                 if(isTable.test(html[i]))
