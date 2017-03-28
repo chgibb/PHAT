@@ -1,8 +1,12 @@
-let dialog = require("electron").remote.dialog;
+/*let dialog = require("electron").remote.dialog;
 let fs = require("fs");
 
 let tokenizeHTMLString = require("./../tokenizeHTMLString");
-let tokenizedHTMLArrayToXLS = require("./../tokenizedHTMLArrayToXLS");
+let tokenizedHTMLArrayToXLS = require("./../tokenizedHTMLArrayToXLS");*/
+import * as electron from "electron";
+const dialog = electron.remote.dialog;
+import * as fs from "fs";
+
 module.exports = function(htmlString)
 {
     dialog.showSaveDialog
