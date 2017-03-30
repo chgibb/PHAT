@@ -1,12 +1,12 @@
-let dialog = require("electron").remote.dialog;
-let fs = require("fs");
+import * as electron from "electron";
+const dialog = electron.remote.dialog;
+import * as fs from "fs";
 
-let tokenizeHTMLString = require("./../tokenizeHTMLString");
-let tokenizedHTMLArrayToCSV = require("./../tokenizedHTMLArrayToCSV");
-module.exports = function(htmlString)
+import tokenizeHTMLString from "./../tokenizeHTMLString";
+import tokenizedHTMLArrayToCSV from "./../tokenizedHTMLArrayToCSV";
+export default function CSVExportDialog(htmlString : string) : void
 {
-    dialog.showSaveDialog
-    (
+    dialog.showSaveDialog(
         {
             filters:
                 [
@@ -20,13 +20,10 @@ module.exports = function(htmlString)
         {
             if(fileName === undefined)
                 return;
-            fs.writeFileSync
-            (
+            fs.writeFileSync(
                 fileName,
-                tokenizedHTMLArrayToCSV
-                (
-                    tokenizeHTMLString
-                    (
+                tokenizedHTMLArrayToCSV(
+                    tokenizeHTMLString(
                         htmlString
                     )
                 )
