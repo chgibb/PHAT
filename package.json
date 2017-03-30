@@ -50,6 +50,7 @@
     "electron-winstaller": "^2.5.2",
     "grunt": "^1.0.1",
     "jsdoc": "^3.4.3",
+    "nwsjs": "^0.2.0",
     "optimize-js": "^1.0.3",
     "typescript": "^2.2.1"
   },
