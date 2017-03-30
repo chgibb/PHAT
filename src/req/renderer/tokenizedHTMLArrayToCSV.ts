@@ -1,6 +1,5 @@
 export default function tokenizedHTMLArrayToCSV(html : Array<string>) : string
 {
-{
     let isTableRowEnd = new RegExp("(</tr>)","i");
 
     let isTableData = new RegExp("(<td>)","i");
