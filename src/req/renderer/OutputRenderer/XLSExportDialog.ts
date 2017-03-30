@@ -1,16 +1,13 @@
-/*let dialog = require("electron").remote.dialog;
-let fs = require("fs");
-
-let tokenizeHTMLString = require("./../tokenizeHTMLString");
-let tokenizedHTMLArrayToXLS = require("./../tokenizedHTMLArrayToXLS");*/
 import * as electron from "electron";
 const dialog = electron.remote.dialog;
 import * as fs from "fs";
 
-module.exports = function(htmlString)
+import tokenizeHTMLString from "./../tokenizeHTMLString";
+import tokenizedHTMLArrayToXLS from "./../tokenizedHTMLArrayToXLS";
+
+export default function XLSExportDialog(htmlString : string) : void
 {
-    dialog.showSaveDialog
-    (
+    dialog.showSaveDialog(
         {
             filters:
             [
@@ -24,13 +21,10 @@ module.exports = function(htmlString)
         {
             if(fileName === undefined) 
                 return;
-            fs.writeFileSync
-            (
+            fs.writeFileSync(
                 fileName,
-                tokenizedHTMLArrayToXLS
-                (
-                    tokenizeHTMLString
-                    (
+                tokenizedHTMLArrayToXLS(
+                    tokenizeHTMLString(
                         htmlString
                     )
                 )
