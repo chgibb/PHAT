@@ -15,7 +15,7 @@ import AlignMgr from "./req/renderer/Align";
 import * as $ from "jquery";
 (<any>window).$ = $;
 require("./req/renderer/commonBehaviour");
-var align = new AlignMgr
+let align = new AlignMgr
 (
     'align',
     {
