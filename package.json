@@ -7,21 +7,24 @@
     "start": "electron main.js",
     "test": "bash runtests.bash"
   },
-  "author": { 
-      "name": "Chris Gibb",
-      "email": "gibb@email.com",
-      "url": "gibb@website.com"
+  "author": {
+    "name": "Chris Gibb",
+    "email": "gibb@email.com",
+    "url": "gibb@website.com"
   },
   "contributors": [
-    { "name": "Mitchell Pynn",
+    {
+      "name": "Mitchell Pynn",
       "email": "mpynn@lakeheadu.ca",
       "url": "https://mitchellpynn.com"
     },
-    { "name": "Shane Liu",
+    {
+      "name": "Shane Liu",
       "email": "shane@email.com",
       "url": "shane@website.com"
     },
-    { "name" : "Jeremy Braun",
+    {
+      "name": "Jeremy Braun",
       "email": "jeremy@email.com",
       "url": "jeremy@website.com"
     }
@@ -29,7 +32,7 @@
   "license": "GPL-3.0",
   "repository": {
     "type": "git",
-    "url": "https://github.com/chgibb/PHAT" 
+    "url": "https://github.com/chgibb/PHAT"
   },
   "bugs": {
     "url": "https://github.com/chgibb/PHAT/issues",
@@ -42,10 +45,12 @@
     "@types/jquery": "^2.0.40",
     "@types/node": "^7.0.5",
     "browserify": "^13.1.0",
+    "bundle-collapser": "^1.2.1",
     "electron-prebuilt": "^1.1.2",
     "electron-winstaller": "^2.5.2",
     "grunt": "^1.0.1",
     "jsdoc": "^3.4.3",
+    "optimize-js": "^1.0.3",
     "typescript": "^2.2.1"
   },
   "dependencies": {

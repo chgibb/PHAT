@@ -86,7 +86,7 @@ app.on
 						message: 'You will need to restart PHAT.', 
 						detail: 'The workspace data was cleared and will be refreshed on next load.', 
 						buttons: ['OK'] 
-					}) 
+					});
 				} 
 			}, 
 			{ 
@@ -155,10 +155,10 @@ app.on
 					},function(response: number) 
 					{
 						if (response == 1)
-							electron.shell.openExternal(''+pjson.repository.url+'/blob/master/TERMS')
+							electron.shell.openExternal(''+pjson.repository.url+'/blob/master/TERMS');
 						else if (response == 2)
-							electron.shell.openExternal(''+pjson.repository.url+'/blob/master/LICENSE')
-					}) 
+							electron.shell.openExternal(''+pjson.repository.url+'/blob/master/LICENSE');
+					});
 				}
 			},
 			{
@@ -170,7 +170,7 @@ app.on
 				label: 'View Release Notes', 
 				click () 
 				{ 
-					electron.shell.openExternal(''+pjson.repository.url+'/releases/tag/'+pjson.version+'') 
+					electron.shell.openExternal(''+pjson.repository.url+'/releases/tag/'+pjson.version+'');
 				}
 
 			},
@@ -182,7 +182,7 @@ app.on
 				label: 'Send us feedback',
 				click () 
 				{ 
-					electron.shell.openExternal('mailto:'+pjson.author.email+'?subject=PHAT%20Feedback') 
+					electron.shell.openExternal('mailto:'+pjson.author.email+'?subject=PHAT%20Feedback');
 				}
 
 			},
@@ -190,7 +190,7 @@ app.on
 				label: 'Get Support',
 				click () 
 				{ 
-					electron.shell.openExternal('mailto:'+pjson.author.email+'?subject=PHAT%20Support') 
+					electron.shell.openExternal('mailto:'+pjson.author.email+'?subject=PHAT%20Support');
 				}
 			},
 			{
@@ -200,7 +200,7 @@ app.on
 				label: 'Learn More',
 				click () 
 				{ 
-					electron.shell.openExternal('http://zehbelab.weebly.com/') 
+					electron.shell.openExternal('http://zehbelab.weebly.com/');
 				}
 			},
 			{
@@ -213,38 +213,38 @@ app.on
 						label: ''+pjson.author.name+'',
 						click () 
 						{ 
-							electron.shell.openExternal(''+pjson.author.url+'') 
+							electron.shell.openExternal(''+pjson.author.url+'');
 						}
 					},
 					{
 						label: ''+pjson.contributors[0].name+'',
 						click () 
 						{ 
-							electron.shell.openExternal(''+pjson.contributors[0].url+'') 
+							electron.shell.openExternal(''+pjson.contributors[0].url+'');
 						}
 					},
 					{
 						label: ''+pjson.contributors[1].name+'',
 						click () 
 						{ 
-							electron.shell.openExternal(''+pjson.contributors[1].url+'') 
+							electron.shell.openExternal(''+pjson.contributors[1].url+'');
 						}
 					},
 					{
 						label: ''+pjson.contributors[2].name+'',
 						click () 
 						{ 
-							electron.shell.openExternal(''+pjson.contributors[2].url+'') 
+							electron.shell.openExternal(''+pjson.contributors[2].url+''); 
 						}
 					}
 				]
 			}
 			]
 		}
-		]
+		];
 
-		const menu = electron.Menu.buildFromTemplate(menuTemplate)
-		electron.Menu.setApplicationMenu(menu)
+		const menu = electron.Menu.buildFromTemplate(menuTemplate);
+		electron.Menu.setApplicationMenu(menu);
 
 		winMgr.windowCreators["toolBar"].Create();
 		setInterval(function(){jobMgr.runJobs();},200);

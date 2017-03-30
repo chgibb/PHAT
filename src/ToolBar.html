@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html>
 	<head>
+		<script>
+			var startUp = performance.now();
+		</script>
 		<meta charset="UTF-8">
 		<link rel="stylesheet" type="text/css" href="styles/ToolBar.css">
 		<link rel="stylesheet" type="text/css" href="bootstrap.min.css">
@@ -36,5 +39,8 @@
 		<img class="buttonshadow toolBarButton" src="img/output.png" id="output" name="Output" alt="Output" onClick="SendOpenMessage('output')"></img>
 		<img class="buttonshadow toolBarButton" src="img/genomeBuilder.png" id="circularGenomeBuilder" name="genomeBUilder" alt="genomeBuilder" onClick="SendOpenMessage('circularGenomeBuilder')"></img>
 	</div>
+	<script>
+			console.log("Start up took "+(performance.now()-startUp+"ms"));
+		</script>
   </body>
 </html>
