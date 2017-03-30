@@ -52,6 +52,7 @@
     "jsdoc": "^3.4.3",
     "nwsjs": "^0.2.0",
     "optimize-js": "^1.0.3",
+    "semi": "^4.0.5",
     "typescript": "^2.2.1"
   },
   "dependencies": {
