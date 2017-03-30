@@ -1,4 +1,4 @@
-module.exports = function(html)
+export default function tokenizedHTMLArrayToCSV(html : Array<string>) : string
 {
     let isTableRowEnd = new RegExp("(</tr>)","i");
 

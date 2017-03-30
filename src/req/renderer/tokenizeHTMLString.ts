@@ -1,10 +1,10 @@
-module.exports = function (html)
+export default function tokenizeHTMLString(html : string) : Array<string>
 {
-    let res = new Array();
-    let breakChars = ["<",">"];
-    let add = true;
-    let str = "";
-    for(let i = 0; i != html.length; ++i)
+    let res : Array<string> = new Array<string>();
+    let breakChars : Array<string> = <Array<string>>["<",">"];
+    let add : boolean = true;
+    let str : string = "";
+    for(let i : number = 0; i != html.length; ++i)
     {
         add = true;
         if(html[i] == "<")

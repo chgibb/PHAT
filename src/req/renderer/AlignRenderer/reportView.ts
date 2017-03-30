@@ -92,7 +92,7 @@ export class ReportView extends viewMgr.View
         }
         html.push("</table></div><br /><br />");
 
-        html.push("<img id='pathTab' src='img/browseButton.png'>");
+        html.push("<img id='pathTab' src='img/buttonPathogen.png'>");
         html.push("<img id='hostTab' src='img/buttonHost.png'>");
         //fasta table
         html.push
