@@ -29,10 +29,10 @@ winMgr.windowCreators["toolBar"] =
 			winMgr.createWithDefault(
 				"P. H. A. T.",
 				"toolBar",
-				790,64,
+				540,84,
 				fsAccess("resources/app/ToolBar.html"),
 				false,false,
-				500,64
+				540,84
 			)
 		);
 		let toolBarWindow : Array<Electron.BrowserWindow> = winMgr.getWindowsByName("toolBar");
