@@ -7,12 +7,6 @@ fi
 
 for f in $target/*.js
 do
-    printf "Collapsing bundle $f\n"
-    ./node_modules/.bin/bundle-collapser $f > tmp
-    if [ $? != 0 ]; then
-        rm temp
-    fi
-    if [ $? == 0 ]; then
-        mv tmp $f
-    fi
+    printf "Running semi-colon insertion on $f\n"
+    ./node_modules/.bin/semi add $f --silent
 done

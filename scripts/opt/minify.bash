@@ -8,6 +8,6 @@ fi
 for f in $target/*.js
 do
     printf "Compressing $f\n"
-    ./node_modules/nwsjs/nwsjs $f --comments --spaces --tabs --newLines > tmp
+    ./node_modules/nwsjs/nwsjs $f > tmp
     mv tmp $f
 done
