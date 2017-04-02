@@ -1,5 +1,11 @@
 const vm = require("vm");
 const fs = require("fs");
+/*
+    Trys to load cached code from cdata.
+    On failure, will try to compile jsFile and write it to cdata, then load from cdata.
+    On failure to compile jsFile, failure to write cdata or failure to load cdata,
+    falls back on calling require(jsModule)
+*/
 function bootStrapCodeCache(jsFile,jsModule,cdata)
 {
     let cache;
@@ -21,6 +27,7 @@ function bootStrapCodeCache(jsFile,jsModule,cdata)
 		else
 		{
 		    console.log("Cached code "+cdata+" was rejected.");
+            console.log("Falling back to require");
 			require(jsModule);
 		}
 	}
@@ -56,6 +63,7 @@ function bootStrapCodeCache(jsFile,jsModule,cdata)
                 catch(err)
                 {
                     console.log("Failed to make cache directory");
+                    console.log("Falling back to require");
                     require(jsModule);
                 }
 			}
@@ -63,6 +71,7 @@ function bootStrapCodeCache(jsFile,jsModule,cdata)
 		else
 		{
 		    console.log("Could not compile "+jsFile);
+            console.log("Falling back to require");
 			require(jsModule);
 		}
 	}
