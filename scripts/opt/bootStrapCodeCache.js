@@ -47,7 +47,17 @@ function bootStrapCodeCache(jsFile,jsModule,cdata)
 			catch(err)
 			{
 			    console.log("Failed to write "+cdata);
-				require(jsModule);
+                try
+                {
+                    fs.mkdirSync("resources/app/cdata");
+                    fs.writeFileSync(cdata,cache);
+				    bootStrapCode(jsFile,jsModule,cdata);
+                }
+                catch(err)
+                {
+                    console.log("Failed to make cache directory");
+                    require(jsModule);
+                }
 			}
 		}
 		else
