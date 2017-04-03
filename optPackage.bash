@@ -27,3 +27,5 @@ cd resources
 cd app
 
 mv realMain.js main.js
+
+rm -rf rt
