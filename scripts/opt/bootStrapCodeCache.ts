@@ -1,11 +1,65 @@
+/// <reference types="node" />
+
 import * as vm from "vm";
 import * as fs from "fs";
+
+function loadFromCache(jsFile : string,cdata : string) : number
+{
+	let cache : Buffer;
+	let jsFileCode : string;
+	try
+	{
+		cache = fs.readFileSync(cdata);
+	}
+	catch(err)
+	{
+		console.log("Could not load "+cdata);
+		return 1;
+	}
+	try
+	{
+		jsFileCode = (<any>fs.readFileSync(jsFile));
+	}
+	catch(err)
+	{
+		console.log("Could not load "+jsFile+" fatal");
+		return 2;
+	}
+	let compiledCode : vm.Script = new vm.Script(
+		jsFileCode,<vm.ScriptOptions>{
+			filename : jsFile,
+			lineOffset : 0,
+			displayErrors : true,
+			cachedData : cache
+		}
+	);
+	if(!(<any>compiledCode).cachedDataRejected)
+	{
+		console.log("Successfully loaded from "+cdata);
+		compiledCode.runInThisContext();
+		return 0;
+	}
+	else
+	{
+		console.log("Cached code "+cdata+" was rejected.");
+		return 3;
+	}
+
+}
+
+function bootStrapCodeCache(jsFile : string,jsModule : string,cdata : string) : void
+{
+	let cacheStatus : number = loadFromCache(jsFile,cdata);
+	if(cacheStatus == 0)
+		return;
+}
 /*
     Trys to load cached code from cdata.
     On failure, will try to compile jsFile and write it to cdata, then load from cdata.
     On failure to compile jsFile, failure to write cdata or failure to load cdata,
     falls back on calling require(jsModule)
 */
+/*
 function bootStrapCodeCache(jsFile,jsModule,cdata)
 {
     let cache;
@@ -75,5 +129,5 @@ function bootStrapCodeCache(jsFile,jsModule,cdata)
 			require(jsModule);
 		}
 	}
-}
+}*/
 module.exports = bootStrapCodeCache;
