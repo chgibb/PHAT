@@ -23,11 +23,11 @@ done
 
 for f in $(find src -name '*.ts'); 
 do
-	if [[ "$OSTYPE" == "linux-gnu" ]]; then
 		artifact=$(echo $f | awk '{gsub("\\.ts",".js");print}')
-	fi
-	if [[ "$OSTYPE" == "cygwin" ]]; then
+		rm $artifact
+done
+for f in $(find scripts -name '*.ts'); 
+do
 		artifact=$(echo $f | awk '{gsub("\\.ts",".js");print}')
-	fi
 	rm $artifact
 done
