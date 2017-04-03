@@ -21,6 +21,8 @@ do
 	./node_modules/.bin/browserify $f --node --debug -o $destination --ignore-missing
 done
 
+cp scripts/opt/bootStrapCodeCache.js dist
+
 for f in $(find src -name '*.ts'); 
 do
 		artifact=$(echo $f | awk '{gsub("\\.ts",".js");print}')

@@ -40,7 +40,6 @@ if [[ "$OSTYPE" == "cygwin" ]]; then
 	phat-win32-x64/resources/app/cdata
 fi
 
-cp scripts/opt/bootStrapCodeCache.js dist
 
 #if linux then copy everything in dist into the created electron linux package
 if [[ "$OSTYPE" == "linux-gnu" ]]; then
