@@ -94,7 +94,7 @@ function bootStrapCodeCache(jsFile : string,jsModule : string,cdata : string) : 
 	let cacheStatus : number = loadFromCache(jsFile,cdata);
 	if(cacheStatus == 0)
 		return;
-	if(cacheStatus == 1)
+	if(cacheStatus == 1 || cacheStatus == 3)
 	{
 		let compilerStatus = compileCache(jsFile,cdata);
 		let secondTry = loadFromCache(jsFile,cdata);
