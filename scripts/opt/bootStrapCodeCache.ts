@@ -1,5 +1,5 @@
-const vm = require("vm");
-const fs = require("fs");
+import * as vm from "vm";
+import * as fs from "fs";
 /*
     Trys to load cached code from cdata.
     On failure, will try to compile jsFile and write it to cdata, then load from cdata.
