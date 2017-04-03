@@ -44,7 +44,49 @@ function loadFromCache(jsFile : string,cdata : string) : number
 		console.log("Cached code "+cdata+" was rejected.");
 		return 3;
 	}
-
+}
+function compileCache(jsFile : string,cdata : string) : number
+{
+	let jsFileCode : string;
+	let cache : Buffer;
+	let compiler : vm.Script;
+	try
+	{
+		jsFileCode = (<any>fs.readFileSync(jsFile));
+	}
+	catch(err)
+	{
+		console.log("Could not load "+jsFile+" fatal");
+		return 2;
+	}
+	compiler = new vm.Script(
+		jsFileCode,<vm.ScriptOptions>{
+			filename : jsFile,
+			lineOffset : 0,
+			displayErrors : true,
+			produceCachedData : true
+		}
+	);
+	if((<any>compiler).cachedDataProduced && (<any>compiler).cachedData)
+	{
+		cache = (<any>compiler).cachedData;
+		console.log("Successfully compiled "+jsFile);
+		try
+		{
+			fs.writeFileSync(cdata,cache);
+		}
+		catch(err)
+		{
+			console.log("Failed to write "+cdata);
+			return 3;
+		}
+		return 0;
+	}
+	else
+	{
+		console.log("Failed to compile "+jsFile);
+		return 1;
+	}
 }
 
 function bootStrapCodeCache(jsFile : string,jsModule : string,cdata : string) : void
@@ -52,6 +94,21 @@ function bootStrapCodeCache(jsFile : string,jsModule : string,cdata : string) : 
 	let cacheStatus : number = loadFromCache(jsFile,cdata);
 	if(cacheStatus == 0)
 		return;
+	if(cacheStatus == 1)
+	{
+		let compilerStatus = compileCache(jsFile,cdata);
+		let secondTry = loadFromCache(jsFile,cdata);
+		if(secondTry != 0 || compilerStatus != 0)
+		{
+			console.log("Falling back to require");
+			require(jsModule);
+			return;
+		}
+	}
+	if(cacheStatus == 2)
+	{
+		throw new Error("Fatal error: Could not load file "+jsFile);
+	}
 }
 /*
     Trys to load cached code from cdata.
