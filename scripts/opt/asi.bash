@@ -7,6 +7,8 @@ fi
 
 for f in $target/*.js
 do
-    printf "Running semi-colon insertion on $f\n"
-    ./node_modules/.bin/semi add $f --silent
+    if [[ "$f" != "$target/pileup.js" ]]; then
+        printf "Running semi-colon insertion on $f\n"
+        ./node_modules/.bin/semi add $f --silent
+    fi
 done

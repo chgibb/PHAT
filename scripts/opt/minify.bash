@@ -7,7 +7,9 @@ fi
 
 for f in $target/*.js
 do
-    printf "Compressing $f\n"
-    ./node_modules/nwsjs/nwsjs $f > tmp
-    mv tmp $f
+    if [[ "$f" != "$target/pileup.js" ]]; then
+        printf "Compressing $f\n"
+        ./node_modules/nwsjs/nwsjs $f > tmp
+        mv tmp $f
+    fi
 done

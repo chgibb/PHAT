@@ -7,7 +7,9 @@ fi
 
 for f in $target/*.js
 do
-    printf "Optimizing IIFEs $f\n"
-    ./node_modules/.bin/optimize-js $f > tmp
-    mv tmp $f
+    if [[ "$f" != "$target/pileup.js" ]]; then
+        printf "Optimizing IIFEs $f\n"
+        ./node_modules/.bin/optimize-js $f > tmp
+        mv tmp $f
+    fi
 done

@@ -7,12 +7,14 @@ fi
 
 for f in $target/*.js
 do
-    printf "Collapsing bundle $f\n"
-    ./node_modules/.bin/bundle-collapser $f > tmp
-    if [ $? != 0 ]; then
-        rm temp
-    fi
-    if [ $? == 0 ]; then
-        mv tmp $f
+    if [[ "$f" != "$target/pileup.js" ]]; then
+        printf "Collapsing bundle $f\n"
+        ./node_modules/.bin/bundle-collapser $f > tmp
+        if [ $? != 0 ]; then
+            rm temp
+        fi
+        if [ $? == 0 ]; then
+            mv tmp $f
+        fi
     fi
 done
