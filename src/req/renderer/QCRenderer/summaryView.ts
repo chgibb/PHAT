@@ -22,7 +22,6 @@ export class SummaryView extends viewMgr.View
 		let html = new Array<string>();
 		html.push
 		(
-			"<img style='float:left;' src='img/done_Analysis.png'><p style='float:left;'>View Report</p>",
 			"<p style='float:right;'>Failure</p><img style='float:right;' src='img/fail.png'>",
 			"<p style='float:right;' >Warning</p><img style='float:right;' src='img/warn.png'>",
 			"<p style='float:right;'>Pass</p><img style='float:right;' src='img/pass.png'>"
@@ -53,14 +52,14 @@ export class SummaryView extends viewMgr.View
 				{
 					html.push
 			        (
-				    	"<td style='text-align:center;'><b id='",this.fastqInputs[i].validID,"'>",'click to analyze',"</b></td>" 
+				    	"<td style='text-align:center;'><b id='",this.fastqInputs[i].validID,"'>",'click to analyze',"</b></td>"
 			        );
 				}
 				else
 				{
 					html.push
 			        (
-				    	"<td style='text-align:center;'><p>","<img id='",this.fastqInputs[i].validID,"' src='img/done_Analysis.png' style='text-align:center;'>","</p></td>"   
+				    	"<td style='text-align:center;'><p>","<img id='",this.fastqInputs[i].validID,"' src='img/done_Analysis.png' style='text-align:center;'>","<br/>View Report</p></td>"
 			        );
 				}
 			    html.push

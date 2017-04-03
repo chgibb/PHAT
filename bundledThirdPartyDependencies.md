@@ -15,7 +15,6 @@
 - Samtools
     - bcftools.exe
     - bgzip.exe
-    - razip.exe
     - samtools.exe
 - Cygwin
     - cygwin1.dll

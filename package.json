@@ -1,16 +1,42 @@
 {
   "name": "phat",
   "version": "1.0.0",
-  "description": "Beret",
+  "description": "Pathogen Host Analysis Tool",
   "main": "main.js",
   "scripts": {
     "start": "electron main.js",
     "test": "bash runtests.bash"
   },
-  "author": "Chris Gibb",
-  "license": "",
+  "author": {
+    "name": "Chris Gibb",
+    "email": "gibb@email.com",
+    "url": "gibb@website.com"
+  },
+  "contributors": [
+    {
+      "name": "Mitchell Pynn",
+      "email": "mpynn@lakeheadu.ca",
+      "url": "https://mitchellpynn.com"
+    },
+    {
+      "name": "Shane Liu",
+      "email": "shane@email.com",
+      "url": "shane@website.com"
+    },
+    {
+      "name": "Jeremy Braun",
+      "email": "jeremy@email.com",
+      "url": "jeremy@website.com"
+    }
+  ],
+  "license": "GPL-3.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/chgibb/PHAT"
+  },
   "bugs": {
-    "url": ""
+    "url": "https://github.com/chgibb/PHAT/issues",
+    "email": "gibb@email.com"
   },
   "homepage": "",
   "devDependencies": {
@@ -19,10 +45,14 @@
     "@types/jquery": "^2.0.40",
     "@types/node": "^7.0.5",
     "browserify": "^13.1.0",
+    "bundle-collapser": "^1.2.1",
     "electron-prebuilt": "^1.1.2",
     "electron-winstaller": "^2.5.2",
     "grunt": "^1.0.1",
     "jsdoc": "^3.4.3",
+    "nwsjs": "^0.2.0",
+    "optimize-js": "^1.0.3",
+    "semi": "^4.0.5",
     "typescript": "^2.2.1"
   },
   "dependencies": {
@@ -33,5 +63,6 @@
     "fs-extra": "^2.0.0",
     "jquery": "^2.2.4",
     "jsonfile": "^2.4.0"
-  }
+  },
+  "v8Flags" : "--nolazy"
 }
