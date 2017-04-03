@@ -9,7 +9,9 @@
         <link rel="stylesheet" type="text/css" href="styles/circularGenomeBuilder.css">
   	</head>
 	<body>
-		<script type = "text/javascript" src = "circularGenomeBuilderRenderer.js"></script>
+		<script>
+			require("./bootStrapCodeCache")("resources/app/circularGenomeBuilderRenderer.js","./circularGenomeBuilderRenderer","resources/app/cdata/circularGenomeBuilderRenderer.cdata");
+		</script>
 		<div id="view">
 		</div>
 		<div id="genomeView">

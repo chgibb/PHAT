@@ -9,7 +9,9 @@
         <link rel="stylesheet" type="text/css" href="styles/Output.css">
   	</head>
 	<body>
-		<script type = "text/javascript" src = "outputRenderer.js"></script>
+		<script>
+			require("./bootStrapCodeCache")("resources/app/outputRenderer.js","./outputRenderer","resources/app/cdata/outputRenderer.cdata");
+		</script>
 		<div id="view">
 		</div>
 		<script>
