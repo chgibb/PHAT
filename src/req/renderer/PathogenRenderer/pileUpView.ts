@@ -25,7 +25,9 @@ export class PileUpView extends viewMgr.View
     }
     onMount()
     {
-        var pileUp = requireDyn('./pileup');
+        if(!window.pileup)
+            require("./bootStrapCodeCache")("resources/app/pileup.js","./pileup","resources/app/cdata/pileup.cdata");
+        //var pileUp = requireDyn('./pileup');
         var twoBit;
         var refName;
         var bam;
@@ -55,7 +57,7 @@ export class PileUpView extends viewMgr.View
                 break;
             }
         }
-        this.viewer = pileUp.create
+        this.viewer = pileup.create
         (
             document.getElementById(this.div),
             {
@@ -68,9 +70,9 @@ export class PileUpView extends viewMgr.View
                 tracks : 
                 [
                     {
-                        viz : pileUp.viz.genome(),
+                        viz : pileup.viz.genome(),
                         isReference : true,
-                        data : pileUp.formats.twoBit
+                        data : pileup.formats.twoBit
                         (
                             {
                                 url : fsAccess(twoBit)
@@ -79,8 +81,8 @@ export class PileUpView extends viewMgr.View
                         name : refName
                     },
                     {
-                        viz : pileUp.viz.pileup(),
-                        data : pileUp.formats.bam
+                        viz : pileup.viz.pileup(),
+                        data : pileup.formats.bam
                         (
                             {
                                 url : fsAccess(bam),
