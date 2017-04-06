@@ -27,7 +27,6 @@ export class PileUpView extends viewMgr.View
     {
         if(!(<any>window).pileup)
             require("./bootStrapCodeCache")("resources/app/pileup.js","./pileup","resources/app/cdata/pileup.cdata");
-        //var pileUp = requireDyn('./pileup');
         var twoBit;
         var refName;
         var bam;
