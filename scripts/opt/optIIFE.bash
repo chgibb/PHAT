@@ -1,3 +1,4 @@
+(set -o igncr) 2>/dev/null && set -o igncr; # For Cygwin on Windows compatibility
 if [[ "$OSTYPE" == "linux-gnu" ]]; then
     target="phat-linux-x64/resources/app"
 fi
