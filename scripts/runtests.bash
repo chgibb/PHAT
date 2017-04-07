@@ -12,7 +12,7 @@ cd ../
 
 for f in guiTests/*.js
 do
-	bash build.bash
+	bash scripts/build.bash
 
 	if [[ "$OSTYPE" == "linux-gnu" ]]; then
 		cd phat-linux-x64
