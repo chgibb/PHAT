@@ -46,7 +46,6 @@
     "@types/node": "^7.0.5",
     "browserify": "^13.1.0",
     "bundle-collapser": "^1.2.1",
-    "electron-installer-debian": "^0.5.1",
     "electron-prebuilt": "^1.1.2",
     "electron-winstaller": "^2.5.2",
     "grunt": "^1.0.1",
