@@ -120,16 +120,11 @@ export function createWithDefault(
 				icon : './../icon.png'
 			};
 			
-			//postState.postState(refName,"windowOptions",windowOptions);
 			dataMgr.setKey(refName,"windowOptions",windowOptions);
 		}
 		
 		
 		let ref = new BrowserWindow(windowOptions);
-		//let image = require('electron').nativeImage.createFromPath('./../64x64.png');
-		//if(image.isEmpty())
-			//throw "Could Not Load Application Icon\n";
-		//ref.setIcon(image);
 
 		ref.loadURL(html);
 		if(debug)
@@ -205,10 +200,6 @@ export function saveBounds(ref : Electron.BrowserWindow,refName : string) : void
 		windowOptions.height = height;
 		change = true;
 	}
-	
-	//Save changes if any.
-	//if(change)
-	//	postState.postState(refName,"windowOptions",windowOptions);
 	if(change)
 		dataMgr.setKey(refName,"windowOptions",windowOptions);
 }
