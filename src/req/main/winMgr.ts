@@ -87,25 +87,22 @@ export function createWithDefault(
 	minHeight? : number
 ) : Electron.BrowserWindow
 {
-		let windowOptions = {};
 		
-		//windowOptions = getState.getState(refName,"windowOptions");
-		windowOptions = dataMgr.getKey(refName,"windowOptions");
+		let windowOptions = dataMgr.getKey(refName,"windowOptions");
 		if(!windowOptions)
 		{
-			/*
 			let display = electron.screen.getPrimaryDisplay();
-			if(refName == "toolbar")
+			if(refName == "toolBar")
 			{
 				width = display.workArea.width/4;
-				//height = display.workArea.height/4;
+				height = display.workArea.height/8;
 			}
 			let x = (display.workArea.width/2)-(width/2);
-			let y = 0;*/
+			let y = 0;
 			windowOptions = 
 			{
-				x : 736,
-				y : 39,
+				x : x,
+				y : y,
 				width : width,
 				height : height,
 				useContentSize : false,
