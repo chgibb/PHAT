@@ -12,7 +12,7 @@ winMgr.windowCreators["input"] =
 				"input",
 				928,300,
 				fsAccess("resources/app/Input.html"),
-				false,false, 500, 150
+				false,false, 545, 85
 			)
 		);
 	}

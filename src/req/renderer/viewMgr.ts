@@ -3,7 +3,7 @@
  * @module req/renderer/viewMgr
  */
 
-///// <reference path="jquery.d.ts" />
+/// <reference types="jquery" />
 
 import {DataModelMgr} from "./model";
 export abstract class View
