@@ -5,7 +5,7 @@
   "main": "main.js",
   "scripts": {
     "start": "electron main.js",
-    "test": "bash runtests.bash"
+    "test": "bash scripts/runtests.bash"
   },
   "author": {
     "name": "Chris Gibb",
