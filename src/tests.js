@@ -11,7 +11,7 @@ catch(err){}
 var assert = require('./req/tests/assert');
 
 
-var Input = require('./req/renderer/Input.js');
+var Input = require('./req/renderer/Input.js').default;
 var QCClass = require('./req/renderer/QC.js');
 var Align = require('./req/renderer/Align');
 
@@ -111,8 +111,8 @@ var defaultHandles =
     }
 };
 var input = new Input('input',defaultHandles);
-var QC = new QCClass('QC',defaultHandles);
-var align = new Align('align',defaultHandles);
+var QC = new QCClass.default('QC',defaultHandles);
+var align = new Align.default('align',defaultHandles);
 
 var containsInvalidIDChars = require('./req/tests/containsInvalidIDChars.js');
 

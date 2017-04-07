@@ -1,20 +1,9 @@
 /**
- * Attaches event handlers to the window and document objects. Allows a window to activate dev tools on F12,
- * report a runtime error in an alert box and open the dev tools, and disables dragging and dropping of foreign content into the window.
+ * Attaches event handlers to the window and document objects.
+ * Report a runtime error in an alert box and open the dev tools, and disables dragging and dropping of foreign content into the window.
  * @module req/renderer/commonBehaviour
  */
 let remote = require("electron").remote;
-document.addEventListener
-(
-    "keydown",function(key)
-    {
-        //F12
-        if(key.which === 123)
-        {
-            remote.getCurrentWindow().toggleDevTools();
-        }
-    }
-);
 
 /*
  Adapted from answer by Fizer Khan
@@ -31,6 +20,7 @@ window.onerror = function(message,file,line,col,error)
     }
     remote.getCurrentWindow().openDevTools();
 }
+
 /*
  Adapted from answer by zcbenz
  https://github.com/electron/electron/issues/908

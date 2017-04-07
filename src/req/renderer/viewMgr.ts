@@ -3,7 +3,7 @@
  * @module req/renderer/viewMgr
  */
 
-///// <reference path="jquery.d.ts" />
+/// <reference types="jquery" />
 
 import {DataModelMgr} from "./model";
 export abstract class View
@@ -11,13 +11,13 @@ export abstract class View
     public name : string;
     public div : string;
     public data : any;
-    public model : DataModelMgr;
+    public model : DataModelMgr | undefined;
     /**
      * @param {string} name - Name to assign to view
      * @param {string} div - ID of div to bind view to
      * @param {any} model - Data model object to bind to view
      */
-    public constructor(name : string,div : string,model : DataModelMgr)
+    public constructor(name : string,div : string,model? : DataModelMgr)
     {
         this.name = name;
         this.div = div;
@@ -131,6 +131,7 @@ export function getIndexOfViewByName(name : string,targetArr : Array<View>) : nu
         if(arr[i].name == name)
             return i;
     }
+    return -1;
 }
 export function getViewByName(name : string,targetArr? : Array<View>) : View
 {
@@ -144,6 +145,13 @@ export function getViewByName(name : string,targetArr? : Array<View>) : View
 
 export let preRender : (view : View) => void = null;
 export let postRender : (view : View) => void = null;
+
+export function setPreRender(
+    func : (view : View) => void
+) : void
+{
+    preRender = func;
+} 
 
 export function render(preRenderArg? : (view : View) => void,postRenderArg? : (view : View) => void) : void
 {
