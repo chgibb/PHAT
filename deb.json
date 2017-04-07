@@ -1,9 +1,0 @@
-{
-    "src" : "phat-linux-x64/",
-    "dest" : ".",
-    "arch" : "amd64",
-    "name" : "phat",
-    "productName" : "PHAT",
-    "bin" : "phat",
-    "icon" : "icons/128x128.png"
-}
