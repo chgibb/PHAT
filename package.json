@@ -47,6 +47,7 @@
     "browserify": "^13.1.0",
     "bundle-collapser": "^1.2.1",
     "electron-prebuilt": "^1.1.2",
+    "electron-squirrel-startup": "^1.0.0",
     "electron-winstaller": "^2.5.2",
     "grunt": "^1.0.1",
     "jsdoc": "^3.4.3",
