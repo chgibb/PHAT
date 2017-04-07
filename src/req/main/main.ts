@@ -6,6 +6,7 @@ import * as fs from "fs";
 import * as electron from "electron";
 const ipc = electron.ipcMain;
 const app = electron.app;
+if(require('electron-squirrel-startup')) app.quit();
 const BrowserWindow = electron.BrowserWindow;
 const jsonFile = require("jsonfile");
 
