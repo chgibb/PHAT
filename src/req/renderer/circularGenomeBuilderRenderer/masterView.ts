@@ -57,6 +57,8 @@ export class View extends viewMgr.View
                 <button id="leftPanel" class="leftSlideOutPanel">Left Panel</button>
                 <button id="rightPanel" class="rightSlideOutPanel">Right Panel</button>
                 <div id="rightSlideOutPanel" class="rightSlideOutPanel">
+                    <button id="heightPlus">Increase Height</button>
+                    <button id="widthPlus">Increase Width</button>
                     <button id="radiusMinus">Decrease Radius</button>
                     <button id="radiusPlus">Increase Radius</button>
                 </div>
@@ -186,6 +188,24 @@ export class View extends viewMgr.View
             ref.genome.radius += 10;
             viewMgr.render();
             console.log(ref.genome.radius);
+        }
+        if(event.target.id == "radiusMinus")
+        {
+            let ref = <GenomeView.GenomeView>viewMgr.getViewByName("genomeView",this.views);
+            ref.genome.radius -= 10;
+            viewMgr.render();
+        }
+        if(event.target.id == "heightPlus")
+        {
+            let ref = <GenomeView.GenomeView>viewMgr.getViewByName("genomeView",this.views);
+            ref.genome.height += 10;
+            viewMgr.render();
+        }
+        if(event.target.id == "widthPlus")
+        {
+            let ref = <GenomeView.GenomeView>viewMgr.getViewByName("genomeView",this.views);
+            ref.genome.width += 10;
+            viewMgr.render();
         }
         if(this.fastaInputs)
         {
