@@ -123,11 +123,23 @@ export class GenomeView extends viewMgr.View
     }
     public postRender() : void
     {
-        //get a reference to the div wrapping the rendered svg graphic of our figure
-        let div = document.getElementById(this.div);
-        div.style.position = "absolute";
-        div.style.height = `${$(window).height()}px`;
-        div.style.width = `${$(window).width()}px`;
+        if(this.genome !== undefined)
+        {
+            //get a reference to the div wrapping the rendered svg graphic of our figure
+            let div = document.getElementById(this.div);
+            div.style.position = "absolute";
+            div.style.height = `${$(window).height()}px`;
+            div.style.width = `${$(window).width()}px`;
+
+            let x = 0;
+            let y = 0;
+            x = ($(window).width()/2)-(this.genome.width/2);
+            y = ($(window).height()/2)-(this.genome.height/2);
+            div.style.left = `${x}px`;
+            div.style.top = `${y}px`;
+            console.log("genome exists");
+        }
+        console.log("genome does not exist");
     }
     public dataChanged() : void{}
     public divClickEvents(event : JQueryEventObject) : void{}
