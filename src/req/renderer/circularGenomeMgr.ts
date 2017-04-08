@@ -4,7 +4,7 @@ import {SpawnRequestParams} from "./../JobIPC";
 let canRead = require("./canRead");
 import {Contig,FastaContigLoader} from "./circularGenome/fastaContigLoader";
 import {SaveKeyEvent} from "../ipcEvents";
-let fasta = require("./fasta");
+import Fasta from "./fasta";
 export class CircularFigure
 {
     public name : string;
@@ -25,7 +25,7 @@ class ManagedFasta
     public loaded : boolean;
     public contigs : any;
     public circularFigures : Array<CircularFigure>;
-    constructor(fasta : any)
+    constructor(fasta : Fasta)
     {
         this.alias = fasta.alias;
         this.name = fasta.name;
@@ -37,10 +37,10 @@ class ManagedFasta
 }
 class RunningLoader
 {
-    public fasta : any;
+    public fasta : Fasta;
     public loader : FastaContigLoader;
 
-    constructor(fasta : any,onComplete : () => void)
+    constructor(fasta : Fasta,onComplete : () => void)
     {
         this.fasta = fasta;
         this.loader = new FastaContigLoader();
@@ -58,7 +58,7 @@ export class CircularGenomeMgr extends DataModelMgr
         this.managedFastas = new Array<ManagedFasta>();
         this.runningLoaders = new Array<RunningLoader>();
     }
-    public cacheFasta(fasta : any) : boolean
+    public cacheFasta(fasta : Fasta) : boolean
     {
         for(let i = 0; i != this.managedFastas.length; ++i)
         {
@@ -85,7 +85,7 @@ export class CircularGenomeMgr extends DataModelMgr
         );
         return true;
     }
-    public isCached(fasta : any) : boolean
+    public isCached(fasta : Fasta) : boolean
     {
         for(let i = 0; i != this.managedFastas.length; ++i)
         {
