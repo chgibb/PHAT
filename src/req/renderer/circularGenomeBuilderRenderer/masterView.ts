@@ -103,7 +103,13 @@ export class View extends viewMgr.View
             }
             return undefined;
     }
-    public postRender() : void{}
+    public postRender() : void
+    {
+        for(let i = 0; i != this.views.length; ++i)
+        {
+            this.views[i].postRender();
+        }
+    }
     public dataChanged() : void
     {
         this.firstRender = true;
