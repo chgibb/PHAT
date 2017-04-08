@@ -106,3 +106,10 @@ $
         );
     }
 );
+$(window).resize
+(
+	function()
+	{
+        viewMgr.render();
+    }
+);
