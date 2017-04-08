@@ -34,4 +34,4 @@ do
 done
 
 #run packaging script
-bash package.bash
+bash scripts/package.bash
