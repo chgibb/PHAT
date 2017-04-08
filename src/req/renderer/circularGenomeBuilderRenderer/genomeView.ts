@@ -4,6 +4,7 @@ import * as viewMgr from "./../viewMgr";
 import {Contig,FastaContigLoader} from "./../circularGenome/fastaContigLoader";
 import {DataModelMgr} from "./../model";
 import {GenomeFigure} from "./../circularGenome/genomeFigure";
+import {CircularFigure} from "./../circularGenomeMgr";
 import * as plasmid from "./../circularGenome/plasmid";
 import * as plasmidTrack from "./../circularGenome/plasmidTrack";
 import * as trackLabel from "./../circularGenome/trackLabel";
@@ -26,7 +27,7 @@ function getRandColor(brightness : number)
 let app : any = angular.module('myApp',['angularplasmid']);
 export class GenomeView extends viewMgr.View
 {
-    public genome : GenomeFigure;
+    public genome : CircularFigure;
     public constructor(name : string,div : string, model : DataModelMgr)
     {
         super(name,div,model);
