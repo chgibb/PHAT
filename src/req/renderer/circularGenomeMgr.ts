@@ -14,7 +14,7 @@ export class CircularFigure
     {
         this.name = name;
         this.contigs = contigs;
-        this.radius = 300;
+        this.radius = 0;
     }
 }
 class ManagedFasta
