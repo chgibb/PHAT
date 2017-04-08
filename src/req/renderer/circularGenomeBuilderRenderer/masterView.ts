@@ -101,6 +101,8 @@ export class View extends viewMgr.View
             {
                 this.views[i].render();
             }
+            //viewMgr will not call postRender for a view that does no rendering so we'll do it explicitly
+            this.postRender();
             return undefined;
     }
     public postRender() : void
