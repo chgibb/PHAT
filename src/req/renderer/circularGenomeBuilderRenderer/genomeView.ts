@@ -58,13 +58,13 @@ export class GenomeView extends viewMgr.View
                     ${plasmid.add(
                     {
                         sequenceLength : totalBP.toString(),
-                        plasmidHeight : "300",
-                        plasmidWidth : "300"
+                        plasmidHeight : this.genome.height,
+                        plasmidWidth : this.genome.width
                     })}
                         ${plasmidTrack.add(
                         {
                             trackStyle : "fill:#f0f0f0;stroke:#ccc",
-                            radius : "120"
+                            radius : this.genome.radius
                         })}
                             ${trackLabel.add(
                             {
@@ -121,7 +121,14 @@ export class GenomeView extends viewMgr.View
         }
         return undefined;
     }
-    public postRender() : void{}
+    public postRender() : void
+    {
+        //get a reference to the div wrapping the rendered svg graphic of our figure
+        let div = document.getElementById(this.div);
+        div.style.position = "absolute";
+        div.style.height = `${$(window).height()}px`;
+        div.style.width = `${$(window).width()}px`;
+    }
     public dataChanged() : void{}
     public divClickEvents(event : JQueryEventObject) : void{}
 }
