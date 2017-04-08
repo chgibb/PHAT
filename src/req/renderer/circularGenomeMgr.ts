@@ -10,11 +10,15 @@ export class CircularFigure
     public name : string;
     public contigs : any;
     public radius : number;
+    public height : number;
+    public width : number;
     constructor(name : string,contigs : any)
     {
         this.name = name;
         this.contigs = contigs;
-        this.radius = 0;
+        this.radius = 120;
+        this.height = 300;
+        this.width = 300;
     }
 }
 class ManagedFasta
