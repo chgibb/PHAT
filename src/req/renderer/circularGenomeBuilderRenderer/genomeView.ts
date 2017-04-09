@@ -4,6 +4,7 @@ import * as viewMgr from "./../viewMgr";
 import {Contig,FastaContigLoader} from "./../circularGenome/fastaContigLoader";
 import {DataModelMgr} from "./../model";
 import {GenomeFigure} from "./../circularGenome/genomeFigure";
+import {CircularFigure} from "./../circularGenomeMgr";
 import * as plasmid from "./../circularGenome/plasmid";
 import * as plasmidTrack from "./../circularGenome/plasmidTrack";
 import * as trackLabel from "./../circularGenome/trackLabel";
@@ -26,7 +27,7 @@ function getRandColor(brightness : number)
 let app : any = angular.module('myApp',['angularplasmid']);
 export class GenomeView extends viewMgr.View
 {
-    public genome : GenomeFigure;
+    public genome : CircularFigure;
     public constructor(name : string,div : string, model : DataModelMgr)
     {
         super(name,div,model);
@@ -57,13 +58,13 @@ export class GenomeView extends viewMgr.View
                     ${plasmid.add(
                     {
                         sequenceLength : totalBP.toString(),
-                        plasmidHeight : "300",
-                        plasmidWidth : "300"
+                        plasmidHeight : this.genome.height,
+                        plasmidWidth : this.genome.width
                     })}
                         ${plasmidTrack.add(
                         {
                             trackStyle : "fill:#f0f0f0;stroke:#ccc",
-                            radius : "120"
+                            radius : this.genome.radius
                         })}
                             ${trackLabel.add(
                             {
@@ -120,7 +121,27 @@ export class GenomeView extends viewMgr.View
         }
         return undefined;
     }
-    public postRender() : void{}
+    public postRender() : void
+    {
+        if(this.genome !== undefined)
+        {
+            //get a reference to the div wrapping the rendered svg graphic of our figure
+            let div = document.getElementById(this.div);
+
+            //expand the div to the new window size
+            div.style.position = "absolute";
+            div.style.height = `${$(window).height()}px`;
+            div.style.width = `${$(window).width()}px`;
+
+            let x = 0;
+            let y = 0;
+            //center the div in the window
+            x = ($(window).width()/2)-(this.genome.width/2);
+            y = ($(window).height()/2)-(this.genome.height/2);
+            div.style.left = `${x}px`;
+            div.style.top = `${y}px`;
+        }
+    }
     public dataChanged() : void{}
     public divClickEvents(event : JQueryEventObject) : void{}
 }

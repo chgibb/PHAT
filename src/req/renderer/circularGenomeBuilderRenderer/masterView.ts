@@ -57,6 +57,10 @@ export class View extends viewMgr.View
                 <button id="leftPanel" class="leftSlideOutPanel">Left Panel</button>
                 <button id="rightPanel" class="rightSlideOutPanel">Right Panel</button>
                 <div id="rightSlideOutPanel" class="rightSlideOutPanel">
+                    <button id="heightPlus">Increase Height</button>
+                    <button id="widthPlus">Increase Width</button>
+                    <button id="radiusMinus">Decrease Radius</button>
+                    <button id="radiusPlus">Increase Radius</button>
                 </div>
                 <div id="leftSlideOutPanel" class="leftSlideOutPanel">
                 ${
@@ -99,9 +103,17 @@ export class View extends viewMgr.View
             {
                 this.views[i].render();
             }
+            //viewMgr will not call postRender for a view that does no rendering so we'll do it explicitly
+            this.postRender();
             return undefined;
     }
-    public postRender() : void{}
+    public postRender() : void
+    {
+        for(let i = 0; i != this.views.length; ++i)
+        {
+            this.views[i].postRender();
+        }
+    }
     public dataChanged() : void
     {
         this.firstRender = true;
@@ -169,6 +181,31 @@ export class View extends viewMgr.View
                     )()
                 }
             );
+        }
+        if(event.target.id == "radiusPlus")
+        {
+            let ref = <GenomeView.GenomeView>viewMgr.getViewByName("genomeView",this.views);
+            ref.genome.radius += 10;
+            viewMgr.render();
+            console.log(ref.genome.radius);
+        }
+        if(event.target.id == "radiusMinus")
+        {
+            let ref = <GenomeView.GenomeView>viewMgr.getViewByName("genomeView",this.views);
+            ref.genome.radius -= 10;
+            viewMgr.render();
+        }
+        if(event.target.id == "heightPlus")
+        {
+            let ref = <GenomeView.GenomeView>viewMgr.getViewByName("genomeView",this.views);
+            ref.genome.height += 10;
+            viewMgr.render();
+        }
+        if(event.target.id == "widthPlus")
+        {
+            let ref = <GenomeView.GenomeView>viewMgr.getViewByName("genomeView",this.views);
+            ref.genome.width += 10;
+            viewMgr.render();
         }
         if(this.fastaInputs)
         {
