@@ -4,7 +4,7 @@ import fsAccess from "./../../fsAccess";
 import {makeValidID} from "./../MakeValidID";
 import requireDyn from "./../../requireDyn";
 import Fastq from "./../fastq";
-import Fasta from "./../fasta";
+import {Fasta} from "./../fasta";
 import alignData from "./../alignData";
 import {DataModelMgr} from "./../model";
 import * as viewMgr from "./../viewMgr";

@@ -1,6 +1,6 @@
 import {makeValidID} from "./MakeValidID";
 import trimPath from "./trimPath";
-export default class Fasta
+export class Fasta
 {
     public name : string;
     public alias : string;

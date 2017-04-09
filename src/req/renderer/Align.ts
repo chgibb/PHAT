@@ -2,7 +2,7 @@ import * as fs from "fs";
 
 import canRead from "./canRead";
 import Fastq from "./fastq";
-import Fasta from "./fasta";
+import {Fasta} from "./fasta";
 import alignData from "./alignData";
 import {DataModelHandlers,DataModelMgr} from "./model";
 import {SpawnRequestParams} from "./../JobIPC";

@@ -4,7 +4,7 @@ let contains = require('./../contains');*/
 import * as viewMgr from "./../viewMgr";
 import {DataModelMgr} from "./../model";
 import Fastq from "./../fastq";
-import Fasta from "./../fasta";
+import {Fasta} from "./../fasta";
 import alignData from "./../alignData";
 import {PileUpView} from "./pileUpView";
 export class ReportView extends viewMgr.View

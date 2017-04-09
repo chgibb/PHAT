@@ -3,7 +3,7 @@ import {makeValidID,findOriginalInput} from "./../MakeValidID";
 import AlignMgr from "./../Align";
 
 import Fastq from "./../fastq";
-import Fasta from "./../fasta";
+import {Fasta} from "./../fasta";
 
 class ConfirmOptions extends viewMgr.View
 {
