@@ -16,7 +16,7 @@ export class View extends viewMgr.View
     public firstRender : boolean;
     public leftPanelOpen : boolean;
     public rightPanelOpen : boolean;
-    public circularGenomes : any;
+    public circularGenomes : Array<CircularFigure>;
     public genomeWriters : any;
     public circularGenomeMgr : CircularGenomeMgr;
     public fastaInputs : any;
@@ -27,7 +27,7 @@ export class View extends viewMgr.View
         this.firstRender = true;
         this.leftPanelOpen = false;
         this.rightPanelOpen = false;
-        this.circularGenomes = new Array<any>();
+        this.circularGenomes = new Array<CircularFigure>();
         this.genomeWriters = new Array<any>();
         this.circularGenomeMgr = model;
     }

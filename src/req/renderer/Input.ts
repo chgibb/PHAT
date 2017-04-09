@@ -7,7 +7,7 @@
 import {SaveKeyEvent} from "./../ipcEvents";
 
 import Fastq from "./fastq";
-import Fasta from "./fasta";
+import {Fasta} from "./fasta";
 import formatByteString from "./formatByteString";
 import canRead from "./canRead";
 import replyFromBowTie2Build from "./input/replyFromBowTie2Build";
