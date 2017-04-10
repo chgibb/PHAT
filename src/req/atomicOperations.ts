@@ -1,6 +1,8 @@
 import {EventEmitter} from "events";
 import * as fs from "fs";
 import {SpawnRequestParams} from "./JobIPC";
+
+import * as rimraf from "rimraf";
 export abstract class AtomicOperation
 {
     public generatedArtifacts : Array<string>;
@@ -98,6 +100,10 @@ export function enQueue(opName : string,data : any) : void
                     for(let i = 0; i != op.generatedArtifacts.length; ++i)
                     {
                         fs.unlinkSync(op.generatedArtifacts[i]);
+                    }
+                    for(let i = 0; i != op.generatedArtifactsDirectories.length; ++i)
+                    {
+                        rimraf.sync(op.generatedArtifactsDirectories[i]);
                     }
                 }
 
