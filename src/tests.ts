@@ -2,6 +2,7 @@ import * as fs from "fs";
 import * as atomic from "./req/atomicOperations";
 import {GenerateQCReport} from "./req/GenerateQCReport";
 import Fastq from "./req/renderer/fastq";
+import {SpawnRequestParams} from "./req/JobIPC";
 
 try
 {
@@ -17,7 +18,16 @@ atomic.register("generateFastQCReport",new GenerateQCReport());
 
 let L6R1 : Fastq = new Fastq('data/L6R1.R1.fastq');
 
+atomic.enQueue("generateFastQCReport",L6R1);
 
+atomic.updates.on(
+	"generateFastQCReport",function(args : SpawnRequestParams)
+	{
+		console.log(JSON.stringify(args));
+	}
+);
+
+atomic.operationsQueue[0].run();
 
 /*
 var assert = require('./req/tests/assert');

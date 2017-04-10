@@ -1,11 +1,52 @@
 import {EventEmitter} from "events";
+import * as fs from "fs";
 import {SpawnRequestParams} from "./JobIPC";
 export abstract class AtomicOperation
 {
-    public abstract getGeneratedArtifacts() : Array<string>;
-    public abstract setGeneratedArtifacts(artifacts : Array<string>) : void;
-    public abstract getDestinationArtifacts() : Array<string>;
-    public abstract setDestinationArtifacts(artifacts : Array<string>) : void;
+    public generatedArtifacts : Array<string>;
+	public destinationArtifacts : Array<string>;
+
+    public generatedArtifactsDirectories : Array<string>;
+	public destinationArtifactsDirectories : Array<string>;
+    public constructor()
+    {
+        this.generatedArtifacts = new Array<string>();
+        this.destinationArtifacts = new Array<string>();
+        this.generatedArtifactsDirectories = new Array<string>();
+        this.destinationArtifactsDirectories = new Array<string>();
+    }
+    public getGeneratedArtifacts() : Array<string>
+    {
+        return this.generatedArtifacts;
+    }
+    public setGeneratedArtifacts(artifacts : Array<string>) : void
+    {
+        this.generatedArtifacts = artifacts;
+    }
+    public getDestinationArtifacts() : Array<string>
+    {
+        return this.destinationArtifacts;
+    }
+    public setDestinationArtifacts(artifacts : Array<string>) : void
+    {
+        this.destinationArtifacts = artifacts;
+    }
+    public getGeneratedArtifactsDirectories() : Array<string>
+    {
+        return this.generatedArtifactsDirectories;
+    }
+    public setGeneratedArtifactsDirectories(artifacts : Array<string>) : void
+    {
+        this.generatedArtifactsDirectories = artifacts;
+    }
+    public getDestinationArtifactsDirectories() : Array<string>
+    {
+        return this.destinationArtifactsDirectories;
+    }
+    public setDestinationArtifactsDirectories(artifacts : Array<string>) : void
+    {
+        this.destinationArtifactsDirectories = artifacts;
+    }
 
     public name : string;
     public done : boolean;
@@ -48,9 +89,19 @@ export function enQueue(opName : string,data : any) : void
                     (<any>registeredOperations[i])
                     )
                 );
-            operationsQueue[operationsQueue.length - 1].setData(data);
-            operationsQueue[operationsQueue.length - 1].update = function(arg : SpawnRequestParams){
-                updates.emit(operationsQueue[operationsQueue.length - 1].name,arg);
+                let op = operationsQueue[operationsQueue.length - 1];
+                op.setData(data);
+                op.update = function(arg : SpawnRequestParams){
+
+                if(op.done)
+                {
+                    for(let i = 0; i != op.generatedArtifacts.length; ++i)
+                    {
+                        fs.unlinkSync(op.generatedArtifacts[i]);
+                    }
+                }
+
+                updates.emit(op.name,arg);
             }
             return;
         }
