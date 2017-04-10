@@ -8,6 +8,8 @@ try
 	fs.mkdirSync("resources/app/rt/AlignmentArtifacts");
 }
 catch(err){}
+
+/*
 var assert = require('./req/tests/assert');
 
 
@@ -354,3 +356,4 @@ assert.assert(function(){
 
 
 assert.runAsserts();
+*/
