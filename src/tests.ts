@@ -1,6 +1,7 @@
+import * as fs from "fs";
+
 try
 {
-	var fs = require("fs");
 	fs.mkdirSync("rt");
 	fs.mkdirSync("resources/app/rt");
 	fs.mkdirSync("resources/app/rt/QCReports");
