@@ -1,15 +1,23 @@
 <!DOCTYPE html>
-<html>	
-	<head>
+<html>
+  <head>
+        <script>
+			var startUp = performance.now();
+		</script>
 		<meta charset="UTF-8">
         <link rel="stylesheet" type="text/css" href="styles/pileup.css">
         <link rel="stylesheet" type="text/css" href="styles/Pathogen.css">
-    </head>
-    <body>
-      <script type = "text/javascript" src = "./PathogenRenderer.js"></script>
-        <div id='goBackDiv'>
-        </div> 
-        <div id='view'>
-        </div>
-    </body>
+  </head>
+  <body>
+      <script>
+        require("./bootStrapCodeCache")("resources/app/PathogenRenderer.js","./PathogenRenderer","resources/app/cdata/PathogenRenderer.cdata");
+		  </script>
+      <div id='goBackDiv'>
+      </div> 
+      <div id='view'>
+      </div>
+      <script>
+			console.log("Start up took "+(performance.now()-startUp+"ms"));
+		</script>
+  </body>
 </html>

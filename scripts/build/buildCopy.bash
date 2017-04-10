@@ -1,3 +1,4 @@
+(set -o igncr) 2>/dev/null && set -o igncr; # For Cygwin on Windows compatibility
 printf "Building copy\n"
 g++ -Wall -fexceptions -fexpensive-optimizations -O3 -std=c++11 -c src/copy/main.cpp -o main.o
 if [ $? != 0 ]; then

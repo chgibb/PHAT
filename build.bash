@@ -31,6 +31,16 @@ do
 	bash $f
 done
 
+#Remove code cache
+if [[ "$OSTYPE" == "linux-gnu" ]]; then
+	rm -rf phat-linux-x64/resources/app/cdata
+fi
+
+if [[ "$OSTYPE" == "cygwin" ]]; then
+	phat-win32-x64/resources/app/cdata
+fi
+
+
 #if linux then copy everything in dist into the created electron linux package
 if [[ "$OSTYPE" == "linux-gnu" ]]; then
 	cp -R -v dist/** phat-linux-x64/resources/app

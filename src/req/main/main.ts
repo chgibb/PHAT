@@ -62,13 +62,17 @@ app.on
 	{
 		try
 		{
+			fs.mkdirSync("resources/app/cdata");
+		}
+		catch(err){}
+		try
+		{
 			fs.mkdirSync("resources/app/rt");
 			fs.mkdirSync("resources/app/rt/QCReports");
 			fs.mkdirSync("resources/app/rt/indexes");
 			fs.mkdirSync("resources/app/rt/AlignmentArtifacts");
 		}
 		catch(err){}
-
 		electron.Menu.setApplicationMenu(menu)
 
 		winMgr.windowCreators["toolBar"].Create();
