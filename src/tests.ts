@@ -1,5 +1,6 @@
 import * as fs from "fs";
 import * as atomic from "./req/atomicOperations";
+import {GenerateQCReport} from "./req/GenerateQCReport";
 import Fastq from "./req/renderer/fastq";
 
 try
@@ -11,45 +12,8 @@ try
 	fs.mkdirSync("resources/app/rt/AlignmentArtifacts");
 }
 catch(err){}
-class QCOperation extends atomic.AtomicOperation
-{
-	public generatedArtifacts : Array<string>;
-	public destinationArtifacts : Array<string>;
-	public fastq : Fastq;
-	public data : string;
-	constructor()
-	{
-		super();
-		this.generatedArtifacts = new Array<string>();
-		this.destinationArtifacts = new Array<string>();
 
-	}
-	public getGeneratedArtifacts() : Array<string>
-	{
-		return this.generatedArtifacts;
-	}
-	public setGeneratedArtifacts(artifacts : Array<string>) : void
-	{
-		this.generatedArtifacts = artifacts;
-	}
-	public getDestinationArtifacts() : Array<string>
-	{
-		return this.destinationArtifacts;
-	}
-	public setDestinationArtifacts(artifacts : Array<string>) : void
-	{
-		this.destinationArtifacts = artifacts
-	}
-	public setData(data : string) : void
-	{
-		this.data = data;
-	}
-	public run() : void
-	{
-		console.log(this.data);
-	}
-}
-atomic.register("generateFastQCReport",new QCOperation());
+atomic.register("generateFastQCReport",new GenerateQCReport());
 
 let L6R1 : Fastq = new Fastq('data/L6R1.R1.fastq');
 
