@@ -89,7 +89,7 @@ export class CompletionFlags
 export interface OperationUpdate
 {
     spawnUpdate? : SpawnRequestParams;
-    flags? : CompletionFlags;
+    op? : AtomicOperation;
     extraData? : any;
 }
 

@@ -92,7 +92,7 @@ export class GenerateQCReport extends atomic.AtomicOperation
 					//Forward data through normally
 					let oup : atomic.OperationUpdate = <atomic.OperationUpdate>{
 						spawnUpdate : params,
-						flags : self.flags
+						op : self
 					}
 				 	self.update(oup);
 				}
@@ -112,14 +112,14 @@ export class GenerateQCReport extends atomic.AtomicOperation
 							{
 								self.setFailure(self.flags);
 								self.update(<atomic.OperationUpdate>{
-									flags : self.flags,
+									op : self,
 									extraData : err
 								});
 								return;
 							}
 							self.setSuccess(self.flags);
 							self.update(<atomic.OperationUpdate>{
-								flags : self.flags,
+								op : self
 							});
 						},1000
 					);
@@ -136,7 +136,7 @@ export class GenerateQCReport extends atomic.AtomicOperation
 		{
 			self.setFailure(self.flags);
 			let oup : atomic.OperationUpdate = <atomic.OperationUpdate>{
-				flags : self.flags,
+				op : self,
 				//Forward error message from failed to spawn exception through
 				extraData : err
 			}

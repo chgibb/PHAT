@@ -23,7 +23,7 @@ atomic.enQueue("generateFastQCReport",L6R1);
 atomic.updates.on(
 	"generateFastQCReport",function(oup : atomic.OperationUpdate)
 	{
-		if(oup.flags.failure)
+		if(oup.op.flags.failure)
 		{
 			console.log("Failed generating QC report");
 			process.exit(1);
