@@ -18,6 +18,7 @@ export class GenerateQCReport extends atomic.AtomicOperation
 	constructor()
 	{
 		super();
+		this.fastQCFlags = new atomic.CompletionFlags();
 	}
 	public setData(data : Fastq) : void
 	{

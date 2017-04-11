@@ -16,6 +16,8 @@ export abstract class AtomicOperation
         this.destinationArtifacts = new Array<string>();
         this.generatedArtifactsDirectories = new Array<string>();
         this.destinationArtifactsDirectories = new Array<string>();
+
+        this.flags = new CompletionFlags();
     }
     public getGeneratedArtifacts() : Array<string>
     {
@@ -72,11 +74,17 @@ export abstract class AtomicOperation
 
     public update : (arg : OperationUpdate) => void;
 }
-export interface CompletionFlags
+export class CompletionFlags
 {
-    done? : boolean,
-    success? : boolean,
-    failure? : boolean
+    public done : boolean;
+    public success : boolean;
+    public failure : boolean;
+    public constructor()
+    {
+        this.done = false;
+        this.success = false;
+        this.failure = false;
+    }
 }
 export interface OperationUpdate
 {
