@@ -29,6 +29,13 @@ export class GenerateQCReport extends atomic.AtomicOperation
 
 		this.generatedArtifactsDirectories.push(remainder+trimmed);
 		this.generatedArtifacts.push(remainder+trimmed+".zip");
+
+		let srcDir = remainder+trimmed;
+		let destDir = 'resources/app/rt/QCReports/'+makeValidID(Fastq.name);
+
+		this.destinationArtifacts.push(`${destDir}/fastqc_report.html`);
+		this.destinationArtifacts.push(`${destDir}/summary.txt`);
+		this.destinationArtifacts.push(`${destDir}/fastqc_data.txt`);
 	}
 	public run() : void
 	{
@@ -90,7 +97,12 @@ export class GenerateQCReport extends atomic.AtomicOperation
 				}
 				else if(self.fastQCFlags.success)
 				{
+					setTimeout(
+						function()
+						{
 
+						},1000
+					);
 				}
 			}
 		};
