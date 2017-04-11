@@ -11,6 +11,7 @@ export class GenerateQCReport extends atomic.AtomicOperation
 {
 	public fastQCPath : string;
 	public fastQCJob : Job;
+	public fastQCFlags : atomic.CompletionFlags;
 	public fastq : Fastq;
 	constructor()
 	{
@@ -58,30 +59,39 @@ export class GenerateQCReport extends atomic.AtomicOperation
 					if(isJVMCrashed.test(params.unBufferedData))
 					{
 						//set operations flags accordingly
-						self.setFailure();
+						self.setFailure(self.flags);
 					}
 				}
 				//Check completion
 				if(params.done && params.retCode !== undefined)
 				{
 					//if we haven't already set completion due to a crash 
-					if(!self.done)
+					if(!self.flags.done)
 					{
+						//FastQC exited correctly
 						if(params.retCode == 0)
-							self.setSuccess();
+							self.setSuccess(self.fastQCFlags);
+						//FastQC failed. Mark the entire operation as failed
 						else
-							self.setFailure();
+							self.setFailure(self.flags);
 					}
 				}
-				//Forward data through
-				let oup : atomic.OperationUpdate = <atomic.OperationUpdate>{
-					spawnUpdate : params,
-					done : self.done,
-					success : self.success,
-					failure : self.failure,
+				//If this a regular update from FastQC or something has went wrong
+				if(!self.fastQCFlags.success)
+				{
+					//Forward data through normally
+					let oup : atomic.OperationUpdate = <atomic.OperationUpdate>{
+						spawnUpdate : params,
+						done : self.flags.done,
+						success : self.flags.success,
+						failure : self.flags.failure,
+					}
+				 	self.update(oup);
 				}
-				 self.update(oup);
+				else if(self.fastQCFlags.success)
+				{
 
+				}
 			}
 		};
 		this.fastQCJob = new Job(this.fastQCPath,args,"",true,fastQCCallBack,{});

@@ -52,27 +52,31 @@ export abstract class AtomicOperation
 
     public name : string;
 
-    public done : boolean;
-    public success : boolean;
-    public failure : boolean;
+    public flags : CompletionFlags;
 
-    public setFailure() : void
+    public setFailure(flags : CompletionFlags) : void
     {
-        this.done = true;
-        this.success = false;
-        this.failure = true;
+        flags.done = true;
+        flags.success = false;
+        flags.failure = true;
     }
-    public setSuccess() : void
+    public setSuccess(flags : CompletionFlags) : void
     {
-        this.done = true;
-        this.success = true;
-        this.failure = false;
+        flags.done = true;
+        flags.success = true;
+        flags.failure = false;
     }
 
     public abstract run() : void;
     public abstract setData(data : any) : void;
 
     public update : (arg : OperationUpdate) => void;
+}
+export interface CompletionFlags
+{
+    done? : boolean,
+    success? : boolean,
+    failure? : boolean
 }
 export interface OperationUpdate
 {
