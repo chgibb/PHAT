@@ -105,8 +105,8 @@ export class GenerateQCReport extends atomic.AtomicOperation
 							try
 							{
 								fse.copySync(`${self.srcDir}/fastqc_report.html`,`${self.destDir}/fastqc_report.html`);
-								fse.copySync(`${self.srcDir}/summary.txt`,`${self.destDir}/fastqc_report.html`);
-								fse.copySync(`${self.srcDir}/fastqc_data.txt`,`${self.destDir}/fastqc_report.html`);
+								fse.copySync(`${self.srcDir}/summary.txt`,`${self.destDir}/summary.txt`);
+								fse.copySync(`${self.srcDir}/fastqc_data.txt`,`${self.destDir}/fastqc_data.txt`);
 							}
 							catch(err)
 							{
