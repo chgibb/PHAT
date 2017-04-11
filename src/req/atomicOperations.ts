@@ -52,11 +52,21 @@ export abstract class AtomicOperation
 
     public name : string;
     public done : boolean;
+    public success : boolean;
+    public failure : boolean;
 
     public abstract run() : void;
     public abstract setData(data : any) : void;
 
-    public update : (arg : SpawnRequestParams) => void;
+    public update : (arg : OperationUpdate) => void;
+}
+export interface OperationUpdate
+{
+    spawnUpdate? : SpawnRequestParams;
+    done? : boolean;
+    success? : boolean;
+    failure? : boolean
+    extraData? : any;
 }
 
 let registeredOperations : Array<AtomicOperation> = new Array<AtomicOperation>();
@@ -93,7 +103,7 @@ export function enQueue(opName : string,data : any) : void
                 );
                 let op = operationsQueue[operationsQueue.length - 1];
                 op.setData(data);
-                op.update = function(arg : SpawnRequestParams){
+                op.update = function(oup : OperationUpdate){
                     if(op.done)
                     {
                         for(let i = 0; i != op.generatedArtifacts.length; ++i)
@@ -114,7 +124,7 @@ export function enQueue(opName : string,data : any) : void
                         }
                     }
 
-                    updates.emit(op.name,arg);
+                    updates.emit(op.name,oup);
                 }
             return;
         }

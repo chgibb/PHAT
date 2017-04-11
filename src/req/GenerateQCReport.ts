@@ -52,13 +52,38 @@ export class GenerateQCReport extends atomic.AtomicOperation
 				if(params.done && params.retCode !== undefined)
 				{
 					self.done = true;
+					if(params.retCode == 0)
+						self.success = true;
+					else
+						self.failure = true;
 				}
 				//Forward data through
-				 self.update(params);
+				let oup : atomic.OperationUpdate = <atomic.OperationUpdate>{
+					spawnUpdate : params,
+					done : self.done,
+					success : self.success,
+					failure : self.failure,
+				}
+				 self.update(oup);
 
 			}
 		};
 		this.fastQCJob = new Job(this.fastQCPath,args,"",true,fastQCCallBack,{});
-		this.fastQCJob.Run();
+		try
+		{
+			this.fastQCJob.Run();
+		}
+		catch(err)
+		{
+			self.done = true;
+			self.failure = true;
+			let oup : atomic.OperationUpdate = <atomic.OperationUpdate>{
+				done : self.done,
+				success : self.success,
+				failure : self.failure,
+				extraData : err
+			}
+			self.update(oup);
+		}
 	}
 }
