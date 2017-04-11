@@ -44,7 +44,7 @@ export class GenerateQCReport extends atomic.AtomicOperation
             args = ['resources/app/FastQC/fastqc',this.fastq.name];
 
 		//Running FastQC with certain versions of OpenJDK occasionally crash it.
-		//One of the first things in the stdout when this happens if "fatal error"
+		//One of the first things in the stdout when this happens is "fatal error"
 		let isJVMCrashed = new RegExp("(fatal error)","g");
 		let self = this;
 		//On update from spawned FastQC
