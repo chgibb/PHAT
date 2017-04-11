@@ -43,19 +43,37 @@ export class GenerateQCReport extends atomic.AtomicOperation
         else if(process.platform == "win32")
             args = ['resources/app/FastQC/fastqc',this.fastq.name];
 
+		//Running FastQC with certain versions of OpenJDK occasionally crash it.
+		//One of the first things in the stdout when this happens if "fatal error"
+		let isJVMCrashed = new RegExp("(fatal error)","g");
 		let self = this;
 		//On update from spawned FastQC
 		let fastQCCallBack : JobCallBackObject = {
 			send(channel : string,params : SpawnRequestParams)
 			{
+				if(params.unBufferedData)
+				{
+					//check for JVM failure on OpenJDK
+					if(isJVMCrashed.test(params.unBufferedData))
+					{
+						//set operations flags accordingly
+						self.done = true;
+						self.failure = true;
+						self.success = false;
+					}
+				}
 				//Check completion
 				if(params.done && params.retCode !== undefined)
 				{
-					self.done = true;
-					if(params.retCode == 0)
-						self.success = true;
-					else
-						self.failure = true;
+					//if we haven't already set completion due to a crash 
+					if(!self.done)
+					{
+						self.done = true;
+						if(params.retCode == 0)
+							self.success = true;
+						else
+							self.failure = true;
+					}
 				}
 				//Forward data through
 				let oup : atomic.OperationUpdate = <atomic.OperationUpdate>{
@@ -73,6 +91,7 @@ export class GenerateQCReport extends atomic.AtomicOperation
 		{
 			this.fastQCJob.Run();
 		}
+		//Failed to spawn job
 		catch(err)
 		{
 			self.done = true;
@@ -81,6 +100,7 @@ export class GenerateQCReport extends atomic.AtomicOperation
 				done : self.done,
 				success : self.success,
 				failure : self.failure,
+				//Forward error message from failed to spawn exception through
 				extraData : err
 			}
 			self.update(oup);
