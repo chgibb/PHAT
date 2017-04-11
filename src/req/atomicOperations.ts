@@ -122,7 +122,7 @@ export function enQueue(opName : string,data : any) : void
                 let op = operationsQueue[operationsQueue.length - 1];
                 op.setData(data);
                 op.update = function(oup : OperationUpdate){
-                    if(op.done)
+                    if(op.flags.done)
                     {
                         for(let i = 0; i != op.generatedArtifacts.length; ++i)
                         {
