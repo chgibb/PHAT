@@ -1,15 +1,11 @@
 export class QCData
 {
     public QCReport : string;
-    public checked : boolean;
-    public runningReport : boolean;
     public summary : Array<QCSummary>;
     public validID : string;
     public constructor()
     {
         this.QCReport = "";
-        this.checked = false;
-        this.runningReport = false;
         this.summary = new Array<QCSummary>();
     }
 }
