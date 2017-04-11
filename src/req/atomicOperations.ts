@@ -94,29 +94,28 @@ export function enQueue(opName : string,data : any) : void
                 let op = operationsQueue[operationsQueue.length - 1];
                 op.setData(data);
                 op.update = function(arg : SpawnRequestParams){
+                    if(op.done)
+                    {
+                        for(let i = 0; i != op.generatedArtifacts.length; ++i)
+                        {
+                            try
+                            {
+                                fs.unlinkSync(op.generatedArtifacts[i]);
+                            }
+                            catch(err){}
+                        }
+                        for(let i = 0; i != op.generatedArtifactsDirectories.length; ++i)
+                        {
+                            try
+                            {
+                                rimraf.sync(op.generatedArtifactsDirectories[i]);
+                            }
+                            catch(err){}
+                        }
+                    }
 
-                if(op.done)
-                {
-                    for(let i = 0; i != op.generatedArtifacts.length; ++i)
-                    {
-                        try
-                        {
-                            fs.unlinkSync(op.generatedArtifacts[i]);
-                        }
-                        catch(err){}
-                    }
-                    for(let i = 0; i != op.generatedArtifactsDirectories.length; ++i)
-                    {
-                        try
-                        {
-                            rimraf.sync(op.generatedArtifactsDirectories[i]);
-                        }
-                        catch(err){}
-                    }
+                    updates.emit(op.name,arg);
                 }
-
-                updates.emit(op.name,arg);
-            }
             return;
         }
     }
