@@ -56,7 +56,8 @@
     "optimize-js": "^1.0.3",
     "rimraf": "^2.6.1",
     "semi": "^4.0.5",
-    "typescript": "^2.2.1"
+    "typescript": "^2.2.1",
+    "uuid": "^3.0.1"
   },
   "dependencies": {
     "angular": "^1.6.1",
