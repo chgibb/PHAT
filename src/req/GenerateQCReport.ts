@@ -114,12 +114,11 @@ export class GenerateQCReport extends atomic.AtomicOperation
 		//Failed to spawn job
 		catch(err)
 		{
-			self.done = true;
-			self.failure = true;
+			self.setFailure(self.flags);
 			let oup : atomic.OperationUpdate = <atomic.OperationUpdate>{
-				done : self.done,
-				success : self.success,
-				failure : self.failure,
+				done : self.flags.done,
+				success : self.flags.success,
+				failure : self.flags.failure,
 				//Forward error message from failed to spawn exception through
 				extraData : err
 			}
