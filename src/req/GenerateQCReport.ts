@@ -3,6 +3,7 @@ import * as cp from "child_process"
 import * as atomic from "./atomicOperations";
 import Fastq from "./renderer/fastq";
 import trimPath from "./renderer/trimPath";
+import {makeValidID} from "./renderer/MakeValidID";
 import {SpawnRequestParams} from "./JobIPC";
 
 import {Job,JobCallBackObject} from "./main/Job";
