@@ -99,11 +99,19 @@ export function enQueue(opName : string,data : any) : void
                 {
                     for(let i = 0; i != op.generatedArtifacts.length; ++i)
                     {
-                        fs.unlinkSync(op.generatedArtifacts[i]);
+                        try
+                        {
+                            fs.unlinkSync(op.generatedArtifacts[i]);
+                        }
+                        catch(err){}
                     }
                     for(let i = 0; i != op.generatedArtifactsDirectories.length; ++i)
                     {
-                        rimraf.sync(op.generatedArtifactsDirectories[i]);
+                        try
+                        {
+                            rimraf.sync(op.generatedArtifactsDirectories[i]);
+                        }
+                        catch(err){}
                     }
                 }
 
