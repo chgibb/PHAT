@@ -1,20 +1,16 @@
-import {makeValidID} from "./MakeValidID";
 export class QCData
 {
     public QCReport : string;
     public checked : boolean;
-    public name : string;
     public runningReport : boolean;
     public summary : Array<QCSummary>;
     public validID : string;
-    public constructor(name : string)
+    public constructor()
     {
         this.QCReport = "";
         this.checked = false;
-        this.name = name;
         this.runningReport = false;
         this.summary = new Array<QCSummary>();
-        this.validID = makeValidID(name);
     }
 }
 export class QCSummary
