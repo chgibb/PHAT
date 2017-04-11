@@ -4,6 +4,8 @@ import {GenerateQCReport} from "./req/GenerateQCReport";
 import Fastq from "./req/renderer/fastq";
 import {SpawnRequestParams} from "./req/JobIPC";
 
+var assert = require("./req/tests/assert");
+
 try
 {
 	fs.mkdirSync("rt");
@@ -32,10 +34,19 @@ atomic.updates.on(
 		{
 			console.log(JSON.stringify(L6R1,undefined,4));
 		}
+		if(oup.op.flags.done)
+			assert.runningEvents -= 1;
 	}
 );
+assert.runningEvents += 1;
+setInterval(function(){atomic.runOperations(1);},200);
 
-atomic.operationsQueue[0].run();
+
+assert.assert(function(){
+	return true;
+},'--------------------------------------------------------',0);
+
+assert.runAsserts();
 
 /*
 var assert = require('./req/tests/assert');

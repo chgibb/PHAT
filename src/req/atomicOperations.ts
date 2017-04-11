@@ -69,6 +69,8 @@ export abstract class AtomicOperation
         flags.failure = false;
     }
 
+    public running : boolean;
+
     public abstract run() : void;
     public abstract setData(data : any) : void;
 
@@ -181,4 +183,34 @@ export function addOperation(opName : string,data : any) : void
         }
     }
     console.log("Could not enQueue");
+}
+
+export function runOperations(maxRunning : number) : void
+{
+    let currentRunning : number = 0;
+    for(let i = 0; i != operationsQueue.length; ++i)
+    {
+        if(operationsQueue[i].running)
+            currentRunning++;
+        if(currentRunning >= maxRunning)
+            continue;
+        if(!operationsQueue[i].running)
+        {
+            operationsQueue[i].run();
+            operationsQueue[i].running = true;
+            currentRunning++;
+        }
+        
+    }
+
+    for(let i = operationsQueue.length - 1; i >= 0; --i)
+    {
+        if(operationsQueue[i].flags.done)
+        {
+            if(operationsQueue[i].flags.success || operationsQueue[i].flags.failure)
+            {
+                operationsQueue.splice(i,1);
+            }
+        }
+    }
 }
