@@ -81,9 +81,7 @@ export interface CompletionFlags
 export interface OperationUpdate
 {
     spawnUpdate? : SpawnRequestParams;
-    done? : boolean;
-    success? : boolean;
-    failure? : boolean
+    flags? : CompletionFlags;
     extraData? : any;
 }
 

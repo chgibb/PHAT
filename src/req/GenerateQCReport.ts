@@ -1,5 +1,7 @@
 import * as cp from "child_process"
 
+const fse = require("fs-extra");
+
 import * as atomic from "./atomicOperations";
 import Fastq from "./renderer/fastq";
 import trimPath from "./renderer/trimPath";
@@ -89,18 +91,36 @@ export class GenerateQCReport extends atomic.AtomicOperation
 					//Forward data through normally
 					let oup : atomic.OperationUpdate = <atomic.OperationUpdate>{
 						spawnUpdate : params,
-						done : self.flags.done,
-						success : self.flags.success,
-						failure : self.flags.failure,
+						flags : self.flags
 					}
 				 	self.update(oup);
 				}
 				else if(self.fastQCFlags.success)
 				{
+					//Wait a second before attempting to copy out what we need
 					setTimeout(
 						function()
 						{
-
+							try
+							{
+								let srcDir = self.generatedArtifactsDirectories[0];
+								fse.copySync(`${srcDir}/fastqc_report.html`,self.destinationArtifacts[0]);
+								fse.copySync(`${srcDir}/summary.txt`,self.destinationArtifacts[1]);
+								fse.copySync(`${srcDir}/fastqc_data.txt`,self.destinationArtifacts[2]);
+							}
+							catch(err)
+							{
+								self.setFailure(self.flags);
+								self.update(<atomic.OperationUpdate>{
+									flags : self.flags,
+									extraData : err
+								});
+								return;
+							}
+							self.setSuccess(self.flags);
+							self.update(<atomic.OperationUpdate>{
+								flags : self.flags,
+							});
 						},1000
 					);
 				}
@@ -116,9 +136,7 @@ export class GenerateQCReport extends atomic.AtomicOperation
 		{
 			self.setFailure(self.flags);
 			let oup : atomic.OperationUpdate = <atomic.OperationUpdate>{
-				done : self.flags.done,
-				success : self.flags.success,
-				failure : self.flags.failure,
+				flags : self.flags,
 				//Forward error message from failed to spawn exception through
 				extraData : err
 			}
