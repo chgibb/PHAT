@@ -106,6 +106,46 @@ export function register(opName : string,op : AtomicOperation) : void
     registeredOperations[registeredOperations.length-1].name = opName;
 }
 
+export function cleanGeneratedArtifacts(op : AtomicOperation) : void
+{
+    for(let i = 0; i != op.generatedArtifacts.length; ++i)
+    {
+        try
+        {
+            fs.unlinkSync(op.generatedArtifacts[i]);
+        }
+        catch(err){}
+    }
+    for(let i = 0; i != op.generatedArtifactsDirectories.length; ++i)
+    {
+        try
+        {
+            rimraf.sync(op.generatedArtifactsDirectories[i]);
+        }
+        catch(err){}
+    }
+}
+
+export function cleanDestinationArtifacts(op : AtomicOperation) : void
+{
+    for(let i = 0; i != op.destinationArtifacts.length; ++i)
+    {
+        try
+        {
+            fs.unlinkSync(op.destinationArtifacts[i]);
+        }
+        catch(err){}
+    }
+    for(let i = 0; i != op.destinationArtifactsDirectories.length; ++i)
+    {
+        try
+        {
+            rimraf.sync(op.destinationArtifactsDirectories[i]);
+        }
+        catch(err){}
+    }
+}
+
 export function enQueue(opName : string,data : any) : void
 {
     for(let i = 0; i != registeredOperations.length; ++i)
@@ -124,22 +164,9 @@ export function enQueue(opName : string,data : any) : void
                 op.update = function(oup : OperationUpdate){
                     if(op.flags.done)
                     {
-                        for(let i = 0; i != op.generatedArtifacts.length; ++i)
-                        {
-                            try
-                            {
-                                fs.unlinkSync(op.generatedArtifacts[i]);
-                            }
-                            catch(err){}
-                        }
-                        for(let i = 0; i != op.generatedArtifactsDirectories.length; ++i)
-                        {
-                            try
-                            {
-                                rimraf.sync(op.generatedArtifactsDirectories[i]);
-                            }
-                            catch(err){}
-                        }
+                        cleanGeneratedArtifacts(op);
+                        if(op.flags.failure)
+                            cleanDestinationArtifacts(op);
                     }
 
                     updates.emit(op.name,oup);
