@@ -51,9 +51,23 @@ export abstract class AtomicOperation
     }
 
     public name : string;
+
     public done : boolean;
     public success : boolean;
     public failure : boolean;
+
+    public setFailure() : void
+    {
+        this.done = true;
+        this.success = false;
+        this.failure = true;
+    }
+    public setSuccess() : void
+    {
+        this.done = true;
+        this.success = true;
+        this.failure = false;
+    }
 
     public abstract run() : void;
     public abstract setData(data : any) : void;
