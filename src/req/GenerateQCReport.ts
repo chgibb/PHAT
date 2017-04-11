@@ -15,6 +15,8 @@ export class GenerateQCReport extends atomic.AtomicOperation
 	public fastQCJob : Job;
 	public fastQCFlags : atomic.CompletionFlags;
 	public fastq : Fastq;
+	public destDir : string;
+	public srcDir : string;
 	constructor()
 	{
 		super();
@@ -24,21 +26,19 @@ export class GenerateQCReport extends atomic.AtomicOperation
 	{
 		this.fastq = data;
 
-		let trimmed : string = trimPath(this.fastq.name);
+		let trimmed : string = trimPath(this.fastq.path);
 
-		let remainder = this.fastq.name.substr(0,this.fastq.name.length-trimmed.length);
+		let remainder = this.fastq.path.substr(0,this.fastq.path.length-trimmed.length);
 
 		trimmed = trimmed.replace(new RegExp('(.fastq)','g'),'_fastqc');
 
 		this.generatedArtifactsDirectories.push(remainder+trimmed);
 		this.generatedArtifacts.push(remainder+trimmed+".zip");
 
-		let srcDir = remainder+trimmed;
-		let destDir = 'resources/app/rt/QCReports/'+makeValidID(Fastq.name);
+		this.srcDir = remainder+trimmed;
+		this.destDir = 'resources/app/rt/QCReports/'+data.uuid;
 
-		this.destinationArtifacts.push(`${destDir}/fastqc_report.html`);
-		this.destinationArtifacts.push(`${destDir}/summary.txt`);
-		this.destinationArtifacts.push(`${destDir}/fastqc_data.txt`);
+		this.destinationArtifactsDirectories.push(this.destDir);
 	}
 	public run() : void
 	{
@@ -51,9 +51,9 @@ export class GenerateQCReport extends atomic.AtomicOperation
 		//figure out arg ordering based on platform
 		let args : Array<string>;
         if(process.platform == "linux")
-            args = [this.fastq.name];
+            args = [this.fastq.path];
         else if(process.platform == "win32")
-            args = ['resources/app/FastQC/fastqc',this.fastq.name];
+            args = ['resources/app/FastQC/fastqc',this.fastq.path];
 
 		//Running FastQC with certain versions of OpenJDK occasionally crash it.
 		//One of the first things in the stdout when this happens is "fatal error"
@@ -104,10 +104,9 @@ export class GenerateQCReport extends atomic.AtomicOperation
 						{
 							try
 							{
-								let srcDir = self.generatedArtifactsDirectories[0];
-								fse.copySync(`${srcDir}/fastqc_report.html`,self.destinationArtifacts[0]);
-								fse.copySync(`${srcDir}/summary.txt`,self.destinationArtifacts[1]);
-								fse.copySync(`${srcDir}/fastqc_data.txt`,self.destinationArtifacts[2]);
+								fse.copySync(`${this.srcDir}/fastqc_report.html`,`${this.destDir}/fastqc_report.html`);
+								fse.copySync(`${this.srcDir}/summary.txt`,`${this.destDir}/fastqc_report.html`);
+								fse.copySync(`${this.srcDir}/fastqc_data.txt`,`${this.destDir}/fastqc_report.html`);
 							}
 							catch(err)
 							{
