@@ -152,7 +152,7 @@ export function cleanDestinationArtifacts(op : AtomicOperation) : void
     }
 }
 
-export function enQueue(opName : string,data : any) : void
+export function addOperation(opName : string,data : any) : void
 {
     for(let i = 0; i != registeredOperations.length; ++i)
     {

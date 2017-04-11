@@ -18,7 +18,7 @@ atomic.register("generateFastQCReport",new GenerateQCReport());
 
 let L6R1 : Fastq = new Fastq('data/L6R1.R1.fastq');
 
-atomic.enQueue("generateFastQCReport",L6R1);
+atomic.addOperation("generateFastQCReport",L6R1);
 
 atomic.updates.on(
 	"generateFastQCReport",function(oup : atomic.OperationUpdate)
