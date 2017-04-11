@@ -22,5 +22,6 @@ export default class Fastq extends File
         this.validID = makeValidID(path);
         this.checked = false;
         setUUID(this);
+        this.QCData = new QCData();
     }
 }

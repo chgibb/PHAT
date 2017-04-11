@@ -28,6 +28,10 @@ atomic.updates.on(
 			console.log("Failed generating QC report");
 			process.exit(1);
 		}
+		else
+		{
+			console.log(JSON.stringify(L6R1,undefined,4));
+		}
 	}
 );
 

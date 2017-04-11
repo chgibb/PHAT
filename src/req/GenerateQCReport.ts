@@ -4,6 +4,7 @@ const fse = require("fs-extra");
 
 import * as atomic from "./atomicOperations";
 import Fastq from "./renderer/fastq";
+import {getQCReportSummaries} from "./renderer/QC/QCReportSummary";
 import trimPath from "./renderer/trimPath";
 import {makeValidID} from "./renderer/MakeValidID";
 import {SpawnRequestParams} from "./JobIPC";
@@ -117,6 +118,8 @@ export class GenerateQCReport extends atomic.AtomicOperation
 								});
 								return;
 							}
+							self.fastq.QCData.QCReport = `resources/app/rt/QCReports/${self.fastq.uuid}`;
+							self.fastq.QCData.summary = getQCReportSummaries(`${self.fastq.QCData.QCReport}/fastqc_data.txt`);
 							self.setSuccess(self.flags);
 							self.update(<atomic.OperationUpdate>{
 								op : self
