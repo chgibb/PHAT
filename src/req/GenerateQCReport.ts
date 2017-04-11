@@ -58,9 +58,7 @@ export class GenerateQCReport extends atomic.AtomicOperation
 					if(isJVMCrashed.test(params.unBufferedData))
 					{
 						//set operations flags accordingly
-						self.done = true;
-						self.failure = true;
-						self.success = false;
+						self.setFailure();
 					}
 				}
 				//Check completion
@@ -69,11 +67,10 @@ export class GenerateQCReport extends atomic.AtomicOperation
 					//if we haven't already set completion due to a crash 
 					if(!self.done)
 					{
-						self.done = true;
 						if(params.retCode == 0)
-							self.success = true;
+							self.setSuccess();
 						else
-							self.failure = true;
+							self.setFailure();
 					}
 				}
 				//Forward data through
