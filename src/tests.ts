@@ -45,6 +45,10 @@ atomic.updates.on(
 setInterval(function(){atomic.runOperations(1);},200);
 
 
+assert.assert(function(){
+	return true;
+},'--------------------------------------------------------',0);
+
 
 assert.assert(function(){
 	assert.runningEvents += 1;
