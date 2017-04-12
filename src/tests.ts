@@ -20,26 +20,38 @@ atomic.register("generateFastQCReport",new GenerateQCReport());
 
 let L6R1 : Fastq = new Fastq('data/L6R1.R1.fastq');
 
-atomic.addOperation("generateFastQCReport",L6R1);
+
 
 atomic.updates.on(
 	"generateFastQCReport",function(oup : atomic.OperationUpdate)
 	{
 		if(oup.op.flags.failure)
 		{
-			console.log("Failed generating QC report");
+			console.log(
+				`Failed generating QC report for ${(<GenerateQCReport>oup.op).fastq.path}
+				${oup.extraData}`
+				);
 			process.exit(1);
 		}
-		else
+		else if(oup.op.flags.success)
 		{
-			console.log(JSON.stringify(L6R1,undefined,4));
+			console.log(`Completed generating QC report for ${(<GenerateQCReport>oup.op).fastq.path}`);
 		}
 		if(oup.op.flags.done)
 			assert.runningEvents -= 1;
 	}
 );
-assert.runningEvents += 1;
+
 setInterval(function(){atomic.runOperations(1);},200);
+
+
+
+assert.assert(function(){
+	assert.runningEvents += 1;
+	console.log(`Starting report generation for ${L6R1.path}`);
+	atomic.addOperation("generateFastQCReport",L6R1);
+	return true;
+},'',0);
 
 
 assert.assert(function(){

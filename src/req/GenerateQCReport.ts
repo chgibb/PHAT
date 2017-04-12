@@ -71,6 +71,11 @@ export class GenerateQCReport extends atomic.AtomicOperation
 					{
 						//set operations flags accordingly
 						self.setFailure(self.flags);
+						self.update(<atomic.OperationUpdate>{
+							op : self,
+							extraData : `JVM crashed.`
+						});
+						return;
 					}
 				}
 				//Check completion
@@ -119,7 +124,20 @@ export class GenerateQCReport extends atomic.AtomicOperation
 								return;
 							}
 							self.fastq.QCData.QCReport = this.destDir;
-							self.fastq.QCData.summary = getQCReportSummaries(`${self.fastq.QCData.QCReport}/fastqc_data.txt`);
+							try
+							{
+								self.fastq.QCData.summary = getQCReportSummaries(`${self.fastq.QCData.QCReport}/fastqc_data.txt`);
+							}
+							catch(err)
+							{
+								self.setFailure(self.flags);
+								self.update(<atomic.OperationUpdate>{
+									op : self,
+									extraData : `Failed to get summaries for ${self.fastq.QCData.QCReport}/fastqc_data.txt
+									${err}`
+								});
+								return;
+							}
 							self.setSuccess(self.flags);
 							self.update(<atomic.OperationUpdate>{
 								op : self
