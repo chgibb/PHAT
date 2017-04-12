@@ -18,7 +18,8 @@ catch(err){}
 
 atomic.register("generateFastQCReport",new GenerateQCReport());
 
-let L6R1 : Fastq = new Fastq('data/L6R1.R1.fastq');
+let L6R1R1 : Fastq = new Fastq('data/L6R1.R1.fastq');
+let L6R1R2 : Fastq = new Fastq('data/L6R1.R2.fastq');
 
 
 
@@ -52,8 +53,8 @@ assert.assert(function(){
 
 assert.assert(function(){
 	assert.runningEvents += 1;
-	console.log(`Starting report generation for ${L6R1.path}`);
-	atomic.addOperation("generateFastQCReport",L6R1);
+	console.log(`Starting report generation for ${L6R1R1.path}`);
+	atomic.addOperation("generateFastQCReport",L6R1R1);
 	return true;
 },'',0);
 
