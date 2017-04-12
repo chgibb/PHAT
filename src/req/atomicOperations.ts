@@ -130,7 +130,6 @@ export function register(opName : string,op : AtomicOperation) : void
             op : op
             }
     );
-    //registeredOperations[registeredOperations.length-1].name = opName;
 }
 
 export function cleanGeneratedArtifacts(op : AtomicOperation) : void
@@ -172,7 +171,6 @@ export function cleanDestinationArtifacts(op : AtomicOperation) : void
         catch(err){}
     }
 }
-function TmpClass(){this.constructor = {}}
 export function addOperation(opName : string,data : any) : void
 {
     for(let i = 0; i != registeredOperations.length; ++i)
