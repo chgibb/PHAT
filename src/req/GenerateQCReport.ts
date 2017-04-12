@@ -118,7 +118,7 @@ export class GenerateQCReport extends atomic.AtomicOperation
 								});
 								return;
 							}
-							self.fastq.QCData.QCReport = `resources/app/rt/QCReports/${self.fastq.uuid}`;
+							self.fastq.QCData.QCReport = this.destDir;
 							self.fastq.QCData.summary = getQCReportSummaries(`${self.fastq.QCData.QCReport}/fastqc_data.txt`);
 							self.setSuccess(self.flags);
 							self.update(<atomic.OperationUpdate>{
