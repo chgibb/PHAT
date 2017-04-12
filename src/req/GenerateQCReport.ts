@@ -69,12 +69,7 @@ export class GenerateQCReport extends atomic.AtomicOperation
 					//check for JVM failure on OpenJDK
 					if(isJVMCrashed.test(params.unBufferedData))
 					{
-						//set operations flags accordingly
-						self.setFailure(self.flags);
-						self.update(<atomic.OperationUpdate>{
-							op : self,
-							extraData : `JVM crashed.`
-						});
+						self.abortOperationWithMessage(`JVM crashed.`);
 						return;
 					}
 				}
@@ -116,11 +111,7 @@ export class GenerateQCReport extends atomic.AtomicOperation
 							}
 							catch(err)
 							{
-								self.setFailure(self.flags);
-								self.update(<atomic.OperationUpdate>{
-									op : self,
-									extraData : err
-								});
+								self.abortOperationWithMessage(err);
 								return;
 							}
 							self.fastq.QCData.QCReport = this.destDir;
@@ -130,12 +121,8 @@ export class GenerateQCReport extends atomic.AtomicOperation
 							}
 							catch(err)
 							{
-								self.setFailure(self.flags);
-								self.update(<atomic.OperationUpdate>{
-									op : self,
-									extraData : `Failed to get summaries for ${self.fastq.QCData.QCReport}/fastqc_data.txt
-									${err}`
-								});
+								self.abortOperationWithMessage(`Failed to get summaries for ${self.fastq.QCData.QCReport}/fastqc_data.txt
+									${err}`);
 								return;
 							}
 							self.setSuccess(self.flags);

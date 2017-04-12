@@ -75,6 +75,15 @@ export abstract class AtomicOperation
     public abstract setData(data : any) : void;
 
     public update : (arg : OperationUpdate) => void;
+
+    public abortOperationWithMessage(msg : string) : void
+    {
+        this.setFailure(this.flags);
+        this.update(<OperationUpdate>{
+            op : this,
+            extraData : msg
+        });
+    }
 }
 export class CompletionFlags
 {
