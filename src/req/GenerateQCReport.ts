@@ -84,7 +84,10 @@ export class GenerateQCReport extends atomic.AtomicOperation
 							self.setSuccess(self.fastQCFlags);
 						//FastQC failed. Mark the entire operation as failed
 						else
-							self.setFailure(self.flags);
+						{
+							self.abortOperationWithMessage(`FastQC failed`);
+							return;
+						}
 					}
 				}
 				//If this a regular update from FastQC or something has went wrong
@@ -142,13 +145,8 @@ export class GenerateQCReport extends atomic.AtomicOperation
 		//Failed to spawn job
 		catch(err)
 		{
-			self.setFailure(self.flags);
-			let oup : atomic.OperationUpdate = <atomic.OperationUpdate>{
-				op : self,
-				//Forward error message from failed to spawn exception through
-				extraData : err
-			}
-			self.update(oup);
+			self.abortOperationWithMessage(`${err}`);
+			return;
 		}
 	}
 }

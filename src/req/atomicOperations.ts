@@ -97,6 +97,11 @@ export class CompletionFlags
         this.failure = false;
     }
 }
+export interface RegisteredAtomicOperation
+{
+    name : string;
+    op : AtomicOperation;
+}
 export interface OperationUpdate
 {
     spawnUpdate? : SpawnRequestParams;
@@ -104,7 +109,7 @@ export interface OperationUpdate
     extraData? : any;
 }
 
-let registeredOperations : Array<AtomicOperation> = new Array<AtomicOperation>();
+export let registeredOperations : Array<RegisteredAtomicOperation> = new Array<RegisteredAtomicOperation>();
 export let operationsQueue : Array<AtomicOperation> = new Array<AtomicOperation>();
 
 export let updates : EventEmitter = new EventEmitter();
@@ -119,8 +124,13 @@ export function register(opName : string,op : AtomicOperation) : void
             return;
         }
     }
-    registeredOperations.push(op);
-    registeredOperations[registeredOperations.length-1].name = opName;
+    registeredOperations.push(
+        <RegisteredAtomicOperation>{
+            name : opName,
+            op : op
+            }
+    );
+    //registeredOperations[registeredOperations.length-1].name = opName;
 }
 
 export function cleanGeneratedArtifacts(op : AtomicOperation) : void
@@ -162,32 +172,27 @@ export function cleanDestinationArtifacts(op : AtomicOperation) : void
         catch(err){}
     }
 }
-
+function TmpClass(){this.constructor = {}}
 export function addOperation(opName : string,data : any) : void
 {
     for(let i = 0; i != registeredOperations.length; ++i)
     {
         if(registeredOperations[i].name == opName)
         {
-            //Push a copy of the class pointed to by registeredOperations[i]
-            operationsQueue.push(
-                Object.assign(
-                    Object.create(<any>registeredOperations[i]),
-                    (<any>registeredOperations[i])
-                    )
-                );
-                let op = operationsQueue[operationsQueue.length - 1];
-                op.setData(data);
-                op.update = function(oup : OperationUpdate){
-                    if(op.flags.done)
-                    {
-                        cleanGeneratedArtifacts(op);
-                        if(op.flags.failure)
-                            cleanDestinationArtifacts(op);
-                    }
-
-                    updates.emit(op.name,oup);
+            let op : AtomicOperation = new (<any>(registeredOperations[i].op))();
+            op.name = registeredOperations[i].name;
+            op.setData(data);
+            op.update = function(oup : OperationUpdate){
+                if(op.flags.done)
+                {
+                    cleanGeneratedArtifacts(op);
+                    if(op.flags.failure)
+                        cleanDestinationArtifacts(op);
                 }
+
+                updates.emit(op.name,oup);
+            }
+            operationsQueue.push(op);
             return;
         }
     }
@@ -196,13 +201,17 @@ export function addOperation(opName : string,data : any) : void
 
 export function runOperations(maxRunning : number) : void
 {
+    
+    console.log(`Called ${operationsQueue.length}`);
     let currentRunning : number = 0;
     for(let i = 0; i != operationsQueue.length; ++i)
     {
+        console.log(`${operationsQueue[i].name} ${operationsQueue[i].running}`);
+
         if(operationsQueue[i].running)
             currentRunning++;
         if(currentRunning >= maxRunning)
-            continue;
+            break;
         if(!operationsQueue[i].running)
         {
             operationsQueue[i].run();
@@ -218,6 +227,7 @@ export function runOperations(maxRunning : number) : void
         {
             if(operationsQueue[i].flags.success || operationsQueue[i].flags.failure)
             {
+                console.log(`spliced ${operationsQueue[i].fastq.path}`);
                 operationsQueue.splice(i,1);
             }
         }
