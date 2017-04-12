@@ -114,7 +114,7 @@ export class GenerateQCReport extends atomic.AtomicOperation
 								self.abortOperationWithMessage(err);
 								return;
 							}
-							self.fastq.QCData.QCReport = this.destDir;
+							self.fastq.QCData.QCReport = self.destDir;
 							try
 							{
 								self.fastq.QCData.summary = getQCReportSummaries(`${self.fastq.QCData.QCReport}/fastqc_data.txt`);
