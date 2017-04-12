@@ -191,7 +191,7 @@ export function addOperation(opName : string,data : any) : void
             return;
         }
     }
-    console.log("Could not enQueue");
+    console.log("Could not add operation "+opName);
 }
 
 export function runOperations(maxRunning : number) : void
