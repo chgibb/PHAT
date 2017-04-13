@@ -1,5 +1,5 @@
-import {File} from "./../file";
-import {Contig} from "./circularGenome/fastaContigLoader";
+import {File} from "./file";
+import {Contig} from "./fastaContigLoader";
 import {makeValidID} from "./MakeValidID";
 import trimPath from "./trimPath";
 export class Fasta extends File
