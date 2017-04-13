@@ -12,8 +12,13 @@ const jsonFile = require("jsonfile");
 
 import {Job} from "./Job";
 import * as dataMgr from "./dataMgr";
-var jobMgr = require('./JobMgr');
+import * as atomicOp from "./operations/atomicOperations";
+import {AtomicOperationIPC} from "./../atomicOperationsIPC";
+import {GenerateQCReport} from "./operations/GenerateQCReport";
+import {IndexFasta} from "./operations/indexFasta";
 import * as winMgr from "./winMgr";
+
+import {File} from "./../file";
 
 import {GetKeyEvent,SaveKeyEvent,KeySubEvent} from "./../ipcEvents";
 var keySub = require('./keySub');
@@ -253,7 +258,11 @@ app.on
 		electron.Menu.setApplicationMenu(menu);
 
 		winMgr.windowCreators["toolBar"].Create();
-		setInterval(function(){jobMgr.runJobs();},200);
+		
+		atomicOp.register("generateFastQCReport",GenerateQCReport);
+		atomicOp.register("indexFasta",IndexFasta);
+
+		setInterval(function(){atomicOp.runOperations(1);},2500);
 	}
 );
 app.on
@@ -326,6 +335,22 @@ ipc.on
 		}
 	}
 );
+
+ipc.on(
+	"runOperation",function(event,arg : AtomicOperationIPC)
+	{
+		let list : Array<File> = dataMgr.getKey(arg.channel,arg.key);
+		for(let i : number = 0; i != list.length; ++i)
+		{
+			if(list[i].uuid == arg.uuid)
+			{
+				console.log(`Found ${list[i].path}`);
+				return;
+			}
+		}
+	}
+);
+
 /*ipc.on
 (
 	"spawnSync",function(event,arg)
@@ -355,3 +380,4 @@ ipc.on
 		}
 	}
 );*/
+
