@@ -1,9 +1,9 @@
 import * as fs from "fs";
-import * as atomic from "./req/atomicOperations";
-import {GenerateQCReport} from "./req/GenerateQCReport";
-import {IndexFasta} from "./req/indexFasta";
-import Fastq from "./req/renderer/fastq";
-import {Fasta} from "./req/renderer/fasta";
+import * as atomic from "./req/main/operations/atomicOperations";
+import {GenerateQCReport} from "./req/main/operations/GenerateQCReport";
+import {IndexFasta} from "./req/main/operations/indexFasta";
+import Fastq from "./req/fastq";
+import {Fasta} from "./req/fasta";
 import {SpawnRequestParams} from "./req/JobIPC";
 
 var assert = require("./req/tests/assert");
