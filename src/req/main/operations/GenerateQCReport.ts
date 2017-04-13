@@ -3,13 +3,13 @@ import * as cp from "child_process"
 const fse = require("fs-extra");
 
 import * as atomic from "./atomicOperations";
-import Fastq from "./renderer/fastq";
-import {getQCReportSummaries} from "./renderer/QC/QCReportSummary";
-import trimPath from "./renderer/trimPath";
-import {makeValidID} from "./renderer/MakeValidID";
-import {SpawnRequestParams} from "./JobIPC";
+import Fastq from "./../../fastq";
+import {getQCReportSummaries} from "./../..//QCReportSummary";
+import trimPath from "./../../trimPath";
+import {makeValidID} from "./../../MakeValidID";
+import {SpawnRequestParams} from "./../../JobIPC";
 
-import {Job,JobCallBackObject} from "./main/Job";
+import {Job,JobCallBackObject} from "./../Job";
 export class GenerateQCReport extends atomic.AtomicOperation
 {
 	public fastQCPath : string;
