@@ -1,7 +1,9 @@
 import * as fs from "fs";
 import * as atomic from "./req/atomicOperations";
 import {GenerateQCReport} from "./req/GenerateQCReport";
+import {IndexFasta} from "./req/indexFasta";
 import Fastq from "./req/renderer/fastq";
+import {Fasta} from "./req/renderer/fasta";
 import {SpawnRequestParams} from "./req/JobIPC";
 
 var assert = require("./req/tests/assert");
@@ -17,9 +19,12 @@ try
 catch(err){}
 
 atomic.register("generateFastQCReport",GenerateQCReport);
+atomic.register("indexFasta",IndexFasta);
 
 let L6R1R1 : Fastq = new Fastq('data/L6R1.R1.fastq');
 let L6R1R2 : Fastq = new Fastq('data/L6R1.R2.fastq');
+
+let hpv16 : Fasta = new Fasta("data/HPV16ref_genomes.fasta");
 
 
 atomic.updates.on(
@@ -43,6 +48,25 @@ atomic.updates.on(
 	}
 );
 
+atomic.updates.on(
+	"indexFasta",function(oup : atomic.OperationUpdate)
+	{
+		if(oup.op.flags.failure)
+		{
+			console.log(
+				`Failed indexing ${(<IndexFasta>oup.op).fasta.path}
+				${oup.extraData}`
+				);
+		}
+		else if(oup.op.flags.success)
+		{
+			console.log(`Completed indexing ${(<IndexFasta>oup.op).fasta.path}`);
+		}
+		if(oup.op.flags.done)
+			assert.runningEvents -= 1;
+	}
+);
+
 setInterval(function(){atomic.runOperations(1);},1000);
 
 
@@ -51,7 +75,7 @@ assert.assert(function(){
 },'--------------------------------------------------------',0);
 
 
-assert.assert(function(){
+/*assert.assert(function(){
 	assert.runningEvents += 1;
 	console.log(`Starting report generation for ${L6R1R1.path}`);
 	atomic.addOperation("generateFastQCReport",L6R1R1);
@@ -62,6 +86,13 @@ assert.assert(function(){
 	assert.runningEvents += 1;
 	console.log(`Starting report generation for ${L6R1R2.path}`);
 	atomic.addOperation("generateFastQCReport",L6R1R2);
+	return true;
+},'',0);*/
+
+assert.assert(function(){
+	assert.runningEvents += 1;
+	console.log(`Starting to index ${hpv16.path}`);
+	atomic.addOperation("indexFasta",hpv16);
 	return true;
 },'',0);
 

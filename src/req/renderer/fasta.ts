@@ -34,6 +34,7 @@ export class Fasta extends File
          * @prop {boolean} pathogen - Whether this file is a pathogen reference
          */
         super();
+        this.path = path;
         this.alias = trimPath(path);
         this.checked = false;
         this.size = 0;
@@ -49,5 +50,6 @@ export class Fasta extends File
         this.twoBit = "";
         this.contigs = new Array<string>();
         this.fai = "";
+        setUUID(this);
     }
 }
