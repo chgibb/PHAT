@@ -83,6 +83,7 @@ export class IndexFasta extends atomic.AtomicOperation
         this.destinationArtifacts.concat(this.bowtieIndices);
         
     }
+    //faToTwoBit -> samTools faidx -> bowtie2-build -> ContigLoader
     public run() : void
     {
         let self = this;
@@ -191,7 +192,7 @@ export class IndexFasta extends atomic.AtomicOperation
                                     }
                                     catch(err)
                                     {
-                                        self.abortOperationWithMessage(`Failed write all bowtie2 indices for ${self.fasta.uuid}`);
+                                        self.abortOperationWithMessage(`Failed to write all bowtie2 indices for ${self.fasta.uuid}`);
                                         return;
                                     }
                                     self.fasta.indexed = true;
