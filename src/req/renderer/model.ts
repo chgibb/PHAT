@@ -12,14 +12,13 @@ export interface DataModelHandlers
 export abstract class DataModelMgr
 {
     public channel : string;
-    public postHandle : (channel : string,arg : any) => void;
-    public spawnHandle : (channel : string,arg : any) => void;
+    public ipcHandle : {send(channel : string, ...args : any[]) : void};
     public fsAccess : (path : string) => string;
     /**
      * @param {string} channel - IPC channel to operate one
      * @param {any} handlers - object containing handler functions
      */
-    constructor(channel : string,handlers : DataModelHandlers)
+    constructor(channel : string,ipcHandle : {send(channel : string, ...args : any[]) : void})
     {
         /**
          * @prop {function(string,any)} postHandle - Function to pass IPC messages related to saving data through 
@@ -27,16 +26,8 @@ export abstract class DataModelMgr
          * @prop {function(string)} fsAccess - Function invoked on attempt to access the file system. Returns path to file.
          * @prop {string} channel - Channel to use in IPC messages
          */
-        this.postHandle = handlers.postStateHandle;
-        this.spawnHandle = handlers.spawnHandle;
-        this.fsAccess = handlers.fsAccess;
+        this.ipcHandle = ipcHandle;
         this.channel = channel;
     }
-    /**
-     * Method to handle replys from spawned processes
-     * @param {string} channel
-     * @param {any} arg
-     * @return {void}
-     */
-    public abstract spawnReply(channel : string, arg : SpawnRequestParams) : void;
+
 }

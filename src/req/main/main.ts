@@ -345,11 +345,18 @@ ipc.on(
 			if(list[i].uuid == arg.uuid)
 			{
 				console.log(`Found ${list[i].path}`);
+				atomicOp.addOperation(arg.opName,list[i]);
 				return;
 			}
 		}
 	}
 );
+atomicOp.updates.on(
+	"indexFasta",function(oup : atomicOp.OperationUpdate)
+	{
+		console.log(oup.op.flags);
+	}
+)
 
 /*ipc.on
 (

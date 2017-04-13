@@ -5,7 +5,7 @@ const ipc = electron.ipcRenderer;
 
 import {GetKeyEvent,KeySubEvent} from "./req/ipcEvents";
 
-import {makeValidID} from "./req/renderer/MakeValidID";
+//import {makeValidID} from "./MakeValidID";
 import * as viewMgr from "./req/renderer/viewMgr";
 let debug = require("./req/renderer/sendDebugMessage");
 debug.initialize("input");
@@ -20,38 +20,7 @@ import Input from "./req/renderer/Input";
 import * as $ from "jquery";
 (<any>window).$ = $;
 require("./req/renderer/commonBehaviour");
-var input = new Input
-(
-    //state channel to operate on
-    "input",
-    {
-        //on attempt to save state
-        postStateHandle : function(channel,arg)
-        {
-            //forward message to main process
-            ipc.send(channel,arg);
-            //rerender window with updated data
-            viewMgr.render();
-        },
-        //on attempt to spawn a process
-        spawnHandle : function(channel,arg)
-        {
-            //forward message to main process
-            ipc.send(channel,arg);
-        },
-        //On any attempt to access a file system resource.
-        //Includes attempts to spawn other processes.
-        //This function will be called first with the path to the process
-        //to spawn before spawnHandle is invoked.
-        //Default paths given assume running under PHAT. If running headless/CLI
-        //or if a different directory structure is required then this function can be 
-        //used to make necessary changes.
-        fsAccess : function(str)
-        {
-            return str;
-        }
-    }
-);
+let input = new Input ("input",ipc);
 
 function preRender(viewRef : viewMgr.View)
 {
@@ -140,15 +109,6 @@ $
                     }
                 }
                 viewMgr.render();
-            }
-        );
-        ipc.on
-        (
-            "spawnReply",function(event,arg)
-            {
-                //update from spawned process.
-                //forward to handler.
-                input.spawnReply("spawnReply",arg);
             }
         );
         document.getElementById("fastqButton").onclick = function()
