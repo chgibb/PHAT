@@ -1,8 +1,8 @@
+import {File,setUUID,setabsPath} from "./../file";
 import {makeValidID} from "./MakeValidID";
 import trimPath from "./trimPath";
-export class Fasta
+export class Fasta extends File
 {
-    public name : string;
     public alias : string;
     public checked : boolean;
     public size : number;
@@ -18,10 +18,9 @@ export class Fasta
     public twoBit : string;
     public contigs : Array<string>;
     public fai : string;
-    public constructor(name : string)
+    public constructor(path : string)
     {
         /**
-         * @prop {string} name - Path to file
          * @prop {string} alias - File name without path
          * @prop {boolean} checked - Whether this file is selected or not
          * @prop {number} size - Size in bytes of file
@@ -34,13 +33,13 @@ export class Fasta
          * @prop {boolean} host - Whether this file is a host reference
          * @prop {boolean} pathogen - Whether this file is a pathogen reference
          */
-        this.name = name;
-        this.alias = trimPath(name);
+        super();
+        this.alias = trimPath(path);
         this.checked = false;
         this.size = 0;
         this.sizeString = "0";
         this.sequences = 0;
-        this.validID = makeValidID(name);
+        this.validID = makeValidID(path);
         this.indexed = false;
         this.indexing = false;
         this.indexes = new Array();
