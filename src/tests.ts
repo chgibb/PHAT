@@ -21,23 +21,6 @@ atomic.register("generateFastQCReport",GenerateQCReport);
 let L6R1R1 : Fastq = new Fastq('data/L6R1.R1.fastq');
 let L6R1R2 : Fastq = new Fastq('data/L6R1.R2.fastq');
 
-atomic.addOperation("generateFastQCReport",L6R1R1);
-atomic.addOperation("generateFastQCReport",L6R1R2);
-
-console.log(atomic.operationsQueue[0].fastq.path);
-console.log(atomic.operationsQueue[0].generatedArtifactsDirectories);
-console.log(atomic.operationsQueue[1].fastq.path);
-console.log(atomic.operationsQueue[1].generatedArtifactsDirectories);
-
-atomic.operationsQueue[0].run();
-atomic.operationsQueue[0].running = true;
-atomic.operationsQueue[1].run();
-atomic.operationsQueue[1].running = true;
-
-console.log(atomic.operationsQueue[0].fastq.path);
-console.log(atomic.operationsQueue[0].generatedArtifactsDirectories);
-console.log(atomic.operationsQueue[1].fastq.path);
-console.log(atomic.operationsQueue[1].generatedArtifactsDirectories);
 
 atomic.updates.on(
 	"generateFastQCReport",function(oup : atomic.OperationUpdate)
@@ -48,8 +31,8 @@ atomic.updates.on(
 				`Failed generating QC report for ${(<GenerateQCReport>oup.op).fastq.path}
 				${oup.extraData}`
 				);
-			console.log(atomic.registeredOperations[0].generatedArtifactsDirectories);
-			process.exit(1);
+				//console.log(oup.op.generatedArtifactsDirectories);
+			//process.exit(1);
 		}
 		else if(oup.op.flags.success)
 		{
@@ -60,7 +43,7 @@ atomic.updates.on(
 	}
 );
 
-//setInterval(function(){atomic.runOperations(1);},1000);
+setInterval(function(){atomic.runOperations(1);},1000);
 
 
 assert.assert(function(){
@@ -87,7 +70,7 @@ assert.assert(function(){
 	return true;
 },'--------------------------------------------------------',0);
 
-//assert.runAsserts();
+assert.runAsserts();
 
 /*
 var assert = require('./req/tests/assert');

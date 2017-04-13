@@ -181,13 +181,12 @@ export function addOperation(opName : string,data : any) : void
             op.name = registeredOperations[i].name;
             op.setData(data);
             op.update = function(oup : OperationUpdate){
-                if(op.flags.done)
+                if(oup.op.flags.done)
                 {
-                    cleanGeneratedArtifacts(op);
-                    if(op.flags.failure)
-                        cleanDestinationArtifacts(op);
+                    cleanGeneratedArtifacts(oup.op);
+                    if(oup.op.flags.failure)
+                        cleanDestinationArtifacts(oup.op);
                 }
-
                 updates.emit(op.name,oup);
             }
             operationsQueue.push(op);
@@ -200,11 +199,11 @@ export function addOperation(opName : string,data : any) : void
 export function runOperations(maxRunning : number) : void
 {
     
-    console.log(`Called ${operationsQueue.length}`);
+    //console.log(`Called ${operationsQueue.length}`);
     let currentRunning : number = 0;
     for(let i = 0; i != operationsQueue.length; ++i)
     {
-        console.log(`${operationsQueue[i].name} ${operationsQueue[i].running}`);
+        //console.log(`${operationsQueue[i].name} ${operationsQueue[i].running}`);
 
         if(operationsQueue[i].running)
             currentRunning++;
@@ -225,7 +224,7 @@ export function runOperations(maxRunning : number) : void
         {
             if(operationsQueue[i].flags.success || operationsQueue[i].flags.failure)
             {
-                console.log(`spliced ${operationsQueue[i].fastq.path}`);
+                //console.log(`spliced ${operationsQueue[i].fastq.path}`);
                 operationsQueue.splice(i,1);
             }
         }

@@ -64,6 +64,8 @@ export class GenerateQCReport extends atomic.AtomicOperation
 		let fastQCCallBack : JobCallBackObject = {
 			send(channel : string,params : SpawnRequestParams)
 			{
+				if(self.flags.done)
+					return;			
 				if(params.unBufferedData)
 				{
 					//check for JVM failure on OpenJDK
@@ -76,18 +78,14 @@ export class GenerateQCReport extends atomic.AtomicOperation
 				//Check completion
 				if(params.done && params.retCode !== undefined)
 				{
-					//if we haven't already set completion due to a crash 
-					if(!self.flags.done)
+					//FastQC exited correctly
+					if(params.retCode == 0)
+						self.setSuccess(self.fastQCFlags);
+					//FastQC failed. Mark the entire operation as failed
+					else
 					{
-						//FastQC exited correctly
-						if(params.retCode == 0)
-							self.setSuccess(self.fastQCFlags);
-						//FastQC failed. Mark the entire operation as failed
-						else
-						{
-							self.abortOperationWithMessage(`FastQC failed`);
-							return;
-						}
+						self.abortOperationWithMessage(`FastQC failed`);
+						return;
 					}
 				}
 				//If this a regular update from FastQC or something has went wrong
