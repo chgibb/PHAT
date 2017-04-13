@@ -1,4 +1,4 @@
-import {File} from "./../file";
+import {File} from "./file";
 import {QCData,QCSummary} from "./QCData";
 import {makeValidID} from "./MakeValidID";
 import trimPath from "./trimPath";
