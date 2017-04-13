@@ -1,6 +1,6 @@
 import {EventEmitter} from "events";
 import * as fs from "fs";
-import {SpawnRequestParams} from "./JobIPC";
+import {SpawnRequestParams} from "./../../JobIPC";
 
 import * as rimraf from "rimraf";
 export abstract class AtomicOperation
