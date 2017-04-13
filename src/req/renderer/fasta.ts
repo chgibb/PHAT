@@ -1,11 +1,10 @@
-import {File,setUUID,setabsPath} from "./../file";
+import {File} from "./../file";
 import {makeValidID} from "./MakeValidID";
 import trimPath from "./trimPath";
 export class Fasta extends File
 {
     public alias : string;
     public checked : boolean;
-    public size : number;
     public sizeString : string;
     public sequences : number;
     public validID : string;
@@ -33,12 +32,9 @@ export class Fasta extends File
          * @prop {boolean} host - Whether this file is a host reference
          * @prop {boolean} pathogen - Whether this file is a pathogen reference
          */
-        super();
-        this.path = path;
+        super(path);
         this.alias = trimPath(path);
         this.checked = false;
-        this.size = 0;
-        this.sizeString = "0";
         this.sequences = 0;
         this.validID = makeValidID(path);
         this.indexed = false;
@@ -50,6 +46,5 @@ export class Fasta extends File
         this.twoBit = "";
         this.contigs = new Array<string>();
         this.fai = "";
-        setUUID(this);
     }
 }
