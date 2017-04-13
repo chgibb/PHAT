@@ -3,14 +3,14 @@ import * as fs from "fs";
 const fse = require("fs-extra");
 
 import * as atomic from "./atomicOperations";
-import {Fasta} from "./renderer/fasta";
-import {Contig,FastaContigLoader} from "./renderer/circularGenome/fastaContigLoader";
-import {getQCReportSummaries} from "./renderer/QC/QCReportSummary";
-import trimPath from "./renderer/trimPath";
-import {makeValidID} from "./renderer/MakeValidID";
-import {SpawnRequestParams} from "./JobIPC";
+import {Fasta} from "./../../fasta";
+import {Contig,FastaContigLoader} from "./../../fastaContigLoader";
+import {getQCReportSummaries} from "./../../QCReportSummary";
+import trimPath from "./../../trimPath";
+import {makeValidID} from "./../../MakeValidID";
+import {SpawnRequestParams} from "./../../JobIPC";
 
-import {Job,JobCallBackObject} from "./main/Job";
+import {Job,JobCallBackObject} from "./../Job";
 export class IndexFasta extends atomic.AtomicOperation
 {
     public fasta : Fasta;
