@@ -100,7 +100,7 @@ export class CompletionFlags
 export interface RegisteredAtomicOperation
 {
     name : string;
-    op : AtomicOperation;
+    op : typeof AtomicOperation;
 }
 export interface OperationUpdate
 {
@@ -114,7 +114,7 @@ export let operationsQueue : Array<AtomicOperation> = new Array<AtomicOperation>
 
 export let updates : EventEmitter = new EventEmitter();
 
-export function register(opName : string,op : AtomicOperation) : void
+export function register(opName : string,op : typeof AtomicOperation) : void
 {
     for(let i = 0; i != registeredOperations.length; ++i)
     {
