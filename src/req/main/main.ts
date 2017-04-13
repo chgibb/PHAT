@@ -326,7 +326,7 @@ ipc.on
 		}
 	}
 );
-ipc.on
+/*ipc.on
 (
 	"spawnSync",function(event,arg)
 	{
@@ -354,4 +354,4 @@ ipc.on
 			jobMgr.runJobs();
 		}
 	}
-);
+);*/
