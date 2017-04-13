@@ -77,7 +77,7 @@ assert.assert(function(){
 },'--------------------------------------------------------',0);
 
 
-/*assert.assert(function(){
+assert.assert(function(){
 	assert.runningEvents += 1;
 	console.log(`Starting report generation for ${L6R1R1.path}`);
 	atomic.addOperation("generateFastQCReport",L6R1R1);
@@ -89,7 +89,7 @@ assert.assert(function(){
 	console.log(`Starting report generation for ${L6R1R2.path}`);
 	atomic.addOperation("generateFastQCReport",L6R1R2);
 	return true;
-},'',0);*/
+},'',0);
 
 assert.assert(function(){
 	assert.runningEvents += 1;
@@ -98,12 +98,12 @@ assert.assert(function(){
 	return true;
 },'',0);
 
-/*assert.assert(function(){
+assert.assert(function(){
 	assert.runningEvents += 1;
 	console.log(`Starting to index ${hpv18.path}`);
 	atomic.addOperation("indexFasta",hpv18);
 	return true;
-},'',0);*/
+},'',0);
 
 
 assert.assert(function(){
