@@ -4,6 +4,7 @@ const fse = require("fs-extra");
 
 import * as atomic from "./atomicOperations";
 import {Fasta} from "./renderer/fasta";
+import {Contig,FastaContigLoader} from "./renderer/circularGenome/fastaContigLoader";
 import {getQCReportSummaries} from "./renderer/QC/QCReportSummary";
 import trimPath from "./renderer/trimPath";
 import {makeValidID} from "./renderer/MakeValidID";
@@ -194,12 +195,20 @@ export class IndexFasta extends atomic.AtomicOperation
                                         return;
                                     }
                                     self.fasta.indexed = true;
-                                    self.setSuccess(self.flags);
-                                    self.update(
-                                        <atomic.OperationUpdate>{
-			                                op : self,
-                                            spawnUpdate : params
-		                                });
+                                    let contigLoader = new FastaContigLoader();
+                                    contigLoader.on(
+                                        "doneLoadingContigs",function()
+                                        {
+                                            self.fasta.contigs = contigLoader.contigs;
+                                            self.setSuccess(self.flags);
+                                            self.update(
+                                                <atomic.OperationUpdate>{
+			                                        op : self,
+                                                    spawnUpdate : params
+		                                    });
+                                        }
+                                    );
+                                    contigLoader.beginRefStream(self.fasta.path);
                                 },5000
                             );
                         }

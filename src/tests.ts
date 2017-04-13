@@ -62,6 +62,7 @@ atomic.updates.on(
 		else if(oup.op.flags.success)
 		{
 			console.log(`Completed indexing ${(<IndexFasta>oup.op).fasta.path}`);
+			console.log(JSON.stringify(hpv16,undefined,4));
 		}
 		if(oup.op.flags.done)
 			assert.runningEvents -= 1;
@@ -97,12 +98,12 @@ assert.assert(function(){
 	return true;
 },'',0);
 
-assert.assert(function(){
+/*assert.assert(function(){
 	assert.runningEvents += 1;
 	console.log(`Starting to index ${hpv18.path}`);
 	atomic.addOperation("indexFasta",hpv18);
 	return true;
-},'',0);
+},'',0);*/
 
 
 assert.assert(function(){

@@ -1,4 +1,5 @@
 import {File} from "./../file";
+import {Contig} from "./circularGenome/fastaContigLoader";
 import {makeValidID} from "./MakeValidID";
 import trimPath from "./trimPath";
 export class Fasta extends File
@@ -15,7 +16,7 @@ export class Fasta extends File
     public pathogen : boolean;
     public type : string;
     public twoBit : string;
-    public contigs : Array<string>;
+    public contigs : Array<Contig>;
     public fai : string;
     public constructor(path : string)
     {
@@ -44,7 +45,7 @@ export class Fasta extends File
         this.pathogen = false;
         this.type = "";
         this.twoBit = "";
-        this.contigs = new Array<string>();
+        this.contigs = new Array<Contig>();
         this.fai = "";
     }
 }
