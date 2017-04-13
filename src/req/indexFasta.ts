@@ -193,6 +193,7 @@ export class IndexFasta extends atomic.AtomicOperation
                                         self.abortOperationWithMessage(`Failed write all bowtie2 indices for ${self.fasta.uuid}`);
                                         return;
                                     }
+                                    self.fasta.indexed = true;
                                     self.setSuccess(self.flags);
                                     self.update(
                                         <atomic.OperationUpdate>{

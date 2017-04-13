@@ -25,6 +25,7 @@ let L6R1R1 : Fastq = new Fastq('data/L6R1.R1.fastq');
 let L6R1R2 : Fastq = new Fastq('data/L6R1.R2.fastq');
 
 let hpv16 : Fasta = new Fasta("data/HPV16ref_genomes.fasta");
+let hpv18 : Fasta = new Fasta("data/HPV18ref_genomes.fasta");
 
 
 atomic.updates.on(
@@ -93,6 +94,13 @@ assert.assert(function(){
 	assert.runningEvents += 1;
 	console.log(`Starting to index ${hpv16.path}`);
 	atomic.addOperation("indexFasta",hpv16);
+	return true;
+},'',0);
+
+assert.assert(function(){
+	assert.runningEvents += 1;
+	console.log(`Starting to index ${hpv18.path}`);
+	atomic.addOperation("indexFasta",hpv18);
 	return true;
 },'',0);
 
