@@ -5,7 +5,6 @@ const ipc = electron.ipcRenderer;
 
 import {GetKeyEvent,KeySubEvent} from "./req/ipcEvents";
 
-//import {makeValidID} from "./MakeValidID";
 import * as viewMgr from "./req/renderer/viewMgr";
 let debug = require("./req/renderer/sendDebugMessage");
 debug.initialize("input");
