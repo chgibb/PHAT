@@ -358,19 +358,22 @@ atomicOp.updates.on(
 	{
 		dataMgr.setKey("application","operations",atomicOp.operationsQueue);
 		dataMgr.publishChangeForKey("application","operations");
-		let fasta : File = (<IndexFasta>oup.op).fasta;
-		let fastaInputs : Array<File> = dataMgr.getKey("input","fastaInputs");
-		for(let i = 0; i != fastaInputs.length; ++i)
+		if(oup.op.flags.success)
 		{
-			if(fastaInputs[i].uuid == fasta.uuid)
+			let fasta : File = (<IndexFasta>oup.op).fasta;
+			let fastaInputs : Array<File> = dataMgr.getKey("input","fastaInputs");
+			for(let i = 0; i != fastaInputs.length; ++i)
 			{
-				fastaInputs[i] = fasta;
-				break;
+				if(fastaInputs[i].uuid == fasta.uuid)
+				{
+					fastaInputs[i] = fasta;
+					break;
+				}
 			}
-		}
 
-		dataMgr.setKey("input","fastaInputs",fastaInputs);
-		dataMgr.publishChangeForKey("input","fastaInputs");
+			dataMgr.setKey("input","fastaInputs",fastaInputs);
+			dataMgr.publishChangeForKey("input","fastaInputs");
+		}
 	}
 )
 
