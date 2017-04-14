@@ -1,18 +1,9 @@
-/*
-    Handles fastq and fasta files.
-    
-	Part of the PHAT Project
-	Author : gibbc@tbh.net
-*/
 import {SaveKeyEvent} from "./../ipcEvents";
 
 import Fastq from "./../fastq";
 import {Fasta} from "./../fasta";
 import {AtomicOperationIPC} from "./../atomicOperationsIPC";
 import canRead from "./canRead";
-//import replyFromBowTie2Build from "./input/replyFromBowTie2Build";
-//import replyFromFaToTwoBit from "./input/replyFromFaToTwoBit";
-//import replyFromSamTools from "./input/replyFromSamTools";
 
 import * as fs from "fs";
 
@@ -95,31 +86,6 @@ export default class Input extends DataModelMgr
                 uuid : fasta.uuid
             }
         );
-        /*
-        for(let i = 0; i != this.fastaInputs.length; ++i)
-        {
-            if(this.fastaInputs[i].name == name)
-            {
-                if(!this.fastaInputs[i].indexing && !this.fastaInputs[i].indexed)
-                {
-                    this.fastaInputs[i].indexing = true;
-                    let args = [this.fastaInputs[i].name,this.fsAccess('resources/app/rt/indexes/'+this.fastaInputs[i].alias+'.2bit')];
-                    this.spawnHandle
-                    (
-                        'spawn',
-                        {
-                            action : 'spawn',
-                            replyChannel : 'input',
-                            processName : this.faToTwoBit,
-                            args : args,
-                            unBuffer : true,
-                            extraData : this.fastaInputs[i].alias
-                        }
-                    );
-                    return true;
-                }
-            }
-        }*/
         return false;
     }
     fastqExists(uuid : string) : boolean
