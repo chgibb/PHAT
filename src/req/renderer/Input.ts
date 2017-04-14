@@ -7,7 +7,7 @@ import canRead from "./canRead";
 
 import * as fs from "fs";
 
-import {DataModelHandlers,DataModelMgr} from "./model";
+import {DataModelMgr} from "./model";
 import {SpawnRequestParams} from "./../JobIPC";
 
 export default class Input extends DataModelMgr
