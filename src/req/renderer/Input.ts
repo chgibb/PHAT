@@ -15,9 +15,6 @@ export default class Input extends DataModelMgr
     public fastqInputs : Array<Fastq>;
     public fastaInputs : Array<Fasta>;
     public faToTwoBit : string;
-    public samTools : string;
-    public copy : string;
-    public bowTie2Build : string;
     public constructor(channel : string,ipc : any)
     {
         super(channel,ipc);
