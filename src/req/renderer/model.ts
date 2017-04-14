@@ -3,17 +3,10 @@
  * @module res/renderer/model
  */
 import {SpawnRequestParams} from "./../JobIPC";
-export interface DataModelHandlers
-{
-    postStateHandle : (channel : string,arg : any) => void;
-    spawnHandle : (channel : string,arg : SpawnRequestParams) => void;
-    fsAccess : (path : string) => string;
-}
 export abstract class DataModelMgr
 {
     public channel : string;
     public ipcHandle : {send(channel : string, ...args : any[]) : void};
-    public fsAccess : (path : string) => string;
     /**
      * @param {string} channel - IPC channel to operate one
      * @param {any} handlers - object containing handler functions
