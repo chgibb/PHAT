@@ -345,7 +345,9 @@ ipc.on(
 			if(list[i].uuid == arg.uuid)
 			{
 				console.log(`Found ${list[i].path}`);
-				atomicOp.addOperation(arg.opName,list[i]);
+				let tmp = {};
+				Object.assign(tmp,list[i]);
+				atomicOp.addOperation(arg.opName,tmp);
 				return;
 			}
 		}
@@ -354,7 +356,21 @@ ipc.on(
 atomicOp.updates.on(
 	"indexFasta",function(oup : atomicOp.OperationUpdate)
 	{
-		console.log(oup.op.flags);
+		dataMgr.setKey("application","operations",atomicOp.operationsQueue);
+		dataMgr.publishChangeForKey("application","operations");
+		let fasta : File = (<IndexFasta>oup.op).fasta;
+		let fastaInputs : Array<File> = dataMgr.getKey("input","fastaInputs");
+		for(let i = 0; i != fastaInputs.length; ++i)
+		{
+			if(fastaInputs[i].uuid == fasta.uuid)
+			{
+				fastaInputs[i] = fasta;
+				break;
+			}
+		}
+
+		dataMgr.setKey("input","fastaInputs",fastaInputs);
+		dataMgr.publishChangeForKey("input","fastaInputs");
 	}
 )
 

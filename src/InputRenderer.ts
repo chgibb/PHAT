@@ -84,6 +84,15 @@ $
                 replyChannel : "input"
             }
         );
+        ipc.send(
+            "keySub",
+            <KeySubEvent>{
+                action : "keySub",
+                channel : "application",
+                key : "operations",
+                replyChannel : "input"
+            }
+        );
 
         //on message from main process
         ipc.on
@@ -106,6 +115,10 @@ $
                         {
                             input.fastaInputs = arg.val;
                         }
+                    }
+                    if(arg.key == "operations")
+                    {
+                        console.log(arg.val);
                     }
                 }
                 viewMgr.render();
