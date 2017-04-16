@@ -1,10 +1,7 @@
 //// <reference path="jquery.d.ts" />
 /// <reference path="./../angularStub.d.ts" />
 import * as viewMgr from "./../viewMgr";
-import {Contig,FastaContigLoader} from "./../circularGenome/fastaContigLoader";
-import {DataModelMgr} from "./../model";
-import {GenomeFigure} from "./../circularGenome/genomeFigure";
-import {CircularFigure} from "./../circularGenomeMgr";
+import {CircularFigure} from "./../circularFigure";
 import * as plasmid from "./../circularGenome/plasmid";
 import * as plasmidTrack from "./../circularGenome/plasmidTrack";
 import * as trackLabel from "./../circularGenome/trackLabel";
@@ -28,9 +25,9 @@ let app : any = angular.module('myApp',['angularplasmid']);
 export class GenomeView extends viewMgr.View
 {
     public genome : CircularFigure;
-    public constructor(name : string,div : string, model : DataModelMgr)
+    public constructor(name : string,div : string)
     {
-        super(name,div,model);
+        super(name,div);
     }
     public onMount() : void{}
     public onUnMount() : void{}
@@ -145,7 +142,7 @@ export class GenomeView extends viewMgr.View
     public dataChanged() : void{}
     public divClickEvents(event : JQueryEventObject) : void{}
 }
-export function addView(arr : Array<viewMgr.View>,div : string,model : DataModelMgr)
+export function addView(arr : Array<viewMgr.View>,div : string)
 {
-    arr.push(new GenomeView("genomeView",div,model));
+    arr.push(new GenomeView("genomeView",div));
 }

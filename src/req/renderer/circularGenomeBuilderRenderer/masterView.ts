@@ -1,14 +1,18 @@
 /// <reference types="jquery" />
 
+import * as electron from "electron";
+const ipc = electron.ipcRenderer;
+
+import {SaveKeyEvent} from "./../../ipcEvents";
 import * as viewMgr from "./../viewMgr";
 import {DataModelMgr} from "./../model";
-import {FastaContigLoader,Contig} from "./../circularGenome/fastaContigLoader";
-import {CircularGenomeMgr,CircularFigure,} from "./../circularGenomeMgr";
+import {CircularFigure,} from "./../circularFigure";
+import {Fasta} from "./../../fasta";
 
 import * as GenomeView from "./genomeView";
-export function addView(arr : Array<viewMgr.View>,div : string,model : CircularGenomeMgr)
+export function addView(arr : Array<viewMgr.View>,div : string)
 {
-    arr.push(new View(div,model));
+    arr.push(new View(div));
 }
 export class View extends viewMgr.View
 {
@@ -16,24 +20,21 @@ export class View extends viewMgr.View
     public firstRender : boolean;
     public leftPanelOpen : boolean;
     public rightPanelOpen : boolean;
-    public circularGenomes : Array<CircularFigure>;
-    public genomeWriters : any;
-    public circularGenomeMgr : CircularGenomeMgr;
-    public fastaInputs : any;
-    public constructor(div : string,model : CircularGenomeMgr)
+    public circularFigures : Array<CircularFigure>;
+    public fastaInputs : Array<Fasta>;
+    public constructor(div : string)
     {
-        super("masterView",div,model);
+        super("masterView",div);
         this.views = new Array<viewMgr.View>();
         this.firstRender = true;
         this.leftPanelOpen = false;
         this.rightPanelOpen = false;
-        this.circularGenomes = new Array<CircularFigure>();
-        this.genomeWriters = new Array<any>();
-        this.circularGenomeMgr = model;
+        this.circularFigures = new Array<CircularFigure>();
+        this.fastaInputs = new Array<Fasta>();
     }
     public onMount() : void
     {
-        GenomeView.addView(this.views,"genomeView",undefined);
+        GenomeView.addView(this.views,"genomeView");
         for(let i = 0; i != this.views.length; ++i)
         {
             this.views[i].onMount();
@@ -48,6 +49,7 @@ export class View extends viewMgr.View
     }
     public renderView() : string
     {
+        console.log(this.fastaInputs);
         if(this.firstRender)
         {
             this.leftPanelOpen = false;
@@ -72,20 +74,17 @@ export class View extends viewMgr.View
                             {
                                 for(let i = 0; i != this.fastaInputs.length; ++i)
                                 {
-                                    if(this.fastaInputs[i].checked)
+                                    if(this.fastaInputs[i].checked && this.fastaInputs[i].indexed)
                                     {
-                                        res += `<div id ="${this.fastaInputs[i].validID}">
+                                        res += `<div id ="${this.fastaInputs[i].uuid}">
                                                 <h3>${this.fastaInputs[i].alias}</h3>
-                                                <button id="${this.fastaInputs[i].validID}_newFigure" style="float:right;">New Figure</button>
+                                                <button id="${this.fastaInputs[i].uuid}_newFigure" style="float:right;">New Figure</button>
                                                 `;
-                                        for(let k = 0; k != this.circularGenomeMgr.managedFastas.length; ++k)
+                                        for(let k = 0; k != this.circularFigures.length; ++k)
                                         {
-                                            if(this.circularGenomeMgr.managedFastas[k].name == this.fastaInputs[i].name)
+                                            if(this.circularFigures[k].uuid == this.fastaInputs[i].uuid)
                                             {
-                                                for(let j = 0; j != this.circularGenomeMgr.managedFastas[k].circularFigures.length; ++j)
-                                                {
-                                                    res += `<input type="radio" id="${j}" name="selectedFigure" /><p>${this.circularGenomeMgr.managedFastas[k].circularFigures[j].name}</p>`;
-                                                }
+                                                res += `<input type="radio" id="${this.circularFigures[k].uuid}" name="selectedFigure" /><p>${this.circularFigures[k].name}</p>`;
                                                 break;
                                             }
                                         }
@@ -116,18 +115,15 @@ export class View extends viewMgr.View
     }
     public dataChanged() : void
     {
-        this.firstRender = true;
-        for(let i = 0; i != this.fastaInputs.length; ++i)
-        {
-            if(!this.circularGenomeMgr.isCached(this.fastaInputs[i]))
-                this.circularGenomeMgr.cacheFasta(this.fastaInputs[i]);
-        }
-    }
-    public doneLoadingContig(genomeIndex : number) : void
-    {
-        let ref = <GenomeView.GenomeView>viewMgr.getViewByName("genomeView",this.views);
-        ref.genome = this.genomeWriters[genomeIndex];
-        this.render();
+        ipc.send(
+            "saveKey",
+            <SaveKeyEvent>{
+                action : "saveKey",
+                channel : "circularGenomeBuilder",
+                key : "circularFigures",
+                val : this.circularFigures
+            }
+        );
     }
     public divClickEvents(event : JQueryEventObject) : void
     {
@@ -182,28 +178,25 @@ export class View extends viewMgr.View
                 }
             );
         }
+        let ref = <GenomeView.GenomeView>viewMgr.getViewByName("genomeView",this.views);
         if(event.target.id == "radiusPlus")
         {
-            let ref = <GenomeView.GenomeView>viewMgr.getViewByName("genomeView",this.views);
             ref.genome.radius += 10;
             viewMgr.render();
             console.log(ref.genome.radius);
         }
         if(event.target.id == "radiusMinus")
         {
-            let ref = <GenomeView.GenomeView>viewMgr.getViewByName("genomeView",this.views);
             ref.genome.radius -= 10;
             viewMgr.render();
         }
         if(event.target.id == "heightPlus")
         {
-            let ref = <GenomeView.GenomeView>viewMgr.getViewByName("genomeView",this.views);
             ref.genome.height += 10;
             viewMgr.render();
         }
         if(event.target.id == "widthPlus")
         {
-            let ref = <GenomeView.GenomeView>viewMgr.getViewByName("genomeView",this.views);
             ref.genome.width += 10;
             viewMgr.render();
         }
@@ -211,36 +204,22 @@ export class View extends viewMgr.View
         {
             for(let i = 0; i != this.fastaInputs.length; ++i)
             {
-                if(event.target.id == this.fastaInputs[i].validID+"_newFigure")
+                if(event.target.id == `${this.fastaInputs[i].uuid}_newFigure`)
                 {
-                    if(this.circularGenomeMgr.isCached(this.fastaInputs[i]))
-                    {
-                        for(let k = 0; k != this.circularGenomeMgr.managedFastas.length; ++k)
-                        {
-                            if(this.circularGenomeMgr.managedFastas[k].name == this.fastaInputs[i].name)
-                            {
-                                this.circularGenomeMgr.managedFastas[k].circularFigures.push
-                                (
-                                    new CircularFigure("New Figure",this.circularGenomeMgr.managedFastas[i].contigs)
-                                );
-                                this.circularGenomeMgr.postManagedFastas();
-                                let ref = <GenomeView.GenomeView>viewMgr.getViewByName("genomeView",this.views);
-                                ref.genome = this.circularGenomeMgr.managedFastas[k].circularFigures[this.circularGenomeMgr.managedFastas[k].circularFigures.length - 1];
-                                viewMgr.render();
-                                return;
-                            }
-                        }
-                    }
+                    this.circularFigures.push(new CircularFigure("New Figure",this.fastaInputs[i].uuid,this.fastaInputs[i].contigs));
+                    let ref = <GenomeView.GenomeView>viewMgr.getViewByName("genomeView",this.views);
+                    ref.genome = this.circularFigures[this.circularFigures.length - 1];
+                    viewMgr.render();
+                    return;
                 }
             }
         }
-        let parentID = event.target.parentElement.id;
-        for(let i = 0; i != this.circularGenomeMgr.managedFastas.length; ++i)
+        for(let i : number = 0; i != this.circularFigures.length; ++i)
         {
-            if(this.circularGenomeMgr.managedFastas[i].validID == parentID)
+            if(event.target.id == this.circularFigures[i].uuid)
             {
                 let ref = <GenomeView.GenomeView>viewMgr.getViewByName("genomeView",this.views);
-                ref.genome = this.circularGenomeMgr.managedFastas[i].circularFigures[<any>event.target.id];
+                ref.genome = this.circularFigures[i];
                 viewMgr.render();
                 return;
             }

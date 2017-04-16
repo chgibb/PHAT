@@ -7,7 +7,7 @@ export class CircularFigure
     public radius : number;
     public height : number;
     public width : number;
-    constructor(name : string,contigs : Array<Contig>)
+    constructor(name : string,uuid : string,contigs : Array<Contig>)
     {
         this.name = name;
         this.contigs = contigs;

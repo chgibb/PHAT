@@ -15,7 +15,7 @@ $
 (
     function()
     {
-        masterView.addView(viewMgr.views,"view",circularGenomeMgr);
+        masterView.addView(viewMgr.views,"view");
         viewMgr.changeView("masterView");
         viewMgr.render();
         ipc.send(
@@ -31,7 +31,7 @@ $
             "getKey",
             <GetKeyEvent>{
                 channel : "circularGenomeBuilder",
-                key : "managedFastas",
+                key : "circularFigures",
                 replyChannel : "circularGenomeBuilder",
                 action : "getKey"
             }
@@ -50,7 +50,7 @@ $
             "keySub",
             <KeySubEvent>{
                 channel : "circularGenomeBuilder",
-                key : "managedFastas",
+                key : "circularFigures",
                 replyChannel : "circularGenomeBuilder",
                 action : "keySub"
             }
@@ -59,6 +59,7 @@ $
         (
             'circularGenomeBuilder',function(event,arg)
             {
+                console.log(arg);
                 if(arg.action == "getKey" || arg.action == "keyChange")
                 {
                     if(arg.key == "fastaInputs")
@@ -67,15 +68,15 @@ $
                         {
                             let ref = <masterView.View>viewMgr.getViewByName("masterView");
                             ref.fastaInputs = arg.val;
-                            viewMgr.getViewByName("masterView").dataChanged();
+                            ref.firstRender = true;
                         }
                     }
-                    if(arg.key == "managedFastas")
+                    if(arg.key == "circularFigures")
                     {
                         if(arg.val !== undefined)
                         {
-                            circularGenomeMgr.managedFastas = arg.val;
-                            viewMgr.getViewByName("masterView").dataChanged();
+                            let ref = <masterView.View>viewMgr.getViewByName("masterView");
+                            ref.circularFigures = arg.val;
                         }
                     }
                 }
