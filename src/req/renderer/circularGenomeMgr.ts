@@ -1,10 +1,9 @@
-let fs = require("fs");
-import {DataModelMgr,DataModelHandlers} from "./model";
+import * as fs from "fs";
+
+import {DataModelMgr} from "./model";
 import {SpawnRequestParams} from "./../JobIPC";
-let canRead = require("./canRead");
-import {Contig,FastaContigLoader} from "./circularGenome/fastaContigLoader";
 import {SaveKeyEvent} from "../ipcEvents";
-import {Fasta} from "./fasta";
+import {Fasta} from "./../fasta";
 export class CircularFigure
 {
     public name : string;
