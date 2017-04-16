@@ -6,6 +6,7 @@ import {SaveKeyEvent} from "../ipcEvents";
 import {Fasta} from "./../fasta";
 export class CircularFigure
 {
+    public uuid : string;
     public name : string;
     public contigs : any;
     public radius : number;
