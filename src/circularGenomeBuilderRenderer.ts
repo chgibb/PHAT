@@ -18,11 +18,6 @@ $
         masterView.addView(viewMgr.views,"view",circularGenomeMgr);
         viewMgr.changeView("masterView");
         viewMgr.render();
-        //ipc.send('keySub',{action : "keySub", channel : "input", key : "fastaInputs", replyChannel : "circularGenomeBuilder"});
-        //ipc.send('input',{replyChannel : 'circularGenomeBuilder', action : 'getState', key : 'fastaInputs'});
-        //ipc.send('keySub',{action : "keySub", channel : "circularGenomeBuilder", key : "managedFastas", replyChannel : "circularGenomeBuilder"});
-        //ipc.send("circularGenomeBuilder",{replyChannel : "circularGenomeBuilder", action : "getState", key : "managedFastas"});
-
         ipc.send(
             "getKey",
             <GetKeyEvent>{
