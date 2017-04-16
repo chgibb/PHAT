@@ -10,24 +10,7 @@ require("./req/renderer/commonBehaviour");
 
 import * as $ from "jquery";
 (<any>window).$ = $;
-let circularGenomeMgr = new CircularGenomeMgr
-(
-    'circularGenomeBuilder',
-    {
-        postStateHandle : function(channel : string,arg : any) : void
-        {
-            ipc.send(channel,arg);
-        },
-        spawnHandle : function(channel,arg : SpawnRequestParams) : void
-        {
-            ipc.send(channel,arg);
-        },
-        fsAccess : function(str : string) : string
-        {
-            return str;
-        }
-    }
-);
+let circularGenomeMgr = new CircularGenomeMgr('circularGenomeBuilder',ipc);
 $
 (
     function()
