@@ -3,7 +3,6 @@ import * as electron from "electron";
 const ipc = electron.ipcRenderer;
 
 import * as viewMgr from "./../viewMgr";
-import QCClass from "./../QC";
 import {ReportView} from "./reportView";
 import Fastq from "./../../fastq";
 import {getQCSummaryByNameOfReportByIndex} from "./../../QCData"
@@ -101,6 +100,11 @@ export class SummaryView extends viewMgr.View
 							uuid : this.fastqInputs[i].uuid
 						}
 					);
+				}
+				else
+				{
+                	(<ReportView>viewMgr.getViewByName("report")).report = this.fastqInputs[i].QCData.QCReport;
+					viewMgr.changeView('report');
 				}
 			}
 		}
