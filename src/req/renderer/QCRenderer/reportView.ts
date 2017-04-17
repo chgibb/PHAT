@@ -2,14 +2,13 @@
 import * as fs from "fs";
 
 import * as viewMgr from "./../viewMgr";
-import QCClass from "./../QC";
 
 export class ReportView extends viewMgr.View
 {
     public report : string;
-    public constructor(div : string,model : QCClass)
+    public constructor(div : string)
     {
-        super('report',div,model);
+        super('report',div);
         this.report = "";
     }
     onMount(){}
@@ -42,7 +41,7 @@ export class ReportView extends viewMgr.View
     dataChanged(){}
 }
 
-export function addView(arr : Array<viewMgr.View>,div : string,model : QCClass) : void
+export function addView(arr : Array<viewMgr.View>,div : string) : void
 {
-    arr.push(new ReportView(div,model));
+    arr.push(new ReportView(div));
 }
