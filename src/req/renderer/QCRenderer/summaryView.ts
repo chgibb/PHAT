@@ -1,4 +1,6 @@
 /// <reference types="jquery" />
+import * as electron from "electron";
+const ipc = electron.ipcRenderer;
 
 import * as viewMgr from "./../viewMgr";
 import QCClass from "./../QC";
@@ -82,7 +84,27 @@ export class SummaryView extends viewMgr.View
 	}
 	postRender(){}
 	divClickEvents(event : JQueryEventObject) : void
-	{/*
+	{
+		if(!event || !event.target || !event.target.id)
+        	return;
+		for(let i : number = 0; i != this.fastqInputs.length; ++i)
+		{
+			if(this.fastqInputs[i].uuid == event.target.id)
+			{
+				if(this.fastqInputs[i].QCData.QCReport == "")
+				{
+					ipc.send(
+						"runOperation",<AtomicOperationIPC>{
+							opName : "generateFastQCReport",
+							channel : "input",
+							key : "fastqInputs",
+							uuid : this.fastqInputs[i].uuid
+						}
+					);
+				}
+			}
+		}
+		/*
 		if(!event || !event.target || !event.target.id)
         	return;
 
