@@ -3,33 +3,12 @@ const ipc = electron.ipcRenderer;
 
 import {GetKeyEvent,KeySubEvent} from "./req/ipcEvents";
 import * as viewMgr from "./req/renderer/viewMgr";
-import {makeValidID} from "./req/renderer/MakeValidID";
-
-import QCClass from "./req/renderer/QC";
 
 import * as summary from "./req/renderer/QCRenderer/summaryView";
 import * as report from "./req/renderer/QCRenderer/reportView";
 
 require("./req/renderer/commonBehaviour");
 
-let QC = new QCClass
-(
-    'QC',
-    {
-        postStateHandle : function(channel,arg)
-        {
-            ipc.send(channel,arg);
-        },
-        spawnHandle : function(channel,arg)
-        {
-            ipc.send(channel,arg);
-        },
-        fsAccess : function(str)
-        {
-            return str;
-        }
-    }
-);
 import * as $ from "jquery";
 (<any>window).$ = $;
 require("./req/renderer/commonBehaviour");
@@ -38,8 +17,8 @@ $
 (
     function()
     {
-        summary.addView(viewMgr.views,'reports',QC);
-        report.addView(viewMgr.views,'reports',QC);
+        summary.addView(viewMgr.views,'reports');
+        report.addView(viewMgr.views,'reports');
 
 
         viewMgr.changeView("summary");
@@ -50,25 +29,6 @@ $
                 action : "keySub",
                 channel : "input",
                 key : "fastqInputs",
-                replyChannel : "QC"
-            }
-        );
-        ipc.send(
-            "keySub",
-            <KeySubEvent>{
-                action : "keySub",
-                channel : "QC",
-                key : "QCData",
-                replyChannel : "QC"
-            }
-        );
-
-        ipc.send(
-            "getKey",
-            <GetKeyEvent>{
-                action : "getKey",
-                channel : "QC",
-                key : "QCData",
                 replyChannel : "QC"
             }
         );
@@ -89,22 +49,10 @@ $
                 console.log(JSON.stringify(arg,undefined,4));
                 if(arg.action == "getKey" || arg.action == "keyChange")
                 {
-                    if(arg.key == 'QCData')
-                    {
-                        if(arg.val !== undefined )
-                        {
-                            QC.QCData = arg.val;
-                        }
-                    }
                     if(arg.key == "fastqInputs")
                     {
                         if(arg.val !== undefined)
                         {
-                            for(let i = 0; i != arg.val.length; ++i)
-                            {
-                                QC.addQCData(arg.val[i].name);
-                            }
-                            QC.postQCData();
                             (<summary.SummaryView>viewMgr.getViewByName("summary")).fastqInputs = arg.val;
                             viewMgr.render();
                         }
@@ -120,7 +68,7 @@ $
         (
             "spawnReply",function(event,arg)
             {
-                if(arg.processName == QC.fastQC)
+                /*if(arg.processName == QC.fastQC)
                 {
                     if(arg.unBufferedData)
                     {
@@ -139,7 +87,7 @@ $
                         }
                     }
                 }
-                QC.spawnReply("spawnReply",arg);
+                QC.spawnReply("spawnReply",arg);*/
             }
         );
         viewMgr.render();
