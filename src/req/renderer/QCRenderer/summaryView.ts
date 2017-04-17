@@ -146,7 +146,7 @@ export class SummaryView extends viewMgr.View
 	}
 	postRender(){}
 	divClickEvents(event : JQueryEventObject) : void
-	{
+	{/*
 		if(!event || !event.target || !event.target.id)
         	return;
 
@@ -165,7 +165,7 @@ export class SummaryView extends viewMgr.View
 					viewMgr.changeView('report');
 				}
 			}
-		}
+		}*/
 	}
 	dataChanged(){}
 }
