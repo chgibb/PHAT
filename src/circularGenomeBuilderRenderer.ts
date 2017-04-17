@@ -77,6 +77,7 @@ $
                         {
                             let ref = <masterView.View>viewMgr.getViewByName("masterView");
                             ref.circularFigures = arg.val;
+                            ref.firstRender = true;
                         }
                     }
                 }

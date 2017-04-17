@@ -82,10 +82,9 @@ export class View extends viewMgr.View
                                                 `;
                                         for(let k = 0; k != this.circularFigures.length; ++k)
                                         {
-                                            if(this.circularFigures[k].uuid == this.fastaInputs[i].uuid)
+                                            if(this.circularFigures[k].uuidFasta == this.fastaInputs[i].uuid)
                                             {
                                                 res += `<input type="radio" id="${this.circularFigures[k].uuid}" name="selectedFigure" /><p>${this.circularFigures[k].name}</p>`;
-                                                break;
                                             }
                                         }
                                         res += `</div>`;
