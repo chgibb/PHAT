@@ -137,10 +137,23 @@ export class SummaryView extends viewMgr.View
 								<td style='text-align:center;'>
 									<img src='img/${getQCSummaryByNameOfReportByIndex(this.fastqInputs,i,"Per base sequence quality")}.png' style='text-align:center;'>
 								</td>
+								<td style='text-align:center;'>
+									<img src='img/${getQCSummaryByNameOfReportByIndex(this.fastqInputs,i,"Per sequence quality scores")}.png' style='text-align:center;'>
+								</td>
+								<td style='text-align:center;'>	
+									<img src='img/${getQCSummaryByNameOfReportByIndex(this.fastqInputs,i,"Per sequence GC content")}.png' style='text-align:center;'>
+								</td>
+								<td style='text-align:center;'>	
+									<img src='img/${getQCSummaryByNameOfReportByIndex(this.fastqInputs,i,"Sequence Duplication Levels")}.png' style='text-align:center;'>
+								</td>
+								<td style='text-align:center;'>	
+									<img src='img/${getQCSummaryByNameOfReportByIndex(this.fastqInputs,i,"Overrepresented sequences")}.png' style='text-align:center;'>
+								</td>
 								</tr>
 							`;
 						}
 					}
+					return res;
 				})()}
 		`;
 	}

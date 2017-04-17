@@ -2,7 +2,6 @@
 import * as fs from "fs";
 
 import * as viewMgr from "./../viewMgr";
-import {makeValidID,findOriginalInput} from "./../MakeValidID";
 import QCClass from "./../QC";
 
 export class ReportView extends viewMgr.View
