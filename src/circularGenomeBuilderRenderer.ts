@@ -4,7 +4,6 @@ import * as viewMgr from "./req/renderer/viewMgr";
 import * as masterView from "./req/renderer/circularGenomeBuilderRenderer/masterView";
 import * as genomeView from "./req/renderer/circularGenomeBuilderRenderer/genomeView";
 import {CircularFigure,} from "./req/renderer/circularFigure";
-import {CircularGenomeMgr} from "./req/renderer/circularGenomeMgr";
 import {SpawnRequestParams} from "./req/JobIPC";
 import {GetKeyEvent,KeySubEvent} from "./req/ipcEvents";
 
@@ -12,7 +11,6 @@ require("./req/renderer/commonBehaviour");
 
 import * as $ from "jquery";
 (<any>window).$ = $;
-let circularGenomeMgr = new CircularGenomeMgr('circularGenomeBuilder',ipc);
 $
 (
     function()
