@@ -12,10 +12,10 @@ const jsonFile = require("jsonfile");
 
 import {Job} from "./Job";
 import * as dataMgr from "./dataMgr";
-import * as atomicOp from "./operations/atomicOperations";
+import * as atomicOp from "./../operations/atomicOperations";
 import {AtomicOperationIPC} from "./../atomicOperationsIPC";
-import {GenerateQCReport} from "./operations/GenerateQCReport";
-import {IndexFasta} from "./operations/indexFasta";
+import {GenerateQCReport} from "./../operations/GenerateQCReport";
+import {IndexFasta} from "./../operations/indexFasta";
 import * as winMgr from "./winMgr";
 
 import {File} from "./../file";
