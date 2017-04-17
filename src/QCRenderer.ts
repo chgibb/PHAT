@@ -121,33 +121,6 @@ $
                 viewMgr.render();
             }
         );
-        
-        ipc.on
-        (
-            "spawnReply",function(event,arg)
-            {
-                /*if(arg.processName == QC.fastQC)
-                {
-                    if(arg.unBufferedData)
-                    {
-                        if(validFastQCOut.test(arg.unBufferedData))
-                        {
-                            let regResult = trimOutFastQCPercentage.exec(arg.unBufferedData);
-                            if(regResult && regResult[0])
-                            {
-                                let idx = -1;
-                                if(process.platform == "linux")
-                                    idx = 0;
-                                else if(process.platform == "win32")
-                                    idx = 1;
-                                $('#'+makeValidID(arg.args[idx])).text(regResult[0]);
-                            }
-                        }
-                    }
-                }
-                QC.spawnReply("spawnReply",arg);*/
-            }
-        );
         viewMgr.render();
     }
 );
