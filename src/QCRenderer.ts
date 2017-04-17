@@ -41,6 +41,15 @@ $
                 replyChannel : "QC"
             }
         );
+        ipc.send(
+            "keySub",
+            <KeySubEvent>{
+                action : "keySub",
+                channel : "application",
+                key : "operations",
+                replyChannel : "QC"
+            }
+        );
         
         ipc.on
         (
