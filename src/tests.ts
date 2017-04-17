@@ -10,13 +10,12 @@ var assert = require("./req/tests/assert");
 
 try
 {
-	fs.mkdirSync("rt");
 	fs.mkdirSync("resources/app/rt");
 	fs.mkdirSync("resources/app/rt/QCReports");
 	fs.mkdirSync("resources/app/rt/indexes");
 	fs.mkdirSync("resources/app/rt/AlignmentArtifacts");
 }
-catch(err){}
+catch(err){console.log(err)}
 
 atomic.register("generateFastQCReport",GenerateQCReport);
 atomic.register("indexFasta",IndexFasta);
