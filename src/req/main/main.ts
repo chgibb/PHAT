@@ -356,7 +356,6 @@ ipc.on(
 atomicOp.updates.on(
 	"indexFasta",function(oup : atomicOp.OperationUpdate)
 	{
-		console.log(JSON.stringify(atomicOp.operationsQueue,undefined,4));
 		dataMgr.setKey("application","operations",atomicOp.operationsQueue);
 		dataMgr.publishChangeForKey("application","operations");
 		if(oup.op.flags.success)
