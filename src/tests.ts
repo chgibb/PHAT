@@ -36,8 +36,6 @@ atomic.updates.on(
 				`Failed generating QC report for ${(<GenerateQCReport>op).fastq.path}
 				${op.extraData}`
 				);
-				//console.log(oup.op.generatedArtifactsDirectories);
-			//process.exit(1);
 		}
 		else if(op.flags.success)
 		{
