@@ -2,8 +2,8 @@ import * as electron from "electron";
 const ipc = electron.ipcRenderer;
 
 import {GetKeyEvent,KeySubEvent} from "./req/ipcEvents";
-import  {AtomicOperation} from "./req/main/operations/atomicOperations"
-import  {GenerateQCReport} from "./req/main/operations/GenerateQCReport"
+import  {AtomicOperation} from "./req/operations/atomicOperations"
+import  {GenerateQCReport} from "./req/operations/GenerateQCReport"
 import * as viewMgr from "./req/renderer/viewMgr";
 
 import * as summary from "./req/renderer/QCRenderer/summaryView";
