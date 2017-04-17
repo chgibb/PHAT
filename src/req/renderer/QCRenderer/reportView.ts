@@ -17,14 +17,16 @@ export class ReportView extends viewMgr.View
     {
         if(document.getElementById('reportIsOpen') || !this.report)
             return undefined;
-        let html = "";
-        html += "<div id='gobackbutton' style='padding: 0px 0px 5px 20px'><br /><img id='goBack' src='img/GoBack.png' ></div>";
-        //html += "<br /><button id='goBack'>Go Back</button><br/>";
-        let report = fs.readFileSync(`${this.report}/fastqc_report.html`).toString();
-        //add a hidden div that we can test for to determine if a report is open or not.
-        report += "<div id='reportIsOpen'></div>";
-        html += report;
-        return html;
+        return `
+            <div id='gobackbutton' style='padding: 0px 0px 5px 20px'>
+                <br />
+                <img id='goBack' src='img/GoBack.png' >
+            </div>
+            <div id='reportIsOpen'></div>
+            ${(()=>{
+                return fs.readFileSync(`${this.report}/fastqc_report.html`).toString();
+            })()}
+        `;
     }
     postRender(){}
     divClickEvents(event : JQueryEventObject) : void
