@@ -4,6 +4,7 @@ import * as viewMgr from "./../viewMgr";
 import QCClass from "./../QC";
 import {ReportView} from "./reportView";
 import Fastq from "./../../fastq";
+import {getQCSummaryByNameOfReportByIndex} from "./../../QCData"
 export class SummaryView extends viewMgr.View
 {
 	public fastqInputs : Array<Fastq>;
@@ -16,6 +17,8 @@ export class SummaryView extends viewMgr.View
 	onUnMount(){}
 	renderView()
 	{
+		
+		/*
 		let html = new Array<string>();
 		html.push
 		(
@@ -91,6 +94,55 @@ export class SummaryView extends viewMgr.View
 			"</table>"
 	    );
         return html.join('');
+		*/
+		return `
+			<p style='float:right;'>Failure</p><img style='float:right;' src='img/fail.png'>
+			<p style='float:right;' >Warning</p><img style='float:right;' src='img/warn.png'>
+			<p style='float:right;'>Pass</p><img style='float:right;' src='img/pass.png'>
+
+			<table style='width:100%'>
+				<tr>
+					<th>Report</th>
+					<th>Sample</th>
+					<th>Per Base Sequence Quality</th>
+					<th>Per Sequence Quality Scores</th>
+					<th>Per Sequence GC Content</th>
+					<th>Sequence Duplication Levels</th>
+					<th>Over Represented Sequences</th>
+				</tr>
+				${(()=>{
+					let res = "";
+					for(let i : number = 0; i != this.fastqInputs.length; ++i)
+					{
+						if(this.fastqInputs[i].checked)
+						{
+							res += `<tr>`;
+							if(this.fastqInputs[i].QCData.QCReport == "")
+							{
+								res += `<td style='text-align:center;'><b id='${this.fastqInputs[i].uuid}'>click to analyze</b></td>`;
+							}
+							else
+							{
+								res += `
+									<td style='text-align:center;'>
+										<p>
+											<img id='${this.fastqInputs[i].uuid}' src='img/done_Analysis.png' style='text-align:center;'>
+											<br/>
+											View Report
+											</p>
+									</td>`;
+							}
+							res += `
+								<td>${this.fastqInputs[i].alias}</td>
+								<td style='text-align:center;'>
+									<img src='img/${getQCSummaryByNameOfReportByIndex(this.fastqInputs,i,"Per base sequence quality")}.png' style='text-align:center;'>
+								</td>
+								</tr>
+							`;
+						}
+					}
+				})()}
+		`;
 	}
 	postRender(){}
 	divClickEvents(event : JQueryEventObject) : void
