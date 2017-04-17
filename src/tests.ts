@@ -62,7 +62,6 @@ atomic.updates.on(
 		else if(op.flags.success)
 		{
 			console.log(`Completed indexing ${(<IndexFasta>op).fasta.path}`);
-			console.log(JSON.stringify(hpv16,undefined,4));
 		}
 		if(op.flags.done)
 			assert.runningEvents -= 1;
@@ -92,6 +91,10 @@ assert.assert(function(){
 },'',0);
 
 assert.assert(function(){
+	return true;
+},'--------------------------------------------------------',0);
+
+assert.assert(function(){
 	assert.runningEvents += 1;
 	console.log(`Starting to index ${hpv16.path}`);
 	atomic.addOperation("indexFasta",hpv16);
@@ -99,11 +102,35 @@ assert.assert(function(){
 },'',0);
 
 assert.assert(function(){
+	return hpv16.indexed;
+},'HPV16 was indexed',0);
+
+assert.assert(function(){
+	return hpv16.contigs.length == 1 ? true : false
+},'HPV16 has 1 contig',0);
+
+assert.assert(function(){
+	return hpv16.contigs[0].bp == 7906 ? true : false;
+},'HPV16 has correct number of base pairs',0);
+
+assert.assert(function(){
 	assert.runningEvents += 1;
 	console.log(`Starting to index ${hpv18.path}`);
 	atomic.addOperation("indexFasta",hpv18);
 	return true;
 },'',0);
+
+assert.assert(function(){
+	return hpv18.indexed;
+},'HPV18 was indexed',0);
+
+assert.assert(function(){
+	return hpv18.contigs.length == 1 ? true : false
+},'HPV18 has 1 contig',0);
+
+assert.assert(function(){
+	return hpv18.contigs[0].bp == 7857 ? true : false;
+},'HPV18 has correct number of base pairs',0);
 
 
 assert.assert(function(){
