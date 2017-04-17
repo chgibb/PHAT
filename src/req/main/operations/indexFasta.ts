@@ -109,11 +109,8 @@ export class IndexFasta extends atomic.AtomicOperation
                                 self.abortOperationWithMessage(err);
                                 return;
                             }
-                            self.update(
-                                <atomic.OperationUpdate>{
-			                        op : self,
-                                    spawnUpdate : params
-		                        });
+                            self.spawnUpdate = params;
+                            self.update();
                         }
                         else
                         {
@@ -160,11 +157,8 @@ export class IndexFasta extends atomic.AtomicOperation
 
                                 },1000
                             );
-                            self.update(
-                                <atomic.OperationUpdate>{
-			                        op : self,
-                                    spawnUpdate : params
-		                        });
+                            self.spawnUpdate = params;
+                            self.update();
                         }
                         else
                         {
@@ -202,11 +196,8 @@ export class IndexFasta extends atomic.AtomicOperation
                                         {
                                             self.fasta.contigs = contigLoader.contigs;
                                             self.setSuccess(self.flags);
-                                            self.update(
-                                                <atomic.OperationUpdate>{
-			                                        op : self,
-                                                    spawnUpdate : params
-		                                    });
+                                            self.spawnUpdate = params;
+                                            self.update();
                                         }
                                     );
                                     contigLoader.beginRefStream(self.fasta.path);
@@ -232,9 +223,6 @@ export class IndexFasta extends atomic.AtomicOperation
             this.abortOperationWithMessage(err);
             return;
         }
-        this.update(
-            <atomic.OperationUpdate>{
-			    op : this
-		    });
+        this.update();
     }
 }
