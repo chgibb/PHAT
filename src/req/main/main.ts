@@ -375,7 +375,30 @@ atomicOp.updates.on(
 			dataMgr.publishChangeForKey("input","fastaInputs");
 		}
 	}
-)
+);
+atomicOp.updates.on(
+	"generateFastQCReport",function(oup : atomicOp.OperationUpdate)
+	{
+		dataMgr.setKey("application","operations",atomicOp.operationsQueue);
+		dataMgr.publishChangeForKey("application","operations");
+		if(oup.op.flags.success)
+		{
+			let fastq : File = (<GenerateQCReport>oup.op).fastq;
+			let fastqInputs : Array<File> = dataMgr.getKey("input","fastqInputs");
+			for(let i = 0; i != fastqInputs.length; ++i)
+			{
+				if(fastqInputs[i].uuid == fastq.uuid)
+				{
+					fastqInputs[i] = fastq;
+					break;
+				}
+			}
+
+			dataMgr.setKey("input","fastqInputs",fastqInputs);
+			dataMgr.publishChangeForKey("input","fastqInputs");
+		}
+	}
+);
 
 /*ipc.on
 (
