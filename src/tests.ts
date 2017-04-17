@@ -1,7 +1,7 @@
 import * as fs from "fs";
-import * as atomic from "./req/main/operations/atomicOperations";
-import {GenerateQCReport} from "./req/main/operations/GenerateQCReport";
-import {IndexFasta} from "./req/main/operations/indexFasta";
+import * as atomic from "./req/operations/atomicOperations";
+import {GenerateQCReport} from "./req/operations/GenerateQCReport";
+import {IndexFasta} from "./req/operations/indexFasta";
 import Fastq from "./req/fastq";
 import {Fasta} from "./req/fasta";
 import {SpawnRequestParams} from "./req/JobIPC";
@@ -29,42 +29,42 @@ let hpv18 : Fasta = new Fasta("data/HPV18ref_genomes.fasta");
 
 
 atomic.updates.on(
-	"generateFastQCReport",function(oup : atomic.OperationUpdate)
+	"generateFastQCReport",function(op : atomic.AtomicOperation)
 	{
-		if(oup.op.flags.failure)
+		if(op.flags.failure)
 		{
 			console.log(
-				`Failed generating QC report for ${(<GenerateQCReport>oup.op).fastq.path}
-				${oup.extraData}`
+				`Failed generating QC report for ${(<GenerateQCReport>op).fastq.path}
+				${op.extraData}`
 				);
 				//console.log(oup.op.generatedArtifactsDirectories);
 			//process.exit(1);
 		}
-		else if(oup.op.flags.success)
+		else if(op.flags.success)
 		{
-			console.log(`Completed generating QC report for ${(<GenerateQCReport>oup.op).fastq.path}`);
+			console.log(`Completed generating QC report for ${(<GenerateQCReport>op).fastq.path}`);
 		}
-		if(oup.op.flags.done)
+		if(op.flags.done)
 			assert.runningEvents -= 1;
 	}
 );
 
 atomic.updates.on(
-	"indexFasta",function(oup : atomic.OperationUpdate)
+	"indexFasta",function(op : atomic.AtomicOperation)
 	{
-		if(oup.op.flags.failure)
+		if(op.flags.failure)
 		{
 			console.log(
-				`Failed indexing ${(<IndexFasta>oup.op).fasta.path}
-				${oup.extraData}`
+				`Failed indexing ${(<IndexFasta>op).fasta.path}
+				${op.extraData}`
 				);
 		}
-		else if(oup.op.flags.success)
+		else if(op.flags.success)
 		{
-			console.log(`Completed indexing ${(<IndexFasta>oup.op).fasta.path}`);
+			console.log(`Completed indexing ${(<IndexFasta>op).fasta.path}`);
 			console.log(JSON.stringify(hpv16,undefined,4));
 		}
-		if(oup.op.flags.done)
+		if(op.flags.done)
 			assert.runningEvents -= 1;
 	}
 );
