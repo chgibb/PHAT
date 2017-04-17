@@ -12,6 +12,7 @@ import {SpawnRequestParams} from "./../../JobIPC";
 import {Job,JobCallBackObject} from "./../Job";
 export class GenerateQCReport extends atomic.AtomicOperation
 {
+	public hasJVMCrashed : boolean = false;
 	public fastQCPath : string;
 	public fastQCJob : Job;
 	public fastQCFlags : atomic.CompletionFlags;
@@ -59,6 +60,7 @@ export class GenerateQCReport extends atomic.AtomicOperation
 		//Running FastQC with certain versions of OpenJDK occasionally crash it.
 		//One of the first things in the stdout when this happens is "fatal error"
 		let isJVMCrashed = new RegExp("(fatal error)","g");
+		
 		let self = this;
 		//On update from spawned FastQC
 		let fastQCCallBack : JobCallBackObject = {
@@ -71,6 +73,7 @@ export class GenerateQCReport extends atomic.AtomicOperation
 					//check for JVM failure on OpenJDK
 					if(isJVMCrashed.test(params.unBufferedData))
 					{
+						self.hasJVMCrashed = true;
 						self.abortOperationWithMessage(`JVM crashed.`);
 						return;
 					}
@@ -92,11 +95,8 @@ export class GenerateQCReport extends atomic.AtomicOperation
 				if(!self.fastQCFlags.success)
 				{
 					//Forward data through normally
-					let oup : atomic.OperationUpdate = <atomic.OperationUpdate>{
-						spawnUpdate : params,
-						op : self
-					}
-				 	self.update(oup);
+					self.spawnUpdate = params;
+				 	self.update();
 				}
 				else if(self.fastQCFlags.success)
 				{
@@ -127,9 +127,7 @@ export class GenerateQCReport extends atomic.AtomicOperation
 								return;
 							}
 							self.setSuccess(self.flags);
-							self.update(<atomic.OperationUpdate>{
-								op : self
-							});
+							self.update();
 						},1000
 					);
 				}

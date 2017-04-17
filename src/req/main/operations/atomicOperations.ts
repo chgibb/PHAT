@@ -74,15 +74,16 @@ export abstract class AtomicOperation
     public abstract run() : void;
     public abstract setData(data : any) : void;
 
-    public update : (arg : OperationUpdate) => void;
+    public update : () => void;
+
+    public spawnUpdate : SpawnRequestParams;
+    public extraData : any;
 
     public abortOperationWithMessage(msg : string) : void
     {
         this.setFailure(this.flags);
-        this.update(<OperationUpdate>{
-            op : this,
-            extraData : msg
-        });
+        this.extraData = msg;
+        this.update();
     }
 }
 export class CompletionFlags
@@ -101,12 +102,6 @@ export interface RegisteredAtomicOperation
 {
     name : string;
     op : typeof AtomicOperation;
-}
-export interface OperationUpdate
-{
-    spawnUpdate? : SpawnRequestParams;
-    op? : AtomicOperation;
-    extraData? : any;
 }
 
 export let registeredOperations : Array<RegisteredAtomicOperation> = new Array<RegisteredAtomicOperation>();
@@ -180,14 +175,14 @@ export function addOperation(opName : string,data : any) : void
             let op : AtomicOperation = new (<any>(registeredOperations[i].op))();
             op.name = registeredOperations[i].name;
             op.setData(data);
-            op.update = function(oup : OperationUpdate){
-                if(oup.op.flags.done)
+            op.update = function(){
+                if(op.flags.done)
                 {
-                    cleanGeneratedArtifacts(oup.op);
-                    if(oup.op.flags.failure)
-                        cleanDestinationArtifacts(oup.op);
+                    cleanGeneratedArtifacts(op);
+                    if(op.flags.failure)
+                        cleanDestinationArtifacts(op);
                 }
-                updates.emit(op.name,oup);
+                updates.emit(op.name,op);
             }
             operationsQueue.push(op);
             return;

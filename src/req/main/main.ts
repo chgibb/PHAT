@@ -354,13 +354,13 @@ ipc.on(
 	}
 );
 atomicOp.updates.on(
-	"indexFasta",function(oup : atomicOp.OperationUpdate)
+	"indexFasta",function(op : atomicOp.AtomicOperation)
 	{
 		dataMgr.setKey("application","operations",atomicOp.operationsQueue);
 		dataMgr.publishChangeForKey("application","operations");
-		if(oup.op.flags.success)
+		if(op.flags.success)
 		{
-			let fasta : File = (<IndexFasta>oup.op).fasta;
+			let fasta : File = (<IndexFasta>op).fasta;
 			let fastaInputs : Array<File> = dataMgr.getKey("input","fastaInputs");
 			for(let i = 0; i != fastaInputs.length; ++i)
 			{
@@ -377,13 +377,13 @@ atomicOp.updates.on(
 	}
 );
 atomicOp.updates.on(
-	"generateFastQCReport",function(oup : atomicOp.OperationUpdate)
+	"generateFastQCReport",function(op : atomicOp.AtomicOperation)
 	{
 		dataMgr.setKey("application","operations",atomicOp.operationsQueue);
 		dataMgr.publishChangeForKey("application","operations");
-		if(oup.op.flags.success)
+		if(op.flags.success)
 		{
-			let fastq : File = (<GenerateQCReport>oup.op).fastq;
+			let fastq : File = (<GenerateQCReport>op).fastq;
 			let fastqInputs : Array<File> = dataMgr.getKey("input","fastqInputs");
 			for(let i = 0; i != fastqInputs.length; ++i)
 			{
