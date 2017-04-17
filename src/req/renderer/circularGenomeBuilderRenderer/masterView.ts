@@ -184,21 +184,29 @@ export class View extends viewMgr.View
             ref.genome.radius += 10;
             viewMgr.render();
             console.log(ref.genome.radius);
+            this.dataChanged();
+            return;
         }
         if(event.target.id == "radiusMinus")
         {
             ref.genome.radius -= 10;
             viewMgr.render();
+            this.dataChanged();
+            return;
         }
         if(event.target.id == "heightPlus")
         {
             ref.genome.height += 10;
             viewMgr.render();
+            this.dataChanged();
+            return;
         }
         if(event.target.id == "widthPlus")
         {
             ref.genome.width += 10;
             viewMgr.render();
+            this.dataChanged();
+            return;
         }
         if(this.fastaInputs)
         {
@@ -210,6 +218,7 @@ export class View extends viewMgr.View
                     let ref = <GenomeView.GenomeView>viewMgr.getViewByName("genomeView",this.views);
                     ref.genome = this.circularFigures[this.circularFigures.length - 1];
                     viewMgr.render();
+                    this.dataChanged();
                     return;
                 }
             }
