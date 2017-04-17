@@ -2,6 +2,8 @@ import {ipcRenderer} from "electron";
 let ipc = ipcRenderer;
 import * as viewMgr from "./req/renderer/viewMgr";
 import * as masterView from "./req/renderer/circularGenomeBuilderRenderer/masterView";
+import * as genomeView from "./req/renderer/circularGenomeBuilderRenderer/genomeView";
+import {CircularFigure,} from "./req/renderer/circularFigure";
 import {CircularGenomeMgr} from "./req/renderer/circularGenomeMgr";
 import {SpawnRequestParams} from "./req/JobIPC";
 import {GetKeyEvent,KeySubEvent} from "./req/ipcEvents";
@@ -66,18 +68,39 @@ $
                     {
                         if(arg.val !== undefined)
                         {
-                            let ref = <masterView.View>viewMgr.getViewByName("masterView");
-                            ref.fastaInputs = arg.val;
-                            ref.firstRender = true;
+                            let masterView = <masterView.View>viewMgr.getViewByName("masterView");
+                            masterView.fastaInputs = arg.val;
+                            masterView.firstRender = true;
                         }
                     }
                     if(arg.key == "circularFigures")
                     {
                         if(arg.val !== undefined)
                         {
-                            let ref = <masterView.View>viewMgr.getViewByName("masterView");
-                            ref.circularFigures = arg.val;
-                            ref.firstRender = true;
+                            let masterView = <masterView.View>viewMgr.getViewByName("masterView");
+                            let genomeView = <genomeView.GenomeView>viewMgr.getViewByName("genomeView",masterView.views);
+                            let currentFigure = "";
+                            //Only update panels if theres been an additional figure created
+                            if((<Array<CircularFigure>>arg.val).length != masterView.circularFigures.length)
+                                masterView.firstRender = true;
+                            //If there's currently a figure being edited then save its id
+                            if(genomeView.genome)
+                                currentFigure = genomeView.genome.uuid;
+                            //overwrite our figure cache with the updated one
+                            masterView.circularFigures = arg.val;
+                            //reassign our current figure with the (potentially changed) new one
+                            if(currentFigure)
+                            {
+                                for(let i : number = 0; i != masterView.circularFigures.length; ++i)
+                                {
+                                    if(masterView.circularFigures[i].uuid == currentFigure)
+                                    {
+                                        genomeView.genome = masterView.circularFigures[i];
+                                        break;
+                                    }
+                                }
+                            }
+                            
                         }
                     }
                 }

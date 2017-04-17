@@ -218,6 +218,7 @@ export class View extends viewMgr.View
                     ref.genome = this.circularFigures[this.circularFigures.length - 1];
                     viewMgr.render();
                     this.dataChanged();
+                    this.firstRender = true;
                     return;
                 }
             }
