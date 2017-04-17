@@ -1,18 +1,15 @@
 /// <reference types="jquery" />
 
 import * as viewMgr from "./../viewMgr";
-import {makeValidID,findOriginalInput} from "./../MakeValidID";
 import QCClass from "./../QC";
-
 import {ReportView} from "./reportView";
-import Fastq from "./../fastq";
+import Fastq from "./../../fastq";
 export class SummaryView extends viewMgr.View
 {
 	public fastqInputs : Array<Fastq>;
-	public model : QCClass;
-	public constructor(div : string,model : QCClass)
+	public constructor(div : string)
     {
-    	super('summary',div,model);
+    	super('summary',div);
         this.fastqInputs = new Array<Fastq>();
     }
 	onMount(){}
@@ -120,7 +117,7 @@ export class SummaryView extends viewMgr.View
 	}
 	dataChanged(){}
 }
-export function addView(arr : Array<viewMgr.View>,div : string,model : QCClass) : void
+export function addView(arr : Array<viewMgr.View>,div : string) : void
 {
-	arr.push(new SummaryView(div,model));
+	arr.push(new SummaryView(div));
 }
