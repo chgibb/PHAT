@@ -2,6 +2,7 @@ import * as fs from "fs";
 import * as atomic from "./req/operations/atomicOperations";
 import {GenerateQCReport} from "./req/operations/GenerateQCReport";
 import {IndexFasta} from "./req/operations/indexFasta";
+import {RunAlignment} from "./req/operations/RunAlignment";
 import Fastq from "./req/fastq";
 import {Fasta} from "./req/fasta";
 import {SpawnRequestParams} from "./req/JobIPC";
@@ -15,10 +16,11 @@ try
 	fs.mkdirSync("resources/app/rt/indexes");
 	fs.mkdirSync("resources/app/rt/AlignmentArtifacts");
 }
-catch(err){console.log(err)}
+catch(err){}
 
 atomic.register("generateFastQCReport",GenerateQCReport);
 atomic.register("indexFasta",IndexFasta);
+atomic.register("runAlignment",RunAlignment);
 
 let L6R1R1 : Fastq = new Fastq('data/L6R1.R1.fastq');
 let L6R1R2 : Fastq = new Fastq('data/L6R1.R2.fastq');
@@ -62,6 +64,13 @@ atomic.updates.on(
 		}
 		if(op.flags.done)
 			assert.runningEvents -= 1;
+	}
+);
+atomic.updates.on(
+	"runAlignment",function(op : atomic.AtomicOperation)
+	{
+		console.log(op.flags);
+		console.log(op.spawnUpdate);
 	}
 );
 
@@ -134,6 +143,18 @@ assert.assert(function(){
 	return true;
 },'--------------------------------------------------------',0);
 
+assert.assert(function(){
+
+	console.log("aligning");
+	atomic.addOperation("runAlignment",{fasta : hpv16,fastq1 : L6R1R1,fastq2 : L6R1R2,type : "patho"})
+
+	assert.runningEvents += 1;
+	return true;
+},'',0)
+
+assert.assert(function(){
+	return true;
+},'--------------------------------------------------------',0);
 assert.runAsserts();
 
 /*
