@@ -6,6 +6,7 @@ import Fastq from "./../fastq";
 import alignData from "./../alignData"
 import {SpawnRequestParams} from "./../JobIPC";
 import {Job,JobCallBackObject} from "./../main/Job";
+import {parseBowTie2AlignmentReport} from "./../bowTie2AlignmentReportParser";
 
 export class RunAlignment extends atomic.AtomicOperation
 {
@@ -58,6 +59,7 @@ export class RunAlignment extends atomic.AtomicOperation
             this.alignData.fastqs.push(this.fastq1,this.fastq2);
             this.destinationArtifactsDirectories.push(`resources/app/rt/AlignmentArtifacts/${this.alignData.uuid}`);
         }
+    //bowtie2-align -> samtools view -> samtools sort -> samtools index
     public run() : void
     {
         let self = this;
@@ -66,7 +68,159 @@ export class RunAlignment extends atomic.AtomicOperation
             {
                 if(self.flags.done)
                     return;
-                self.spawnUpdate = params;
+                if(params.processName == self.bowtie2Exe)
+                {
+                    if(params.unBufferedData)
+                        self.alignData.summaryText += params.unBufferedData;
+                    self.spawnUpdate = params;
+                    if(params.done && params.retCode !== undefined)
+                    {
+                        if(params.retCode == 0)
+                        {
+                            self.setSuccess(self.bowtieFlags);
+                            setTimeout(
+                                function(){
+                                    self.alignData.summary = parseBowTie2AlignmentReport(self.alignData.summaryText);
+                                    self.samToolsViewJob = new Job(
+                                        self.samToolsExe,
+                                        <string[]>[
+                                            "view",
+                                            "-bS",
+                                            `resources/app/rt/AlignmentArtifacts/${self.alignData.uuid}/out.sam`,
+                                            "-o",
+                                            `resources/app/rt/AlignmentArtifacts/${self.alignData.uuid}/out.bam`,
+                                        ],
+                                        "",true,jobCallBack,{}
+                                    );
+                                    try
+                                    {
+                                        self.samToolsViewJob.Run();
+                                    }
+                                    catch(err)
+                                    {
+                                        self.abortOperationWithMessage(err);
+                                        return;
+                                    }
+                                },500
+                            );
+                        }
+                        else
+                        {
+                            self.abortOperationWithMessage(params.unBufferedData);
+                            self.update();
+                        }
+                    }
+                }
+                if(params.processName == self.samToolsExe && params.args[0] == "view")
+                {
+                    if(params.done && params.retCode !== undefined)
+                    {
+                        if(params.retCode == 0)
+                        {
+                            self.setSuccess(self.samToolsViewFlags);
+                            setTimeout(
+                                function(){
+                                    let input : string = `resources/app/rt/AlignmentArtifacts/${self.alignData.uuid}/out.bam`;
+                                    let output : string = `resources/app/rt/AlignmentArtifacts/${self.alignData.uuid}/out.sorted.bam`
+
+                                    let args : Array<string> = new Array<string>();
+                                    if(process.platform == "linux")
+                                    {
+                                        args = <Array<string>>[
+                                            "sort",
+                                            input,
+                                            "-o",
+                                            output
+                                        ];
+                                    }
+                                    //samtools sort options are slightly different on windows for some reason
+                                    else if(process.platform == "win32")
+                                    {
+                                        args = <Array<string>>[
+                                            "sort",
+                                            input,
+                                            output
+                                        ];
+                                    }
+                                    self.samToolsSortJob = new Job(self.samToolsExe,args,"",true,jobCallBack,{});
+                                    try
+                                    {
+                                        self.samToolsSortJob.Run();
+                                    }
+                                    catch(err)
+                                    {
+                                        self.abortOperationWithMessage(err);
+                                        return;
+                                    }
+                                },500
+                            );
+                        }
+                        else
+                        {
+                            self.abortOperationWithMessage(params.unBufferedData);
+                            self.update();
+                        }
+                    }
+                    else
+                    {
+                        self.abortOperationWithMessage(`Failed to generate bam for ${self.alignData.alias}`);
+                        return;
+                    }
+                }
+                if(params.processName == self.samToolsExe && params.args[0] == "sort")
+                {
+                    if(params.done && params.retCode !== undefined)
+                    {
+                        if(params.retCode == 0)
+                        {
+                            self.setSuccess(self.samToolsSortFlags);
+                            setTimeout(
+                                function(){
+                                    self.samToolsIndexJob = new Job(
+                                        self.samToolsExe,
+                                        <Array<string>>[
+                                            "index",
+                                            `resources/app/rt/AlignmentArtifacts/${self.alignData.uuid}/out.sorted.bam`,
+                                            `resources/app/rt/AlignmentArtifacts/${self.alignData.uuid}/out.sorted.bam.bai`
+                                        ],"",true,jobCallBack,{}
+                                    );
+                                    try
+                                    {
+                                        self.samToolsIndexJob.Run();
+                                    }
+                                    catch(err)
+                                    {
+                                        self.abortOperationWithMessage(err);
+                                        return;
+                                    }
+                                },500
+                            );
+                        }
+                        else
+                        {
+                            self.abortOperationWithMessage(`Failed to sort bam for ${self.alignData.alias}`);
+                            self.update();
+                            return;
+                        }
+                    }
+                }
+                if(params.processName == self.samToolsExe && params.args[0] == "index")
+                {
+                    if(params.done && params.retCode !== undefined)
+                    {
+                        if(params.retCode == 0)
+                        {
+                            self.setSuccess(self.samToolsIndexFlags);
+                            self.setSuccess(self.flags);
+                        }
+                        else
+                        {
+                            self.abortOperationWithMessage(`Failed to index bam for ${self.alignData.alias}`);
+                            self.update();
+                            return;
+                        }
+                    }
+                }
                 self.update();
             }
         };

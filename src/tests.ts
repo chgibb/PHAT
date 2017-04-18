@@ -69,14 +69,30 @@ atomic.updates.on(
 atomic.updates.on(
 	"runAlignment",function(op : atomic.AtomicOperation)
 	{
-		console.log(op.flags);
-		console.log(op.spawnUpdate);
+		console.log((<RunAlignment>op).bowtieFlags);
+		console.log((<RunAlignment>op).samToolsViewFlags);
+		console.log((<RunAlignment>op).samToolsSortFlags);
+		if(op.flags.failure)
+		{
+			console.log(
+				`Failed aligning ${(<RunAlignment>op).fastq1} ${(<RunAlignment>op).fastq2} against ${(<RunAlignment>op).fasta}`	
+			);
+			console.log(op.extraData);
+		}
+		else if(op.flags.success)
+		{
+			console.log(
+				`Completed aligning ${(<RunAlignment>op).fastq1} ${(<RunAlignment>op).fastq2} against ${(<RunAlignment>op).fasta}`	
+			);
+		}
+		if(op.flags.done)
+			assert.runningEvents -= 1;
 	}
 );
 
 setInterval(function(){atomic.runOperations(1);},1000);
 
-/*
+
 assert.assert(function(){
 	return true;
 },'--------------------------------------------------------',0);
@@ -95,7 +111,7 @@ assert.assert(function(){
 	atomic.addOperation("generateFastQCReport",L6R1R2);
 	return true;
 },'',0);
-*/
+
 assert.assert(function(){
 	return true;
 },'--------------------------------------------------------',0);
