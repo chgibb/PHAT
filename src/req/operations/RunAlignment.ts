@@ -56,7 +56,7 @@ export class RunAlignment extends atomic.AtomicOperation
             this.alignData.type = data.type;
             this.alignData.fasta = this.fasta;
             this.alignData.fastqs.push(this.fastq1,this.fastq2);
-            this.destinationArtifactsDirectories.push(`resources/app/AlignmentArtifacts/${this.alignData.uuid}`);
+            this.destinationArtifactsDirectories.push(`resources/app/rt/AlignmentArtifacts/${this.alignData.uuid}`);
         }
     public run() : void
     {
@@ -74,13 +74,13 @@ export class RunAlignment extends atomic.AtomicOperation
         if(process.platform == "win32")
             args.push("resources/app/bowtie2");
         args.push("-x");
-        args.push(`resources/app/indexes/${this.fasta.uuid}`);
+        args.push(`resources/app/rt/indexes/${this.fasta.uuid}`);
         args.push("-1");
         args.push(this.fastq1.path);
         args.push("-2");
         args.push(this.fastq2.path);
         args.push("-S");
-        args.push(`resources/app/AlignmentArtifacts/${this.alignData.uuid}/out.sam`);
+        args.push(`resources/app/rt/AlignmentArtifacts/${this.alignData.uuid}/out.sam`);
 
         let invokeString = "";
         for(let i = 0; i != args.length; ++i)
@@ -90,7 +90,7 @@ export class RunAlignment extends atomic.AtomicOperation
         }
         this.alignData.invokeString = invokeString;
         this.alignData.alias = `${this.fastq1.alias}, ${this.fastq2.alias}; ${this.fasta.alias}`;
-
+        fs.mkdirSync(`resources/app/rt/AlignmentArtifacts/${this.alignData.uuid}`);
         this.bowtieJob = new Job(this.bowtie2Exe,args,"",true,jobCallBack,{});
         try
         {

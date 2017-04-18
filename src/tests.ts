@@ -76,7 +76,7 @@ atomic.updates.on(
 
 setInterval(function(){atomic.runOperations(1);},1000);
 
-
+/*
 assert.assert(function(){
 	return true;
 },'--------------------------------------------------------',0);
@@ -95,7 +95,7 @@ assert.assert(function(){
 	atomic.addOperation("generateFastQCReport",L6R1R2);
 	return true;
 },'',0);
-
+*/
 assert.assert(function(){
 	return true;
 },'--------------------------------------------------------',0);
