@@ -69,20 +69,18 @@ atomic.updates.on(
 atomic.updates.on(
 	"runAlignment",function(op : atomic.AtomicOperation)
 	{
-		console.log((<RunAlignment>op).bowtieFlags);
-		console.log((<RunAlignment>op).samToolsViewFlags);
-		console.log((<RunAlignment>op).samToolsSortFlags);
+		console.log(op.extraData);
 		if(op.flags.failure)
 		{
 			console.log(
-				`Failed aligning ${(<RunAlignment>op).fastq1} ${(<RunAlignment>op).fastq2} against ${(<RunAlignment>op).fasta}`	
+				`Failed aligning ${(<RunAlignment>op).fastq1.alias} ${(<RunAlignment>op).fastq2.alias} against ${(<RunAlignment>op).fasta.alias}`	
 			);
 			console.log(op.extraData);
 		}
 		else if(op.flags.success)
 		{
 			console.log(
-				`Completed aligning ${(<RunAlignment>op).fastq1} ${(<RunAlignment>op).fastq2} against ${(<RunAlignment>op).fasta}`	
+				`Completed aligning ${(<RunAlignment>op).fastq1.alias} ${(<RunAlignment>op).fastq2.alias} against ${(<RunAlignment>op).fasta.alias}`	
 			);
 		}
 		if(op.flags.done)

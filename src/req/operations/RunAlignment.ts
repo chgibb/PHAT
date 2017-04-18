@@ -40,7 +40,7 @@ export class RunAlignment extends atomic.AtomicOperation
         if(process.platform == "linux")
             this.bowtie2Exe = 'resources/app/bowtie2';
         else if(process.platform == "win32")
-            this.bowtie2Exe = 'resources/app/python/python.exe';
+            this.bowtie2Exe = 'resources/app/perl/perl/bin/perl.exe';
     }
     public setData(
         data : {
@@ -70,8 +70,10 @@ export class RunAlignment extends atomic.AtomicOperation
                     return;
                 if(params.processName == self.bowtie2Exe)
                 {
-                    if(params.unBufferedData)
+                    if(params.unBufferedData){
                         self.alignData.summaryText += params.unBufferedData;
+                        console.log(params.unBufferedData);
+                    }
                     self.spawnUpdate = params;
                     if(params.done && params.retCode !== undefined)
                     {
@@ -161,11 +163,11 @@ export class RunAlignment extends atomic.AtomicOperation
                             self.update();
                         }
                     }
-                    else
+                    /*else
                     {
                         self.abortOperationWithMessage(`Failed to generate bam for ${self.alignData.alias}`);
                         return;
-                    }
+                    }*/
                 }
                 if(params.processName == self.samToolsExe && params.args[0] == "sort")
                 {
@@ -248,6 +250,7 @@ export class RunAlignment extends atomic.AtomicOperation
         this.bowtieJob = new Job(this.bowtie2Exe,args,"",true,jobCallBack,{});
         try
         {
+            console.log(args);
             this.bowtieJob.Run();
         }
         catch(err)
