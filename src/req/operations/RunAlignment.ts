@@ -70,10 +70,8 @@ export class RunAlignment extends atomic.AtomicOperation
                     return;
                 if(params.processName == self.bowtie2Exe)
                 {
-                    if(params.unBufferedData){
+                    if(params.unBufferedData)
                         self.alignData.summaryText += params.unBufferedData;
-                        console.log(params.unBufferedData);
-                    }
                     self.spawnUpdate = params;
                     if(params.done && params.retCode !== undefined)
                     {
