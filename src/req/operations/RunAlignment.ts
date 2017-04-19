@@ -248,7 +248,6 @@ export class RunAlignment extends atomic.AtomicOperation
         this.bowtieJob = new Job(this.bowtie2Exe,args,"",true,jobCallBack,{});
         try
         {
-            console.log(args);
             this.bowtieJob.Run();
         }
         catch(err)
