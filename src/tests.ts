@@ -3,6 +3,7 @@ import * as atomic from "./req/operations/atomicOperations";
 import {GenerateQCReport} from "./req/operations/GenerateQCReport";
 import {IndexFasta} from "./req/operations/indexFasta";
 import {RunAlignment} from "./req/operations/RunAlignment";
+import alignData from "./req/alignData";
 import Fastq from "./req/fastq";
 import {Fasta} from "./req/fasta";
 import {SpawnRequestParams} from "./req/JobIPC";
@@ -27,6 +28,8 @@ let L6R1R2 : Fastq = new Fastq('data/L6R1.R2.fastq');
 
 let hpv16 : Fasta = new Fasta("data/HPV16ref_genomes.fasta");
 let hpv18 : Fasta = new Fasta("data/HPV18ref_genomes.fasta");
+
+let L6R1Alignment : alignData;
 
 
 atomic.updates.on(
@@ -80,6 +83,7 @@ atomic.updates.on(
 			console.log(
 				`Completed aligning ${(<RunAlignment>op).fastq1.alias} ${(<RunAlignment>op).fastq2.alias} against ${(<RunAlignment>op).fasta.alias}`	
 			);
+			L6R1Alignment = (<RunAlignment>op).alignData;
 		}
 		if(op.flags.done)
 			assert.runningEvents -= 1;
@@ -162,7 +166,22 @@ assert.assert(function(){
 
 	assert.runningEvents += 1;
 	return true;
-},'',0)
+},'',0);
+
+assert.assert(function(){
+	return L6R1Alignment.summary.reads == 2689 ? true : false;
+
+},'Alignment has correct number of reads',0);
+
+assert.assert(function(){
+	return L6R1Alignment.summary.mates == 4696 ? true : false;
+
+},'Alignment has correct number of mates',0);
+
+assert.assert(function(){
+	return L6R1Alignment.summary.overallAlignmentRate == 12.96 ? true : false;
+
+},'Alignment has correct alignment rate	',0);
 
 assert.assert(function(){
 	return true;
