@@ -84,7 +84,11 @@ atomic.updates.on(
 			console.log(
 				`Completed aligning ${(<RunAlignment>op).fastq1.alias} ${(<RunAlignment>op).fastq2.alias} against ${(<RunAlignment>op).fasta.alias}`	
 			);
-			L6R1HPV16Alignment = (<RunAlignment>op).alignData;
+			//in the actual application, this would not be done
+			if((<RunAlignment>op).fasta.uuid == hpv16.uuid)
+				L6R1HPV16Alignment = (<RunAlignment>op).alignData;
+			if((<RunAlignment>op).fasta.uuid == hpv18.uuid)
+				L6R1HPV18Alignment = (<RunAlignment>op).alignData;
 		}
 		if(op.flags.done)
 			assert.runningEvents -= 1;
@@ -183,6 +187,33 @@ assert.assert(function(){
 	return L6R1HPV16Alignment.summary.overallAlignmentRate == 12.96 ? true : false;
 
 },'Alignment has correct alignment rate	',0);
+
+
+assert.assert(function(){
+
+	console.log("aligning L6R1.R1, L6R1.R2 against HPV18");
+	atomic.addOperation("runAlignment",{fasta : hpv18,fastq1 : L6R1R1,fastq2 : L6R1R2,type : "patho"})
+
+	assert.runningEvents += 1;
+	return true;
+},'',0);
+
+assert.assert(function(){
+	return L6R1HPV18Alignment.summary.reads == 2689 ? true : false;
+
+},'Alignment has correct number of reads',0);
+
+assert.assert(function(){
+	return L6R1HPV18Alignment.summary.mates == 5378 ? true : false;
+
+},'Alignment has correct number of mates',0);
+
+assert.assert(function(){
+	return L6R1HPV18Alignment.summary.overallAlignmentRate == 0 ? true : false;
+
+},'Alignment has correct alignment rate	',0);
+
+
 
 assert.assert(function(){
 	return true;
