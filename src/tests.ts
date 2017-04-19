@@ -30,6 +30,7 @@ let hpv16 : Fasta = new Fasta("data/HPV16ref_genomes.fasta");
 let hpv18 : Fasta = new Fasta("data/HPV18ref_genomes.fasta");
 
 let L6R1HPV16Alignment : alignData;
+let L6R1HPV18Alignment : alignData;
 
 
 atomic.updates.on(
@@ -161,7 +162,7 @@ assert.assert(function(){
 
 assert.assert(function(){
 
-	console.log("aligning L6R1.R1, L6R1.R1 against HPV16");
+	console.log("aligning L6R1.R1, L6R1.R2 against HPV16");
 	atomic.addOperation("runAlignment",{fasta : hpv16,fastq1 : L6R1R1,fastq2 : L6R1R2,type : "patho"})
 
 	assert.runningEvents += 1;
