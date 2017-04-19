@@ -69,13 +69,11 @@ atomic.updates.on(
 atomic.updates.on(
 	"runAlignment",function(op : atomic.AtomicOperation)
 	{
-		console.log(op.extraData);
 		if(op.flags.failure)
 		{
 			console.log(
 				`Failed aligning ${(<RunAlignment>op).fastq1.alias} ${(<RunAlignment>op).fastq2.alias} against ${(<RunAlignment>op).fasta.alias}`	
 			);
-			console.log(op.extraData);
 		}
 		else if(op.flags.success)
 		{
