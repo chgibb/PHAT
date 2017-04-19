@@ -157,7 +157,7 @@ assert.assert(function(){
 
 assert.assert(function(){
 
-	console.log("aligning");
+	console.log("aligning L6R1.R1, L6R1.R1 against HPV16");
 	atomic.addOperation("runAlignment",{fasta : hpv16,fastq1 : L6R1R1,fastq2 : L6R1R2,type : "patho"})
 
 	assert.runningEvents += 1;
