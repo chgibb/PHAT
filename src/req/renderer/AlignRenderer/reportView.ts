@@ -124,6 +124,7 @@ export class ReportView extends viewMgr.View
         html.push("</table></div>");
         html.push("<div id='confirmOptions'></div>");
         html.push("<img id='alignButton' src='img/temporaryAlignButton.png'>");
+        this.confirmOptions.render();
         return html.join('');
     }
     postRender()
