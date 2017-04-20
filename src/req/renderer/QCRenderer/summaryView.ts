@@ -79,6 +79,7 @@ export class SummaryView extends viewMgr.View
 					}
 					return res;
 				})()}
+			</table>
 		`;
 	}
 	postRender(){}
