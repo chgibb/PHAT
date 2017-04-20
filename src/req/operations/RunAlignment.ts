@@ -121,7 +121,11 @@ export class RunAlignment extends atomic.AtomicOperation
                             setTimeout(
                                 function(){
                                     let input : string = `resources/app/rt/AlignmentArtifacts/${self.alignData.uuid}/out.bam`;
-                                    let output : string = `resources/app/rt/AlignmentArtifacts/${self.alignData.uuid}/out.sorted`
+                                    let output : string;
+                                    if(process.platform == "win32")
+                                        output = `resources/app/rt/AlignmentArtifacts/${self.alignData.uuid}/out.sorted`
+                                    else if(process.platform == "linux")
+                                        output = `resources/app/rt/AlignmentArtifacts/${self.alignData.uuid}/out.sorted.bam`
 
                                     let args : Array<string> = new Array<string>();
                                     if(process.platform == "linux")
