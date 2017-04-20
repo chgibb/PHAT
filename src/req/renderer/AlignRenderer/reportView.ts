@@ -1,6 +1,11 @@
+/// <reference types="jquery" />
+import * as electron from "electron";
+const ipc = electron.ipcRenderer;
+
 import * as viewMgr from "./../viewMgr";
 import Fastq from "./../../fastq";
 import {Fasta} from "./../../fasta";
+import {AtomicOperationIPC} from "./../../atomicOperationsIPC";
 
 class ConfirmOptions extends viewMgr.View
 {
@@ -194,8 +199,18 @@ export class ReportView extends viewMgr.View
                 AND a Fasta has been selected.
             */
             if (this.selectedFasta && selected_fastq_count >= 2) {
-                alert("P.H.A.T will now align your selection.\nThis may take a few minutes.")
-                //this.model.runAlignment(this.selectedFastqs,this.selectedFasta,this.tab);
+                //alert("P.H.A.T will now align your selection.\nThis may take a few minutes.")
+                ipc.send(
+                    "runOperation",<AtomicOperationIPC>{
+                        opName : "runAlignment",
+                        alignParams : {
+                            fasta : this.selectedFasta,
+                            fastq1 : this.selectedFastqs[0],
+                            fastq2 : this.selectedFastqs[1],
+                            type : this.tab
+                        }
+                    }
+                );
             } else {
                 alert(selected_fastq_count >= 2 ? "You need to select a Fasta file!" : "You need to select two FastQ files!");
             }
