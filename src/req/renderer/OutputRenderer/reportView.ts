@@ -15,7 +15,6 @@ export class ReportView extends viewMgr.View
     public SDL : boolean;
     public ORS : boolean;
     public fastqInputs : Array<Fastq>;
-    public QC : QCClass;
     public constructor(div : string,model? : DataModelMgr)
     {
         super("report",div,model);
@@ -30,18 +29,6 @@ export class ReportView extends viewMgr.View
         this.SDL = false;
         this.ORS = false;
         this.fastqInputs = new Array<Fastq>();
-        this.QC = new QCClass
-        (
-            "output",
-            {
-                postStateHandle : function(channel,args){},
-                spawnHandle : function(channel,arg){},
-                fsAccess : function(str)
-                {
-                    return str;
-                }
-            }
-        );
     }
     onMount(){}
     onUnMount(){}
