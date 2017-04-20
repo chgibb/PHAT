@@ -1,5 +1,5 @@
 import {View} from "./../viewMgr";
-import {makeValidID,findOriginalInput} from "./../MakeValidID";
+import {makeValidID,findOriginalInput} from "./../../MakeValidID";
 import Input from "./../Input";
 var buildInclusiveSearchFilter = require('./../buildInclusiveSearchFilter.js');
 
@@ -43,12 +43,12 @@ export class FastaView extends View
 			{
                 html.push
 		        (
-			        "<tr><td><input type='checkbox' id='",makeValidID(this.model.fastaInputs[i].name),"'></input></td>",
-			        "<td id='",makeValidID(this.model.fastaInputs[i].name)+"_p","'>",this.model.fastaInputs[i].alias,"</td>",
-			        "<td>",this.model.fastaInputs[i].name,"</td>",
+			        "<tr><td><input type='checkbox' id='",this.model.fastaInputs[i].uuid,"'></input></td>",
+			        "<td id='",this.model.fastaInputs[i].uuid+"_p","'>",this.model.fastaInputs[i].alias,"</td>",
+			        "<td>",this.model.fastaInputs[i].absPath,"</td>",
 			        "<td>",this.model.fastaInputs[i].sizeString,"</td>",
-                    "<td>","<input type='radio' id='",makeValidID(this.model.fastaInputs[i].name)+"_path","' name='",makeValidID(this.model.fastaInputs[i].name),"'></input></td>",
-                    "<td>","<input type='radio' id='",makeValidID(this.model.fastaInputs[i].name)+"_host","' name='",makeValidID(this.model.fastaInputs[i].name),"'></input></td>",
+                    "<td>","<input type='radio' id='",this.model.fastaInputs[i].uuid+"_path","' name='",this.model.fastaInputs[i].uuid,"'></input></td>",
+                    "<td>","<input type='radio' id='",this.model.fastaInputs[i].uuid+"_host","' name='",this.model.fastaInputs[i].uuid,"'></input></td>",
                     "<td>",this.model.fastaInputs[i].indexed,"</td>",
 			        "</tr>"
 		        );
@@ -66,12 +66,12 @@ export class FastaView extends View
         {
             if(this.model.fastaInputs[i].checked)
             {
-                $('#'+this.model.fastaInputs[i].validID).prop("checked",true);
+                $('#'+this.model.fastaInputs[i].uuid).prop("checked",true);
             }
             if(this.model.fastaInputs[i].host)
-                $('#'+this.model.fastaInputs[i].validID+'_host').prop("checked",true);
+                $('#'+this.model.fastaInputs[i].uuid+'_host').prop("checked",true);
             if(this.model.fastaInputs[i].pathogen)
-                $('#'+this.model.fastaInputs[i].validID+'_path').prop("checked",true);
+                $('#'+this.model.fastaInputs[i].uuid+'_path').prop("checked",true);
             if(this.searchFilter.test(this.model.fastaInputs[i].alias))
             {
                 if(!this.model.fastaInputs[i].checked)
@@ -100,32 +100,27 @@ export class FastaView extends View
         //checkboxs are the most likely to be clicked
         if(event.target.id != 'fastaSelectAllBox')
         {
-            var name = findOriginalInput(event.target.id,this.model.fastaInputs);
-            //checkbox was clicked
-            if(name !== undefined)
+            if((<HTMLInputElement>event.target).checked)
             {
-                if((<HTMLInputElement>event.target).checked)
+                for(let i = 0; i != this.model.fastaInputs.length; ++i)
                 {
-                    for(let i = 0; i != this.model.fastaInputs.length; ++i)
+                    if(this.model.fastaInputs[i].uuid == event.target.id)
                     {
-                        if(this.model.fastaInputs[i].name == name)
-                        {
-                            this.model.fastaInputs[i].checked = true;
-                            this.dataChanged();
-                            return;
-                        }
+                        this.model.fastaInputs[i].checked = true;
+                        this.dataChanged();
+                        return;
                     }
                 }
-                if(!(<HTMLInputElement>event.target).checked)
+            }
+            if(!(<HTMLInputElement>event.target).checked)
+            {
+                for(let i = 0; i != this.model.fastaInputs.length; ++i)
                 {
-                    for(let i = 0; i != this.model.fastaInputs.length; ++i)
+                    if(this.model.fastaInputs[i].uuid == event.target.id)
                     {
-                        if(this.model.fastaInputs[i].name == name)
-                        {
-                            this.model.fastaInputs[i].checked = false;
-                            this.dataChanged();
-                            return;
-                        }
+                        this.model.fastaInputs[i].checked = false;
+                        this.dataChanged();
+                        return;
                     }
                 }
             }
@@ -151,7 +146,7 @@ export class FastaView extends View
                 if(this.searchFilter.test(this.model.fastaInputs[i].alias))
                 {
                     if(this.model.fastaInputs[i].checked)
-                        this.model.indexFasta(this.model.fastaInputs[i].name);
+                        this.model.indexFasta(this.model.fastaInputs[i]);
                 }
             }
         }
@@ -166,9 +161,8 @@ export class FastaView extends View
             var ID = event.target.id.substr(0,event.target.id.length-5);
             for(let i = 0; i != this.model.fastaInputs.length; ++i)
             {
-                if(this.model.fastaInputs[i].validID == ID)
+                if(this.model.fastaInputs[i].uuid == ID)
                 {
-                    console.log('found item');
                     if(type == "_host")
                     {
                         this.model.fastaInputs[i].host = true;

@@ -1,12 +1,10 @@
 /// <reference types="jquery" />
+import * as Path from "path";
 
-import fsAccess from "./../../fsAccess";
-import {makeValidID} from "./../MakeValidID";
 import requireDyn from "./../../requireDyn";
-import Fastq from "./../fastq";
-import {Fasta} from "./../fasta";
-import alignData from "./../alignData";
-import {DataModelMgr} from "./../model";
+import Fastq from "./../../fastq";
+import {Fasta} from "./../../fasta";
+import alignData from "./../../alignData";
 import * as viewMgr from "./../viewMgr";
 
 export class PileUpView extends viewMgr.View
@@ -15,7 +13,7 @@ export class PileUpView extends viewMgr.View
     public viewer : any;
     public selectedFastaInputs : Array<Fasta>;
     public aligns : Array<alignData>;
-    constructor(div : string,model? : DataModelMgr)
+    constructor(div : string)
     {
         super('pileUp',div);
         this.report = "";
@@ -33,26 +31,16 @@ export class PileUpView extends viewMgr.View
         var bai;
         var bamName;
         var contig;
-            
-        refName = this.report.split(";")[2];
-
-        for(let i = 0; i != this.selectedFastaInputs.length; ++i)
-        {
-            if(this.selectedFastaInputs[i].alias == refName)
-            {
-                twoBit = "resources/app/"+this.selectedFastaInputs[i].twoBit;
-                contig = this.selectedFastaInputs[i].contigs[0];
-                break;
-            }
-        }
 
         for(let i = 0; i != this.aligns.length; ++i)
         {
-            if(this.aligns[i].UUID == this.report)
-            {   
+            if(this.aligns[i].uuid == this.report)
+            {
+                twoBit = this.aligns[i].fasta.twoBit;
+                contig = this.aligns[i].fasta.contigs[0].name.split(' ')[0];
                 bam = "resources/app/rt/AlignmentArtifacts/"+this.report+"/out.sorted.bam";
                 bai = "resources/app/rt/AlignmentArtifacts/"+this.report+"/out.sorted.bam.bai";
-                bamName = this.report.split(';')[0]+", "+this.report.split(';')[1];
+                bamName = this.aligns[i].alias;
                 break;
             }
         }
@@ -74,7 +62,7 @@ export class PileUpView extends viewMgr.View
                         data : (<any>window).pileup.formats.twoBit
                         (
                             {
-                                url : fsAccess(twoBit)
+                                url : Path.resolve(twoBit)
                             }
                         ),
                         name : refName
@@ -84,8 +72,8 @@ export class PileUpView extends viewMgr.View
                         data : (<any>window).pileup.formats.bam
                         (
                             {
-                                url : fsAccess(bam),
-                                indexUrl : fsAccess(bai)
+                                url : Path.resolve(bam),
+                                indexUrl :Path.resolve(bai)
                             }
                         ),
                         cssClass : 'normal',
@@ -146,7 +134,7 @@ export class PileUpView extends viewMgr.View
     }
     dataChanged(){}
 }
-export function addView(arr : Array<viewMgr.View>,div : string,model? : DataModelMgr) : void
+export function addView(arr : Array<viewMgr.View>,div : string) : void
 {
-    arr.push(new PileUpView(div,model));
+    arr.push(new PileUpView(div));
 }

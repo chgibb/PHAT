@@ -12,8 +12,15 @@ const jsonFile = require("jsonfile");
 
 import {Job} from "./Job";
 import * as dataMgr from "./dataMgr";
-var jobMgr = require('./JobMgr');
+import * as atomicOp from "./../operations/atomicOperations";
+import {AtomicOperationIPC} from "./../atomicOperationsIPC";
+import {GenerateQCReport} from "./../operations/GenerateQCReport";
+import {IndexFasta} from "./../operations/indexFasta";
+import {RunAlignment} from "./../operations/RunAlignment";
 import * as winMgr from "./winMgr";
+
+import {File} from "./../file";
+import alignData from "./../alignData";
 
 import {GetKeyEvent,SaveKeyEvent,KeySubEvent} from "./../ipcEvents";
 var keySub = require('./keySub');
@@ -253,7 +260,12 @@ app.on
 		electron.Menu.setApplicationMenu(menu);
 
 		winMgr.windowCreators["toolBar"].Create();
-		setInterval(function(){jobMgr.runJobs();},200);
+		
+		atomicOp.register("generateFastQCReport",GenerateQCReport);
+		atomicOp.register("indexFasta",IndexFasta);
+		atomicOp.register("runAlignment",RunAlignment);
+
+		setInterval(function(){atomicOp.runOperations(1);},2500);
 	}
 );
 app.on
@@ -326,7 +338,99 @@ ipc.on
 		}
 	}
 );
-ipc.on
+
+ipc.on(
+	"runOperation",function(event,arg : AtomicOperationIPC)
+	{
+		if(arg.opName != "runAlignment")
+		{
+			let list : Array<File> = dataMgr.getKey(arg.channel,arg.key);
+			for(let i : number = 0; i != list.length; ++i)
+			{
+				if(list[i].uuid == arg.uuid)
+				{
+					console.log(`Found ${list[i].path}`);
+					let tmp = {};
+					Object.assign(tmp,list[i]);
+					atomicOp.addOperation(arg.opName,tmp);
+					return;
+				}
+			}
+		}
+		else if(arg.opName == "runAlignment")
+		{
+			console.log("running alignment");
+			atomicOp.addOperation(
+				arg.opName,
+				Object.assign({},arg.alignParams)
+			);
+		}
+	}
+);
+atomicOp.updates.on(
+	"indexFasta",function(op : atomicOp.AtomicOperation)
+	{
+		dataMgr.setKey("application","operations",atomicOp.operationsQueue);
+		dataMgr.publishChangeForKey("application","operations");
+		if(op.flags.success)
+		{
+			let fasta : File = (<IndexFasta>op).fasta;
+			let fastaInputs : Array<File> = dataMgr.getKey("input","fastaInputs");
+			for(let i = 0; i != fastaInputs.length; ++i)
+			{
+				if(fastaInputs[i].uuid == fasta.uuid)
+				{
+					fastaInputs[i] = fasta;
+					break;
+				}
+			}
+
+			dataMgr.setKey("input","fastaInputs",fastaInputs);
+			dataMgr.publishChangeForKey("input","fastaInputs");
+		}
+	}
+);
+atomicOp.updates.on(
+	"generateFastQCReport",function(op : atomicOp.AtomicOperation)
+	{
+		dataMgr.setKey("application","operations",atomicOp.operationsQueue);
+		dataMgr.publishChangeForKey("application","operations");
+		if(op.flags.success)
+		{
+			let fastq : File = (<GenerateQCReport>op).fastq;
+			let fastqInputs : Array<File> = dataMgr.getKey("input","fastqInputs");
+			for(let i = 0; i != fastqInputs.length; ++i)
+			{
+				if(fastqInputs[i].uuid == fastq.uuid)
+				{
+					fastqInputs[i] = fastq;
+					break;
+				}
+			}
+
+			dataMgr.setKey("input","fastqInputs",fastqInputs);
+			dataMgr.publishChangeForKey("input","fastqInputs");
+		}
+	}
+);
+atomicOp.updates.on(
+	"runAlignment",function(op : RunAlignment)
+	{
+		dataMgr.setKey("application","operations",atomicOp.operationsQueue);
+		dataMgr.publishChangeForKey("application","operations");
+		if(op.flags.success)
+		{
+			let aligns : Array<alignData> = dataMgr.getKey("align","aligns");
+			if(aligns == undefined)
+				aligns = new Array<alignData>();
+
+			aligns.push(op.alignData);
+			dataMgr.setKey("align","aligns",aligns);
+			dataMgr.publishChangeForKey("align","aligns");
+		}
+	}
+);
+/*ipc.on
 (
 	"spawnSync",function(event,arg)
 	{
@@ -354,4 +458,5 @@ ipc.on
 			jobMgr.runJobs();
 		}
 	}
-);
+);*/
+

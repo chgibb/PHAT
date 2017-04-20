@@ -1,11 +1,11 @@
+import {File} from "./file";
+import {Contig} from "./fastaContigLoader";
 import {makeValidID} from "./MakeValidID";
 import trimPath from "./trimPath";
-export class Fasta
+export class Fasta extends File
 {
-    public name : string;
     public alias : string;
     public checked : boolean;
-    public size : number;
     public sizeString : string;
     public sequences : number;
     public validID : string;
@@ -16,12 +16,11 @@ export class Fasta
     public pathogen : boolean;
     public type : string;
     public twoBit : string;
-    public contigs : Array<string>;
+    public contigs : Array<Contig>;
     public fai : string;
-    public constructor(name : string)
+    public constructor(path : string)
     {
         /**
-         * @prop {string} name - Path to file
          * @prop {string} alias - File name without path
          * @prop {boolean} checked - Whether this file is selected or not
          * @prop {number} size - Size in bytes of file
@@ -34,13 +33,11 @@ export class Fasta
          * @prop {boolean} host - Whether this file is a host reference
          * @prop {boolean} pathogen - Whether this file is a pathogen reference
          */
-        this.name = name;
-        this.alias = trimPath(name);
+        super(path);
+        this.alias = trimPath(path);
         this.checked = false;
-        this.size = 0;
-        this.sizeString = "0";
         this.sequences = 0;
-        this.validID = makeValidID(name);
+        this.validID = makeValidID(path);
         this.indexed = false;
         this.indexing = false;
         this.indexes = new Array();
@@ -48,7 +45,7 @@ export class Fasta
         this.pathogen = false;
         this.type = "";
         this.twoBit = "";
-        this.contigs = new Array<string>();
+        this.contigs = new Array<Contig>();
         this.fai = "";
     }
 }

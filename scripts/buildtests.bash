@@ -30,11 +30,6 @@ done
 
 for f in $(find src -name '*.ts'); 
 do
-	if [[ "$OSTYPE" == "linux-gnu" ]]; then
-		artifact=$(echo $f | awk '{gsub("\.ts",".js");print}')
-	fi
-	if [[ "$OSTYPE" == "cygwin" ]]; then
-		artifact=$(echo $f | awk '{gsub("\\.ts",".js");print}')
-	fi
+	artifact=$(echo $f | awk '{gsub("\\.ts",".js");print}')
 	rm $artifact
 done
