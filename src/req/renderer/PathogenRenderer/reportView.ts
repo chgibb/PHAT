@@ -79,6 +79,7 @@ export class ReportView extends viewMgr.View
                     <th>Date Ran</th>
                 </tr>
                 ${(()=>{
+                    let res : string = "";
                     for(let i : number = 0; i != this.aligns.length; ++i)
                     {
                         if(this.aligns[i].type = "path")
@@ -110,7 +111,7 @@ export class ReportView extends viewMgr.View
                             }
                             if(found == 3)
                             {
-                                return `
+                                res += `
                                     <tr>
                                         <td><p id="${this.aligns[i].uuid}">${this.aligns[i].alias}</i></td>
                                         <td>${this.aligns[i].summary.reads}</td>
@@ -122,7 +123,7 @@ export class ReportView extends viewMgr.View
                             }
                         }
                     }
-                    return ``;
+                    return res;
                 })()}
             </table>
         `;
@@ -137,6 +138,7 @@ export class ReportView extends viewMgr.View
             if(this.aligns[i].uuid == event.target.id)
             {
                 (<PileUpView>viewMgr.getViewByName("pileUp")).report = this.aligns[i].uuid;
+                console.log(this.aligns[i].uuid);
                 viewMgr.changeView("pileUp");
                 return;
             }
