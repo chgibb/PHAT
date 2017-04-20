@@ -1,6 +1,8 @@
 import {SpawnRequestParams} from "./JobIPC";
-import {OperationUpdate,CompletionFlags} from "./main/operations/atomicOperations";
-export {OperationUpdate,CompletionFlags} from "./main/operations/atomicOperations";
+import {Fasta} from "./fasta";
+import Fastq from "./fastq";
+import {CompletionFlags} from "./operations/atomicOperations";
+export {CompletionFlags} from "./operations/atomicOperations";
 
 export interface AtomicOperationIPC
 {
@@ -8,5 +10,5 @@ export interface AtomicOperationIPC
     channel? : string;
     key? : string;
     uuid? : string;
-    oup? : OperationUpdate;
+    alignParams? : {fasta : Fasta,fastq1 : Fastq,fastq2 : Fastq,type : "patho" | "host"};
 }
