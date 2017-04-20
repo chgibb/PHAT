@@ -16,9 +16,11 @@ import * as atomicOp from "./../operations/atomicOperations";
 import {AtomicOperationIPC} from "./../atomicOperationsIPC";
 import {GenerateQCReport} from "./../operations/GenerateQCReport";
 import {IndexFasta} from "./../operations/indexFasta";
+import {RunAlignment} from "./../operations/RunAlignment";
 import * as winMgr from "./winMgr";
 
 import {File} from "./../file";
+import alignData from "./../alignData";
 
 import {GetKeyEvent,SaveKeyEvent,KeySubEvent} from "./../ipcEvents";
 var keySub = require('./keySub');
@@ -261,6 +263,7 @@ app.on
 		
 		atomicOp.register("generateFastQCReport",GenerateQCReport);
 		atomicOp.register("indexFasta",IndexFasta);
+		atomicOp.register("runAlignment",RunAlignment);
 
 		setInterval(function(){atomicOp.runOperations(1);},2500);
 	}
@@ -339,17 +342,28 @@ ipc.on
 ipc.on(
 	"runOperation",function(event,arg : AtomicOperationIPC)
 	{
-		let list : Array<File> = dataMgr.getKey(arg.channel,arg.key);
-		for(let i : number = 0; i != list.length; ++i)
+		if(arg.opName != "runAlignment")
 		{
-			if(list[i].uuid == arg.uuid)
+			let list : Array<File> = dataMgr.getKey(arg.channel,arg.key);
+			for(let i : number = 0; i != list.length; ++i)
 			{
-				console.log(`Found ${list[i].path}`);
-				let tmp = {};
-				Object.assign(tmp,list[i]);
-				atomicOp.addOperation(arg.opName,tmp);
-				return;
+				if(list[i].uuid == arg.uuid)
+				{
+					console.log(`Found ${list[i].path}`);
+					let tmp = {};
+					Object.assign(tmp,list[i]);
+					atomicOp.addOperation(arg.opName,tmp);
+					return;
+				}
 			}
+		}
+		else if(arg.opName == "runAlignment")
+		{
+			console.log("running alignment");
+			atomicOp.addOperation(
+				arg.opName,
+				Object.assign({},arg.alignParams)
+			);
 		}
 	}
 );
@@ -399,7 +413,23 @@ atomicOp.updates.on(
 		}
 	}
 );
+atomicOp.updates.on(
+	"runAlignment",function(op : RunAlignment)
+	{
+		dataMgr.setKey("application","operations",atomicOp.operationsQueue);
+		dataMgr.publishChangeForKey("application","operations");
+		if(op.flags.success)
+		{
+			let aligns : Array<alignData> = dataMgr.getKey("align","aligns");
+			if(aligns == undefined)
+				aligns = new Array<alignData>();
 
+			aligns.push(op.alignData);
+			dataMgr.setKey("align","aligns",aligns);
+			dataMgr.publishChangeForKey("align","aligns");
+		}
+	}
+);
 /*ipc.on
 (
 	"spawnSync",function(event,arg)

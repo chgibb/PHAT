@@ -80,6 +80,7 @@ $
         (
             'align',function(event,arg)
             {
+                console.log(arg);
                 if(arg.action == "getKey" || arg.action == "keyChange")
                 {
                     if(arg.key == "fastqInputs")
