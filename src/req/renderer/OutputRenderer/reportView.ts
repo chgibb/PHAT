@@ -1,6 +1,5 @@
 import * as viewMgr from "./../viewMgr";
-import Fastq from "./../fastq";
-import QCClass from "./../QC";
+import Fastq from "./../../fastq";
 import {DataModelMgr} from "./../model";
 
 export class ReportView extends viewMgr.View
