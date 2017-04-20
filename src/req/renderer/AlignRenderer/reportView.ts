@@ -1,9 +1,6 @@
 import * as viewMgr from "./../viewMgr";
-import {makeValidID,findOriginalInput} from "./../MakeValidID";
-import AlignMgr from "./../Align";
-
-import Fastq from "./../fastq";
-import {Fasta} from "./../fasta";
+import Fastq from "./../../fastq";
+import {Fasta} from "./../../fasta";
 
 class ConfirmOptions extends viewMgr.View
 {
@@ -45,12 +42,10 @@ export class ReportView extends viewMgr.View
 
     public tab : "path" | "host";
 
-    public model : AlignMgr;
-
     public confirmOptions : ConfirmOptions;
-    public constructor(div : string,model : AlignMgr)
+    public constructor(div : string)
     {
-        super('report',div,model);
+        super('report',div);
         this.fastqInputs = new Array<Fastq>();
         this.fastaInputs = new Array<Fasta>();
 
@@ -85,7 +80,7 @@ export class ReportView extends viewMgr.View
                 (
                     "<tr>",
                     "<td>",this.fastqInputs[i].alias,"</td>",
-                    "<td>","<input type='checkbox' id='",this.fastqInputs[i].validID,"'></input></td>",
+                    "<td>","<input type='checkbox' id='",this.fastqInputs[i].uuid,"'></input></td>",
                     "</tr>"
                 );
             }
@@ -114,7 +109,7 @@ export class ReportView extends viewMgr.View
                 (
                     "<tr>",
                     "<td>",this.fastaInputs[i].alias,"</td>",
-                    "<td>","<input type='radio' name='fasta' id='",this.fastaInputs[i].validID,"'></input></td>",
+                    "<td>","<input type='radio' name='fasta' id='",this.fastaInputs[i].uuid,"'></input></td>",
                     "</tr>"
                 );
             }
@@ -131,13 +126,13 @@ export class ReportView extends viewMgr.View
         //restore checked state of checkboxs
         for(let i = 0; i != this.selectedFastqs.length; ++i)
         {
-            let elem = (<HTMLInputElement>document.getElementById(this.selectedFastqs[i].validID));
+            let elem = (<HTMLInputElement>document.getElementById(this.selectedFastqs[i].uuid));
             if(elem)
                 elem.checked = true;
         }
         if(this.selectedFasta)
         {
-            let elem = (<HTMLInputElement>document.getElementById(this.selectedFasta.validID));
+            let elem = (<HTMLInputElement>document.getElementById(this.selectedFasta.uuid));
             if(elem)
                 elem.checked = true;
         }
@@ -152,7 +147,7 @@ export class ReportView extends viewMgr.View
             return;
         for(let i = 0; i != this.fastqInputs.length; ++i)
         {
-            if(event.target.id == this.fastqInputs[i].validID)
+            if(event.target.id == this.fastqInputs[i].uuid)
             {
                 if(this.selectedFastqs.length >= 2)
                     (<HTMLInputElement>document.getElementById(event.target.id)).checked = false;
@@ -173,12 +168,12 @@ export class ReportView extends viewMgr.View
             let selected_fastq_count = 0;
             for(let i = 0; i != this.fastqInputs.length; ++i)
             {
-                if(this.selectedFastqs[0] && this.selectedFastqs[0].validID == this.fastqInputs[i].validID)
+                if(this.selectedFastqs[0] && this.selectedFastqs[0].uuid == this.fastqInputs[i].uuid)
                 {
                     this.selectedFastqs[0] = this.fastqInputs[i];
                     selected_fastq_count++;
                 }
-                if(this.selectedFastqs[1] && this.selectedFastqs[1].validID == this.fastqInputs[i].validID)
+                if(this.selectedFastqs[1] && this.selectedFastqs[1].uuid == this.fastqInputs[i].uuid)
                 {
                     this.selectedFastqs[1] = this.fastqInputs[i];
                     selected_fastq_count++;
@@ -187,7 +182,7 @@ export class ReportView extends viewMgr.View
             }
             for(let i = 0; i != this.fastaInputs.length; ++i)
             {
-                if(this.selectedFasta.validID == this.fastaInputs[i].validID)
+                if(this.selectedFasta.uuid == this.fastaInputs[i].uuid)
                 {
                     this.selectedFasta = this.fastaInputs[i];
                     break;
@@ -200,7 +195,7 @@ export class ReportView extends viewMgr.View
             */
             if (this.selectedFasta && selected_fastq_count >= 2) {
                 alert("P.H.A.T will now align your selection.\nThis may take a few minutes.")
-                this.model.runAlignment(this.selectedFastqs,this.selectedFasta,this.tab);
+                //this.model.runAlignment(this.selectedFastqs,this.selectedFasta,this.tab);
             } else {
                 alert(selected_fastq_count >= 2 ? "You need to select a Fasta file!" : "You need to select two FastQ files!");
             }
@@ -218,7 +213,7 @@ export class ReportView extends viewMgr.View
         for(let i = 0; i != this.fastqInputs.length; ++i)
         {
             if(this.fastqInputs[i].checked &&
-            (<HTMLInputElement>document.getElementById(this.fastqInputs[i].validID)).checked)
+            (<HTMLInputElement>document.getElementById(this.fastqInputs[i].uuid)).checked)
             {
                 this.selectedFastqs.push(this.fastqInputs[i]);
             }
@@ -232,7 +227,7 @@ export class ReportView extends viewMgr.View
         //walk the table and save checked fasta in selectedFasta
         for(let i = 0; i != this.fastaInputs.length; ++i)
         {
-            let elem = (<HTMLInputElement>document.getElementById(this.fastaInputs[i].validID));
+            let elem = (<HTMLInputElement>document.getElementById(this.fastaInputs[i].uuid));
             if(elem && elem.checked)
             {
                 this.selectedFasta = this.fastaInputs[i];
@@ -249,17 +244,17 @@ export class ReportView extends viewMgr.View
         let setSecond = false;
         if(!this.selectedFastqs[0] || !this.selectedFastqs[1])
             return;
-        //Selected items are saved by validID. Convert to alias for confirmOptions to render.
+        //Selected items are saved by uuid. Convert to alias for confirmOptions to render.
         for(let i = 0; i != this.fastqInputs.length; ++i)
         {
             if(this.fastqInputs[i].checked)
             {
-                if(this.selectedFastqs[0].validID == this.fastqInputs[i].validID)
+                if(this.selectedFastqs[0].uuid == this.fastqInputs[i].uuid)
                 {
                     this.confirmOptions.selectedFastqs[0] = this.fastqInputs[i].alias;
                     setFirst = true;
                 }
-                if(this.selectedFastqs[1].validID == this.fastqInputs[i].validID)
+                if(this.selectedFastqs[1].uuid == this.fastqInputs[i].uuid)
                 {
                     this.confirmOptions.selectedFastqs[1] = this.fastqInputs[i].alias;
                     setSecond = true;
@@ -272,7 +267,7 @@ export class ReportView extends viewMgr.View
         {
             if(this.fastaInputs[i].checked)
             {
-                if(this.selectedFasta.validID == this.fastaInputs[i].validID)
+                if(this.selectedFasta.uuid == this.fastaInputs[i].uuid)
                 {
                     this.confirmOptions.selectedFasta = this.fastaInputs[i].alias;
                     break;
@@ -282,7 +277,7 @@ export class ReportView extends viewMgr.View
     }
 }
 
-export function addView(arr : Array<viewMgr.View>,div : string,model : AlignMgr) : void
+export function addView(arr : Array<viewMgr.View>,div : string) : void
 {
-    arr.push(new ReportView(div,model));
+    arr.push(new ReportView(div));
 }
