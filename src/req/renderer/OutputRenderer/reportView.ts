@@ -1,5 +1,6 @@
 import * as viewMgr from "./../viewMgr";
 import Fastq from "./../../fastq";
+import {getQCSummaryByNameOfReportByIndex} from "./../../QCData";
 import {DataModelMgr} from "./../model";
 
 export class ReportView extends viewMgr.View
@@ -54,20 +55,11 @@ export class ReportView extends viewMgr.View
                     {
                         if(this.fastqInputs[i].checked)
                         {
-                            let QCDataIndex;
-                            for(let k = 0; k != this.QC.QCData.length; ++k)
-                            {
-                                if(this.QC.QCData[k].name == this.fastqInputs[i].name)
-                                {
-                                    QCDataIndex = k;
-                                    break;
-                                }
-                            }
                             res += "<tr>";
                             if(this.alias)
                                 res += `<td>${this.fastqInputs[i].alias}</td>`;
                             if(this.fullName)
-                                res += `<td>${this.fastqInputs[i].name}</td>`;
+                                res += `<td>${this.fastqInputs[i].absPath}</td>`;
                             if(this.sizeInBytes)
                                 res += `<td>${this.fastqInputs[i].size}</td>`;
                             if(this.formattedSize)
@@ -75,15 +67,15 @@ export class ReportView extends viewMgr.View
                             if(this.numberOfSequences)
                                 res += `<td>${this.fastqInputs[i].sequences}</td>`;
                             if(this.PBSQ)
-                                res += `<td>${this.QC.getQCSummaryByNameOfReportByIndex(QCDataIndex,"Per base sequence quality")}</td>`;
+                                res += `<td>${getQCSummaryByNameOfReportByIndex(this.fastqInputs,i,"Per base sequence quality")}</td>`;
                             if(this.PSQS)
-                                res += `<td>${this.QC.getQCSummaryByNameOfReportByIndex(QCDataIndex,"Per sequence quality scores")}</td>`;
+                                res += `<td>${getQCSummaryByNameOfReportByIndex(this.fastqInputs,i,"Per sequence quality scores")}</td>`;
                             if(this.PSGCC)
-                                res += `<td>${this.QC.getQCSummaryByNameOfReportByIndex(QCDataIndex,"Per sequence GC content")}</td>`;
+                                res += `<td>${getQCSummaryByNameOfReportByIndex(this.fastqInputs,i,"Per sequence GC content")}</td>`;
                             if(this.SDL)
-                                res += `<td>${this.QC.getQCSummaryByNameOfReportByIndex(QCDataIndex,"Sequence Duplication Levels")}</td>`;
+                                res += `<td>${getQCSummaryByNameOfReportByIndex(this.fastqInputs,i,"Sequence Duplication Levels")}</td>`;
                             if(this.ORS)
-                                res += `<td>${this.QC.getQCSummaryByNameOfReportByIndex(QCDataIndex,"Overrepresented sequences")}</td>`;
+                                res += `<td>${getQCSummaryByNameOfReportByIndex(this.fastqInputs,i,"Overrepresented sequences")}</td>`;
                             res += "</tr>";
                         }
                     }
