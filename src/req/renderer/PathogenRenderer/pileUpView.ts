@@ -1,4 +1,5 @@
 /// <reference types="jquery" />
+import * as Path from "path";
 
 import requireDyn from "./../../requireDyn";
 import Fastq from "./../../fastq";
@@ -30,26 +31,16 @@ export class PileUpView extends viewMgr.View
         var bai;
         var bamName;
         var contig;
-            
-        refName = this.report.split(";")[2];
-
-        for(let i = 0; i != this.selectedFastaInputs.length; ++i)
-        {
-            if(this.selectedFastaInputs[i].alias == refName)
-            {
-                twoBit = "resources/app/"+this.selectedFastaInputs[i].twoBit;
-                contig = this.selectedFastaInputs[i].contigs[0];
-                break;
-            }
-        }
 
         for(let i = 0; i != this.aligns.length; ++i)
         {
             if(this.aligns[i].uuid == this.report)
-            {   
+            {
+                twoBit = this.aligns[i].fasta.twoBit;
+                contig = this.aligns[i].fasta.contigs[0].name.split(' ')[0];
                 bam = "resources/app/rt/AlignmentArtifacts/"+this.report+"/out.sorted.bam";
                 bai = "resources/app/rt/AlignmentArtifacts/"+this.report+"/out.sorted.bam.bai";
-                bamName = this.report.split(';')[0]+", "+this.report.split(';')[1];
+                bamName = this.aligns[i].alias;
                 break;
             }
         }
@@ -71,7 +62,7 @@ export class PileUpView extends viewMgr.View
                         data : (<any>window).pileup.formats.twoBit
                         (
                             {
-                                url : twoBit
+                                url : Path.resolve(twoBit)
                             }
                         ),
                         name : refName
@@ -81,8 +72,8 @@ export class PileUpView extends viewMgr.View
                         data : (<any>window).pileup.formats.bam
                         (
                             {
-                                url : bam,
-                                indexUrl : bai
+                                url : Path.resolve(bam),
+                                indexUrl :Path.resolve(bai)
                             }
                         ),
                         cssClass : 'normal',
