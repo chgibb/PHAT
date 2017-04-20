@@ -4,42 +4,18 @@ import * as electron from "electron";
 const ipc = electron.ipcRenderer;
 
 import {GetKeyEvent,KeySubEvent} from "./req/ipcEvents";
-
-import {makeValidID} from "./req/renderer/MakeValidID";
 import * as viewMgr from "./req/renderer/viewMgr";
-
 import * as reportView from "./req/renderer/AlignRenderer/reportView"
-
-import AlignMgr from "./req/renderer/Align";
 
 import * as $ from "jquery";
 (<any>window).$ = $;
 require("./req/renderer/commonBehaviour");
-let align = new AlignMgr
-(
-    'align',
-    {
-        postStateHandle : function(channel,arg)
-        {
-            ipc.send(channel,arg);
-            viewMgr.render();
-        },
-        spawnHandle : function(channel,arg)
-        {
-            ipc.send(channel,arg);
-        },
-        fsAccess : function(str)
-        {
-            return str;
-        }
-    }
-);
 
 $
 (
     function()
     {
-        reportView.addView(viewMgr.views,"container",align);
+        reportView.addView(viewMgr.views,"container");
 
         viewMgr.changeView("report");
         
@@ -126,22 +102,12 @@ $
                     {
                         if(arg.val !== undefined)
                         {
-                            align.aligns = arg.val;
+                            
                         }
                     }
                 }
                 
                 viewMgr.render();
-            }
-        );
-        ipc.on
-        (
-            "spawnReply",function(event,arg)
-            {
-                console.log(JSON.stringify(arg,undefined,4));
-                //update from spawned process.
-                //forward to handler.
-                align.spawnReply("spawnReply",arg);
             }
         );
     }
