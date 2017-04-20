@@ -1,12 +1,9 @@
 /// <reference types="jquery" />
 
-import fsAccess from "./../../fsAccess";
-import {makeValidID} from "./../MakeValidID";
 import requireDyn from "./../../requireDyn";
-import Fastq from "./../fastq";
-import {Fasta} from "./../fasta";
-import alignData from "./../alignData";
-import {DataModelMgr} from "./../model";
+import Fastq from "./../../fastq";
+import {Fasta} from "./../../fasta";
+import alignData from "./../../alignData";
 import * as viewMgr from "./../viewMgr";
 
 export class PileUpView extends viewMgr.View
@@ -15,7 +12,7 @@ export class PileUpView extends viewMgr.View
     public viewer : any;
     public selectedFastaInputs : Array<Fasta>;
     public aligns : Array<alignData>;
-    constructor(div : string,model? : DataModelMgr)
+    constructor(div : string)
     {
         super('pileUp',div);
         this.report = "";
@@ -48,7 +45,7 @@ export class PileUpView extends viewMgr.View
 
         for(let i = 0; i != this.aligns.length; ++i)
         {
-            if(this.aligns[i].UUID == this.report)
+            if(this.aligns[i].uuid == this.report)
             {   
                 bam = "resources/app/rt/AlignmentArtifacts/"+this.report+"/out.sorted.bam";
                 bai = "resources/app/rt/AlignmentArtifacts/"+this.report+"/out.sorted.bam.bai";
@@ -74,7 +71,7 @@ export class PileUpView extends viewMgr.View
                         data : (<any>window).pileup.formats.twoBit
                         (
                             {
-                                url : fsAccess(twoBit)
+                                url : twoBit
                             }
                         ),
                         name : refName
@@ -84,8 +81,8 @@ export class PileUpView extends viewMgr.View
                         data : (<any>window).pileup.formats.bam
                         (
                             {
-                                url : fsAccess(bam),
-                                indexUrl : fsAccess(bai)
+                                url : bam,
+                                indexUrl : bai
                             }
                         ),
                         cssClass : 'normal',
@@ -146,7 +143,7 @@ export class PileUpView extends viewMgr.View
     }
     dataChanged(){}
 }
-export function addView(arr : Array<viewMgr.View>,div : string,model? : DataModelMgr) : void
+export function addView(arr : Array<viewMgr.View>,div : string) : void
 {
-    arr.push(new PileUpView(div,model));
+    arr.push(new PileUpView(div));
 }
