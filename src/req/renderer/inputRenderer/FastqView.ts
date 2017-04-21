@@ -1,5 +1,5 @@
 import {View} from "./../viewMgr";
-import {makeValidID,findOriginalInput} from "./../MakeValidID";
+import {makeValidID,findOriginalInput} from "./../../MakeValidID";
 import Input from "./../Input";
 var buildInclusiveSearchFilter = require('./../buildInclusiveSearchFilter.js');
 export class FastqView extends View
@@ -39,9 +39,9 @@ export class FastqView extends View
             {
 		        html.push
 		        (
-			        "<tr><td><input type='checkbox' id='",this.model.fastqInputs[i].validID,"'></input></td>",
+			        "<tr><td><input type='checkbox' id='",this.model.fastqInputs[i].uuid,"'></input></td>",
 			        "<td>",this.model.fastqInputs[i].alias,"</td>",
-			        "<td>",this.model.fastqInputs[i].name,"</td>",
+			        "<td>",this.model.fastqInputs[i].absPath,"</td>",
 			        "<td>",this.model.fastqInputs[i].sizeString,"</td>",
 			        "</tr>"
                 );
@@ -61,7 +61,7 @@ export class FastqView extends View
             //restore state of checkboxes
             if(this.model.fastqInputs[i].checked)
             {
-                $('#'+this.model.fastqInputs[i].validID).prop("checked",true);
+                $('#'+this.model.fastqInputs[i].uuid).prop("checked",true);
             }
             //check the check all box if all visible items have been checked
             if(this.searchFilter.test(this.model.fastqInputs[i].alias))
@@ -102,33 +102,27 @@ export class FastqView extends View
         //this is a reasonable check to ensure a checkbox was (maybe) clicked
         if(event.target.id != 'fastqSelectAllBox')
         {
-            //if name is defined then a checkbox was actually clicked
-            var name = findOriginalInput(event.target.id,this.model.fastqInputs);
-            //checkbox was clicked
-            if(name !== undefined)
+            if((<HTMLInputElement>event.target).checked)
             {
-                if((<HTMLInputElement>event.target).checked)
+                for(let i = 0; i != this.model.fastqInputs.length; ++i)
                 {
-                    for(var i in this.model.fastqInputs)
+                    if(this.model.fastqInputs[i].uuid == event.target.id)
                     {
-                        if(this.model.fastqInputs[i].name == name)
-                        {
-                            this.model.fastqInputs[i].checked = true;
-                            this.dataChanged();
-                            return;
-                        }
+                        this.model.fastqInputs[i].checked = true;
+                        this.dataChanged();
+                        return;
                     }
                 }
-                if(!(<HTMLInputElement>event.target).checked)
+            }
+            if(!(<HTMLInputElement>event.target).checked)
+            {
+                for(let i = 0; i != this.model.fastqInputs.length; ++i)
                 {
-                    for(var i in this.model.fastqInputs)
+                    if(this.model.fastqInputs[i].uuid == event.target.id)
                     {
-                        if(this.model.fastqInputs[i].name == name)
-                        {
-                            this.model.fastqInputs[i].checked = false;
-                            this.dataChanged();
-                            return;
-                        }
+                        this.model.fastqInputs[i].checked = false;
+                        this.dataChanged();
+                        return;
                     }
                 }
             }

@@ -94,7 +94,7 @@ export function createKey(channel : string,key : string) : boolean
 }
 export function setKey(channel : string,key : string,val : any) : boolean
 {
-    console.log(stringifyData(undefined,4));
+    //console.log(stringifyData(undefined,4));
     try
     {
         if(!getChannel(channel))

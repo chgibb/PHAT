@@ -14,5 +14,5 @@ if [[ "$OSTYPE" == "cygwin" ]]; then
 fi
 
 #build then run
-bash build.bash
-sh run.sh
+bash scripts/build.bash
+sh scripts/run.sh

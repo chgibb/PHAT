@@ -2,34 +2,15 @@ import * as electron from "electron";
 const ipc = electron.ipcRenderer;
 
 import {GetKeyEvent,KeySubEvent} from "./req/ipcEvents";
+import  {AtomicOperation} from "./req/operations/atomicOperations"
+import  {GenerateQCReport} from "./req/operations/GenerateQCReport"
 import * as viewMgr from "./req/renderer/viewMgr";
-import {makeValidID} from "./req/renderer/MakeValidID";
-
-import QCClass from "./req/renderer/QC";
 
 import * as summary from "./req/renderer/QCRenderer/summaryView";
 import * as report from "./req/renderer/QCRenderer/reportView";
 
 require("./req/renderer/commonBehaviour");
 
-let QC = new QCClass
-(
-    'QC',
-    {
-        postStateHandle : function(channel,arg)
-        {
-            ipc.send(channel,arg);
-        },
-        spawnHandle : function(channel,arg)
-        {
-            ipc.send(channel,arg);
-        },
-        fsAccess : function(str)
-        {
-            return str;
-        }
-    }
-);
 import * as $ from "jquery";
 (<any>window).$ = $;
 require("./req/renderer/commonBehaviour");
@@ -38,8 +19,8 @@ $
 (
     function()
     {
-        summary.addView(viewMgr.views,'reports',QC);
-        report.addView(viewMgr.views,'reports',QC);
+        summary.addView(viewMgr.views,'reports');
+        report.addView(viewMgr.views,'reports');
 
 
         viewMgr.changeView("summary");
@@ -54,25 +35,6 @@ $
             }
         );
         ipc.send(
-            "keySub",
-            <KeySubEvent>{
-                action : "keySub",
-                channel : "QC",
-                key : "QCData",
-                replyChannel : "QC"
-            }
-        );
-
-        ipc.send(
-            "getKey",
-            <GetKeyEvent>{
-                action : "getKey",
-                channel : "QC",
-                key : "QCData",
-                replyChannel : "QC"
-            }
-        );
-        ipc.send(
             "getKey",
             <GetKeyEvent>{
                 action : "getKey",
@@ -81,65 +43,82 @@ $
                 replyChannel : "QC"
             }
         );
-        
-        ipc.on
-        (
-            'QC',function(event,arg)
-            {
-                console.log(JSON.stringify(arg,undefined,4));
-                if(arg.action == "getKey" || arg.action == "keyChange")
-                {
-                    if(arg.key == 'QCData')
-                    {
-                        if(arg.val !== undefined )
-                        {
-                            QC.QCData = arg.val;
-                        }
-                    }
-                    if(arg.key == "fastqInputs")
-                    {
-                        if(arg.val !== undefined)
-                        {
-                            for(let i = 0; i != arg.val.length; ++i)
-                            {
-                                QC.addQCData(arg.val[i].name);
-                            }
-                            QC.postQCData();
-                            (<summary.SummaryView>viewMgr.getViewByName("summary")).fastqInputs = arg.val;
-                            viewMgr.render();
-                        }
-                    }
-                    
-                }
-                viewMgr.render();
+        ipc.send(
+            "keySub",
+            <KeySubEvent>{
+                action : "keySub",
+                channel : "application",
+                key : "operations",
+                replyChannel : "QC"
             }
         );
         let validFastQCOut = new RegExp("[0-9]|[.]","g");
         let trimOutFastQCPercentage = new RegExp("[0-9][0-9][%]|[0-9][%]","g");
         ipc.on
         (
-            "spawnReply",function(event,arg)
+            'QC',function(event,arg)
             {
-                if(arg.processName == QC.fastQC)
+                if(arg.action == "getKey" || arg.action == "keyChange")
                 {
-                    if(arg.unBufferedData)
+                    if(arg.key == "fastqInputs")
                     {
-                        if(validFastQCOut.test(arg.unBufferedData))
+                        //Update fastq list and rerender
+                        if(arg.val !== undefined)
                         {
-                            let regResult = trimOutFastQCPercentage.exec(arg.unBufferedData);
-                            if(regResult && regResult[0])
+                            (<summary.SummaryView>viewMgr.getViewByName("summary")).fastqInputs = arg.val;
+                            viewMgr.render();
+                        }
+                    }
+                    if(arg.key == "operations")
+                    {
+                        //On update from running jobs
+                        let operations : Array<AtomicOperation> = arg.val;
+                        for(let i : number = 0; i != operations.length; ++i)
+                        {
+                            //look for only report generation jobs
+                            if(operations[i].name == "generateFastQCReport")
                             {
-                                let idx = -1;
-                                if(process.platform == "linux")
-                                    idx = 0;
-                                else if(process.platform == "win32")
-                                    idx = 1;
-                                $('#'+makeValidID(arg.args[idx])).text(regResult[0]);
+                                let op : GenerateQCReport = (<any>operations[i]);
+                                //notify user on failure
+                                if(op.flags.failure)
+                                {
+                                    alert(`Failed to generate report for ${op.fastq.alias}`);
+                                    if(op.hasJVMCrashed)
+                                    {
+                                        alert(`Java Virtual Machine has crashed`);
+                                    }
+                                    viewMgr.render();
+                                }
+                                //Check for stdout from FastQC
+                                if(op.spawnUpdate && op.spawnUpdate.unBufferedData)
+                                {
+                                    //if its not garbled
+                                    if(validFastQCOut.test(op.spawnUpdate.unBufferedData))
+                                    {
+                                        //extract percentage
+                                        let regResult = trimOutFastQCPercentage.exec(op.spawnUpdate.unBufferedData);
+                                        if(regResult && regResult[0])
+                                        {
+                                            //find the fastq in the table corresponding to the one being processed and
+                                            //put the percentage next to it
+                                            let fastqInputs = (<summary.SummaryView>viewMgr.getViewByName("summary")).fastqInputs;
+                                            for(let i : number = 0; i != fastqInputs.length; ++i)
+                                            {
+                                                if(fastqInputs[i].uuid == op.fastq.uuid)
+                                                {
+                                                    $(`#${op.fastq.uuid}`).text(regResult[0]);
+                                                    return;
+                                                }
+                                            }
+                                        }
+                                    }
+                                    return;
+                                }
                             }
                         }
                     }
                 }
-                QC.spawnReply("spawnReply",arg);
+                viewMgr.render();
             }
         );
         viewMgr.render();

@@ -5,8 +5,8 @@ import * as viewMgr from "./req/renderer/viewMgr";
 import * as pileUpView from "./req/renderer/PathogenRenderer/pileUpView";
 import * as reportView from "./req/renderer/PathogenRenderer/reportView";
 
-import Fastq from "./req/renderer/fastq";
-import Fasta from "./req/renderer/fasta";
+import Fastq from "./req/fastq";
+import {Fasta} from "./req/fasta";
 
 import * as $ from "jquery";
 (<any>window).$ = $;

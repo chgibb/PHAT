@@ -1,11 +1,11 @@
 {
   "name": "phat",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "Pathogen Host Analysis Tool",
   "main": "main.js",
   "scripts": {
     "start": "electron main.js",
-    "test": "bash runtests.bash"
+    "test": "bash scripts/runtests.bash"
   },
   "author": {
     "name": "Chris Gibb",
@@ -44,16 +44,20 @@
     "@types/fs-extra": "0.0.37",
     "@types/jquery": "^2.0.40",
     "@types/node": "^7.0.5",
+    "@types/rimraf": "0.0.28",
     "browserify": "^13.1.0",
     "bundle-collapser": "^1.2.1",
     "electron-prebuilt": "^1.1.2",
+    "electron-squirrel-startup": "^1.0.0",
     "electron-winstaller": "^2.5.2",
     "grunt": "^1.0.1",
     "jsdoc": "^3.4.3",
     "nwsjs": "^0.2.0",
     "optimize-js": "^1.0.3",
+    "rimraf": "^2.6.1",
     "semi": "^4.0.5",
-    "typescript": "^2.2.1"
+    "typescript": "^2.2.1",
+    "uuid": "^3.0.1"
   },
   "dependencies": {
     "angular": "^1.6.1",
@@ -64,5 +68,5 @@
     "jquery": "^2.2.4",
     "jsonfile": "^2.4.0"
   },
-  "v8Flags" : "--nolazy"
+  "v8Flags": "--nolazy"
 }

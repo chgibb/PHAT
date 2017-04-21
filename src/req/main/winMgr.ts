@@ -87,16 +87,22 @@ export function createWithDefault(
 	minHeight? : number
 ) : Electron.BrowserWindow
 {
-		let windowOptions = {};
 		
-		//windowOptions = getState.getState(refName,"windowOptions");
-		windowOptions = dataMgr.getKey(refName,"windowOptions");
+		let windowOptions = dataMgr.getKey(refName,"windowOptions");
 		if(!windowOptions)
 		{
+			let display = electron.screen.getPrimaryDisplay();
+			if(refName == "toolBar")
+			{
+				width = display.workArea.width/4;
+				height = display.workArea.height/8;
+			}
+			let x = (display.workArea.width/2)-(width/2);
+			let y = 0;
 			windowOptions = 
 			{
-				x : 736,
-				y : 39,
+				x : x,
+				y : y,
 				width : width,
 				height : height,
 				useContentSize : false,
@@ -114,16 +120,11 @@ export function createWithDefault(
 				icon : './../icon.png'
 			};
 			
-			//postState.postState(refName,"windowOptions",windowOptions);
 			dataMgr.setKey(refName,"windowOptions",windowOptions);
 		}
 		
 		
 		let ref = new BrowserWindow(windowOptions);
-		//let image = require('electron').nativeImage.createFromPath('./../64x64.png');
-		//if(image.isEmpty())
-			//throw "Could Not Load Application Icon\n";
-		//ref.setIcon(image);
 
 		ref.loadURL(html);
 		if(debug)
@@ -160,7 +161,16 @@ export function createWithDefault(
  */
 export function saveBounds(ref : Electron.BrowserWindow,refName : string) : void
 {
-	let bounds = ref.getBounds();
+	let x : number;
+	let y : number;
+	let width : number;
+	let height : number;
+	let pos = ref.getPosition();
+	let dimensions = ref.getSize();
+	x = pos[0];
+	y = pos[1];
+	width = dimensions[0];
+	height = dimensions[1];
 	//Get old saved values.
 	//let windowOptions = getState.getState(refName,"windowOptions");
 	let windowOptions = dataMgr.getKey(refName,"windowOptions");
@@ -170,29 +180,26 @@ export function saveBounds(ref : Electron.BrowserWindow,refName : string) : void
 	}
 	//Determine simple diff
 	let change = false;
-	if(windowOptions.x != bounds.x)
+	if(windowOptions.x != x)
 	{
-		windowOptions.x = bounds.x;
+		windowOptions.x = x;
 		change = true;
 	}
-	if(windowOptions.y != bounds.y)
+	if(windowOptions.y != y)
 	{
-		windowOptions.y = bounds.y;
+		windowOptions.y = y;
 		change = true;
 	}
-	if(windowOptions.width != bounds.width)
+	if(windowOptions.width != width)
 	{
-		windowOptions.width = bounds.width;
+		windowOptions.width = width;
 		change = true;
 	}
-	if(windowOptions.height != bounds.height)
+	if(windowOptions.height != height)
 	{
-		windowOptions.height = bounds.height;
+		windowOptions.height = height;
 		change = true;
 	}
-	//Save changes if any.
-	//if(change)
-	//	postState.postState(refName,"windowOptions",windowOptions);
 	if(change)
 		dataMgr.setKey(refName,"windowOptions",windowOptions);
 }
