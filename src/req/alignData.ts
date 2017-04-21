@@ -1,4 +1,4 @@
-const uuidv1 : () => string = require("uuid/v1");
+const uuidv4 : () => string = require("uuid/v4");
 
 let dFormat = require('./dateFormat');
 import Fastq from "./fastq";
@@ -27,6 +27,6 @@ export default class alignData
         this.summaryText = "";
         this.dateStamp = dFormat.generateFixedSizeDateStamp();
         this.dateStampString = dFormat.formatDateStamp(this.dateStamp);
-        this.uuid = uuidv1();
+        this.uuid = uuidv4();
     }
 }

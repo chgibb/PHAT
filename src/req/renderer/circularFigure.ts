@@ -1,4 +1,4 @@
-const uuidv1 : () => string = require("uuid/v1");
+const uuidv4 : () => string = require("uuid/v4");
 import {Contig} from "./../fastaContigLoader";
 export class CircularFigure
 {
@@ -12,7 +12,7 @@ export class CircularFigure
     constructor(name : string,uuid : string,contigs : Array<Contig>)
     {
         this.uuidFasta = uuid;
-        this.uuid = uuidv1();
+        this.uuid = uuidv4();
         this.name = name;
         this.contigs = contigs;
         this.radius = 120;
