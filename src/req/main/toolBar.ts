@@ -1,8 +1,3 @@
-/*const electron = require('electron');
-const ipc = electron.ipcMain;
-const app = electron.app;
-var window = require('./window');
-var fsAccess = require("./../fsAccess").default;*/
 import * as electron from "electron";
 const ipc = electron.ipcMain;
 const app = electron.app;
