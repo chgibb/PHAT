@@ -1,6 +1,7 @@
 import * as electron from "electron";
 const ipc = electron.ipcRenderer;
 
+import {AtomicOperation} from "./req/operations/atomicOperations"
 import {GetKeyEvent,KeySubEvent} from "./req/ipcEvents";
 
 import * as viewMgr from "./req/renderer/viewMgr";
@@ -31,5 +32,47 @@ $
         document.getElementById("circularGenomeBuilder").onclick = function(this : HTMLElement,ev : MouseEvent){
             ipc.send("openWindow",{refName : "circularGenomeBuilder"});
         }
+
+        ipc.send(
+            "keySub",
+            <KeySubEvent>{
+                action : "keySub",
+                channel : "application",
+                key : "operations",
+                replyChannel : "toolBar"
+            }
+        );
+        ipc.on
+        (
+            "toolBar",function(event,arg)
+            {
+                if(arg.action == "getKey" || arg.action == "keyChange")
+                {
+                    if(arg.key == "operations" && arg.val !== undefined)
+                    {
+                        let ops : Array<AtomicOperation> = <Array<AtomicOperation>>arg.val;
+                        for(let i = 0; i != ops.length; ++i)
+                        {
+                            if(ops[i].flags.done && ops[i].flags.success)
+                            {
+                                //alert(`${ops[i].name} succeeded`);
+                                let toast = {
+                                    title : "Success",
+                                    message : `
+                                    ${ops[i].name} has finished
+                                    <br />
+                                    `,
+                                    detail : "",
+                                    width : 440,
+                                    timeout : 2000,
+                                    focus : true
+                                };
+                                ipc.send("electron-toaster-message",toast);
+                            }
+                        }
+                    }
+                }
+            }
+        );
     }
 );

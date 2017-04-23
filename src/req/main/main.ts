@@ -7,6 +7,9 @@ import * as electron from "electron";
 const ipc = electron.ipcMain;
 const app = electron.app;
 if(require('electron-squirrel-startup')) app.quit();
+const electronToaster : any = require("electron-toaster");
+const Toaster = new electronToaster();
+
 const BrowserWindow = electron.BrowserWindow;
 const jsonFile = require("jsonfile");
 
@@ -268,6 +271,9 @@ app.on
 		
 
 		setInterval(function(){atomicOp.runOperations(1);},2500);
+
+		let wins : Array<Electron.BrowserWindow> = winMgr.getWindowsByName("toolBar");
+		Toaster.init(wins[0]);
 	}
 );
 app.on
