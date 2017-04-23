@@ -49,7 +49,6 @@ export class View extends viewMgr.View
     }
     public renderView() : string
     {
-        console.log(this.fastaInputs);
         if(this.firstRender)
         {
             this.leftPanelOpen = false;
@@ -182,7 +181,6 @@ export class View extends viewMgr.View
         {
             ref.genome.radius += 10;
             viewMgr.render();
-            console.log(ref.genome.radius);
             this.dataChanged();
             return;
         }

@@ -1,6 +1,6 @@
 import * as fs from "fs";
 import * as Path from "path";
-const uuidv1 : () => string = require("uuid/v1");
+const uuidv4 : () => string = require("uuid/v4");
 
 import formatByteString from "./renderer/formatByteString";
 export class File
@@ -15,7 +15,7 @@ export class File
     {
         this.path = path;
         this.absPath = Path.resolve(path);
-        this.uuid = uuidv1();
+        this.uuid = uuidv4();
         this.reachable = true;
         let stats : fs.Stats = fs.statSync(path);
         this.size = stats.size;
