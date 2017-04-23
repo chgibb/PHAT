@@ -9,17 +9,6 @@ const app = electron.app;
 import * as winMgr from "./winMgr";
 import fsAccess from "./../fsAccess";
 import * as dataMgr from "./dataMgr";
-
-ipc.on
-(
-	"toolBar",function(event,arg)
-	{
-		if(arg.action === "open")
-		{
-			winMgr.windowCreators[arg.arg].Create();
-		}
-	}
-);
 winMgr.windowCreators["toolBar"] =
 {
 	Create : function()

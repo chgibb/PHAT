@@ -27,7 +27,7 @@
 		 function SendOpenMessage(target)
 		 {
 			 console.log('clicked');
-			 ipc.send('toolBar',{action : "open",arg : target});
+			 ipc.send("openWindow",{refName:target});
 		 }
 	</script>
 	<div id="toolbar">

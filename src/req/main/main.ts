@@ -295,7 +295,13 @@ app.on
 
 
 
-
+ipc.on
+(
+	"openWindow",function(event : Electron.IpcMainEvent,arg : {refName : string})
+	{
+		winMgr.windowCreators[arg.refName].Create();
+	}
+);
 ipc.on
 (
 	"getKey",function(event: Electron.IpcMainEvent,arg : GetKeyEvent)
