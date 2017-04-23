@@ -35,7 +35,7 @@ process.on
                 (
                     "finish",function()
                     {
-                        //console.log(totalFiles);
+                        process.send({totalFiles : totalFiles});
                     }
                 );
                 try
