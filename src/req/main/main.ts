@@ -17,6 +17,7 @@ import {AtomicOperationIPC} from "./../atomicOperationsIPC";
 import {GenerateQCReport} from "./../operations/GenerateQCReport";
 import {IndexFasta} from "./../operations/indexFasta";
 import {RunAlignment} from "./../operations/RunAlignment";
+import {InstallUpdate} from "./../operations/InstallUpdate";
 import * as winMgr from "./winMgr";
 
 import {File} from "./../file";
@@ -264,6 +265,7 @@ app.on
 		atomicOp.register("generateFastQCReport",GenerateQCReport);
 		atomicOp.register("indexFasta",IndexFasta);
 		atomicOp.register("runAlignment",RunAlignment);
+		
 
 		setInterval(function(){atomicOp.runOperations(1);},2500);
 	}
@@ -342,7 +344,7 @@ ipc.on
 ipc.on(
 	"runOperation",function(event,arg : AtomicOperationIPC)
 	{
-		if(arg.opName != "runAlignment")
+		if(arg.opName != "runAlignment" && arg.opName != "installUpdate")
 		{
 			let list : Array<File> = dataMgr.getKey(arg.channel,arg.key);
 			for(let i : number = 0; i != list.length; ++i)
@@ -365,6 +367,8 @@ ipc.on(
 				Object.assign({},arg.alignParams)
 			);
 		}
+		else if(arg.opName == "installUpdate")
+			atomicOp.addOperation(arg.opName,{});
 	}
 );
 atomicOp.updates.on(
@@ -428,6 +432,13 @@ atomicOp.updates.on(
 			dataMgr.setKey("align","aligns",aligns);
 			dataMgr.publishChangeForKey("align","aligns");
 		}
+	}
+);
+atomicOp.updates.on(
+	"installUpdate",function(op : InstallUpdate)
+	{
+		dataMgr.setKey("application","operations",atomicOp.operationsQueue);
+		dataMgr.publishChangeForKey("application","operations");
 	}
 );
 /*ipc.on
