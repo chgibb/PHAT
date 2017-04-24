@@ -53,18 +53,30 @@ $
                         let ops : Array<AtomicOperation> = <Array<AtomicOperation>>arg.val;
                         for(let i = 0; i != ops.length; ++i)
                         {
-                            if(ops[i].flags.done && ops[i].flags.success)
+                            if(ops[i].flags.done)
                             {
                                 //alert(`${ops[i].name} succeeded`);
                                 let toast = {
-                                    title : "Success",
+                                    title : ops[i].flags.success ? "Success" : "Failure",
                                     message : `
-                                    ${ops[i].name} has finished
-                                    <br />
+                                        ${(()=>{
+                                            if(ops[i].flags.success)
+                                            {
+                                                return `
+                                                    <h2>${ops[i].name} has completed successfully</h2>
+                                                `;
+                                            }
+                                            else
+                                            {
+                                                return `
+                                                    <h2>${ops[i].name} has failed</h2>
+                                                `;
+                                            }
+                                        })()}
                                     `,
                                     detail : "",
                                     width : 440,
-                                    timeout : 2000,
+                                    timeout : 5000,
                                     focus : true
                                 };
                                 ipc.send("electron-toaster-message",toast);
