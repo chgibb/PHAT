@@ -79,7 +79,7 @@ export class GenomeView extends viewMgr.View
                                 let res = "";
                                 let lastLocation = 0;
                                 for(let i = 0; i != this.genome.contigs.length; ++i)
-                                {
+                                { 
                                     res += `
                                         ${trackMarker.add(
                                         {
