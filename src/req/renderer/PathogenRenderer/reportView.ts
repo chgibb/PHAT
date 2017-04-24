@@ -87,10 +87,17 @@ export class ReportView extends viewMgr.View
         {
             if(this.aligns[i].uuid == event.target.id)
             {
-                (<PileUpView>viewMgr.getViewByName("pileUp")).report = this.aligns[i].uuid;
-                console.log(this.aligns[i].uuid);
-                viewMgr.changeView("pileUp");
-                return;
+                if(this.aligns[i].summary.overallAlignmentRate != 0)
+                {
+                    (<PileUpView>viewMgr.getViewByName("pileUp")).report = this.aligns[i].uuid;
+                    viewMgr.changeView("pileUp");
+                    return;
+                }
+                else
+                {
+                    alert(`Can't view an alignment with 0% alignment rate`);
+                    return;
+                }
             }
         }
     }
