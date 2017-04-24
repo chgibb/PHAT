@@ -42,6 +42,8 @@ export class GenomeView extends viewMgr.View
     }
     public showBPTrackOnChange()
     {
+        //this method gets called from within angular scope primarily.
+        //get a reference to the genome view and set it's firstrender prop to true so the markup can be updated
         let masterView = <masterView.View>viewMgr.getViewByName("masterView");
         let genomeView = <GenomeView>viewMgr.getViewByName("genomeView",masterView.views);
         genomeView.firstRender = true;
