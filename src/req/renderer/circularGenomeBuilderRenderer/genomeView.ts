@@ -11,16 +11,7 @@ import * as trackScale from "./../circularGenome/trackScale";
 
 require("angular");
 require("angularplasmid");
-//adapted from answer by letronje and edited by Peter Mortensen
-//http://stackoverflow.com/questions/1484506/random-color-generator-in-javascript
-function getRandColor(brightness : number)
-{
-    // Six levels of brightness from 0 to 5, 0 being the darkest
-    let rgb = [Math.random() * 256, Math.random() * 256, Math.random() * 256];
-    let mix = [brightness*51, brightness*51, brightness*51]; //51 => 255/5
-    let mixedrgb = [rgb[0] + mix[0], rgb[1] + mix[1], rgb[2] + mix[2]].map(function(x){return Math.round(x/2.0)});
-    return "rgb(" + mixedrgb.join(",") + ")";
-}
+
 let app : any = angular.module('myApp',['angularplasmid']);
 export class GenomeView extends viewMgr.View
 {
@@ -33,10 +24,20 @@ export class GenomeView extends viewMgr.View
     public onUnMount() : void{}
     public renderView() : string
     {
+        let self = this;
         if(this.genome)
         {
-            //Remove the div this view is bound to
-            document.body.removeChild(document.getElementById(this.div));
+            try
+            {
+                document.body.removeChild(document.getElementById("controls"));
+            }
+            catch(err){}
+            try
+            {
+                //Remove the div this view is bound to
+                document.body.removeChild(document.getElementById(this.div));
+            }
+            catch(err){}
             $("#"+this.div).remove();
 
             let totalBP = 0;
@@ -51,7 +52,11 @@ export class GenomeView extends viewMgr.View
             //the page
             let $div = $
             (
-                `<div id="${this.div}">
+                `
+                <div id="controls">
+                    <input type="number" name="input" ng-model="genome.radius"min="0" max="400" required>
+                </div>
+                <div id="${this.div}">
                     ${plasmid.add(
                     {
                         sequenceLength : totalBP.toString(),
@@ -61,7 +66,7 @@ export class GenomeView extends viewMgr.View
                         ${plasmidTrack.add(
                         {
                             trackStyle : "fill:#f0f0f0;stroke:#ccc",
-                            radius : this.genome.radius
+                            radius : "{{genome.radius}}"
                         })}
                             ${trackLabel.add(
                             {
@@ -74,13 +79,13 @@ export class GenomeView extends viewMgr.View
                                 let res = "";
                                 let lastLocation = 0;
                                 for(let i = 0; i != this.genome.contigs.length; ++i)
-                                {
+                                { 
                                     res += `
                                         ${trackMarker.add(
                                         {
                                             start : lastLocation.toString(),
                                             end : (lastLocation + this.genome.contigs[i].bp).toString(),
-                                            markerStyle : "fill:"+getRandColor(1)
+                                            markerStyle : `fill:${this.genome.contigs[i].color}`
                                         })}
                                             ${markerLabel.add(
                                             {
@@ -111,6 +116,7 @@ export class GenomeView extends viewMgr.View
                 function($compile : any)
                 {
                     let scope = angular.element($div).scope();
+                    scope.genome = self.genome;
                     $compile($div)(scope);
                 }
             );

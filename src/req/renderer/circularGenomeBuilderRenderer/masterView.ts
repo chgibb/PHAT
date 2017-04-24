@@ -39,6 +39,10 @@ export class View extends viewMgr.View
         {
             this.views[i].onMount();
         }
+        let self = this;
+        window.onbeforeunload = function(e){
+            self.dataChanged();
+        }
     }
     public onUnMount() : void
     {
