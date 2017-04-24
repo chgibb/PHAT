@@ -1,15 +1,18 @@
 import * as fs from "fs";
 import {EventEmitter} from "events";
+const uuidv4 : () => string = require("uuid/v4");
 export class Contig
 {
     public bp : number;
     public name : string;
     public loaded : boolean;
+    public uuid : string;
     public constructor()
     {
         this.bp = 0;
         this.name = "";
         this.loaded = false;
+        this.uuid = uuidv4();
     }
 }
 export class FastaContigLoader extends EventEmitter

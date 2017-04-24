@@ -11,33 +11,15 @@
   </head>
   <body class="window-color">
   	<script>
-		 const ipc = require('electron').ipcRenderer;
-		 ipc.send('keySub',{action : "keySub",channel : "input", key : "inputs", replyChannel : "toolBar"});
-		 ipc.on
-		 (
-			 "toolBar",function(event,arg)
-			 {
-				 if(arg.action == "keyChange")
-				 {
-					 //alert(arg.channel +" "+arg.key);
-					// alert(arg.val);
-				 }
-			 }
-		 );
-		 function SendOpenMessage(target)
-		 {
-			 console.log('clicked');
-			 ipc.send('toolBar',{action : "open",arg : target});
-		 }
+		  require("./bootStrapCodeCache")("resources/app/ToolBarRenderer.js","./ToolBarRenderer","resources/app/cdata/ToolBarRenderer.cdata");
 	</script>
 	<div id="toolbar">
-		<img class="buttonshadow toolBarButton" src="img/input.png" id="input" alt="Input" name="input" onClick="SendOpenMessage('input')"></img>
-		<img class="buttonshadow toolBarButton" src="img/qc.png" id="QC" name="QC" alt="FastQC" onClick="SendOpenMessage('QC')"></img>
-		<img class="buttonshadow toolBarButton" src="img/align.png" id="align" name="Align" alt="Align" onClick="SendOpenMessage('align')"></img>
-		<img class="buttonshadow toolBarButton" src="img/pathogenButton.png" id="pathogen" name="Patho" alt="Patho" onClick="SendOpenMessage('pathogen')"></img>
-		<!--<img class="buttonshadow toolBarButton" src="img/hostButton.png" id="host" name="Host" alt="Host" onClick="SendOpenMessage('host')"></img>-->
-		<img class="buttonshadow toolBarButton" src="img/output.png" id="output" name="Output" alt="Output" onClick="SendOpenMessage('output')"></img>
-		<img class="buttonshadow toolBarButton" src="img/genomeBuilder.png" id="circularGenomeBuilder" name="genomeBUilder" alt="genomeBuilder" onClick="SendOpenMessage('circularGenomeBuilder')"></img>
+		<img class="buttonshadow toolBarButton" src="img/input.png" id="input" alt="Input" name="input"></img>
+		<img class="buttonshadow toolBarButton" src="img/qc.png" id="QC" name="QC" alt="FastQC"></img>
+		<img class="buttonshadow toolBarButton" src="img/align.png" id="align" name="Align" alt="Align"></img>
+		<img class="buttonshadow toolBarButton" src="img/pathogenButton.png" id="pathogen" name="Patho" alt="Patho"></img>
+		<img class="buttonshadow toolBarButton" src="img/output.png" id="output" name="Output" alt="Output"></img>
+		<img class="buttonshadow toolBarButton" src="img/genomeBuilder.png" id="circularGenomeBuilder" name="genomeBUilder" alt="genomeBuilder"></img>
 	</div>
 	<script>
 			console.log("Start up took "+(performance.now()-startUp+"ms"));

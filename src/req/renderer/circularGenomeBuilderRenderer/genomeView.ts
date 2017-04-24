@@ -1,6 +1,9 @@
 //// <reference path="jquery.d.ts" />
 /// <reference path="./../angularStub.d.ts" />
+import * as util from "util";
+
 import * as viewMgr from "./../viewMgr";
+import * as masterView from "./masterView";
 import {CircularFigure} from "./../circularFigure";
 import * as plasmid from "./../circularGenome/plasmid";
 import * as plasmidTrack from "./../circularGenome/plasmidTrack";
@@ -11,32 +14,56 @@ import * as trackScale from "./../circularGenome/trackScale";
 
 require("angular");
 require("angularplasmid");
-//adapted from answer by letronje and edited by Peter Mortensen
-//http://stackoverflow.com/questions/1484506/random-color-generator-in-javascript
-function getRandColor(brightness : number)
-{
-    // Six levels of brightness from 0 to 5, 0 being the darkest
-    let rgb = [Math.random() * 256, Math.random() * 256, Math.random() * 256];
-    let mix = [brightness*51, brightness*51, brightness*51]; //51 => 255/5
-    let mixedrgb = [rgb[0] + mix[0], rgb[1] + mix[1], rgb[2] + mix[2]].map(function(x){return Math.round(x/2.0)});
-    return "rgb(" + mixedrgb.join(",") + ")";
-}
+
 let app : any = angular.module('myApp',['angularplasmid']);
 export class GenomeView extends viewMgr.View
 {
     public genome : CircularFigure;
+    public firstRender : boolean;
     public constructor(name : string,div : string)
     {
         super(name,div);
+        this.firstRender = true;
     }
     public onMount() : void{}
     public onUnMount() : void{}
+    public markerOnClick($event : any,$marker : any,uuid : string) : void
+    {
+    }
+    public inputRadiusOnChange()
+    {
+        this.genome.height = this.genome.radius*5;
+        this.genome.width =this.genome.radius*5;
+        this.postRender();
+    }
+    public showBPTrackOnChange()
+    {
+        //this method gets called from within angular scope primarily.
+        //get a reference to the genome view and set it's firstrender prop to true so the markup can be updated
+        let masterView = <masterView.View>viewMgr.getViewByName("masterView");
+        let genomeView = <GenomeView>viewMgr.getViewByName("genomeView",masterView.views);
+        genomeView.firstRender = true;
+        viewMgr.render();
+    }
     public renderView() : string
     {
+        let self = this;
         if(this.genome)
         {
-            //Remove the div this view is bound to
-            document.body.removeChild(document.getElementById(this.div));
+            //Only render markup when we explicitly need to
+            //All figure updates are handled through angular bindings
+            if(this.firstRender){
+            try
+            {
+                document.body.removeChild(document.getElementById("controls"));
+            }
+            catch(err){}
+            try
+            {
+                //Remove the div this view is bound to
+                document.body.removeChild(document.getElementById(this.div));
+            }
+            catch(err){}
             $("#"+this.div).remove();
 
             let totalBP = 0;
@@ -44,6 +71,8 @@ export class GenomeView extends viewMgr.View
             {
                 totalBP += this.genome.contigs[i].bp;
             }
+
+
             //This is an unholy mess adapted from the example given inline in the
             //angular source code https://github.com/angular/angular.js/blob/master/src/auto/injector.js
             //We remove the div this view is bound to, recreate it and re render the angular template into it
@@ -51,17 +80,37 @@ export class GenomeView extends viewMgr.View
             //the page
             let $div = $
             (
-                `<div id="${this.div}">
+                `
+                <div id="controls">
+                    <input type="number" ng-model="genome.radius" ng-change="inputRadiusOnChange()" min="0" max="1000" required>
+                     <label>Show BP Positions:
+                        <input type="checkbox" ng-model="genome.circularFigureBPTrackOptions.showLabels" ng-true-value="1" ng-false-value="0" ng-change="showBPTrackOnChange()">
+                     </label>
+                     ${(()=>{
+                         let res = ``;
+                         if(this.genome.circularFigureBPTrackOptions.showLabels)
+                         {
+                             res += `
+                                <br />
+                                <label>Interval:
+                                    <input type="number" ng-model="genome.circularFigureBPTrackOptions.interval" required>
+                                </label>
+                             `;
+                         }
+                         return res;
+                     })()}
+                </div>
+                <div id="${this.div}" style="z-index=-1;">
                     ${plasmid.add(
                     {
                         sequenceLength : totalBP.toString(),
-                        plasmidHeight : this.genome.height,
-                        plasmidWidth : this.genome.width
+                        plasmidHeight : "{{genome.height}}",
+                        plasmidWidth : "{{genome.width}}"
                     })}
                         ${plasmidTrack.add(
                         {
                             trackStyle : "fill:#f0f0f0;stroke:#ccc",
-                            radius : this.genome.radius
+                            radius : "{{genome.radius}}"
                         })}
                             ${trackLabel.add(
                             {
@@ -74,13 +123,15 @@ export class GenomeView extends viewMgr.View
                                 let res = "";
                                 let lastLocation = 0;
                                 for(let i = 0; i != this.genome.contigs.length; ++i)
-                                {
+                                { 
                                     res += `
                                         ${trackMarker.add(
                                         {
                                             start : lastLocation.toString(),
                                             end : (lastLocation + this.genome.contigs[i].bp).toString(),
-                                            markerStyle : "fill:"+getRandColor(1)
+                                            markerStyle : `fill:${this.genome.contigs[i].color}`,
+                                            uuid : this.genome.contigs[i].uuid,
+                                            onClick : "markerOnClick"
                                         })}
                                             ${markerLabel.add(
                                             {
@@ -96,8 +147,9 @@ export class GenomeView extends viewMgr.View
                             })()}
                             ${trackScale.add(
                             {
-                                interval : "100",
-                                vAdjust : "5"
+                                interval : "{{genome.circularFigureBPTrackOptions.interval}}",
+                                vAdjust : "{{genome.circularFigureBPTrackOptions.vAdjust}}",
+                                showLabels : "{{genome.circularFigureBPTrackOptions.showLabels}}"
                             }
                             )}
                             ${trackScale.end()}
@@ -110,12 +162,21 @@ export class GenomeView extends viewMgr.View
             (
                 function($compile : any)
                 {
+                    //This should probably be done with an actual angular scope instead 
+                    //of mutating the existing scope
                     let scope = angular.element($div).scope();
+                    scope.genome = self.genome;
+                    scope.markerOnClick = self.markerOnClick;
+                    scope.inputRadiusOnChange = self.inputRadiusOnChange;
+                    scope.showBPTrackOnChange = self.showBPTrackOnChange;
+                    scope.postRender = self.postRender;
+                    scope.firstRender = self.firstRender;
+                    scope.div = self.div;
                     $compile($div)(scope);
                 }
             );
-
-        }
+            this.firstRender = false;
+        }}
         return undefined;
     }
     public postRender() : void
@@ -126,6 +187,7 @@ export class GenomeView extends viewMgr.View
             let div = document.getElementById(this.div);
 
             //expand the div to the new window size
+            div.style.zIndex = "-1";
             div.style.position = "absolute";
             div.style.height = `${$(window).height()}px`;
             div.style.width = `${$(window).width()}px`;

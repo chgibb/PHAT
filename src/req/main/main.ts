@@ -7,6 +7,9 @@ import * as electron from "electron";
 const ipc = electron.ipcMain;
 const app = electron.app;
 if(require('electron-squirrel-startup')) app.quit();
+const electronToaster : any = require("electron-toaster");
+const Toaster = new electronToaster();
+
 const BrowserWindow = electron.BrowserWindow;
 const jsonFile = require("jsonfile");
 
@@ -17,6 +20,7 @@ import {AtomicOperationIPC} from "./../atomicOperationsIPC";
 import {GenerateQCReport} from "./../operations/GenerateQCReport";
 import {IndexFasta} from "./../operations/indexFasta";
 import {RunAlignment} from "./../operations/RunAlignment";
+import {InstallUpdate} from "./../operations/InstallUpdate";
 import * as winMgr from "./winMgr";
 
 import {File} from "./../file";
@@ -264,8 +268,12 @@ app.on
 		atomicOp.register("generateFastQCReport",GenerateQCReport);
 		atomicOp.register("indexFasta",IndexFasta);
 		atomicOp.register("runAlignment",RunAlignment);
+		
 
 		setInterval(function(){atomicOp.runOperations(1);},2500);
+
+		let wins : Array<Electron.BrowserWindow> = winMgr.getWindowsByName("toolBar");
+		Toaster.init(wins[0]);
 	}
 );
 app.on
@@ -293,7 +301,13 @@ app.on
 
 
 
-
+ipc.on
+(
+	"openWindow",function(event : Electron.IpcMainEvent,arg : {refName : string})
+	{
+		winMgr.windowCreators[arg.refName].Create();
+	}
+);
 ipc.on
 (
 	"getKey",function(event: Electron.IpcMainEvent,arg : GetKeyEvent)
@@ -342,7 +356,7 @@ ipc.on
 ipc.on(
 	"runOperation",function(event,arg : AtomicOperationIPC)
 	{
-		if(arg.opName != "runAlignment")
+		if(arg.opName != "runAlignment" && arg.opName != "installUpdate")
 		{
 			let list : Array<File> = dataMgr.getKey(arg.channel,arg.key);
 			for(let i : number = 0; i != list.length; ++i)
@@ -365,6 +379,8 @@ ipc.on(
 				Object.assign({},arg.alignParams)
 			);
 		}
+		else if(arg.opName == "installUpdate")
+			atomicOp.addOperation(arg.opName,{});
 	}
 );
 atomicOp.updates.on(
@@ -428,6 +444,13 @@ atomicOp.updates.on(
 			dataMgr.setKey("align","aligns",aligns);
 			dataMgr.publishChangeForKey("align","aligns");
 		}
+	}
+);
+atomicOp.updates.on(
+	"installUpdate",function(op : InstallUpdate)
+	{
+		dataMgr.setKey("application","operations",atomicOp.operationsQueue);
+		dataMgr.publishChangeForKey("application","operations");
 	}
 );
 /*ipc.on
