@@ -1,17 +1,24 @@
 (set -o igncr) 2>/dev/null && set -o igncr; # For Cygwin on Windows compaibility
+function cleanTSArtifacts {
+	for f in $(find src -name '*.ts'); 
+	do
+		artifact=$(echo $f | awk '{gsub("\\.ts",".js");print}')
+		rm $artifact
+	done
+	for f in $(find scripts -name '*.ts'); 
+	do
+		artifact=$(echo $f | awk '{gsub("\\.ts",".js");print}')
+		rm $artifact
+	done
+}
 cp src/pileup.js/style/pileup.css dist/styles/pileup.css
 
 ./node_modules/.bin/tsc
 #Compilation failed somewhere
-#if [ $? != 0 ]; then
-	#Clean artifacts and abort
-#    for f in $(find src -name '*.ts'); 
-#	do 
-#		artifact=$(echo $f | awk '{gsub(".ts",".js");print}')
-#		rm $artifact
-#	done
-#	exit 1
-#fi
+if [ $? != 0 ]; then
+    cleanTSArtifacts
+	exit 1
+fi
 for f in src/*.js
 do
 	printf "Bundling "
@@ -22,14 +29,6 @@ do
 done
 
 cp scripts/opt/bootStrapCodeCache.js dist
+cleanTSArtifacts
 
-for f in $(find src -name '*.ts'); 
-do
-		artifact=$(echo $f | awk '{gsub("\\.ts",".js");print}')
-		rm $artifact
-done
-for f in $(find scripts -name '*.ts'); 
-do
-		artifact=$(echo $f | awk '{gsub("\\.ts",".js");print}')
-	rm $artifact
-done
+

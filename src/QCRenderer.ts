@@ -80,7 +80,7 @@ $
                             {
                                 let op : GenerateQCReport = (<any>operations[i]);
                                 //notify user on failure
-                                if(op.flags.failure)
+                                /*if(op.flags.failure)
                                 {
                                     alert(`Failed to generate report for ${op.fastq.alias}`);
                                     if(op.hasJVMCrashed)
@@ -88,7 +88,7 @@ $
                                         alert(`Java Virtual Machine has crashed`);
                                     }
                                     viewMgr.render();
-                                }
+                                }*/
                                 //Check for stdout from FastQC
                                 if(op.spawnUpdate && op.spawnUpdate.unBufferedData)
                                 {
