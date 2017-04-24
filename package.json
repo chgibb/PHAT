@@ -72,5 +72,5 @@
     "jquery": "^2.2.4",
     "jsonfile": "^2.4.0"
   },
-  "v8Flags": "--nolazy"
+  "v8Flags": "--nolazy --serialize_eager"
 }
