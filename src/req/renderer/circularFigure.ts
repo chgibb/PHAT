@@ -1,5 +1,9 @@
 const uuidv4 : () => string = require("uuid/v4");
-import {Contig} from "./../fastaContigLoader";
+import * as fastaContigLoader from "./../fastaContigLoader";
+export class Contig extends fastaContigLoader.Contig
+{
+    public color? : string = "";
+}
 export class CircularFigure
 {
     public uuid : string;
