@@ -72,9 +72,9 @@ export class GenomeView extends viewMgr.View
             (
                 `
                 <div id="controls">
-                    <input type="number" name="input" ng-model="genome.radius" ng-change="inputRadiusOnChange()" min="0" max="400" required>
+                    <input type="number" name="input" ng-model="genome.radius" ng-change="inputRadiusOnChange()" min="0" max="1000" required>
                 </div>
-                <div id="${this.div}">
+                <div id="${this.div}" style="z-index=-1;">
                     ${plasmid.add(
                     {
                         sequenceLength : totalBP.toString(),
@@ -157,6 +157,7 @@ export class GenomeView extends viewMgr.View
             let div = document.getElementById(this.div);
 
             //expand the div to the new window size
+            div.style.zIndex = "-1";
             div.style.position = "absolute";
             div.style.height = `${$(window).height()}px`;
             div.style.width = `${$(window).width()}px`;
