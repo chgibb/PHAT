@@ -218,9 +218,10 @@ export class View extends viewMgr.View
                     this.circularFigures.push(new CircularFigure("New Figure",this.fastaInputs[i].uuid,this.fastaInputs[i].contigs));
                     let ref = <GenomeView.GenomeView>viewMgr.getViewByName("genomeView",this.views);
                     ref.genome = this.circularFigures[this.circularFigures.length - 1];
-                    viewMgr.render();
                     this.dataChanged();
                     this.firstRender = true;
+                    ref.firstRender = true;
+                    viewMgr.render();
                     return;
                 }
             }
@@ -231,6 +232,7 @@ export class View extends viewMgr.View
             {
                 let ref = <GenomeView.GenomeView>viewMgr.getViewByName("genomeView",this.views);
                 ref.genome = this.circularFigures[i];
+                ref.firstRender = true;
                 viewMgr.render();
                 return;
             }

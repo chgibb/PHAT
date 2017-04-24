@@ -18,9 +18,11 @@ let app : any = angular.module('myApp',['angularplasmid']);
 export class GenomeView extends viewMgr.View
 {
     public genome : CircularFigure;
+    public firstRender : boolean;
     public constructor(name : string,div : string)
     {
         super(name,div);
+        this.firstRender = true;
     }
     public onMount() : void{}
     public onUnMount() : void{}
@@ -30,11 +32,19 @@ export class GenomeView extends viewMgr.View
         console.log(util.inspect($marker));
         console.log(uuid);
     }
+    public inputRadiusOnChange()
+    {
+        this.genome.height = this.genome.radius*2.5;
+        this.genome.width =this.genome.radius*2.5;
+        this.postRender();
+        console.log(this.genome.radius+" "+this.genome.width+" "+this.genome.height);
+    }
     public renderView() : string
     {
         let self = this;
         if(this.genome)
         {
+            if(this.firstRender){
             try
             {
                 document.body.removeChild(document.getElementById("controls"));
@@ -62,14 +72,14 @@ export class GenomeView extends viewMgr.View
             (
                 `
                 <div id="controls">
-                    <input type="number" name="input" ng-model="genome.radius"min="0" max="400" required>
+                    <input type="number" name="input" ng-model="genome.radius" ng-change="inputRadiusOnChange()" min="0" max="400" required>
                 </div>
                 <div id="${this.div}">
                     ${plasmid.add(
                     {
                         sequenceLength : totalBP.toString(),
-                        plasmidHeight : this.genome.height,
-                        plasmidWidth : this.genome.width
+                        plasmidHeight : "{{genome.height}}",
+                        plasmidWidth : "{{genome.width}}"
                     })}
                         ${plasmidTrack.add(
                         {
@@ -128,15 +138,19 @@ export class GenomeView extends viewMgr.View
                     let scope = angular.element($div).scope();
                     scope.genome = self.genome;
                     scope.markerOnClick = self.markerOnClick;
+                    scope.inputRadiusOnChange = self.inputRadiusOnChange;
+                    scope.postRender = self.postRender;
+                    scope.div = self.div;
                     $compile($div)(scope);
                 }
             );
-
-        }
+            this.firstRender = false;
+        }}
         return undefined;
     }
     public postRender() : void
     {
+        console.log("Called post render");
         if(this.genome !== undefined)
         {
             //get a reference to the div wrapping the rendered svg graphic of our figure
