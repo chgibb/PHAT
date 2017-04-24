@@ -33,6 +33,7 @@ export class GenomeView extends viewMgr.View
     public onUnMount() : void{}
     public renderView() : string
     {
+        let self = this;
         if(this.genome)
         {
             //Remove the div this view is bound to
@@ -52,6 +53,8 @@ export class GenomeView extends viewMgr.View
             let $div = $
             (
                 `<div id="${this.div}">
+                <input type="number" name="input" ng-model="genome.radius"
+           min="0" max="400" required>
                     ${plasmid.add(
                     {
                         sequenceLength : totalBP.toString(),
@@ -61,7 +64,7 @@ export class GenomeView extends viewMgr.View
                         ${plasmidTrack.add(
                         {
                             trackStyle : "fill:#f0f0f0;stroke:#ccc",
-                            radius : this.genome.radius
+                            radius : (<any>"{{genome.radius}}")
                         })}
                             ${trackLabel.add(
                             {
@@ -111,6 +114,7 @@ export class GenomeView extends viewMgr.View
                 function($compile : any)
                 {
                     let scope = angular.element($div).scope();
+                    scope.genome = self.genome;
                     $compile($div)(scope);
                 }
             );
