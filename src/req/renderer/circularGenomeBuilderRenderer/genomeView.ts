@@ -50,6 +50,8 @@ export class GenomeView extends viewMgr.View
         let self = this;
         if(this.genome)
         {
+            //Only render markup when we explicitly need to
+            //All figure updates are handled through angular bindings
             if(this.firstRender){
             try
             {
@@ -160,6 +162,8 @@ export class GenomeView extends viewMgr.View
             (
                 function($compile : any)
                 {
+                    //This should probably be done with an actual angular scope instead 
+                    //of mutating the existing scope
                     let scope = angular.element($div).scope();
                     scope.genome = self.genome;
                     scope.markerOnClick = self.markerOnClick;
