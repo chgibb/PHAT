@@ -11,16 +11,7 @@ import * as trackScale from "./../circularGenome/trackScale";
 
 require("angular");
 require("angularplasmid");
-//adapted from answer by letronje and edited by Peter Mortensen
-//http://stackoverflow.com/questions/1484506/random-color-generator-in-javascript
-function getRandColor(brightness : number)
-{
-    // Six levels of brightness from 0 to 5, 0 being the darkest
-    let rgb = [Math.random() * 256, Math.random() * 256, Math.random() * 256];
-    let mix = [brightness*51, brightness*51, brightness*51]; //51 => 255/5
-    let mixedrgb = [rgb[0] + mix[0], rgb[1] + mix[1], rgb[2] + mix[2]].map(function(x){return Math.round(x/2.0)});
-    return "rgb(" + mixedrgb.join(",") + ")";
-}
+
 let app : any = angular.module('myApp',['angularplasmid']);
 export class GenomeView extends viewMgr.View
 {
@@ -94,7 +85,7 @@ export class GenomeView extends viewMgr.View
                                         {
                                             start : lastLocation.toString(),
                                             end : (lastLocation + this.genome.contigs[i].bp).toString(),
-                                            markerStyle : "fill:"+getRandColor(1)
+                                            markerStyle : `fill:${this.genome.contigs[i].color}`
                                         })}
                                             ${markerLabel.add(
                                             {

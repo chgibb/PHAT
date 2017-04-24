@@ -4,6 +4,16 @@ export class Contig extends fastaContigLoader.Contig
 {
     public color? : string = "";
 }
+//adapted from answer by letronje and edited by Peter Mortensen
+//http://stackoverflow.com/questions/1484506/random-color-generator-in-javascript
+function getRandColor(brightness : number)
+{
+    // Six levels of brightness from 0 to 5, 0 being the darkest
+    let rgb = [Math.random() * 256, Math.random() * 256, Math.random() * 256];
+    let mix = [brightness*51, brightness*51, brightness*51]; //51 => 255/5
+    let mixedrgb = [rgb[0] + mix[0], rgb[1] + mix[1], rgb[2] + mix[2]].map(function(x){return Math.round(x/2.0)});
+    return "rgb(" + mixedrgb.join(",") + ")";
+}
 export class CircularFigure
 {
     public uuid : string;
@@ -22,5 +32,9 @@ export class CircularFigure
         this.radius = 120;
         this.height = 300;
         this.width = 300;
+        for(let i = 0; i != this.contigs.length; ++i)
+        {
+            this.contigs[i].color = getRandColor(1);
+        }
     }
 }
