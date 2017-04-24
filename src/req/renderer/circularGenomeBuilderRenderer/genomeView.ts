@@ -1,5 +1,7 @@
 //// <reference path="jquery.d.ts" />
 /// <reference path="./../angularStub.d.ts" />
+import * as util from "util";
+
 import * as viewMgr from "./../viewMgr";
 import {CircularFigure} from "./../circularFigure";
 import * as plasmid from "./../circularGenome/plasmid";
@@ -22,6 +24,12 @@ export class GenomeView extends viewMgr.View
     }
     public onMount() : void{}
     public onUnMount() : void{}
+    public markerOnClick($event : any,$marker : any,uuid : string) : void
+    {
+        console.log(util.inspect($event));
+        console.log(util.inspect($marker));
+        console.log(uuid);
+    }
     public renderView() : string
     {
         let self = this;
@@ -85,7 +93,9 @@ export class GenomeView extends viewMgr.View
                                         {
                                             start : lastLocation.toString(),
                                             end : (lastLocation + this.genome.contigs[i].bp).toString(),
-                                            markerStyle : `fill:${this.genome.contigs[i].color}`
+                                            markerStyle : `fill:${this.genome.contigs[i].color}`,
+                                            uuid : this.genome.contigs[i].uuid,
+                                            onClick : "markerOnClick"
                                         })}
                                             ${markerLabel.add(
                                             {
@@ -117,6 +127,7 @@ export class GenomeView extends viewMgr.View
                 {
                     let scope = angular.element($div).scope();
                     scope.genome = self.genome;
+                    scope.markerOnClick = self.markerOnClick;
                     $compile($div)(scope);
                 }
             );
