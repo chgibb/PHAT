@@ -64,7 +64,7 @@ export class GenomeView extends viewMgr.View
                         ${plasmidTrack.add(
                         {
                             trackStyle : "fill:#f0f0f0;stroke:#ccc",
-                            radius : (<any>"{{genome.radius}}")
+                            radius : "{{genome.radius}}"
                         })}
                             ${trackLabel.add(
                             {

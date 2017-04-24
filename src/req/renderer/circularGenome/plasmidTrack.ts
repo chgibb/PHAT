@@ -2,7 +2,7 @@ export function add(
     options? : {
         trackStyle? : string,
         width? : string,
-        radius? : number
+        radius? : number | string
     }
 ) : string
 {
