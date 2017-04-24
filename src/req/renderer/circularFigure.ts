@@ -36,6 +36,7 @@ export class CircularFigure
         {
             this.contigs[i].color = getRandColor(1);
         }
+        //Add filler contig at the end of the reference so the figure displays correctly
         if(this.contigs.length == 1)
         {
             this.contigs.push(new Contig());
