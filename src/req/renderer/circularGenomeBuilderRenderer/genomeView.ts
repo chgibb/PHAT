@@ -52,9 +52,11 @@ export class GenomeView extends viewMgr.View
             //the page
             let $div = $
             (
-                `<div id="${this.div}">
-                <input type="number" name="input" ng-model="genome.radius"
-           min="0" max="400" required>
+                `
+                <div id="controls">
+                    <input type="number" name="input" ng-model="genome.radius"min="0" max="400" required>
+                </div>
+                <div id="${this.div}">
                     ${plasmid.add(
                     {
                         sequenceLength : totalBP.toString(),
