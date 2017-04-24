@@ -36,8 +36,17 @@ export class GenomeView extends viewMgr.View
         let self = this;
         if(this.genome)
         {
-            //Remove the div this view is bound to
-            document.body.removeChild(document.getElementById(this.div));
+            try
+            {
+                document.body.removeChild(document.getElementById("controls"));
+            }
+            catch(err){}
+            try
+            {
+                //Remove the div this view is bound to
+                document.body.removeChild(document.getElementById(this.div));
+            }
+            catch(err){}
             $("#"+this.div).remove();
 
             let totalBP = 0;
