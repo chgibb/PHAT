@@ -3,6 +3,7 @@
 import * as util from "util";
 
 import * as viewMgr from "./../viewMgr";
+import * as masterView from "./masterView";
 import {CircularFigure} from "./../circularFigure";
 import * as plasmid from "./../circularGenome/plasmid";
 import * as plasmidTrack from "./../circularGenome/plasmidTrack";
@@ -34,16 +35,24 @@ export class GenomeView extends viewMgr.View
     }
     public inputRadiusOnChange()
     {
-        this.genome.height = this.genome.radius*2.5;
-        this.genome.width =this.genome.radius*2.5;
+        this.genome.height = this.genome.radius*5;
+        this.genome.width =this.genome.radius*5;
         this.postRender();
         console.log(this.genome.radius+" "+this.genome.width+" "+this.genome.height);
+    }
+    public showBPTrackOnChange()
+    {
+        let masterView = <masterView.View>viewMgr.getViewByName("masterView");
+        let genomeView = <GenomeView>viewMgr.getViewByName("genomeView",masterView.views);
+        genomeView.firstRender = true;
+        viewMgr.render();
     }
     public renderView() : string
     {
         let self = this;
         if(this.genome)
         {
+            console.log("in renderview: "+this.firstRender);
             if(this.firstRender){
             try
             {
@@ -74,10 +83,23 @@ export class GenomeView extends viewMgr.View
             (
                 `
                 <div id="controls">
-                    <input type="number" name="input" ng-model="genome.radius" ng-change="inputRadiusOnChange()" min="0" max="1000" required>
-                     <label>Value2:
-                        <input type="checkbox" ng-model="genome.circularFigureBPTrackOptions.showLabels" ng-true-value="1" ng-false-value="0">
+                    <input type="number" ng-model="genome.radius" ng-change="inputRadiusOnChange()" min="0" max="1000" required>
+                     <label>Show BP Positions:
+                        <input type="checkbox" ng-model="genome.circularFigureBPTrackOptions.showLabels" ng-true-value="1" ng-false-value="0" ng-change="showBPTrackOnChange()">
                      </label>
+                     ${(()=>{
+                         let res = ``;
+                         if(this.genome.circularFigureBPTrackOptions.showLabels)
+                         {
+                             res += `
+                                <br />
+                                <label>Interval:
+                                    <input type="number" ng-model="genome.circularFigureBPTrackOptions.interval" required>
+                                </label>
+                             `;
+                         }
+                         return res;
+                     })()}
                 </div>
                 <div id="${this.div}" style="z-index=-1;">
                     ${plasmid.add(
@@ -145,7 +167,9 @@ export class GenomeView extends viewMgr.View
                     scope.genome = self.genome;
                     scope.markerOnClick = self.markerOnClick;
                     scope.inputRadiusOnChange = self.inputRadiusOnChange;
+                    scope.showBPTrackOnChange = self.showBPTrackOnChange;
                     scope.postRender = self.postRender;
+                    scope.firstRender = self.firstRender;
                     scope.div = self.div;
                     $compile($div)(scope);
                 }
