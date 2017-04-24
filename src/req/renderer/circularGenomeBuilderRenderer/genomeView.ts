@@ -29,16 +29,12 @@ export class GenomeView extends viewMgr.View
     public onUnMount() : void{}
     public markerOnClick($event : any,$marker : any,uuid : string) : void
     {
-        console.log(util.inspect($event));
-        console.log(util.inspect($marker));
-        console.log(uuid);
     }
     public inputRadiusOnChange()
     {
         this.genome.height = this.genome.radius*5;
         this.genome.width =this.genome.radius*5;
         this.postRender();
-        console.log(this.genome.radius+" "+this.genome.width+" "+this.genome.height);
     }
     public showBPTrackOnChange()
     {
@@ -54,7 +50,6 @@ export class GenomeView extends viewMgr.View
         let self = this;
         if(this.genome)
         {
-            console.log("in renderview: "+this.firstRender);
             if(this.firstRender){
             try
             {
@@ -182,7 +177,6 @@ export class GenomeView extends viewMgr.View
     }
     public postRender() : void
     {
-        console.log("Called post render");
         if(this.genome !== undefined)
         {
             //get a reference to the div wrapping the rendered svg graphic of our figure
