@@ -63,6 +63,8 @@ export class GenomeView extends viewMgr.View
             {
                 totalBP += this.genome.contigs[i].bp;
             }
+
+
             //This is an unholy mess adapted from the example given inline in the
             //angular source code https://github.com/angular/angular.js/blob/master/src/auto/injector.js
             //We remove the div this view is bound to, recreate it and re render the angular template into it

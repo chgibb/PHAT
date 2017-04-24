@@ -36,5 +36,13 @@ export class CircularFigure
         {
             this.contigs[i].color = getRandColor(1);
         }
+        if(this.contigs.length == 1)
+        {
+            this.contigs.push(new Contig());
+            this.contigs[1].color = this.contigs[0].color;
+            this.contigs[1].uuid = "filler";
+            this.contigs[1].bp = 1;
+            this.contigs[1].loaded = true;
+        }
     }
 }
