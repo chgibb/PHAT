@@ -75,6 +75,9 @@ export class GenomeView extends viewMgr.View
                 `
                 <div id="controls">
                     <input type="number" name="input" ng-model="genome.radius" ng-change="inputRadiusOnChange()" min="0" max="1000" required>
+                     <label>Value2:
+                        <input type="checkbox" ng-model="genome.circularFigureBPTrackOptions.showLabels" ng-true-value="1" ng-false-value="0">
+                     </label>
                 </div>
                 <div id="${this.div}" style="z-index=-1;">
                     ${plasmid.add(
@@ -123,8 +126,9 @@ export class GenomeView extends viewMgr.View
                             })()}
                             ${trackScale.add(
                             {
-                                interval : "100",
-                                vAdjust : "5"
+                                interval : "{{genome.circularFigureBPTrackOptions.interval}}",
+                                vAdjust : "{{genome.circularFigureBPTrackOptions.vAdjust}}",
+                                showLabels : "{{genome.circularFigureBPTrackOptions.showLabels}}"
                             }
                             )}
                             ${trackScale.end()}
