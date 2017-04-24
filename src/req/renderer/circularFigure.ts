@@ -14,6 +14,18 @@ function getRandColor(brightness : number)
     let mixedrgb = [rgb[0] + mix[0], rgb[1] + mix[1], rgb[2] + mix[2]].map(function(x){return Math.round(x/2.0)});
     return "rgb(" + mixedrgb.join(",") + ")";
 }
+export class CircularFigureBPTrackOptions
+{
+    public interval : number;
+    public vAdjust : number;
+    public showLabels : number;
+    constructor()
+    {
+        this.interval = 500;
+        this.vAdjust = 5;
+        this.showLabels = 0;
+    }
+}
 export class CircularFigure
 {
     public uuid : string;
@@ -23,6 +35,7 @@ export class CircularFigure
     public radius : number;
     public height : number;
     public width : number;
+    public circularFigureBPTrackOptions : CircularFigureBPTrackOptions;
     constructor(name : string,uuid : string,contigs : Array<Contig>)
     {
         this.uuidFasta = uuid;
@@ -32,9 +45,19 @@ export class CircularFigure
         this.radius = 120;
         this.height = 300;
         this.width = 300;
+        this.circularFigureBPTrackOptions = new CircularFigureBPTrackOptions();
         for(let i = 0; i != this.contigs.length; ++i)
         {
             this.contigs[i].color = getRandColor(1);
+        }
+        //Add filler contig at the end of the reference so the figure displays correctly
+        if(this.contigs.length == 1)
+        {
+            this.contigs.push(new Contig());
+            this.contigs[1].color = this.contigs[0].color;
+            this.contigs[1].uuid = "filler";
+            this.contigs[1].bp = 1;
+            this.contigs[1].loaded = true;
         }
     }
 }
