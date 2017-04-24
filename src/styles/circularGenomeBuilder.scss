@@ -36,3 +36,8 @@ div.leftSlideOutPanel
 	overflow-y : scroll;
 	overflow-x : scroll;
 }
+.trackMarkerHover:hover
+{
+	stroke : #f00;
+	stroke-width : 2px;
+}

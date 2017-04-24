@@ -12,7 +12,8 @@ export function add(
 ) : string
 {
     let res = `
-        <trackmarker ${
+        <trackmarker 
+        markerclass="trackMarkerHover" ${
             (
                 ()=>
                 {
