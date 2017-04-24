@@ -1,25 +1,9 @@
-/*const electron = require('electron');
-const ipc = electron.ipcMain;
-const app = electron.app;
-var window = require('./window');
-var fsAccess = require("./../fsAccess").default;*/
 import * as electron from "electron";
 const ipc = electron.ipcMain;
 const app = electron.app;
 import * as winMgr from "./winMgr";
 import fsAccess from "./../fsAccess";
 import * as dataMgr from "./dataMgr";
-
-ipc.on
-(
-	"toolBar",function(event,arg)
-	{
-		if(arg.action === "open")
-		{
-			winMgr.windowCreators[arg.arg].Create();
-		}
-	}
-);
 winMgr.windowCreators["toolBar"] =
 {
 	Create : function()
