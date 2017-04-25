@@ -61,9 +61,7 @@
     "tar-fs": "^1.15.2",
     "tar-stream": "^1.5.2",
     "typescript": "^2.2.1",
-    "uuid": "^3.0.1"
-  },
-  "dependencies": {
+    "uuid": "^3.0.1",
     "angular": "^1.6.1",
     "angularplasmid": "^1.0.5",
     "electron-ipc-stream": "^0.2.0",
@@ -71,6 +69,9 @@
     "fs-extra": "^2.0.0",
     "jquery": "^2.2.4",
     "jsonfile": "^2.4.0"
+  },
+  "dependencies": {
+    
   },
   "v8Flags": "--nolazy --serialize_eager"
 }
