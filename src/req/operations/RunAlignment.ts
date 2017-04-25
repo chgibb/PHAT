@@ -22,11 +22,15 @@ export class RunAlignment extends atomic.AtomicOperation
     public samToolsIndexJob : Job;
     public samToolsSortJob : Job;
     public samToolsViewJob : Job;
+    public samToolsDepthJob : Job;
+
+    public samToolsCoverageFileStream : fs.WriteStream;
 
     public bowtieFlags : atomic.CompletionFlags;
     public samToolsIndexFlags : atomic.CompletionFlags;
     public samToolsSortFlags : atomic.CompletionFlags;
     public samToolsViewFlags : atomic.CompletionFlags;
+    public samToolsDepthFlags : atomic.CompletionFlags;
     constructor()
     {
         super();
@@ -35,6 +39,7 @@ export class RunAlignment extends atomic.AtomicOperation
         this.samToolsIndexFlags = new atomic.CompletionFlags();
         this.samToolsSortFlags = new atomic.CompletionFlags();
         this.samToolsViewFlags = new atomic.CompletionFlags();
+        this.samToolsDepthFlags = new atomic.CompletionFlags();
 
         this.samToolsExe = 'resources/app/samtools';
         if(process.platform == "linux")
@@ -59,7 +64,7 @@ export class RunAlignment extends atomic.AtomicOperation
             this.alignData.fastqs.push(this.fastq1,this.fastq2);
             this.destinationArtifactsDirectories.push(`resources/app/rt/AlignmentArtifacts/${this.alignData.uuid}`);
         }
-    //bowtie2-align -> samtools view -> samtools sort -> samtools index
+    //bowtie2-align -> samtools view -> samtools sort -> samtools index -> samtools depth
     public run() : void
     {
         let self = this;
@@ -215,7 +220,28 @@ export class RunAlignment extends atomic.AtomicOperation
                         if(params.retCode == 0)
                         {
                             self.setSuccess(self.samToolsIndexFlags);
-                            self.setSuccess(self.flags);
+                            setTimeout(
+                                function(){
+                                    self.samToolsDepthJob = new Job(
+                                        self.samToolsExe,
+                                        <Array<string>>[
+                                            "depth",
+                                            `resources/app/rt/AlignmentArtifacts/${self.alignData.uuid}/out.sorted.bam`
+                                        ],"",true,jobCallBack,{}
+                                    );
+                                    try
+                                    {
+                                        self.samToolsDepthJob.Run();
+                                    }
+                                    catch(err)
+                                    {
+                                        self.abortOperationWithMessage(err);
+                                        return;
+                                    }
+                                    self.samToolsCoverageFileStream = fs.createWriteStream(`resources/app/rt/AlignmentArtifacts/${self.alignData.uuid}/depth.coverage`)
+                                },500
+                            );
+                            //self.setSuccess(self.flags);
                         }
                         else
                         {
@@ -223,6 +249,26 @@ export class RunAlignment extends atomic.AtomicOperation
                             self.update();
                             return;
                         }
+                    }
+                }
+                if(params.processName == self.samToolsExe && params.args[0] == "depth")
+                {
+                    if(params.unBufferedData)
+                    {
+                        self.samToolsCoverageFileStream.write(params.unBufferedData);
+                    }
+                    else if(params.done && params.retCode !== undefined)
+                    {
+                        self.setSuccess(self.samToolsDepthFlags);
+                        self.setSuccess(self.flags);
+                        self.samToolsCoverageFileStream.end();
+                    }
+                    else
+                    {
+                        self.abortOperationWithMessage(`Failed to get depth for ${self.alignData.alias}`);
+                        self.update();
+                        self.samToolsCoverageFileStream.end();
+                        return;
                     }
                 }
                 self.update();
