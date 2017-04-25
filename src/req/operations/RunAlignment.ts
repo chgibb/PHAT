@@ -259,9 +259,14 @@ export class RunAlignment extends atomic.AtomicOperation
                     }
                     else if(params.done && params.retCode !== undefined)
                     {
-                        self.setSuccess(self.samToolsDepthFlags);
-                        self.setSuccess(self.flags);
-                        self.samToolsCoverageFileStream.end();
+                        setTimeout(
+                            function(){
+                                self.setSuccess(self.samToolsDepthFlags);
+                                self.setSuccess(self.flags);
+                                self.samToolsCoverageFileStream.end();
+                                self.update();
+                            },500
+                        );
                     }
                     else
                     {
