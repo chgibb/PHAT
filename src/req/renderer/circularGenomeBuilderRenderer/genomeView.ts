@@ -4,7 +4,7 @@ import * as util from "util";
 
 import * as viewMgr from "./../viewMgr";
 import * as masterView from "./masterView";
-import {CircularFigure} from "./../circularFigure";
+import {CircularFigure,renderBaseFigure,getBaseFigureFromCache} from "./../circularFigure";
 import * as plasmid from "./../circularGenome/plasmid";
 import * as plasmidTrack from "./../circularGenome/plasmidTrack";
 import * as trackLabel from "./../circularGenome/trackLabel";
@@ -78,7 +78,40 @@ export class GenomeView extends viewMgr.View
             //We remove the div this view is bound to, recreate it and re render the angular template into it
             //Then we pass the div into angular to compile the templates and then finally inject it all back into
             //the page
-            let $div = $
+            let $div = $(
+                `
+                <div id="controls">
+                    <input type="number" ng-model="genome.radius" ng-change="inputRadiusOnChange()" min="0" max="1000" required>
+                     <label>Show BP Positions:
+                        <input type="checkbox" ng-model="genome.circularFigureBPTrackOptions.showLabels" ng-true-value="1" ng-false-value="0" ng-change="showBPTrackOnChange()">
+                     </label>
+                     ${(()=>{
+                         let res = ``;
+                         if(this.genome.circularFigureBPTrackOptions.showLabels)
+                         {
+                             res += `
+                                <br />
+                                <label>Interval:
+                                    <input type="number" ng-model="genome.circularFigureBPTrackOptions.interval" required>
+                                </label>
+                             `;
+                         }
+                         return res;
+                     })()}
+                </div>
+                <div id="${this.div}" style="z-index=-1;">
+                    ${plasmid.add(
+                    {
+                        sequenceLength : totalBP.toString(),
+                        plasmidHeight : "{{genome.height}}",
+                        plasmidWidth : "{{genome.width}}"
+                    })}
+                        ${getBaseFigureFromCache(this.genome)}
+                    ${plasmid.end()}
+                </div>
+                `
+            );
+           /* let $div = $
             (
                 `
                 <div id="controls">
@@ -156,7 +189,7 @@ export class GenomeView extends viewMgr.View
                         ${plasmidTrack.end()}
                     ${plasmid.end()}
                 </div>
-            `);
+            `);*/
             $(document.body).append($div);
             angular.element(document).injector().invoke
             (
