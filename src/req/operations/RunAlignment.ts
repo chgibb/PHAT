@@ -255,7 +255,22 @@ export class RunAlignment extends atomic.AtomicOperation
                 {
                     if(params.unBufferedData)
                     {
+                        //console.log(params.unBufferedData.split(/\s/g));
+                        let coverageTokens = params.unBufferedData.split(/\s/g);
+                        //console.log(tokens[0]+" "tokens[1]+" "tokens[2]);
                         self.samToolsCoverageFileStream.write(params.unBufferedData);
+                        for(let i = 0; i != self.fasta.contigs.length; ++i)
+                        {
+                            let contigTokens = self.fasta.contigs[i].name.split(/\s/g);
+                            console.log(contigTokens);
+                            for(let k = 0; k != coverageTokens.length; ++k)
+                            {
+                                if(coverageTokens[k] == contigTokens[0])
+                                {
+                                    fs.appendFileSync(`resources/app/rt/AlignmentArtifacts/${self.alignData.uuid}/contigCoverage/${self.fasta.contigs[i].uuid}`,`${coverageTokens[k+1]} ${coverageTokens[k+2]} `);
+                                }
+                            }
+                        }
                     }
                     else if(params.done && params.retCode !== undefined)
                     {
@@ -300,6 +315,7 @@ export class RunAlignment extends atomic.AtomicOperation
         this.alignData.invokeString = invokeString;
         this.alignData.alias = `${this.fastq1.alias}, ${this.fastq2.alias}; ${this.fasta.alias}`;
         fs.mkdirSync(`resources/app/rt/AlignmentArtifacts/${this.alignData.uuid}`);
+        fs.mkdirSync(`resources/app/rt/AlignmentArtifacts/${this.alignData.uuid}/contigCoverage`);
         this.bowtieJob = new Job(this.bowtie2Exe,args,"",true,jobCallBack,{});
         try
         {
