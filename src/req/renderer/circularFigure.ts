@@ -203,11 +203,4 @@ export function renderCoverageTracks(figure : CircularFigure,contiguuid : string
         fs.writeFileSync("coverageTracks",coverageTracks);
         cb(true,coverageTracks);
     });
-
-    /*
-    coverageTracks += `
-                <plasmidtrack trackstyle="fill-opacity:0.0" width="10" radius="{{genome.radius+${100+i}}}" >
-                    <trackmarker start="${baseBP+parseInt(tokens[1])}" end="${baseBP+parseInt(tokens[1])+1}" markerstyle="fill:rgb(64,64,64);stroke-width:1px;" wadjust="-8"></trackmarker>
-                </plasmidtrack>
-            `*/
 }
