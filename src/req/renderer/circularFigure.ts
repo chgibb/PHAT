@@ -188,7 +188,20 @@ export function renderCoverageTracks(figure : CircularFigure,contiguuid : string
     });
     rl.on("close",function(){
         depths.sort(function(a : PositionsWithDepths,b : PositionsWithDepths){return a.depth - b.depth;});
-        console.log(depths);
+
+        for(let i = 0; i != depths.length; ++i)
+        {
+            let res = "";
+            res += `<plasmidtrack trackstyle="fill-opacity:0.0" width="10" radius="{{genome.radius+${100+i}}}" >`;
+            for(let k = 0; k != depths[i].positions.length; ++k)
+            {
+                res += `<trackmarker start="${baseBP+depths[i].positions[k]}" end="${baseBP+depths[i].positions[k]+1}" markerstyle="fill:rgb(64,64,64);stroke-width:1px;" wadjust="-8"></trackmarker>`;
+            }
+            res += `</plasmidtrack>`;
+            coverageTracks += res;
+        }
+        fs.writeFileSync("coverageTracks",coverageTracks);
+        cb(true,coverageTracks);
     });
 
     /*
