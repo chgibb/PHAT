@@ -1,5 +1,5 @@
 import * as fs from "fs";
-
+import * as readline from "readline";
 import * as atomic from "./atomicOperations";
 import {Fasta} from "./../fasta";
 import Fastq from "./../fastq";
@@ -256,30 +256,42 @@ export class RunAlignment extends atomic.AtomicOperation
                     if(params.unBufferedData)
                     {
                         //console.log(params.unBufferedData.split(/\s/g));
-                        let coverageTokens = params.unBufferedData.split(/\s/g);
+                        //let coverageTokens = params.unBufferedData.split(/\s/g);
                         //console.log(tokens[0]+" "tokens[1]+" "tokens[2]);
                         self.samToolsCoverageFileStream.write(params.unBufferedData);
-                        for(let i = 0; i != self.fasta.contigs.length; ++i)
-                        {
-                            let contigTokens = self.fasta.contigs[i].name.split(/\s/g);
-                            console.log(contigTokens);
-                            for(let k = 0; k != coverageTokens.length; ++k)
-                            {
-                                if(coverageTokens[k] == contigTokens[0])
-                                {
-                                    fs.appendFileSync(`resources/app/rt/AlignmentArtifacts/${self.alignData.uuid}/contigCoverage/${self.fasta.contigs[i].uuid}`,`${coverageTokens[k+1]} ${coverageTokens[k+2]} `);
-                                }
-                            }
-                        }
+                        
                     }
                     else if(params.done && params.retCode !== undefined)
                     {
                         setTimeout(
                             function(){
-                                self.setSuccess(self.samToolsDepthFlags);
+                                self.samToolsCoverageFileStream.end();
+                                let rl : readline.ReadLine = readline.createInterface(<readline.ReadLineOptions>{
+                                    input : fs.createReadStream(`resources/app/rt/AlignmentArtifacts/${self.alignData.uuid}/depth.coverage`)
+                                });
+                                rl.on("line",function(line){
+                                    let coverageTokens = line.split(/\s/g);
+                                    for(let i = 0; i != self.fasta.contigs.length; ++i)
+                                    {
+                                        let contigTokens = self.fasta.contigs[i].name.split(/\s/g);
+                                        for(let k = 0; k != coverageTokens.length; ++k)
+                                        {
+                                            if(coverageTokens[k] == contigTokens[0])
+                                            {
+                                                fs.appendFileSync(`resources/app/rt/AlignmentArtifacts/${self.alignData.uuid}/contigCoverage/${self.fasta.contigs[i].uuid}`,`${coverageTokens[k+1]} ${coverageTokens[k+2]}\n`);
+                                            }
+                                        }
+                                    }
+                                });
+                                rl.on("close",function(){
+                                    self.setSuccess(self.samToolsDepthFlags);
+                                    self.setSuccess(self.flags);
+                                    self.update();
+                                });
+                                /*self.setSuccess(self.samToolsDepthFlags);
                                 self.setSuccess(self.flags);
                                 self.samToolsCoverageFileStream.end();
-                                self.update();
+                                self.update();*/
                             },500
                         );
                     }
