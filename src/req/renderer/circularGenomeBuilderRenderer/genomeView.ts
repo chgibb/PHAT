@@ -4,7 +4,8 @@ import * as util from "util";
 
 import * as viewMgr from "./../viewMgr";
 import * as masterView from "./masterView";
-import {CircularFigure,renderBaseFigure,getBaseFigureFromCache} from "./../circularFigure";
+import alignData from "./../../alignData";
+import {CircularFigure,renderBaseFigure,getBaseFigureFromCache,renderCoverageTracks} from "./../circularFigure";
 import * as plasmid from "./../circularGenome/plasmid";
 import * as plasmidTrack from "./../circularGenome/plasmidTrack";
 import * as trackLabel from "./../circularGenome/trackLabel";
@@ -20,21 +21,33 @@ export class GenomeView extends viewMgr.View
 {
     public genome : CircularFigure;
     public firstRender : boolean;
+    public coverageTracks : string;
+    public alignData : Array<alignData>;
     public constructor(name : string,div : string)
     {
         super(name,div);
         this.firstRender = true;
+        this.coverageTracks = "";
     }
     public onMount() : void{}
     public onUnMount() : void{}
     public markerOnClick($event : any,$marker : any,uuid : string) : void
     {
+        let self = this;
+        renderCoverageTracks(this.genome,uuid,this.alignData[0],function(status,coverageTracks){
+            let masterView = <masterView.View>viewMgr.getViewByName("masterView");
+            let genomeView = <GenomeView>viewMgr.getViewByName("genomeView",masterView.views);
+            genomeView.coverageTracks += coverageTracks;
+            genomeView.firstRender = true;
+            viewMgr.render();
+        });
     }
     public inputRadiusOnChange()
     {
         this.genome.height = this.genome.radius*5;
         this.genome.width =this.genome.radius*5;
         this.postRender();
+        let self = this;
     }
     public showBPTrackOnChange()
     {
@@ -50,6 +63,7 @@ export class GenomeView extends viewMgr.View
         let self = this;
         if(this.genome)
         {
+            
             //Only render markup when we explicitly need to
             //All figure updates are handled through angular bindings
             if(this.firstRender){
@@ -107,6 +121,7 @@ export class GenomeView extends viewMgr.View
                         plasmidWidth : "{{genome.width}}"
                     })}
                         ${getBaseFigureFromCache(this.genome)}
+                        ${self.coverageTracks}
                     ${plasmid.end()}
                 </div>
                 `
@@ -199,9 +214,11 @@ export class GenomeView extends viewMgr.View
                     //of mutating the existing scope
                     let scope = angular.element($div).scope();
                     scope.genome = self.genome;
+                    scope.alignData = self.alignData;
                     scope.markerOnClick = self.markerOnClick;
                     scope.inputRadiusOnChange = self.inputRadiusOnChange;
                     scope.showBPTrackOnChange = self.showBPTrackOnChange;
+                    scope.coverageTracks = self.coverageTracks;
                     scope.postRender = self.postRender;
                     scope.firstRender = self.firstRender;
                     scope.div = self.div;
