@@ -6,6 +6,7 @@ import {RunAlignment} from "./req/operations/RunAlignment";
 import alignData from "./req/alignData";
 import Fastq from "./req/fastq";
 import {Fasta} from "./req/fasta";
+import {CircularFigure} from "./req/renderer/circularFigure";
 import {SpawnRequestParams} from "./req/JobIPC";
 
 var assert = require("./req/tests/assert");
@@ -97,7 +98,7 @@ atomic.updates.on(
 
 setInterval(function(){atomic.runOperations(1);},1000);
 
-
+/*
 assert.assert(function(){
 	return true;
 },'--------------------------------------------------------',0);
@@ -116,7 +117,7 @@ assert.assert(function(){
 	atomic.addOperation("generateFastQCReport",L6R1R2);
 	return true;
 },'',0);
-
+*/
 assert.assert(function(){
 	return true;
 },'--------------------------------------------------------',0);
@@ -146,6 +147,7 @@ assert.assert(function(){
 	atomic.addOperation("indexFasta",hpv18);
 	return true;
 },'',0);
+/*
 
 assert.assert(function(){
 	return hpv18.indexed;
@@ -172,7 +174,7 @@ assert.assert(function(){
 	assert.runningEvents += 1;
 	return true;
 },'',0);
-
+*/
 assert.assert(function(){
 	return L6R1HPV16Alignment.summary.reads == 2689 ? true : false;
 
@@ -188,7 +190,7 @@ assert.assert(function(){
 
 },'Alignment has correct alignment rate	',0);
 
-
+/*
 assert.assert(function(){
 
 	console.log("aligning L6R1.R1, L6R1.R2 against HPV18");
@@ -213,7 +215,7 @@ assert.assert(function(){
 
 },'Alignment has correct alignment rate	',0);
 
-
+*/
 
 assert.assert(function(){
 	return true;
