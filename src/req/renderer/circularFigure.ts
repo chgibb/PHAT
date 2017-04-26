@@ -1,4 +1,5 @@
 import * as fs from "fs";
+import * as readline from "readline";
 const uuidv4 : () => string = require("uuid/v4");
 import * as fastaContigLoader from "./../fastaContigLoader";
 import * as plasmidTrack from "./circularGenome/plasmidTrack";
@@ -6,6 +7,8 @@ import * as trackLabel from "./circularGenome/trackLabel";
 import * as trackMarker from "./circularGenome/trackMarker";
 import * as markerLabel from "./circularGenome/markerLabel";
 import * as trackScale from "./circularGenome/trackScale";
+
+import alignData from "./../alignData";
 export class Contig extends fastaContigLoader.Contig
 {
     public color? : string = "";
@@ -134,11 +137,64 @@ export function getBaseFigureFromCache(figure : CircularFigure) : string
     return (<any>fs.readFileSync(`resources/app/rt/circularFigures/${figure.uuid}/baseFigure`));
 }
 
-export function cacheCoverageTracks(figure : CircularFigure,coverageFile : string,cb : (status : boolean) => void) : void
+
+function getBaseBP(figure : CircularFigure,contiguuid : string) : number
 {
-    try
+    let base = 0;
+    for(let i = 0; i != figure.contigs.length; ++i)
     {
-        fs.mkdirSync(`resources/app/rt/circularFigures/${figure.uuid}`);
+        if(figure.contigs[i].uuid == contiguuid)
+            return base;
+        base += figure.contigs[i].bp;
     }
-    catch(err){}
+    return -1;
+}
+interface PositionsWithDepths
+{
+    depth : number;
+    positions : Array<number>;
+}
+export function renderCoverageTracks(figure : CircularFigure,contiguuid : string,align : alignData,cb : (status : boolean,coverageTracks : string) => void) : void
+{
+    let coverageTracks : string = "";
+    let rl : readline.ReadLine = readline.createInterface(<readline.ReadLineOptions>{
+        input : fs.createReadStream(`resources/app/rt/AlignmentArtifacts/${align.uuid}/contigCoverage/${contiguuid}`)
+    });
+    let baseBP = getBaseBP(figure,contiguuid);
+    if(baseBP == -1)
+        throw new Error("Could not get base position of "+figure.name+" for reference");
+
+    let depths : Array<PositionsWithDepths> = new Array<PositionsWithDepths>();
+    rl.on("line",function(line : string){
+        let tokens = line.split(/\s/g);
+        let depth = parseInt(tokens[1]);
+        let found = false;
+        for(let i = 0; i != depths.length; ++i)
+        {
+            if(depths[i].depth == depth)
+            {
+                depths[i].positions.push(parseInt(tokens[0]));
+                found = true;
+                break;
+            }
+        }
+        if(!found)
+        {
+            depths.push(<PositionsWithDepths>{
+                depth : depth,
+                positions : <Array<number>>[parseInt(tokens[0])]
+            });
+        }
+    });
+    rl.on("close",function(){
+        depths.sort(function(a : PositionsWithDepths,b : PositionsWithDepths){return a.depth - b.depth;});
+        console.log(depths);
+    });
+
+    /*
+    coverageTracks += `
+                <plasmidtrack trackstyle="fill-opacity:0.0" width="10" radius="{{genome.radius+${100+i}}}" >
+                    <trackmarker start="${baseBP+parseInt(tokens[1])}" end="${baseBP+parseInt(tokens[1])+1}" markerstyle="fill:rgb(64,64,64);stroke-width:1px;" wadjust="-8"></trackmarker>
+                </plasmidtrack>
+            `*/
 }
