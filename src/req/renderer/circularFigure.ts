@@ -204,3 +204,24 @@ export function renderCoverageTracks(figure : CircularFigure,contiguuid : string
         cb(true,coverageTracks);
     });
 }
+export function cacheCoverageTracks(figure : CircularFigure,contiguuid : string,align : alignData,cb : (status : boolean,coverageTracks : string) => void) : void
+{
+    try
+    {
+        fs.mkdirSync(`resources/app/rt/circularFigures/${figure.uuid}`);
+    }
+    catch(err){}
+    try
+    {
+        fs.mkdirSync(`resources/app/rt/circularFigures/${figure.uuid}/coverage`);
+    }
+    catch(err){}
+    renderCoverageTracks(
+        figure,
+        contiguuid,
+        align,
+        function(status,coverageTracks){
+            fs.writeFileSync(`resources/app/rt/circularFigures/${figure.uuid}/coverage/${contiguuid}`,coverageTracks);
+            cb(status,coverageTracks);
+    });
+}
