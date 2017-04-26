@@ -1,5 +1,11 @@
+import * as fs from "fs";
 const uuidv4 : () => string = require("uuid/v4");
 import * as fastaContigLoader from "./../fastaContigLoader";
+import * as plasmidTrack from "./circularGenome/plasmidTrack";
+import * as trackLabel from "./circularGenome/trackLabel";
+import * as trackMarker from "./circularGenome/trackMarker";
+import * as markerLabel from "./circularGenome/markerLabel";
+import * as trackScale from "./circularGenome/trackScale";
 export class Contig extends fastaContigLoader.Contig
 {
     public color? : string = "";
@@ -59,5 +65,80 @@ export class CircularFigure
             this.contigs[1].bp = 1;
             this.contigs[1].loaded = true;
         }
+        cacheBaseFigure(this);
     }
+}
+export function renderBaseFigure(figure : CircularFigure) : string
+{
+    return `
+        ${plasmidTrack.add(
+        {
+            trackStyle : "fill:#f0f0f0;stroke:#ccc",
+            radius : "{{genome.radius}}"
+        })}
+            ${trackLabel.add(
+            {
+                text : figure.contigs[0].name,
+                labelStyle : "font-size:20px;font-weight:400"
+            })}
+            ${trackLabel.end()}
+            ${(()=>
+            {
+                let res = "";
+                let lastLocation = 0;
+                for(let i = 0; i != figure.contigs.length; ++i)
+                { 
+                    res += `
+                        ${trackMarker.add(
+                        {
+                            start : lastLocation.toString(),
+                            end : (lastLocation + figure.contigs[i].bp).toString(),
+                            markerStyle : `fill:${figure.contigs[i].color}`,
+                            uuid : figure.contigs[i].uuid,
+                            onClick : "markerOnClick"
+                        })}
+                            ${markerLabel.add(
+                            {
+                                type : "path",
+                                text : figure.contigs[i].name
+                            })}
+                            ${markerLabel.end()}
+                        ${trackMarker.end()}
+                    `;
+                    lastLocation = lastLocation + figure.contigs[i].bp;
+                }
+                return res; 
+            })()}
+            ${trackScale.add(
+            {
+                interval : "{{genome.circularFigureBPTrackOptions.interval}}",
+                vAdjust : "{{genome.circularFigureBPTrackOptions.vAdjust}}",
+                showLabels : "{{genome.circularFigureBPTrackOptions.showLabels}}"
+            }
+        )}
+        ${trackScale.end()}
+    ${plasmidTrack.end()}
+    `;
+}
+export function cacheBaseFigure(figure : CircularFigure) : void
+{
+    try
+    {
+        fs.mkdirSync(`resources/app/rt/circularFigures/${figure.uuid}`);
+    }
+    catch(err){}
+    fs.writeFileSync(`resources/app/rt/circularFigures/${figure.uuid}/baseFigure`,renderBaseFigure(figure));
+}
+export function getBaseFigureFromCache(figure : CircularFigure) : string
+{
+    return (<any>fs.readFileSync(`resources/app/rt/circularFigures/${figure.uuid}/baseFigure`));
+}
+
+export function cacheCoverageTracks(figure : CircularFigure,coverageFile : string,cb : (status : boolean) => void) : void
+{
+    try
+    {
+        fs.mkdirSync(`resources/app/rt/circularFigures/${figure.uuid}`);
+    }
+    catch(err){}
 }
