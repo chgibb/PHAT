@@ -255,9 +255,6 @@ export class RunAlignment extends atomic.AtomicOperation
                 {
                     if(params.unBufferedData)
                     {
-                        //console.log(params.unBufferedData.split(/\s/g));
-                        //let coverageTokens = params.unBufferedData.split(/\s/g);
-                        //console.log(tokens[0]+" "tokens[1]+" "tokens[2]);
                         self.samToolsCoverageFileStream.write(params.unBufferedData);
                         
                     }
@@ -288,10 +285,6 @@ export class RunAlignment extends atomic.AtomicOperation
                                     self.setSuccess(self.flags);
                                     self.update();
                                 });
-                                /*self.setSuccess(self.samToolsDepthFlags);
-                                self.setSuccess(self.flags);
-                                self.samToolsCoverageFileStream.end();
-                                self.update();*/
                             },500
                         );
                     }
