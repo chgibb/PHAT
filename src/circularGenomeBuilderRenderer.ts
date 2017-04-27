@@ -93,8 +93,8 @@ $
                         if(arg.val !== undefined)
                         {
                             let masterView = <masterView.View>viewMgr.getViewByName("masterView");
-                            let genomeView = <genomeView.GenomeView>viewMgr.getViewByName("genomeView",masterView.views);
-                            genomeView.alignData = arg.val;
+                            let rightPanelView = <genomeView.GenomeView>viewMgr.getViewByName("rightPanel",masterView.views);
+                            rightPanelView.alignData = arg.val;
                         }
                     }
                     if(arg.key == "circularFigures")
