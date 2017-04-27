@@ -66,26 +66,5 @@ export class RenderCoverageTrackForContig extends atomic.AtomicOperation
                 );
             },500
         );
-        /*let self = this;
-        try
-        {
-            cf.cacheCoverageTracks(
-                this.circularFigure,
-                this.contiguuid,
-                this.alignData,
-                function(status,coverageTracks){
-                    if(status == true)
-                    {
-                        self.setSuccess(self.flags);
-                        self.update();
-                    }
-                }
-            );
-        }
-        catch(err)
-        {
-            this.abortOperationWithMessage(err);
-            return;
-        }*/
     }
 }
