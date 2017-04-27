@@ -98,7 +98,6 @@ export class GenomeView extends viewMgr.View
                 totalBP += this.genome.contigs[i].bp;
             }
 
-
             //This is an unholy mess adapted from the example given inline in the
             //angular source code https://github.com/angular/angular.js/blob/master/src/auto/injector.js
             //We remove the div this view is bound to, recreate it and re render the angular template into it
@@ -138,85 +137,6 @@ export class GenomeView extends viewMgr.View
                 </div>
                 `
             );
-           /* let $div = $
-            (
-                `
-                <div id="controls">
-                    <input type="number" ng-model="genome.radius" ng-change="inputRadiusOnChange()" min="0" max="1000" required>
-                     <label>Show BP Positions:
-                        <input type="checkbox" ng-model="genome.circularFigureBPTrackOptions.showLabels" ng-true-value="1" ng-false-value="0" ng-change="showBPTrackOnChange()">
-                     </label>
-                     ${(()=>{
-                         let res = ``;
-                         if(this.genome.circularFigureBPTrackOptions.showLabels)
-                         {
-                             res += `
-                                <br />
-                                <label>Interval:
-                                    <input type="number" ng-model="genome.circularFigureBPTrackOptions.interval" required>
-                                </label>
-                             `;
-                         }
-                         return res;
-                     })()}
-                </div>
-                <div id="${this.div}" style="z-index=-1;">
-                    ${plasmid.add(
-                    {
-                        sequenceLength : totalBP.toString(),
-                        plasmidHeight : "{{genome.height}}",
-                        plasmidWidth : "{{genome.width}}"
-                    })}
-                        ${plasmidTrack.add(
-                        {
-                            trackStyle : "fill:#f0f0f0;stroke:#ccc",
-                            radius : "{{genome.radius}}"
-                        })}
-                            ${trackLabel.add(
-                            {
-                                text : this.genome.contigs[0].name,
-                                labelStyle : "font-size:20px;font-weight:400"
-                            })}
-                            ${trackLabel.end()}
-                            ${(()=>
-                            {
-                                let res = "";
-                                let lastLocation = 0;
-                                for(let i = 0; i != this.genome.contigs.length; ++i)
-                                { 
-                                    res += `
-                                        ${trackMarker.add(
-                                        {
-                                            start : lastLocation.toString(),
-                                            end : (lastLocation + this.genome.contigs[i].bp).toString(),
-                                            markerStyle : `fill:${this.genome.contigs[i].color}`,
-                                            uuid : this.genome.contigs[i].uuid,
-                                            onClick : "markerOnClick"
-                                        })}
-                                            ${markerLabel.add(
-                                            {
-                                                type : "path",
-                                                text : this.genome.contigs[i].name
-                                            })}
-                                            ${markerLabel.end()}
-                                        ${trackMarker.end()}
-                                    `;
-                                    lastLocation = lastLocation + this.genome.contigs[i].bp;
-                                }
-                                return res; 
-                            })()}
-                            ${trackScale.add(
-                            {
-                                interval : "{{genome.circularFigureBPTrackOptions.interval}}",
-                                vAdjust : "{{genome.circularFigureBPTrackOptions.vAdjust}}",
-                                showLabels : "{{genome.circularFigureBPTrackOptions.showLabels}}"
-                            }
-                            )}
-                            ${trackScale.end()}
-                        ${plasmidTrack.end()}
-                    ${plasmid.end()}
-                </div>
-            `);*/
             $(document.body).append($div);
             angular.element(document).injector().invoke
             (
