@@ -48,6 +48,12 @@ export class RenderCoverageTrackForContig extends atomic.AtomicOperation
                 {
                     self.extraData = ev.data;
                     self.flags = ev.flags;
+                    if(ev.flags.success == true)
+                    {
+                        self.circularFigure = ev.data.circularFigure;
+                        self.contiguuid = ev.data.contiguuid;
+                        self.alignData = ev.data.alignData;
+                    }
                     self.update();
                 }
             }

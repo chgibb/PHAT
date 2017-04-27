@@ -104,7 +104,8 @@ atomic.updates.on(
 	{
 		if(op.flags.success)
 		{
-			console.log("rendered")
+			console.log("rendered");
+			console.log(op.circularFigure);
 		}
 		if(op.flags.failure)
 		{

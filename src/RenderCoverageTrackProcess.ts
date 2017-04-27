@@ -39,7 +39,12 @@ process.on
                             process.send(
                                 <AtomicOperationForkEvent>{
                                     update : true,
-                                    flags : flags
+                                    flags : flags,
+                                    data : {
+                                        alignData : align,
+                                        contiguuid : contiguuid,
+                                        circularFigure : circularFigure
+                                    }
                                 }
                             );
                             process.exit(0);
