@@ -31,7 +31,7 @@ export class RenderCoverageTrackForContig extends atomic.AtomicOperation
     public run() : void
     {
         let self = this;
-        this.renderCoverageTrackProcess = cp.fork("resources/app/RenderCoverageTracks.js");
+        this.renderCoverageTrackProcess = cp.fork("resources/app/RenderCoverageTrack.js");
         self.renderCoverageTrackProcess.on(
             "message",function(ev : AtomicOperationForkEvent)
             {

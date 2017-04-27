@@ -10,6 +10,9 @@ export interface AtomicOperationIPC
     channel? : string;
     key? : string;
     uuid? : string;
+
+    alignuuid? : string;
+    figureuuid? : string;
     alignParams? : {fasta : Fasta,fastq1 : Fastq,fastq2 : Fastq,type : "patho" | "host"};
 }
 

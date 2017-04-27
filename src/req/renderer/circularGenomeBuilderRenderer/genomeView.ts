@@ -2,6 +2,10 @@
 /// <reference path="./../angularStub.d.ts" />
 import * as util from "util";
 
+import * as electron from "electron";
+const ipc = electron.ipcRenderer;
+
+import {AtomicOperationIPC} from "./../../atomicOperationsIPC";
 import * as viewMgr from "./../viewMgr";
 import * as masterView from "./masterView";
 import alignData from "./../../alignData";
@@ -34,13 +38,21 @@ export class GenomeView extends viewMgr.View
     public markerOnClick($event : any,$marker : any,uuid : string) : void
     {
         let self = this;
-        renderCoverageTracks(this.genome,uuid,this.alignData[0],function(status,coverageTracks){
+        ipc.send(
+            "runOperation",<AtomicOperationIPC>{
+                opName : "renderCoverageTrackForContig",
+                figureuuid : self.genome.uuid,
+                alignuuid : self.alignData[0].uuid,
+                uuid : uuid
+            }
+        );
+        /*renderCoverageTracks(this.genome,uuid,this.alignData[0],function(status,coverageTracks){
             let masterView = <masterView.View>viewMgr.getViewByName("masterView");
             let genomeView = <GenomeView>viewMgr.getViewByName("genomeView",masterView.views);
             genomeView.coverageTracks += coverageTracks;
             genomeView.firstRender = true;
             viewMgr.render();
-        });
+        });*/
     }
     public inputRadiusOnChange()
     {

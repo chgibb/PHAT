@@ -18,11 +18,14 @@ import {AtomicOperationIPC} from "./../atomicOperationsIPC";
 import {GenerateQCReport} from "./../operations/GenerateQCReport";
 import {IndexFasta} from "./../operations/indexFasta";
 import {RunAlignment} from "./../operations/RunAlignment";
+import {RenderCoverageTrackForContig} from "./../operations/RenderCoverageTrack";
 import {InstallUpdate} from "./../operations/InstallUpdate";
+
 import * as winMgr from "./winMgr";
 
 import {File} from "./../file";
 import alignData from "./../alignData";
+import {CircularFigure} from "./../renderer/circularFigure";
 
 import {GetKeyEvent,SaveKeyEvent,KeySubEvent} from "./../ipcEvents";
 var keySub = require('./keySub');
@@ -267,6 +270,7 @@ app.on
 		atomicOp.register("generateFastQCReport",GenerateQCReport);
 		atomicOp.register("indexFasta",IndexFasta);
 		atomicOp.register("runAlignment",RunAlignment);
+		atomicOp.register("renderCoverageTrackForContig",RenderCoverageTrackForContig);
 		
 
 		setInterval(function(){atomicOp.runOperations(1);},2500);
@@ -352,7 +356,7 @@ ipc.on
 ipc.on(
 	"runOperation",function(event,arg : AtomicOperationIPC)
 	{
-		if(arg.opName != "runAlignment" && arg.opName != "installUpdate")
+		if(arg.opName =="indexFasta" || arg.opName == "generateFastQCReport")
 		{
 			let list : Array<File> = dataMgr.getKey(arg.channel,arg.key);
 			for(let i : number = 0; i != list.length; ++i)
@@ -377,6 +381,41 @@ ipc.on(
 		}
 		else if(arg.opName == "installUpdate")
 			atomicOp.addOperation(arg.opName,{});
+		else if(arg.opName == "renderCoverageTrackForContig")
+		{
+			let aligns : Array<alignData> = dataMgr.getKey("align","aligns");
+			let circularFigures : Array<CircularFigure> = dataMgr.getKey("circularGenomeBuilder","circularFigures",);
+
+			if(aligns && circularFigures)
+			{
+				let alignData : alignData = <any>{};
+				let circularFigure : CircularFigure = <any>{};
+				for(let i = 0; i != aligns.length; ++i)
+				{
+					if(arg.alignuuid == aligns[i].uuid)
+					{
+						Object.assign(alignData,aligns[i]);
+						break;
+					}
+				}
+				for(let i = 0; i != circularFigures.length; ++i)
+				{
+					if(arg.figureuuid == circularFigures[i].uuid)
+					{
+						Object.assign(circularFigure,circularFigures[i]);
+						break;
+					}
+				}
+				atomicOp.addOperation(
+					"renderCoverageTrackForContig",
+					{
+						circularFigure : circularFigure,
+						contiguuid : arg.uuid,
+						alignData : alignData
+					}
+				);
+			}
+		}
 	}
 );
 atomicOp.updates.on(
@@ -440,6 +479,13 @@ atomicOp.updates.on(
 			dataMgr.setKey("align","aligns",aligns);
 			dataMgr.publishChangeForKey("align","aligns");
 		}
+	}
+);
+atomicOp.updates.on(
+	"renderCoverageTrackForContig",function(op : RenderCoverageTrackForContig)
+	{
+		dataMgr.setKey("application","operations",atomicOp.operationsQueue);
+		dataMgr.publishChangeForKey("application","operations");
 	}
 );
 atomicOp.updates.on(
