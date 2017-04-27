@@ -3,6 +3,7 @@ let ipc = ipcRenderer;
 import * as viewMgr from "./req/renderer/viewMgr";
 import * as masterView from "./req/renderer/circularGenomeBuilderRenderer/masterView";
 import * as genomeView from "./req/renderer/circularGenomeBuilderRenderer/genomeView";
+import * as rightPanelView from "./req/renderer/circularGenomeBuilderRenderer/rightPanel";
 import {CircularFigure,} from "./req/renderer/circularFigure";
 import {SpawnRequestParams} from "./req/JobIPC";
 import {GetKeyEvent,KeySubEvent} from "./req/ipcEvents";
@@ -93,7 +94,7 @@ $
                         if(arg.val !== undefined)
                         {
                             let masterView = <masterView.View>viewMgr.getViewByName("masterView");
-                            let rightPanelView = <genomeView.GenomeView>viewMgr.getViewByName("rightPanel",masterView.views);
+                            let rightPanelView = <rightPanelView.RightPanel>viewMgr.getViewByName("rightPanel",masterView.views);
                             rightPanelView.alignData = arg.val;
                         }
                     }
