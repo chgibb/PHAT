@@ -1,6 +1,7 @@
 import * as fs from "fs";
 import * as readline from "readline";
 const uuidv4 : () => string = require("uuid/v4");
+import * as mkdirp from "mkdirp";
 import * as fastaContigLoader from "./../fastaContigLoader";
 import * as plasmidTrack from "./circularGenome/plasmidTrack";
 import * as trackLabel from "./circularGenome/trackLabel";
@@ -35,6 +36,26 @@ export class CircularFigureBPTrackOptions
         this.showLabels = 0;
     }
 }
+export class RenderedCoverageTrackRecord
+{
+    public uuid : string;
+    public uuidAlign : string;
+    public uuidContig : string;
+    public uuidFigure : string;
+    public path : string;
+    public constructor(
+        uuidAlign : string,
+        uuidContig : string,
+        uuidFigure : string,
+        path : string)
+        {
+            this.uuid = uuidv4();
+            this.uuidAlign = uuidAlign;
+            this.uuidContig = uuidContig;
+            this.uuidFigure = uuidFigure;
+            this.path = path;
+        }
+}
 export class CircularFigure
 {
     public uuid : string;
@@ -45,6 +66,7 @@ export class CircularFigure
     public height : number;
     public width : number;
     public circularFigureBPTrackOptions : CircularFigureBPTrackOptions;
+    public renderedCoverageTracks : Array<RenderedCoverageTrackRecord>;
     constructor(name : string,uuid : string,contigs : Array<Contig>)
     {
         this.uuidFasta = uuid;
@@ -55,6 +77,7 @@ export class CircularFigure
         this.height = 300;
         this.width = 300;
         this.circularFigureBPTrackOptions = new CircularFigureBPTrackOptions();
+        this.renderedCoverageTracks = new Array<RenderedCoverageTrackRecord>();
         for(let i = 0; i != this.contigs.length; ++i)
         {
             this.contigs[i].color = getRandColor(1);
@@ -208,12 +231,7 @@ export function cacheCoverageTracks(figure : CircularFigure,contiguuid : string,
 {
     try
     {
-        fs.mkdirSync(`resources/app/rt/circularFigures/${figure.uuid}`);
-    }
-    catch(err){}
-    try
-    {
-        fs.mkdirSync(`resources/app/rt/circularFigures/${figure.uuid}/coverage`);
+        mkdirp.sync(`resources/app/rt/circularFigures/${figure.uuid}/coverage/${align.uuid}`);
     }
     catch(err){}
     renderCoverageTracks(
@@ -221,7 +239,18 @@ export function cacheCoverageTracks(figure : CircularFigure,contiguuid : string,
         contiguuid,
         align,
         function(status,coverageTracks){
-            fs.writeFileSync(`resources/app/rt/circularFigures/${figure.uuid}/coverage/${contiguuid}`,coverageTracks);
+            fs.writeFileSync(`resources/app/rt/circularFigures/${figure.uuid}/coverage/${align.uuid}/${contiguuid}`,coverageTracks);
+            if(status == true)
+            {
+                figure.renderedCoverageTracks.push(
+                    new RenderedCoverageTrackRecord(
+                        align.uuid,
+                        contiguuid,
+                        figure.uuid,
+                        `resources/app/rt/circularFigures/${figure.uuid}/coverage/${align.uuid}/${contiguuid}`
+                    )
+                );
+            }
             cb(status,coverageTracks);
     });
 }
