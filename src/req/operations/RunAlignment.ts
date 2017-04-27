@@ -64,7 +64,7 @@ export class RunAlignment extends atomic.AtomicOperation
             this.alignData.fastqs.push(this.fastq1,this.fastq2);
             this.destinationArtifactsDirectories.push(`resources/app/rt/AlignmentArtifacts/${this.alignData.uuid}`);
         }
-    //bowtie2-align -> samtools view -> samtools sort -> samtools index -> samtools depth
+    //bowtie2-align -> samtools view -> samtools sort -> samtools index -> samtools depth -> separate out coverage data
     public run() : void
     {
         let self = this;
@@ -170,11 +170,6 @@ export class RunAlignment extends atomic.AtomicOperation
                             self.update();
                         }
                     }
-                    /*else
-                    {
-                        self.abortOperationWithMessage(`Failed to generate bam for ${self.alignData.alias}`);
-                        return;
-                    }*/
                 }
                 if(params.processName == self.samToolsExe && params.args[0] == "sort")
                 {
@@ -255,6 +250,7 @@ export class RunAlignment extends atomic.AtomicOperation
                 {
                     if(params.unBufferedData)
                     {
+                        //Forward through to the depth.coverage file
                         self.samToolsCoverageFileStream.write(params.unBufferedData);
                         
                     }
@@ -267,6 +263,7 @@ export class RunAlignment extends atomic.AtomicOperation
                                     input : fs.createReadStream(`resources/app/rt/AlignmentArtifacts/${self.alignData.uuid}/depth.coverage`)
                                 });
                                 rl.on("line",function(line){
+                                    //distill output from samtools depth into individual contig coverage files identified by uuid and without the contig name.
                                     let coverageTokens = line.split(/\s/g);
                                     for(let i = 0; i != self.fasta.contigs.length; ++i)
                                     {
