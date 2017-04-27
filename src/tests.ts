@@ -3,7 +3,7 @@ import * as atomic from "./req/operations/atomicOperations";
 import {GenerateQCReport} from "./req/operations/GenerateQCReport";
 import {IndexFasta} from "./req/operations/indexFasta";
 import {RunAlignment} from "./req/operations/RunAlignment";
-import {RenderCoverageTracksForContig} from "./req/operations/RenderCoverageTracks";
+import {RenderCoverageTrackForContig} from "./req/operations/RenderCoverageTrack";
 import alignData from "./req/alignData";
 import Fastq from "./req/fastq";
 import {Fasta} from "./req/fasta";
@@ -25,7 +25,7 @@ catch(err){}
 atomic.register("generateFastQCReport",GenerateQCReport);
 atomic.register("indexFasta",IndexFasta);
 atomic.register("runAlignment",RunAlignment);
-atomic.register("renderCoverageTracksForContig",RenderCoverageTracksForContig);
+atomic.register("renderCoverageTrackForContig",RenderCoverageTrackForContig);
 
 let L6R1R1 : Fastq = new Fastq('data/L6R1.R1.fastq');
 let L6R1R2 : Fastq = new Fastq('data/L6R1.R2.fastq');
@@ -100,7 +100,7 @@ atomic.updates.on(
 	}
 );
 atomic.updates.on(
-	"renderCoverageTracksForContig",function(op : RenderCoverageTracksForContig)
+	"renderCoverageTrackForContig",function(op : RenderCoverageTrackForContig)
 	{
 		if(op.flags.success)
 		{
@@ -238,7 +238,7 @@ assert.assert(function(){
 */
 assert.assert(function(){
 	hpv16Figure = new CircularFigure("HPV16 Figure",hpv16.uuid,hpv16.contigs);
-	atomic.addOperation("renderCoverageTracksForContig",{circularFigure : hpv16Figure,contiguuid:hpv16Figure.contigs[0].uuid,alignData:L6R1HPV16Alignment});
+	atomic.addOperation("renderCoverageTrackForContig",{circularFigure : hpv16Figure,contiguuid:hpv16Figure.contigs[0].uuid,alignData:L6R1HPV16Alignment});
 	assert.runningEvents += 1;
 	return true;
 },'',0);
