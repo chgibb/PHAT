@@ -495,33 +495,3 @@ atomicOp.updates.on(
 		dataMgr.publishChangeForKey("application","operations");
 	}
 );
-/*ipc.on
-(
-	"spawnSync",function(event,arg)
-	{
-		if(arg.action == "spawnSync")
-		{
-			var spawn = require('child_process');
-			if(arg.processName && arg.args)
-			{
-				var process = spawn.spawnSync(arg.processName,arg.args);
-				arg.status = process.status;
-				event.sender.send("spawnSyncReply",arg);
-			}
-		}
-	}
-); 
-
-
-ipc.on
-(
-	"spawn",function(event,arg)
-	{
-		if(arg.action == "spawn")
-		{
-			jobMgr.addJob(arg.processName,arg.args,"spawnReply",arg.unBuffer,event.sender,arg.extraData);
-			jobMgr.runJobs();
-		}
-	}
-);*/
-
