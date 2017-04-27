@@ -10,6 +10,7 @@ import {CircularFigure,} from "./../circularFigure";
 import {Fasta} from "./../../fasta";
 
 import * as GenomeView from "./genomeView";
+import * as RightPanel from "./rightPanel";
 export function addView(arr : Array<viewMgr.View>,div : string)
 {
     arr.push(new View(div));
@@ -35,6 +36,7 @@ export class View extends viewMgr.View
     public onMount() : void
     {
         GenomeView.addView(this.views,"genomeView");
+        RightPanel.addView(this.views,"rightSlideOutPanel");
         for(let i = 0; i != this.views.length; ++i)
         {
             this.views[i].onMount();
@@ -100,16 +102,17 @@ export class View extends viewMgr.View
                     </div>
                 `;
             }
-            for(let i = 0; i != this.views.length; ++i)
-            {
-                this.views[i].render();
-            }
+            
             //viewMgr will not call postRender for a view that does no rendering so we'll do it explicitly
             this.postRender();
             return undefined;
     }
     public postRender() : void
     {
+        for(let i = 0; i != this.views.length; ++i)
+        {
+            this.views[i].render();
+        }
         for(let i = 0; i != this.views.length; ++i)
         {
             this.views[i].postRender();
