@@ -64,10 +64,6 @@ export class View extends viewMgr.View
                 <button id="leftPanel" class="leftSlideOutPanel">Left Panel</button>
                 <button id="rightPanel" class="rightSlideOutPanel">Right Panel</button>
                 <div id="rightSlideOutPanel" class="rightSlideOutPanel">
-                    <button id="heightPlus">Increase Height</button>
-                    <button id="widthPlus">Increase Width</button>
-                    <button id="radiusMinus">Decrease Radius</button>
-                    <button id="radiusPlus">Increase Radius</button>
                 </div>
                 <div id="leftSlideOutPanel" class="leftSlideOutPanel">
                 ${
