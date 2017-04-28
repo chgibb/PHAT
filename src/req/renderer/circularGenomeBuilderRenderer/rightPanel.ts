@@ -12,14 +12,15 @@ export class RightPanel extends viewMgr.View
 {
     public genome : cf.CircularFigure;
     public alignData : Array<alignData>;
+    public selectedAlignment : alignData;
     public views : Array<viewMgr.View>;
     public constructor(name : string,div : string)
     {
         super(name,div);
         this.views = new Array<viewMgr.View>();
-        selectAlignment.addView(this.views,this.div);
-        noReference.addView(this.views,this.div);
-        noCoverage.addView(this.views,this.div);
+        selectAlignment.addView(this.views,this.div+"View");
+        noReference.addView(this.views,this.div+"View");
+        noCoverage.addView(this.views,this.div)+"View";
     }
     public unMountChildren() : void
     {
@@ -44,6 +45,10 @@ export class RightPanel extends viewMgr.View
         {
             idx = viewMgr.getIndexOfViewByName("selectAlignment",this.views);
             (<selectAlignment.SelectAlignment>this.views[idx]).alignData = this.alignData;
+        }
+        if(this.selectedAlignment)
+        {
+            idx = viewMgr.getIndexOfViewByName("selectCoverageTracks",this.views);
         }
 
         this.views[idx].mount();
