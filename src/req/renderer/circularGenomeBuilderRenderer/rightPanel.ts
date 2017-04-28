@@ -35,9 +35,15 @@ export class RightPanel extends viewMgr.View
                 {
                     for(let i : number = 0; i != this.alignData.length; ++i)
                     {
-                        
+                        if(this.alignData[i].fasta.uuid == genomeView.genome.uuidFasta)
+                        {
+                            res += `<h3>${this.alignData[i].alias}`;
+                        }
                     }
-                    return noCoverageMessage;
+                    if(!res)
+                        return noCoverageMessage;
+                    else
+                        return res;
                 }
                 else if(!this.alignData)
                 {
