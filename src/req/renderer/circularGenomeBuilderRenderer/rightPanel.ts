@@ -12,7 +12,7 @@ export class RightPanel extends viewMgr.View
     {
         super(name,div);
     }
-    public onMount() : void{console.log("Called onmount");}
+    public onMount() : void{}
     public onUnMount() : void{}
     public renderView() : string
     {
