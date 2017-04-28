@@ -2,6 +2,7 @@ import * as viewMgr from "./../viewMgr";
 import * as masterView from "./masterView";
 
 import * as selectAlignment from "./rightPanel/selectAlignment";
+import * as selectCoverageTracks from "./rightPanel/selectCoverageTracks";
 import * as noReference from "./rightPanel/noReference";
 import * as noCoverage from "./rightPanel/noCoverage";
 import {GenomeView} from "./genomeView";
@@ -19,6 +20,7 @@ export class RightPanel extends viewMgr.View
         super(name,div);
         this.views = new Array<viewMgr.View>();
         selectAlignment.addView(this.views,this.div+"View");
+        selectCoverageTracks.addView(this.views,this.div+"View");
         noReference.addView(this.views,this.div+"View");
         noCoverage.addView(this.views,this.div)+"View";
     }
