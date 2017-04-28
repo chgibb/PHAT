@@ -64,6 +64,8 @@ export class View extends viewMgr.View
                 <button id="leftPanel" class="leftSlideOutPanel">Left Panel</button>
                 <button id="rightPanel" class="rightSlideOutPanel">Right Panel</button>
                 <div id="rightSlideOutPanel" class="rightSlideOutPanel">
+                    <div id="rightSlideOutPanelView">
+                    </div>
                 </div>
                 <div id="leftSlideOutPanel" class="leftSlideOutPanel">
                 ${
@@ -98,17 +100,17 @@ export class View extends viewMgr.View
                     </div>
                 `;
             }
-            
+            for(let i = 0; i != this.views.length; ++i)
+            {
+                this.views[i].render();
+            }
             //viewMgr will not call postRender for a view that does no rendering so we'll do it explicitly
             this.postRender();
             return undefined;
     }
     public postRender() : void
     {
-        for(let i = 0; i != this.views.length; ++i)
-        {
-            this.views[i].render();
-        }
+        
         for(let i = 0; i != this.views.length; ++i)
         {
             this.views[i].postRender();
