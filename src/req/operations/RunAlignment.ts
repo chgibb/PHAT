@@ -1,5 +1,5 @@
 import * as fs from "fs";
-
+import * as readline from "readline";
 import * as atomic from "./atomicOperations";
 import {Fasta} from "./../fasta";
 import Fastq from "./../fastq";
@@ -22,11 +22,15 @@ export class RunAlignment extends atomic.AtomicOperation
     public samToolsIndexJob : Job;
     public samToolsSortJob : Job;
     public samToolsViewJob : Job;
+    public samToolsDepthJob : Job;
+
+    public samToolsCoverageFileStream : fs.WriteStream;
 
     public bowtieFlags : atomic.CompletionFlags;
     public samToolsIndexFlags : atomic.CompletionFlags;
     public samToolsSortFlags : atomic.CompletionFlags;
     public samToolsViewFlags : atomic.CompletionFlags;
+    public samToolsDepthFlags : atomic.CompletionFlags;
     constructor()
     {
         super();
@@ -35,6 +39,7 @@ export class RunAlignment extends atomic.AtomicOperation
         this.samToolsIndexFlags = new atomic.CompletionFlags();
         this.samToolsSortFlags = new atomic.CompletionFlags();
         this.samToolsViewFlags = new atomic.CompletionFlags();
+        this.samToolsDepthFlags = new atomic.CompletionFlags();
 
         this.samToolsExe = 'resources/app/samtools';
         if(process.platform == "linux")
@@ -59,7 +64,7 @@ export class RunAlignment extends atomic.AtomicOperation
             this.alignData.fastqs.push(this.fastq1,this.fastq2);
             this.destinationArtifactsDirectories.push(`resources/app/rt/AlignmentArtifacts/${this.alignData.uuid}`);
         }
-    //bowtie2-align -> samtools view -> samtools sort -> samtools index
+    //bowtie2-align -> samtools view -> samtools sort -> samtools index -> samtools depth -> separate out coverage data
     public run() : void
     {
         let self = this;
@@ -165,11 +170,6 @@ export class RunAlignment extends atomic.AtomicOperation
                             self.update();
                         }
                     }
-                    /*else
-                    {
-                        self.abortOperationWithMessage(`Failed to generate bam for ${self.alignData.alias}`);
-                        return;
-                    }*/
                 }
                 if(params.processName == self.samToolsExe && params.args[0] == "sort")
                 {
@@ -215,7 +215,28 @@ export class RunAlignment extends atomic.AtomicOperation
                         if(params.retCode == 0)
                         {
                             self.setSuccess(self.samToolsIndexFlags);
-                            self.setSuccess(self.flags);
+                            setTimeout(
+                                function(){
+                                    self.samToolsDepthJob = new Job(
+                                        self.samToolsExe,
+                                        <Array<string>>[
+                                            "depth",
+                                            `resources/app/rt/AlignmentArtifacts/${self.alignData.uuid}/out.sorted.bam`
+                                        ],"",true,jobCallBack,{}
+                                    );
+                                    try
+                                    {
+                                        self.samToolsDepthJob.Run();
+                                    }
+                                    catch(err)
+                                    {
+                                        self.abortOperationWithMessage(err);
+                                        return;
+                                    }
+                                    self.samToolsCoverageFileStream = fs.createWriteStream(`resources/app/rt/AlignmentArtifacts/${self.alignData.uuid}/depth.coverage`)
+                                },500
+                            );
+                            //self.setSuccess(self.flags);
                         }
                         else
                         {
@@ -223,6 +244,53 @@ export class RunAlignment extends atomic.AtomicOperation
                             self.update();
                             return;
                         }
+                    }
+                }
+                if(params.processName == self.samToolsExe && params.args[0] == "depth")
+                {
+                    if(params.unBufferedData)
+                    {
+                        //Forward through to the depth.coverage file
+                        self.samToolsCoverageFileStream.write(params.unBufferedData);
+                        
+                    }
+                    else if(params.done && params.retCode !== undefined)
+                    {
+                        setTimeout(
+                            function(){
+                                self.samToolsCoverageFileStream.end();
+                                let rl : readline.ReadLine = readline.createInterface(<readline.ReadLineOptions>{
+                                    input : fs.createReadStream(`resources/app/rt/AlignmentArtifacts/${self.alignData.uuid}/depth.coverage`)
+                                });
+                                rl.on("line",function(line){
+                                    //distill output from samtools depth into individual contig coverage files identified by uuid and without the contig name.
+                                    let coverageTokens = line.split(/\s/g);
+                                    for(let i = 0; i != self.fasta.contigs.length; ++i)
+                                    {
+                                        let contigTokens = self.fasta.contigs[i].name.split(/\s/g);
+                                        for(let k = 0; k != coverageTokens.length; ++k)
+                                        {
+                                            if(coverageTokens[k] == contigTokens[0])
+                                            {
+                                                fs.appendFileSync(`resources/app/rt/AlignmentArtifacts/${self.alignData.uuid}/contigCoverage/${self.fasta.contigs[i].uuid}`,`${coverageTokens[k+1]} ${coverageTokens[k+2]}\n`);
+                                            }
+                                        }
+                                    }
+                                });
+                                rl.on("close",function(){
+                                    self.setSuccess(self.samToolsDepthFlags);
+                                    self.setSuccess(self.flags);
+                                    self.update();
+                                });
+                            },500
+                        );
+                    }
+                    else
+                    {
+                        self.abortOperationWithMessage(`Failed to get depth for ${self.alignData.alias}`);
+                        self.update();
+                        self.samToolsCoverageFileStream.end();
+                        return;
                     }
                 }
                 self.update();
@@ -249,6 +317,7 @@ export class RunAlignment extends atomic.AtomicOperation
         this.alignData.invokeString = invokeString;
         this.alignData.alias = `${this.fastq1.alias}, ${this.fastq2.alias}; ${this.fasta.alias}`;
         fs.mkdirSync(`resources/app/rt/AlignmentArtifacts/${this.alignData.uuid}`);
+        fs.mkdirSync(`resources/app/rt/AlignmentArtifacts/${this.alignData.uuid}/contigCoverage`);
         this.bowtieJob = new Job(this.bowtie2Exe,args,"",true,jobCallBack,{});
         try
         {

@@ -55,8 +55,26 @@ $
                         {
                             if(ops[i].flags.done)
                             {
+                                let notification : Notification = new Notification("Success",<NotificationOptions>{
+                                    body : `
+                                        ${(()=>{
+                                            if(ops[i].flags.success)
+                                            {
+                                                return `
+                                                    ${ops[i].name} has completed successfully
+                                                `;
+                                            }
+                                            else
+                                            {
+                                                return `
+                                                    ${ops[i].name} has failed
+                                                `;
+                                            }
+                                        })()}
+                                    `
+                                });
                                 //alert(`${ops[i].name} succeeded`);
-                                let toast = {
+                                /*let toast = {
                                     title : ops[i].flags.success ? "Success" : "Failure",
                                     message : `
                                         ${(()=>{
@@ -79,7 +97,7 @@ $
                                     timeout : 5000,
                                     focus : true
                                 };
-                                ipc.send("electron-toaster-message",toast);
+                                ipc.send("electron-toaster-message",toast);*/
                             }
                         }
                     }

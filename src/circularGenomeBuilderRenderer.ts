@@ -3,6 +3,7 @@ let ipc = ipcRenderer;
 import * as viewMgr from "./req/renderer/viewMgr";
 import * as masterView from "./req/renderer/circularGenomeBuilderRenderer/masterView";
 import * as genomeView from "./req/renderer/circularGenomeBuilderRenderer/genomeView";
+import * as rightPanelView from "./req/renderer/circularGenomeBuilderRenderer/rightPanel";
 import {CircularFigure,} from "./req/renderer/circularFigure";
 import {SpawnRequestParams} from "./req/JobIPC";
 import {GetKeyEvent,KeySubEvent} from "./req/ipcEvents";
@@ -36,6 +37,15 @@ $
                 action : "getKey"
             }
         );
+        ipc.send(
+            "getKey",
+            <GetKeyEvent>{
+                channel : "align",
+                key : "aligns",
+                replyChannel : "circularGenomeBuilder",
+                action : "getKey"
+            }
+        );
 
         ipc.send(
             "keySub",
@@ -55,6 +65,15 @@ $
                 action : "keySub"
             }
         );
+        ipc.send(
+            "keySub",
+            <KeySubEvent>{
+                channel : "align",
+                key : "aligns",
+                replyChannel : "circularGenomeBuilder",
+                action : "keySub"
+            }
+        );
         ipc.on
         (
             'circularGenomeBuilder',function(event,arg)
@@ -68,6 +87,15 @@ $
                             let masterView = <masterView.View>viewMgr.getViewByName("masterView");
                             masterView.fastaInputs = arg.val;
                             masterView.firstRender = true;
+                        }
+                    }
+                    if(arg.key == "aligns")
+                    {
+                        if(arg.val !== undefined)
+                        {
+                            let masterView = <masterView.View>viewMgr.getViewByName("masterView");
+                            let rightPanelView = <rightPanelView.RightPanel>viewMgr.getViewByName("rightPanel",masterView.views);
+                            rightPanelView.alignData = arg.val;
                         }
                     }
                     if(arg.key == "circularFigures")
