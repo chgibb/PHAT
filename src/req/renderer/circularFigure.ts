@@ -43,6 +43,7 @@ export class RenderedCoverageTrackRecord
     public uuidContig : string;
     public uuidFigure : string;
     public path : string;
+    public checked : boolean;
     public constructor(
         uuidAlign : string,
         uuidContig : string,
@@ -54,6 +55,7 @@ export class RenderedCoverageTrackRecord
             this.uuidContig = uuidContig;
             this.uuidFigure = uuidFigure;
             this.path = path;
+            this.checked = false;
         }
 }
 export class CircularFigure
@@ -223,7 +225,6 @@ export function renderCoverageTracks(figure : CircularFigure,contiguuid : string
             res += `</plasmidtrack>`;
             coverageTracks += res;
         }
-        fs.writeFileSync("coverageTracks",coverageTracks);
         cb(true,coverageTracks);
     });
 }
@@ -254,3 +255,4 @@ export function cacheCoverageTracks(figure : CircularFigure,contiguuid : string,
             cb(status,coverageTracks);
     });
 }
+ 
