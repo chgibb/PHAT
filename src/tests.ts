@@ -118,7 +118,7 @@ atomic.updates.on(
 
 setInterval(function(){atomic.runOperations(1);},1000);
 
-/*
+
 assert.assert(function(){
 	return true;
 },'--------------------------------------------------------',0);
@@ -137,7 +137,7 @@ assert.assert(function(){
 	atomic.addOperation("generateFastQCReport",L6R1R2);
 	return true;
 },'',0);
-*/
+
 assert.assert(function(){
 	return true;
 },'--------------------------------------------------------',0);
@@ -161,7 +161,7 @@ assert.assert(function(){
 	return hpv16.contigs[0].bp == 7906 ? true : false;
 },'HPV16 has correct number of base pairs',0);
 
-/*
+
 assert.assert(function(){
 	assert.runningEvents += 1;
 	console.log(`Starting to index ${hpv18.path}`);
@@ -181,7 +181,7 @@ assert.assert(function(){
 assert.assert(function(){
 	return hpv18.contigs[0].bp == 7857 ? true : false;
 },'HPV18 has correct number of base pairs',0);
-*/
+
 
 assert.assert(function(){
 	return true;
@@ -211,7 +211,7 @@ assert.assert(function(){
 
 },'Alignment has correct alignment rate	',0);
 
-/*
+
 assert.assert(function(){
 
 	console.log("aligning L6R1.R1, L6R1.R2 against HPV18");
@@ -236,7 +236,7 @@ assert.assert(function(){
 
 },'Alignment has correct alignment rate	',0);
 
-*/
+
 assert.assert(function(){
 	hpv16Figure = new CircularFigure("HPV16 Figure",hpv16.uuid,hpv16.contigs);
 	atomic.addOperation("renderCoverageTrackForContig",{circularFigure : hpv16Figure,contiguuid:hpv16Figure.contigs[0].uuid,alignData:L6R1HPV16Alignment});
