@@ -223,7 +223,6 @@ export function renderCoverageTracks(figure : CircularFigure,contiguuid : string
             res += `</plasmidtrack>`;
             coverageTracks += res;
         }
-        fs.writeFileSync("coverageTracks",coverageTracks);
         cb(true,coverageTracks);
     });
 }
