@@ -39,8 +39,8 @@ export class GenomeView extends viewMgr.View
     }
     public inputRadiusOnChange()
     {
-        this.genome.height = this.genome.radius*5;
-        this.genome.width =this.genome.radius*5;
+        this.genome.height = this.genome.radius*10;
+        this.genome.width =this.genome.radius*10;
         this.postRender();
         let self = this;
     }
