@@ -1,5 +1,6 @@
 //// <reference path="jquery.d.ts" />
 /// <reference path="./../angularStub.d.ts" />
+import * as fs from "fs";
 import * as util from "util";
 
 import * as electron from "electron";
@@ -25,13 +26,11 @@ export class GenomeView extends viewMgr.View
 {
     public genome : CircularFigure;
     public firstRender : boolean;
-    public coverageTracks : string;
     public alignData : Array<alignData>;
     public constructor(name : string,div : string)
     {
         super(name,div);
         this.firstRender = true;
-        this.coverageTracks = "";
     }
     public onMount() : void{}
     public onUnMount() : void{}
@@ -132,7 +131,17 @@ export class GenomeView extends viewMgr.View
                         plasmidWidth : "{{genome.width}}"
                     })}
                         ${getBaseFigureFromCache(this.genome)}
-                        ${self.coverageTracks}
+                        ${(()=>{
+                            let res = "";
+                            for(let i = 0; i != self.genome.renderedCoverageTracks.length; ++i)
+                            {
+                                if(self.genome.renderedCoverageTracks[i].checked)
+                                {
+                                    res += (<any>fs.readFileSync(self.genome.renderedCoverageTracks[i].path));
+                                }
+                            }
+                            return res;
+                        })()}
                     ${plasmid.end()}
                 </div>
                 `
@@ -150,7 +159,6 @@ export class GenomeView extends viewMgr.View
                     scope.markerOnClick = self.markerOnClick;
                     scope.inputRadiusOnChange = self.inputRadiusOnChange;
                     scope.showBPTrackOnChange = self.showBPTrackOnChange;
-                    scope.coverageTracks = self.coverageTracks;
                     scope.postRender = self.postRender;
                     scope.firstRender = self.firstRender;
                     scope.div = self.div;

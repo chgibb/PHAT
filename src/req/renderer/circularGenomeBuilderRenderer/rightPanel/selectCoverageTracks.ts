@@ -1,3 +1,4 @@
+import * as fs from "fs";
 import * as viewMgr from "./../../viewMgr";
 import * as masterView from "./../masterView";
 import {GenomeView} from "./../genomeView";
@@ -22,26 +23,103 @@ export class SelectCoverageTracks extends viewMgr.View
         let rightPanel = <RightPanel>viewMgr.getViewByName("rightPanel",masterView.views);
         this.genome = genomeView.genome;
         this.selectedAlignment = rightPanel.selectedAlignment;
-        return `
-            <h2>Available Tracks</h2>
+        let res =  `
             ${(()=>{
-                let res = "";
-                for(let i = 0; i != this.genome.renderedCoverageTracks.length; ++i)
+                let res = `<h2>Available Tracks</h2>`;
+                if(this.genome.renderedCoverageTracks.length >= 1)
                 {
-                    for(let k = 0; k != this.genome.contigs.length; ++k)
+                    for(let i = 0; i != this.genome.renderedCoverageTracks.length; ++i)
                     {
-                        if(this.genome.renderedCoverageTracks[i].uuidContig == this.genome.contigs[k].uuid)
+                        for(let k = 0; k != this.genome.contigs.length; ++k)
                         {
-                            res += `<input type="checkbox" id="${this.genome.renderedCoverageTracks[i].path}" /><h3>${this.genome.contigs[k].name}</h3>`;
+                            if(this.genome.renderedCoverageTracks[i].uuidContig == this.genome.contigs[k].uuid)
+                            {
+                                res += `<input type="checkbox" id="${this.genome.renderedCoverageTracks[i].uuid}" /><h3>${this.genome.contigs[k].name}</h3>`;
+                            }
+                        }
+                    }
+                    return res;
+                }
+                return "";
+            })()}
+        `;
+        res += `
+            ${(()=>{
+                let res = ""
+                for(let i = 0; i != this.genome.contigs.length; ++i)
+                {
+                    if(this.genome.contigs[i].uuid != "filler")
+                    {
+                        let shouldRender = true;
+                        for(let k = 0; k != this.genome.renderedCoverageTracks.length; ++k)
+                        {
+                            if(this.genome.renderedCoverageTracks[k].uuidContig == this.genome.contigs[i].uuid)
+                            {
+                                shouldRender = false;
+                                break;
+                            }
+                        }
+                        if(shouldRender)
+                        {
+                            res += `<p>${this.genome.contigs[i].name}</p><input type="button" id="${this.genome.contigs[i].uuid}" value="Generate Visualization" />`;
                         }
                     }
                 }
+                return res;
             })()}
         `;
+
+        return res;
     }
-    public postRender() : void{}
+    public postRender() : void
+    {
+        for(let i = 0; i != this.genome.renderedCoverageTracks.length; ++i)
+        {
+            if(this.genome.renderedCoverageTracks[i].checked)
+            {
+                (<HTMLInputElement>document.getElementById(this.genome.renderedCoverageTracks[i].uuid)).checked = true;
+            }
+        }
+    }
     public dataChanged() : void{}
-    public divClickEvents(event : JQueryEventObject) : void{}
+    public divClickEvents(event : JQueryEventObject) : void
+    {
+        if(!event.target.id)
+            return;
+        let masterView = <masterView.View>viewMgr.getViewByName("masterView");
+        let genomeView = <GenomeView>viewMgr.getViewByName("genomeView",masterView.views);
+        for(let i = 0; i != this.genome.contigs.length; ++i)
+        {
+            if(this.genome.contigs[i].uuid == event.target.id)
+            {
+                cf.cacheCoverageTracks(
+                    this.genome,
+                    this.genome.contigs[i].uuid,
+                    this.selectedAlignment,
+                    function(status : boolean,coverageTracks : string)
+                    {
+                        viewMgr.render();
+                    }
+                );
+                break;
+            }
+        }
+        let rebuildTracks = false;
+        for(let i = 0; i != this.genome.renderedCoverageTracks.length; ++i)
+        {
+            if(this.genome.renderedCoverageTracks[i].uuid == event.target.id)
+            {
+                this.genome.renderedCoverageTracks[i].checked = (<HTMLInputElement>document.getElementById(event.target.id)).checked;
+                rebuildTracks = true;
+                break;
+            }
+        }
+        if(rebuildTracks)
+        {
+            genomeView.firstRender = true;
+            viewMgr.render();
+        }
+    }
 }
 export function addView(arr : Array<viewMgr.View>,div : string)
 {
