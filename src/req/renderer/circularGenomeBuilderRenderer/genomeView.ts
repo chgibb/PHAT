@@ -20,7 +20,6 @@ import * as trackScale from "./../circularGenome/trackScale";
 
 require("angular");
 require("angularplasmid");
-
 let app : any = angular.module('myApp',['angularplasmid']);
 export class GenomeView extends viewMgr.View
 {
@@ -36,22 +35,7 @@ export class GenomeView extends viewMgr.View
     public onUnMount() : void{}
     public markerOnClick($event : any,$marker : any,uuid : string) : void
     {
-        let self = this;
-        ipc.send(
-            "runOperation",<AtomicOperationIPC>{
-                opName : "renderCoverageTrackForContig",
-                figureuuid : self.genome.uuid,
-                alignuuid : self.alignData[0].uuid,
-                uuid : uuid
-            }
-        );
-        /*renderCoverageTracks(this.genome,uuid,this.alignData[0],function(status,coverageTracks){
-            let masterView = <masterView.View>viewMgr.getViewByName("masterView");
-            let genomeView = <GenomeView>viewMgr.getViewByName("genomeView",masterView.views);
-            genomeView.coverageTracks += coverageTracks;
-            genomeView.firstRender = true;
-            viewMgr.render();
-        });*/
+
     }
     public inputRadiusOnChange()
     {
@@ -71,7 +55,9 @@ export class GenomeView extends viewMgr.View
     }
     public renderView() : string
     {
+        
         let self = this;
+
         if(this.genome)
         {
             
@@ -171,6 +157,14 @@ export class GenomeView extends viewMgr.View
     }
     public postRender() : void
     {
+
+/*try{
+        let svg = document.getElementById(this.div).children[0];
+       let serializer = new XMLSerializer();
+        fs.writeFileSync("xml",serializer.serializeToString(svg));
+}
+catch(err){}*/
+
         if(this.genome !== undefined)
         {
             //get a reference to the div wrapping the rendered svg graphic of our figure
