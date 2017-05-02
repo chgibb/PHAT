@@ -56,42 +56,6 @@ export class RightPanel extends viewMgr.View
         this.views[idx].mount();
         this.views[idx].render();
         return undefined;
-        /*console.log("called render panel");
-        let masterView = <masterView.View>viewMgr.getViewByName("masterView");
-        let genomeView = <GenomeView>viewMgr.getViewByName("genomeView",masterView.views);
-        if(!genomeView.genome)
-        {
-            return `
-                <h3>Select a reference from the left to view coverage visualization options</h3>
-            `;
-        }
-        this.genome = genomeView.genome;
-        let noCoverageMessage = `<h3>Run alignments with this reference to generate coverage data to visualize</h3>`;
-        return ` 
-            <h1>Coverage Options</h1>
-            ${(()=>{
-                let res : string = "";
-                if(this.alignData)
-                {
-                    for(let i : number = 0; i != this.alignData.length; ++i)
-                    {
-                        if(this.alignData[i].fasta.uuid == genomeView.genome.uuidFasta)
-                        {
-                            res += `<h3>${this.alignData[i].alias}`;
-                        }
-                    }
-                    if(!res)
-                        return noCoverageMessage;
-                    else
-                        return res;
-                }
-                else if(!this.alignData)
-                {
-                    return noCoverageMessage;
-                }
-                return " ";
-            })()}
-        `;*/
     }
     public postRender() : void{}
     public dataChanged() : void{}
