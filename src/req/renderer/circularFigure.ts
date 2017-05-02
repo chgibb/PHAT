@@ -1,5 +1,15 @@
+import * as fs from "fs";
+import * as readline from "readline";
 const uuidv4 : () => string = require("uuid/v4");
+import * as mkdirp from "mkdirp";
 import * as fastaContigLoader from "./../fastaContigLoader";
+import * as plasmidTrack from "./circularGenome/plasmidTrack";
+import * as trackLabel from "./circularGenome/trackLabel";
+import * as trackMarker from "./circularGenome/trackMarker";
+import * as markerLabel from "./circularGenome/markerLabel";
+import * as trackScale from "./circularGenome/trackScale";
+
+import alignData from "./../alignData";
 export class Contig extends fastaContigLoader.Contig
 {
     public color? : string = "";
@@ -26,6 +36,28 @@ export class CircularFigureBPTrackOptions
         this.showLabels = 0;
     }
 }
+export class RenderedCoverageTrackRecord
+{
+    public uuid : string;
+    public uuidAlign : string;
+    public uuidContig : string;
+    public uuidFigure : string;
+    public path : string;
+    public checked : boolean;
+    public constructor(
+        uuidAlign : string,
+        uuidContig : string,
+        uuidFigure : string,
+        path : string)
+        {
+            this.uuid = uuidv4();
+            this.uuidAlign = uuidAlign;
+            this.uuidContig = uuidContig;
+            this.uuidFigure = uuidFigure;
+            this.path = path;
+            this.checked = false;
+        }
+}
 export class CircularFigure
 {
     public uuid : string;
@@ -36,6 +68,7 @@ export class CircularFigure
     public height : number;
     public width : number;
     public circularFigureBPTrackOptions : CircularFigureBPTrackOptions;
+    public renderedCoverageTracks : Array<RenderedCoverageTrackRecord>;
     constructor(name : string,uuid : string,contigs : Array<Contig>)
     {
         this.uuidFasta = uuid;
@@ -46,6 +79,7 @@ export class CircularFigure
         this.height = 300;
         this.width = 300;
         this.circularFigureBPTrackOptions = new CircularFigureBPTrackOptions();
+        this.renderedCoverageTracks = new Array<RenderedCoverageTrackRecord>();
         for(let i = 0; i != this.contigs.length; ++i)
         {
             this.contigs[i].color = getRandColor(1);
@@ -59,5 +93,166 @@ export class CircularFigure
             this.contigs[1].bp = 1;
             this.contigs[1].loaded = true;
         }
+        cacheBaseFigure(this);
     }
 }
+export function renderBaseFigure(figure : CircularFigure) : string
+{
+    return `
+        ${plasmidTrack.add(
+        {
+            trackStyle : "fill:#f0f0f0;stroke:#ccc",
+            radius : "{{genome.radius}}"
+        })}
+            ${trackLabel.add(
+            {
+                text : figure.contigs[0].name,
+                labelStyle : "font-size:20px;font-weight:400"
+            })}
+            ${trackLabel.end()}
+            ${(()=>
+            {
+                let res = "";
+                let lastLocation = 0;
+                for(let i = 0; i != figure.contigs.length; ++i)
+                { 
+                    res += `
+                        ${trackMarker.add(
+                        {
+                            start : lastLocation.toString(),
+                            end : (lastLocation + figure.contigs[i].bp).toString(),
+                            markerStyle : `fill:${figure.contigs[i].color}`,
+                            uuid : figure.contigs[i].uuid,
+                            onClick : "markerOnClick"
+                        })}
+                            ${markerLabel.add(
+                            {
+                                type : "path",
+                                text : figure.contigs[i].name
+                            })}
+                            ${markerLabel.end()}
+                        ${trackMarker.end()}
+                    `;
+                    lastLocation = lastLocation + figure.contigs[i].bp;
+                }
+                return res; 
+            })()}
+            ${trackScale.add(
+            {
+                interval : "{{genome.circularFigureBPTrackOptions.interval}}",
+                vAdjust : "{{genome.circularFigureBPTrackOptions.vAdjust}}",
+                showLabels : "{{genome.circularFigureBPTrackOptions.showLabels}}"
+            }
+        )}
+        ${trackScale.end()}
+    ${plasmidTrack.end()}
+    `;
+}
+export function cacheBaseFigure(figure : CircularFigure) : void
+{
+    try
+    {
+        fs.mkdirSync(`resources/app/rt/circularFigures/${figure.uuid}`);
+    }
+    catch(err){}
+    fs.writeFileSync(`resources/app/rt/circularFigures/${figure.uuid}/baseFigure`,renderBaseFigure(figure));
+}
+export function getBaseFigureFromCache(figure : CircularFigure) : string
+{
+    return (<any>fs.readFileSync(`resources/app/rt/circularFigures/${figure.uuid}/baseFigure`));
+}
+
+
+function getBaseBP(figure : CircularFigure,contiguuid : string) : number
+{
+    let base = 0;
+    for(let i = 0; i != figure.contigs.length; ++i)
+    {
+        if(figure.contigs[i].uuid == contiguuid)
+            return base;
+        base += figure.contigs[i].bp;
+    }
+    return -1;
+}
+interface PositionsWithDepths
+{
+    depth : number;
+    positions : Array<number>;
+}
+export function renderCoverageTracks(figure : CircularFigure,contiguuid : string,align : alignData,cb : (status : boolean,coverageTracks : string) => void) : void
+{
+    let coverageTracks : string = "";
+    let rl : readline.ReadLine = readline.createInterface(<readline.ReadLineOptions>{
+        input : fs.createReadStream(`resources/app/rt/AlignmentArtifacts/${align.uuid}/contigCoverage/${contiguuid}`)
+    });
+    let baseBP = getBaseBP(figure,contiguuid);
+    if(baseBP == -1)
+        throw new Error("Could not get base position of "+figure.name+" for reference");
+
+    let depths : Array<PositionsWithDepths> = new Array<PositionsWithDepths>();
+    rl.on("line",function(line : string){
+        let tokens = line.split(/\s/g);
+        let depth = parseInt(tokens[1]);
+        let found = false;
+        for(let i = 0; i != depths.length; ++i)
+        {
+            if(depths[i].depth == depth)
+            {
+                depths[i].positions.push(parseInt(tokens[0]));
+                found = true;
+                break;
+            }
+        }
+        if(!found)
+        {
+            depths.push(<PositionsWithDepths>{
+                depth : depth,
+                positions : <Array<number>>[parseInt(tokens[0])]
+            });
+        }
+    });
+    rl.on("close",function(){
+        depths.sort(function(a : PositionsWithDepths,b : PositionsWithDepths){return a.depth - b.depth;});
+
+        for(let i = 0; i != depths.length; ++i)
+        {
+            let res = "";
+            res += `<plasmidtrack trackstyle="fill-opacity:0.0" width="10" radius="{{genome.radius+${100+i}}}" >`;
+            for(let k = 0; k != depths[i].positions.length; ++k)
+            {
+                res += `<trackmarker start="${baseBP+depths[i].positions[k]}" end="${baseBP+depths[i].positions[k]+1}" markerstyle="fill:rgb(64,64,64);stroke-width:1px;" wadjust="-8"></trackmarker>`;
+            }
+            res += `</plasmidtrack>`;
+            coverageTracks += res;
+        }
+        cb(true,coverageTracks);
+    });
+}
+export function cacheCoverageTracks(figure : CircularFigure,contiguuid : string,align : alignData,cb : (status : boolean,coverageTracks : string) => void) : void
+{
+    try
+    {
+        mkdirp.sync(`resources/app/rt/circularFigures/${figure.uuid}/coverage/${align.uuid}`);
+    }
+    catch(err){}
+    renderCoverageTracks(
+        figure,
+        contiguuid,
+        align,
+        function(status,coverageTracks){
+            fs.writeFileSync(`resources/app/rt/circularFigures/${figure.uuid}/coverage/${align.uuid}/${contiguuid}`,coverageTracks);
+            if(status == true)
+            {
+                figure.renderedCoverageTracks.push(
+                    new RenderedCoverageTrackRecord(
+                        align.uuid,
+                        contiguuid,
+                        figure.uuid,
+                        `resources/app/rt/circularFigures/${figure.uuid}/coverage/${align.uuid}/${contiguuid}`
+                    )
+                );
+            }
+            cb(status,coverageTracks);
+    });
+}
+ 

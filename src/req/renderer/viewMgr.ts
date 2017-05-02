@@ -153,8 +153,14 @@ export function setPreRender(
     preRender = func;
 } 
 
-export function render(preRenderArg? : (view : View) => void,postRenderArg? : (view : View) => void) : void
+export function render(preRenderArg? : (view : View) => void,postRenderArg? : (view : View) => void,targetArr? : Array<View>) : void
 {
+    let views : Array<View>;
+    if(targetArr)
+        views = targetArr;
+    else
+        views = views;
+
     let currViewRef = getViewByName(currView,views);
     if(!preRender)
     {

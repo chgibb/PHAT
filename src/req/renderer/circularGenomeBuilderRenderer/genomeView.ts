@@ -1,10 +1,16 @@
 //// <reference path="jquery.d.ts" />
 /// <reference path="./../angularStub.d.ts" />
+import * as fs from "fs";
 import * as util from "util";
 
+import * as electron from "electron";
+const ipc = electron.ipcRenderer;
+
+import {AtomicOperationIPC} from "./../../atomicOperationsIPC";
 import * as viewMgr from "./../viewMgr";
 import * as masterView from "./masterView";
-import {CircularFigure} from "./../circularFigure";
+import alignData from "./../../alignData";
+import {CircularFigure,renderBaseFigure,getBaseFigureFromCache,renderCoverageTracks} from "./../circularFigure";
 import * as plasmid from "./../circularGenome/plasmid";
 import * as plasmidTrack from "./../circularGenome/plasmidTrack";
 import * as trackLabel from "./../circularGenome/trackLabel";
@@ -14,12 +20,12 @@ import * as trackScale from "./../circularGenome/trackScale";
 
 require("angular");
 require("angularplasmid");
-
 let app : any = angular.module('myApp',['angularplasmid']);
 export class GenomeView extends viewMgr.View
 {
     public genome : CircularFigure;
     public firstRender : boolean;
+    public alignData : Array<alignData>;
     public constructor(name : string,div : string)
     {
         super(name,div);
@@ -29,12 +35,14 @@ export class GenomeView extends viewMgr.View
     public onUnMount() : void{}
     public markerOnClick($event : any,$marker : any,uuid : string) : void
     {
+
     }
     public inputRadiusOnChange()
     {
-        this.genome.height = this.genome.radius*5;
-        this.genome.width =this.genome.radius*5;
+        this.genome.height = this.genome.radius*10;
+        this.genome.width =this.genome.radius*10;
         this.postRender();
+        let self = this;
     }
     public showBPTrackOnChange()
     {
@@ -47,9 +55,12 @@ export class GenomeView extends viewMgr.View
     }
     public renderView() : string
     {
+        
         let self = this;
+
         if(this.genome)
         {
+            
             //Only render markup when we explicitly need to
             //All figure updates are handled through angular bindings
             if(this.firstRender){
@@ -72,14 +83,12 @@ export class GenomeView extends viewMgr.View
                 totalBP += this.genome.contigs[i].bp;
             }
 
-
             //This is an unholy mess adapted from the example given inline in the
             //angular source code https://github.com/angular/angular.js/blob/master/src/auto/injector.js
             //We remove the div this view is bound to, recreate it and re render the angular template into it
             //Then we pass the div into angular to compile the templates and then finally inject it all back into
             //the page
-            let $div = $
-            (
+            let $div = $(
                 `
                 <div id="controls">
                     <input type="number" ng-model="genome.radius" ng-change="inputRadiusOnChange()" min="0" max="1000" required>
@@ -107,56 +116,22 @@ export class GenomeView extends viewMgr.View
                         plasmidHeight : "{{genome.height}}",
                         plasmidWidth : "{{genome.width}}"
                     })}
-                        ${plasmidTrack.add(
-                        {
-                            trackStyle : "fill:#f0f0f0;stroke:#ccc",
-                            radius : "{{genome.radius}}"
-                        })}
-                            ${trackLabel.add(
+                        ${getBaseFigureFromCache(this.genome)}
+                        ${(()=>{
+                            let res = "";
+                            for(let i = 0; i != self.genome.renderedCoverageTracks.length; ++i)
                             {
-                                text : this.genome.contigs[0].name,
-                                labelStyle : "font-size:20px;font-weight:400"
-                            })}
-                            ${trackLabel.end()}
-                            ${(()=>
-                            {
-                                let res = "";
-                                let lastLocation = 0;
-                                for(let i = 0; i != this.genome.contigs.length; ++i)
-                                { 
-                                    res += `
-                                        ${trackMarker.add(
-                                        {
-                                            start : lastLocation.toString(),
-                                            end : (lastLocation + this.genome.contigs[i].bp).toString(),
-                                            markerStyle : `fill:${this.genome.contigs[i].color}`,
-                                            uuid : this.genome.contigs[i].uuid,
-                                            onClick : "markerOnClick"
-                                        })}
-                                            ${markerLabel.add(
-                                            {
-                                                type : "path",
-                                                text : this.genome.contigs[i].name
-                                            })}
-                                            ${markerLabel.end()}
-                                        ${trackMarker.end()}
-                                    `;
-                                    lastLocation = lastLocation + this.genome.contigs[i].bp;
+                                if(self.genome.renderedCoverageTracks[i].checked)
+                                {
+                                    res += (<any>fs.readFileSync(self.genome.renderedCoverageTracks[i].path));
                                 }
-                                return res; 
-                            })()}
-                            ${trackScale.add(
-                            {
-                                interval : "{{genome.circularFigureBPTrackOptions.interval}}",
-                                vAdjust : "{{genome.circularFigureBPTrackOptions.vAdjust}}",
-                                showLabels : "{{genome.circularFigureBPTrackOptions.showLabels}}"
                             }
-                            )}
-                            ${trackScale.end()}
-                        ${plasmidTrack.end()}
+                            return res;
+                        })()}
                     ${plasmid.end()}
                 </div>
-            `);
+                `
+            );
             $(document.body).append($div);
             angular.element(document).injector().invoke
             (
@@ -166,6 +141,7 @@ export class GenomeView extends viewMgr.View
                     //of mutating the existing scope
                     let scope = angular.element($div).scope();
                     scope.genome = self.genome;
+                    scope.alignData = self.alignData;
                     scope.markerOnClick = self.markerOnClick;
                     scope.inputRadiusOnChange = self.inputRadiusOnChange;
                     scope.showBPTrackOnChange = self.showBPTrackOnChange;
@@ -181,6 +157,14 @@ export class GenomeView extends viewMgr.View
     }
     public postRender() : void
     {
+
+/*try{
+        let svg = document.getElementById(this.div).children[0];
+       let serializer = new XMLSerializer();
+        fs.writeFileSync("xml",serializer.serializeToString(svg));
+}
+catch(err){}*/
+
         if(this.genome !== undefined)
         {
             //get a reference to the div wrapping the rendered svg graphic of our figure

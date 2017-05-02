@@ -10,6 +10,7 @@ import {CircularFigure,} from "./../circularFigure";
 import {Fasta} from "./../../fasta";
 
 import * as GenomeView from "./genomeView";
+import * as RightPanel from "./rightPanel";
 export function addView(arr : Array<viewMgr.View>,div : string)
 {
     arr.push(new View(div));
@@ -35,6 +36,7 @@ export class View extends viewMgr.View
     public onMount() : void
     {
         GenomeView.addView(this.views,"genomeView");
+        RightPanel.addView(this.views,"rightSlideOutPanel");
         for(let i = 0; i != this.views.length; ++i)
         {
             this.views[i].onMount();
@@ -62,10 +64,8 @@ export class View extends viewMgr.View
                 <button id="leftPanel" class="leftSlideOutPanel">Left Panel</button>
                 <button id="rightPanel" class="rightSlideOutPanel">Right Panel</button>
                 <div id="rightSlideOutPanel" class="rightSlideOutPanel">
-                    <button id="heightPlus">Increase Height</button>
-                    <button id="widthPlus">Increase Width</button>
-                    <button id="radiusMinus">Decrease Radius</button>
-                    <button id="radiusPlus">Increase Radius</button>
+                    <div id="rightSlideOutPanelView">
+                    </div>
                 </div>
                 <div id="leftSlideOutPanel" class="leftSlideOutPanel">
                 ${
@@ -110,6 +110,7 @@ export class View extends viewMgr.View
     }
     public postRender() : void
     {
+        
         for(let i = 0; i != this.views.length; ++i)
         {
             this.views[i].postRender();
