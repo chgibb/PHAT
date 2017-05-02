@@ -42,6 +42,7 @@ export class GenomeView extends viewMgr.View
         this.genome.height = this.genome.radius*10;
         this.genome.width =this.genome.radius*10;
         this.postRender();
+        let masterView = <masterView.View>viewMgr.getViewByName("masterView");
         let self = this;
     }
     public showBPTrackOnChange()
@@ -51,6 +52,7 @@ export class GenomeView extends viewMgr.View
         let masterView = <masterView.View>viewMgr.getViewByName("masterView");
         let genomeView = <GenomeView>viewMgr.getViewByName("genomeView",masterView.views);
         genomeView.firstRender = true;
+        masterView.dataChanged();
         viewMgr.render();
     }
     public renderView() : string
@@ -157,14 +159,6 @@ export class GenomeView extends viewMgr.View
     }
     public postRender() : void
     {
-
-/*try{
-        let svg = document.getElementById(this.div).children[0];
-       let serializer = new XMLSerializer();
-        fs.writeFileSync("xml",serializer.serializeToString(svg));
-}
-catch(err){}*/
-
         if(this.genome !== undefined)
         {
             //get a reference to the div wrapping the rendered svg graphic of our figure

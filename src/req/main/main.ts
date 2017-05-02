@@ -486,6 +486,20 @@ atomicOp.updates.on(
 	{
 		dataMgr.setKey("application","operations",atomicOp.operationsQueue);
 		dataMgr.publishChangeForKey("application","operations");
+		if(op.flags.success)
+		{
+			let circularFigures : Array<CircularFigure> = dataMgr.getKey("circularGenomeBuilder","circularFigures");
+			for(let i = 0; i != circularFigures.length; ++i)
+			{
+				if(circularFigures[i].uuid == op.circularFigure.uuid)
+				{
+					circularFigures[i].renderedCoverageTracks.push(op.circularFigure.renderedCoverageTracks[0]);
+					dataMgr.setKey("circularGenomeBuilder","circularFigures",circularFigures);
+					dataMgr.publishChangeForKey("circularGenomeBuilder","circularFigures");
+					break;
+				}
+			}
+		}
 	}
 );
 atomicOp.updates.on(
