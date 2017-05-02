@@ -493,7 +493,7 @@ atomicOp.updates.on(
 			{
 				if(circularFigures[i].uuid == op.circularFigure.uuid)
 				{
-					circularFigures[i].renderedCoverageTracks.push(op.circularFigure.renderedCoverageTracks[0]);
+					circularFigures[i].renderedCoverageTracks = op.circularFigure.renderedCoverageTracks;
 					dataMgr.setKey("circularGenomeBuilder","circularFigures",circularFigures);
 					dataMgr.publishChangeForKey("circularGenomeBuilder","circularFigures");
 					break;
