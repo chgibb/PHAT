@@ -181,35 +181,9 @@ export class View extends viewMgr.View
                 }
             );
         }
-        let ref = <GenomeView.GenomeView>viewMgr.getViewByName("genomeView",this.views);
-        if(event.target.id == "radiusPlus")
-        {
-            ref.genome.radius += 10;
-            viewMgr.render();
-            this.dataChanged();
-            return;
-        }
-        if(event.target.id == "radiusMinus")
-        {
-            ref.genome.radius -= 10;
-            viewMgr.render();
-            this.dataChanged();
-            return;
-        }
-        if(event.target.id == "heightPlus")
-        {
-            ref.genome.height += 10;
-            viewMgr.render();
-            this.dataChanged();
-            return;
-        }
-        if(event.target.id == "widthPlus")
-        {
-            ref.genome.width += 10;
-            viewMgr.render();
-            this.dataChanged();
-            return;
-        }
+        let genomeView = <GenomeView.GenomeView>viewMgr.getViewByName("genomeView",this.views);
+        let rightPanel = <RightPanel.RightPanel>viewMgr.getViewByName("rightPanel",this.views);
+
         if(this.fastaInputs)
         {
             for(let i = 0; i != this.fastaInputs.length; ++i)
@@ -217,11 +191,11 @@ export class View extends viewMgr.View
                 if(event.target.id == `${this.fastaInputs[i].uuid}_newFigure`)
                 {
                     this.circularFigures.push(new CircularFigure("New Figure",this.fastaInputs[i].uuid,this.fastaInputs[i].contigs));
-                    let ref = <GenomeView.GenomeView>viewMgr.getViewByName("genomeView",this.views);
-                    ref.genome = this.circularFigures[this.circularFigures.length - 1];
+                    genomeView.genome = this.circularFigures[this.circularFigures.length - 1];
                     this.dataChanged();
                     this.firstRender = true;
-                    ref.firstRender = true;
+                    genomeView.firstRender = true;
+                    rightPanel.selectedAlignment = undefined;
                     viewMgr.render();
                     return;
                 }
@@ -231,9 +205,9 @@ export class View extends viewMgr.View
         {
             if(event.target.id == this.circularFigures[i].uuid)
             {
-                let ref = <GenomeView.GenomeView>viewMgr.getViewByName("genomeView",this.views);
-                ref.genome = this.circularFigures[i];
-                ref.firstRender = true;
+                genomeView.genome = this.circularFigures[i];
+                genomeView.firstRender = true;
+                rightPanel.selectedAlignment = undefined;
                 viewMgr.render();
                 return;
             }
