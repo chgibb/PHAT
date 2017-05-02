@@ -1,4 +1,8 @@
 import * as fs from "fs";
+import * as electron from "electron";
+const ipc = electron.ipcRenderer;
+
+import {AtomicOperationIPC} from "./../../../atomicOperationsIPC";
 import * as viewMgr from "./../../viewMgr";
 import * as masterView from "./../masterView";
 import {GenomeView} from "./../genomeView";
@@ -92,13 +96,14 @@ export class SelectCoverageTracks extends viewMgr.View
         {
             if(this.genome.contigs[i].uuid == event.target.id)
             {
-                cf.cacheCoverageTracks(
-                    this.genome,
-                    this.genome.contigs[i].uuid,
-                    this.selectedAlignment,
-                    function(status : boolean,coverageTracks : string)
-                    {
-                        viewMgr.render();
+                masterView.dataChanged();
+                ipc.send(
+                    "runOperation",
+                    <AtomicOperationIPC>{
+                        opName : "renderCoverageTrackForContig",
+                        figureuuid : this.genome.uuid,
+                        alignuuid : this.selectedAlignment.uuid,
+                        uuid : event.target.id
                     }
                 );
                 break;

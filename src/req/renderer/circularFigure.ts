@@ -216,11 +216,22 @@ export function renderCoverageTracks(figure : CircularFigure,contiguuid : string
 
         for(let i = 0; i != depths.length; ++i)
         {
+            depths[i].positions.sort(function(a : number,b : number){return a - b});
             let res = "";
             res += `<plasmidtrack trackstyle="fill-opacity:0.0" width="10" radius="{{genome.radius+${100+i}}}" >`;
             for(let k = 0; k != depths[i].positions.length; ++k)
             {
-                res += `<trackmarker start="${baseBP+depths[i].positions[k]}" end="${baseBP+depths[i].positions[k]+1}" markerstyle="fill:rgb(64,64,64);stroke-width:1px;" wadjust="-8"></trackmarker>`;
+                let offset = 1;
+                let prev = depths[i].positions[k];
+                let initial = k; 
+                while(depths[i].positions[k + offset] == depths[i].positions[initial] + offset)
+                {
+                    if(k + offset == depths[i].positions.length)
+                        break;
+                    offset++;
+                }
+                k = k + (offset - 1);
+                res += `<trackmarker start="${baseBP+depths[i].positions[initial]}" end="${baseBP+depths[i].positions[initial]+offset}" markerstyle="fill:rgb(64,64,64);stroke-width:1px;" wadjust="-8"></trackmarker>`;
             }
             res += `</plasmidtrack>`;
             coverageTracks += res;
