@@ -44,10 +44,12 @@ export class RenderedCoverageTrackRecord
     public uuidFigure : string;
     public path : string;
     public checked : boolean;
+    public colour : string;
     public constructor(
         uuidAlign : string,
         uuidContig : string,
         uuidFigure : string,
+        colour : string,
         path : string)
         {
             this.uuid = uuidv4();
@@ -56,6 +58,7 @@ export class RenderedCoverageTrackRecord
             this.uuidFigure = uuidFigure;
             this.path = path;
             this.checked = false;
+            this.colour = colour;
         }
 }
 export class CircularFigure
@@ -181,7 +184,7 @@ interface PositionsWithDepths
     depth : number;
     positions : Array<number>;
 }
-export function renderCoverageTracks(figure : CircularFigure,contiguuid : string,align : alignData,cb : (status : boolean,coverageTracks : string) => void) : void
+export function renderCoverageTracks(figure : CircularFigure,contiguuid : string,align : alignData,cb : (status : boolean,coverageTracks : string) => void,colour : string = "rgb(64,64,64)") : void
 {
     let coverageTracks : string = "";
     //Stream the distilled samtools depth data from the specified alignment for the specified contig
@@ -248,7 +251,7 @@ export function renderCoverageTracks(figure : CircularFigure,contiguuid : string
                 }
                 //in case we didn't find any sequential positions, this will render singles fine
                 k = k + (offset - 1);
-                res += `<trackmarker start="${baseBP+depths[i].positions[initial]}" end="${baseBP+depths[i].positions[initial]+offset}" markerstyle="fill:rgb(64,64,64);stroke-width:1px;" wadjust="-8"></trackmarker>`;
+                res += `<trackmarker start="${baseBP+depths[i].positions[initial]}" end="${baseBP+depths[i].positions[initial]+offset}" markerstyle="fill:${colour};stroke-width:1px;" wadjust="-8"></trackmarker>`;
             }
             res += `</plasmidtrack>`;
             coverageTracks += res;
@@ -256,7 +259,7 @@ export function renderCoverageTracks(figure : CircularFigure,contiguuid : string
         cb(true,coverageTracks);
     });
 }
-export function cacheCoverageTracks(figure : CircularFigure,contiguuid : string,align : alignData,cb : (status : boolean,coverageTracks : string) => void) : void
+export function cacheCoverageTracks(figure : CircularFigure,contiguuid : string,align : alignData,cb : (status : boolean,coverageTracks : string) => void,colour : string = "rgb(64,64,64)") : void
 {
     try
     {
@@ -276,6 +279,7 @@ export function cacheCoverageTracks(figure : CircularFigure,contiguuid : string,
                         align.uuid,
                         contiguuid,
                         figure.uuid,
+                        colour,
                         `resources/app/rt/circularFigures/${figure.uuid}/coverage/${align.uuid}/${contiguuid}`
                     )
                 );

@@ -8,6 +8,7 @@ import * as cf from "./req/renderer/circularFigure";
 let align : alignData;
 let contiguuid : string;
 let circularFigure : cf.CircularFigure;
+let colour : string;
 
 let flags : CompletionFlags = new CompletionFlags();
 process.on
@@ -19,6 +20,7 @@ process.on
             align = ev.data.alignData;
             contiguuid = ev.data.contiguuid;
             circularFigure = ev.data.circularFigure;
+            colour = ev.data.colour;
             process.send(<AtomicOperationForkEvent>{finishedSettingData : true});
             return;
         }
@@ -43,13 +45,15 @@ process.on
                                     data : {
                                         alignData : align,
                                         contiguuid : contiguuid,
-                                        circularFigure : circularFigure
+                                        circularFigure : circularFigure,
+                                        colour : colour
                                     }
                                 }
                             );
                             process.exit(0);
                         }
-                    }
+                    },
+                    colour
                 );
             }
             catch(err)
