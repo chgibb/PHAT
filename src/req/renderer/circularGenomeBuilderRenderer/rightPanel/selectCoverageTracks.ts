@@ -10,6 +10,7 @@ import {RightPanel} from "./../rightPanel";
 import alignData from "./../../../alignData";
 import * as cf from "./../../circularFigure";
 
+require("@claviska/jquery-minicolors");
 export class SelectCoverageTracks extends viewMgr.View
 {
     public genome : cf.CircularFigure;
@@ -48,6 +49,7 @@ export class SelectCoverageTracks extends viewMgr.View
                 return "";
             })()}
         `;
+        res += `<input type="text" id="colourPicker" data-format="rgb" value="rgb(0, 0, 0)">`;
         res += `
             ${(()=>{
                 let res = ""
@@ -78,6 +80,20 @@ export class SelectCoverageTracks extends viewMgr.View
     }
     public postRender() : void
     {
+        let colourPicker = document.getElementById("colourPicker");
+        $(colourPicker).minicolors({
+            control : "hue",
+            defaultValue : "",
+            format : "rgb",
+            keywords : "",
+            inline : false,
+            swatches : [],
+            theme : "default",
+            change : function(hex : string,opacity : string)
+            {
+                console.log(hex+" "+opacity);
+            }
+        });
         for(let i = 0; i != this.genome.renderedCoverageTracks.length; ++i)
         {
             if(this.genome.renderedCoverageTracks[i].checked)
