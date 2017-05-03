@@ -106,7 +106,7 @@ export function renderBaseFigure(figure : CircularFigure) : string
         })}
             ${trackLabel.add(
             {
-                text : figure.contigs[0].name,
+                text : figure.name,
                 labelStyle : "font-size:20px;font-weight:400"
             })}
             ${trackLabel.end()}
@@ -128,7 +128,7 @@ export function renderBaseFigure(figure : CircularFigure) : string
                             ${markerLabel.add(
                             {
                                 type : "path",
-                                text : figure.contigs[i].name
+                                text : figure.contigs[i].alias
                             })}
                             ${markerLabel.end()}
                         ${trackMarker.end()}
