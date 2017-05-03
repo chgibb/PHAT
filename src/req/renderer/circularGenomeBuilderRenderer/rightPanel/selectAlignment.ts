@@ -18,8 +18,10 @@ export class SelectAlignment extends viewMgr.View
     public renderView() : string
     {
         let masterView = <masterView.View>viewMgr.getViewByName("masterView");
+        let rightPanelView = <RightPanel>viewMgr.getViewByName("rightPanel",masterView.views);
         let genomeView = <GenomeView>viewMgr.getViewByName("genomeView",masterView.views);
         this.genome = genomeView.genome;
+        this.alignData = rightPanelView.alignData;
         return ` 
             <h1>Coverage Options</h1>
             ${(()=>{

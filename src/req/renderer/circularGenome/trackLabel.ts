@@ -9,7 +9,7 @@ export function add(
 ) : string
 {
     let res = `
-        <tracklabel ${(()=>{return options.onClick ? `ng-click="${options.onClick}()"` : "";})()} ${
+        <tracklabel class="trackLabelHover" ${(()=>{return options.onClick ? `ng-click="${options.onClick}()"` : "";})()} ${
             (
                 ()=>
                 {
