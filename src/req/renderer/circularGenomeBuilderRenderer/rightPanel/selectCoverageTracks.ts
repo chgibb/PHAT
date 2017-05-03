@@ -28,6 +28,7 @@ export class SelectCoverageTracks extends viewMgr.View
         this.genome = genomeView.genome;
         this.selectedAlignment = rightPanel.selectedAlignment;
         let res =  `
+            <button id="goBack">Go Back</button>
             ${(()=>{
                 let res = `<h2>Available Tracks</h2>`;
                 if(this.genome.renderedCoverageTracks.length >= 1)
@@ -36,7 +37,7 @@ export class SelectCoverageTracks extends viewMgr.View
                     {
                         for(let k = 0; k != this.genome.contigs.length; ++k)
                         {
-                            if(this.genome.renderedCoverageTracks[i].uuidContig == this.genome.contigs[k].uuid)
+                            if(this.genome.renderedCoverageTracks[i].uuidContig == this.genome.contigs[k].uuid && this.genome.renderedCoverageTracks[i].uuidAlign == this.selectedAlignment.uuid)
                             {
                                 res += `<input type="checkbox" id="${this.genome.renderedCoverageTracks[i].uuid}" /><h3>${this.genome.contigs[k].name}</h3>`;
                             }
@@ -57,7 +58,7 @@ export class SelectCoverageTracks extends viewMgr.View
                         let shouldRender = true;
                         for(let k = 0; k != this.genome.renderedCoverageTracks.length; ++k)
                         {
-                            if(this.genome.renderedCoverageTracks[k].uuidContig == this.genome.contigs[i].uuid)
+                            if(this.genome.renderedCoverageTracks[k].uuidContig == this.genome.contigs[i].uuid && this.genome.renderedCoverageTracks[k].uuidAlign == this.selectedAlignment.uuid)
                             {
                                 shouldRender = false;
                                 break;
@@ -81,7 +82,11 @@ export class SelectCoverageTracks extends viewMgr.View
         {
             if(this.genome.renderedCoverageTracks[i].checked)
             {
-                (<HTMLInputElement>document.getElementById(this.genome.renderedCoverageTracks[i].uuid)).checked = true;
+                try
+                {
+                    (<HTMLInputElement>document.getElementById(this.genome.renderedCoverageTracks[i].uuid)).checked = true;
+                }
+                catch(err){}
             }
         }
     }
@@ -92,6 +97,14 @@ export class SelectCoverageTracks extends viewMgr.View
             return;
         let masterView = <masterView.View>viewMgr.getViewByName("masterView");
         let genomeView = <GenomeView>viewMgr.getViewByName("genomeView",masterView.views);
+        let rightPanel = <RightPanel>viewMgr.getViewByName("rightPanel",masterView.views);
+
+        if(event.target.id == "goBack")
+        {
+            rightPanel.selectedAlignment = undefined;
+            viewMgr.render();
+        }
+
         for(let i = 0; i != this.genome.contigs.length; ++i)
         {
             if(this.genome.contigs[i].uuid == event.target.id)
