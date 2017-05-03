@@ -37,6 +37,15 @@ export class GenomeView extends viewMgr.View
     {
 
     }
+    public figureNameOnClick() : void
+    {
+        this.genome.name = prompt("",this.genome.name);
+        let masterView = <masterView.View>viewMgr.getViewByName("masterView");
+        let genomeView = <GenomeView>viewMgr.getViewByName("genomeView",masterView.views);
+        masterView.firstRender = true;
+        genomeView.firstRender = true;
+        viewMgr.render();
+    }
     public inputRadiusOnChange()
     {
         this.genome.height = this.genome.radius*10;
@@ -52,7 +61,7 @@ export class GenomeView extends viewMgr.View
         let masterView = <masterView.View>viewMgr.getViewByName("masterView");
         let genomeView = <GenomeView>viewMgr.getViewByName("genomeView",masterView.views);
         genomeView.firstRender = true;
-        masterView.dataChanged();
+        //masterView.dataChanged();
         viewMgr.render();
     }
     public renderView() : string
@@ -145,6 +154,7 @@ export class GenomeView extends viewMgr.View
                     scope.genome = self.genome;
                     scope.alignData = self.alignData;
                     scope.markerOnClick = self.markerOnClick;
+                    scope.figureNameOnClick = self.figureNameOnClick;
                     scope.inputRadiusOnChange = self.inputRadiusOnChange;
                     scope.showBPTrackOnChange = self.showBPTrackOnChange;
                     scope.postRender = self.postRender;

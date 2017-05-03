@@ -107,7 +107,8 @@ export function renderBaseFigure(figure : CircularFigure) : string
             ${trackLabel.add(
             {
                 text : figure.name,
-                labelStyle : "font-size:20px;font-weight:400"
+                labelStyle : "font-size:20px;font-weight:400",
+                onClick : "figureNameOnClick"
             })}
             ${trackLabel.end()}
             ${(()=>
