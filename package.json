@@ -50,6 +50,7 @@
     "angularplasmid": "^1.0.5",
     "browserify": "^13.1.0",
     "bundle-collapser": "^1.2.1",
+    "dialogs": "^1.1.19",
     "electron-ipc-stream": "^0.2.0",
     "electron-packager": "^8.0.0",
     "electron-prebuilt": "^1.1.2",
