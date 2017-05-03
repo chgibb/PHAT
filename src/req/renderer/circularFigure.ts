@@ -163,7 +163,8 @@ export function getBaseFigureFromCache(figure : CircularFigure) : string
     return (<any>fs.readFileSync(`resources/app/rt/circularFigures/${figure.uuid}/baseFigure`));
 }
 
-
+//Walk the figures contigs clockwise and return the offset of the beginning of contig specified
+//by contiguuid from the start of the figure
 function getBaseBP(figure : CircularFigure,contiguuid : string) : number
 {
     let base = 0;
@@ -183,6 +184,7 @@ interface PositionsWithDepths
 export function renderCoverageTracks(figure : CircularFigure,contiguuid : string,align : alignData,cb : (status : boolean,coverageTracks : string) => void) : void
 {
     let coverageTracks : string = "";
+    //Stream the distilled samtools depth data from the specified alignment for the specified contig
     let rl : readline.ReadLine = readline.createInterface(<readline.ReadLineOptions>{
         input : fs.createReadStream(`resources/app/rt/AlignmentArtifacts/${align.uuid}/contigCoverage/${contiguuid}`)
     });
@@ -190,6 +192,11 @@ export function renderCoverageTracks(figure : CircularFigure,contiguuid : string
     if(baseBP == -1)
         throw new Error("Could not get base position of "+figure.name+" for reference");
 
+    /*
+        Anular Plasmid tracks are declared in terms of y position. We want to group all positions with the same depth
+        together so we can create one track for each depth and then render every position with the same depth onto
+        the same track.
+    */
     let depths : Array<PositionsWithDepths> = new Array<PositionsWithDepths>();
     rl.on("line",function(line : string){
         let tokens = line.split(/\s/g);
@@ -213,13 +220,21 @@ export function renderCoverageTracks(figure : CircularFigure,contiguuid : string
         }
     });
     rl.on("close",function(){
+        //sort depths
         depths.sort(function(a : PositionsWithDepths,b : PositionsWithDepths){return a.depth - b.depth;});
 
+        /*
+            Instead of rendering one marker for every single position, we stretch a single marker to cover sequential positions which are all at the same
+            depth.
+        */
         for(let i = 0; i != depths.length; ++i)
         {
+            //sort positions within each depth position we're looking at
             depths[i].positions.sort(function(a : number,b : number){return a - b});
             let res = "";
+            //render the start of the current track
             res += `<plasmidtrack trackstyle="fill-opacity:0.0" width="10" radius="{{genome.radius+${100+i}}}" >`;
+            //try to find a group of sequential positions
             for(let k = 0; k != depths[i].positions.length; ++k)
             {
                 let offset = 1;
@@ -231,6 +246,7 @@ export function renderCoverageTracks(figure : CircularFigure,contiguuid : string
                         break;
                     offset++;
                 }
+                //in case we didn't find any sequential positions, this will render singles fine
                 k = k + (offset - 1);
                 res += `<trackmarker start="${baseBP+depths[i].positions[initial]}" end="${baseBP+depths[i].positions[initial]+offset}" markerstyle="fill:rgb(64,64,64);stroke-width:1px;" wadjust="-8"></trackmarker>`;
             }
