@@ -39,7 +39,7 @@ export class SelectCoverageTracks extends viewMgr.View
                         {
                             if(this.genome.renderedCoverageTracks[i].uuidContig == this.genome.contigs[k].uuid && this.genome.renderedCoverageTracks[i].uuidAlign == this.selectedAlignment.uuid)
                             {
-                                res += `<input type="checkbox" id="${this.genome.renderedCoverageTracks[i].uuid}" /><h3>${this.genome.contigs[k].name}</h3>`;
+                                res += `<input type="checkbox" id="${this.genome.renderedCoverageTracks[i].uuid}" /><h3 style="color:${this.genome.renderedCoverageTracks[i].colour}">${this.genome.contigs[k].name}</h3>`;
                             }
                         }
                     }
