@@ -52,12 +52,16 @@ export class GenomeView extends viewMgr.View
             if(text)
             {
                 self.genome.name = text;
+                //Overwrite old template cache for figure
                 cacheBaseFigure(self.genome);
                 let masterView = <masterView.View>viewMgr.getViewByName("masterView");
                 let genomeView = <GenomeView>viewMgr.getViewByName("genomeView",masterView.views);
+                //Ensure updated cache gets used to render figure
                 masterView.firstRender = true;
                 genomeView.firstRender = true;
+                //Save changes
                 masterView.dataChanged();
+                //Re render
                 viewMgr.render();
             }
         });
@@ -66,14 +70,12 @@ export class GenomeView extends viewMgr.View
     {
         this.genome.height = this.genome.radius*10;
         this.genome.width =this.genome.radius*10;
+        //Re center figure
         this.postRender();
-        let masterView = <masterView.View>viewMgr.getViewByName("masterView");
         let self = this;
     }
     public showBPTrackOnChange()
     {
-        //this method gets called from within angular scope primarily.
-        //get a reference to the genome view and set it's firstrender prop to true so the markup can be updated
         let masterView = <masterView.View>viewMgr.getViewByName("masterView");
         let genomeView = <GenomeView>viewMgr.getViewByName("genomeView",masterView.views);
         genomeView.firstRender = true;
