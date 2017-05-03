@@ -5,6 +5,8 @@ import * as util from "util";
 
 import * as electron from "electron";
 const ipc = electron.ipcRenderer;
+const dialog = electron.remote.dialog;
+
 const Dialogs = require("dialogs");
 const dialogs = Dialogs();
 
@@ -41,6 +43,29 @@ export class GenomeView extends viewMgr.View
     }
     public onMount() : void{}
     public onUnMount() : void{}
+    public exportSVG()
+    {
+        let self = this;
+        dialog.showSaveDialog(
+            <Electron.SaveDialogOptions>{
+                title : "Save figure as SVG",
+                filters : <{name:string,extensions:string[]}[]>[
+                    {
+                        name : "Scalable Vector Graphic",
+                        extensions : <string[]>[
+                            "svg"
+                        ]
+                    }
+                ]
+            },function(fileName : string)
+            {
+                if(fileName)
+                {
+                    fs.writeFileSync(fileName,new XMLSerializer().serializeToString(document.getElementById(self.div).children[0]));
+                }
+            }
+        );
+    }
     public markerOnClick($event : any,$marker : any,uuid : string) : void
     {
 
@@ -120,6 +145,7 @@ export class GenomeView extends viewMgr.View
             let $div = $(
                 `
                 <div id="controls">
+                    <button ng-click="exportSVG()">Export as SVG</button>
                     <input type="number" ng-model="genome.radius" ng-change="inputRadiusOnChange()" min="0" max="1000" required>
                      <label>Show BP Positions:
                         <input type="checkbox" ng-model="genome.circularFigureBPTrackOptions.showLabels" ng-true-value="1" ng-false-value="0" ng-change="showBPTrackOnChange()">
@@ -175,12 +201,14 @@ export class GenomeView extends viewMgr.View
                     scope.figureNameOnClick = self.figureNameOnClick;
                     scope.inputRadiusOnChange = self.inputRadiusOnChange;
                     scope.showBPTrackOnChange = self.showBPTrackOnChange;
+                    scope.exportSVG = self.exportSVG;
                     scope.postRender = self.postRender;
                     scope.firstRender = self.firstRender;
                     scope.div = self.div;
                     $compile($div)(scope);
                 }
             );
+            
             this.firstRender = false;
         }}
         return undefined;
