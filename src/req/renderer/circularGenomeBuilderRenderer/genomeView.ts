@@ -5,12 +5,20 @@ import * as util from "util";
 
 import * as electron from "electron";
 const ipc = electron.ipcRenderer;
+const Dialogs = require("dialogs");
+const dialogs = Dialogs();
 
 import {AtomicOperationIPC} from "./../../atomicOperationsIPC";
 import * as viewMgr from "./../viewMgr";
 import * as masterView from "./masterView";
 import alignData from "./../../alignData";
-import {CircularFigure,renderBaseFigure,getBaseFigureFromCache,renderCoverageTracks} from "./../circularFigure";
+import {
+    CircularFigure,
+    renderBaseFigure,
+    getBaseFigureFromCache,
+    cacheBaseFigure,
+    renderCoverageTracks
+} from "./../circularFigure";
 import * as plasmid from "./../circularGenome/plasmid";
 import * as plasmidTrack from "./../circularGenome/plasmidTrack";
 import * as trackLabel from "./../circularGenome/trackLabel";
@@ -39,12 +47,20 @@ export class GenomeView extends viewMgr.View
     }
     public figureNameOnClick() : void
     {
-        this.genome.name = prompt("",this.genome.name);
-        let masterView = <masterView.View>viewMgr.getViewByName("masterView");
-        let genomeView = <GenomeView>viewMgr.getViewByName("genomeView",masterView.views);
-        masterView.firstRender = true;
-        genomeView.firstRender = true;
-        viewMgr.render();
+        let self = this;
+        dialogs.prompt("Figure Name",this.genome.name,function(text : string){
+            if(text)
+            {
+                self.genome.name = text;
+                cacheBaseFigure(self.genome);
+                let masterView = <masterView.View>viewMgr.getViewByName("masterView");
+                let genomeView = <GenomeView>viewMgr.getViewByName("genomeView",masterView.views);
+                masterView.firstRender = true;
+                genomeView.firstRender = true;
+                masterView.dataChanged();
+                viewMgr.render();
+            }
+        });
     }
     public inputRadiusOnChange()
     {
