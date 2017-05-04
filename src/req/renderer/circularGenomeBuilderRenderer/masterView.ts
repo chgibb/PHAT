@@ -61,8 +61,8 @@ export class View extends viewMgr.View
             this.rightPanelOpen = false;
             this.firstRender = false;
             return `
-                <button id="leftPanel" class="leftSlideOutPanel">Left Panel</button>
-                <button id="rightPanel" class="rightSlideOutPanel">Right Panel</button>
+                <button id="leftPanel" class="leftSlideOutPanel">Refs</button>
+                <button id="rightPanel" class="rightSlideOutPanel">Coverage Options</button>
                 <div id="rightSlideOutPanel" class="rightSlideOutPanel">
                     <div id="rightSlideOutPanelView">
                     </div>
