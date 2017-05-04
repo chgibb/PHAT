@@ -411,7 +411,8 @@ ipc.on(
 					{
 						circularFigure : circularFigure,
 						contiguuid : arg.uuid,
-						alignData : alignData
+						alignData : alignData,
+						colour : arg.colour
 					}
 				);
 			}
