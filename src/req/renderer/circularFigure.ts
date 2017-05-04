@@ -236,7 +236,7 @@ export function renderCoverageTracks(figure : CircularFigure,contiguuid : string
             depths[i].positions.sort(function(a : number,b : number){return a - b});
             let res = "";
             //render the start of the current track
-            res += `<plasmidtrack trackstyle="fill-opacity:0.0" width="10" radius="{{genome.radius+${100+i}}}" >`;
+            res += `<plasmidtrack trackstyle="fill-opacity:0.0;fill:${colour}" width="10" radius="{{genome.radius+${100+i}}}" >`;
             //try to find a group of sequential positions
             for(let k = 0; k != depths[i].positions.length; ++k)
             {
@@ -285,6 +285,6 @@ export function cacheCoverageTracks(figure : CircularFigure,contiguuid : string,
                 );
             }
             cb(status,coverageTracks);
-    });
+    },colour);
 }
  
