@@ -184,7 +184,13 @@ interface PositionsWithDepths
     depth : number;
     positions : Array<number>;
 }
-export function renderCoverageTracks(figure : CircularFigure,contiguuid : string,align : alignData,cb : (status : boolean,coverageTracks : string) => void,colour : string = "rgb(64,64,64)") : void
+export function renderCoverageTracks(
+    figure : CircularFigure,
+    contiguuid : string,
+    align : alignData,
+    cb : (status : boolean,coverageTracks : string) => void
+    ,colour : string = "rgb(64,64,64)"
+) : void
 {
     let coverageTracks : string = "";
     //Stream the distilled samtools depth data from the specified alignment for the specified contig
@@ -259,7 +265,13 @@ export function renderCoverageTracks(figure : CircularFigure,contiguuid : string
         cb(true,coverageTracks);
     });
 }
-export function cacheCoverageTracks(figure : CircularFigure,contiguuid : string,align : alignData,cb : (status : boolean,coverageTracks : string) => void,colour : string = "rgb(64,64,64)") : void
+export function cacheCoverageTracks(
+    figure : CircularFigure,
+    contiguuid : string,
+    align : alignData,
+    cb : (status : boolean,coverageTracks : string) => void,
+    colour : string = "rgb(64,64,64)"
+) : void
 {
     try
     {
