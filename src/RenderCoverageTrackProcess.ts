@@ -27,48 +27,45 @@ process.on
 
         if(ev.run == true)
         {
-            try
-            {
-                cf.cacheCoverageTracks(
-                    circularFigure,
-                    contiguuid,
-                    align,
-                    function(status,coverageTracks){
-                        if(status == true)
-                        {
-                            flags.done = true;
-                            flags.success = true;
-                            process.send(
-                                <AtomicOperationForkEvent>{
-                                    update : true,
-                                    flags : flags,
-                                    data : {
-                                        alignData : align,
-                                        contiguuid : contiguuid,
-                                        circularFigure : circularFigure,
-                                        colour : colour
-                                    }
+            cf.cacheCoverageTracks(
+                circularFigure,
+                contiguuid,
+                align,
+                function(status,coverageTracks){
+                    if(status == true)
+                    {
+                        flags.done = true;
+                        flags.success = true;
+                        process.send(
+                            <AtomicOperationForkEvent>{
+                                update : true,
+                                flags : flags,
+                                data : {
+                                    alignData : align,
+                                    contiguuid : contiguuid,
+                                    circularFigure : circularFigure,
+                                    colour : colour
                                 }
-                            );
-                            process.exit(0);
-                        }
-                    },
-                    colour
-                );
-            }
-            catch(err)
-            {
-                flags.done = true;
-                flags.failure = true;
-                process.send(
-                    <AtomicOperationForkEvent>{
-                        update : true,
-                        flags : flags,
-                        data : err
+                            }
+                        );
+                        process.exit(0);
                     }
-                );
-                process.exit(1);
-            }
+                },
+                colour
+            );
         }
     }  
 );
+process.on("uncaughtException",function(err : string){
+    flags.done = true;
+    flags.failure = true;
+    flags.success = false;
+    process.send(
+        <AtomicOperationForkEvent>{
+            update : true,
+            flags : flags,
+            data : err
+        }
+    );
+    process.exit(1);
+});
