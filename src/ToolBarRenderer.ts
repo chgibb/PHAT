@@ -55,7 +55,7 @@ $
                         {
                             if(ops[i].flags.done)
                             {
-                                let notification : Notification = new Notification("Success",<NotificationOptions>{
+                                let notification : Notification = new Notification(ops[i].flags.success ? "Success" : "Failure",<NotificationOptions>{
                                     body : `
                                         ${(()=>{
                                             if(ops[i].flags.success)
@@ -68,6 +68,7 @@ $
                                             {
                                                 return `
                                                     ${ops[i].name} has failed
+                                                    ${JSON.stringify(ops[i].extraData)}
                                                 `;
                                             }
                                         })()}
