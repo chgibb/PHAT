@@ -80,14 +80,14 @@ export class View extends viewMgr.View
                                     if(this.fastaInputs[i].checked && this.fastaInputs[i].indexed)
                                     {
                                         res += `<div id ="${this.fastaInputs[i].uuid}">
-                                                <h3>${this.fastaInputs[i].alias}</h3>
-                                                <button id="${this.fastaInputs[i].uuid}_newFigure" style="float:right;">New Figure</button>
+                                                <h3>${this.fastaInputs[i].alias}</h3><br />
+                                                <button id="${this.fastaInputs[i].uuid}_newFigure" style="float:left;">New Figure</button><br /><br />
                                                 `;
                                         for(let k = 0; k != this.circularFigures.length; ++k)
                                         {
                                             if(this.circularFigures[k].uuidFasta == this.fastaInputs[i].uuid)
                                             {
-                                                res += `<input type="radio" id="${this.circularFigures[k].uuid}" name="selectedFigure" /><p>${this.circularFigures[k].name}</p>`;
+                                                res += `<div class="refFigureBlock"><input style="display:inline-block;" type="radio" id="${this.circularFigures[k].uuid}" name="selectedFigure" /><p style="display:inline-block;">${this.circularFigures[k].name}</p></div>`;
                                             }
                                         }
                                         res += `</div>`;
