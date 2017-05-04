@@ -263,7 +263,7 @@ export function renderCoverageTracks(
             res += `</plasmidtrack>`;
             coverageTracks += res;
         }
-        
+       /* 
         let lowest = depths[0];
         let res = "";
             res += `
@@ -283,7 +283,7 @@ export function renderCoverageTracks(
             `;
         coverageTracks += res;
         fs.writeFileSync("coverage",JSON.stringify(depths,undefined,4));
-        
+        */
         cb(true,coverageTracks);
     });
 }
