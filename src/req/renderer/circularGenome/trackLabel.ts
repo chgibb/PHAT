@@ -3,12 +3,13 @@ export function add(
         text? : string,
         labelStyle? : string,
         vAdjust? : string,
-        wAdjust? : string
+        wAdjust? : string,
+        onClick? : string
     }
 ) : string
 {
     let res = `
-        <tracklabel ${
+        <tracklabel class="trackLabelHover" ${(()=>{return options.onClick ? `ng-click="${options.onClick}()"` : "";})()} ${
             (
                 ()=>
                 {

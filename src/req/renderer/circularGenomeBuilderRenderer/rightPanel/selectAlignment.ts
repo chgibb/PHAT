@@ -18,15 +18,17 @@ export class SelectAlignment extends viewMgr.View
     public renderView() : string
     {
         let masterView = <masterView.View>viewMgr.getViewByName("masterView");
+        let rightPanelView = <RightPanel>viewMgr.getViewByName("rightPanel",masterView.views);
         let genomeView = <GenomeView>viewMgr.getViewByName("genomeView",masterView.views);
         this.genome = genomeView.genome;
+        this.alignData = rightPanelView.alignData;
         return ` 
             <h1>Coverage Options</h1>
             ${(()=>{
                 let res : string = `
                     <table style='width:100%'>
                         <tr>
-                            <th>Use</th>
+                            <th>Options</th>
                             <th>Name</th>
                             <th>Reads</th>
                             <th>Mates</th>
@@ -38,11 +40,18 @@ export class SelectAlignment extends viewMgr.View
                 {
                     for(let i : number = 0; i != this.alignData.length; ++i)
                     {
-                        if(this.alignData[i].fasta.uuid == genomeView.genome.uuidFasta)
+                        if(this.alignData[i].fasta.uuid == this.genome.uuidFasta)
                         {
+                            let viewing = 0;
+                            for(let k : number = 0; k != this.genome.renderedCoverageTracks.length; ++k)
+                            {
+                                if(this.genome.renderedCoverageTracks[k].uuidAlign == this.alignData[i].uuid && this.genome.renderedCoverageTracks[k].checked)
+                                    viewing++;
+                            }
                             res += `
                                 <tr>
-                                    <td><input type="radio" id="${this.alignData[i].uuid}" /></td>
+                                    <td><button id="${this.alignData[i].uuid}">View Available Tracks</button><br />
+                                    ${viewing > 0 ? `Showing ${viewing} ${viewing > 1 ? "Tracks" : "Track"} from this alignment` : ``}</td>
                                     <td>${this.alignData[i].alias}</td>
                                     <td>${this.alignData[i].summary.reads}</td>
                                     <td>${this.alignData[i].summary.mates}</td>
