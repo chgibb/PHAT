@@ -40,7 +40,7 @@ export class SelectCoverageTracks extends viewMgr.View
                         {
                             if(this.genome.renderedCoverageTracks[i].uuidContig == this.genome.contigs[k].uuid && this.genome.renderedCoverageTracks[i].uuidAlign == this.selectedAlignment.uuid)
                             {
-                                res += `<input type="checkbox" id="${this.genome.renderedCoverageTracks[i].uuid}" /><h3 style="color:${this.genome.renderedCoverageTracks[i].colour}">${this.genome.contigs[k].name}</h3>`;
+                                res += `<div><input style="display:inline-block;" type="checkbox" id="${this.genome.renderedCoverageTracks[i].uuid}" /><h3 style="display:inline-block;color:${this.genome.renderedCoverageTracks[i].colour}">${this.genome.contigs[k].name}</h3></div>`;
                             }
                         }
                     }
@@ -57,7 +57,7 @@ export class SelectCoverageTracks extends viewMgr.View
                 {
                     if(this.genome.contigs[i].uuid != "filler")
                     {
-                        res += `<p>${this.genome.contigs[i].name}</p><input type="button" id="${this.genome.contigs[i].uuid}" value="Generate Visualization" />`;
+                        res += `<div><p style="display:inline-block;">${this.genome.contigs[i].name}</p><input style="display:inline-block;" type="button" id="${this.genome.contigs[i].uuid}" value="Generate Visualization" /></div>`;
                     }
                 }
                 return res;
