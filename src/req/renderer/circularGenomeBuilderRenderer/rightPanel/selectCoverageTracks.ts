@@ -57,19 +57,7 @@ export class SelectCoverageTracks extends viewMgr.View
                 {
                     if(this.genome.contigs[i].uuid != "filler")
                     {
-                        let shouldRender = true;
-                        for(let k = 0; k != this.genome.renderedCoverageTracks.length; ++k)
-                        {
-                            if(this.genome.renderedCoverageTracks[k].uuidContig == this.genome.contigs[i].uuid && this.genome.renderedCoverageTracks[k].uuidAlign == this.selectedAlignment.uuid)
-                            {
-                                shouldRender = false;
-                                break;
-                            }
-                        }
-                        if(shouldRender)
-                        {
-                            res += `<p>${this.genome.contigs[i].name}</p><input type="button" id="${this.genome.contigs[i].uuid}" value="Generate Visualization" />`;
-                        }
+                        res += `<p>${this.genome.contigs[i].name}</p><input type="button" id="${this.genome.contigs[i].uuid}" value="Generate Visualization" />`;
                     }
                 }
                 return res;
