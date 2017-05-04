@@ -79,8 +79,8 @@ export class CircularFigure
         this.name = name;
         this.contigs = contigs;
         this.radius = 120;
-        this.height = 300;
-        this.width = 300;
+        this.height = this.radius*10;
+        this.width = this.radius*10;
         this.circularFigureBPTrackOptions = new CircularFigureBPTrackOptions();
         this.renderedCoverageTracks = new Array<RenderedCoverageTrackRecord>();
         for(let i = 0; i != this.contigs.length; ++i)
