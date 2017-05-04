@@ -263,7 +263,7 @@ export function cacheCoverageTracks(figure : CircularFigure,contiguuid : string,
 {
     try
     {
-        mkdirp.sync(`resources/app/rt/circularFigures/${figure.uuid}/coverage/${align.uuid}`);
+        mkdirp.sync(`resources/app/rt/circularFigures/${figure.uuid}/coverage/${align.uuid}/${contiguuid}`);
     }
     catch(err){}
     renderCoverageTracks(
@@ -271,18 +271,12 @@ export function cacheCoverageTracks(figure : CircularFigure,contiguuid : string,
         contiguuid,
         align,
         function(status,coverageTracks){
-            fs.writeFileSync(`resources/app/rt/circularFigures/${figure.uuid}/coverage/${align.uuid}/${contiguuid}`,coverageTracks);
             if(status == true)
             {
-                figure.renderedCoverageTracks.push(
-                    new RenderedCoverageTrackRecord(
-                        align.uuid,
-                        contiguuid,
-                        figure.uuid,
-                        colour,
-                        `resources/app/rt/circularFigures/${figure.uuid}/coverage/${align.uuid}/${contiguuid}`
-                    )
-                );
+                let trackRecord = new RenderedCoverageTrackRecord(align.uuid,contiguuid,figure.uuid,colour,"");
+                trackRecord.path = `resources/app/rt/circularFigures/${figure.uuid}/coverage/${align.uuid}/${contiguuid}/${trackRecord.uuid}`;
+                fs.writeFileSync(trackRecord.path,coverageTracks);
+                figure.renderedCoverageTracks.push(trackRecord);
             }
             cb(status,coverageTracks);
     },colour);
