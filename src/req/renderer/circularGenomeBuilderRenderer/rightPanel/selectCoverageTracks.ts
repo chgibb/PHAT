@@ -89,10 +89,7 @@ export class SelectCoverageTracks extends viewMgr.View
             inline : false,
             swatches : [],
             theme : "default",
-            change : function(hex : string,opacity : string)
-            {
-                console.log(hex+" "+opacity);
-            }
+            change : function(hex : string,opacity : string){}
         });
         for(let i = 0; i != this.genome.renderedCoverageTracks.length; ++i)
         {
@@ -125,14 +122,15 @@ export class SelectCoverageTracks extends viewMgr.View
         {
             if(this.genome.contigs[i].uuid == event.target.id)
             {
-                masterView.dataChanged();
+                masterView.dataChanged(); 
                 ipc.send(
                     "runOperation",
                     <AtomicOperationIPC>{
                         opName : "renderCoverageTrackForContig",
                         figureuuid : this.genome.uuid,
                         alignuuid : this.selectedAlignment.uuid,
-                        uuid : event.target.id
+                        uuid : event.target.id,
+                        colour : (<string>(<any>$(document.getElementById("colourPicker"))).minicolors("rgbString"))
                     }
                 );
                 break;
