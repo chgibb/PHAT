@@ -44,10 +44,12 @@ export class RenderedCoverageTrackRecord
     public uuidFigure : string;
     public path : string;
     public checked : boolean;
+    public colour : string;
     public constructor(
         uuidAlign : string,
         uuidContig : string,
         uuidFigure : string,
+        colour : string,
         path : string)
         {
             this.uuid = uuidv4();
@@ -56,6 +58,7 @@ export class RenderedCoverageTrackRecord
             this.uuidFigure = uuidFigure;
             this.path = path;
             this.checked = false;
+            this.colour = colour;
         }
 }
 export class CircularFigure
@@ -76,8 +79,8 @@ export class CircularFigure
         this.name = name;
         this.contigs = contigs;
         this.radius = 120;
-        this.height = 300;
-        this.width = 300;
+        this.height = this.radius*10;
+        this.width = this.radius*10;
         this.circularFigureBPTrackOptions = new CircularFigureBPTrackOptions();
         this.renderedCoverageTracks = new Array<RenderedCoverageTrackRecord>();
         for(let i = 0; i != this.contigs.length; ++i)
@@ -106,8 +109,9 @@ export function renderBaseFigure(figure : CircularFigure) : string
         })}
             ${trackLabel.add(
             {
-                text : figure.contigs[0].name,
-                labelStyle : "font-size:20px;font-weight:400"
+                text : figure.name,
+                labelStyle : "font-size:20px;font-weight:400",
+                onClick : "figureNameOnClick"
             })}
             ${trackLabel.end()}
             ${(()=>
@@ -128,7 +132,7 @@ export function renderBaseFigure(figure : CircularFigure) : string
                             ${markerLabel.add(
                             {
                                 type : "path",
-                                text : figure.contigs[i].name
+                                text : figure.contigs[i].alias
                             })}
                             ${markerLabel.end()}
                         ${trackMarker.end()}
@@ -162,7 +166,8 @@ export function getBaseFigureFromCache(figure : CircularFigure) : string
     return (<any>fs.readFileSync(`resources/app/rt/circularFigures/${figure.uuid}/baseFigure`));
 }
 
-
+//Walk the figures contigs clockwise and return the offset of the beginning of contig specified
+//by contiguuid from the start of the figure
 function getBaseBP(figure : CircularFigure,contiguuid : string) : number
 {
     let base = 0;
@@ -179,9 +184,16 @@ interface PositionsWithDepths
     depth : number;
     positions : Array<number>;
 }
-export function renderCoverageTracks(figure : CircularFigure,contiguuid : string,align : alignData,cb : (status : boolean,coverageTracks : string) => void) : void
+export function renderCoverageTracks(
+    figure : CircularFigure,
+    contiguuid : string,
+    align : alignData,
+    cb : (status : boolean,coverageTracks : string) => void
+    ,colour : string = "rgb(64,64,64)"
+) : void
 {
     let coverageTracks : string = "";
+    //Stream the distilled samtools depth data from the specified alignment for the specified contig
     let rl : readline.ReadLine = readline.createInterface(<readline.ReadLineOptions>{
         input : fs.createReadStream(`resources/app/rt/AlignmentArtifacts/${align.uuid}/contigCoverage/${contiguuid}`)
     });
@@ -189,6 +201,11 @@ export function renderCoverageTracks(figure : CircularFigure,contiguuid : string
     if(baseBP == -1)
         throw new Error("Could not get base position of "+figure.name+" for reference");
 
+    /*
+        Anular Plasmid tracks are declared in terms of y position. We want to group all positions with the same depth
+        together so we can create one track for each depth and then render every position with the same depth onto
+        the same track.
+    */
     let depths : Array<PositionsWithDepths> = new Array<PositionsWithDepths>();
     rl.on("line",function(line : string){
         let tokens = line.split(/\s/g);
@@ -212,13 +229,21 @@ export function renderCoverageTracks(figure : CircularFigure,contiguuid : string
         }
     });
     rl.on("close",function(){
+        //sort depths
         depths.sort(function(a : PositionsWithDepths,b : PositionsWithDepths){return a.depth - b.depth;});
 
+        /*
+            Instead of rendering one marker for every single position, we stretch a single marker to cover sequential positions which are all at the same
+            depth.
+        */
         for(let i = 0; i != depths.length; ++i)
         {
+            //sort positions within each depth position we're looking at
             depths[i].positions.sort(function(a : number,b : number){return a - b});
             let res = "";
-            res += `<plasmidtrack trackstyle="fill-opacity:0.0" width="10" radius="{{genome.radius+${100+i}}}" >`;
+            //render the start of the current track
+            res += `<plasmidtrack trackstyle="fill-opacity:0.0;fill:${colour}" width="10" radius="{{genome.radius+${100+depths[i].depth}}}" >`;
+            //try to find a group of sequential positions
             for(let k = 0; k != depths[i].positions.length; ++k)
             {
                 let offset = 1;
@@ -230,20 +255,49 @@ export function renderCoverageTracks(figure : CircularFigure,contiguuid : string
                         break;
                     offset++;
                 }
+                //in case we didn't find any sequential positions, this will render singles fine
                 k = k + (offset - 1);
-                res += `<trackmarker start="${baseBP+depths[i].positions[initial]}" end="${baseBP+depths[i].positions[initial]+offset}" markerstyle="fill:rgb(64,64,64);stroke-width:1px;" wadjust="-8"></trackmarker>`;
+                res += `<trackmarker start="${baseBP+depths[i].positions[initial]}" end="${baseBP+depths[i].positions[initial]+offset}" markerstyle="fill:${colour};stroke-width:1px;" wadjust="-8"></trackmarker>`;
             }
+            
             res += `</plasmidtrack>`;
             coverageTracks += res;
         }
+       /* 
+        let lowest = depths[0];
+        let res = "";
+            res += `
+            <plasmidtrack trackstyle="fill-opacity:0.0;fill:${colour}" width="10" radius="{{genome.radius+${100+lowest.depth}}}" >
+                <trackmarker start="${baseBP+lowest.positions[lowest.positions[lowest.positions.length - 1]]}" style="stroke:#c00;stroke-width:2px;" wadjust="12" vadjust="-6">
+                    <markerlabel text="${lowest.depth}" type="path" valign="outer" hadjust="-2" vadjust="38"></markerlabel>
+                </trackmarker>
+                </plasmidtrack>
+            `;
+        let highest = depths[depths.length - 1];
+        res += `
+            <plasmidtrack trackstyle="fill-opacity:0.0;fill:${colour}" width="10" radius="{{genome.radius+${100+highest.depth}}}" >
+                <trackmarker start="${baseBP+highest.positions[highest.positions.length - 1]}" style="stroke:#c00;stroke-width:2px;" wadjust="12" vadjust="-6">
+                    <markerlabel text="${highest.depth}" type="path" valign="outer" hadjust="-2" vadjust="38"></markerlabel>
+                </trackmarker>
+                </plasmidtrack>
+            `;
+        coverageTracks += res;
+        fs.writeFileSync("coverage",JSON.stringify(depths,undefined,4));
+        */
         cb(true,coverageTracks);
     });
 }
-export function cacheCoverageTracks(figure : CircularFigure,contiguuid : string,align : alignData,cb : (status : boolean,coverageTracks : string) => void) : void
+export function cacheCoverageTracks(
+    figure : CircularFigure,
+    contiguuid : string,
+    align : alignData,
+    cb : (status : boolean,coverageTracks : string) => void,
+    colour : string = "rgb(64,64,64)"
+) : void
 {
     try
     {
-        mkdirp.sync(`resources/app/rt/circularFigures/${figure.uuid}/coverage/${align.uuid}`);
+        mkdirp.sync(`resources/app/rt/circularFigures/${figure.uuid}/coverage/${align.uuid}/${contiguuid}`);
     }
     catch(err){}
     renderCoverageTracks(
@@ -251,19 +305,14 @@ export function cacheCoverageTracks(figure : CircularFigure,contiguuid : string,
         contiguuid,
         align,
         function(status,coverageTracks){
-            fs.writeFileSync(`resources/app/rt/circularFigures/${figure.uuid}/coverage/${align.uuid}/${contiguuid}`,coverageTracks);
             if(status == true)
             {
-                figure.renderedCoverageTracks.push(
-                    new RenderedCoverageTrackRecord(
-                        align.uuid,
-                        contiguuid,
-                        figure.uuid,
-                        `resources/app/rt/circularFigures/${figure.uuid}/coverage/${align.uuid}/${contiguuid}`
-                    )
-                );
+                let trackRecord = new RenderedCoverageTrackRecord(align.uuid,contiguuid,figure.uuid,colour,"");
+                trackRecord.path = `resources/app/rt/circularFigures/${figure.uuid}/coverage/${align.uuid}/${contiguuid}/${trackRecord.uuid}`;
+                fs.writeFileSync(trackRecord.path,coverageTracks);
+                figure.renderedCoverageTracks.push(trackRecord);
             }
             cb(status,coverageTracks);
-    });
+    },colour);
 }
  

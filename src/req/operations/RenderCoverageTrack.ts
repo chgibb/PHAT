@@ -12,6 +12,7 @@ export class RenderCoverageTrackForContig extends atomic.AtomicOperation
     public alignData : alignData;
     public contiguuid : string;
     public circularFigure : cf.CircularFigure;
+    public colour : string;
 
     public renderCoverageTrackProcess : cp.ChildProcess;
     constructor()
@@ -21,12 +22,14 @@ export class RenderCoverageTrackForContig extends atomic.AtomicOperation
     public setData(data : {
         circularFigure : cf.CircularFigure,
         contiguuid : string,
-        alignData : alignData
+        alignData : alignData,
+        colour : string
     }) : void
     {
         this.circularFigure = data.circularFigure;
         this.contiguuid = data.contiguuid;
         this.alignData = data.alignData;
+        this.colour = data.colour;
     }
     public run() : void
     {
@@ -53,6 +56,7 @@ export class RenderCoverageTrackForContig extends atomic.AtomicOperation
                         self.circularFigure = ev.data.circularFigure;
                         self.contiguuid = ev.data.contiguuid;
                         self.alignData = ev.data.alignData;
+                        self.colour = ev.data.colour;
                     }
                     self.update();
                 }
@@ -66,7 +70,8 @@ export class RenderCoverageTrackForContig extends atomic.AtomicOperation
                         data : {
                             alignData : self.alignData,
                             contiguuid : self.contiguuid,
-                            circularFigure : self.circularFigure
+                            circularFigure : self.circularFigure,
+                            colour : self.colour
                         }
                     }
                 );

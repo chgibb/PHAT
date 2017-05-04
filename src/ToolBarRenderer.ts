@@ -55,7 +55,7 @@ $
                         {
                             if(ops[i].flags.done)
                             {
-                                let notification : Notification = new Notification("Success",<NotificationOptions>{
+                                let notification : Notification = new Notification(ops[i].flags.success ? "Success" : "Failure",<NotificationOptions>{
                                     body : `
                                         ${(()=>{
                                             if(ops[i].flags.success)
@@ -68,36 +68,12 @@ $
                                             {
                                                 return `
                                                     ${ops[i].name} has failed
+                                                    ${JSON.stringify(ops[i].extraData)}
                                                 `;
                                             }
                                         })()}
                                     `
                                 });
-                                //alert(`${ops[i].name} succeeded`);
-                                /*let toast = {
-                                    title : ops[i].flags.success ? "Success" : "Failure",
-                                    message : `
-                                        ${(()=>{
-                                            if(ops[i].flags.success)
-                                            {
-                                                return `
-                                                    <h2>${ops[i].name} has completed successfully</h2>
-                                                `;
-                                            }
-                                            else
-                                            {
-                                                return `
-                                                    <h2>${ops[i].name} has failed</h2>
-                                                `;
-                                            }
-                                        })()}
-                                    `,
-                                    detail : "",
-                                    width : 440,
-                                    timeout : 5000,
-                                    focus : true
-                                };
-                                ipc.send("electron-toaster-message",toast);*/
                             }
                         }
                     }

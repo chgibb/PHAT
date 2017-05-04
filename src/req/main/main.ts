@@ -411,7 +411,8 @@ ipc.on(
 					{
 						circularFigure : circularFigure,
 						contiguuid : arg.uuid,
-						alignData : alignData
+						alignData : alignData,
+						colour : arg.colour
 					}
 				);
 			}
@@ -493,7 +494,7 @@ atomicOp.updates.on(
 			{
 				if(circularFigures[i].uuid == op.circularFigure.uuid)
 				{
-					circularFigures[i].renderedCoverageTracks = op.circularFigure.renderedCoverageTracks;
+					circularFigures[i].renderedCoverageTracks.push(op.circularFigure.renderedCoverageTracks[op.circularFigure.renderedCoverageTracks.length - 1]);
 					dataMgr.setKey("circularGenomeBuilder","circularFigures",circularFigures);
 					dataMgr.publishChangeForKey("circularGenomeBuilder","circularFigures");
 					break;
