@@ -14,6 +14,7 @@ import {AtomicOperationIPC} from "./../../atomicOperationsIPC";
 import * as viewMgr from "./../viewMgr";
 import * as masterView from "./masterView";
 import {ContigEditor} from "./contigEditor";
+import {ContigCreator} from "./contigCreator";
 import alignData from "./../../alignData";
 import * as cf from "./../circularFigure";
 import * as plasmid from "./../circularGenome/plasmid";
@@ -38,6 +39,13 @@ export class GenomeView extends viewMgr.View
     }
     public onMount() : void{}
     public onUnMount() : void{}
+    public showContigCreator() : void
+    {
+        let masterView = <masterView.View>viewMgr.getViewByName("masterView");
+        let contigCreator = <ContigCreator>viewMgr.getViewByName("contigCreator",masterView.views);
+        contigCreator.show();
+        viewMgr.render();
+    }
     public exportSVG()
     {
         let self = this;
@@ -148,6 +156,7 @@ export class GenomeView extends viewMgr.View
             let $div = $(
                 `
                 <div id="controls">
+                    <button style="float:right;" ng-click="showContigCreator()">Add Contig</button>
                     <button style="float:right;" ng-click="exportSVG()">Export as SVG</button>
                     <input type="number" ng-model="genome.radius" ng-change="inputRadiusOnChange()" min="0" max="1000" required>
                      <label>Show BP Positions:
@@ -205,6 +214,7 @@ export class GenomeView extends viewMgr.View
                     scope.inputRadiusOnChange = self.inputRadiusOnChange;
                     scope.showBPTrackOnChange = self.showBPTrackOnChange;
                     scope.exportSVG = self.exportSVG;
+                    scope.showContigCreator = self.showContigCreator;
                     scope.postRender = self.postRender;
                     scope.firstRender = self.firstRender;
                     scope.div = self.div;

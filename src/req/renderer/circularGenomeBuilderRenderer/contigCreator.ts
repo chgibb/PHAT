@@ -35,7 +35,18 @@ export class ContigCreator extends viewMgr.View
     {
         try
         {
-            return " ";
+            return `
+                <div class="modalContent">
+                    <div class="modalHeader">
+                        <span id="closeCreator" class="modalCloseButton">&times;</span>
+                        <h2 id="contigAlias" style="display:inline-block;">${"a"}</h2>
+                    </div>
+                    <div class="modalBody">
+                    </div>
+                    <div class="modalFooter">
+                    </div>
+                </div>
+            `;
         }
         catch(err)
         {
@@ -46,10 +57,13 @@ export class ContigCreator extends viewMgr.View
     public dataChanged() : void{}
     public divClickEvents(event : JQueryEventObject) : void
     {
-        
+        if(event.target.id == "closeCreator")
+        {
+            this.hide();
+        }
     }
 }
 export function addView(arr : Array<viewMgr.View>,div : string)
 {
-    arr.push(new ContigCreator("contigEditor",div));
+    arr.push(new ContigCreator("contigCreator",div));
 }
