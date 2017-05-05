@@ -11,6 +11,8 @@ import {Fasta} from "./../../fasta";
 
 import * as GenomeView from "./genomeView";
 import * as RightPanel from "./rightPanel";
+import * as contigEditor from "./contigEditor";
+import * as contigCreator from "./contigCreator";
 export function addView(arr : Array<viewMgr.View>,div : string)
 {
     arr.push(new View(div));
@@ -37,6 +39,8 @@ export class View extends viewMgr.View
     {
         GenomeView.addView(this.views,"genomeView");
         RightPanel.addView(this.views,"rightSlideOutPanel");
+        contigEditor.addView(this.views,"contigEditor");
+        contigCreator.addView(this.views,"contigCreator");
         for(let i = 0; i != this.views.length; ++i)
         {
             this.views[i].onMount();
@@ -97,6 +101,10 @@ export class View extends viewMgr.View
                             return res;
                         }
                     )()}
+                    </div>
+                    <div id="contigEditor" class="modal">
+                    </div>
+                    <div id="contigCreator" class="modal">
                     </div>
                 `;
             }

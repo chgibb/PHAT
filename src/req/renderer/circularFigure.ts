@@ -13,6 +13,20 @@ import alignData from "./../alignData";
 export class Contig extends fastaContigLoader.Contig
 {
     public color? : string = "";
+    public opacity? : number = 1.0;
+    public fontSize? : string = "";
+    public fontWeight? : string = "";
+    public fontFill? : string = "";
+    public allowPositionChange? : boolean = false;
+    public start? : number;
+    public end? : number;
+}
+export function initContigForDisplay(contig : Contig,allowPositionChange = false) : void
+{
+    contig.color = getRandColor(1);
+    contig.opacity = 1.0;
+    contig.fontFill = "rgb(0,0,0)";
+    contig.allowPositionChange = allowPositionChange;
 }
 //adapted from answer by letronje and edited by Peter Mortensen
 //http://stackoverflow.com/questions/1484506/random-color-generator-in-javascript
@@ -67,6 +81,7 @@ export class CircularFigure
     public uuidFasta : string;
     public name : string;
     public contigs : Array<Contig>;
+    public customContigs : Array<Contig>;
     public radius : number;
     public height : number;
     public width : number;
@@ -85,7 +100,7 @@ export class CircularFigure
         this.renderedCoverageTracks = new Array<RenderedCoverageTrackRecord>();
         for(let i = 0; i != this.contigs.length; ++i)
         {
-            this.contigs[i].color = getRandColor(1);
+            initContigForDisplay(this.contigs[i]);
         }
         //Add filler contig at the end of the reference so the figure displays correctly
         if(this.contigs.length == 1)
@@ -96,8 +111,36 @@ export class CircularFigure
             this.contigs[1].bp = 1;
             this.contigs[1].loaded = true;
         }
+        this.customContigs = new Array<Contig>();
         cacheBaseFigure(this);
     }
+}
+export function renderContig(contig : Contig,start : number = -1,end : number = -1) : string
+{
+    if(start == -1)
+        start = contig.start;
+    if(end == -1)
+        end = contig.end;
+    let res = "";
+    res += `
+        ${trackMarker.add(
+        {
+            start : start.toString(),
+            end : end.toString(),
+            markerStyle : `fill:${contig.color};opacity:${contig.opacity};`,
+            uuid : contig.uuid,
+            onClick : "markerOnClick"
+        })}
+            ${markerLabel.add(
+            {
+                type : "path",
+                text : contig.alias,
+                labelStyle : `fill:${contig.fontFill};opacity:${contig.opacity};`
+            })}
+            ${markerLabel.end()}
+        ${trackMarker.end()}
+    `;
+    return res;
 }
 export function renderBaseFigure(figure : CircularFigure) : string
 {
@@ -119,25 +162,13 @@ export function renderBaseFigure(figure : CircularFigure) : string
                 let res = "";
                 let lastLocation = 0;
                 for(let i = 0; i != figure.contigs.length; ++i)
-                { 
-                    res += `
-                        ${trackMarker.add(
-                        {
-                            start : lastLocation.toString(),
-                            end : (lastLocation + figure.contigs[i].bp).toString(),
-                            markerStyle : `fill:${figure.contigs[i].color}`,
-                            uuid : figure.contigs[i].uuid,
-                            onClick : "markerOnClick"
-                        })}
-                            ${markerLabel.add(
-                            {
-                                type : "path",
-                                text : figure.contigs[i].alias
-                            })}
-                            ${markerLabel.end()}
-                        ${trackMarker.end()}
-                    `;
+                {
+                    res += renderContig(figure.contigs[i],lastLocation,lastLocation+figure.contigs[i].bp);
                     lastLocation = lastLocation + figure.contigs[i].bp;
+                }
+                for(let i = 0; i != figure.customContigs.length; ++i)
+                {
+                    res += renderContig(figure.customContigs[i],figure.customContigs[i].start,figure.customContigs[i].end);
                 }
                 return res; 
             })()}

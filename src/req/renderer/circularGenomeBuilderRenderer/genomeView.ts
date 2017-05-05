@@ -1,4 +1,4 @@
-//// <reference path="jquery.d.ts" />
+/// <reference types="jquery" />
 /// <reference path="./../angularStub.d.ts" />
 import * as fs from "fs";
 import * as util from "util";
@@ -13,14 +13,10 @@ const dialogs = Dialogs();
 import {AtomicOperationIPC} from "./../../atomicOperationsIPC";
 import * as viewMgr from "./../viewMgr";
 import * as masterView from "./masterView";
+import {ContigEditor} from "./contigEditor";
+import {ContigCreator} from "./contigCreator";
 import alignData from "./../../alignData";
-import {
-    CircularFigure,
-    renderBaseFigure,
-    getBaseFigureFromCache,
-    cacheBaseFigure,
-    renderCoverageTracks
-} from "./../circularFigure";
+import * as cf from "./../circularFigure";
 import * as plasmid from "./../circularGenome/plasmid";
 import * as plasmidTrack from "./../circularGenome/plasmidTrack";
 import * as trackLabel from "./../circularGenome/trackLabel";
@@ -33,7 +29,7 @@ require("angularplasmid");
 let app : any = angular.module('myApp',['angularplasmid']);
 export class GenomeView extends viewMgr.View
 {
-    public genome : CircularFigure;
+    public genome : cf.CircularFigure;
     public firstRender : boolean;
     public alignData : Array<alignData>;
     public constructor(name : string,div : string)
@@ -43,13 +39,24 @@ export class GenomeView extends viewMgr.View
     }
     public onMount() : void{}
     public onUnMount() : void{}
+    public showContigCreator() : void
+    {
+        let masterView = <masterView.View>viewMgr.getViewByName("masterView");
+        let contigCreator = <ContigCreator>viewMgr.getViewByName("contigCreator",masterView.views);
+        contigCreator.show();
+        viewMgr.render();
+    }
     public exportSVG()
     {
         let self = this;
         dialog.showSaveDialog(
             <Electron.SaveDialogOptions>{
                 title : "Save figure as SVG",
-                filters : <{name:string,extensions:string[]}[]>[
+                filters : <{
+                    name : string,
+                    extensions : string[]
+                }[]>
+                [
                     {
                         name : "Scalable Vector Graphic",
                         extensions : <string[]>[
@@ -68,7 +75,11 @@ export class GenomeView extends viewMgr.View
     }
     public markerOnClick($event : any,$marker : any,uuid : string) : void
     {
-
+        let masterView = <masterView.View>viewMgr.getViewByName("masterView");
+        let contigEditor = <ContigEditor>viewMgr.getViewByName("contigEditor",masterView.views);
+        contigEditor.contiguuid = uuid;
+        contigEditor.show();
+        viewMgr.render();
     }
     public figureNameOnClick() : void
     {
@@ -78,7 +89,7 @@ export class GenomeView extends viewMgr.View
             {
                 self.genome.name = text;
                 //Overwrite old template cache for figure
-                cacheBaseFigure(self.genome);
+                cf.cacheBaseFigure(self.genome);
                 let masterView = <masterView.View>viewMgr.getViewByName("masterView");
                 let genomeView = <GenomeView>viewMgr.getViewByName("genomeView",masterView.views);
                 //Ensure updated cache gets used to render figure
@@ -145,6 +156,7 @@ export class GenomeView extends viewMgr.View
             let $div = $(
                 `
                 <div id="controls">
+                    <button style="float:right;" ng-click="showContigCreator()">Add Contig</button>
                     <button style="float:right;" ng-click="exportSVG()">Export as SVG</button>
                     <input type="number" ng-model="genome.radius" ng-change="inputRadiusOnChange()" min="0" max="1000" required>
                      <label>Show BP Positions:
@@ -171,7 +183,7 @@ export class GenomeView extends viewMgr.View
                         plasmidHeight : "{{genome.height}}",
                         plasmidWidth : "{{genome.width}}"
                     })}
-                        ${getBaseFigureFromCache(this.genome)}
+                        ${cf.getBaseFigureFromCache(this.genome)}
                         ${(()=>{
                             let res = "";
                             for(let i = 0; i != self.genome.renderedCoverageTracks.length; ++i)
@@ -202,6 +214,7 @@ export class GenomeView extends viewMgr.View
                     scope.inputRadiusOnChange = self.inputRadiusOnChange;
                     scope.showBPTrackOnChange = self.showBPTrackOnChange;
                     scope.exportSVG = self.exportSVG;
+                    scope.showContigCreator = self.showContigCreator;
                     scope.postRender = self.postRender;
                     scope.firstRender = self.firstRender;
                     scope.div = self.div;
