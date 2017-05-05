@@ -24,6 +24,15 @@ export class ContigEditor extends viewMgr.View
     }
     public onMount() : void{}
     public onUnMount() : void{}
+    public forceReRender()
+    {
+        cf.cacheBaseFigure(this.genome);
+        let masterView = <masterView.View>viewMgr.getViewByName("masterView");
+        let genomeView = <GenomeView>viewMgr.getViewByName("genomeView",masterView.views);
+        genomeView.firstRender = true;
+        masterView.dataChanged();
+        viewMgr.render();
+    }
     public show() : void
     {
         this.mount();
@@ -31,6 +40,12 @@ export class ContigEditor extends viewMgr.View
     }
     public hide() : void
     {
+        let colour : string = (<string>(<any>$(document.getElementById("colourPicker"))).minicolors("rgbString"));
+        if(colour != this.contig.color)
+        {
+            this.contig.color = colour;
+            this.forceReRender();
+        }
         this.unMount();
         document.getElementById(this.div).style.display = "none";
     }
@@ -62,11 +77,13 @@ export class ContigEditor extends viewMgr.View
                                     <h5>${this.contig.name}</h5>
                             </div>
                             <div class="modalBody">
-                                <p>Some text in the Modal Body</p>
-                                <p>Some other text...</p>
+                                <input type="text" id="colourPicker" data-format="rgb" value="${this.contig.color}">
+                                <br />
+                                <br />
+                                <br />
+                                <br />
                             </div>
                             <div class="modalFooter">
-                                <h3>Modal Footer</h3>
                             </div>
                         </div>
                     `;
@@ -81,7 +98,20 @@ export class ContigEditor extends viewMgr.View
             return undefined;
         }
     }
-    public postRender() : void{}
+    public postRender() : void
+    {
+        let colourPicker = document.getElementById("colourPicker");
+        $(colourPicker).minicolors({
+            control : "hue",
+            defaultValue : "",
+            format : "rgb",
+            keywords : "",
+            inline : false,
+            swatches : [],
+            theme : "default",
+            change : function(hex : string,opacity : string){}
+        });
+    }
     public dataChanged() : void{}
     public divClickEvents(event : JQueryEventObject) : void
     {
@@ -92,12 +122,8 @@ export class ContigEditor extends viewMgr.View
                 if(text)
                 {
                     self.contig.alias = text;
-                    cf.cacheBaseFigure(self.genome);
-                    let masterView = <masterView.View>viewMgr.getViewByName("masterView");
-                    let genomeView = <GenomeView>viewMgr.getViewByName("genomeView",masterView.views);
-                    genomeView.firstRender = true;
-                    masterView.dataChanged();
-                    viewMgr.render();
+                    self.forceReRender();
+                    
                 }
             });
         }
