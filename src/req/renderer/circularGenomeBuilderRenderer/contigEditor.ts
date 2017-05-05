@@ -12,7 +12,6 @@ import * as masterView from "./masterView";
 export class ContigEditor extends viewMgr.View
 {
     public genome : cf.CircularFigure;
-    public firstRender : boolean = true;
     public constructor(name : string,div : string)
     {
         super(name,div);
