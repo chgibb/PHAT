@@ -164,8 +164,11 @@ export function renderBaseFigure(figure : CircularFigure) : string
                 for(let i = 0; i != figure.contigs.length; ++i)
                 {
                     res += renderContig(figure.contigs[i],lastLocation,lastLocation+figure.contigs[i].bp);
-                    
                     lastLocation = lastLocation + figure.contigs[i].bp;
+                }
+                for(let i = 0; i != figure.customContigs.length; ++i)
+                {
+                    res += renderContig(figure.customContigs[i],figure.customContigs[i].start,figure.customContigs[i].end);
                 }
                 return res; 
             })()}
