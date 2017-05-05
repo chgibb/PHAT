@@ -84,6 +84,14 @@ export class ContigEditor extends viewMgr.View
                             break;
                         }
                     }
+                    for(let i = 0; i != this.genome.customContigs.length; ++i)
+                    {
+                        if(this.genome.customContigs[i].uuid == this.contiguuid)
+                        {
+                            this.contig = this.genome.customContigs[i];
+                            break;
+                        }
+                    }
 
                     return `
                         <div class="modalContent">
