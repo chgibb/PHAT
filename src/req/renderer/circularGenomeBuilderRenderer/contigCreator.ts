@@ -54,6 +54,8 @@ export class ContigCreator extends viewMgr.View
             cf.initContigForDisplay(contig,true);
             contig.start = this.contigStart;
             contig.end = this.contigEnd;
+            contig.alias = "New Contig";
+            contig.name = "Custom Annotation";  
             this.genome.customContigs.push(contig);
             this.forceReRender();
             console.log("rerendered");
