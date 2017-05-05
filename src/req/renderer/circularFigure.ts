@@ -15,7 +15,7 @@ export class Contig extends fastaContigLoader.Contig
     public color? : string = "";
     public fontSize? : string = "";
     public fontWeight? : string = "";
-    public fontFill? : string = "rgb(0,0,0)"
+    public fontFill? : string = "";
 }
 //adapted from answer by letronje and edited by Peter Mortensen
 //http://stackoverflow.com/questions/1484506/random-color-generator-in-javascript
@@ -89,6 +89,7 @@ export class CircularFigure
         for(let i = 0; i != this.contigs.length; ++i)
         {
             this.contigs[i].color = getRandColor(1);
+            this.contigs[i].fontFill = "rgb(0,0,0)";
         }
         //Add filler contig at the end of the reference so the figure displays correctly
         if(this.contigs.length == 1)
