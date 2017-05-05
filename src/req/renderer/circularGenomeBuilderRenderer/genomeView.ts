@@ -69,6 +69,7 @@ export class GenomeView extends viewMgr.View
     {
         let masterView = <masterView.View>viewMgr.getViewByName("masterView");
         let contigEditor = <ContigEditor>viewMgr.getViewByName("contigEditor",masterView.views);
+        contigEditor.contiguuid = uuid;
         contigEditor.show();
         viewMgr.render();
     }
