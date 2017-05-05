@@ -18,7 +18,10 @@ export class ContigEditor extends viewMgr.View
     }
     public onMount() : void{}
     public onUnMount() : void{}
-    public renderView() : string{}
+    public renderView() : string
+    {
+        return '';
+    }
     public postRender() : void{}
     public dataChanged() : void{}
     public divClickEvents(event : JQueryEventObject) : void{}
