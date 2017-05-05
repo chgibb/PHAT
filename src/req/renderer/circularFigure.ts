@@ -13,6 +13,7 @@ import alignData from "./../alignData";
 export class Contig extends fastaContigLoader.Contig
 {
     public color? : string = "";
+    public opacity? : number = 1.0;
     public fontSize? : string = "";
     public fontWeight? : string = "";
     public fontFill? : string = "";
@@ -89,6 +90,7 @@ export class CircularFigure
         for(let i = 0; i != this.contigs.length; ++i)
         {
             this.contigs[i].color = getRandColor(1);
+            this.contigs[i].opacity = 1.0;
             this.contigs[i].fontFill = "rgb(0,0,0)";
         }
         //Add filler contig at the end of the reference so the figure displays correctly
@@ -129,7 +131,7 @@ export function renderBaseFigure(figure : CircularFigure) : string
                         {
                             start : lastLocation.toString(),
                             end : (lastLocation + figure.contigs[i].bp).toString(),
-                            markerStyle : `fill:${figure.contigs[i].color}`,
+                            markerStyle : `fill:${figure.contigs[i].color};opacity:${figure.contigs[i].opacity};`,
                             uuid : figure.contigs[i].uuid,
                             onClick : "markerOnClick"
                         })}
@@ -137,7 +139,7 @@ export function renderBaseFigure(figure : CircularFigure) : string
                             {
                                 type : "path",
                                 text : figure.contigs[i].alias,
-                                labelStyle : `fill:${figure.contigs[i].fontFill};`
+                                labelStyle : `fill:${figure.contigs[i].fontFill};opacity:${figure.contigs[i].opacity};`
                             })}
                             ${markerLabel.end()}
                         ${trackMarker.end()}
