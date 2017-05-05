@@ -21,10 +21,12 @@ export class ContigEditor extends viewMgr.View
     public onUnMount() : void{}
     public show() : void
     {
+        this.mount();
         document.getElementById(this.div).style.display = "block";
     }
     public hide() : void
     {
+        this.unMount();
         document.getElementById(this.div).style.display = "none";
     }
     public renderView() : string | undefined
@@ -33,8 +35,6 @@ export class ContigEditor extends viewMgr.View
         {
             if(document.getElementById(this.div).style.display == "block")
             {
-                if(this.firstRender)
-                    this.mount();
                 return `
                     <div class="modalContent">
                         <div class="modalHeader">
