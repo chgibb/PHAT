@@ -19,6 +19,13 @@ export class Contig extends fastaContigLoader.Contig
     public fontFill? : string = "";
     public allowPositionChange? : boolean = false;
 }
+export function initContigForDisplay(contig : Contig,allowPositionChange = false) : void
+{
+    contig.color = getRandColor(1);
+    contig.opacity = 1.0;
+    contig.fontFill = "rgb(0,0,0)";
+    contig.allowPositionChange = allowPositionChange;
+}
 //adapted from answer by letronje and edited by Peter Mortensen
 //http://stackoverflow.com/questions/1484506/random-color-generator-in-javascript
 function getRandColor(brightness : number)
@@ -90,10 +97,7 @@ export class CircularFigure
         this.renderedCoverageTracks = new Array<RenderedCoverageTrackRecord>();
         for(let i = 0; i != this.contigs.length; ++i)
         {
-            this.contigs[i].color = getRandColor(1);
-            this.contigs[i].opacity = 1.0;
-            this.contigs[i].fontFill = "rgb(0,0,0)";
-            this.contigs[i].allowPositionChange = false;
+            initContigForDisplay(this.contigs[i]);
         }
         //Add filler contig at the end of the reference so the figure displays correctly
         if(this.contigs.length == 1)
