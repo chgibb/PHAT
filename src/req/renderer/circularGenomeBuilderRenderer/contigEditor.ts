@@ -18,6 +18,14 @@ export class ContigEditor extends viewMgr.View
     }
     public onMount() : void{}
     public onUnMount() : void{}
+    public show() : void
+    {
+        document.getElementById(this.div).style.display = "block";
+    }
+    public hide() : void
+    {
+        document.getElementById(this.div).style.display = "none";
+    }
     public renderView() : string
     {
         return '';
