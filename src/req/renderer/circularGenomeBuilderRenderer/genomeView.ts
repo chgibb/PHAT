@@ -1,4 +1,4 @@
-//// <reference path="jquery.d.ts" />
+/// <reference types="jquery" />
 /// <reference path="./../angularStub.d.ts" />
 import * as fs from "fs";
 import * as util from "util";
