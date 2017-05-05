@@ -30,6 +30,7 @@ export class ContigEditor extends viewMgr.View
         let masterView = <masterView.View>viewMgr.getViewByName("masterView");
         let genomeView = <GenomeView>viewMgr.getViewByName("genomeView",masterView.views);
         genomeView.firstRender = true;
+        masterView.firstRender = true;
         masterView.dataChanged();
         viewMgr.render();
     }
@@ -42,6 +43,7 @@ export class ContigEditor extends viewMgr.View
     {
         let colour : string = (<string>(<any>$(document.getElementById("fillColourPicker"))).minicolors("rgbString"));
         let fontColour : string = (<string>(<any>$(document.getElementById("fontColourPicker"))).minicolors("rgbString"));
+        let toggleVisibility = (<HTMLInputElement>document.getElementById("toggleVisibility"));
         let shouldReRender = false;
         if(colour != this.contig.color)
         {
@@ -53,6 +55,11 @@ export class ContigEditor extends viewMgr.View
             this.contig.fontFill = fontColour;
             shouldReRender = true;
         }
+        if(toggleVisibility.checked == true && this.contig.opacity == 0)
+            shouldReRender = true;
+        if(toggleVisibility.checked == false && this.contig.opacity == 1)
+            shouldReRender = true;
+        this.contig.opacity = toggleVisibility.checked ? 1 : 0;
         document.getElementById(this.div).style.display = "none";
         if(shouldReRender)
             this.forceReRender();
@@ -84,6 +91,8 @@ export class ContigEditor extends viewMgr.View
                                 <span id="closeEditor" class="modalCloseButton">&times;</span>
                                     <h2 id="contigAlias" style="display:inline-block;">${this.contig.alias}</h2>
                                     <input type="text" id="fontColourPicker" data-format="rgb" style="display:inline-block;" value="${this.contig.fontFill}">
+                                    <input type="checkbox" id="toggleVisibility" style="display:inline-block;"/>
+                                    <p style="display:inline-block;">Visible</p>
                                     <h5>${this.contig.name}</h5>
                             </div>
                             <div class="modalBody">
@@ -118,28 +127,37 @@ export class ContigEditor extends viewMgr.View
     }
     public postRender() : void
     {
-        let colourPicker = document.getElementById("fillColourPicker");
-        $(colourPicker).minicolors({
-            control : "hue",
-            defaultValue : "",
-            format : "rgb",
-            keywords : "",
-            inline : false,
-            swatches : [],
-            theme : "default",
-            change : function(hex : string,opacity : string){}
-        });
-        let fontColourPicker = document.getElementById("fontColourPicker");
-        $(fontColourPicker).minicolors({
-            control : "hue",
-            defaultValue : "",
-            format : "rgb",
-            keywords : "",
-            inline : false,
-            swatches : [],
-            theme : "default",
-            change : function(hex : string,opacity : string){}
-        });
+        try
+        {
+            let colourPicker = document.getElementById("fillColourPicker");
+            $(colourPicker).minicolors({
+                control : "hue",
+                defaultValue : "",
+                format : "rgb",
+                keywords : "",
+                inline : false,
+                swatches : [],
+                theme : "default",
+                change : function(hex : string,opacity : string){}
+            });
+            let fontColourPicker = document.getElementById("fontColourPicker");
+            $(fontColourPicker).minicolors({
+                control : "hue",
+                defaultValue : "",
+                format : "rgb",
+                keywords : "",
+                inline : false,
+                swatches : [],
+                theme : "default",
+                change : function(hex : string,opacity : string){}
+            });
+            let toggleVisibility = (<HTMLInputElement>document.getElementById("toggleVisibility"));
+            if(this.contig.opacity == 0)
+                toggleVisibility.checked = false;
+            if(this.contig.opacity == 1)
+                toggleVisibility.checked = true;
+        }
+        catch(err){}
     }
     public dataChanged() : void{}
     public divClickEvents(event : JQueryEventObject) : void
