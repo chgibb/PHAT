@@ -40,7 +40,7 @@ export class ContigEditor extends viewMgr.View
     }
     public hide() : void
     {
-        let colour : string = (<string>(<any>$(document.getElementById("colourPicker"))).minicolors("rgbString"));
+        let colour : string = (<string>(<any>$(document.getElementById("fillColourPicker"))).minicolors("rgbString"));
         if(colour != this.contig.color)
         {
             this.contig.color = colour;
@@ -77,7 +77,15 @@ export class ContigEditor extends viewMgr.View
                                     <h5>${this.contig.name}</h5>
                             </div>
                             <div class="modalBody">
-                                <input type="text" id="colourPicker" data-format="rgb" value="${this.contig.color}">
+                                <input type="text" id="fillColourPicker" data-format="rgb" value="${this.contig.color}">
+                                <br />
+                                <br />
+                                <br />
+                                <br />
+                                <br />
+                                <br />
+                                <br />
+                                <br />
                                 <br />
                                 <br />
                                 <br />
@@ -100,7 +108,7 @@ export class ContigEditor extends viewMgr.View
     }
     public postRender() : void
     {
-        let colourPicker = document.getElementById("colourPicker");
+        let colourPicker = document.getElementById("fillColourPicker");
         $(colourPicker).minicolors({
             control : "hue",
             defaultValue : "",
