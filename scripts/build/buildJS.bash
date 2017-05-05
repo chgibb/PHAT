@@ -26,6 +26,9 @@ do
 	printf "\n"
 	destination=$(echo $f | awk '{gsub("src/","dist/");print}')
 	./node_modules/.bin/browserify $f --node --debug -o $destination --ignore-missing
+	if [ $? != 0 ]; then
+		exit 1
+	fi
 done
 
 cp scripts/opt/bootStrapCodeCache.js dist
