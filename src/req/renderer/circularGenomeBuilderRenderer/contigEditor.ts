@@ -12,6 +12,7 @@ import * as masterView from "./masterView";
 export class ContigEditor extends viewMgr.View
 {
     public genome : cf.CircularFigure;
+    public firstRender : boolean = true;
     public constructor(name : string,div : string)
     {
         super(name,div);
@@ -32,10 +33,12 @@ export class ContigEditor extends viewMgr.View
         {
             if(document.getElementById(this.div).style.display == "block")
             {
+                if(this.firstRender)
+                    this.mount();
                 return `
                     <div class="modalContent">
                         <div class="modalHeader">
-                            <span class="modalCloseButton">&times;</span>
+                            <span id="closeEditor" class="modalCloseButton">&times;</span>
                                 <h2>Modal Header</h2>
                         </div>
                         <div class="modalBody">
@@ -58,7 +61,13 @@ export class ContigEditor extends viewMgr.View
     }
     public postRender() : void{}
     public dataChanged() : void{}
-    public divClickEvents(event : JQueryEventObject) : void{}
+    public divClickEvents(event : JQueryEventObject) : void
+    {
+        if(event.target.id == "closeEditor")
+        {
+            this.hide();
+        }
+    }
 }
 export function addView(arr : Array<viewMgr.View>,div : string)
 {
