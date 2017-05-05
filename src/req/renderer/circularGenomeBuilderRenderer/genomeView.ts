@@ -49,7 +49,11 @@ export class GenomeView extends viewMgr.View
         dialog.showSaveDialog(
             <Electron.SaveDialogOptions>{
                 title : "Save figure as SVG",
-                filters : <{name:string,extensions:string[]}[]>[
+                filters : <{
+                    name : string,
+                    extensions : string[]
+                }[]>
+                [
                     {
                         name : "Scalable Vector Graphic",
                         extensions : <string[]>[
