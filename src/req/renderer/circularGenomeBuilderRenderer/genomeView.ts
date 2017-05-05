@@ -14,13 +14,7 @@ import {AtomicOperationIPC} from "./../../atomicOperationsIPC";
 import * as viewMgr from "./../viewMgr";
 import * as masterView from "./masterView";
 import alignData from "./../../alignData";
-import {
-    CircularFigure,
-    renderBaseFigure,
-    getBaseFigureFromCache,
-    cacheBaseFigure,
-    renderCoverageTracks
-} from "./../circularFigure";
+import * as cf from "./../circularFigure";
 import * as plasmid from "./../circularGenome/plasmid";
 import * as plasmidTrack from "./../circularGenome/plasmidTrack";
 import * as trackLabel from "./../circularGenome/trackLabel";
@@ -33,7 +27,7 @@ require("angularplasmid");
 let app : any = angular.module('myApp',['angularplasmid']);
 export class GenomeView extends viewMgr.View
 {
-    public genome : CircularFigure;
+    public genome : cf.CircularFigure;
     public firstRender : boolean;
     public alignData : Array<alignData>;
     public constructor(name : string,div : string)
@@ -82,7 +76,7 @@ export class GenomeView extends viewMgr.View
             {
                 self.genome.name = text;
                 //Overwrite old template cache for figure
-                cacheBaseFigure(self.genome);
+                cf.cacheBaseFigure(self.genome);
                 let masterView = <masterView.View>viewMgr.getViewByName("masterView");
                 let genomeView = <GenomeView>viewMgr.getViewByName("genomeView",masterView.views);
                 //Ensure updated cache gets used to render figure
@@ -175,7 +169,7 @@ export class GenomeView extends viewMgr.View
                         plasmidHeight : "{{genome.height}}",
                         plasmidWidth : "{{genome.width}}"
                     })}
-                        ${getBaseFigureFromCache(this.genome)}
+                        ${cf.getBaseFigureFromCache(this.genome)}
                         ${(()=>{
                             let res = "";
                             for(let i = 0; i != self.genome.renderedCoverageTracks.length; ++i)
