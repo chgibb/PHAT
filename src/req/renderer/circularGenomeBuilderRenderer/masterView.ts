@@ -100,6 +100,8 @@ export class View extends viewMgr.View
                         }
                     )()}
                     </div>
+                    <div id="contigEditor" class="modal">
+                    </div>
                 `;
             }
             for(let i = 0; i != this.views.length; ++i)

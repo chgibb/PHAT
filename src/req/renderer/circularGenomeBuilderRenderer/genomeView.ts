@@ -13,6 +13,7 @@ const dialogs = Dialogs();
 import {AtomicOperationIPC} from "./../../atomicOperationsIPC";
 import * as viewMgr from "./../viewMgr";
 import * as masterView from "./masterView";
+import {ContigEditor} from "./contigEditor";
 import alignData from "./../../alignData";
 import * as cf from "./../circularFigure";
 import * as plasmid from "./../circularGenome/plasmid";
@@ -66,7 +67,9 @@ export class GenomeView extends viewMgr.View
     }
     public markerOnClick($event : any,$marker : any,uuid : string) : void
     {
-
+        let masterView = <masterView.View>viewMgr.getViewByName("masterView");
+        let contigEditor = <ContigEditor>viewMgr.getViewByName("contigEditor",masterView.views);
+        contigEditor.show();
     }
     public figureNameOnClick() : void
     {

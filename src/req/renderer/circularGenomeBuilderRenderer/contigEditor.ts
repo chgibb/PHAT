@@ -26,9 +26,35 @@ export class ContigEditor extends viewMgr.View
     {
         document.getElementById(this.div).style.display = "none";
     }
-    public renderView() : string
+    public renderView() : string | undefined
     {
-        return '';
+        try
+        {
+            if(document.getElementById(this.div).style.display == "block")
+            {
+                return `
+                    <div class="modalContent">
+                        <div class="modalHeader">
+                            <span class="modalCloseButton">&times;</span>
+                                <h2>Modal Header</h2>
+                        </div>
+                        <div class="modalBody">
+                            <p>Some text in the Modal Body</p>
+                            <p>Some other text...</p>
+                        </div>
+                        <div class="modalFooter">
+                            <h3>Modal Footer</h3>
+                        </div>
+                    </div>
+                `;
+            }
+            else
+                return " ";
+        }
+        catch(err)
+        {
+            return undefined;
+        }
     }
     public postRender() : void{}
     public dataChanged() : void{}
