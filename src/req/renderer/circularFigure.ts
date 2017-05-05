@@ -13,6 +13,9 @@ import alignData from "./../alignData";
 export class Contig extends fastaContigLoader.Contig
 {
     public color? : string = "";
+    public fontSize? : string = "";
+    public fontWeight? : string = "";
+    public fontFill? : string = "rgb(0,0,0)"
 }
 //adapted from answer by letronje and edited by Peter Mortensen
 //http://stackoverflow.com/questions/1484506/random-color-generator-in-javascript
@@ -132,7 +135,8 @@ export function renderBaseFigure(figure : CircularFigure) : string
                             ${markerLabel.add(
                             {
                                 type : "path",
-                                text : figure.contigs[i].alias
+                                text : figure.contigs[i].alias,
+                                labelStyle : `fill:${figure.contigs[i].fontFill};`
                             })}
                             ${markerLabel.end()}
                         ${trackMarker.end()}
