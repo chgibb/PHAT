@@ -18,6 +18,7 @@ export class ContigCreator extends viewMgr.View
     public genome : cf.CircularFigure;
     public contigStart : number = -1;
     public contigEnd : number = -1;
+    public contigVAdjust : number = 0;
     public constructor(name : string,div : string)
     {
         super(name,div);
@@ -45,15 +46,17 @@ export class ContigCreator extends viewMgr.View
     {
         let inputStart : number = parseInt((<HTMLInputElement>document.getElementById("contigStart")).value);
         let inputEnd : number = parseInt((<HTMLInputElement>document.getElementById("contigEnd")).value);
-
+        let vAdjust : number = parseInt((<HTMLInputElement>document.getElementById("contigVAdjust")).value);
         if(inputStart && inputEnd && inputEnd != 0)
         {
             this.contigStart = inputStart;
             this.contigEnd = inputEnd
+            this.contigVAdjust = vAdjust;
             let contig : cf.Contig = new cf.Contig();
             cf.initContigForDisplay(contig,true);
             contig.start = this.contigStart;
             contig.end = this.contigEnd;
+            contig.vAdjust = this.contigVAdjust;
             contig.alias = "New Contig";
             contig.name = "Custom Annotation";  
             this.genome.customContigs.push(contig);
@@ -76,10 +79,12 @@ export class ContigCreator extends viewMgr.View
                 <div class="modalContent">
                     <div class="modalHeader">
                         <span id="closeCreator" class="modalCloseButton">&times;</span>
-                        <input type="text" id="contigStart"style="display:inline-block;" />
+                        <p style="display:inline-block;">Vertical Adjustment</p>
+                        <input type="text" id="contigVAdjust"style="display:inline-block;" />
                         <p style="display:inline-block;">Start</p>
-                        <input type="text" id="contigEnd" style="display:inline-block;" />
+                        <input type="text" id="contigStart"style="display:inline-block;" />
                         <p style="display:inline-block;">End</p>
+                        <input type="text" id="contigEnd" style="display:inline-block;" />
                     </div>
                     <div class="modalBody">
                     </div>
