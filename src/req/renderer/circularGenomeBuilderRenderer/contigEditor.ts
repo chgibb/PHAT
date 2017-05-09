@@ -136,9 +136,11 @@ export class ContigEditor extends viewMgr.View
                                     if(this.contig.allowPositionChange)
                                     {
                                         return `
-                                            <input type="text" id="vAdjust" value="${this.contig.vAdjust}">
-                                            <input type="text" id="start" value="${this.contig.start}">
-                                            <input type="text" id="end" value="${this.contig.end}">
+                                            <div>
+                                                <p>Vertical Adjustment</p><input type="text" id="vAdjust" value="${this.contig.vAdjust}">
+                                                <p>Start</p><input style="display:inline-block;" type="text" id="start" value="${this.contig.start}">
+                                                <p>End</p><input style="display:inline-block;" type="text" id="end" value="${this.contig.end}">
+                                            </div>
                                         `
                                     }
                                     return " ";
