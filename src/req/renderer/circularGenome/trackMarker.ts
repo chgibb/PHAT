@@ -6,7 +6,7 @@ export function add(
         class? : string,
         arrowStartLength? : string,
         arrowEndLength? : string,
-        vAdjust? : string,
+        vAdjust? : number,
         wAdjust? : string,
         uuid? : string,
         onClick? : string
