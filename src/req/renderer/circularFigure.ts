@@ -20,7 +20,7 @@ export class Contig extends fastaContigLoader.Contig
     public allowPositionChange? : boolean = false;
     public start? : number;
     public end? : number;
-    public vAdjust : number;
+    public vAdjust? : number;
 }
 export function initContigForDisplay(contig : Contig,allowPositionChange = false) : void
 {
