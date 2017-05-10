@@ -4,6 +4,7 @@ import {GenerateQCReport} from "./req/operations/GenerateQCReport";
 import {IndexFasta} from "./req/operations/indexFasta";
 import {RunAlignment} from "./req/operations/RunAlignment";
 import {RenderCoverageTrackForContig} from "./req/operations/RenderCoverageTrack";
+import {CheckForUpdate} from "./req/operations/CheckForUpdate";
 import alignData from "./req/alignData";
 import Fastq from "./req/fastq";
 import {Fasta} from "./req/fasta";
@@ -26,6 +27,8 @@ atomic.register("generateFastQCReport",GenerateQCReport);
 atomic.register("indexFasta",IndexFasta);
 atomic.register("runAlignment",RunAlignment);
 atomic.register("renderCoverageTrackForContig",RenderCoverageTrackForContig);
+
+atomic.register("checkForUpdate",CheckForUpdate);
 
 let L6R1R1 : Fastq = new Fastq('data/L6R1.R1.fastq');
 let L6R1R2 : Fastq = new Fastq('data/L6R1.R2.fastq');
@@ -116,8 +119,33 @@ atomic.updates.on(
 	}
 );
 
+atomic.updates.on(
+	"checkForUpdate",function(op : CheckForUpdate)
+	{
+		console.log(op);
+		assert.runningEvents -= 1;
+	}
+);
+
 setInterval(function(){atomic.runOperations(1);},1000);
 
+assert.assert(function(){
+	return true;
+},'--------------------------------------------------------',0);
+
+assert.assert(function(){
+	atomic.addOperation("checkForUpdate",{token : ""});
+	assert.runningEvents += 1;
+	return true;
+},'',0);
+
+
+
+assert.assert(function(){
+	return true;
+},'--------------------------------------------------------',0);
+
+/*
 
 assert.assert(function(){
 	return true;
@@ -246,6 +274,7 @@ assert.assert(function(){
 assert.assert(function(){
 	return true;
 },'--------------------------------------------------------',0);
+*/
 assert.runAsserts();
 
 /*
