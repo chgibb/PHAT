@@ -70,6 +70,7 @@
     "optimize-js": "^1.0.3",
     "rimraf": "^2.6.1",
     "semi": "^4.0.5",
+    "semver": "^5.3.0",
     "tar-fs": "^1.15.2",
     "tar-stream": "^1.5.2",
     "typescript": "^2.2.1",
