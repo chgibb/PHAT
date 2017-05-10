@@ -71,12 +71,22 @@ process.on
                                 flags : flags
                             }
                         );
-                        if(process.platform == "linux")
-                        {
-                            fs.unlinkSync("phat");
-                        }
+                        ///if(process.platform == "linux")
+                       // {
+                      //      fs.renameSync("phat","oldphat");
+                      //  }
                         let extract = tarfs.extract("./../phat-linux-x64",{
                             ignore : (name : string) => {
+                                if(name == "newphat")
+                                {
+                                    fs.renameSync("phat","newphat");
+                                    fs.unlinkSync("newphat");
+                                }
+                                if(name == "newlibnode.so")
+                                {
+                                    fs.renameSync("libnode.so","newlibnode.so");
+                                    fs.unlinkSync("newlibnode.so");
+                                }
                                 unPackedFiles++;
                                 process.send(
                                     <AtomicOperationForkEvent>{
@@ -99,6 +109,7 @@ process.on
                                     flags : flags,
                                 }
                             );
+                            fs.unlinkSync("oldphat");
                             process.exit(0);
                         });
                         let unPackStream = fs.createReadStream("phat.update").pipe(gunzip()).pipe(extract);

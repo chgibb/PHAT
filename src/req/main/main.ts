@@ -424,9 +424,27 @@ ipc.on(
 		{
 			let token = "";
 			let auth = dataMgr.getKey("application","auth");
-			if(auth.token)
+			if(auth && auth.token)
 				token = auth.token
+				console.log("token: "+token);
 			atomicOp.addOperation("checkForUpdate",{token : token});
+		}
+		else if(arg.opName == "downloadAndInstallUpdate")
+		{
+			let token = "";
+			let asset : any = undefined;
+			let auth = dataMgr.getKey("application","auth");
+			if(auth && auth.token)
+				token = auth.token
+			//if checkForUpdate was not successful, this will not be set
+			asset = dataMgr.getKey("application","availableUpdate");
+			if(!asset)
+				return;
+			atomicOp.addOperation("downloadAndInstallUpdate",
+			{
+				asset : asset,
+				token : token
+			});
 		}
 	}
 );
@@ -518,7 +536,12 @@ atomicOp.updates.on(
 atomicOp.updates.on(
 	"checkForUpdate",function(op : CheckForUpdate)
 	{
+		console.log(op);
 		dataMgr.setKey("application","operations",atomicOp.operationsQueue);
 		dataMgr.publishChangeForKey("application","operations");
+		if(op.flags.success)
+		{
+			dataMgr.setKey("application","availableUpdate",op.extraData.asset);
+		}
 	}
 );

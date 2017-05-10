@@ -15,7 +15,7 @@ export function checkServerPermission(token : string) : Promise<{}>
                     return reject(error);
 
         }).then((arg : any) => {
-
+            resolve();
         }).catch((arg : any) => {
             reject(arg);
         });

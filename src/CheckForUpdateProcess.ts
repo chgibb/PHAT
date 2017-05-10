@@ -39,6 +39,7 @@ process.on
                         data : arg
                     }
                 );
+                process.exit(1);
             });
         }
     }
