@@ -1,12 +1,8 @@
 import * as fs from "fs";
 import * as cp from "child_process";
 
-const semver = require("semver");
-
 import * as atomic from "./atomicOperations";
 import {AtomicOperationForkEvent,AtomicOperationIPC} from "./../atomicOperationsIPC";
-
-const pjson = require("./package.json");
 export class CheckForUpdate extends atomic.AtomicOperation
 {
     public token : string;
@@ -25,8 +21,26 @@ export class CheckForUpdate extends atomic.AtomicOperation
     public run() : void
     {
         let self = this;
-        this.checkForUpdateProcess = cp.fork("resources/app/CheckForUpdateProcess.js");
-
+        this.checkForUpdateProcess = cp.fork("resources/app/CheckForUpdate.js");
+        this.checkForUpdateProcess.on(
+            "message",function(ev : AtomicOperationForkEvent)
+            {
+                if(ev.finishedSettingData == true)
+                {
+                    self.checkForUpdateProcess.send(
+                        <AtomicOperationForkEvent>{
+                            run : true
+                        }
+                    );
+                }
+                if(ev.update == true)
+                {
+                    self.extraData = ev.data;
+                    self.flags = ev.flags;
+                    self.update();
+                }
+            }
+        );
         setTimeout(
             function(){
                 self.checkForUpdateProcess.send(
