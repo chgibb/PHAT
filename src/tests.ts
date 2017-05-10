@@ -167,7 +167,7 @@ assert.assert(function(){
 	return true;
 },'--------------------------------------------------------',0);
 
-assert.assert(function(){
+/*assert.assert(function(){
 	atomic.addOperation("checkForUpdate",{token : ""});
 	assert.runningEvents += 1;
 	return true;
@@ -178,8 +178,8 @@ assert.assert(function(){
 assert.assert(function(){
 	return true;
 },'--------------------------------------------------------',0);
+*/
 
-/*
 
 assert.assert(function(){
 	return true;
@@ -308,7 +308,8 @@ assert.assert(function(){
 assert.assert(function(){
 	return true;
 },'--------------------------------------------------------',0);
-*/
+
+
 assert.runAsserts();
 
 /*

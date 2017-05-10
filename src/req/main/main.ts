@@ -19,7 +19,8 @@ import {GenerateQCReport} from "./../operations/GenerateQCReport";
 import {IndexFasta} from "./../operations/indexFasta";
 import {RunAlignment} from "./../operations/RunAlignment";
 import {RenderCoverageTrackForContig} from "./../operations/RenderCoverageTrack";
-import {InstallUpdate} from "./../operations/InstallUpdate";
+import {CheckForUpdate} from "./../operations/CheckForUpdate";
+import {DownloadAndInstallUpdate} from "./../operations/DownloadAndInstallUpdate";
 
 import * as winMgr from "./winMgr";
 
@@ -271,7 +272,9 @@ app.on
 		atomicOp.register("indexFasta",IndexFasta);
 		atomicOp.register("runAlignment",RunAlignment);
 		atomicOp.register("renderCoverageTrackForContig",RenderCoverageTrackForContig);
-		
+
+		atomicOp.register("checkForUpdate",CheckForUpdate);
+		atomicOp.register("downloadAndInstallUpdate",DownloadAndInstallUpdate);		
 
 		setInterval(function(){atomicOp.runOperations(1);},2500);
 	}
@@ -417,6 +420,14 @@ ipc.on(
 				);
 			}
 		}
+		else if(arg.opName == "checkForUpdate")
+		{
+			let token = "";
+			let auth = dataMgr.getKey("application","auth");
+			if(auth.token)
+				token = auth.token
+			atomicOp.addOperation("checkForUpdate",{token : token});
+		}
 	}
 );
 atomicOp.updates.on(
@@ -501,12 +512,5 @@ atomicOp.updates.on(
 				}
 			}
 		}
-	}
-);
-atomicOp.updates.on(
-	"installUpdate",function(op : InstallUpdate)
-	{
-		dataMgr.setKey("application","operations",atomicOp.operationsQueue);
-		dataMgr.publishChangeForKey("application","operations");
 	}
 );
