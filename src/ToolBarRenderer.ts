@@ -24,12 +24,12 @@ $
             to collaborators. This needs to be removed for the public release. token should be
             a GitHub oAuth token.
         */
-        dialogs.prompt("Enter Access Token","",function(token : string){
+        /*dialogs.prompt("Enter Access Token","",function(token : string){
             checkServerPermission(token).catch((err : string) => {
                 let remote = electron.remote;
                 remote.app.quit();
             });
-        });
+        });*/
         document.getElementById("input").onclick = function(this : HTMLElement,ev : MouseEvent){
             ipc.send("openWindow",{refName : "input"});
         }
