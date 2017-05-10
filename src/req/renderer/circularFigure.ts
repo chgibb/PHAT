@@ -20,6 +20,7 @@ export class Contig extends fastaContigLoader.Contig
     public allowPositionChange? : boolean = false;
     public start? : number;
     public end? : number;
+    public vAdjust? : number;
 }
 export function initContigForDisplay(contig : Contig,allowPositionChange = false) : void
 {
@@ -27,6 +28,7 @@ export function initContigForDisplay(contig : Contig,allowPositionChange = false
     contig.opacity = 1.0;
     contig.fontFill = "rgb(0,0,0)";
     contig.allowPositionChange = allowPositionChange;
+    contig.vAdjust = 0;
 }
 //adapted from answer by letronje and edited by Peter Mortensen
 //http://stackoverflow.com/questions/1484506/random-color-generator-in-javascript
@@ -127,6 +129,7 @@ export function renderContig(contig : Contig,start : number = -1,end : number = 
         {
             start : start.toString(),
             end : end.toString(),
+            vAdjust : contig.vAdjust,
             markerStyle : `fill:${contig.color};opacity:${contig.opacity};`,
             uuid : contig.uuid,
             onClick : "markerOnClick"
