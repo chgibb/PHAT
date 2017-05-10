@@ -514,3 +514,11 @@ atomicOp.updates.on(
 		}
 	}
 );
+
+atomicOp.updates.on(
+	"checkForUpdate",function(op : CheckForUpdate)
+	{
+		dataMgr.setKey("application","operations",atomicOp.operationsQueue);
+		dataMgr.publishChangeForKey("application","operations");
+	}
+);
