@@ -3,9 +3,11 @@ import * as atomic from "./req/operations/atomicOperations";
 import {GenerateQCReport} from "./req/operations/GenerateQCReport";
 import {IndexFasta} from "./req/operations/indexFasta";
 import {RunAlignment} from "./req/operations/RunAlignment";
+import {RenderCoverageTrackForContig} from "./req/operations/RenderCoverageTrack";
 import alignData from "./req/alignData";
 import Fastq from "./req/fastq";
 import {Fasta} from "./req/fasta";
+import {CircularFigure} from "./req/renderer/circularFigure";
 import {SpawnRequestParams} from "./req/JobIPC";
 
 var assert = require("./req/tests/assert");
@@ -16,12 +18,14 @@ try
 	fs.mkdirSync("resources/app/rt/QCReports");
 	fs.mkdirSync("resources/app/rt/indexes");
 	fs.mkdirSync("resources/app/rt/AlignmentArtifacts");
+	fs.mkdirSync("resources/app/rt/circularFigures");
 }
 catch(err){}
 
 atomic.register("generateFastQCReport",GenerateQCReport);
 atomic.register("indexFasta",IndexFasta);
 atomic.register("runAlignment",RunAlignment);
+atomic.register("renderCoverageTrackForContig",RenderCoverageTrackForContig);
 
 let L6R1R1 : Fastq = new Fastq('data/L6R1.R1.fastq');
 let L6R1R2 : Fastq = new Fastq('data/L6R1.R2.fastq');
@@ -32,6 +36,7 @@ let hpv18 : Fasta = new Fasta("data/HPV18ref_genomes.fasta");
 let L6R1HPV16Alignment : alignData;
 let L6R1HPV18Alignment : alignData;
 
+let hpv16Figure : CircularFigure;
 
 atomic.updates.on(
 	"generateFastQCReport",function(op : atomic.AtomicOperation)
@@ -94,6 +99,22 @@ atomic.updates.on(
 			assert.runningEvents -= 1;
 	}
 );
+atomic.updates.on(
+	"renderCoverageTrackForContig",function(op : RenderCoverageTrackForContig)
+	{
+		if(op.flags.success)
+		{
+			console.log("rendered");
+			console.log(op.circularFigure);
+		}
+		if(op.flags.failure)
+		{
+			console.log(op.extraData);
+		}
+		if(op.flags.done)
+			assert.runningEvents -= 1;
+	}
+);
 
 setInterval(function(){atomic.runOperations(1);},1000);
 
@@ -140,12 +161,14 @@ assert.assert(function(){
 	return hpv16.contigs[0].bp == 7906 ? true : false;
 },'HPV16 has correct number of base pairs',0);
 
+
 assert.assert(function(){
 	assert.runningEvents += 1;
 	console.log(`Starting to index ${hpv18.path}`);
 	atomic.addOperation("indexFasta",hpv18);
 	return true;
 },'',0);
+
 
 assert.assert(function(){
 	return hpv18.indexed;
@@ -214,7 +237,12 @@ assert.assert(function(){
 },'Alignment has correct alignment rate	',0);
 
 
-
+assert.assert(function(){
+	hpv16Figure = new CircularFigure("HPV16 Figure",hpv16.uuid,hpv16.contigs);
+	atomic.addOperation("renderCoverageTrackForContig",{circularFigure : hpv16Figure,contiguuid:hpv16Figure.contigs[0].uuid,alignData:L6R1HPV16Alignment});
+	assert.runningEvents += 1;
+	return true;
+},'',0);
 assert.assert(function(){
 	return true;
 },'--------------------------------------------------------',0);

@@ -1,15 +1,20 @@
 import * as fs from "fs";
 import {EventEmitter} from "events";
+const uuidv4 : () => string = require("uuid/v4");
 export class Contig
 {
     public bp : number;
     public name : string;
+    public alias : string;
     public loaded : boolean;
+    public uuid : string;
     public constructor()
     {
         this.bp = 0;
         this.name = "";
+        this.alias = "";
         this.loaded = false;
+        this.uuid = uuidv4();
     }
 }
 export class FastaContigLoader extends EventEmitter
@@ -42,6 +47,7 @@ export class FastaContigLoader extends EventEmitter
                         while(data[i] != "\n")
                         {
                             self.contigs[self.contigIndex].name += data[i];
+                            self.contigs[self.contigIndex].alias += data[i];
                             ++i;
                         }
                         if(self.contigIndex - 1 >= 0)

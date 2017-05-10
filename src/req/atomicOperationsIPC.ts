@@ -10,5 +10,20 @@ export interface AtomicOperationIPC
     channel? : string;
     key? : string;
     uuid? : string;
+
+    alignuuid? : string;
+    figureuuid? : string;
+    colour? : string;
     alignParams? : {fasta : Fasta,fastq1 : Fastq,fastq2 : Fastq,type : "patho" | "host"};
+}
+
+export interface AtomicOperationForkEvent
+{
+    setData? : boolean;
+    finishedSettingData? : boolean;
+    data? : any;
+
+    run? : boolean;
+    update? : boolean;
+    flags? : CompletionFlags;
 }

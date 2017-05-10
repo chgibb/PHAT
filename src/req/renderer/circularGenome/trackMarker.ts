@@ -6,13 +6,16 @@ export function add(
         class? : string,
         arrowStartLength? : string,
         arrowEndLength? : string,
-        vAdjust? : string,
-        wAdjust? : string
+        vAdjust? : number,
+        wAdjust? : string,
+        uuid? : string,
+        onClick? : string
     }
 ) : string
 {
     let res = `
-        <trackmarker ${
+        <trackmarker 
+        markerclass="trackMarkerHover" markerclick="${options.onClick}($event,$marker,'${options.uuid}')" ${
             (
                 ()=>
                 {

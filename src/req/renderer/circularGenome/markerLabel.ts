@@ -4,7 +4,8 @@ export function add(
         class? : string,
         text? : string,
         vAdjust? : string,
-        wAdjust? : string
+        wAdjust? : string,
+        labelStyle? : string
     }
 ) : string
 {
@@ -36,6 +37,14 @@ export function add(
                         {
                             if(options && options.vAdjust)
                                 return `vadjust="${options.vAdjust}"`;
+                            return "";
+                        })()} 
+                        ${
+                        (
+                        ()=>
+                        {
+                            if(options && options.labelStyle)
+                                return `labelstyle="${options.labelStyle}"`;
                             return "";
                         })()} ${
                         (

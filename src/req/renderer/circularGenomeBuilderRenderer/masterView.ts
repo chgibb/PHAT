@@ -10,6 +10,9 @@ import {CircularFigure,} from "./../circularFigure";
 import {Fasta} from "./../../fasta";
 
 import * as GenomeView from "./genomeView";
+import * as RightPanel from "./rightPanel";
+import * as contigEditor from "./contigEditor";
+import * as contigCreator from "./contigCreator";
 export function addView(arr : Array<viewMgr.View>,div : string)
 {
     arr.push(new View(div));
@@ -35,9 +38,16 @@ export class View extends viewMgr.View
     public onMount() : void
     {
         GenomeView.addView(this.views,"genomeView");
+        RightPanel.addView(this.views,"rightSlideOutPanel");
+        contigEditor.addView(this.views,"contigEditor");
+        contigCreator.addView(this.views,"contigCreator");
         for(let i = 0; i != this.views.length; ++i)
         {
             this.views[i].onMount();
+        }
+        let self = this;
+        window.onbeforeunload = function(e){
+            self.dataChanged();
         }
     }
     public onUnMount() : void
@@ -55,13 +65,11 @@ export class View extends viewMgr.View
             this.rightPanelOpen = false;
             this.firstRender = false;
             return `
-                <button id="leftPanel" class="leftSlideOutPanel">Left Panel</button>
-                <button id="rightPanel" class="rightSlideOutPanel">Right Panel</button>
+                <button id="leftPanel" class="leftSlideOutPanel">Refs</button>
+                <button id="rightPanel" class="rightSlideOutPanel">Coverage Options</button>
                 <div id="rightSlideOutPanel" class="rightSlideOutPanel">
-                    <button id="heightPlus">Increase Height</button>
-                    <button id="widthPlus">Increase Width</button>
-                    <button id="radiusMinus">Decrease Radius</button>
-                    <button id="radiusPlus">Increase Radius</button>
+                    <div id="rightSlideOutPanelView">
+                    </div>
                 </div>
                 <div id="leftSlideOutPanel" class="leftSlideOutPanel">
                 ${
@@ -76,14 +84,14 @@ export class View extends viewMgr.View
                                     if(this.fastaInputs[i].checked && this.fastaInputs[i].indexed)
                                     {
                                         res += `<div id ="${this.fastaInputs[i].uuid}">
-                                                <h3>${this.fastaInputs[i].alias}</h3>
-                                                <button id="${this.fastaInputs[i].uuid}_newFigure" style="float:right;">New Figure</button>
+                                                <h3>${this.fastaInputs[i].alias}</h3><br />
+                                                <button id="${this.fastaInputs[i].uuid}_newFigure" style="float:left;">New Figure</button><br /><br />
                                                 `;
                                         for(let k = 0; k != this.circularFigures.length; ++k)
                                         {
                                             if(this.circularFigures[k].uuidFasta == this.fastaInputs[i].uuid)
                                             {
-                                                res += `<input type="radio" id="${this.circularFigures[k].uuid}" name="selectedFigure" /><p>${this.circularFigures[k].name}</p>`;
+                                                res += `<div class="refFigureBlock"><input style="display:inline-block;" type="radio" id="${this.circularFigures[k].uuid}" name="selectedFigure" /><p style="display:inline-block;">${this.circularFigures[k].name}</p></div>`;
                                             }
                                         }
                                         res += `</div>`;
@@ -93,6 +101,10 @@ export class View extends viewMgr.View
                             return res;
                         }
                     )()}
+                    </div>
+                    <div id="contigEditor" class="modal">
+                    </div>
+                    <div id="contigCreator" class="modal">
                     </div>
                 `;
             }
@@ -106,6 +118,7 @@ export class View extends viewMgr.View
     }
     public postRender() : void
     {
+        
         for(let i = 0; i != this.views.length; ++i)
         {
             this.views[i].postRender();
@@ -176,35 +189,9 @@ export class View extends viewMgr.View
                 }
             );
         }
-        let ref = <GenomeView.GenomeView>viewMgr.getViewByName("genomeView",this.views);
-        if(event.target.id == "radiusPlus")
-        {
-            ref.genome.radius += 10;
-            viewMgr.render();
-            this.dataChanged();
-            return;
-        }
-        if(event.target.id == "radiusMinus")
-        {
-            ref.genome.radius -= 10;
-            viewMgr.render();
-            this.dataChanged();
-            return;
-        }
-        if(event.target.id == "heightPlus")
-        {
-            ref.genome.height += 10;
-            viewMgr.render();
-            this.dataChanged();
-            return;
-        }
-        if(event.target.id == "widthPlus")
-        {
-            ref.genome.width += 10;
-            viewMgr.render();
-            this.dataChanged();
-            return;
-        }
+        let genomeView = <GenomeView.GenomeView>viewMgr.getViewByName("genomeView",this.views);
+        let rightPanel = <RightPanel.RightPanel>viewMgr.getViewByName("rightPanel",this.views);
+
         if(this.fastaInputs)
         {
             for(let i = 0; i != this.fastaInputs.length; ++i)
@@ -212,11 +199,12 @@ export class View extends viewMgr.View
                 if(event.target.id == `${this.fastaInputs[i].uuid}_newFigure`)
                 {
                     this.circularFigures.push(new CircularFigure("New Figure",this.fastaInputs[i].uuid,this.fastaInputs[i].contigs));
-                    let ref = <GenomeView.GenomeView>viewMgr.getViewByName("genomeView",this.views);
-                    ref.genome = this.circularFigures[this.circularFigures.length - 1];
-                    viewMgr.render();
+                    genomeView.genome = this.circularFigures[this.circularFigures.length - 1];
                     this.dataChanged();
                     this.firstRender = true;
+                    genomeView.firstRender = true;
+                    rightPanel.selectedAlignment = undefined;
+                    viewMgr.render();
                     return;
                 }
             }
@@ -225,8 +213,9 @@ export class View extends viewMgr.View
         {
             if(event.target.id == this.circularFigures[i].uuid)
             {
-                let ref = <GenomeView.GenomeView>viewMgr.getViewByName("genomeView",this.views);
-                ref.genome = this.circularFigures[i];
+                genomeView.genome = this.circularFigures[i];
+                genomeView.firstRender = true;
+                rightPanel.selectedAlignment = undefined;
                 viewMgr.render();
                 return;
             }

@@ -3,6 +3,7 @@
 @import "common/td";
 @import "common/th";
 @import "common/tableCell";
+@import "common/modal";
 div.rightSlideOutPanel
 {
     margin-right: -50%;
@@ -35,4 +36,19 @@ div.leftSlideOutPanel
 	position : fixed;
 	overflow-y : scroll;
 	overflow-x : scroll;
+}
+.trackMarkerHover:hover
+{
+	stroke : #f00;
+	stroke-width : 8px;
+}
+.trackLabelHover:hover
+{
+	stroke : #000;
+	stroke-width : 1px;
+	font-size : 2em;
+}
+.refFigureBlock
+{
+
 }

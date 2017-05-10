@@ -1,0 +1,2 @@
+import requireDyn from "./req/requireDyn";
+requireDyn("./bootStrapCodeCache")("resources/app/RenderCoverageTrackProcess.js","./RenderCoverageTrackProcess","resources/app/cdata/RenderCoverageTrackProcess.cdata");

@@ -1,7 +1,22 @@
-//// <reference path="jquery.d.ts" />
+/// <reference types="jquery" />
 /// <reference path="./../angularStub.d.ts" />
+import * as fs from "fs";
+import * as util from "util";
+
+import * as electron from "electron";
+const ipc = electron.ipcRenderer;
+const dialog = electron.remote.dialog;
+
+const Dialogs = require("dialogs");
+const dialogs = Dialogs();
+
+import {AtomicOperationIPC} from "./../../atomicOperationsIPC";
 import * as viewMgr from "./../viewMgr";
-import {CircularFigure} from "./../circularFigure";
+import * as masterView from "./masterView";
+import {ContigEditor} from "./contigEditor";
+import {ContigCreator} from "./contigCreator";
+import alignData from "./../../alignData";
+import * as cf from "./../circularFigure";
 import * as plasmid from "./../circularGenome/plasmid";
 import * as plasmidTrack from "./../circularGenome/plasmidTrack";
 import * as trackLabel from "./../circularGenome/trackLabel";
@@ -11,32 +26,120 @@ import * as trackScale from "./../circularGenome/trackScale";
 
 require("angular");
 require("angularplasmid");
-//adapted from answer by letronje and edited by Peter Mortensen
-//http://stackoverflow.com/questions/1484506/random-color-generator-in-javascript
-function getRandColor(brightness : number)
-{
-    // Six levels of brightness from 0 to 5, 0 being the darkest
-    let rgb = [Math.random() * 256, Math.random() * 256, Math.random() * 256];
-    let mix = [brightness*51, brightness*51, brightness*51]; //51 => 255/5
-    let mixedrgb = [rgb[0] + mix[0], rgb[1] + mix[1], rgb[2] + mix[2]].map(function(x){return Math.round(x/2.0)});
-    return "rgb(" + mixedrgb.join(",") + ")";
-}
 let app : any = angular.module('myApp',['angularplasmid']);
 export class GenomeView extends viewMgr.View
 {
-    public genome : CircularFigure;
+    public genome : cf.CircularFigure;
+    public firstRender : boolean;
+    public alignData : Array<alignData>;
     public constructor(name : string,div : string)
     {
         super(name,div);
+        this.firstRender = true;
     }
     public onMount() : void{}
     public onUnMount() : void{}
+    public showContigCreator() : void
+    {
+        let masterView = <masterView.View>viewMgr.getViewByName("masterView");
+        let contigCreator = <ContigCreator>viewMgr.getViewByName("contigCreator",masterView.views);
+        contigCreator.show();
+        viewMgr.render();
+    }
+    public exportSVG()
+    {
+        let self = this;
+        dialog.showSaveDialog(
+            <Electron.SaveDialogOptions>{
+                title : "Save figure as SVG",
+                filters : <{
+                    name : string,
+                    extensions : string[]
+                }[]>
+                [
+                    {
+                        name : "Scalable Vector Graphic",
+                        extensions : <string[]>[
+                            "svg"
+                        ]
+                    }
+                ]
+            },function(fileName : string)
+            {
+                if(fileName)
+                {
+                    fs.writeFileSync(fileName,new XMLSerializer().serializeToString(document.getElementById(self.div).children[0]));
+                }
+            }
+        );
+    }
+    public markerOnClick($event : any,$marker : any,uuid : string) : void
+    {
+        let masterView = <masterView.View>viewMgr.getViewByName("masterView");
+        let contigEditor = <ContigEditor>viewMgr.getViewByName("contigEditor",masterView.views);
+        contigEditor.contiguuid = uuid;
+        contigEditor.show();
+        viewMgr.render();
+    }
+    public figureNameOnClick() : void
+    {
+        let self = this;
+        dialogs.prompt("Figure Name",this.genome.name,function(text : string){
+            if(text)
+            {
+                self.genome.name = text;
+                //Overwrite old template cache for figure
+                cf.cacheBaseFigure(self.genome);
+                let masterView = <masterView.View>viewMgr.getViewByName("masterView");
+                let genomeView = <GenomeView>viewMgr.getViewByName("genomeView",masterView.views);
+                //Ensure updated cache gets used to render figure
+                masterView.firstRender = true;
+                genomeView.firstRender = true;
+                //Save changes
+                masterView.dataChanged();
+                //Re render
+                viewMgr.render();
+            }
+        });
+    }
+    public inputRadiusOnChange()
+    {
+        this.genome.height = this.genome.radius*10;
+        this.genome.width =this.genome.radius*10;
+        //Re center figure
+        this.postRender();
+        let self = this;
+    }
+    public showBPTrackOnChange()
+    {
+        let masterView = <masterView.View>viewMgr.getViewByName("masterView");
+        let genomeView = <GenomeView>viewMgr.getViewByName("genomeView",masterView.views);
+        genomeView.firstRender = true;
+        //masterView.dataChanged();
+        viewMgr.render();
+    }
     public renderView() : string
     {
+        
+        let self = this;
+
         if(this.genome)
         {
-            //Remove the div this view is bound to
-            document.body.removeChild(document.getElementById(this.div));
+            
+            //Only render markup when we explicitly need to
+            //All figure updates are handled through angular bindings
+            if(this.firstRender){
+            try
+            {
+                document.body.removeChild(document.getElementById("controls"));
+            }
+            catch(err){}
+            try
+            {
+                //Remove the div this view is bound to
+                document.body.removeChild(document.getElementById(this.div));
+            }
+            catch(err){}
             $("#"+this.div).remove();
 
             let totalBP = 0;
@@ -44,78 +147,83 @@ export class GenomeView extends viewMgr.View
             {
                 totalBP += this.genome.contigs[i].bp;
             }
+
             //This is an unholy mess adapted from the example given inline in the
             //angular source code https://github.com/angular/angular.js/blob/master/src/auto/injector.js
             //We remove the div this view is bound to, recreate it and re render the angular template into it
             //Then we pass the div into angular to compile the templates and then finally inject it all back into
             //the page
-            let $div = $
-            (
-                `<div id="${this.div}">
+            let $div = $(
+                `
+                <div id="controls">
+                    <button style="float:right;" ng-click="showContigCreator()">Add Contig</button>
+                    <button style="float:right;" ng-click="exportSVG()">Export as SVG</button>
+                    <input type="number" ng-model="genome.radius" ng-change="inputRadiusOnChange()" min="0" max="1000" required>
+                     <label>Show BP Positions:
+                        <input type="checkbox" ng-model="genome.circularFigureBPTrackOptions.showLabels" ng-true-value="1" ng-false-value="0" ng-change="showBPTrackOnChange()">
+                     </label>
+                     ${(()=>{
+                         let res = ``;
+                         if(this.genome.circularFigureBPTrackOptions.showLabels)
+                         {
+                             res += `
+                                <br />
+                                <label>Interval:
+                                    <input type="number" ng-model="genome.circularFigureBPTrackOptions.interval" required>
+                                </label>
+                             `;
+                         }
+                         return res;
+                     })()}
+                </div>
+                <div id="${this.div}" style="z-index=-1;">
                     ${plasmid.add(
                     {
                         sequenceLength : totalBP.toString(),
-                        plasmidHeight : this.genome.height,
-                        plasmidWidth : this.genome.width
+                        plasmidHeight : "{{genome.height}}",
+                        plasmidWidth : "{{genome.width}}"
                     })}
-                        ${plasmidTrack.add(
-                        {
-                            trackStyle : "fill:#f0f0f0;stroke:#ccc",
-                            radius : this.genome.radius
-                        })}
-                            ${trackLabel.add(
+                        ${cf.getBaseFigureFromCache(this.genome)}
+                        ${(()=>{
+                            let res = "";
+                            for(let i = 0; i != self.genome.renderedCoverageTracks.length; ++i)
                             {
-                                text : this.genome.contigs[0].name,
-                                labelStyle : "font-size:20px;font-weight:400"
-                            })}
-                            ${trackLabel.end()}
-                            ${(()=>
-                            {
-                                let res = "";
-                                let lastLocation = 0;
-                                for(let i = 0; i != this.genome.contigs.length; ++i)
+                                if(self.genome.renderedCoverageTracks[i].checked)
                                 {
-                                    res += `
-                                        ${trackMarker.add(
-                                        {
-                                            start : lastLocation.toString(),
-                                            end : (lastLocation + this.genome.contigs[i].bp).toString(),
-                                            markerStyle : "fill:"+getRandColor(1)
-                                        })}
-                                            ${markerLabel.add(
-                                            {
-                                                type : "path",
-                                                text : this.genome.contigs[i].name
-                                            })}
-                                            ${markerLabel.end()}
-                                        ${trackMarker.end()}
-                                    `;
-                                    lastLocation = lastLocation + this.genome.contigs[i].bp;
+                                    res += (<any>fs.readFileSync(self.genome.renderedCoverageTracks[i].path));
                                 }
-                                return res; 
-                            })()}
-                            ${trackScale.add(
-                            {
-                                interval : "100",
-                                vAdjust : "5"
                             }
-                            )}
-                            ${trackScale.end()}
-                        ${plasmidTrack.end()}
+                            return res;
+                        })()}
                     ${plasmid.end()}
                 </div>
-            `);
+                `
+            );
             $(document.body).append($div);
             angular.element(document).injector().invoke
             (
                 function($compile : any)
                 {
+                    //This should probably be done with an actual angular scope instead 
+                    //of mutating the existing scope
                     let scope = angular.element($div).scope();
+                    scope.genome = self.genome;
+                    scope.alignData = self.alignData;
+                    scope.markerOnClick = self.markerOnClick;
+                    scope.figureNameOnClick = self.figureNameOnClick;
+                    scope.inputRadiusOnChange = self.inputRadiusOnChange;
+                    scope.showBPTrackOnChange = self.showBPTrackOnChange;
+                    scope.exportSVG = self.exportSVG;
+                    scope.showContigCreator = self.showContigCreator;
+                    scope.postRender = self.postRender;
+                    scope.firstRender = self.firstRender;
+                    scope.div = self.div;
                     $compile($div)(scope);
                 }
             );
-
-        }
+            
+            this.firstRender = false;
+        }}
         return undefined;
     }
     public postRender() : void
@@ -126,6 +234,7 @@ export class GenomeView extends viewMgr.View
             let div = document.getElementById(this.div);
 
             //expand the div to the new window size
+            div.style.zIndex = "-1";
             div.style.position = "absolute";
             div.style.height = `${$(window).height()}px`;
             div.style.width = `${$(window).width()}px`;

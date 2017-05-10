@@ -25,10 +25,16 @@ cp src/*.html dist
 for f in scripts/build/*.sh
 do
 	sh $f
+	if [ $? != 0 ]; then
+		exit 1
+	fi
 done
 for f in scripts/build/*.bash
 do
 	bash $f
+	if [ $? != 0 ]; then
+		exit 1
+	fi
 done
 
 #Remove code cache

@@ -13,5 +13,7 @@ pileup.js
 sassc
 sassc.exe
 docs
+forDist/styles/jquery.minicolors.css
+forDist/styles/jquery.minicolors.png
 
 \.idea/
