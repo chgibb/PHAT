@@ -4,6 +4,11 @@ const ipc = electron.ipcRenderer;
 import {AtomicOperation} from "./req/operations/atomicOperations"
 import {GetKeyEvent,KeySubEvent} from "./req/ipcEvents";
 
+const Dialogs = require("dialogs");
+const dialogs = Dialogs();
+
+import {checkServerPermission} from "./req/checkServerPermission";
+
 import * as viewMgr from "./req/renderer/viewMgr";
 
 import * as $ from "jquery";
@@ -14,6 +19,17 @@ $
 (
     function()
     {
+        /*
+            This method is only for internal testing in order to limit access to the application
+            to collaborators. This needs to be removed for the public release. token should be
+            a GitHub oAuth token.
+        */
+        dialogs.prompt("Enter Access Token","",function(token : string){
+            checkServerPermission(token).catch((err : string) => {
+                let remote = electron.remote;
+                remote.app.quit();
+            });
+        });
         document.getElementById("input").onclick = function(this : HTMLElement,ev : MouseEvent){
             ipc.send("openWindow",{refName : "input"});
         }
