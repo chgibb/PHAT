@@ -5,6 +5,7 @@ import {IndexFasta} from "./req/operations/indexFasta";
 import {RunAlignment} from "./req/operations/RunAlignment";
 import {RenderCoverageTrackForContig} from "./req/operations/RenderCoverageTrack";
 import {CheckForUpdate} from "./req/operations/CheckForUpdate";
+import {DownloadAndInstallUpdate} from "./req/operations/DownloadAndInstallUpdate";
 import alignData from "./req/alignData";
 import Fastq from "./req/fastq";
 import {Fasta} from "./req/fasta";
@@ -34,6 +35,7 @@ atomic.register("runAlignment",RunAlignment);
 atomic.register("renderCoverageTrackForContig",RenderCoverageTrackForContig);
 
 atomic.register("checkForUpdate",CheckForUpdate);
+atomic.register("downloadAndInstallUpdate",DownloadAndInstallUpdate);
 
 let L6R1R1 : Fastq = new Fastq('data/L6R1.R1.fastq');
 let L6R1R2 : Fastq = new Fastq('data/L6R1.R2.fastq');
@@ -127,10 +129,37 @@ atomic.updates.on(
 atomic.updates.on(
 	"checkForUpdate",function(op : CheckForUpdate)
 	{
-		console.log(op);
-		assert.runningEvents -= 1;
+		if(op.flags.done)
+		{
+			if(op.flags.success)
+			{
+				if(op.extraData.status == 0)
+				{
+					console.log(JSON.stringify(op.extraData.asset,undefined,4));
+					atomic.addOperation("downloadAndInstallUpdate",
+					{
+						asset : op.extraData.asset,
+						token : op.token
+					});
+				}
+			}
+			if(op.flags.failure)
+				console.log("failed to check");
+			console.log(op);
+		}
 	}
 );
+atomic.updates.on(
+	"downloadAndInstallUpdate",function(op : DownloadAndInstallUpdate)
+	{
+		if(op.extraData)
+			console.log(op.extraData);
+		if(op.flags.done)
+		{	console.log(op);
+			assert.runningEvents -= 1;
+		}
+	}
+)
 
 setInterval(function(){atomic.runOperations(1);},1000);
 
