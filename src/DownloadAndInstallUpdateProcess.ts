@@ -34,7 +34,7 @@ process.on
                     process.send(
                         <AtomicOperationForkEvent>{
                             update : true,
-                            data : progress,
+                            data : {downloadProgress:progress},
                             flags : flags
                         }
                     );
@@ -44,16 +44,66 @@ process.on
                 istream.on("error",(error : string) => {throw new Error(error);});
                 ostream.on("error",(error : string) => {throw new Error(error);});
                 ostream.on("close",() => {
-                    flags.done = true;
-                    flags.success = true;
-                    flags.failure = false;
-                    process.send(
-                        <AtomicOperationForkEvent>{
-                            update : true,
-                            flags : flags,
+
+
+                    let totalFiles = 0;
+                    let countedFiles = 0;
+                    let unPackedFiles = 0;
+
+                    let countFiles = tarStream.extract();
+                    countFiles.on(
+                        "entry",(header : any,stream : any,next : () => void) => {
+                            if(header)
+                            {
+                                totalFiles++;
+                            }
+                            stream.on("end",() => {
+                                next();
+                            });
+                            stream.resume();
                         }
                     );
-                    process.exit(0);
+                    countFiles.on("finish",() => {
+                        process.send(
+                            <AtomicOperationForkEvent>{
+                                update : true,
+                                data : {totalFiles:totalFiles},
+                                flags : flags
+                            }
+                        );
+                        if(process.platform == "linux")
+                        {
+                            fs.unlinkSync("phat");
+                        }
+                        let extract = tarfs.extract("./../phat-linux-x64",{
+                            ignore : (name : string) => {
+                                unPackedFiles++;
+                                process.send(
+                                    <AtomicOperationForkEvent>{
+                                        update : true,
+                                        data : {unPackedFiles:unPackedFiles},
+                                        flags : flags
+                                    }
+                                );
+                                
+                                return false;
+                            }
+                        });
+                        extract.on("finish",() => {
+                            flags.done = true;
+                            flags.success = true;
+                            flags.failure = false;
+                            process.send(
+                                <AtomicOperationForkEvent>{
+                                    update : true,
+                                    flags : flags,
+                                }
+                            );
+                            process.exit(0);
+                        });
+                        let unPackStream = fs.createReadStream("phat.update").pipe(gunzip()).pipe(extract);
+                    });
+                    fs.createReadStream("phat.update").pipe(gunzip()).pipe(countFiles);
                 });
             });
         }

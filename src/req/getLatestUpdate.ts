@@ -34,9 +34,10 @@ export function getLatestUpdate(userName : string,repo : string,token : string) 
                     return reject(<Status>{status : -1,msg : error});
             }
         ).then((arg : any) => {
-            for(let i = 0; i != arg.data.length; ++ i)
+            for(let i = arg.data.length-1; i != -1; i--)
             {
-                if(semver.satisfies(arg.data[i].tag_name,pjson.version))
+                console.log(arg.data[i]);
+                if(semver.satisfies(arg.data[i].tag_name,">"+pjson.version))
                 {
                     for(let k = 0; k != arg.data[i].assets.length; ++k)
                     {

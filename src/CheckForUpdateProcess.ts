@@ -28,6 +28,7 @@ process.on
                 );
                 process.exit(0);
             }).catch((arg : any) => {
+                console.log(arg);
                 flags.done = true;
                 flags.success = false;
                 flags.failure = true;
@@ -43,6 +44,7 @@ process.on
     }
 );
 process.on("uncaughtException",function(err : string){
+    console.log(err);
     flags.done = true;
     flags.failure = true;
     flags.success = false;
@@ -56,6 +58,7 @@ process.on("uncaughtException",function(err : string){
     process.exit(1);
 });
 process.on("unhandledRejection",function(err : string){
+    console.log(err);
     flags.done = true;
     flags.failure = true;
     flags.success = false;

@@ -16,8 +16,8 @@ export class DownloadAndInstallUpdate extends atomic.AtomicOperation
     {
         this.asset = data.asset;
         this.token = data.token;
-        //this.destinationArtifacts.push("phat.update");
-        //this.generatedArtifacts.push("phat.update");
+        this.destinationArtifacts.push("phat.update");
+        this.generatedArtifacts.push("phat.update");
     }
     public run() : void
     {
