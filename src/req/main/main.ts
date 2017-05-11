@@ -3,6 +3,7 @@
  * @module req/main/main
  */
 import * as fs from "fs";
+import * as cp from "child_process";
 import * as electron from "electron";
 const ipc = electron.ipcMain;
 const app = electron.app;
@@ -19,7 +20,8 @@ import {GenerateQCReport} from "./../operations/GenerateQCReport";
 import {IndexFasta} from "./../operations/indexFasta";
 import {RunAlignment} from "./../operations/RunAlignment";
 import {RenderCoverageTrackForContig} from "./../operations/RenderCoverageTrack";
-import {InstallUpdate} from "./../operations/InstallUpdate";
+import {CheckForUpdate} from "./../operations/CheckForUpdate";
+import {DownloadAndInstallUpdate} from "./../operations/DownloadAndInstallUpdate";
 
 import * as winMgr from "./winMgr";
 
@@ -271,21 +273,55 @@ app.on
 		atomicOp.register("indexFasta",IndexFasta);
 		atomicOp.register("runAlignment",RunAlignment);
 		atomicOp.register("renderCoverageTrackForContig",RenderCoverageTrackForContig);
-		
+
+		atomicOp.register("checkForUpdate",CheckForUpdate);
+		atomicOp.register("downloadAndInstallUpdate",DownloadAndInstallUpdate);		
 
 		setInterval(function(){atomicOp.runOperations(1);},2500);
 	}
 );
+/*
 app.on
 (
 	'window-all-closed',function() 
 	{
   		if(process.platform !== 'darwin' || winMgr.getWindowsByName("toolBar").length == 0)
 		{
+			if(dataMgr.getKey("application","downloadedUpdate"))
+			{
+				console.log("downloadedUpdate was set");
+				let installer = cp.spawn(
+                             "python",["resources/app/installUpdate.py"],
+                            {
+                                detached : true,
+                                stdio : [
+                                    "ignore","ignore","ignore"
+                                ]
+                            }
+                        );
+                        installer.unref();
+						console.log("spawned installUpdate.py");
+			}
+			dataMgr.setKey("application","operations",{});
+			console.log("cleared operations");
 			dataMgr.saveData();
-    		app.quit();
+			console.log("saved data");
+    		//app.quit();
   		}
 	}
+);*/
+
+app.on
+(
+	'will-quit',function() 
+	{
+			dataMgr.setKey("application","operations",{});
+			console.log("cleared operations");
+			dataMgr.saveData();
+			console.log("saved data");
+			process.exit(0);
+    		//app.quit();
+  		}
 );
 
 app.on
@@ -417,6 +453,32 @@ ipc.on(
 				);
 			}
 		}
+		else if(arg.opName == "checkForUpdate")
+		{
+			let token = "";
+			let auth = dataMgr.getKey("application","auth");
+			if(auth && auth.token)
+				token = auth.token
+				console.log("token: "+token);
+			atomicOp.addOperation("checkForUpdate",{token : token});
+		}
+		else if(arg.opName == "downloadAndInstallUpdate")
+		{
+			let token = "";
+			let asset : any = undefined;
+			let auth = dataMgr.getKey("application","auth");
+			if(auth && auth.token)
+				token = auth.token
+			//if checkForUpdate was not successful, this will not be set
+			asset = dataMgr.getKey("application","availableUpdate");
+			if(!asset)
+				return;
+			atomicOp.addOperation("downloadAndInstallUpdate",
+			{
+				asset : asset,
+				token : token
+			});
+		}
 	}
 );
 atomicOp.updates.on(
@@ -503,10 +565,27 @@ atomicOp.updates.on(
 		}
 	}
 );
+
 atomicOp.updates.on(
-	"installUpdate",function(op : InstallUpdate)
+	"checkForUpdate",function(op : CheckForUpdate)
 	{
+		console.log(op);
 		dataMgr.setKey("application","operations",atomicOp.operationsQueue);
 		dataMgr.publishChangeForKey("application","operations");
+		if(op.flags.success)
+		{
+			dataMgr.setKey("application","availableUpdate",op.extraData.asset);
+		}
 	}
 );
+atomicOp.updates.on(
+	"downloadAndInstallUpdate",function(op : DownloadAndInstallUpdate)
+	{
+		if(op.flags.success)
+		{
+			dataMgr.setKey("application","downloadedUpdate",true);
+			console.log("calling quit");
+			app.quit();
+		}
+	}
+)

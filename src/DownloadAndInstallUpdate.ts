@@ -1,0 +1,2 @@
+import requireDyn from "./req/requireDyn";
+requireDyn("./bootStrapCodeCache")("resources/app/DownloadAndInstallUpdateProcess.js","./DownloadAndInstallUpdateProcess","resources/app/cdata/DownloadAndInstallUpdateProcess.cdata");
