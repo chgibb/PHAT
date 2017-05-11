@@ -3,6 +3,7 @@
  * @module req/main/main
  */
 import * as fs from "fs";
+import * as cp from "child_process";
 import * as electron from "electron";
 const ipc = electron.ipcMain;
 const app = electron.app;
@@ -279,16 +280,60 @@ app.on
 		setInterval(function(){atomicOp.runOperations(1);},2500);
 	}
 );
+/*
 app.on
 (
 	'window-all-closed',function() 
 	{
   		if(process.platform !== 'darwin' || winMgr.getWindowsByName("toolBar").length == 0)
 		{
+			if(dataMgr.getKey("application","downloadedUpdate"))
+			{
+				console.log("downloadedUpdate was set");
+				let installer = cp.spawn(
+                             "python",["resources/app/installUpdate.py"],
+                            {
+                                detached : true,
+                                stdio : [
+                                    "ignore","ignore","ignore"
+                                ]
+                            }
+                        );
+                        installer.unref();
+						console.log("spawned installUpdate.py");
+			}
+			dataMgr.setKey("application","operations",{});
+			console.log("cleared operations");
 			dataMgr.saveData();
-    		app.quit();
+			console.log("saved data");
+    		//app.quit();
   		}
 	}
+);*/
+
+app.on
+(
+	'will-quit',function() 
+	{
+			if(dataMgr.getKey("application","downloadedUpdate"))
+			{
+				console.log("downloadedUpdate was set");
+				let installer = cp.spawn(
+                	"python",["resources/app/installUpdate.py"],
+                	<cp.SpawnOptions>{
+                		detached : true,
+                    	stdio : "ignore"
+                	}
+            	);
+            	installer.unref();
+				console.log("spawned installUpdate.py");
+			}
+			dataMgr.setKey("application","operations",{});
+			console.log("cleared operations");
+			dataMgr.saveData();
+			console.log("saved data");
+    		//app.quit();
+  		}
 );
 
 app.on
@@ -545,3 +590,14 @@ atomicOp.updates.on(
 		}
 	}
 );
+atomicOp.updates.on(
+	"downloadAndInstallUpdate",function(op : DownloadAndInstallUpdate)
+	{
+		if(op.flags.success)
+		{
+			dataMgr.setKey("application","downloadedUpdate",true);
+			console.log("calling quit");
+			app.quit();
+		}
+	}
+)

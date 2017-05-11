@@ -1,6 +1,9 @@
 import * as fs from "fs";
 import * as cp from "child_process";
 
+import * as electron from "electron";
+const app = electron.app;
+
 import * as atomic from "./atomicOperations";
 import {AtomicOperationForkEvent,AtomicOperationIPC} from "./../atomicOperationsIPC";
 export class DownloadAndInstallUpdate extends atomic.AtomicOperation
@@ -16,8 +19,8 @@ export class DownloadAndInstallUpdate extends atomic.AtomicOperation
     {
         this.asset = data.asset;
         this.token = data.token;
-        this.destinationArtifacts.push("phat.update");
-        this.generatedArtifacts.push("phat.update");
+        //this.destinationArtifacts.push("phat.update");
+        //this.generatedArtifacts.push("phat.update");
     }
     public run() : void
     {
@@ -38,6 +41,20 @@ export class DownloadAndInstallUpdate extends atomic.AtomicOperation
                 {
                     self.extraData = ev.data;
                     self.flags = ev.flags;
+                    if(self.flags.success == true)
+                    {
+                         /*let installer = cp.spawn(
+                             "python",["resources/app/installUpdate.py"],
+                            {
+                                detached : true,
+                                stdio : [
+                                    "ignore","ignore","ignore"
+                                ]
+                            }
+                        );
+                        installer.unref();
+                        app.quit();*/
+                    }
                     self.update();
                 }
             }

@@ -1,4 +1,5 @@
 import * as fs from "fs";
+import * as cp from "child_process";
 
 let GitHubReleases = require("github-releases");
 const tarfs = require("tar-fs");
@@ -45,8 +46,19 @@ process.on
                 ostream.on("error",(error : string) => {throw new Error(error);});
                 ostream.on("close",() => {
 
+                    flags.done = true;
+                            flags.success = true;
+                            flags.failure = false;
+                            process.send(
+                                <AtomicOperationForkEvent>{
+                                    update : true,
+                                    flags : flags,
+                                }
+                            );
+                            process.exit(0);
+                   
 
-                    let totalFiles = 0;
+                    /*let totalFiles = 0;
                     let countedFiles = 0;
                     let unPackedFiles = 0;
 
@@ -114,7 +126,7 @@ process.on
                         });
                         let unPackStream = fs.createReadStream("phat.update").pipe(gunzip()).pipe(extract);
                     });
-                    fs.createReadStream("phat.update").pipe(gunzip()).pipe(countFiles);
+                    fs.createReadStream("phat.update").pipe(gunzip()).pipe(countFiles);*/
                 });
             });
         }
