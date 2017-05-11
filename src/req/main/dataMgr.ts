@@ -29,6 +29,14 @@ export function saveData() : void
     console.log("Called save"+dataPath);
     try
     {
+        try
+        {
+            data["application"]["operations"] = {};
+        }
+        catch(err)
+        {
+            console.log(err);
+        }
 	    jsonFile.writeFileSync(dataPath,data,{spaces : 4});
     }
     catch(err)

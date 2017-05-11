@@ -25,8 +25,12 @@ winMgr.windowCreators["toolBar"] =
 			toolBarWindow[0].on(
 				"closed",function()
 				{
-					dataMgr.saveData();
-					app.quit();
+					//Let the download -> install handoff handle app quitting and data saving
+					if(!dataMgr.getKey("application","downloadedUpdate"))
+					{
+						dataMgr.saveData();
+						app.quit();
+					}
 				}
 			)
 		}

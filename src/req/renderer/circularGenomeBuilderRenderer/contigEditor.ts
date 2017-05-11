@@ -44,6 +44,8 @@ export class ContigEditor extends viewMgr.View
         let colour : string = (<string>(<any>$(document.getElementById("fillColourPicker"))).minicolors("rgbString"));
         let fontColour : string = (<string>(<any>$(document.getElementById("fontColourPicker"))).minicolors("rgbString"));
         let toggleVisibility = (<HTMLInputElement>document.getElementById("toggleVisibility"));
+
+
         let shouldReRender = false;
         if(colour != this.contig.color)
         {
@@ -60,6 +62,31 @@ export class ContigEditor extends viewMgr.View
         if(toggleVisibility.checked == false && this.contig.opacity == 1)
             shouldReRender = true;
         this.contig.opacity = toggleVisibility.checked ? 1 : 0;
+
+        //Will throw if contig being edited is from the reference file because the elements with these IDs dont get rendered
+        try
+        {
+            let vAdjust : string = (<HTMLInputElement>document.getElementById("vAdjust")).value;
+            let start : string = (<HTMLInputElement>document.getElementById("start")).value;
+            let end : string  = (<HTMLInputElement>document.getElementById("end")).value;
+            if(parseInt(vAdjust) != this.contig.vAdjust)
+            {
+                this.contig.vAdjust = parseInt(vAdjust);
+                shouldReRender = true;
+            }
+            if(parseInt(start) != this.contig.start)
+            {
+                this.contig.start = parseInt(start);
+                shouldReRender = true;
+            }
+            if(parseInt(end) != this.contig.end)
+            {
+                this.contig.end = parseInt(end);
+                shouldReRender = true;
+            }
+        }
+        catch(err){}
+
         document.getElementById(this.div).style.display = "none";
         if(shouldReRender)
             this.forceReRender();
@@ -105,6 +132,19 @@ export class ContigEditor extends viewMgr.View
                             </div>
                             <div class="modalBody">
                                 <input type="text" id="fillColourPicker" data-format="rgb" value="${this.contig.color}">
+                                ${(()=>{
+                                    if(this.contig.allowPositionChange)
+                                    {
+                                        return `
+                                            <div>
+                                                <p>Vertical Adjustment</p><input type="text" id="vAdjust" value="${this.contig.vAdjust}">
+                                                <p>Start</p><input style="display:inline-block;" type="text" id="start" value="${this.contig.start}">
+                                                <p>End</p><input style="display:inline-block;" type="text" id="end" value="${this.contig.end}">
+                                            </div>
+                                        `
+                                    }
+                                    return " ";
+                                })()}
                                 <br />
                                 <br />
                                 <br />
