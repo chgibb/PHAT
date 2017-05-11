@@ -47,15 +47,17 @@ process.on
                 ostream.on("close",() => {
 
                     flags.done = true;
-                            flags.success = true;
-                            flags.failure = false;
-                            process.send(
-                                <AtomicOperationForkEvent>{
-                                    update : true,
-                                    flags : flags,
-                                }
-                            );
-                            process.exit(0);
+                    flags.success = true;
+                    flags.failure = false;
+                    process.send(
+                        <AtomicOperationForkEvent>{
+                            update : true,
+                            flags : flags,
+                        }
+                    );
+                    if(process.platform == "linux")
+                        cp.spawnSync("resources/app/installUpdateProcess");
+                    process.exit(0);
                    
 
                     /*let totalFiles = 0;

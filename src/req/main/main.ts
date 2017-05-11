@@ -315,23 +315,11 @@ app.on
 (
 	'will-quit',function() 
 	{
-			if(dataMgr.getKey("application","downloadedUpdate"))
-			{
-				console.log("downloadedUpdate was set");
-				let installer = cp.spawn(
-                	"python",["resources/app/installUpdate.py"],
-                	<cp.SpawnOptions>{
-                		detached : true,
-                    	stdio : "ignore"
-                	}
-            	);
-            	installer.unref();
-				console.log("spawned installUpdate.py");
-			}
 			dataMgr.setKey("application","operations",{});
 			console.log("cleared operations");
 			dataMgr.saveData();
 			console.log("saved data");
+			process.exit(0);
     		//app.quit();
   		}
 );
