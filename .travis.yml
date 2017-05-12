@@ -14,7 +14,7 @@ install:
 script: 
  - npm test
  - bash scripts/cleanTests.bash
- - bash prepareLinuxRelease.bash
+ - bash scripts/prepareLinuxRelease.bash
 notifications:
   slack: zehbelab:BuLG0b1qhVzAyihGf2XbQU4D
 deploy:
