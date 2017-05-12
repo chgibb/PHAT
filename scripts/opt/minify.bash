@@ -10,12 +10,13 @@ for f in $target/*.js
 do
     if [[ "$f" != "$target/pileup.js" ]]; then
         printf "Compressing $f\n"
-        if [[ "$OSTYPE" == "linux-gnu" ]]; then
-            ./node_modules/nwsjs/nwsjs $f > tmp
-        fi
-        if [[ "$OSTYPE" == "cygwin" ]]; then
-            ./node_modules/nwsjs/nwsjs.exe $f > tmp
-        fi
+        #if [[ "$OSTYPE" == "linux-gnu" ]]; then
+        #    ./node_modules/nwsjs/nwsjs $f > tmp
+        #fi
+        #if [[ "$OSTYPE" == "cygwin" ]]; then
+        #    ./node_modules/nwsjs/nwsjs.exe $f > tmp
+        #fi
+        node node_modules/uglify-es/bin/uglifyjs --compress -- $f > tmp
         mv tmp $f
     fi
 done
