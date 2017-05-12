@@ -27,6 +27,7 @@ deploy:
   file:
     - phat-linux-x64.tar.gz
     - phat-linux-x64-update.tar.gz
+  skip_cleanup: true
   on:
     repo: chgibb/PHAT
     tags: true
