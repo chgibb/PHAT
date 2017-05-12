@@ -2,7 +2,7 @@ var electronInstaller = require('electron-winstaller');
 
 resultPromise = electronInstaller.createWindowsInstaller({
     appDirectory: './phat-win32-x64',
-    outputDirectory: './installer64',
+    outputDirectory: './phat-installer-x64',
     authors: 'Zehbe Lab',
     description: "Pathogen Host Analysis Tool",
     exe: 'phat.exe',
