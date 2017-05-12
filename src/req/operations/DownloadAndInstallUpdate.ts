@@ -1,9 +1,6 @@
 import * as fs from "fs";
 import * as cp from "child_process";
 
-import * as electron from "electron";
-const app = electron.app;
-
 import * as atomic from "./atomicOperations";
 import {AtomicOperationForkEvent,AtomicOperationIPC} from "./../atomicOperationsIPC";
 export class DownloadAndInstallUpdate extends atomic.AtomicOperation
