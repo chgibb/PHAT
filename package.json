@@ -74,6 +74,7 @@
     "tar-fs": "^1.15.2",
     "tar-stream": "^1.5.2",
     "typescript": "^2.2.1",
+    "uglify-es": "^3.0.4",
     "uuid": "^3.0.1"
   },
   "dependencies": {},
