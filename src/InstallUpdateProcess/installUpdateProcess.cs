@@ -1,4 +1,5 @@
 using System;
+using System.Threading;
 using System.IO;
 using System.Diagnostics;
 
@@ -11,6 +12,7 @@ namespace phat
         //Adapted from https://github.com/icsharpcode/SharpZipLib/wiki/GZip-and-Tar-Samples
         public static void Main(String[] args)
         {
+            Thread.Sleep(5000);
             Stream inStream = File.OpenRead("phat.update");
     	    Stream gzipStream = new GZipInputStream(inStream);
     
@@ -20,7 +22,7 @@ namespace phat
     
     	    gzipStream.Close();
     	    inStream.Close();
-            
+
             Process.Start(new ProcessStartInfo("phat.exe"));
         }
     }
