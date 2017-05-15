@@ -20,4 +20,5 @@ if [[ "$OSTYPE" == "cygwin" ]]; then
     cd ../
     cd ../
     mv src/InstallUpdateProcess/installUpdateProcess.exe dist
+    cp src/InstallUpdateProcess/ICSharpCode.SharpZipLib.dll dist
 fi
