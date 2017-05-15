@@ -43,7 +43,7 @@ if [[ "$OSTYPE" == "linux-gnu" ]]; then
 fi
 
 if [[ "$OSTYPE" == "cygwin" ]]; then
-	phat-win32-x64/resources/app/cdata
+	rm -rf phat-win32-x64/resources/app/cdata
 fi
 
 
