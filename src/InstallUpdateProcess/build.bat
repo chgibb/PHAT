@@ -1,1 +1,1 @@
-C:\Windows\Microsoft.NET\Framework\v3.5\csc installUpdate.cs /r:ICSharpCode.SharpZipLib.dll
+C:\Windows\Microsoft.NET\Framework\v3.5\csc installUpdateProcess.cs /r:ICSharpCode.SharpZipLib.dll

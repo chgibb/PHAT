@@ -282,7 +282,7 @@ app.on
 		try
 		{
 			fs.rename("resources/app/newCSharpCode.SharpZipLib.dll","resources/app/ICSharpCode.SharpZipLib.dll");
-			fs.rename("resources/app/newinstallUpdateProcess.exe","resources/app/installUpdateProcess.exe");
+			fs.rename("resources/app/newinstallUpdateProcess.exe","resources/app/installUpdate.exe");
 		}
 		catch(err){}
 	}
