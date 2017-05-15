@@ -67,7 +67,7 @@ process.on
                     if(process.platform == "win32")
                     {
                         let installer = cp.spawn(
-                            "resources/app/installUpdateProcess.exe",<Array<string>>[],
+                            "resources/app/installUpdate.exe",<Array<string>>[],
                             <cp.SpawnOptions>{
                                 detached : true,
                                 stdio : "ignore"
