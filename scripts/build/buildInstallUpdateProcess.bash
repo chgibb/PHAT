@@ -13,3 +13,11 @@ if [[ "$OSTYPE" == "linux-gnu" ]]; then
     rm main.o
     rm installUpdateProcess
 fi
+
+if [[ "$OSTYPE" == "cygwin" ]]; then
+    cd src/InstallUpdateProcess
+    ./build.bat
+    cd ../
+    cd ../
+    mv src/InstallUpdateProcess/installUpdateProcess.exe dist
+fi
