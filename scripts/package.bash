@@ -60,6 +60,8 @@ do
 done
 
 if [[ "$OSTYPE" == "cygwin" ]]; then
-    cmd /c "icacls phat-win32-x64 /grant \"Users:(OI)(CI)F\""
-    cmd /c "icacls phat-win32-x64\* /q /c /t /reset"
+    cp forDist/ICSharpCode.SharpZipLib.dll phat-win32-x64
+    rm phat-win32-x64/resources/app/ICSharpCode.SharpZipLib.dll
+    cmd /c "icacls phat-win32-x64\* /grant Users:(OI)(CI)F /T"
+    #cmd /c "icacls phat-win32-x64\* /q /c /t /reset"
 fi
