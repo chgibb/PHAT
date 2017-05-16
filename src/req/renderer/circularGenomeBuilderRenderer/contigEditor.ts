@@ -178,7 +178,7 @@ export class ContigEditor extends viewMgr.View
         try
         {
             let colourPicker = document.getElementById("fillColourPicker");
-            $(colourPicker).minicolors({
+            (<any>$(colourPicker)).minicolors({
                 control : "hue",
                 defaultValue : "",
                 format : "rgb",
@@ -189,7 +189,7 @@ export class ContigEditor extends viewMgr.View
                 change : function(hex : string,opacity : string){}
             });
             let fontColourPicker = document.getElementById("fontColourPicker");
-            $(fontColourPicker).minicolors({
+            (<any>$(fontColourPicker)).minicolors({
                 control : "hue",
                 defaultValue : "",
                 format : "rgb",
