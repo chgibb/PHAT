@@ -281,8 +281,8 @@ app.on
 		//After an update has been installed, update the updater with new binaries.
 		try
 		{
-			fs.rename("resources/app/newCSharpCode.SharpZipLib.dll","resources/app/ICSharpCode.SharpZipLib.dll");
-			fs.rename("resources/app/newinstallUpdateProcess.exe","resources/app/installUpdate.exe");
+			fs.rename("resources/app/newCSharpCode.SharpZipLib.dll","resources/app/ICSharpCode.SharpZipLib.dll",function(err : NodeJS.ErrnoException){});
+			fs.rename("resources/app/newinstallUpdateProcess.exe","resources/app/installUpdate.exe",function(err : NodeJS.ErrnoException){});
 		}
 		catch(err){}
 	}
