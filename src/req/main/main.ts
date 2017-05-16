@@ -282,7 +282,7 @@ app.on
 		try
 		{
 			fs.rename("resources/app/newCSharpCode.SharpZipLib.dll","resources/app/ICSharpCode.SharpZipLib.dll",function(err : NodeJS.ErrnoException){});
-			fs.rename("resources/app/newinstallUpdateProcess.exe","resources/app/installUpdate.exe",function(err : NodeJS.ErrnoException){});
+			fs.rename("resources/app/newinstallUpdateProcess.exe","resources/app/installUpdateProcess.exe",function(err : NodeJS.ErrnoException){});
 		}
 		catch(err){}
 	}
