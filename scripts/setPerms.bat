@@ -1,0 +1,1 @@
+icacls phat-win32-x64\* /grant Everyone:(OI)(CI)F /T
