@@ -1,11 +1,11 @@
 install:
-  - bash scripts/install.bash
+  - C:\cygwin\bin\bash.exe scripts/install.bash
 
 build_script:
-  - bash scripts/buildtests.bash
+  - C:\cygwin\bin\bash.exe scripts/buildtests.bash
 
 test_script:
-  - npm test
+  - C:\cygwin\bin\bash.exe scripts/runtests.bash
 
 clone_depth: 1
 
