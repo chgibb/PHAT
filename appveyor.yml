@@ -1,5 +1,5 @@
 install:
-  - bash install.bash
+  - bash scripts/install.bash
 
 build_script:
   - bash scripts/buildtests.bash
