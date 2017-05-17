@@ -61,7 +61,7 @@ done
 
 if [[ "$OSTYPE" == "cygwin" ]]; then
     printf "Running icacls\n"
-    cmd /c "icacls phat-win32-x64\* /grant Everyone:(OI)(CI)F /T"
+    cmd /c "icacls phat-win32-x64\\* /grant Everyone:(OI)(CI)F /T"
     printf "Done running icacls\n"
     #cmd /c "icacls phat-win32-x64\* /q /c /t /reset"
     
