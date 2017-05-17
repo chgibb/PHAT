@@ -1,0 +1,12 @@
+install:
+  - bash install.bash
+
+build_script:
+  - bash scripts/buildtests.bash
+
+test_script:
+  - npm test
+
+environment:
+  OSTYPE: 'cygwin'
+  APPVEYOR: true
