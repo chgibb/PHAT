@@ -55,8 +55,26 @@ process.on
                             flags : flags,
                         }
                     );
+                    /*
+                        child_process.spawn()ing detached processes on Linux is completely broken.
+                        installUpdateProcess on Linux will fork() fork() and execl() python installUpdateProcess.py to actually unpack the update.
+                        cp.spawnSync will return after the first fork().
+
+                        For Windows, we call into ICSharpCode's C# archive library to unpack the update and then restart PHAT.
+                    */
                     if(process.platform == "linux")
                         cp.spawnSync("resources/app/installUpdateProcess");
+                    if(process.platform == "win32")
+                    {
+                        let installer = cp.spawn(
+                            "resources/app/installUpdateProcess.exe",<Array<string>>[],
+                            <cp.SpawnOptions>{
+                                detached : true,
+                                stdio : "ignore"
+                            }
+                        );
+                        installer.unref();
+                    }
                     process.exit(0);
                    
 

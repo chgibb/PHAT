@@ -13,3 +13,13 @@ if [[ "$OSTYPE" == "linux-gnu" ]]; then
     rm main.o
     rm installUpdateProcess
 fi
+
+if [[ "$OSTYPE" == "cygwin" ]]; then
+    cd src/InstallUpdateProcess
+    ./build.bat
+    cd ../
+    cd ../
+    mv src/InstallUpdateProcess/installUpdateProcess.exe dist
+    mv src/InstallUpdateProcess/installUpdate.exe dist
+    cp --preserve=all src/InstallUpdateProcess/ICSharpCode.SharpZipLib.dll phat-win32-x64/resources/app
+fi

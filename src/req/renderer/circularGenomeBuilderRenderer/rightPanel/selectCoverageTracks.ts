@@ -69,7 +69,7 @@ export class SelectCoverageTracks extends viewMgr.View
     public postRender() : void
     {
         let colourPicker = document.getElementById("colourPicker");
-        $(colourPicker).minicolors({
+        (<any>$(colourPicker)).minicolors({
             control : "hue",
             defaultValue : "",
             format : "rgb",
