@@ -1,4 +1,5 @@
 install:
+  - cmd: SET PATH=C:\Program Files\Nodejs;%PATH%
   - C:\cygwin\bin\bash.exe scripts/install.bash
 
 build_script:
