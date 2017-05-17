@@ -7,6 +7,8 @@ build_script:
 test_script:
   - npm test
 
+clone_depth: 1
+
 environment:
   OSTYPE: 'cygwin'
   APPVEYOR: true
