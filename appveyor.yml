@@ -2,10 +2,10 @@ install:
   - bash scripts/install.bash
 
 build_script:
-  - bash scripts/buildtests.bash
+  - bash scripts/build.bash
 
 test_script:
-  - npm test
+ 
 
 clone_depth: 1
 
