@@ -1,4 +1,5 @@
 install:
+  - ps: wget "https://github.com/icsharpcode/SharpZipLib/releases/download/0.86.0.518/ICSharpCode.SharpZipLib.dll" -OutFile "src/installUpdateProcess/ICSharpCode.SharpZipLib.dll"
   - bash scripts/install.bash
 
 build_script:
