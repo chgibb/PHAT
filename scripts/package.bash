@@ -11,9 +11,6 @@ cp package.json dist
 
 #if linux
 if [[ "$OSTYPE" == "linux-gnu" ]]; then
-    
-    #set fastqc to be executable
-    chmod +x src/FastQC/fastqc
 
     #create electron package
     ./node_modules/.bin/electron-packager ./dist/ --platform linux --arch x64 --overwrite --ignore=node_modules --ignore=.jsx --ignore=build.sh --ignore=src --ignore=vcs  --ignore=.sh --ignore=notes --ignore=manuscript --ignore=presentation
@@ -30,6 +27,7 @@ if [[ "$OSTYPE" == "linux-gnu" ]]; then
         fi
         cp $f phat-linux-x64/resources/app
     done
+    cp -R forDist/FastQC phat-linux-x64/resources/app
 fi
 
 #if windows
@@ -43,6 +41,7 @@ if [[ "$OSTYPE" == "cygwin" ]]; then
     do
         tar -xzvf $f -C phat-win32-x64/resources/app
     done
+    cp -R forDist/FastQC phat-win32-x64/resources/app
 fi
 
 #for everything in the top level of forDist (should be cross platform stuff only in the top level)
