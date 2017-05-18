@@ -43,7 +43,7 @@ if [[ "$OSTYPE" == "linux-gnu" ]]; then
 fi
 
 if [[ "$OSTYPE" == "cygwin" ]]; then
-	phat-win32-x64/resources/app/cdata
+	rm -rf phat-win32-x64/resources/app/cdata
 fi
 
 
@@ -61,6 +61,13 @@ if [[ "$OSTYPE" == "cygwin" ]]; then
 
 	#remove dist
 	rm -rf dist
+
+	#cmd /c "icacls phat-win32-x64\* /q /c /t /reset"
+	#cmd /c "icacls phat-win32-x64\* /grant Everyone:(OI)(CI)F /T"
+	printf "Running icacls\n"
+    ./scripts/setPerms.bat
+    printf "Done running icacls\n"
+    #
 fi
 
 
