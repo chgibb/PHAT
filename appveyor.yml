@@ -17,17 +17,17 @@ test_script:
 
 artifacts:
   - path: phat-win32-x64-update.tar.gz
-    name: Update
+    name: to-publish
 
   - path: phat-win32-x64-setup.exe
-    name: Setup
+    name: to-publish
 
 deploy:
   provider: GitHub
   force_update: true
   auth_token:
     secure: fqX7hM2PGofEbimvGZVHX3VfHeKE+IFOQUOH/W96SWtmZNG+nUgou9zbCt6RA5j9
-  artifact: /(Update)|(Setup)/g
+  artifact: to-publish
   on:
     appveyor_repo_tag: true
 
