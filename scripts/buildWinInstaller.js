@@ -1,8 +1,16 @@
-var electronInstaller = require('electron-winstaller');
+const fs = require("fs");
+
+const electronInstaller = require('electron-winstaller');
+
+let buildTime = 0;
+let updateBuildTime = setTimeout(() => {
+  buildTime += 10;
+  console.log("Current Build Time For Installer: "+buildTime+" seconds");
+},10000);
 
 resultPromise = electronInstaller.createWindowsInstaller({
     appDirectory: './phat-win32-x64',
-    outputDirectory: './phat-installer-x64',
+    outputDirectory: '.',
     authors: 'Zehbe Lab',
     description: "Pathogen Host Analysis Tool",
     exe: 'phat.exe',
@@ -11,4 +19,11 @@ resultPromise = electronInstaller.createWindowsInstaller({
     //setupIcon: './icons/phat.ico'
   });
 
-resultPromise.then(() => console.log("It worked!"), (e) => console.log(`No dice: ${e.message}`));
+resultPromise.then(
+  () => {
+    fs.renameSync("Setup.exe","phat-win32-x64-setup.exe");
+    clearTimeout(updateBuildTime);
+    }, (e) => {
+      console.log(`No dice: ${e.message}`);
+      clearTimeout(updateBuildTime);
+    });
