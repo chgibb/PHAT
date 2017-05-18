@@ -15,8 +15,8 @@ test_script:
  - bash scripts/cleanTests.bash
 
 artifacts:
-  - path: phat-win32-x64-update.tar.gz
-  - path: phat-win32-x64-setup.exe
+  - path: '*.tar.gz'
+  - path: '*.exe'
 
 before_deploy:
   - bash scripts/prepareWindowsRelease.bash
