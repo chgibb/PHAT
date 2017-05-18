@@ -15,8 +15,11 @@ test_script:
  - bash scripts/cleanTests.bash
 
 artifacts:
-  - path: '\*.tar.gz'
-  - path: '\*.exe'
+  - path: phat-win32-x64-update.tar.gz
+    name: Update
+
+  - path: phat-win32-x64-setup.exe
+    name: Setup
 
 before_deploy:
   - bash scripts/prepareWindowsRelease.bash
@@ -26,7 +29,7 @@ deploy:
   force_update: true
   auth_token:
     secure: fqX7hM2PGofEbimvGZVHX3VfHeKE+IFOQUOH/W96SWtmZNG+nUgou9zbCt6RA5j9
-  artifact: /.*\.gz|.*\.exe/
+  artifact: Update, Setup
   on:
     appveyor_repo_tag: true
 
