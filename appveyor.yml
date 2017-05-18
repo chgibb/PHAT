@@ -26,7 +26,7 @@ deploy:
   force_update: true
   auth_token:
     secure: fqX7hM2PGofEbimvGZVHX3VfHeKE+IFOQUOH/W96SWtmZNG+nUgou9zbCt6RA5j9
-  artifacts: 'phat-win32-x64-setup.exe','phat-win32-x64-update.tar.gz)'
+  artifact: 'phat-win32-x64-setup.exe','phat-win32-x64-update.tar.gz)'
   on:
     appveyor_repo_tag: true
 
