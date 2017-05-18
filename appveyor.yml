@@ -27,7 +27,7 @@ deploy:
   force_update: true
   auth_token:
     secure: fqX7hM2PGofEbimvGZVHX3VfHeKE+IFOQUOH/W96SWtmZNG+nUgou9zbCt6RA5j9
-  artifact: Update, Setup
+  artifact: /(Update)|(Setup)/g
   on:
     appveyor_repo_tag: true
 
