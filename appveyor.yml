@@ -13,6 +13,7 @@ test_script:
  - bash scripts/buildtests.bash
  - npm test
  - bash scripts/cleanTests.bash
+ - bash scripts/prepareWindowsRelease.bash
 
 artifacts:
   - path: phat-win32-x64-update.tar.gz
@@ -20,9 +21,6 @@ artifacts:
 
   - path: phat-win32-x64-setup.exe
     name: Setup
-
-before_deploy:
-  - bash scripts/prepareWindowsRelease.bash
 
 deploy:
   provider: GitHub
