@@ -19,3 +19,5 @@ mv phat-win32-x64/*.tar.gz .
 
 
 node scripts/buildWinInstaller
+
+ls
