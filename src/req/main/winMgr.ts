@@ -32,6 +32,15 @@ export function pushWindow(refName : string,ref : Electron.BrowserWindow) : void
 	windows.push(new WindowRef(refName,ref));
 }
 
+export function closeAllExcept(refName : string) : void
+{
+	for(let i : number = 0; i != windows.length; ++i)
+	{
+		if(windows[i].name != refName)
+			windows[i].window.close();
+	}
+}
+
 export function getWindowsByName(refName : string) : Array<Electron.BrowserWindow>
 {
 	let res : Array<Electron.BrowserWindow> = new Array<Electron.BrowserWindow>();
