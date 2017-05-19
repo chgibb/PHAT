@@ -588,6 +588,8 @@ atomicOp.updates.on(
 atomicOp.updates.on(
 	"downloadAndInstallUpdate",function(op : DownloadAndInstallUpdate)
 	{
+		dataMgr.setKey("application","operations",atomicOp.operationsQueue);
+		dataMgr.publishChangeForKey("application","operations");
 		if(op.flags.success)
 		{
 			dataMgr.setKey("application","downloadedUpdate",true);
