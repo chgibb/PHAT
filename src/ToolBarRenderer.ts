@@ -37,15 +37,13 @@ $
                         val : {token : token}
                     }
                 );
-                setTimeout(
-                    function(){
-                        ipc.send(
-                            "runOperation",
-                            <AtomicOperationIPC>{
-                                opName : "checkForUpdate"
-                            }
-                        );
-                },1000);
+                ipc.send(
+                    "runOperation",
+                    <AtomicOperationIPC>{
+                        opName : "checkForUpdate"
+                    }
+                );
+                
             }).catch((err : string) => {
                 let remote = electron.remote;
                 remote.app.quit();
