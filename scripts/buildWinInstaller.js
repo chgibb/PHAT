@@ -3,7 +3,7 @@ const fs = require("fs");
 const electronInstaller = require('electron-winstaller');
 
 let buildTime = 0;
-let updateBuildTime = setTimeout(() => {
+let updateBuildTime = setInterval(() => {
   buildTime += 10;
   console.log("Current Build Time For Installer: "+buildTime+" seconds");
 },10000);
@@ -22,8 +22,8 @@ resultPromise = electronInstaller.createWindowsInstaller({
 resultPromise.then(
   () => {
     fs.renameSync("Setup.exe","phat-win32-x64-setup.exe");
-    clearTimeout(updateBuildTime);
+    clearInterval(updateBuildTime);
     }, (e) => {
       console.log(`No dice: ${e.message}`);
-      clearTimeout(updateBuildTime);
+      clearInterval(updateBuildTime);
     });
