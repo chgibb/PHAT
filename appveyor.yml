@@ -13,20 +13,21 @@ test_script:
  - bash scripts/buildtests.bash
  - npm test
  - bash scripts/cleanTests.bash
+ - bash scripts/prepareWindowsRelease.bash
 
 artifacts:
   - path: phat-win32-x64-update.tar.gz
-  - path: phat-win32-x64-setup.exe
+    name: to-publish
 
-before_deploy:
-  - bash scripts/prepareWindowsRelease.bash
+  - path: phat-win32-x64-setup.exe
+    name: to-publish
 
 deploy:
   provider: GitHub
   force_update: true
   auth_token:
     secure: fqX7hM2PGofEbimvGZVHX3VfHeKE+IFOQUOH/W96SWtmZNG+nUgou9zbCt6RA5j9
-  artifact: /(phat-win32-x64-setup.exe)|(phat-win32-x64-update.tar.gz)/
+  artifact: to-publish
   on:
     appveyor_repo_tag: true
 
