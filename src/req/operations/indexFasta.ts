@@ -141,7 +141,7 @@ export class IndexFasta extends atomic.AtomicOperation
                                     }
                                     let bowtieArgs : Array<string> = new Array<string>();
                                     if(process.platform == "linux")
-                                        bowtieArgs = [`"${self.fasta.path}"`,`"${self.bowTieIndexPath}"`];
+                                        bowtieArgs = [self.fasta.path,self.bowTieIndexPath];
                                     else if(process.platform == "win32")
                                         bowtieArgs = ['resources/app/bowtie2-build',`"${self.fasta.path}"`,`"${self.bowTieIndexPath}"`];
                                     self.bowtieJob = new Job(self.bowtie2BuildExe,bowtieArgs,"",true,jobCallBack,{});
