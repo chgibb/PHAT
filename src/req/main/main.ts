@@ -485,6 +485,7 @@ ipc.on(
 				asset : asset,
 				token : token
 			});
+			winMgr.closeAllExcept("toolBar");
 		}
 	}
 );
