@@ -9,6 +9,7 @@ const Dialogs = require("dialogs");
 const dialogs = Dialogs();
 
 import {checkServerPermission} from "./req/checkServerPermission";
+import formatByteString from "./req/renderer/formatByteString";
 
 import * as viewMgr from "./req/renderer/viewMgr";
 
@@ -84,7 +85,6 @@ $
         (
             "toolBar",function(event,arg)
             {
-                console.log(arg);
                 if(arg.action == "getKey" || arg.action == "keyChange")
                 {
                     if(arg.key == "operations" && arg.val !== undefined)
@@ -92,6 +92,14 @@ $
                         let ops : Array<AtomicOperation> = <Array<AtomicOperation>>arg.val;
                         for(let i = 0; i != ops.length; ++i)
                         {
+                            if(ops[i].name == "downloadAndInstallUpdate")
+                            {
+                                document.body.innerHTML = `
+                                    <h1>Downloaded: ${formatByteString(ops[i].extraData.downloadProgress)}</h1><br />
+                                    <h2>PHAT will close itself when the download is complete. Please wait a few minutes before restarting PHAT.</h2>
+
+                                `;
+                            }
                             if(ops[i].flags.done && ops[i].name != "checkForUpdate")
                             {
                                 let notification : Notification = new Notification(ops[i].flags.success ? "Success" : "Failure",<NotificationOptions>{
