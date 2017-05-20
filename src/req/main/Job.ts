@@ -10,7 +10,7 @@ import * as spawn from "child_process";
 import * as fs from "fs";
 
 import {SpawnRequestParams} from "./../JobIPC";
-
+import * as dataMgr from "./dataMgr";
 export interface JobCallBackObject
 {
 	send : (
@@ -61,8 +61,8 @@ export class Job
 		this.unBuffer = unBuffer;
 		this.extraData = extraData;
 		this.retCode = undefined;
-		this.errorLog = undefined;
-		this.vLog = undefined
+		this.errorLog = dataMgr.getKey("application","jobErrorLog");
+		this.vLog = dataMgr.getKey("application","jobVerboseLog");
 	}
     /**
      * @param {Buffer} data - data buffer to unbuffer to string
