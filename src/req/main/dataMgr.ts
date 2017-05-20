@@ -53,7 +53,6 @@ export function getChannel(channel : string) : any | undefined
     }
     catch(err)
     {
-        console.log(err);
         return undefined;
     }
 }
@@ -67,7 +66,6 @@ export function createChannel(channel : string) : boolean
     catch(err)
     {
         console.log("Could not get"+channel);
-        console.log(err);
         return false;
     }
 }
@@ -79,7 +77,6 @@ export function getKey(channel : string,key : string) : any | undefined
     }
     catch(err)
     {
-        console.log(err);
         return undefined;
     }
 }
