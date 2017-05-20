@@ -8,11 +8,16 @@
  */
 import {SpawnRequestParams} from "./../JobIPC";
 import * as spawn from "child_process";
+import * as fs from "fs";
 export interface JobCallBackObject
 {
 	send : (
 		callBackChannel : string,params : SpawnRequestParams
 	) => void;
+}
+export function logJobError(path : string,obj : SpawnRequestParams) : void
+{
+	fs.appendFileSync(path,JSON.stringify(obj,undefined,4));
 }
 export class Job
 {
@@ -33,6 +38,8 @@ export class Job
 	public done : boolean;
 	public running : boolean;
 	public extraData : any;
+	public retCode : number | undefined;
+	public errorLog : string;
 	public constructor(
 		processName : string,
 		args : Array<string>,
@@ -50,6 +57,8 @@ export class Job
 		this.running = false;
 		this.unBuffer = unBuffer;
 		this.extraData = extraData;
+		this.retCode = undefined;
+		this.errorLog = "spawnErrorLog.txt";
 	}
     /**
      * @param {Buffer} data - data buffer to unbuffer to string
@@ -76,34 +85,33 @@ export class Job
      */
 	OnErr(data : Buffer) : void
 	{
+		let obj : SpawnRequestParams;
 		if(!this.unBuffer)
 		{
-			this.callBackObj.send
-			(
-				this.callBackChannel,
-				{
-					processName : this.processName,
-					args : this.args,
-					data : data,
-					done : this.done,
-					extraData : this.extraData
-				}
-			);
+			obj = <SpawnRequestParams>{
+				processName : this.processName,
+				args : this.args,
+				data : data,
+				done : this.done,
+				extraData : this.extraData
+			};
+			
 		}
 		if(this.unBuffer)
 		{
-			this.callBackObj.send
-			(
-				this.callBackChannel,
-				{
-					processName : this.processName,
-					args : this.args,
-					done : this.done,
-					unBufferedData : this.unBufferBufferedData(data),
-					extraData : this.extraData
-				}
-			);
+			obj = <SpawnRequestParams>{
+				processName : this.processName,
+				args : this.args,
+				done : this.done,
+				unBufferedData : this.unBufferBufferedData(data),
+				extraData : this.extraData
+			};
 		}
+		if(this.retCode != undefined && this.retCode != 0)
+		{
+			logJobError(this.errorLog,obj);
+		}
+		this.callBackObj.send(this.callBackChannel,obj);
 	}
 	OnOut(data : Buffer) : void
 	{
@@ -117,17 +125,18 @@ export class Job
 	{
 		this.done = true;
 		this.running = false;
-		this.callBackObj.send
-		(
-			this.callBackChannel,
-			{
-				processName : this.processName,
-				args : this.args,
-				done : this.done,
-				retCode : retCode,
-				extraData : this.extraData
-			}
-		);
+		this.retCode = retCode;
+		let obj : SpawnRequestParams;
+		obj = <SpawnRequestParams>{
+			processName : this.processName,
+			args : this.args,
+			done : this.done,
+			retCode : retCode,
+			extraData : this.extraData
+		};
+		if(retCode != 0)
+			logJobError(this.errorLog,obj);
+		this.callBackObj.send(this.callBackChannel,obj);
 	}
 	Run()
 	{

@@ -114,7 +114,7 @@ export class IndexFasta extends atomic.AtomicOperation
                         }
                         else
                         {
-                            self.abortOperationWithMessage(`Failed to create 2bit index for ${self.fasta.uuid}`);
+                            self.abortOperationWithMessage(`Failed to create 2bit index for ${self.fasta.alias}`);
                             return;
                         }
                     }
@@ -162,7 +162,7 @@ export class IndexFasta extends atomic.AtomicOperation
                         }
                         else
                         {
-                            self.abortOperationWithMessage(`Failed to create fai index for ${self.fasta.uuid}`);
+                            self.abortOperationWithMessage(`Failed to create fai index for ${self.fasta.alias}`);
                             return;
                         }
                     }
@@ -186,7 +186,7 @@ export class IndexFasta extends atomic.AtomicOperation
                                     }
                                     catch(err)
                                     {
-                                        self.abortOperationWithMessage(`Failed to write all bowtie2 indices for ${self.fasta.uuid}`);
+                                        self.abortOperationWithMessage(`Failed to write all bowtie2 indices for ${self.fasta.alias}`);
                                         return;
                                     }
                                     self.fasta.indexed = true;
@@ -206,7 +206,7 @@ export class IndexFasta extends atomic.AtomicOperation
                         }
                         else
                         {
-                            self.abortOperationWithMessage(`Failed to create bowtie2 index for ${self.fasta.uuid}`);
+                            self.abortOperationWithMessage(`Failed to create bowtie2 index for ${self.fasta.alias}`);
                             return;
                         }
                     }
