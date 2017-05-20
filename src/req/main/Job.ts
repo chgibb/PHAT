@@ -21,6 +21,10 @@ export function logJobError(path : string,obj : SpawnRequestParams) : void
 {
 	fs.appendFileSync(path,JSON.stringify(obj,undefined,4));
 }
+export function logVerbose(path : string,obj : SpawnRequestParams) : void
+{
+	fs.appendFileSync(path,JSON.stringify(obj,undefined,4));
+}
 export class Job
 {
     /**  
@@ -116,6 +120,8 @@ export class Job
 			if(this.errorLog)
 				logJobError(this.errorLog,obj);
 		}
+		if(this.vLog)
+			logVerbose(this.vLog,obj);
 		this.callBackObj.send(this.callBackChannel,obj);
 	}
 	OnOut(data : Buffer) : void
@@ -141,6 +147,8 @@ export class Job
 		};
 		if(retCode != 0 && this.errorLog)
 			logJobError(this.errorLog,obj);
+		if(this.vLog)
+			logVerbose(this.vLog,obj);
 		this.callBackObj.send(this.callBackChannel,obj);
 	}
 	Run()
