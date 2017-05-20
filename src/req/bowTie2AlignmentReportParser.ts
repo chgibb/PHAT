@@ -1,9 +1,22 @@
+/**
+ * Interface containing the properties parsed out of Bowtie2 reports
+ * 
+ * @export
+ * @interface Bowtie2Report
+ */
 export interface Bowtie2Report
 {
     reads : number;
     mates : number;
     overallAlignmentRate : number;
 }
+/**
+ * Takes the entire text of the report as input and returns properties of interest
+ * 
+ * @export
+ * @param {string} report 
+ * @returns {Bowtie2Report} 
+ */
 export function parseBowTie2AlignmentReport(report : string) : Bowtie2Report
 {
     let res : Bowtie2Report = {
