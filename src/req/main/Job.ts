@@ -6,9 +6,11 @@
  * @see module:req/main/JobMgr
  * @module req/main/Job
  */
-import {SpawnRequestParams} from "./../JobIPC";
 import * as spawn from "child_process";
 import * as fs from "fs";
+
+import {SpawnRequestParams} from "./../JobIPC";
+import * as dataMgr from "./dataMgr";
 export interface JobCallBackObject
 {
 	send : (
@@ -16,6 +18,10 @@ export interface JobCallBackObject
 	) => void;
 }
 export function logJobError(path : string,obj : SpawnRequestParams) : void
+{
+	fs.appendFileSync(path,JSON.stringify(obj,undefined,4));
+}
+export function logVerbose(path : string,obj : SpawnRequestParams) : void
 {
 	fs.appendFileSync(path,JSON.stringify(obj,undefined,4));
 }
@@ -40,6 +46,7 @@ export class Job
 	public extraData : any;
 	public retCode : number | undefined;
 	public errorLog : string;
+	public vLog : string;
 	public constructor(
 		processName : string,
 		args : Array<string>,
@@ -58,7 +65,8 @@ export class Job
 		this.unBuffer = unBuffer;
 		this.extraData = extraData;
 		this.retCode = undefined;
-		this.errorLog = "spawnErrorLog.txt";
+		this.errorLog = dataMgr.getKey("application","jobErrorLog");
+		this.vLog = dataMgr.getKey("application","jobVerboseLog");
 	}
     /**
      * @param {Buffer} data - data buffer to unbuffer to string
@@ -109,8 +117,11 @@ export class Job
 		}
 		if(this.retCode != undefined && this.retCode != 0)
 		{
-			logJobError(this.errorLog,obj);
+			if(this.errorLog)
+				logJobError(this.errorLog,obj);
 		}
+		if(this.vLog)
+			logVerbose(this.vLog,obj);
 		this.callBackObj.send(this.callBackChannel,obj);
 	}
 	OnOut(data : Buffer) : void
@@ -134,8 +145,10 @@ export class Job
 			retCode : retCode,
 			extraData : this.extraData
 		};
-		if(retCode != 0)
+		if(retCode != 0 && this.errorLog)
 			logJobError(this.errorLog,obj);
+		if(this.vLog)
+			logVerbose(this.vLog,obj);
 		this.callBackObj.send(this.callBackChannel,obj);
 	}
 	Run()
