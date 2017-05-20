@@ -6,9 +6,11 @@
  * @see module:req/main/JobMgr
  * @module req/main/Job
  */
-import {SpawnRequestParams} from "./../JobIPC";
 import * as spawn from "child_process";
 import * as fs from "fs";
+
+import {SpawnRequestParams} from "./../JobIPC";
+
 export interface JobCallBackObject
 {
 	send : (
