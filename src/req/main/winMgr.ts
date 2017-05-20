@@ -6,6 +6,7 @@ const electron = require('electron');
 const BrowserWindow = electron.BrowserWindow;
 
 import * as dataMgr from "./dataMgr";
+import {GetKeyEvent,KeyChangeEvent} from "./../ipcEvents";
 
 
 export class WindowRef
@@ -64,7 +65,49 @@ export function getWindowsByName(refName : string) : Array<Electron.BrowserWindo
 	}
 	return res;
 }
+export function pushKeyTo(
+    channel : string,
+    key : string,
+    refName : string,
+    sender : Electron.WebContents) : void
+{
+    if(dataMgr.getChannel(channel))
+    {
+        sender.send(
+            refName,
+            <GetKeyEvent>{
+                replyChannel : refName,
+                channel : channel,
+                key : key,
+                val : dataMgr.getKey(channel,key),
+                action : "getKey"
+            }
+        );
+    }
+}
 
+export function publishChangeForKey(channel : string,key : string) : void
+{
+    for(let i : number = 0; i != dataMgr.keySubs.length; ++i)
+    {
+        if(dataMgr.keySubs[i].channel == channel)
+        {
+            let windows = getWindowsByName(dataMgr.keySubs[i].replyChannel);
+            for(let k : number = 0; k != windows.length; ++k)
+            {
+                windows[k].webContents.send(
+                    dataMgr.keySubs[i].replyChannel,
+                    <KeyChangeEvent>{
+                        action : "keyChange",
+                        channel : channel,
+                        key : key,
+                        val : dataMgr.getKey(channel,key)
+                    }
+                );
+            }
+        }
+    }
+}
 
 /**
  * Creates a new renderer window with default events attached.

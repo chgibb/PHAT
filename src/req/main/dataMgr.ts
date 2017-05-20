@@ -135,7 +135,7 @@ export interface KeySubObj
 	key : string;
 	replyChannel : string
 }
-let keySubs = new Array<KeySubObj>();
+export let keySubs = new Array<KeySubObj>();
 
 export function addSubscriberToKey(sub : KeySubObj) : void
 {
@@ -167,46 +167,5 @@ export function removeSubscriberFromKey(sub : KeySubObj)
 	}
 }
 
-export function pushKeyTo(
-    channel : string,
-    key : string,
-    refName : string,
-    sender : Electron.WebContents) : void
-{
-    if(getChannel(channel))
-    {
-        sender.send(
-            refName,
-            <GetKeyEvent>{
-                replyChannel : refName,
-                channel : channel,
-                key : key,
-                val : getKey(channel,key),
-                action : "getKey"
-            }
-        );
-    }
-}
 
-export function publishChangeForKey(channel : string,key : string) : void
-{
-    for(let i : number = 0; i != keySubs.length; ++i)
-    {
-        if(keySubs[i].channel == channel)
-        {
-            let windows = winMgr.getWindowsByName(keySubs[i].replyChannel);
-            for(let k : number = 0; k != windows.length; ++k)
-            {
-                windows[k].webContents.send(
-                    keySubs[i].replyChannel,
-                    <KeyChangeEvent>{
-                        action : "keyChange",
-                        channel : channel,
-                        key : key,
-                        val : getKey(channel,key)
-                    }
-                );
-            }
-        }
-    }
-}
+

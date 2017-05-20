@@ -370,7 +370,7 @@ ipc.on
 (
 	"getKey",function(event: Electron.IpcMainEvent,arg : GetKeyEvent)
 	{
-		dataMgr.pushKeyTo(
+		winMgr.pushKeyTo(
 			arg.channel,
 			arg.key,
 			arg.replyChannel,
@@ -389,7 +389,7 @@ ipc.on
 			arg.val
 		);
 
-		dataMgr.publishChangeForKey(arg.channel,arg.key);
+		winMgr.publishChangeForKey(arg.channel,arg.key);
 	}
 )
 
@@ -508,7 +508,7 @@ atomicOp.updates.on(
 	"indexFasta",function(op : atomicOp.AtomicOperation)
 	{
 		dataMgr.setKey("application","operations",atomicOp.operationsQueue);
-		dataMgr.publishChangeForKey("application","operations");
+		winMgr.publishChangeForKey("application","operations");
 		if(op.flags.success)
 		{
 			let fasta : File = (<IndexFasta>op).fasta;
@@ -523,7 +523,7 @@ atomicOp.updates.on(
 			}
 
 			dataMgr.setKey("input","fastaInputs",fastaInputs);
-			dataMgr.publishChangeForKey("input","fastaInputs");
+			winMgr.publishChangeForKey("input","fastaInputs");
 		}
 	}
 );
@@ -531,7 +531,7 @@ atomicOp.updates.on(
 	"generateFastQCReport",function(op : atomicOp.AtomicOperation)
 	{
 		dataMgr.setKey("application","operations",atomicOp.operationsQueue);
-		dataMgr.publishChangeForKey("application","operations");
+		winMgr.publishChangeForKey("application","operations");
 		if(op.flags.success)
 		{
 			let fastq : File = (<GenerateQCReport>op).fastq;
@@ -546,7 +546,7 @@ atomicOp.updates.on(
 			}
 
 			dataMgr.setKey("input","fastqInputs",fastqInputs);
-			dataMgr.publishChangeForKey("input","fastqInputs");
+			winMgr.publishChangeForKey("input","fastqInputs");
 		}
 	}
 );
@@ -554,7 +554,7 @@ atomicOp.updates.on(
 	"runAlignment",function(op : RunAlignment)
 	{
 		dataMgr.setKey("application","operations",atomicOp.operationsQueue);
-		dataMgr.publishChangeForKey("application","operations");
+		winMgr.publishChangeForKey("application","operations");
 		if(op.flags.success)
 		{
 			let aligns : Array<alignData> = dataMgr.getKey("align","aligns");
@@ -563,7 +563,7 @@ atomicOp.updates.on(
 
 			aligns.push(op.alignData);
 			dataMgr.setKey("align","aligns",aligns);
-			dataMgr.publishChangeForKey("align","aligns");
+			winMgr.publishChangeForKey("align","aligns");
 		}
 	}
 );
@@ -571,7 +571,7 @@ atomicOp.updates.on(
 	"renderCoverageTrackForContig",function(op : RenderCoverageTrackForContig)
 	{
 		dataMgr.setKey("application","operations",atomicOp.operationsQueue);
-		dataMgr.publishChangeForKey("application","operations");
+		winMgr.publishChangeForKey("application","operations");
 		if(op.flags.success)
 		{
 			let circularFigures : Array<CircularFigure> = dataMgr.getKey("circularGenomeBuilder","circularFigures");
@@ -581,7 +581,7 @@ atomicOp.updates.on(
 				{
 					circularFigures[i].renderedCoverageTracks.push(op.circularFigure.renderedCoverageTracks[op.circularFigure.renderedCoverageTracks.length - 1]);
 					dataMgr.setKey("circularGenomeBuilder","circularFigures",circularFigures);
-					dataMgr.publishChangeForKey("circularGenomeBuilder","circularFigures");
+					winMgr.publishChangeForKey("circularGenomeBuilder","circularFigures");
 					break;
 				}
 			}
@@ -594,7 +594,7 @@ atomicOp.updates.on(
 	{
 		console.log(op);
 		dataMgr.setKey("application","operations",atomicOp.operationsQueue);
-		dataMgr.publishChangeForKey("application","operations");
+		winMgr.publishChangeForKey("application","operations");
 		if(op.flags.success)
 		{
 			dataMgr.setKey("application","availableUpdate",op.extraData.asset);
@@ -605,7 +605,7 @@ atomicOp.updates.on(
 	"downloadAndInstallUpdate",function(op : DownloadAndInstallUpdate)
 	{
 		dataMgr.setKey("application","operations",atomicOp.operationsQueue);
-		dataMgr.publishChangeForKey("application","operations");
+		winMgr.publishChangeForKey("application","operations");
 		if(op.flags.success)
 		{
 			dataMgr.setKey("application","downloadedUpdate",true);
