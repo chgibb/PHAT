@@ -203,7 +203,7 @@ app.on
 				label: 'Send us feedback',
 				click () 
 				{ 
-					electron.shell.openExternal('mailto:'+pjson.author.email+'?subject=PHAT%20Feedback');
+					electron.shell.openExternal("https://github.com/chgibb/PHAT/issues");
 				}
 
 			},
@@ -211,7 +211,7 @@ app.on
 				label: 'Get Support',
 				click () 
 				{ 
-					electron.shell.openExternal('mailto:'+pjson.author.email+'?subject=PHAT%20Support');
+					electron.shell.openExternal("https://github.com/chgibb/PHAT/issues");
 				}
 			},
 			{
