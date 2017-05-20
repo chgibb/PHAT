@@ -40,6 +40,7 @@ export class Job
 	public extraData : any;
 	public retCode : number | undefined;
 	public errorLog : string;
+	public vLog : string;
 	public constructor(
 		processName : string,
 		args : Array<string>,
@@ -58,7 +59,8 @@ export class Job
 		this.unBuffer = unBuffer;
 		this.extraData = extraData;
 		this.retCode = undefined;
-		this.errorLog = "spawnErrorLog.txt";
+		this.errorLog = undefined;
+		this.vLog = undefined
 	}
     /**
      * @param {Buffer} data - data buffer to unbuffer to string
@@ -109,7 +111,8 @@ export class Job
 		}
 		if(this.retCode != undefined && this.retCode != 0)
 		{
-			logJobError(this.errorLog,obj);
+			if(this.errorLog)
+				logJobError(this.errorLog,obj);
 		}
 		this.callBackObj.send(this.callBackChannel,obj);
 	}
@@ -134,7 +137,7 @@ export class Job
 			retCode : retCode,
 			extraData : this.extraData
 		};
-		if(retCode != 0)
+		if(retCode != 0 && this.errorLog)
 			logJobError(this.errorLog,obj);
 		this.callBackObj.send(this.callBackChannel,obj);
 	}
