@@ -4,6 +4,13 @@ import Fastq from "./fastq";
 import {CompletionFlags} from "./operations/atomicOperations";
 export {CompletionFlags} from "./operations/atomicOperations";
 
+/**
+ * Interface used to request operation spawning and for recieving operation status updates
+ * over IPC
+ * 
+ * @export
+ * @interface AtomicOperationIPC
+ */
 export interface AtomicOperationIPC
 {
     opName? : string;
@@ -19,6 +26,12 @@ export interface AtomicOperationIPC
     token? : string;
 }
 
+/**
+ * Interface used to communicate with AtomicOperations running in forked processes
+ * 
+ * @export
+ * @interface AtomicOperationForkEvent
+ */
 export interface AtomicOperationForkEvent
 {
     setData? : boolean;
