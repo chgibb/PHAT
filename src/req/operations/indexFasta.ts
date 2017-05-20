@@ -181,7 +181,7 @@ export class IndexFasta extends atomic.AtomicOperation
                                     {
                                         for(let i : number = 0; i != self.bowtieIndices.length; ++i)
                                         {
-                                            fs.accessSync(self.bowtieIndices[i],fs.constants.F_OK | fs.constants.R_OK);
+                                            fs.accessSync(`${self.bowtieIndices[i]}`,fs.constants.F_OK | fs.constants.R_OK);
                                         }
                                     }
                                     catch(err)
