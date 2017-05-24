@@ -1,0 +1,1 @@
+cp forDist/styles/* dist/styles

@@ -18,7 +18,9 @@ if [[ "$OSTYPE" == "linux-gnu" ]]; then
     #copy in all 3rd party linux dependencies
     for f in forDist/linux/*.tar.gz
     do
-        tar -xzvf $f -C phat-linux-x64/resources/app
+        printf "Unpacking dependencies\n"
+        tar -xzvf $f -C phat-linux-x64/resources/app > /dev/null
+        printf "Done unpacking\n"
     done
     for f in forDist/linux/*
     do
@@ -39,7 +41,9 @@ if [[ "$OSTYPE" == "cygwin" ]]; then
     #copy in all 3rd party windows dependencies
     for f in forDist/win32/*.tar.gz
     do
-        tar -xzvf $f -C phat-win32-x64/resources/app
+        printf "Unpacking dependencies\n"
+        tar -xzvf $f -C phat-win32-x64/resources/app > /dev/null
+        printf "Done unpacking\n"
     done
     cp -R forDist/FastQC phat-win32-x64/resources/app
 fi
@@ -59,10 +63,5 @@ do
 done
 
 if [[ "$OSTYPE" == "cygwin" ]]; then
-    printf "Running icacls\n"
-    ./scripts/setPerms.bat
-    #cmd /c "icacls phat-win32-x64\\* /grant Everyone:(OI)(CI)F /T"
-    printf "Done running icacls\n"
-    #cmd /c "icacls phat-win32-x64\* /q /c /t /reset"
-    
+    ./scripts/setPerms.bat  
 fi

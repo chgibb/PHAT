@@ -49,7 +49,9 @@ fi
 
 #if linux then copy everything in dist into the created electron linux package
 if [[ "$OSTYPE" == "linux-gnu" ]]; then
-	cp -R -v dist/** phat-linux-x64/resources/app
+	printf "Copying built files\n"
+	cp -R dist/** phat-linux-x64/resources/app > /dev/null
+	printf "Done\n"
 	
 	#remove dist
 	rm -rf dist
@@ -57,7 +59,9 @@ fi
 
 #if windows then copy everything in dist into the created electron windows package
 if [[ "$OSTYPE" == "cygwin" ]]; then
-	cp -R -v dist/** phat-win32-x64/resources/app
+	printf "Copying built files\n"
+	cp -R dist/** phat-win32-x64/resources/app > /dev/null
+	printf "Done\n"
 
 	#remove dist
 	rm -rf dist
