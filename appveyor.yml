@@ -1,7 +1,7 @@
 clone_depth: 10
 init:
   - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
-  
+
 install:
   - ps: Install-Product node ''
   - ps: wget "https://github.com/icsharpcode/SharpZipLib/releases/download/0.86.0.518/ICSharpCode.SharpZipLib.dll" -OutFile "src/installUpdateProcess/ICSharpCode.SharpZipLib.dll"
@@ -36,6 +36,8 @@ deploy:
 environment:
   OSTYPE: 'cygwin'
   APPVEYOR: true
+  appveyor_rdp_password:
+    secure: HZDsRPdDWdN+s9VcHAXIyA==
 
 notifications:
   - provider: Slack
