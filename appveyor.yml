@@ -4,7 +4,7 @@ install:
   - ps: Install-Product node ''
   - ps: wget "https://github.com/icsharpcode/SharpZipLib/releases/download/0.86.0.518/ICSharpCode.SharpZipLib.dll" -OutFile "src/installUpdateProcess/ICSharpCode.SharpZipLib.dll"
   - ps: wget "https://github.com/chgibb/FastQC0.11.5/releases/download/v0.11.5/FastQC.tar.gz" -OutFile "FastQC.tar.gz"
-  - bash scripts/install.bash > /dev/null
+  - bash scripts/install.bash >nul
 
 build_script:
   - bash scripts/build.bash
