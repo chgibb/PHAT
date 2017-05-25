@@ -63,6 +63,9 @@ export default class Input extends DataModelMgr
     {
         if(!canRead(path))
             return false;
+        let hasComma : RegExp = new RegExp("(,)","g");
+        if(hasComma.test(path))
+            throw new Error("Comma in path");
         for(let i = 0; i != this.fastaInputs.length; ++i)
         {
             if(this.fastaInputs[i].path == path || this.fastaInputs[i].absPath == path)
