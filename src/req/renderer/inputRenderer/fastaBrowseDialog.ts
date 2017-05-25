@@ -35,7 +35,14 @@ export default function showFastaBrowseDialog(input : Input) : void
                 	//create new items if not already existing
 					if(!input.fastaExists(files[i]))
 					{
-                    	input.addFasta(files[i]);
+						try
+						{
+                    		input.addFasta(files[i]);
+						}
+						catch(err)
+						{
+							alert("Bowtie2 will reject fasta files with commas in their paths. Please remove all commas from the path and try again.");
+						}
 					}
                 }
 				input.postFastaInputs();
