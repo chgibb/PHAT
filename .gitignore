@@ -16,6 +16,7 @@ docs
 forDist/styles/jquery.minicolors.css
 forDist/styles/jquery.minicolors.png
 forDist/*.dll
+forDist/*.jar
 forDist/FastQC/**
 src/installUpdateProcess/*.dll
 \.idea/
