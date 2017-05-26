@@ -11,8 +11,23 @@ import Fastq from "./req/fastq";
 import {Fasta} from "./req/fasta";
 import {CircularFigure} from "./req/renderer/circularFigure";
 import {SpawnRequestParams} from "./req/JobIPC";
-
+import * as dataMgr from "./req/main/dataMgr";
 var assert = require("./req/tests/assert");
+
+let jobErrorLog = dataMgr.getKey("application","jobErrorLog");
+	let jobVerboseLog = dataMgr.getKey("application","jobVerboseLog");
+	try
+	{
+		fs.unlinkSync(jobErrorLog);
+	}
+	catch(err){}
+	try
+	{
+		fs.unlinkSync(jobVerboseLog);
+	}
+	catch(err){}
+	dataMgr.setKey("application","jobErrorLog","jobErrorLog.txt");
+	dataMgr.setKey("application","jobVerboseLog","jobVerboseLog.txt");
 
 try
 {

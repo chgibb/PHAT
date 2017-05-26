@@ -43,6 +43,9 @@ do
 	./phat
 	cd ../
 
+	cat tests/jobVerboseLog.txt
+	cat tests/jobErrorLog.txt
+
 done
 
 
