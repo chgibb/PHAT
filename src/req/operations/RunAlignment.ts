@@ -17,12 +17,14 @@ export class RunAlignment extends atomic.AtomicOperation
 
     public samToolsExe : string;
     public bowtie2Exe : string;
+    public varScanExe : string;
 
     public bowtieJob : Job;
     public samToolsIndexJob : Job;
     public samToolsSortJob : Job;
     public samToolsViewJob : Job;
     public samToolsDepthJob : Job;
+    public varScanJob : Job;
 
     public samToolsCoverageFileStream : fs.WriteStream;
 
@@ -31,6 +33,7 @@ export class RunAlignment extends atomic.AtomicOperation
     public samToolsSortFlags : atomic.CompletionFlags;
     public samToolsViewFlags : atomic.CompletionFlags;
     public samToolsDepthFlags : atomic.CompletionFlags;
+    public varScanDepthFlags : atomic.CompletionFlags;
     constructor()
     {
         super();
