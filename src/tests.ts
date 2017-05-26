@@ -70,6 +70,7 @@ atomic.updates.on(
 atomic.updates.on(
 	"indexFasta",function(op : atomic.AtomicOperation)
 	{
+		console.log(op);
 		if(op.flags.failure)
 		{
 			console.log(
