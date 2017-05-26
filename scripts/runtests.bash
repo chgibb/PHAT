@@ -5,6 +5,8 @@ cd tests
 
 node tests.js
 if [ $? != 0 ]; then
+	cat tests/jobVerboseLog.txt
+	cat tests/jobErrorLog.txt
 	exit 1
 fi
 
@@ -42,9 +44,6 @@ do
 	fi
 	./phat
 	cd ../
-
-	cat tests/jobVerboseLog.txt
-	cat tests/jobErrorLog.txt
 
 done
 
