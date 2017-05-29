@@ -91,7 +91,14 @@ export class RunAlignment extends atomic.AtomicOperation
                     self.setSuccess(self.samToolsIndexFlags);
                     self.update();
                     samToolsIndex(self).then((result) => {
-
+                        self.setSuccess(self.samToolsIndexFlags);
+                        self.update();
+                        samToolsDepth(self).then((result) => {
+                            self.setSuccess(self.flags);
+                            self.update();
+                        }).catch((err) => {
+                            self.abortOperationWithMessage(err);
+                        })
                     }).catch((err) => {
                         self.abortOperationWithMessage(err);
                     })
