@@ -18,5 +18,6 @@ forDist/styles/jquery.minicolors.png
 forDist/*.dll
 forDist/*.jar
 forDist/FastQC/**
+forDist/linux/samtools
 src/installUpdateProcess/*.dll
 \.idea/
