@@ -13,6 +13,7 @@ import {samToolsDepth} from "./RunAlignment/samToolsDepth";
 import {samToolsIndex} from "./RunAlignment/samToolsIndex";
 import {samToolsSort} from "./RunAlignment/samToolsSort";
 import {samToolsView} from "./RunAlignment/samToolsView";
+import {samToolsMPileup} from "./RunAlignment/samToolsMPileup";
 
 export class RunAlignment extends atomic.AtomicOperation
 {
@@ -30,9 +31,11 @@ export class RunAlignment extends atomic.AtomicOperation
     public samToolsSortJob : Job;
     public samToolsViewJob : Job;
     public samToolsDepthJob : Job;
+    public samToolsMPileupJob : Job;
     public varScanJob : Job;
 
     public samToolsCoverageFileStream : fs.WriteStream;
+    public samToolsMPileupStream : fs.WriteStream;
     public snpStream : fs.WriteStream;
 
     public bowtieFlags : atomic.CompletionFlags;
@@ -40,6 +43,7 @@ export class RunAlignment extends atomic.AtomicOperation
     public samToolsSortFlags : atomic.CompletionFlags;
     public samToolsViewFlags : atomic.CompletionFlags;
     public samToolsDepthFlags : atomic.CompletionFlags;
+    public samToolsMPileupFlags : atomic.CompletionFlags;
     public varScanDepthFlags : atomic.CompletionFlags;
     constructor()
     {
@@ -50,6 +54,7 @@ export class RunAlignment extends atomic.AtomicOperation
         this.samToolsSortFlags = new atomic.CompletionFlags();
         this.samToolsViewFlags = new atomic.CompletionFlags();
         this.samToolsDepthFlags = new atomic.CompletionFlags();
+        this.samToolsMPileupFlags = new atomic.CompletionFlags();
         this.varScanDepthFlags = new atomic.CompletionFlags();
 
         this.samToolsExe = 'resources/app/samtools';
@@ -103,9 +108,16 @@ export class RunAlignment extends atomic.AtomicOperation
 
                         samToolsDepth(self).then((result) => {
 
-                            self.setSuccess(self.flags);
-                            self.update();
-                            
+                            samToolsMPileup(self).then((result) => {
+
+                                self.setSuccess(self.samToolsMPileupFlags);
+
+                                self.setSuccess(self.flags);
+                                self.update();
+
+                            }).catch((err) => {
+                                self.abortOperationWithMessage(err);
+                            })
                         }).catch((err) => {
                             self.abortOperationWithMessage(err);
                         })
