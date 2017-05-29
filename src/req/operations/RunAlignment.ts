@@ -14,6 +14,7 @@ import {samToolsIndex} from "./RunAlignment/samToolsIndex";
 import {samToolsSort} from "./RunAlignment/samToolsSort";
 import {samToolsView} from "./RunAlignment/samToolsView";
 import {samToolsMPileup} from "./RunAlignment/samToolsMPileup";
+import {varScanMPileup2SNP} from "./RunAlignment/varScanMPileup2SNP"
 
 export class RunAlignment extends atomic.AtomicOperation
 {
@@ -36,7 +37,7 @@ export class RunAlignment extends atomic.AtomicOperation
 
     public samToolsCoverageFileStream : fs.WriteStream;
     public samToolsMPileupStream : fs.WriteStream;
-    public snpStream : fs.WriteStream;
+    public varScanMPileup2SNPStdOutStream : fs.WriteStream;
 
     public bowtieFlags : atomic.CompletionFlags;
     public samToolsIndexFlags : atomic.CompletionFlags;
@@ -113,9 +114,16 @@ export class RunAlignment extends atomic.AtomicOperation
 
                                 self.setSuccess(self.samToolsMPileupFlags);
 
-                                self.setSuccess(self.flags);
-                                self.update();
+                                varScanMPileup2SNP(self).then((result) => {
 
+                                    self.setSuccess(self.varScanMPileup2SNPFlags);
+
+                                    self.setSuccess(self.flags);
+                                    self.update();
+
+                                }).catch((err) => {
+                                    self.abortOperationWithMessage(err);
+                                })
                             }).catch((err) => {
                                 self.abortOperationWithMessage(err);
                             })
