@@ -18,7 +18,7 @@ export function samToolsSort(op : RunAlignment) : Promise<{}>
                         }
                         else
                         {
-                            return reject(`Failed to sort bam for ${self.alignData.alias}`);
+                            return reject(`Failed to sort bam for ${op.alignData.alias}`);
                         }
                     }
                 }
