@@ -41,7 +41,7 @@ export function samToolsMPileup(op : RunAlignment) : Promise<{}>
             <Array<string>>[
                 "mpileup",
                 "-f",
-                op.fasta,
+                op.fasta.path,
                 `resources/app/rt/AlignmentArtifacts/${op.alignData.uuid}/out.sorted.bam`
             ],"",true,jobCallBack,{}
         );
