@@ -93,6 +93,7 @@ atomic.updates.on(
 			console.log(
 				`Failed aligning ${(<RunAlignment>op).fastq1.alias} ${(<RunAlignment>op).fastq2.alias} against ${(<RunAlignment>op).fasta.alias}`	
 			);
+			console.log(op);
 		}
 		else if(op.flags.success)
 		{
