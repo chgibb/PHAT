@@ -91,10 +91,6 @@ export class Job
 	EmitStdo(data : Buffer,err : boolean,out : boolean) : void
 	{
 		let obj : SpawnRequestParams;
-		if(err && !out)
-			obj.err = true;
-		if(out && !err)
-			obj.out = true;
 		if(!this.unBuffer)
 		{
 			obj = <SpawnRequestParams>{
@@ -104,6 +100,10 @@ export class Job
 				done : this.done,
 				extraData : this.extraData
 			};
+			if(err && !out)
+				obj.err = true;
+			if(out && !err)
+				obj.out = true;
 			
 		}
 		if(this.unBuffer)
@@ -115,6 +115,10 @@ export class Job
 				unBufferedData : this.unBufferBufferedData(data),
 				extraData : this.extraData
 			};
+			if(err && !out)
+				obj.err = true;
+			if(out && !err)
+				obj.out = true;
 		}
 		if(this.retCode != undefined && this.retCode != 0)
 		{
