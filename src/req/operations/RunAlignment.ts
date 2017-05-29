@@ -82,20 +82,30 @@ export class RunAlignment extends atomic.AtomicOperation
     {
         let self = this;
         bowTie2Align(this).then((result) => {
+
             self.setSuccess(self.bowtieFlags);
             self.update();
+
             samToolsView(self).then((result) => {
+
                 self.setSuccess(self.samToolsViewFlags);
                 self.update();
+
                 samToolsSort(self).then((result) => {
+
                     self.setSuccess(self.samToolsIndexFlags);
                     self.update();
+
                     samToolsIndex(self).then((result) => {
+
                         self.setSuccess(self.samToolsIndexFlags);
                         self.update();
+
                         samToolsDepth(self).then((result) => {
+
                             self.setSuccess(self.flags);
                             self.update();
+                            
                         }).catch((err) => {
                             self.abortOperationWithMessage(err);
                         })
