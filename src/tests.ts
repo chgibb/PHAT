@@ -11,6 +11,10 @@ import Fastq from "./req/fastq";
 import {Fasta} from "./req/fasta";
 import {CircularFigure} from "./req/renderer/circularFigure";
 import {SpawnRequestParams} from "./req/JobIPC";
+import * as dataMgr from "./req/main/dataMgr";
+
+dataMgr.setKey("application","jobErrorLog","jobErrorLog.txt");
+dataMgr.setKey("application","jobVerboseLog","jobVerboseLog.txt");
 
 var assert = require("./req/tests/assert");
 
