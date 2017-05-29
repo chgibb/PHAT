@@ -32,7 +32,7 @@ export class RunAlignment extends atomic.AtomicOperation
     public samToolsViewJob : Job;
     public samToolsDepthJob : Job;
     public samToolsMPileupJob : Job;
-    public varScanJob : Job;
+    public varScanMPileup2SNPJob : Job;
 
     public samToolsCoverageFileStream : fs.WriteStream;
     public samToolsMPileupStream : fs.WriteStream;
@@ -44,7 +44,7 @@ export class RunAlignment extends atomic.AtomicOperation
     public samToolsViewFlags : atomic.CompletionFlags;
     public samToolsDepthFlags : atomic.CompletionFlags;
     public samToolsMPileupFlags : atomic.CompletionFlags;
-    public varScanDepthFlags : atomic.CompletionFlags;
+    public varScanMPileup2SNPFlags : atomic.CompletionFlags;
     constructor()
     {
         super();
@@ -55,7 +55,7 @@ export class RunAlignment extends atomic.AtomicOperation
         this.samToolsViewFlags = new atomic.CompletionFlags();
         this.samToolsDepthFlags = new atomic.CompletionFlags();
         this.samToolsMPileupFlags = new atomic.CompletionFlags();
-        this.varScanDepthFlags = new atomic.CompletionFlags();
+        this.varScanMPileup2SNPFlags = new atomic.CompletionFlags();
 
         this.samToolsExe = 'resources/app/samtools';
         if(process.platform == "linux")
