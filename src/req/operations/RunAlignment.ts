@@ -8,6 +8,12 @@ import {SpawnRequestParams} from "./../JobIPC";
 import {Job,JobCallBackObject} from "./../main/Job";
 import {parseBowTie2AlignmentReport} from "./../bowTie2AlignmentReportParser";
 
+import {bowTie2Align} from "./RunAlignment/bowTie2Align";
+import {samToolsDepth} from "./RunAlignment/samToolsDepth";
+import {samToolsIndex} from "./RunAlignment/samToolsIndex";
+import {samToolsSort} from "./RunAlignment/samToolsSort";
+import {samToolsView} from "./RunAlignment/samToolsView";
+
 export class RunAlignment extends atomic.AtomicOperation
 {
     public alignData : alignData;
@@ -74,6 +80,31 @@ export class RunAlignment extends atomic.AtomicOperation
     //bowtie2-align -> samtools view -> samtools sort -> samtools index -> samtools depth -> separate out coverage data
     public run() : void
     {
+        let self = this;
+        bowTie2Align(this).then((result) => {
+            self.setSuccess(self.bowtieFlags);
+            self.update();
+            samToolsView(self).then((result) => {
+                self.setSuccess(self.samToolsViewFlags);
+                self.update();
+                samToolsSort(self).then((result) => {
+                    self.setSuccess(self.samToolsIndexFlags);
+                    self.update();
+                    samToolsIndex(self).then((result) => {
+
+                    }).catch((err) => {
+                        self.abortOperationWithMessage(err);
+                    })
+                }).catch((err) => {
+                    self.abortOperationWithMessage(err);
+                })
+            }).catch((err) => {
+                self.abortOperationWithMessage(err);
+            })
+        }).catch((err) => {
+            self.abortOperationWithMessage(err);
+        });
+        /*
         let self = this;
         let jobCallBack : JobCallBackObject = {
             send(channel : string,params : SpawnRequestParams)
@@ -339,39 +370,7 @@ export class RunAlignment extends atomic.AtomicOperation
                 self.update();
             }
         };
-        let args : Array<string> = new Array<string>();
-        if(process.platform == "win32")
-            args.push("resources/app/bowtie2");
-        args.push("-x");
-        args.push(`resources/app/rt/indexes/${this.fasta.uuid}`);
-        args.push("-1");
-        args.push(this.fastq1.path);
-        args.push("-2");
-        args.push(this.fastq2.path);
-        args.push("-S");
-        args.push(`resources/app/rt/AlignmentArtifacts/${this.alignData.uuid}/out.sam`);
-
-        let invokeString = "";
-        for(let i = 0; i != args.length; ++i)
-        {
-            invokeString += args[i];
-            invokeString += " ";
-        }
-        this.alignData.invokeString = invokeString;
-        this.alignData.alias = `${this.fastq1.alias}, ${this.fastq2.alias}; ${this.fasta.alias}`;
-        fs.mkdirSync(`resources/app/rt/AlignmentArtifacts/${this.alignData.uuid}`);
-        fs.mkdirSync(`resources/app/rt/AlignmentArtifacts/${this.alignData.uuid}/contigCoverage`);
-        this.bowtieJob = new Job(this.bowtie2Exe,args,"",true,jobCallBack,{});
-        try
-        {
-            this.bowtieJob.Run();
-        }
-        catch(err)
-        {
-            this.abortOperationWithMessage(err);
-            return;
-        }
-        this.update();
+        */
     }
 
 }
