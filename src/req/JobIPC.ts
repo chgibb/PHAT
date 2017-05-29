@@ -10,6 +10,6 @@ export interface SpawnRequestParams
     unBufferedData? : string;
     data? : Buffer;
 
-    err? : boolean;
-    out? : boolean;
+    stderr? : boolean;
+    stdout? : boolean;
 }

@@ -101,9 +101,9 @@ export class Job
 				extraData : this.extraData
 			};
 			if(err && !out)
-				obj.err = true;
+				obj.stderr = true;
 			if(out && !err)
-				obj.out = true;
+				obj.stdout = true;
 			
 		}
 		if(this.unBuffer)

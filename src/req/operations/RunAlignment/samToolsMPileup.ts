@@ -13,7 +13,7 @@ export function samToolsMPileup(op : RunAlignment) : Promise<{}>
             {
                 if(params.processName == op.samToolsExe && params.args[0] == "mpileup")
                 {
-                    if(params.unBufferedData)
+                    if(params.unBufferedData && params.stdout)
                     {
                         op.samToolsMPileupStream.write(params.unBufferedData);
                     }
