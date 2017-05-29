@@ -27,6 +27,7 @@ export class RunAlignment extends atomic.AtomicOperation
     public varScanJob : Job;
 
     public samToolsCoverageFileStream : fs.WriteStream;
+    public snpStream : fs.WriteStream;
 
     public bowtieFlags : atomic.CompletionFlags;
     public samToolsIndexFlags : atomic.CompletionFlags;
@@ -43,12 +44,15 @@ export class RunAlignment extends atomic.AtomicOperation
         this.samToolsSortFlags = new atomic.CompletionFlags();
         this.samToolsViewFlags = new atomic.CompletionFlags();
         this.samToolsDepthFlags = new atomic.CompletionFlags();
+        this.varScanDepthFlags = new atomic.CompletionFlags();
 
         this.samToolsExe = 'resources/app/samtools';
         if(process.platform == "linux")
             this.bowtie2Exe = 'resources/app/bowtie2';
         else if(process.platform == "win32")
             this.bowtie2Exe = 'resources/app/perl/perl/bin/perl.exe';
+
+        this.varScanExe = "java";
     }
     public setData(
         data : {
@@ -282,8 +286,26 @@ export class RunAlignment extends atomic.AtomicOperation
                                 });
                                 rl.on("close",function(){
                                     self.setSuccess(self.samToolsDepthFlags);
-                                    self.setSuccess(self.flags);
-                                    self.update();
+                                    self.varScanJob = new Job(
+                                        self.varScanExe,
+                                        <string[]>[
+                                            "-jar",
+                                            "resources/app/varscan.jar",
+                                            "pileup2snp",
+                                            `resources/app/rt/AlignmentArtifacts/${self.alignData.uuid}/depth.coverage`
+                                        ],
+                                        "",true,jobCallBack,{}
+                                    );
+                                    try
+                                    {
+                                        self.varScanJob.Run();
+                                    }
+                                    catch(err)
+                                    {
+                                        self.abortOperationWithMessage(err);
+                                        return;
+                                    }
+                                    self.snpStream = fs.createWriteStream(`resources/app/rt/AlignmentArtifacts/${self.alignData.uuid}/snps.vcf`);
                                 });
                             },500
                         );
@@ -294,6 +316,24 @@ export class RunAlignment extends atomic.AtomicOperation
                         self.update();
                         self.samToolsCoverageFileStream.end();
                         return;
+                    }
+                }
+                if(params.processName == self.varScanExe)
+                {
+                    if(params.unBufferedData)
+                    {
+                        self.snpStream.write(params.unBufferedData);
+                    }
+                    else if(params.done && params.retCode !== undefined)
+                    {
+                        setTimeout(
+                            function(){
+                                self.snpStream.end();
+                                self.setSuccess(self.varScanDepthFlags);
+                                self.setSuccess(self.flags);
+                                self.update();
+                            }
+                        );
                     }
                 }
                 self.update();
