@@ -33,13 +33,13 @@ export function bowTie2Align(op : RunAlignment) : Promise<{}>
         if(process.platform == "win32")
             args.push("resources/app/bowtie2");
         args.push("-x");
-        args.push(`resources/app/rt/indexes/${this.fasta.uuid}`);
+        args.push(`resources/app/rt/indexes/${op.fasta.uuid}`);
         args.push("-1");
-        args.push(this.fastq1.path);
+        args.push(op.fastq1.path);
         args.push("-2");
-        args.push(this.fastq2.path);
+        args.push(op.fastq2.path);
         args.push("-S");
-        args.push(`resources/app/rt/AlignmentArtifacts/${this.alignData.uuid}/out.sam`);
+        args.push(`resources/app/rt/AlignmentArtifacts/${op.alignData.uuid}/out.sam`);
 
         let invokeString = "";
         for(let i = 0; i != args.length; ++i)
@@ -47,20 +47,19 @@ export function bowTie2Align(op : RunAlignment) : Promise<{}>
             invokeString += args[i];
             invokeString += " ";
         }
-        this.alignData.invokeString = invokeString;
-        this.alignData.alias = `${this.fastq1.alias}, ${this.fastq2.alias}; ${this.fasta.alias}`;
-        fs.mkdirSync(`resources/app/rt/AlignmentArtifacts/${this.alignData.uuid}`);
-        fs.mkdirSync(`resources/app/rt/AlignmentArtifacts/${this.alignData.uuid}/contigCoverage`);
-        this.bowtieJob = new Job(this.bowtie2Exe,args,"",true,jobCallBack,{});
+        op.alignData.invokeString = invokeString;
+        op.alignData.alias = `${op.fastq1.alias}, ${op.fastq2.alias}; ${op.fasta.alias}`;
+        fs.mkdirSync(`resources/app/rt/AlignmentArtifacts/${op.alignData.uuid}`);
+        fs.mkdirSync(`resources/app/rt/AlignmentArtifacts/${op.alignData.uuid}/contigCoverage`);
+        op.bowtieJob = new Job(op.bowtie2Exe,args,"",true,jobCallBack,{});
         try
         {
-            this.bowtieJob.Run();
+            op.bowtieJob.Run();
         }
         catch(err)
         {
-            this.abortOperationWithMessage(err);
-            return;
+            return reject(err);
         }
-        this.update();
+        op.update();
     });
 }
