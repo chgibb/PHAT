@@ -51,7 +51,7 @@ export function samToolsDepth(op : RunAlignment) : Promise<{}>
                         }
                         else
                         {
-                            reject(`Failed to get depth for ${self.alignData.alias}`);
+                            reject(`Failed to get depth for ${op.alignData.alias}`);
                         }
                 }
             }
