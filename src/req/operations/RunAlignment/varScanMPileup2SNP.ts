@@ -16,11 +16,11 @@ export function varScanMPileup2SNP(op : RunAlignment) : Promise<{}>
                     if(params.stdout)
                     {
                         op.varScanMPileup2SNPStdOutStream.write(params.unBufferedData);
-                        fs.writeFileSync(`resources/app/rt/AlignmentArtifacts/${op.alignData.uuid}/out`,params.unBufferedData);
+                        fs.appendFileSync(`resources/app/rt/AlignmentArtifacts/${op.alignData.uuid}/out`,params.unBufferedData);
                     }
                     else if(params.stderr)
                     {
-                        fs.writeFileSync(`resources/app/rt/AlignmentArtifacts/${op.alignData.uuid}/err`,params.unBufferedData);
+                        fs.appendFileSync(`resources/app/rt/AlignmentArtifacts/${op.alignData.uuid}/err`,params.unBufferedData);
                     }
                 }
                 else if(params.done && params.retCode !== undefined)
