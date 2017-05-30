@@ -14,10 +14,13 @@ export function varScanMPileup2SNP(op : RunAlignment) : Promise<{}>
                 if(params.unBufferedData)
                 {
                     if(params.stdout)
+                    {
                         op.varScanMPileup2SNPStdOutStream.write(params.unBufferedData);
+                        fs.writeFileSync("out",params.unBufferedData);
+                    }
                     else if(params.stderr)
                     {
-                        //process summary
+                        fs.writeFileSync("err",params.unBufferedData);
                     }
                 }
                 else if(params.done && params.retCode !== undefined)
