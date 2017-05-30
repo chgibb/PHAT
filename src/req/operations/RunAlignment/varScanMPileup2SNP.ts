@@ -42,10 +42,10 @@ export function varScanMPileup2SNP(op : RunAlignment) : Promise<{}>
             }
         }
         op.varScanMPileup2SNPJob = new Job(
-            op.varScanExe,
+            "java",
             <Array<string>>[
                 "-jar",
-                "resources/app/varscan.jar",
+                op.varScanExe,
                 "mpileup2snp",
                 `resources/app/rt/AlignmentArtifacts/${op.alignData.uuid}/pileup.mpileup`
             ],"",true,jobCallBack,{}

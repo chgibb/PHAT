@@ -64,7 +64,7 @@ export class RunAlignment extends atomic.AtomicOperation
         else if(process.platform == "win32")
             this.bowtie2Exe = 'resources/app/perl/perl/bin/perl.exe';
 
-        this.varScanExe = "java";
+        this.varScanExe = "resources/app/varscan.jar";
     }
     public setData(
         data : {
