@@ -3,7 +3,6 @@ import * as fs from "fs";
 import {RunAlignment} from "./../RunAlignment";
 import {SpawnRequestParams} from "./../../JobIPC";
 import {Job,JobCallBackObject} from "./../../main/Job";
-import {parseBowTie2AlignmentReport} from "./../../bowTie2AlignmentReportParser";
 
 export function samToolsMPileup(op : RunAlignment) : Promise<{}>
 {
