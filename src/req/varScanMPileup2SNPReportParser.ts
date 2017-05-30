@@ -43,8 +43,6 @@ export function varScanMPileup2SNPReportParser(report : string) : varScanMPileup
         if(isMinVarFreq.test(lines[i]))
         {
             tokens = lines[i].split(/\s/);
-            console.log("minvarfreq");
-            console.log(tokens);
             res.minVarFreq = parseFloat(tokens[3]);
             continue;
         }
@@ -52,8 +50,6 @@ export function varScanMPileup2SNPReportParser(report : string) : varScanMPileup
         if(isMinAvgQual.test(lines[i]))
         {
             tokens = lines[i].split(/\s/);
-            console.log("minavgqual");
-            console.log(tokens);
             res.minAvgQual = parseInt(tokens[3]);
             continue;
         }
@@ -61,8 +57,6 @@ export function varScanMPileup2SNPReportParser(report : string) : varScanMPileup
         if(isPValueThresh.test(lines[i]))
         {
             tokens = lines[i].split(/\s/);
-            console.log("pvaluethresh");
-            console.log(tokens);
             res.pValueThresh = parseFloat(tokens[2]);
             continue;
         }
