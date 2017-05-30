@@ -3,7 +3,7 @@ import * as fs from "fs";
 import {RunAlignment} from "./../RunAlignment";
 import {SpawnRequestParams} from "./../../JobIPC";
 import {Job,JobCallBackObject} from "./../../main/Job";
-import {parseBowTie2AlignmentReport} from "./../../bowTie2AlignmentReportParser";
+import {varScanMPileup2SNPReportParser} from "./../../varScanMPileup2SNPReportParser";
 
 export function varScanMPileup2SNP(op : RunAlignment) : Promise<{}>
 {
@@ -16,11 +16,10 @@ export function varScanMPileup2SNP(op : RunAlignment) : Promise<{}>
                     if(params.stdout)
                     {
                         op.varScanMPileup2SNPStdOutStream.write(params.unBufferedData);
-                        fs.appendFileSync(`resources/app/rt/AlignmentArtifacts/${op.alignData.uuid}/out`,params.unBufferedData);
                     }
                     else if(params.stderr)
                     {
-                        fs.appendFileSync(`resources/app/rt/AlignmentArtifacts/${op.alignData.uuid}/err`,params.unBufferedData);
+                        op.alignData.varScanSNPReport += params.unBufferedData;
                     }
                 }
                 else if(params.done && params.retCode !== undefined)
@@ -30,6 +29,7 @@ export function varScanMPileup2SNP(op : RunAlignment) : Promise<{}>
                         setTimeout(
                             function(){
                                 op.varScanMPileup2SNPStdOutStream.end();
+                                op.alignData.varScanSNPSummary = varScanMPileup2SNPReportParser(op.alignData.varScanSNPReport);
                                 resolve();
                             },500
                         );
