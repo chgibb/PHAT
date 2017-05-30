@@ -78,7 +78,6 @@ export function varScanMPileup2SNPReportParser(report : string) : varScanMPileup
             continue;
         }
     }
-
     return res;
 
 }
