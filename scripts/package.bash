@@ -45,6 +45,19 @@ if [[ "$OSTYPE" == "cygwin" ]]; then
         tar -xzvf $f -C phat-win32-x64/resources/app > /dev/null
         printf "Done unpacking\n"
     done
+    for f in forDist/win32/*
+    do
+        if [ "$f" == "forDist/linux/cygwin.tar.gz" ]; then
+            continue
+        fi
+        if [ "$f" == "forDist/linux/python.tar.gz" ]; then
+            continue
+        fi
+        if [ "$f" == "forDist/linux/win32.tar.gz" ]; then
+            continue
+        fi
+        cp $f phat-win32-x64/resources/app
+    done
     cp -R forDist/FastQC phat-win32-x64/resources/app
 fi
 
