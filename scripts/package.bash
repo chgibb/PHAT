@@ -47,13 +47,13 @@ if [[ "$OSTYPE" == "cygwin" ]]; then
     done
     for f in forDist/win32/*
     do
-        if [ "$f" == "forDist/linux/cygwin.tar.gz" ]; then
+        if [ "$f" == "forDist/win32/cygwin.tar.gz" ]; then
             continue
         fi
-        if [ "$f" == "forDist/linux/python.tar.gz" ]; then
+        if [ "$f" == "forDist/win32/python.tar.gz" ]; then
             continue
         fi
-        if [ "$f" == "forDist/linux/win32.tar.gz" ]; then
+        if [ "$f" == "forDist/win32/win32.tar.gz" ]; then
             continue
         fi
         cp $f phat-win32-x64/resources/app
