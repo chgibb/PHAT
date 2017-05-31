@@ -9,4 +9,7 @@ export interface SpawnRequestParams
     retCode? : number;
     unBufferedData? : string;
     data? : Buffer;
+
+    stderr? : boolean;
+    stdout? : boolean;
 }

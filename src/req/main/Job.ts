@@ -87,11 +87,8 @@ export class Job
 		unBufferedData = unBufferedData.replace(new RegExp("\\u0000","g"),"");
 		return unBufferedData;
 	}
-    /**
-     * On output over stderr. Forwards data from stderr.
-     * @param {string} data - stderr output from process
-     */
-	OnErr(data : Buffer) : void
+    
+	EmitStdo(data : Buffer,err : boolean,out : boolean) : void
 	{
 		let obj : SpawnRequestParams;
 		if(!this.unBuffer)
@@ -103,6 +100,10 @@ export class Job
 				done : this.done,
 				extraData : this.extraData
 			};
+			if(err && !out)
+				obj.stderr = true;
+			if(out && !err)
+				obj.stdout = true;
 			
 		}
 		if(this.unBuffer)
@@ -114,6 +115,10 @@ export class Job
 				unBufferedData : this.unBufferBufferedData(data),
 				extraData : this.extraData
 			};
+			if(err && !out)
+				obj.stderr = true;
+			if(out && !err)
+				obj.stdout = true;
 		}
 		if(this.retCode != undefined && this.retCode != 0)
 		{
@@ -126,7 +131,11 @@ export class Job
 	}
 	OnOut(data : Buffer) : void
 	{
-		this.OnErr(data);
+		this.EmitStdo(data,false,true);
+	}
+	OnErr(data : Buffer) : void
+	{
+		this.EmitStdo(data,true,false);
 	}
 	OnSpawnError(err : string) : void
 	{
