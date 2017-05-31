@@ -26,6 +26,12 @@ export class ReportView extends viewMgr.View
                     <th>Reads</th>
                     <th>Mates</th>
                     <th>Overall Alignment Rate %</th>
+                    <th>Minimum Coverage</th>
+                    <th>Minimum Variable Frequency</th>
+                    <th>Minimum Average Quality</th>
+                    <th>P-Value Threshold</th>
+                    <th>SNPs Predicted</th>
+                    <th>Indels Predicted</th>
                     <th>Date Ran</th>
                 </tr>
                 ${(()=>{
@@ -67,6 +73,12 @@ export class ReportView extends viewMgr.View
                                         <td>${this.aligns[i].summary.reads}</td>
                                         <td>${this.aligns[i].summary.mates}</td>
                                         <td>${this.aligns[i].summary.overallAlignmentRate}</td>
+                                        <td>${this.aligns[i].varScanSNPSummary.minCoverage}</td>
+                                        <td>${this.aligns[i].varScanSNPSummary.minVarFreq}</td>
+                                        <td>${this.aligns[i].varScanSNPSummary.minAvgQual}</td>
+                                        <td>${this.aligns[i].varScanSNPSummary.pValueThresh}</td>
+                                        <td>${this.aligns[i].varScanSNPSummary.SNPsReported}</td>
+                                        <td>${this.aligns[i].varScanSNPSummary.indelsReported}</td>
                                         <td>${this.aligns[i].dateStampString}</td>
                                     </tr>
                                 `;
