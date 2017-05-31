@@ -19,5 +19,6 @@ forDist/*.dll
 forDist/*.jar
 forDist/FastQC/**
 forDist/linux/samtools
+forDist/win32/*.exe
 src/installUpdateProcess/*.dll
 \.idea/
