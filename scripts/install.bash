@@ -2,6 +2,9 @@
 (set -o igncr) 2>/dev/null && set -o igncr; # For Cygwin on Windows compaibility
 #set -e
 
+if [[ "$APPVEYOR" == true ]]; then
+	PATH=~/c/cygwin64/bin:$PATH
+fi
 #install all deb packages under scripts/install
 sudo dpkg -R -i scripts/install
 
