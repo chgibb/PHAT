@@ -18,7 +18,7 @@ if [[ "$OSTYPE" == "cygwin" ]]; then
     ./configure --without-curses --disable-bz2 --disable-lzma
     make
     cd ../
-    cp samtools-1.4.1/samtools.exe forDist/linux/samtools.exe
+    cp samtools-1.4.1/samtools.exe forDist/win32/samtools.exe
 fi
 rm -rf samtools-1.4.1
 rm samtools-1.4.1.tar.bz2
