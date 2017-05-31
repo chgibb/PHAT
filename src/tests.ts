@@ -278,6 +278,36 @@ assert.assert(function(){
 
 },'Alignment has correct alignment rate	',0);
 
+assert.assert(function(){
+	return L6R1HPV16Alignment.varScanSNPSummary.minCoverage == 8 ? true : false;
+
+},'Alignment has correct minimum coverage',0);
+
+assert.assert(function(){
+	return L6R1HPV16Alignment.varScanSNPSummary.minVarFreq == 0.2 ? true : false;
+
+},'Alignment has correct minimum variable frequency',0);
+
+assert.assert(function(){
+	return L6R1HPV16Alignment.varScanSNPSummary.minAvgQual == 15 ? true : false;
+
+},'Alignment has correct minimum average quality',0);
+
+assert.assert(function(){
+	return L6R1HPV16Alignment.varScanSNPSummary.pValueThresh == 0.01 ? true : false;
+
+},'Alignment has correct p-value threshold',0);
+
+assert.assert(function(){
+	return L6R1HPV16Alignment.varScanSNPSummary.SNPsReported == 8 ? true : false;
+
+},'Alignment has correct predicted SNPs',0);
+
+assert.assert(function(){
+	return L6R1HPV16Alignment.varScanSNPSummary.indelsReported == 0 ? true : false;
+
+},'Alignment has correct predicted indels',0);
+
 
 assert.assert(function(){
 
@@ -302,6 +332,36 @@ assert.assert(function(){
 	return L6R1HPV18Alignment.summary.overallAlignmentRate == 0 ? true : false;
 
 },'Alignment has correct alignment rate	',0);
+
+assert.assert(function(){
+	return L6R1HPV18Alignment.varScanSNPSummary.minCoverage == 8 ? true : false;
+
+},'Alignment has correct minimum coverage',0);
+
+assert.assert(function(){
+	return L6R1HPV18Alignment.varScanSNPSummary.minVarFreq == 0.2 ? true : false;
+
+},'Alignment has correct minimum variable frequency',0);
+
+assert.assert(function(){
+	return L6R1HPV18Alignment.varScanSNPSummary.minAvgQual == 15 ? true : false;
+
+},'Alignment has correct minimum average quality',0);
+
+assert.assert(function(){
+	return L6R1HPV18Alignment.varScanSNPSummary.pValueThresh == 0.01 ? true : false;
+
+},'Alignment has correct p-value threshold',0);
+
+assert.assert(function(){
+	return L6R1HPV18Alignment.varScanSNPSummary.SNPsReported == 0 ? true : false;
+
+},'Alignment has correct predicted SNPs',0);
+
+assert.assert(function(){
+	return L6R1HPV18Alignment.varScanSNPSummary.indelsReported == 0 ? true : false;
+
+},'Alignment has correct predicted indels',0);
 
 
 assert.assert(function(){
