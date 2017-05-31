@@ -26,30 +26,30 @@ export function samToolsSort(op : RunAlignment) : Promise<{}>
         }
         let input : string = `resources/app/rt/AlignmentArtifacts/${op.alignData.uuid}/out.bam`;
         let output : string;
-        if(process.platform == "win32")
-            output = `resources/app/rt/AlignmentArtifacts/${op.alignData.uuid}/out.sorted`
-        else if(process.platform == "linux")
+     //   if(process.platform == "win32")
+     //       output = `resources/app/rt/AlignmentArtifacts/${op.alignData.uuid}/out.sorted`
+    //    else if(process.platform == "linux")
             output = `resources/app/rt/AlignmentArtifacts/${op.alignData.uuid}/out.sorted.bam`
 
         let args : Array<string> = new Array<string>();
-        if(process.platform == "linux")
-        {
+     //   if(process.platform == "linux")
+      //  {
             args = <Array<string>>[
                 "sort",
                 input,
                 "-o",
                 output
             ];
-        }
+     //   }
         //samtools sort options are slightly different on windows for some reason
-        else if(process.platform == "win32")
+       /* else if(process.platform == "win32")
         {
             args = <Array<string>>[
                 "sort",
                 input,
                 output
             ];
-        }
+        }*/
         op.samToolsSortJob = new Job(op.samToolsExe,args,"",true,jobCallBack,{});
         try
         {
