@@ -20,5 +20,5 @@ if [[ "$OSTYPE" == "cygwin" ]]; then
     cd ../
     cp samtools-1.4.1/samtools.exe forDist/win32/samtools.exe
 fi
-rm -rf samtools-1.4.1
+#rm -rf samtools-1.4.1
 #rm samtools-1.4.1.tar.bz2
