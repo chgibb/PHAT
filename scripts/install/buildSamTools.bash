@@ -9,16 +9,17 @@ if [[ "$OSTYPE" == "linux-gnu" ]]; then
     cd ../
     cp samtools-1.4.1/samtools forDist/linux/samtools
 fi
-
-if [[ "$OSTYPE" == "cygwin" ]]; then
+#This section is used to build on Windows. Building is fucked on Appveyor and there is no time to fix it
+#This has been run to produce a binary that has been archived in forDist/win32/win32.tar.gz
+#if [[ "$OSTYPE" == "cygwin" ]]; then
     #Windows isn't even supported by samtools so this is a huge hack to begin with
     #It's too much work (for now) to figure out how to build with bz2 and lzma support so just disable it
     #Also disable curses because we don't even use tview (for now)
     #This has the effect of disabling support for tview as well as any kind of CRAM handling
-    ./configure --without-curses --disable-bz2 --disable-lzma
-    make
-    cd ../
-    cp samtools-1.4.1/samtools.exe forDist/win32/samtools.exe
-fi
-#rm -rf samtools-1.4.1
-#rm samtools-1.4.1.tar.bz2
+#    ./configure --without-curses --disable-bz2 --disable-lzma
+#    make
+#    cd ../
+#    cp samtools-1.4.1/samtools.exe forDist/win32/samtools.exe
+#fi
+rm -rf samtools-1.4.1
+rm samtools-1.4.1.tar.bz2
