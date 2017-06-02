@@ -3,7 +3,7 @@ import {IndexFasta} from "./../indexFasta";
 import {SpawnRequestParams} from "./../../JobIPC";
 import {Job,JobCallBackObject} from "./../../main/Job";
 
-export function foToTwoBit(op : IndexFasta) : Promise<{}>
+export function faToTwoBit(op : IndexFasta) : Promise<{}>
 {
     return new Promise((resolve,reject) => {
         let jobCallBack : JobCallBackObject = {
