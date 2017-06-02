@@ -3,11 +3,12 @@ import * as fs from "fs";
 const fse = require("fs-extra");
 
 import {IndexFasta} from "./../indexFasta";
+import {RunAlignment} from "./../RunAlignment";
 
 import {SpawnRequestParams} from "./../../JobIPC";
 import {Job,JobCallBackObject} from "./../../main/Job";
 
-export function samToolsFaidx(op : IndexFasta) : Promise<{}>
+export function samToolsFaidx(op : IndexFasta | RunAlignment) : Promise<{}>
 {
     return new Promise((resolve,reject) => {
         let jobCallBack : JobCallBackObject = {
