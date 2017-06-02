@@ -115,7 +115,6 @@ export class GenomeView extends viewMgr.View
         let masterView = <masterView.View>viewMgr.getViewByName("masterView");
         let genomeView = <GenomeView>viewMgr.getViewByName("genomeView",masterView.views);
         genomeView.firstRender = true;
-        //masterView.dataChanged();
         viewMgr.render();
     }
     public renderView() : string
@@ -170,6 +169,9 @@ export class GenomeView extends viewMgr.View
                                 <br />
                                 <label>Interval:
                                     <input type="number" ng-model="genome.circularFigureBPTrackOptions.interval" required>
+                                </label>
+                                <label>Show Inside Figure
+                                    <input type="checkbox" ng-model="genome.circularFigureBPTrackOptions.direction" ng-true-value="'in'" ng-false-value="'out'" ng-change="showBPTrackOnChange()">
                                 </label>
                              `;
                          }
