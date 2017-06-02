@@ -28,6 +28,7 @@ export function bowTie2Build(op : IndexFasta) : Promise<string | undefined>
                                 {
                                     reject(`Failed to write all bowtie2 indices for ${op.fasta.alias}`);
                                 }
+                                resolve();
                             },5000
                         );
                     }
