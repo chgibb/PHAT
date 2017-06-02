@@ -58,18 +58,17 @@ catch(err)
 {
 	let jobErrorLog = dataMgr.getKey("application","jobErrorLog");
 	let jobVerboseLog = dataMgr.getKey("application","jobVerboseLog");
+
 	try
 	{
-		fs.unlinkSync(jobErrorLog);
+		fs.unlink(jobErrorLog,function(err : NodeJS.ErrnoException){});
+		fs.unlink(jobVerboseLog,function(err : NodeJS.ErrnoException){});
 	}
 	catch(err){}
-	try
-	{
-		fs.unlinkSync(jobVerboseLog);
-	}
-	catch(err){}
+
 	dataMgr.setKey("application","jobErrorLog","jobErrorLog.txt");
 	dataMgr.setKey("application","jobVerboseLog","jobVerboseLog.txt");
+
 }
 
 app.on
@@ -294,44 +293,13 @@ app.on
 
 		setInterval(function(){atomicOp.runOperations(1);},2500);
 		//After an update has been installed, update the updater with new binaries.
-		try
-		{
-			fs.rename("resources/app/newCSharpCode.SharpZipLib.dll","resources/app/ICSharpCode.SharpZipLib.dll",function(err : NodeJS.ErrnoException){});
-			fs.rename("resources/app/newinstallUpdateProcess.exe","resources/app/installUpdateProcess.exe",function(err : NodeJS.ErrnoException){});
-		}
-		catch(err){}
+		fs.rename("resources/app/newCSharpCode.SharpZipLib.dll","resources/app/ICSharpCode.SharpZipLib.dll",function(err : NodeJS.ErrnoException){});
+		fs.rename("resources/app/newinstallUpdateProcess.exe","resources/app/installUpdateProcess.exe",function(err : NodeJS.ErrnoException){});
+
+		fs.unlink("phat.update",function(err : NodeJS.ErrnoException){});
 	}
 );
-/*
-app.on
-(
-	'window-all-closed',function() 
-	{
-  		if(process.platform !== 'darwin' || winMgr.getWindowsByName("toolBar").length == 0)
-		{
-			if(dataMgr.getKey("application","downloadedUpdate"))
-			{
-				console.log("downloadedUpdate was set");
-				let installer = cp.spawn(
-                             "python",["resources/app/installUpdate.py"],
-                            {
-                                detached : true,
-                                stdio : [
-                                    "ignore","ignore","ignore"
-                                ]
-                            }
-                        );
-                        installer.unref();
-						console.log("spawned installUpdate.py");
-			}
-			dataMgr.setKey("application","operations",{});
-			console.log("cleared operations");
-			dataMgr.saveData();
-			console.log("saved data");
-    		//app.quit();
-  		}
-	}
-);*/
+
 
 app.on
 (
