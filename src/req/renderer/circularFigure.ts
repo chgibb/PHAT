@@ -54,7 +54,7 @@ export class CircularFigureBPTrackOptions
         this.direction = "out";
     }
 }
-export class RenderedCoverageTrackRecord
+export class RenderedTrackRecord
 {
     public uuid : string;
     public uuidAlign : string;
@@ -78,6 +78,32 @@ export class RenderedCoverageTrackRecord
             this.checked = false;
             this.colour = colour;
         }
+}
+export class RenderedCoverageTrackRecord extends RenderedTrackRecord
+{
+    public constructor(
+        uuidAlign : string,
+        uuidContig : string,
+        uuidFigure : string,
+        colour : string,
+        path : string
+    )
+    {
+        super(uuidAlign,uuidContig,uuidFigure,colour,path);
+    }
+}
+export class RenderedSNPTrackRecord extends RenderedTrackRecord
+{
+    public constructor(
+        uuidAlign : string,
+        uuidContig : string,
+        uuidFigure : string,
+        colour : string,
+        path : string
+    )
+    {
+        super(uuidAlign,uuidContig,uuidFigure,colour,path);
+    }
 }
 export class CircularFigure
 {
