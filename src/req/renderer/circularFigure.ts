@@ -300,27 +300,6 @@ export function renderCoverageTracks(
             res += `</plasmidtrack>`;
             coverageTracks += res;
         }
-       /* 
-        let lowest = depths[0];
-        let res = "";
-            res += `
-            <plasmidtrack trackstyle="fill-opacity:0.0;fill:${colour}" width="10" radius="{{genome.radius+${100+lowest.depth}}}" >
-                <trackmarker start="${baseBP+lowest.positions[lowest.positions[lowest.positions.length - 1]]}" style="stroke:#c00;stroke-width:2px;" wadjust="12" vadjust="-6">
-                    <markerlabel text="${lowest.depth}" type="path" valign="outer" hadjust="-2" vadjust="38"></markerlabel>
-                </trackmarker>
-                </plasmidtrack>
-            `;
-        let highest = depths[depths.length - 1];
-        res += `
-            <plasmidtrack trackstyle="fill-opacity:0.0;fill:${colour}" width="10" radius="{{genome.radius+${100+highest.depth}}}" >
-                <trackmarker start="${baseBP+highest.positions[highest.positions.length - 1]}" style="stroke:#c00;stroke-width:2px;" wadjust="12" vadjust="-6">
-                    <markerlabel text="${highest.depth}" type="path" valign="outer" hadjust="-2" vadjust="38"></markerlabel>
-                </trackmarker>
-                </plasmidtrack>
-            `;
-        coverageTracks += res;
-        fs.writeFileSync("coverage",JSON.stringify(depths,undefined,4));
-        */
         cb(true,coverageTracks);
     });
 }
