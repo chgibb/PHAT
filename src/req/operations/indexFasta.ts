@@ -11,6 +11,10 @@ import {makeValidID} from "./../MakeValidID";
 import {SpawnRequestParams} from "./../JobIPC";
 
 import {Job,JobCallBackObject} from "./../main/Job";
+
+import {bowTie2Build} from "./indexFasta/bowTie2Build";
+import {faToTwoBit} from "./indexFasta/faToTwoBit";
+import {samToolsFaidx} from "./indexFasta/samToolsFaidx";
 export class IndexFasta extends atomic.AtomicOperation
 {
     public fasta : Fasta;
@@ -87,7 +91,7 @@ export class IndexFasta extends atomic.AtomicOperation
     public run() : void
     {
         let self = this;
-        let jobCallBack : JobCallBackObject = {
+        /*let jobCallBack : JobCallBackObject = {
             send(channel : string,params : SpawnRequestParams)
             {
                 if(self.flags.done)
@@ -224,5 +228,6 @@ export class IndexFasta extends atomic.AtomicOperation
             return;
         }
         this.update();
+        */
     }
 }
