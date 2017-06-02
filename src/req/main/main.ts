@@ -59,11 +59,12 @@ catch(err)
 	let jobErrorLog = dataMgr.getKey("application","jobErrorLog");
 	let jobVerboseLog = dataMgr.getKey("application","jobVerboseLog");
 
-	fs.unlink(jobErrorLog);
-	fs.unlink(jobVerboseLog);
+	fs.unlink(jobErrorLog,function(err : NodeJS.ErrnoException){});
+	fs.unlink(jobVerboseLog,function(err : NodeJS.ErrnoException){});
 
 	dataMgr.setKey("application","jobErrorLog","jobErrorLog.txt");
 	dataMgr.setKey("application","jobVerboseLog","jobVerboseLog.txt");
+
 }
 
 app.on
