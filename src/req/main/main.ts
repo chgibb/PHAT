@@ -58,16 +58,10 @@ catch(err)
 {
 	let jobErrorLog = dataMgr.getKey("application","jobErrorLog");
 	let jobVerboseLog = dataMgr.getKey("application","jobVerboseLog");
-	try
-	{
-		fs.unlinkSync(jobErrorLog);
-	}
-	catch(err){}
-	try
-	{
-		fs.unlinkSync(jobVerboseLog);
-	}
-	catch(err){}
+
+	fs.unlink(jobErrorLog);
+	fs.unlink(jobVerboseLog);
+
 	dataMgr.setKey("application","jobErrorLog","jobErrorLog.txt");
 	dataMgr.setKey("application","jobVerboseLog","jobVerboseLog.txt");
 }
