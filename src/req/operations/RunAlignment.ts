@@ -93,6 +93,7 @@ export class RunAlignment extends atomic.AtomicOperation
             this.destinationArtifactsDirectories.push(`resources/app/rt/AlignmentArtifacts/${this.alignData.uuid}`);
         }
     //bowtie2-align -> samtools view -> samtools sort -> samtools index -> samtools depth -> separate out coverage data
+    //-> samtools faidx -> samtools mpileup -> varscan pileup2snp
     public run() : void
     {
         let self = this;
