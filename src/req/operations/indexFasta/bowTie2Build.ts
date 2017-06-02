@@ -5,7 +5,7 @@ import {IndexFasta} from "./../indexFasta";
 import {SpawnRequestParams} from "./../../JobIPC";
 import {Job,JobCallBackObject} from "./../../main/Job";
 
-export function bowTie2Build(op : IndexFasta) : Promise<{}>
+export function bowTie2Build(op : IndexFasta) : Promise<string | undefined>
 {
     return new Promise((resolve,reject) => {
         let jobCallBack : JobCallBackObject = {
