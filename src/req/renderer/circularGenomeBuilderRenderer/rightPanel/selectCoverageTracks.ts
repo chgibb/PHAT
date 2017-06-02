@@ -57,7 +57,7 @@ export class SelectCoverageTracks extends viewMgr.View
                 {
                     if(this.genome.contigs[i].uuid != "filler")
                     {
-                        res += `<div><p style="display:inline-block;">${this.genome.contigs[i].name}</p><input style="display:inline-block;" type="button" id="${this.genome.contigs[i].uuid}" value="Generate Visualization" /></div>`;
+                        res += `<div><p style="display:inline-block;">${this.genome.contigs[i].name}</p><input style="display:inline-block;" type="button" id="${this.genome.contigs[i].uuid}" value="Generate Coverage Plot" /></div>`;
                     }
                 }
                 return res;
