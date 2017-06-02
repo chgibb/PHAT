@@ -45,11 +45,13 @@ export class CircularFigureBPTrackOptions
     public interval : number;
     public vAdjust : number;
     public showLabels : number;
+    public direction : string;
     constructor()
     {
         this.interval = 500;
         this.vAdjust = 5;
         this.showLabels = 0;
+        this.direction = "out";
     }
 }
 export class RenderedCoverageTrackRecord
@@ -179,7 +181,8 @@ export function renderBaseFigure(figure : CircularFigure) : string
             {
                 interval : "{{genome.circularFigureBPTrackOptions.interval}}",
                 vAdjust : "{{genome.circularFigureBPTrackOptions.vAdjust}}",
-                showLabels : "{{genome.circularFigureBPTrackOptions.showLabels}}"
+                showLabels : "{{genome.circularFigureBPTrackOptions.showLabels}}",
+                direction : "{{genome.circularFigureBPTrackOptions.direction}}"
             }
         )}
         ${trackScale.end()}
