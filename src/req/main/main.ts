@@ -295,36 +295,7 @@ app.on
 		fs.unlink("phat.update",function(err : NodeJS.ErrnoException){});
 	}
 );
-/*
-app.on
-(
-	'window-all-closed',function() 
-	{
-  		if(process.platform !== 'darwin' || winMgr.getWindowsByName("toolBar").length == 0)
-		{
-			if(dataMgr.getKey("application","downloadedUpdate"))
-			{
-				console.log("downloadedUpdate was set");
-				let installer = cp.spawn(
-                             "python",["resources/app/installUpdate.py"],
-                            {
-                                detached : true,
-                                stdio : [
-                                    "ignore","ignore","ignore"
-                                ]
-                            }
-                        );
-                        installer.unref();
-						console.log("spawned installUpdate.py");
-			}
-			dataMgr.setKey("application","operations",{});
-			console.log("cleared operations");
-			dataMgr.saveData();
-			console.log("saved data");
-    		//app.quit();
-  		}
-	}
-);*/
+
 
 app.on
 (
