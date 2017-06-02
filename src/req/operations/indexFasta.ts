@@ -11,6 +11,10 @@ import {makeValidID} from "./../MakeValidID";
 import {SpawnRequestParams} from "./../JobIPC";
 
 import {Job,JobCallBackObject} from "./../main/Job";
+
+import {bowTie2Build} from "./indexFasta/bowTie2Build";
+import {faToTwoBit} from "./indexFasta/faToTwoBit";
+import {samToolsFaidx} from "./indexFasta/samToolsFaidx";
 export class IndexFasta extends atomic.AtomicOperation
 {
     public fasta : Fasta;
@@ -87,142 +91,41 @@ export class IndexFasta extends atomic.AtomicOperation
     public run() : void
     {
         let self = this;
-        let jobCallBack : JobCallBackObject = {
-            send(channel : string,params : SpawnRequestParams)
-            {
-                if(self.flags.done)
-					    return;
-                if(params.processName == self.faToTwoBitExe)
-                {
-                    if(params.done && params.retCode !== undefined)
-                    {
-                        if(params.retCode == 0)
-                        {
-                            self.setSuccess(self.twoBitFlags);
-                            self.faiJob = new Job(self.samToolsExe,["faidx",self.fasta.path],"",true,jobCallBack,{});
-                            try
-                            {
-                                self.faiJob.Run();
-                            }
-                            catch(err)
-                            {
-                                self.abortOperationWithMessage(err);
-                                return;
-                            }
-                            self.spawnUpdate = params;
-                            self.update();
-                        }
-                        else
-                        {
-                            self.abortOperationWithMessage(`Failed to create 2bit index for ${self.fasta.alias}`);
-                            return;
-                        }
-                    }
-                }
-                if(params.processName == self.samToolsExe)
-                {
-                    if(params.done && params.retCode !== undefined)
-                    {
-                        if(params.retCode == 0)
-                        {
-                            self.setSuccess(self.faiFlags);
-                            setTimeout(
-                                function()
-                                {
-                                    try
-                                    {
-                                        fse.copySync(`${self.fasta.path}.fai`,self.faiPath);
-                                        self.setSuccess(self.faiFlags);
-                                    }
-                                    catch(err)
-                                    {
-                                        self.abortOperationWithMessage(err);
-								        return;
-                                    }
-                                    let bowtieArgs : Array<string> = new Array<string>();
-                                    if(process.platform == "linux")
-                                        bowtieArgs = [self.fasta.path,self.bowTieIndexPath];
-                                    else if(process.platform == "win32")
-                                        bowtieArgs = ['resources/app/bowtie2-build',`"${self.fasta.path}"`,`"${self.bowTieIndexPath}"`];
-                                    self.bowtieJob = new Job(self.bowtie2BuildExe,bowtieArgs,"",true,jobCallBack,{});
-                                    try
-                                    {
-                                        self.bowtieJob.Run();
-                                    }
-                                    catch(err)
-                                    {
-                                        self.abortOperationWithMessage(err);
-                                        return;
-                                    }
 
-                                },1000
-                            );
-                            self.spawnUpdate = params;
+        faToTwoBit(self).then((result) => {
+
+            self.setSuccess(self.twoBitFlags);
+            self.update();
+
+            samToolsFaidx(self).then((result) => {
+
+                self.setSuccess(self.faiFlags);
+                self.update();
+
+                bowTie2Build(self).then((result) => {
+
+                    self.setSuccess(self.bowtieFlags);
+                    self.update();
+
+                    let contigLoader = new FastaContigLoader();
+                    contigLoader.on(
+                        "doneLoadingContigs",function(){
+                            self.fasta.contigs = contigLoader.contigs;
+                            self.setSuccess(self.flags);
+                            self.fasta.indexed = true;
                             self.update();
                         }
-                        else
-                        {
-                            self.abortOperationWithMessage(`Failed to create fai index for ${self.fasta.alias}`);
-                            return;
-                        }
-                    }
-                }
-                if(params.processName == self.bowtie2BuildExe)
-                {
-                    if(params.done && params.retCode !== undefined)
-                    {
-                        if(params.retCode == 0)
-                        {
-                            self.setSuccess(self.bowtieFlags);
-                            setTimeout(
-                                function()
-                                {
-                                    try
-                                    {
-                                        for(let i : number = 0; i != self.bowtieIndices.length; ++i)
-                                        {
-                                            fs.accessSync(`${self.bowtieIndices[i]}`,fs.constants.F_OK | fs.constants.R_OK);
-                                        }
-                                    }
-                                    catch(err)
-                                    {
-                                        self.abortOperationWithMessage(`Failed to write all bowtie2 indices for ${self.fasta.alias}`);
-                                        return;
-                                    }
-                                    self.fasta.indexed = true;
-                                    let contigLoader = new FastaContigLoader();
-                                    contigLoader.on(
-                                        "doneLoadingContigs",function()
-                                        {
-                                            self.fasta.contigs = contigLoader.contigs;
-                                            self.setSuccess(self.flags);
-                                            self.spawnUpdate = params;
-                                            self.update();
-                                        }
-                                    );
-                                    contigLoader.beginRefStream(self.fasta.path);
-                                },5000
-                            );
-                        }
-                        else
-                        {
-                            self.abortOperationWithMessage(`Failed to create bowtie2 index for ${self.fasta.alias}`);
-                            return;
-                        }
-                    }
-                }
-            }
-        }
-        this.twoBitJob = new Job(this.faToTwoBitExe,[this.fasta.path,this.twoBitPath],"",true,jobCallBack,{});
-        try
-        {
-            this.twoBitJob.Run();
-        }
-        catch(err)
-        {
-            this.abortOperationWithMessage(err);
-            return;
-        }
-        this.update();
+                    );
+                    contigLoader.beginRefStream(self.fasta.path);
+
+                }).catch((err) => {
+                    self.abortOperationWithMessage(err);
+                });
+            }).catch((err) => {
+                self.abortOperationWithMessage(err);
+            });
+        }).catch((err) => {
+            self.abortOperationWithMessage(err);
+        });
     }
 }

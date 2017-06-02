@@ -35,6 +35,17 @@ export function pushWindow(refName : string,ref : Electron.BrowserWindow) : void
 
 export function closeAllExcept(refName : string) : void
 {
+	for(let i : number = windows.length - 1; i >= 0; --i)
+	{
+		try
+		{
+			windows[i].window.isResizable();
+		}
+		catch(err)
+		{
+			windows.splice(i,1);
+		}
+	}
 	for(let i : number = 0; i != windows.length; ++i)
 	{
 		if(windows[i].name != refName)
