@@ -13,7 +13,9 @@ import {samToolsDepth} from "./RunAlignment/samToolsDepth";
 import {samToolsIndex} from "./RunAlignment/samToolsIndex";
 import {samToolsSort} from "./RunAlignment/samToolsSort";
 import {samToolsView} from "./RunAlignment/samToolsView";
+import {samToolsFaidx} from "./indexFasta/samToolsFaidx";
 import {samToolsMPileup} from "./RunAlignment/samToolsMPileup";
+
 import {varScanMPileup2SNP} from "./RunAlignment/varScanMPileup2SNP"
 
 export class RunAlignment extends atomic.AtomicOperation
@@ -27,12 +29,15 @@ export class RunAlignment extends atomic.AtomicOperation
     public bowtie2Exe : string;
     public varScanExe : string;
 
+    public faiPath : string;
+
     public bowtieJob : Job;
     public samToolsIndexJob : Job;
     public samToolsSortJob : Job;
     public samToolsViewJob : Job;
     public samToolsDepthJob : Job;
     public samToolsMPileupJob : Job;
+    public faiJob : Job;
     public varScanMPileup2SNPJob : Job;
 
     public samToolsCoverageFileStream : fs.WriteStream;
@@ -77,6 +82,9 @@ export class RunAlignment extends atomic.AtomicOperation
             this.fasta = data.fasta;
             this.fastq1 = data.fastq1;
             this.fastq2 = data.fastq2;
+
+            this.faiPath = `resources/app/rt/indexes/${this.fasta.uuid}.fai`;
+
             this.alignData = new alignData();
             this.alignData.type = data.type;
             this.alignData.fasta = this.fasta;
@@ -110,20 +118,25 @@ export class RunAlignment extends atomic.AtomicOperation
 
                         samToolsDepth(self).then((result) => {
 
-                            samToolsMPileup(self).then((result) => {
+                            samToolsFaidx(self).then((result) => {
 
-                                self.setSuccess(self.samToolsMPileupFlags);
+                                samToolsMPileup(self).then((result) => {
 
-                                varScanMPileup2SNP(self).then((result) => {
+                                    self.setSuccess(self.samToolsMPileupFlags);
 
-                                    self.setSuccess(self.varScanMPileup2SNPFlags);
+                                    varScanMPileup2SNP(self).then((result) => {
 
-                                    self.setSuccess(self.flags);
-                                    self.update();
+                                        self.setSuccess(self.varScanMPileup2SNPFlags);
 
+                                        self.setSuccess(self.flags);
+                                        self.update();
+
+                                    }).catch((err) => {
+                                        self.abortOperationWithMessage(err);
+                                    });
                                 }).catch((err) => {
                                     self.abortOperationWithMessage(err);
-                                })
+                                });
                             }).catch((err) => {
                                 self.abortOperationWithMessage(err);
                             })
