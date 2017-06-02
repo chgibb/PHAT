@@ -289,12 +289,10 @@ app.on
 
 		setInterval(function(){atomicOp.runOperations(1);},2500);
 		//After an update has been installed, update the updater with new binaries.
-		try
-		{
-			fs.rename("resources/app/newCSharpCode.SharpZipLib.dll","resources/app/ICSharpCode.SharpZipLib.dll",function(err : NodeJS.ErrnoException){});
-			fs.rename("resources/app/newinstallUpdateProcess.exe","resources/app/installUpdateProcess.exe",function(err : NodeJS.ErrnoException){});
-		}
-		catch(err){}
+		fs.rename("resources/app/newCSharpCode.SharpZipLib.dll","resources/app/ICSharpCode.SharpZipLib.dll",function(err : NodeJS.ErrnoException){});
+		fs.rename("resources/app/newinstallUpdateProcess.exe","resources/app/installUpdateProcess.exe",function(err : NodeJS.ErrnoException){});
+
+		fs.unlink("phat.update",function(err : NodeJS.ErrnoException){});
 	}
 );
 /*
