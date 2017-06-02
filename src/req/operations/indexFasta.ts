@@ -96,19 +96,16 @@ export class IndexFasta extends atomic.AtomicOperation
 
             self.setSuccess(self.twoBitFlags);
             self.update();
-            console.log("fatotwobit");
 
             samToolsFaidx(self).then((result) => {
 
                 self.setSuccess(self.faiFlags);
                 self.update();
-                console.log("samtoolsfaidx");
 
                 bowTie2Build(self).then((result) => {
 
                     self.setSuccess(self.bowtieFlags);
                     self.update();
-                    console.log("bowtie2build");
 
                     let contigLoader = new FastaContigLoader();
                     contigLoader.on(
@@ -117,7 +114,6 @@ export class IndexFasta extends atomic.AtomicOperation
                             self.setSuccess(self.flags);
                             self.fasta.indexed = true;
                             self.update();
-                            console.log("doneloadingcontigs");
                         }
                     );
                     contigLoader.beginRefStream(self.fasta.path);
