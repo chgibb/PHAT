@@ -57,7 +57,7 @@ export class SelectCoverageTracks extends viewMgr.View
                 {
                     if(this.genome.contigs[i].uuid != "filler")
                     {
-                        res += `<div><p style="display:inline-block;">${this.genome.contigs[i].name}</p><input style="display:inline-block;" type="button" id="${this.genome.contigs[i].uuid}" value="Generate Coverage Plot" /></div>`;
+                        res += `<div><p style="display:inline-block;">${this.genome.contigs[i].name}</p><input style="display:inline-block;" type="button" id="${this.genome.contigs[i].uuid+"coverage"}" value="Generate Coverage Plot" /></div>`;
                     }
                 }
                 return res;
@@ -85,7 +85,7 @@ export class SelectCoverageTracks extends viewMgr.View
             {
                 try
                 {
-                    (<HTMLInputElement>document.getElementById(this.genome.renderedCoverageTracks[i].uuid)).checked = true;
+                    (<HTMLInputElement>document.getElementById(this.genome.renderedCoverageTracks[i].uuid+"coverage")).checked = true;
                 }
                 catch(err){}
             }
@@ -108,7 +108,7 @@ export class SelectCoverageTracks extends viewMgr.View
 
         for(let i = 0; i != this.genome.contigs.length; ++i)
         {
-            if(this.genome.contigs[i].uuid == event.target.id)
+            if(this.genome.contigs[i].uuid+"coverage" == event.target.id)
             {
                 masterView.dataChanged(); 
                 ipc.send(
@@ -117,7 +117,7 @@ export class SelectCoverageTracks extends viewMgr.View
                         opName : "renderCoverageTrackForContig",
                         figureuuid : this.genome.uuid,
                         alignuuid : this.selectedAlignment.uuid,
-                        uuid : event.target.id,
+                        uuid : this.genome.contigs[i].uuid,
                         colour : (<string>(<any>$(document.getElementById("colourPicker"))).minicolors("rgbString"))
                     }
                 );
@@ -127,7 +127,7 @@ export class SelectCoverageTracks extends viewMgr.View
         let rebuildTracks = false;
         for(let i = 0; i != this.genome.renderedCoverageTracks.length; ++i)
         {
-            if(this.genome.renderedCoverageTracks[i].uuid == event.target.id)
+            if(this.genome.renderedCoverageTracks[i].uuid+"coverage" == event.target.id)
             {
                 this.genome.renderedCoverageTracks[i].checked = (<HTMLInputElement>document.getElementById(event.target.id)).checked;
                 rebuildTracks = true;
