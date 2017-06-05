@@ -85,7 +85,7 @@ export class SelectCoverageTracks extends viewMgr.View
             {
                 try
                 {
-                    (<HTMLInputElement>document.getElementById(this.genome.renderedCoverageTracks[i].uuid+"coverage")).checked = true;
+                    (<HTMLInputElement>document.getElementById(this.genome.renderedCoverageTracks[i].uuid)).checked = true;
                 }
                 catch(err){}
             }
@@ -127,7 +127,7 @@ export class SelectCoverageTracks extends viewMgr.View
         let rebuildTracks = false;
         for(let i = 0; i != this.genome.renderedCoverageTracks.length; ++i)
         {
-            if(this.genome.renderedCoverageTracks[i].uuid+"coverage" == event.target.id)
+            if(this.genome.renderedCoverageTracks[i].uuid == event.target.id)
             {
                 this.genome.renderedCoverageTracks[i].checked = (<HTMLInputElement>document.getElementById(event.target.id)).checked;
                 rebuildTracks = true;
