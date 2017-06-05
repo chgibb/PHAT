@@ -360,3 +360,22 @@ export function cacheCoverageTrack(
     },colour);
 }
 
+export function renderSNPTrack(
+    figure : CircularFigure,
+    contiguuid : string,
+    align : alignData,
+    cb : (status : boolean,SNPTracks : string) => void
+    ,colour : string = "rgb(64,64,64)"
+) : void
+{
+}
+
+export function cacheSNPTrack(
+    figure : CircularFigure,
+    contiguuid : string,
+    align : alignData,
+    cb : (status : boolean,SNPTracks : string) => void,
+    colour : string = "rgb(64,64,64)"
+) : void
+{
+}
