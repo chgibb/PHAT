@@ -378,4 +378,23 @@ export function cacheSNPTrack(
     colour : string = "rgb(64,64,64)"
 ) : void
 {
+    try
+    {
+        mkdirp.sync(`resources/app/rt/circularFigures/${figure.uuid}/snp/${align.uuid}/${contiguuid}`);
+    }
+    catch(err){}
+    renderSNPTrack(
+        figure,
+        contiguuid,
+        align,
+        function(status,SNPTracks){
+            if(status == true)
+            {
+                let trackRecord = new RenderedSNPTrackRecord(align.uuid,contiguuid,figure.uuid,colour,"");
+                trackRecord.path = `resources/app/rt/circularFigures/${figure.uuid}/snp/${align.uuid}/${contiguuid}/${trackRecord.uuid}`;
+                fs.writeFileSync(trackRecord.path,SNPTracks);
+                figure.renderedSNPTracks.push(trackRecord);
+            }
+            cb(status,SNPTracks);
+        },colour);
 }

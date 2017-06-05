@@ -24,7 +24,7 @@ process.on
 
         if(ev.run == true)
         {
-            flags.done = true;
+            /*flags.done = true;
                         flags.success = true;
                         process.send(
                             <AtomicOperationForkEvent>{
@@ -38,13 +38,13 @@ process.on
                                 }
                             }
                         );
-                        process.exit(0);
-            /*
-            cf.cacheCoverageTracks(
+                        process.exit(0);*/
+            
+            cf.cacheSNPTrack(
                 circularFigure,
                 contiguuid,
                 align,
-                function(status,coverageTracks){
+                function(status,SNPTracks){
                     if(status == true)
                     {
                         flags.done = true;
@@ -65,7 +65,7 @@ process.on
                     }
                 },
                 colour
-            );*/
+            );
         }
     }  
 );
