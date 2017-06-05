@@ -391,8 +391,8 @@ export function renderSNPTrack(
                 let to = tokens[3];
                 SNPTracks += `
                     <plasmidtrack width="20" trackstyle="fill-opacity:0.0" radius="{{genome.radius}}">
-                        <trackmarker start="${position}" markerstyle="stroke:${colour};stroke-dasharray:2,2;stroke-width:2px;" wadjust="20">
-                            <markerlabel style="font-size:20px" text="${from} ${parseInt(tokens[1])} ${to}" vadjust="30"></markerlabel>
+                        <trackmarker start="${position}" markerstyle="stroke:${colour};stroke-dasharray:2,2;stroke-width:2px;" wadjust="{{genome.radius-20}}">
+                            <markerlabel style="font-size:20px" text="${from} ${parseInt(tokens[1])} ${to}" vadjust="{{genome.radius-20}}"></markerlabel>
                         </trackmarker>
                     </plasmidtrack> 
                 `;
