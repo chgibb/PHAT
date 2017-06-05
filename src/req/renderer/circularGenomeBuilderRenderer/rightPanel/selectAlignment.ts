@@ -48,10 +48,16 @@ export class SelectAlignment extends viewMgr.View
                                 if(this.genome.renderedCoverageTracks[k].uuidAlign == this.alignData[i].uuid && this.genome.renderedCoverageTracks[k].checked)
                                     viewing++;
                             }
+                            for(let k : number = 0; k != this.genome.renderedSNPTracks.length; ++k)
+                            {
+                                if(this.genome.renderedSNPTracks[k].uuidAlign == this.alignData[i].uuid && this.genome.renderedSNPTracks[k].checked)
+                                    viewing++;
+                            }
+                            console.log("rendered: "+this.alignData[i].uuid);
                             res += `
                                 <tr>
                                     <td><button id="${this.alignData[i].uuid}">View Available Tracks</button><br />
-                                    ${viewing > 0 ? `Showing ${viewing} ${viewing > 1 ? "Tracks" : "Track"} from this alignment` : ``}</td>
+                                    ${viewing > 0 ? `Showing ${viewing} ${viewing > 1 ? "tracks" : "track"} from this alignment` : ``}</td>
                                     <td>${this.alignData[i].alias}</td>
                                     <td>${this.alignData[i].summary.reads}</td>
                                     <td>${this.alignData[i].summary.mates}</td>
@@ -79,6 +85,7 @@ export class SelectAlignment extends viewMgr.View
     public dataChanged() : void{}
     public divClickEvents(event : JQueryEventObject) : void
     {
+        console.log("target: "+event.target.id);
         if(event.target.id)
         {
             for(let i : number = 0; i != this.alignData.length; ++i)

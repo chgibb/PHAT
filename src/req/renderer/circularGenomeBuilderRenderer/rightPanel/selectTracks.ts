@@ -11,7 +11,7 @@ import alignData from "./../../../alignData";
 import * as cf from "./../../circularFigure";
 
 require("@claviska/jquery-minicolors");
-export class SelectCoverageTracks extends viewMgr.View
+export class SelectTracks extends viewMgr.View
 {
     public genome : cf.CircularFigure;
     public selectedAlignment : alignData;
@@ -31,9 +31,10 @@ export class SelectCoverageTracks extends viewMgr.View
         let res =  `
             <button id="goBack">Go Back</button>
             ${(()=>{
-                let res = `<h2>Available Tracks</h2>`;
+                let res = "";
                 if(this.genome.renderedCoverageTracks.length >= 1)
                 {
+                    res += `<h2>Available Coverage Plots</h2>`;
                     for(let i = 0; i != this.genome.renderedCoverageTracks.length; ++i)
                     {
                         for(let k = 0; k != this.genome.contigs.length; ++k)
@@ -44,8 +45,24 @@ export class SelectCoverageTracks extends viewMgr.View
                             }
                         }
                     }
-                    return res;
                 }
+                
+                if(this.genome.renderedSNPTracks.length >= 1)
+                {
+                    res += `<h2>Available SNP Markers</h2>`;
+                    for(let i = 0; i != this.genome.renderedSNPTracks.length; ++i)
+                    {
+                        for(let k = 0; k != this.genome.contigs.length; ++k)
+                        {
+                            if(this.genome.renderedSNPTracks[i].uuidContig == this.genome.contigs[k].uuid && this.genome.renderedSNPTracks[i].uuidAlign == this.selectedAlignment.uuid)
+                            {
+                                res += `<div><input style="display:inline-block;" type="checkbox" id="${this.genome.renderedSNPTracks[i].uuid}" /><h3 style="display:inline-block;color:${this.genome.renderedSNPTracks[i].colour}">${this.genome.contigs[k].name}</h3></div>`;
+                            }
+                        }
+                    }
+                }
+                if(res)
+                    return res;
                 return "";
             })()}
         `;
@@ -57,7 +74,12 @@ export class SelectCoverageTracks extends viewMgr.View
                 {
                     if(this.genome.contigs[i].uuid != "filler")
                     {
-                        res += `<div><p style="display:inline-block;">${this.genome.contigs[i].name}</p><input style="display:inline-block;" type="button" id="${this.genome.contigs[i].uuid}" value="Generate Visualization" /></div>`;
+                        res += `
+                        <div>
+                            <p style="display:inline-block;">${this.genome.contigs[i].name}</p>
+                            <input style="display:inline-block;" type="button" id="${this.genome.contigs[i].uuid+"coverage"}" value="Generate Coverage Plot" />
+                            <input style="display:inline-block;" type="button" id="${this.genome.contigs[i].uuid+"snp"}" value="Generate SNP Markers" />
+                        </div>`;
                     }
                 }
                 return res;
@@ -90,6 +112,17 @@ export class SelectCoverageTracks extends viewMgr.View
                 catch(err){}
             }
         }
+        for(let i = 0; i != this.genome.renderedSNPTracks.length; ++i)
+        {
+            if(this.genome.renderedSNPTracks[i].checked)
+            {
+                try
+                {
+                    (<HTMLInputElement>document.getElementById(this.genome.renderedSNPTracks[i].uuid)).checked = true;
+                }
+                catch(err){}
+            }
+        }
     }
     public dataChanged() : void{}
     public divClickEvents(event : JQueryEventObject) : void
@@ -108,7 +141,7 @@ export class SelectCoverageTracks extends viewMgr.View
 
         for(let i = 0; i != this.genome.contigs.length; ++i)
         {
-            if(this.genome.contigs[i].uuid == event.target.id)
+            if(this.genome.contigs[i].uuid+"coverage" == event.target.id)
             {
                 masterView.dataChanged(); 
                 ipc.send(
@@ -117,7 +150,23 @@ export class SelectCoverageTracks extends viewMgr.View
                         opName : "renderCoverageTrackForContig",
                         figureuuid : this.genome.uuid,
                         alignuuid : this.selectedAlignment.uuid,
-                        uuid : event.target.id,
+                        uuid : this.genome.contigs[i].uuid,
+                        colour : (<string>(<any>$(document.getElementById("colourPicker"))).minicolors("rgbString"))
+                    }
+                );
+                break;
+            }
+
+            if(this.genome.contigs[i].uuid+"snp" == event.target.id)
+            {
+                masterView.dataChanged(); 
+                ipc.send(
+                    "runOperation",
+                    <AtomicOperationIPC>{
+                        opName : "renderSNPTrackForContig",
+                        figureuuid : this.genome.uuid,
+                        alignuuid : this.selectedAlignment.uuid,
+                        uuid : this.genome.contigs[i].uuid,
                         colour : (<string>(<any>$(document.getElementById("colourPicker"))).minicolors("rgbString"))
                     }
                 );
@@ -134,6 +183,15 @@ export class SelectCoverageTracks extends viewMgr.View
                 break;
             }
         }
+        for(let i = 0; i != this.genome.renderedSNPTracks.length; ++i)
+        {
+            if(this.genome.renderedSNPTracks[i].uuid == event.target.id)
+            {
+                this.genome.renderedSNPTracks[i].checked = (<HTMLInputElement>document.getElementById(event.target.id)).checked;
+                rebuildTracks = true;
+                break;
+            }
+        }
         if(rebuildTracks)
         {
             genomeView.firstRender = true;
@@ -143,5 +201,5 @@ export class SelectCoverageTracks extends viewMgr.View
 }
 export function addView(arr : Array<viewMgr.View>,div : string)
 {
-    arr.push(new SelectCoverageTracks("selectCoverageTracks",div));
+    arr.push(new SelectTracks("selectCoverageTracks",div));
 }

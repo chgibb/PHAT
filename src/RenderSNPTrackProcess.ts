@@ -1,6 +1,3 @@
-import * as fs from "fs";
-import * as readline from "readline";
-
 import {AtomicOperationForkEvent,CompletionFlags} from "./req/atomicOperationsIPC";
 import alignData from "./req/alignData"
 import * as cf from "./req/renderer/circularFigure";
@@ -27,11 +24,27 @@ process.on
 
         if(ev.run == true)
         {
-            cf.cacheCoverageTrack(
+            /*flags.done = true;
+                        flags.success = true;
+                        process.send(
+                            <AtomicOperationForkEvent>{
+                                update : true,
+                                flags : flags,
+                                data : {
+                                    alignData : align,
+                                    contiguuid : contiguuid,
+                                    circularFigure : circularFigure,
+                                    colour : colour
+                                }
+                            }
+                        );
+                        process.exit(0);*/
+            
+            cf.cacheSNPTrack(
                 circularFigure,
                 contiguuid,
                 align,
-                function(status,coverageTracks){
+                function(status,SNPTracks){
                     if(status == true)
                     {
                         flags.done = true;
