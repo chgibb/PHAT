@@ -27,7 +27,7 @@ process.on
 
         if(ev.run == true)
         {
-            cf.cacheCoverageTracks(
+            cf.cacheCoverageTrack(
                 circularFigure,
                 contiguuid,
                 align,

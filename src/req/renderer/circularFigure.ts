@@ -249,7 +249,7 @@ interface PositionsWithDepths
     depth : number;
     positions : Array<number>;
 }
-export function renderCoverageTracks(
+export function renderCoverageTrack(
     figure : CircularFigure,
     contiguuid : string,
     align : alignData,
@@ -331,7 +331,7 @@ export function renderCoverageTracks(
         cb(true,coverageTracks);
     });
 }
-export function cacheCoverageTracks(
+export function cacheCoverageTrack(
     figure : CircularFigure,
     contiguuid : string,
     align : alignData,
@@ -344,7 +344,7 @@ export function cacheCoverageTracks(
         mkdirp.sync(`resources/app/rt/circularFigures/${figure.uuid}/coverage/${align.uuid}/${contiguuid}`);
     }
     catch(err){}
-    renderCoverageTracks(
+    renderCoverageTrack(
         figure,
         contiguuid,
         align,
@@ -359,4 +359,4 @@ export function cacheCoverageTracks(
             cb(status,coverageTracks);
     },colour);
 }
- 
+
