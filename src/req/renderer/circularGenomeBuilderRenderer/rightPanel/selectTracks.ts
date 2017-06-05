@@ -11,7 +11,7 @@ import alignData from "./../../../alignData";
 import * as cf from "./../../circularFigure";
 
 require("@claviska/jquery-minicolors");
-export class SelectCoverageTracks extends viewMgr.View
+export class SelectTracks extends viewMgr.View
 {
     public genome : cf.CircularFigure;
     public selectedAlignment : alignData;
@@ -143,5 +143,5 @@ export class SelectCoverageTracks extends viewMgr.View
 }
 export function addView(arr : Array<viewMgr.View>,div : string)
 {
-    arr.push(new SelectCoverageTracks("selectCoverageTracks",div));
+    arr.push(new SelectTracks("selectCoverageTracks",div));
 }
