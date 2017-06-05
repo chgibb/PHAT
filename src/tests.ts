@@ -143,7 +143,7 @@ atomic.updates.on(
 		}
 		if(op.flags.failure)
 		{
-			console.log(op.extraData);
+			console.log(op);
 		}
 		if(op.flags.done)
 			assert.runningEvents -= 1;
