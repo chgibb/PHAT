@@ -368,6 +368,39 @@ export function renderSNPTrack(
     ,colour : string = "rgb(64,64,64)"
 ) : void
 {
+    let SNPTracks : string = "";
+
+    let rl : readline.ReadLine = readline.createInterface(<readline.ReadLineOptions>{
+        input : fs.createReadStream(`resources/app/rt/AlignmentArtifacts/${align.uuid}/snps.vcf`)
+    });
+
+    let baseBP = getBaseBP(figure,contiguuid);
+    if(baseBP == -1)
+        throw new Error("Could not get base position of "+figure.name+" for reference");
+
+    rl.on("line",function(line : string){
+        let tokens = line.split(/\s/g);
+
+        for(let i = 0; i != figure.contigs.length; ++i)
+        {
+            if(tokens[0] == (figure.contigs[i].name.split(/\s/g))[0])
+            {
+                let position = parseInt(tokens[1]);
+                position = baseBP + position;
+                let from = tokens[2];
+                let to = tokens[3];
+                SNPTracks += `
+                    <trackmarker start="${position}" markerstyle="stroke:${colour};stroke-dasharray:2,2;stroke-width:2px;" wadjust="20">
+                        <markerlabel style="font-size:8px" text="${from} to ${to}" vadjust="30"></markerlabel>
+                    </trackmarker> 
+                `;
+            }
+        }
+
+    });
+    rl.on("close",function(){
+        cb(true,SNPTracks);
+    });
 }
 
 export function cacheSNPTrack(
