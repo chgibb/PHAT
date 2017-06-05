@@ -57,7 +57,7 @@ export class SelectAlignment extends viewMgr.View
                             res += `
                                 <tr>
                                     <td><button id="${this.alignData[i].uuid}">View Available Tracks</button><br />
-                                    ${viewing > 0 ? `Showing ${viewing} ${viewing > 1 ? "Tracks" : "Track"} from this alignment` : ``}</td>
+                                    ${viewing > 0 ? `Showing ${viewing} ${viewing > 1 ? "tracks" : "track"} from this alignment` : ``}</td>
                                     <td>${this.alignData[i].alias}</td>
                                     <td>${this.alignData[i].summary.reads}</td>
                                     <td>${this.alignData[i].summary.mates}</td>
