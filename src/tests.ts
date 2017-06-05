@@ -393,6 +393,15 @@ assert.assert(function(){
 	return true;
 },'--------------------------------------------------------',0);
 
+assert.assert(function(){
+	atomic.addOperation("renderSNPTrackForContig",{circularFigure : hpv16Figure,contiguuid:hpv16Figure.contigs[0].uuid,alignData:L6R1HPV16Alignment});
+	assert.runningEvents += 1;
+	return true;
+},'',0);
+assert.assert(function(){
+	return true;
+},'--------------------------------------------------------',0);
+
 
 assert.runAsserts();
 
