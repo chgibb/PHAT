@@ -197,6 +197,17 @@ export class GenomeView extends viewMgr.View
                             }
                             return res;
                         })()}
+                        ${(()=>{
+                            let res = "";
+                            for(let i = 0; i != self.genome.renderedSNPTracks.length; ++i)
+                            {
+                                if(self.genome.renderedSNPTracks[i].checked)
+                                {
+                                    res += (<any>fs.readFileSync(self.genome.renderedSNPTracks[i].path));
+                                }
+                            }
+                            return res;
+                        })()}
                     ${plasmid.end()}
                 </div>
                 `

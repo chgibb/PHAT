@@ -112,6 +112,17 @@ export class SelectTracks extends viewMgr.View
                 catch(err){}
             }
         }
+        for(let i = 0; i != this.genome.renderedSNPTracks.length; ++i)
+        {
+            if(this.genome.renderedSNPTracks[i].checked)
+            {
+                try
+                {
+                    (<HTMLInputElement>document.getElementById(this.genome.renderedSNPTracks[i].uuid)).checked = true;
+                }
+                catch(err){}
+            }
+        }
     }
     public dataChanged() : void{}
     public divClickEvents(event : JQueryEventObject) : void
@@ -168,6 +179,15 @@ export class SelectTracks extends viewMgr.View
             if(this.genome.renderedCoverageTracks[i].uuid == event.target.id)
             {
                 this.genome.renderedCoverageTracks[i].checked = (<HTMLInputElement>document.getElementById(event.target.id)).checked;
+                rebuildTracks = true;
+                break;
+            }
+        }
+        for(let i = 0; i != this.genome.renderedSNPTracks.length; ++i)
+        {
+            if(this.genome.renderedSNPTracks[i].uuid == event.target.id)
+            {
+                this.genome.renderedSNPTracks[i].checked = (<HTMLInputElement>document.getElementById(event.target.id)).checked;
                 rebuildTracks = true;
                 break;
             }

@@ -390,9 +390,11 @@ export function renderSNPTrack(
                 let from = tokens[2];
                 let to = tokens[3];
                 SNPTracks += `
-                    <trackmarker start="${position}" markerstyle="stroke:${colour};stroke-dasharray:2,2;stroke-width:2px;" wadjust="20">
-                        <markerlabel style="font-size:8px" text="${from} to ${to}" vadjust="30"></markerlabel>
-                    </trackmarker> 
+                    <plasmidtrack width="20" trackstyle="fill-opacity:0.0" radius="{{genome.radius+${150}">
+                        <trackmarker start="${position}" markerstyle="stroke:${colour};stroke-dasharray:2,2;stroke-width:2px;" wadjust="20">
+                            <markerlabel style="font-size:8px" text="${from} to ${to}" vadjust="30"></markerlabel>
+                        </trackmarker>
+                    </plasmidtrack> 
                 `;
             }
         }
