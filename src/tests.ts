@@ -4,6 +4,7 @@ import {GenerateQCReport} from "./req/operations/GenerateQCReport";
 import {IndexFasta} from "./req/operations/indexFasta";
 import {RunAlignment} from "./req/operations/RunAlignment";
 import {RenderCoverageTrackForContig} from "./req/operations/RenderCoverageTrack";
+import {RenderSNPTrackForContig} from "./req/operations/RenderSNPTrack";
 import {CheckForUpdate} from "./req/operations/CheckForUpdate";
 import {DownloadAndInstallUpdate} from "./req/operations/DownloadAndInstallUpdate";
 import alignData from "./req/alignData";
@@ -37,6 +38,7 @@ atomic.register("generateFastQCReport",GenerateQCReport);
 atomic.register("indexFasta",IndexFasta);
 atomic.register("runAlignment",RunAlignment);
 atomic.register("renderCoverageTrackForContig",RenderCoverageTrackForContig);
+atomic.register("renderSNPTrackForContig",RenderSNPTrackForContig);
 
 atomic.register("checkForUpdate",CheckForUpdate);
 atomic.register("downloadAndInstallUpdate",DownloadAndInstallUpdate);
@@ -116,6 +118,23 @@ atomic.updates.on(
 );
 atomic.updates.on(
 	"renderCoverageTrackForContig",function(op : RenderCoverageTrackForContig)
+	{
+		if(op.flags.success)
+		{
+			console.log("rendered");
+			console.log(op.circularFigure);
+		}
+		if(op.flags.failure)
+		{
+			console.log(op.extraData);
+		}
+		if(op.flags.done)
+			assert.runningEvents -= 1;
+	}
+);
+
+atomic.updates.on(
+	"renderSNPTrackForContig",function(op : RenderSNPTrackForContig)
 	{
 		if(op.flags.success)
 		{
