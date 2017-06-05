@@ -20,6 +20,7 @@ import {GenerateQCReport} from "./../operations/GenerateQCReport";
 import {IndexFasta} from "./../operations/indexFasta";
 import {RunAlignment} from "./../operations/RunAlignment";
 import {RenderCoverageTrackForContig} from "./../operations/RenderCoverageTrack";
+import {RenderSNPTrackForContig} from "./../operations/RenderSNPTrack";
 import {CheckForUpdate} from "./../operations/CheckForUpdate";
 import {DownloadAndInstallUpdate} from "./../operations/DownloadAndInstallUpdate";
 
@@ -287,6 +288,7 @@ app.on
 		atomicOp.register("indexFasta",IndexFasta);
 		atomicOp.register("runAlignment",RunAlignment);
 		atomicOp.register("renderCoverageTrackForContig",RenderCoverageTrackForContig);
+		atomicOp.register("renderSNPTrackForContig",RenderSNPTrackForContig);
 
 		atomicOp.register("checkForUpdate",CheckForUpdate);
 		atomicOp.register("downloadAndInstallUpdate",DownloadAndInstallUpdate);		
@@ -443,6 +445,43 @@ ipc.on(
 				);
 			}
 		}
+
+		else if(arg.opName == "renderSNPTrackForContig")
+		{
+			let aligns : Array<alignData> = dataMgr.getKey("align","aligns");
+			let circularFigures : Array<CircularFigure> = dataMgr.getKey("circularGenomeBuilder","circularFigures",);
+
+			if(aligns && circularFigures)
+			{
+				let alignData : alignData = <any>{};
+				let circularFigure : CircularFigure = <any>{};
+				for(let i = 0; i != aligns.length; ++i)
+				{
+					if(arg.alignuuid == aligns[i].uuid)
+					{
+						Object.assign(alignData,aligns[i]);
+						break;
+					}
+				}
+				for(let i = 0; i != circularFigures.length; ++i)
+				{
+					if(arg.figureuuid == circularFigures[i].uuid)
+					{
+						Object.assign(circularFigure,circularFigures[i]);
+						break;
+					}
+				}
+				atomicOp.addOperation(
+					"renderSNPTrackForContig",
+					{
+						circularFigure : circularFigure,
+						contiguuid : arg.uuid,
+						alignData : alignData,
+						colour : arg.colour
+					}
+				);
+			}
+		}
 		else if(arg.opName == "checkForUpdate")
 		{
 			let token = "";
@@ -548,6 +587,28 @@ atomicOp.updates.on(
 				if(circularFigures[i].uuid == op.circularFigure.uuid)
 				{
 					circularFigures[i].renderedCoverageTracks.push(op.circularFigure.renderedCoverageTracks[op.circularFigure.renderedCoverageTracks.length - 1]);
+					dataMgr.setKey("circularGenomeBuilder","circularFigures",circularFigures);
+					winMgr.publishChangeForKey("circularGenomeBuilder","circularFigures");
+					break;
+				}
+			}
+		}
+	}
+);
+
+atomicOp.updates.on(
+	"renderSNPTrackForContig",function(op : RenderSNPTrackForContig)
+	{
+		dataMgr.setKey("application","operations",atomicOp.operationsQueue);
+		winMgr.publishChangeForKey("application","operations");
+		if(op.flags.success)
+		{
+			let circularFigures : Array<CircularFigure> = dataMgr.getKey("circularGenomeBuilder","circularFigures");
+			for(let i = 0; i != circularFigures.length; ++i)
+			{
+				if(circularFigures[i].uuid == op.circularFigure.uuid)
+				{
+					circularFigures[i].renderedSNPTracks.push(op.circularFigure.renderedSNPTracks[op.circularFigure.renderedSNPTracks.length - 1]);
 					dataMgr.setKey("circularGenomeBuilder","circularFigures",circularFigures);
 					winMgr.publishChangeForKey("circularGenomeBuilder","circularFigures");
 					break;
