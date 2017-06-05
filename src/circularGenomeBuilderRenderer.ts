@@ -141,3 +141,7 @@ $(window).resize
         viewMgr.render();
     }
 );
+window.addEventListener("beforeunload",function(){
+    let masterView = <masterView.View>viewMgr.getViewByName("masterView");
+    masterView.dataChanged();
+});
