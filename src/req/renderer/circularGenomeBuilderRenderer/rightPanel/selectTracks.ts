@@ -31,9 +31,10 @@ export class SelectTracks extends viewMgr.View
         let res =  `
             <button id="goBack">Go Back</button>
             ${(()=>{
-                let res = `<h2>Available Tracks</h2>`;
+                let res = "";
                 if(this.genome.renderedCoverageTracks.length >= 1)
                 {
+                    res += `<h2>Available Coverage Plots</h2>`;
                     for(let i = 0; i != this.genome.renderedCoverageTracks.length; ++i)
                     {
                         for(let k = 0; k != this.genome.contigs.length; ++k)
@@ -44,8 +45,24 @@ export class SelectTracks extends viewMgr.View
                             }
                         }
                     }
-                    return res;
                 }
+                
+                if(this.genome.renderedSNPTracks.length >= 1)
+                {
+                    res += `<h2>Available SNP Markers</h2>`;
+                    for(let i = 0; i != this.genome.renderedSNPTracks.length; ++i)
+                    {
+                        for(let k = 0; k != this.genome.contigs.length; ++k)
+                        {
+                            if(this.genome.renderedSNPTracks[i].uuidContig == this.genome.contigs[k].uuid && this.genome.renderedSNPTracks[i].uuidAlign == this.selectedAlignment.uuid)
+                            {
+                                res += `<div><input style="display:inline-block;" type="checkbox" id="${this.genome.renderedSNPTracks[i].uuid}" /><h3 style="display:inline-block;color:${this.genome.renderedSNPTracks[i].colour}">${this.genome.contigs[k].name}</h3></div>`;
+                            }
+                        }
+                    }
+                }
+                if(res)
+                    return res;
                 return "";
             })()}
         `;
@@ -57,7 +74,12 @@ export class SelectTracks extends viewMgr.View
                 {
                     if(this.genome.contigs[i].uuid != "filler")
                     {
-                        res += `<div><p style="display:inline-block;">${this.genome.contigs[i].name}</p><input style="display:inline-block;" type="button" id="${this.genome.contigs[i].uuid+"coverage"}" value="Generate Coverage Plot" /></div>`;
+                        res += `
+                        <div>
+                            <p style="display:inline-block;">${this.genome.contigs[i].name}</p>
+                            <input style="display:inline-block;" type="button" id="${this.genome.contigs[i].uuid+"coverage"}" value="Generate Coverage Plot" />
+                            <input style="display:inline-block;" type="button" id="${this.genome.contigs[i].uuid+"snp"}" value="Generate SNP Markers" />
+                        </div>`;
                     }
                 }
                 return res;
@@ -115,6 +137,22 @@ export class SelectTracks extends viewMgr.View
                     "runOperation",
                     <AtomicOperationIPC>{
                         opName : "renderCoverageTrackForContig",
+                        figureuuid : this.genome.uuid,
+                        alignuuid : this.selectedAlignment.uuid,
+                        uuid : this.genome.contigs[i].uuid,
+                        colour : (<string>(<any>$(document.getElementById("colourPicker"))).minicolors("rgbString"))
+                    }
+                );
+                break;
+            }
+
+            if(this.genome.contigs[i].uuid+"snp" == event.target.id)
+            {
+                masterView.dataChanged(); 
+                ipc.send(
+                    "runOperation",
+                    <AtomicOperationIPC>{
+                        opName : "renderSNPTrackForContig",
                         figureuuid : this.genome.uuid,
                         alignuuid : this.selectedAlignment.uuid,
                         uuid : this.genome.contigs[i].uuid,
