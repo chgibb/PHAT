@@ -54,7 +54,7 @@ export class CircularFigureBPTrackOptions
         this.direction = "out";
     }
 }
-export class RenderedCoverageTrackRecord
+export class RenderedTrackRecord
 {
     public uuid : string;
     public uuidAlign : string;
@@ -79,6 +79,32 @@ export class RenderedCoverageTrackRecord
             this.colour = colour;
         }
 }
+export class RenderedCoverageTrackRecord extends RenderedTrackRecord
+{
+    public constructor(
+        uuidAlign : string,
+        uuidContig : string,
+        uuidFigure : string,
+        colour : string,
+        path : string
+    )
+    {
+        super(uuidAlign,uuidContig,uuidFigure,colour,path);
+    }
+}
+export class RenderedSNPTrackRecord extends RenderedTrackRecord
+{
+    public constructor(
+        uuidAlign : string,
+        uuidContig : string,
+        uuidFigure : string,
+        colour : string,
+        path : string
+    )
+    {
+        super(uuidAlign,uuidContig,uuidFigure,colour,path);
+    }
+}
 export class CircularFigure
 {
     public uuid : string;
@@ -91,6 +117,7 @@ export class CircularFigure
     public width : number;
     public circularFigureBPTrackOptions : CircularFigureBPTrackOptions;
     public renderedCoverageTracks : Array<RenderedCoverageTrackRecord>;
+    public renderedSNPTracks : Array<RenderedSNPTrackRecord>;
     constructor(name : string,uuid : string,contigs : Array<Contig>)
     {
         this.uuidFasta = uuid;
@@ -102,6 +129,7 @@ export class CircularFigure
         this.width = this.radius*10;
         this.circularFigureBPTrackOptions = new CircularFigureBPTrackOptions();
         this.renderedCoverageTracks = new Array<RenderedCoverageTrackRecord>();
+        this.renderedSNPTracks = new Array<RenderedSNPTrackRecord>();
         for(let i = 0; i != this.contigs.length; ++i)
         {
             initContigForDisplay(this.contigs[i]);
@@ -221,7 +249,7 @@ interface PositionsWithDepths
     depth : number;
     positions : Array<number>;
 }
-export function renderCoverageTracks(
+export function renderCoverageTrack(
     figure : CircularFigure,
     contiguuid : string,
     align : alignData,
@@ -300,31 +328,10 @@ export function renderCoverageTracks(
             res += `</plasmidtrack>`;
             coverageTracks += res;
         }
-       /* 
-        let lowest = depths[0];
-        let res = "";
-            res += `
-            <plasmidtrack trackstyle="fill-opacity:0.0;fill:${colour}" width="10" radius="{{genome.radius+${100+lowest.depth}}}" >
-                <trackmarker start="${baseBP+lowest.positions[lowest.positions[lowest.positions.length - 1]]}" style="stroke:#c00;stroke-width:2px;" wadjust="12" vadjust="-6">
-                    <markerlabel text="${lowest.depth}" type="path" valign="outer" hadjust="-2" vadjust="38"></markerlabel>
-                </trackmarker>
-                </plasmidtrack>
-            `;
-        let highest = depths[depths.length - 1];
-        res += `
-            <plasmidtrack trackstyle="fill-opacity:0.0;fill:${colour}" width="10" radius="{{genome.radius+${100+highest.depth}}}" >
-                <trackmarker start="${baseBP+highest.positions[highest.positions.length - 1]}" style="stroke:#c00;stroke-width:2px;" wadjust="12" vadjust="-6">
-                    <markerlabel text="${highest.depth}" type="path" valign="outer" hadjust="-2" vadjust="38"></markerlabel>
-                </trackmarker>
-                </plasmidtrack>
-            `;
-        coverageTracks += res;
-        fs.writeFileSync("coverage",JSON.stringify(depths,undefined,4));
-        */
         cb(true,coverageTracks);
     });
 }
-export function cacheCoverageTracks(
+export function cacheCoverageTrack(
     figure : CircularFigure,
     contiguuid : string,
     align : alignData,
@@ -337,7 +344,7 @@ export function cacheCoverageTracks(
         mkdirp.sync(`resources/app/rt/circularFigures/${figure.uuid}/coverage/${align.uuid}/${contiguuid}`);
     }
     catch(err){}
-    renderCoverageTracks(
+    renderCoverageTrack(
         figure,
         contiguuid,
         align,
@@ -352,4 +359,112 @@ export function cacheCoverageTracks(
             cb(status,coverageTracks);
     },colour);
 }
- 
+
+interface SNPPosition
+{
+    position : number;
+    relativePosition : number;
+    from : string;
+    to : string;
+    colour : string
+    adjust : number;
+}
+
+export function renderSNPTrack(
+    figure : CircularFigure,
+    contiguuid : string,
+    align : alignData,
+    cb : (status : boolean,SNPTracks : string) => void
+    ,colour : string = "rgb(64,64,64)"
+) : void
+{
+    let SNPTracks : string = "";
+
+    let rl : readline.ReadLine = readline.createInterface(<readline.ReadLineOptions>{
+        input : fs.createReadStream(`resources/app/rt/AlignmentArtifacts/${align.uuid}/snps.vcf`)
+    });
+
+    let baseBP = getBaseBP(figure,contiguuid);
+    if(baseBP == -1)
+        throw new Error("Could not get base position of "+figure.name+" for reference");
+
+    let SNPPositions : Array<SNPPosition> = new Array<SNPPosition>();
+
+    rl.on("line",function(line : string){
+        let tokens = line.split(/\s/g);
+
+        for(let i = 0; i != figure.contigs.length; ++i)
+        {
+            if(tokens[0] == (figure.contigs[i].name.split(/\s/g))[0])
+            {
+                SNPPositions.push({
+                    position : baseBP + parseInt(tokens[1]),
+                    relativePosition : parseInt(tokens[1]),
+                    from : tokens[2],
+                    to : tokens[3],
+                    adjust : 20,
+                    colour : colour
+                });
+            }
+        }
+    });
+    rl.on("close",function(){
+
+        SNPPositions.sort(function(a : SNPPosition,b : SNPPosition){return a.position - b.position;});
+
+        for(let i = 0; i != SNPPositions.length; ++i)
+        {
+            for(let k = 0; k != SNPPositions.length; ++k)
+            {
+                if(i != k && i < k)
+                {
+                    if((SNPPositions[k].position - SNPPositions[i].position) <= 85)
+                    {
+                        SNPPositions[k].adjust += 85;
+                    }
+                }
+            }
+        }
+
+        for(let i = 0; i != SNPPositions.length; ++i)
+        {
+            SNPTracks += `
+                <plasmidtrack width="20" trackstyle="fill-opacity:0.0" radius="{{genome.radius}}">
+                    <trackmarker start="${SNPPositions[i].position}" markerstyle="stroke:${SNPPositions[i].colour};stroke-dasharray:2,2;stroke-width:2px;" wadjust="{{genome.radius+${SNPPositions[i].adjust}}}">
+                        <markerlabel style="font-size:20px" text="${SNPPositions[i].from}${SNPPositions[i].relativePosition}${SNPPositions[i].to}" vadjust="{{genome.radius+${SNPPositions[i].adjust}}}"></markerlabel>
+                    </trackmarker>
+                </plasmidtrack> 
+                `;
+        }
+        cb(true,SNPTracks);
+    });
+}
+
+export function cacheSNPTrack(
+    figure : CircularFigure,
+    contiguuid : string,
+    align : alignData,
+    cb : (status : boolean,SNPTracks : string) => void,
+    colour : string = "rgb(64,64,64)"
+) : void
+{
+    try
+    {
+        mkdirp.sync(`resources/app/rt/circularFigures/${figure.uuid}/snp/${align.uuid}/${contiguuid}`);
+    }
+    catch(err){}
+    renderSNPTrack(
+        figure,
+        contiguuid,
+        align,
+        function(status,SNPTracks){
+            if(status == true)
+            {
+                let trackRecord = new RenderedSNPTrackRecord(align.uuid,contiguuid,figure.uuid,colour,"");
+                trackRecord.path = `resources/app/rt/circularFigures/${figure.uuid}/snp/${align.uuid}/${contiguuid}/${trackRecord.uuid}`;
+                fs.writeFileSync(trackRecord.path,SNPTracks);
+                figure.renderedSNPTracks.push(trackRecord);
+            }
+            cb(status,SNPTracks);
+        },colour);
+}

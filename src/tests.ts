@@ -4,6 +4,7 @@ import {GenerateQCReport} from "./req/operations/GenerateQCReport";
 import {IndexFasta} from "./req/operations/indexFasta";
 import {RunAlignment} from "./req/operations/RunAlignment";
 import {RenderCoverageTrackForContig} from "./req/operations/RenderCoverageTrack";
+import {RenderSNPTrackForContig} from "./req/operations/RenderSNPTrack";
 import {CheckForUpdate} from "./req/operations/CheckForUpdate";
 import {DownloadAndInstallUpdate} from "./req/operations/DownloadAndInstallUpdate";
 import alignData from "./req/alignData";
@@ -37,6 +38,7 @@ atomic.register("generateFastQCReport",GenerateQCReport);
 atomic.register("indexFasta",IndexFasta);
 atomic.register("runAlignment",RunAlignment);
 atomic.register("renderCoverageTrackForContig",RenderCoverageTrackForContig);
+atomic.register("renderSNPTrackForContig",RenderSNPTrackForContig);
 
 atomic.register("checkForUpdate",CheckForUpdate);
 atomic.register("downloadAndInstallUpdate",DownloadAndInstallUpdate);
@@ -125,6 +127,23 @@ atomic.updates.on(
 		if(op.flags.failure)
 		{
 			console.log(op.extraData);
+		}
+		if(op.flags.done)
+			assert.runningEvents -= 1;
+	}
+);
+
+atomic.updates.on(
+	"renderSNPTrackForContig",function(op : RenderSNPTrackForContig)
+	{
+		if(op.flags.success)
+		{
+			console.log("rendered");
+			console.log(op.circularFigure);
+		}
+		if(op.flags.failure)
+		{
+			console.log(op);
 		}
 		if(op.flags.done)
 			assert.runningEvents -= 1;
@@ -367,6 +386,15 @@ assert.assert(function(){
 assert.assert(function(){
 	hpv16Figure = new CircularFigure("HPV16 Figure",hpv16.uuid,hpv16.contigs);
 	atomic.addOperation("renderCoverageTrackForContig",{circularFigure : hpv16Figure,contiguuid:hpv16Figure.contigs[0].uuid,alignData:L6R1HPV16Alignment});
+	assert.runningEvents += 1;
+	return true;
+},'',0);
+assert.assert(function(){
+	return true;
+},'--------------------------------------------------------',0);
+
+assert.assert(function(){
+	atomic.addOperation("renderSNPTrackForContig",{circularFigure : hpv16Figure,contiguuid:hpv16Figure.contigs[0].uuid,alignData:L6R1HPV16Alignment});
 	assert.runningEvents += 1;
 	return true;
 },'',0);
