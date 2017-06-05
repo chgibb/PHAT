@@ -48,6 +48,11 @@ export class SelectAlignment extends viewMgr.View
                                 if(this.genome.renderedCoverageTracks[k].uuidAlign == this.alignData[i].uuid && this.genome.renderedCoverageTracks[k].checked)
                                     viewing++;
                             }
+                            for(let k : number = 0; k != this.genome.renderedSNPTracks.length; ++k)
+                            {
+                                if(this.genome.renderedSNPTracks[k].uuidAlign == this.alignData[i].uuid && this.genome.renderedSNPTracks[k].checked)
+                                    viewing++;
+                            }
                             console.log("rendered: "+this.alignData[i].uuid);
                             res += `
                                 <tr>
