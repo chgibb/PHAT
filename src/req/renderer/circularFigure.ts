@@ -360,6 +360,16 @@ export function cacheCoverageTrack(
     },colour);
 }
 
+interface SNPPosition
+{
+    position : number;
+    relativePosition : number;
+    from : string;
+    to : string;
+    colour : string
+    adjust : number;
+}
+
 export function renderSNPTrack(
     figure : CircularFigure,
     contiguuid : string,
@@ -378,6 +388,8 @@ export function renderSNPTrack(
     if(baseBP == -1)
         throw new Error("Could not get base position of "+figure.name+" for reference");
 
+    let SNPPositions : Array<SNPPosition> = new Array<SNPPosition>();
+
     rl.on("line",function(line : string){
         let tokens = line.split(/\s/g);
 
@@ -385,22 +397,45 @@ export function renderSNPTrack(
         {
             if(tokens[0] == (figure.contigs[i].name.split(/\s/g))[0])
             {
-                let position = parseInt(tokens[1]);
-                position = baseBP + position;
-                let from = tokens[2];
-                let to = tokens[3];
-                SNPTracks += `
-                    <plasmidtrack width="20" trackstyle="fill-opacity:0.0" radius="{{genome.radius}}">
-                        <trackmarker start="${position}" markerstyle="stroke:${colour};stroke-dasharray:2,2;stroke-width:2px;" wadjust="{{genome.radius-20}}">
-                            <markerlabel style="font-size:20px" text="${from} ${parseInt(tokens[1])} ${to}" vadjust="{{genome.radius-20}}"></markerlabel>
-                        </trackmarker>
-                    </plasmidtrack> 
-                `;
+                SNPPositions.push({
+                    position : baseBP + parseInt(tokens[1]),
+                    relativePosition : parseInt(tokens[1]),
+                    from : tokens[2],
+                    to : tokens[3],
+                    adjust : 20,
+                    colour : colour
+                });
+            }
+        }
+    });
+    rl.on("close",function(){
+
+        SNPPositions.sort(function(a : SNPPosition,b : SNPPosition){return a.position - b.position;});
+
+        for(let i = 0; i != SNPPositions.length; ++i)
+        {
+            for(let k = 0; k != SNPPositions.length; ++k)
+            {
+                if(i != k && i < k)
+                {
+                    if((SNPPositions[k].position - SNPPositions[i].position) <= 85)
+                    {
+                        SNPPositions[k].adjust += 85;
+                    }
+                }
             }
         }
 
-    });
-    rl.on("close",function(){
+        for(let i = 0; i != SNPPositions.length; ++i)
+        {
+            SNPTracks += `
+                <plasmidtrack width="20" trackstyle="fill-opacity:0.0" radius="{{genome.radius}}">
+                    <trackmarker start="${SNPPositions[i].position}" markerstyle="stroke:${SNPPositions[i].colour};stroke-dasharray:2,2;stroke-width:2px;" wadjust="{{genome.radius+${SNPPositions[i].adjust}}}">
+                        <markerlabel style="font-size:20px" text="${SNPPositions[i].from}${SNPPositions[i].relativePosition}${SNPPositions[i].to}" vadjust="{{genome.radius+${SNPPositions[i].adjust}}}"></markerlabel>
+                    </trackmarker>
+                </plasmidtrack> 
+                `;
+        }
         cb(true,SNPTracks);
     });
 }
