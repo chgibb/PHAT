@@ -117,6 +117,7 @@ export class CircularFigure
     public width : number;
     public circularFigureBPTrackOptions : CircularFigureBPTrackOptions;
     public renderedCoverageTracks : Array<RenderedCoverageTrackRecord>;
+    public renderedSNPTracks : Array<RenderedSNPTrackRecord>;
     constructor(name : string,uuid : string,contigs : Array<Contig>)
     {
         this.uuidFasta = uuid;
