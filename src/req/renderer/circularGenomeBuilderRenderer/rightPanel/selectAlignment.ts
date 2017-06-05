@@ -48,6 +48,7 @@ export class SelectAlignment extends viewMgr.View
                                 if(this.genome.renderedCoverageTracks[k].uuidAlign == this.alignData[i].uuid && this.genome.renderedCoverageTracks[k].checked)
                                     viewing++;
                             }
+                            console.log("rendered: "+this.alignData[i].uuid);
                             res += `
                                 <tr>
                                     <td><button id="${this.alignData[i].uuid}">View Available Tracks</button><br />
@@ -79,6 +80,7 @@ export class SelectAlignment extends viewMgr.View
     public dataChanged() : void{}
     public divClickEvents(event : JQueryEventObject) : void
     {
+        console.log("target: "+event.target.id);
         if(event.target.id)
         {
             for(let i : number = 0; i != this.alignData.length; ++i)
