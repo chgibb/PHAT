@@ -129,6 +129,7 @@ export class CircularFigure
         this.width = this.radius*10;
         this.circularFigureBPTrackOptions = new CircularFigureBPTrackOptions();
         this.renderedCoverageTracks = new Array<RenderedCoverageTrackRecord>();
+        this.renderedSNPTracks = new Array<RenderedSNPTrackRecord>();
         for(let i = 0; i != this.contigs.length; ++i)
         {
             initContigForDisplay(this.contigs[i]);
