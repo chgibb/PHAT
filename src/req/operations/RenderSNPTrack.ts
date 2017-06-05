@@ -32,7 +32,7 @@ export class RenderSNPTrackForContig extends atomic.AtomicOperation
     public run() : void
     {
         let self = this;
-        this.renderSNPTrackProcess = cp.fork("resources/app/RenderSNPTrackProcess.js");
+        this.renderSNPTrackProcess = cp.fork("resources/app/RenderSNPTrack.js");
         self.renderSNPTrackProcess.on(
             "message",function(ev : AtomicOperationForkEvent)
             {
