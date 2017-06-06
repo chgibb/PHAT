@@ -1,4 +1,4 @@
-import {ProjectManifest} from "./projectManifest";
+import {ProjectManifest,manifestsPath} from "./projectManifest";
 
 export function saveCurrentProject() : Promise<{}>
 {

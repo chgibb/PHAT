@@ -7,3 +7,4 @@ export interface ProjectManifest
     uuid : string;
 }
 
+export let manifestsPath : string = "resources/app/projectsManifest.json";

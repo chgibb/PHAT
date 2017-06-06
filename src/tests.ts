@@ -14,6 +14,13 @@ import {CircularFigure} from "./req/renderer/circularFigure";
 import {SpawnRequestParams} from "./req/JobIPC";
 import * as dataMgr from "./req/main/dataMgr";
 
+import {ProjectManifest,manifestsPath} from "./req/projectManifest";
+
+import {NewProject} from "./req/operations/NewProject";
+import {OpenProject} from "./req/operations/OpenProject";
+
+const jsonFile = require("jsonfile");
+
 dataMgr.setKey("application","jobErrorLog","jobErrorLog.txt");
 dataMgr.setKey("application","jobVerboseLog","jobVerboseLog.txt");
 
@@ -24,7 +31,7 @@ try
 	fs.mkdirSync("resources/app/cdata");
 }
 catch(err){}
-try
+/*try
 {
 	fs.mkdirSync("resources/app/rt");
 	fs.mkdirSync("resources/app/rt/QCReports");
@@ -32,7 +39,7 @@ try
 	fs.mkdirSync("resources/app/rt/AlignmentArtifacts");
 	fs.mkdirSync("resources/app/rt/circularFigures");
 }
-catch(err){}
+catch(err){}*/
 
 atomic.register("generateFastQCReport",GenerateQCReport);
 atomic.register("indexFasta",IndexFasta);
@@ -42,6 +49,9 @@ atomic.register("renderSNPTrackForContig",RenderSNPTrackForContig);
 
 atomic.register("checkForUpdate",CheckForUpdate);
 atomic.register("downloadAndInstallUpdate",DownloadAndInstallUpdate);
+
+atomic.register("newProject",NewProject);
+atomic.register("openProject",OpenProject);
 
 let L6R1R1 : Fastq = new Fastq('data/L6R1.R1.fastq');
 let L6R1R2 : Fastq = new Fastq('data/L6R1.R2.fastq');
@@ -185,7 +195,29 @@ atomic.updates.on(
 	}
 )
 
+atomic.updates.on(
+	"newProject",function(op : NewProject)
+	{
+		if(op.flags.done)
+			assert.runningEvents -= 1;
+	}
+);
+
+atomic.updates.on(
+	"openProject",function(op : NewProject)
+	{
+		if(op.flags.done)
+			assert.runningEvents -= 1;
+		if(op.flags.failure)
+		{
+			console.log(op.extraData);
+			process.exit(1);
+		}
+	}
+);
+
 setInterval(function(){atomic.runOperations(1);},1000);
+
 
 assert.assert(function(){
 	return true;
@@ -203,6 +235,30 @@ assert.assert(function(){
 	return true;
 },'--------------------------------------------------------',0);
 */
+
+assert.assert(function(){
+	assert.runningEvents += 1;
+
+	atomic.addOperation("newProject","Test Project1");
+	return true;
+},'',0);
+
+assert.assert(function(){
+
+	assert.runningEvents += 1;
+
+	let projectManifest : Array<ProjectManifest> = jsonFile.readFileSync(manifestsPath);
+
+	if(!projectManifest)
+	{
+		return false;
+	}
+
+	atomic.addOperation("openProject",projectManifest[0]);
+	return true;
+
+},'Created test project 1',0);
+
 
 
 assert.assert(function(){
