@@ -1,6 +1,10 @@
 import * as electron from "electron";
 const ipc = electron.ipcRenderer;
 
+import {AtomicOperation} from "./req/operations/atomicOperations"
+import {AtomicOperationIPC} from "./req/atomicOperationsIPC";
+import {GetKeyEvent,KeySubEvent,SaveKeyEvent} from "./req/ipcEvents";
+
 const Dialogs = require("dialogs");
 const dialogs = Dialogs();
 
@@ -17,5 +21,19 @@ $
 (
     function()
     {
+        ipc.send(
+            "keySub",
+            <KeySubEvent>{
+                action : "keySub",
+                channel : "application",
+                key : "operations",
+                replyChannel : "projectSelection"
+            }
+        );
+        ipc.on
+        (
+            "projectSelection",function(event,arg)
+            {}
+        )
     }
 );
