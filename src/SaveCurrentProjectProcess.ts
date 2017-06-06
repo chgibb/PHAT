@@ -17,7 +17,7 @@ process.on
 
         if(ev.run == true)
         {
-            saveCurrentProject().then(() => {
+            saveCurrentProject(proj).then(() => {
                 flags.done = true;
                 flags.failure = false;
                 flags.success = true;
@@ -43,6 +43,21 @@ process.on
     }  
 );
 process.on("uncaughtException",function(err : string){
+    flags.done = true;
+    flags.failure = true;
+    flags.success = false;
+    process.send(
+        <AtomicOperationForkEvent>{
+            update : true,
+            flags : flags,
+            data : err
+        }
+    );
+    process.exit(1);
+});
+
+process.on("unhandledRejection",function(err : string){
+    console.log("ERROR "+err);
     flags.done = true;
     flags.failure = true;
     flags.success = false;

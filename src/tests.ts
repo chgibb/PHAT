@@ -18,6 +18,7 @@ import {ProjectManifest,manifestsPath} from "./req/projectManifest";
 
 import {NewProject} from "./req/operations/NewProject";
 import {OpenProject} from "./req/operations/OpenProject";
+import {SaveCurrentProject} from "./req/operations//SaveCurrentProject";
 
 const jsonFile = require("jsonfile");
 
@@ -52,6 +53,7 @@ atomic.register("downloadAndInstallUpdate",DownloadAndInstallUpdate);
 
 atomic.register("newProject",NewProject);
 atomic.register("openProject",OpenProject);
+atomic.register("saveCurrentProject",SaveCurrentProject);
 
 let L6R1R1 : Fastq = new Fastq('data/L6R1.R1.fastq');
 let L6R1R2 : Fastq = new Fastq('data/L6R1.R2.fastq');
@@ -205,6 +207,19 @@ atomic.updates.on(
 
 atomic.updates.on(
 	"openProject",function(op : NewProject)
+	{
+		if(op.flags.done)
+			assert.runningEvents -= 1;
+		if(op.flags.failure)
+		{
+			console.log(op.extraData);
+			process.exit(1);
+		}
+	}
+);
+
+atomic.updates.on(
+	"saveCurrentProject",function(op : SaveCurrentProject)
 	{
 		if(op.flags.done)
 			assert.runningEvents -= 1;
@@ -458,6 +473,21 @@ assert.assert(function(){
 	return true;
 },'--------------------------------------------------------',0);
 
+assert.assert(function(){
+	assert.runningEvents += 1;
+	let projectManifest : Array<ProjectManifest> = jsonFile.readFileSync(manifestsPath);
+
+	if(!projectManifest)
+	{
+		return false;
+	}
+	atomic.addOperation("saveCurrentProject",projectManifest[0]);
+	return true;
+},'',0);
+
+assert.assert(function(){
+	return true;
+},'--------------------------------------------------------',0);
 
 assert.runAsserts();
 
