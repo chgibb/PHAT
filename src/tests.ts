@@ -492,7 +492,7 @@ assert.assert(function(){
 	atomic.addOperation("openProject",projectManifest[0]);
 	return true;
 
-},'Created test project 1',0);
+},'',0);
 
 
 fastQReportGeneration();
@@ -523,7 +523,7 @@ alignR1ToHPV18();
 validateR1ToHPV18Alignment();
 
 
-renderHPV16FigureTracks();
+
 
 
 assert.assert(function(){
@@ -541,6 +541,30 @@ assert.assert(function(){
 assert.assert(function(){
 	return true;
 },'--------------------------------------------------------',0);
+
+
+assert.assert(function(){
+
+	assert.runningEvents += 1;
+
+	let projectManifest : Array<ProjectManifest> = jsonFile.readFileSync(manifestsPath);
+
+	if(!projectManifest)
+	{
+		return false;
+	}
+
+	atomic.addOperation("openProject",projectManifest[0]);
+	return true;
+
+},'',0);
+
+validateHPV16Index();
+validateHPV18Index();
+validateR1ToHPV16Alignment();
+validateR1ToHPV18Alignment();
+
+renderHPV16FigureTracks();
 
 assert.runAsserts();
 
