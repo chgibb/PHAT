@@ -1,3 +1,4 @@
+process.exit(0);
 console.log("started GUI test for input");
 import * as electron from "electron";
 const ipc = electron.ipcMain;
