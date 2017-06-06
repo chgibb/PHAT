@@ -231,6 +231,226 @@ atomic.updates.on(
 	}
 );
 
+function fastQReportGeneration()
+{
+	assert.assert(function(){
+		return true;
+	},'--------------------------------------------------------',0);
+
+
+	assert.assert(function(){
+		assert.runningEvents += 1;
+		console.log(`Starting report generation for ${L6R1R1.path}`);
+		atomic.addOperation("generateFastQCReport",L6R1R1);
+		return true;
+	},'',0);
+
+	assert.assert(function(){
+		assert.runningEvents += 1;
+		console.log(`Starting report generation for ${L6R1R2.path}`);
+		atomic.addOperation("generateFastQCReport",L6R1R2);
+		return true;
+	},'',0);
+
+	assert.assert(function(){
+		return true;
+	},'--------------------------------------------------------',0);
+}
+
+function indexHPV16()
+{
+	assert.assert(function(){
+		assert.runningEvents += 1;
+		console.log(`Starting to index ${hpv16.path}`);
+		atomic.addOperation("indexFasta",hpv16);
+		return true;
+	},'',0);
+}
+
+function indexHPV18()
+{
+	assert.assert(function(){
+		assert.runningEvents += 1;
+		console.log(`Starting to index ${hpv18.path}`);
+		atomic.addOperation("indexFasta",hpv18);
+		return true;
+	},'',0);
+}
+
+function validateHPV16Index()
+{
+	assert.assert(function(){
+		return hpv16.indexed;
+	},'HPV16 was indexed',0);
+
+	assert.assert(function(){
+		return hpv16.contigs.length == 1 ? true : false
+	},'HPV16 has 1 contig',0);
+
+	assert.assert(function(){
+		return hpv16.contigs[0].bp == 7906 ? true : false;
+	},'HPV16 has correct number of base pairs',0);
+}
+
+function validateHPV18Index()
+{
+	assert.assert(function(){
+		return hpv18.indexed;
+	},'HPV18 was indexed',0);
+
+	assert.assert(function(){
+		return hpv18.contigs.length == 1 ? true : false
+	},'HPV18 has 1 contig',0);
+
+	assert.assert(function(){
+		return hpv18.contigs[0].bp == 7857 ? true : false;
+	},'HPV18 has correct number of base pairs',0);
+
+}
+
+function alignR1ToHPV16()
+{
+	assert.assert(function(){
+
+		console.log("aligning L6R1.R1, L6R1.R2 against HPV16");
+		atomic.addOperation("runAlignment",{fasta : hpv16,fastq1 : L6R1R1,fastq2 : L6R1R2,type : "patho"})
+
+		assert.runningEvents += 1;
+		return true;
+	},'',0);
+}
+
+function alignR1ToHPV18()
+{
+	assert.assert(function(){
+
+		console.log("aligning L6R1.R1, L6R1.R2 against HPV18");
+		atomic.addOperation("runAlignment",{fasta : hpv18,fastq1 : L6R1R1,fastq2 : L6R1R2,type : "patho"})
+
+		assert.runningEvents += 1;
+	return true;
+	},'',0);
+}
+
+function validateR1ToHPV16Alignment()
+{
+	assert.assert(function(){
+		return L6R1HPV16Alignment.summary.reads == 2689 ? true : false;
+
+	},'Alignment has correct number of reads',0);
+
+	assert.assert(function(){
+		return L6R1HPV16Alignment.summary.mates == 4696 ? true : false;
+
+	},'Alignment has correct number of mates',0);
+
+	assert.assert(function(){
+		return L6R1HPV16Alignment.summary.overallAlignmentRate == 12.96 ? true : false;
+
+	},'Alignment has correct alignment rate	',0);
+
+	assert.assert(function(){
+		return L6R1HPV16Alignment.varScanSNPSummary.minCoverage == 8 ? true : false;
+
+	},'Alignment has correct minimum coverage',0);
+
+	assert.assert(function(){
+		return L6R1HPV16Alignment.varScanSNPSummary.minVarFreq == 0.2 ? true : false;
+
+	},'Alignment has correct minimum variable frequency',0);
+
+	assert.assert(function(){
+		return L6R1HPV16Alignment.varScanSNPSummary.minAvgQual == 15 ? true : false;
+
+	},'Alignment has correct minimum average quality',0);
+
+	assert.assert(function(){
+		return L6R1HPV16Alignment.varScanSNPSummary.pValueThresh == 0.01 ? true : false;
+
+	},'Alignment has correct p-value threshold',0);
+
+	assert.assert(function(){
+		return L6R1HPV16Alignment.varScanSNPSummary.SNPsReported == 8 ? true : false;
+
+	},'Alignment has correct predicted SNPs',0);
+
+	assert.assert(function(){
+		return L6R1HPV16Alignment.varScanSNPSummary.indelsReported == 0 ? true : false;
+
+	},'Alignment has correct predicted indels',0);
+
+}
+
+function validateR1ToHPV18Alignment()
+{
+	assert.assert(function(){
+		return L6R1HPV18Alignment.summary.reads == 2689 ? true : false;
+
+	},'Alignment has correct number of reads',0);
+
+	assert.assert(function(){
+		return L6R1HPV18Alignment.summary.mates == 5378 ? true : false;
+
+	},'Alignment has correct number of mates',0);
+
+	assert.assert(function(){
+		return L6R1HPV18Alignment.summary.overallAlignmentRate == 0 ? true : false;
+
+	},'Alignment has correct alignment rate	',0);
+
+	assert.assert(function(){
+		return L6R1HPV18Alignment.varScanSNPSummary.minCoverage == 8 ? true : false;
+
+	},'Alignment has correct minimum coverage',0);
+
+	assert.assert(function(){
+		return L6R1HPV18Alignment.varScanSNPSummary.minVarFreq == 0.2 ? true : false;
+
+	},'Alignment has correct minimum variable frequency',0);
+
+	assert.assert(function(){
+		return L6R1HPV18Alignment.varScanSNPSummary.minAvgQual == 15 ? true : false;
+
+	},'Alignment has correct minimum average quality',0);
+
+	assert.assert(function(){
+		return L6R1HPV18Alignment.varScanSNPSummary.pValueThresh == 0.01 ? true : false;
+
+	},'Alignment has correct p-value threshold',0);
+
+	assert.assert(function(){
+		return L6R1HPV18Alignment.varScanSNPSummary.SNPsReported == 0 ? true : false;
+
+	},'Alignment has correct predicted SNPs',0);
+
+	assert.assert(function(){
+		return L6R1HPV18Alignment.varScanSNPSummary.indelsReported == 0 ? true : false;
+
+	},'Alignment has correct predicted indels',0);
+}
+
+function renderHPV16FigureTracks()
+{
+	assert.assert(function(){
+		hpv16Figure = new CircularFigure("HPV16 Figure",hpv16.uuid,hpv16.contigs);
+		atomic.addOperation("renderCoverageTrackForContig",{circularFigure : hpv16Figure,contiguuid:hpv16Figure.contigs[0].uuid,alignData:L6R1HPV16Alignment});
+		assert.runningEvents += 1;
+		return true;
+	},'',0);
+	assert.assert(function(){
+		return true;
+	},'--------------------------------------------------------',0);
+
+	assert.assert(function(){
+		atomic.addOperation("renderSNPTrackForContig",{circularFigure : hpv16Figure,contiguuid:hpv16Figure.contigs[0].uuid,alignData:L6R1HPV16Alignment});
+		assert.runningEvents += 1;
+		return true;
+	},'',0);
+	assert.assert(function(){
+		return true;
+	},'--------------------------------------------------------',0);
+}
+
 setInterval(function(){atomic.runOperations(1);},1000);
 
 
@@ -275,203 +495,36 @@ assert.assert(function(){
 },'Created test project 1',0);
 
 
+fastQReportGeneration();
 
-assert.assert(function(){
-	return true;
-},'--------------------------------------------------------',0);
-
-
-assert.assert(function(){
-	assert.runningEvents += 1;
-	console.log(`Starting report generation for ${L6R1R1.path}`);
-	atomic.addOperation("generateFastQCReport",L6R1R1);
-	return true;
-},'',0);
-
-assert.assert(function(){
-	assert.runningEvents += 1;
-	console.log(`Starting report generation for ${L6R1R2.path}`);
-	atomic.addOperation("generateFastQCReport",L6R1R2);
-	return true;
-},'',0);
-
-assert.assert(function(){
-	return true;
-},'--------------------------------------------------------',0);
-
-assert.assert(function(){
-	assert.runningEvents += 1;
-	console.log(`Starting to index ${hpv16.path}`);
-	atomic.addOperation("indexFasta",hpv16);
-	return true;
-},'',0);
-
-assert.assert(function(){
-	return hpv16.indexed;
-},'HPV16 was indexed',0);
-
-assert.assert(function(){
-	return hpv16.contigs.length == 1 ? true : false
-},'HPV16 has 1 contig',0);
-
-assert.assert(function(){
-	return hpv16.contigs[0].bp == 7906 ? true : false;
-},'HPV16 has correct number of base pairs',0);
+indexHPV16();
 
 
-assert.assert(function(){
-	assert.runningEvents += 1;
-	console.log(`Starting to index ${hpv18.path}`);
-	atomic.addOperation("indexFasta",hpv18);
-	return true;
-},'',0);
+validateHPV16Index();
 
 
-assert.assert(function(){
-	return hpv18.indexed;
-},'HPV18 was indexed',0);
+indexHPV18();
 
-assert.assert(function(){
-	return hpv18.contigs.length == 1 ? true : false
-},'HPV18 has 1 contig',0);
+validateHPV18Index();
 
-assert.assert(function(){
-	return hpv18.contigs[0].bp == 7857 ? true : false;
-},'HPV18 has correct number of base pairs',0);
+
 
 
 assert.assert(function(){
 	return true;
 },'--------------------------------------------------------',0);
 
-assert.assert(function(){
+alignR1ToHPV16();
 
-	console.log("aligning L6R1.R1, L6R1.R2 against HPV16");
-	atomic.addOperation("runAlignment",{fasta : hpv16,fastq1 : L6R1R1,fastq2 : L6R1R2,type : "patho"})
+validateR1ToHPV16Alignment();
 
-	assert.runningEvents += 1;
-	return true;
-},'',0);
+alignR1ToHPV18();
 
-assert.assert(function(){
-	return L6R1HPV16Alignment.summary.reads == 2689 ? true : false;
-
-},'Alignment has correct number of reads',0);
-
-assert.assert(function(){
-	return L6R1HPV16Alignment.summary.mates == 4696 ? true : false;
-
-},'Alignment has correct number of mates',0);
-
-assert.assert(function(){
-	return L6R1HPV16Alignment.summary.overallAlignmentRate == 12.96 ? true : false;
-
-},'Alignment has correct alignment rate	',0);
-
-assert.assert(function(){
-	return L6R1HPV16Alignment.varScanSNPSummary.minCoverage == 8 ? true : false;
-
-},'Alignment has correct minimum coverage',0);
-
-assert.assert(function(){
-	return L6R1HPV16Alignment.varScanSNPSummary.minVarFreq == 0.2 ? true : false;
-
-},'Alignment has correct minimum variable frequency',0);
-
-assert.assert(function(){
-	return L6R1HPV16Alignment.varScanSNPSummary.minAvgQual == 15 ? true : false;
-
-},'Alignment has correct minimum average quality',0);
-
-assert.assert(function(){
-	return L6R1HPV16Alignment.varScanSNPSummary.pValueThresh == 0.01 ? true : false;
-
-},'Alignment has correct p-value threshold',0);
-
-assert.assert(function(){
-	return L6R1HPV16Alignment.varScanSNPSummary.SNPsReported == 8 ? true : false;
-
-},'Alignment has correct predicted SNPs',0);
-
-assert.assert(function(){
-	return L6R1HPV16Alignment.varScanSNPSummary.indelsReported == 0 ? true : false;
-
-},'Alignment has correct predicted indels',0);
+validateR1ToHPV18Alignment();
 
 
-assert.assert(function(){
+renderHPV16FigureTracks();
 
-	console.log("aligning L6R1.R1, L6R1.R2 against HPV18");
-	atomic.addOperation("runAlignment",{fasta : hpv18,fastq1 : L6R1R1,fastq2 : L6R1R2,type : "patho"})
-
-	assert.runningEvents += 1;
-	return true;
-},'',0);
-
-assert.assert(function(){
-	return L6R1HPV18Alignment.summary.reads == 2689 ? true : false;
-
-},'Alignment has correct number of reads',0);
-
-assert.assert(function(){
-	return L6R1HPV18Alignment.summary.mates == 5378 ? true : false;
-
-},'Alignment has correct number of mates',0);
-
-assert.assert(function(){
-	return L6R1HPV18Alignment.summary.overallAlignmentRate == 0 ? true : false;
-
-},'Alignment has correct alignment rate	',0);
-
-assert.assert(function(){
-	return L6R1HPV18Alignment.varScanSNPSummary.minCoverage == 8 ? true : false;
-
-},'Alignment has correct minimum coverage',0);
-
-assert.assert(function(){
-	return L6R1HPV18Alignment.varScanSNPSummary.minVarFreq == 0.2 ? true : false;
-
-},'Alignment has correct minimum variable frequency',0);
-
-assert.assert(function(){
-	return L6R1HPV18Alignment.varScanSNPSummary.minAvgQual == 15 ? true : false;
-
-},'Alignment has correct minimum average quality',0);
-
-assert.assert(function(){
-	return L6R1HPV18Alignment.varScanSNPSummary.pValueThresh == 0.01 ? true : false;
-
-},'Alignment has correct p-value threshold',0);
-
-assert.assert(function(){
-	return L6R1HPV18Alignment.varScanSNPSummary.SNPsReported == 0 ? true : false;
-
-},'Alignment has correct predicted SNPs',0);
-
-assert.assert(function(){
-	return L6R1HPV18Alignment.varScanSNPSummary.indelsReported == 0 ? true : false;
-
-},'Alignment has correct predicted indels',0);
-
-
-assert.assert(function(){
-	hpv16Figure = new CircularFigure("HPV16 Figure",hpv16.uuid,hpv16.contigs);
-	atomic.addOperation("renderCoverageTrackForContig",{circularFigure : hpv16Figure,contiguuid:hpv16Figure.contigs[0].uuid,alignData:L6R1HPV16Alignment});
-	assert.runningEvents += 1;
-	return true;
-},'',0);
-assert.assert(function(){
-	return true;
-},'--------------------------------------------------------',0);
-
-assert.assert(function(){
-	atomic.addOperation("renderSNPTrackForContig",{circularFigure : hpv16Figure,contiguuid:hpv16Figure.contigs[0].uuid,alignData:L6R1HPV16Alignment});
-	assert.runningEvents += 1;
-	return true;
-},'',0);
-assert.assert(function(){
-	return true;
-},'--------------------------------------------------------',0);
 
 assert.assert(function(){
 	assert.runningEvents += 1;
