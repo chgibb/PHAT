@@ -24,6 +24,12 @@ import {RenderSNPTrackForContig} from "./../operations/RenderSNPTrack";
 import {CheckForUpdate} from "./../operations/CheckForUpdate";
 import {DownloadAndInstallUpdate} from "./../operations/DownloadAndInstallUpdate";
 
+import {ProjectManifest,manifestsPath} from "./../projectManifest";
+
+import {NewProject} from "./../operations/NewProject";
+import {OpenProject} from "./../operations/OpenProject";
+import {SaveCurrentProject} from "./../operations//SaveCurrentProject";
+
 import * as winMgr from "./winMgr";
 
 import {File} from "./../file";
@@ -293,7 +299,11 @@ app.on
 		atomicOp.register("renderSNPTrackForContig",RenderSNPTrackForContig);
 
 		atomicOp.register("checkForUpdate",CheckForUpdate);
-		atomicOp.register("downloadAndInstallUpdate",DownloadAndInstallUpdate);		
+		atomicOp.register("downloadAndInstallUpdate",DownloadAndInstallUpdate);
+
+		atomicOp.register("newProject",NewProject);
+		atomicOp.register("openProject",OpenProject);
+		atomicOp.register("saveCurrentProject",SaveCurrentProject);	
 
 		setInterval(function(){atomicOp.runOperations(1);},2500);
 		//After an update has been installed, update the updater with new binaries.
