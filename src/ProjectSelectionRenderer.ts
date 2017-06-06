@@ -13,6 +13,8 @@ import formatByteString from "./req/renderer/formatByteString";
 
 import * as viewMgr from "./req/renderer/viewMgr";
 
+import * as projectsView from "./req/renderer/ProjectSelectionRenderer/projectsView";
+
 import * as $ from "jquery";
 (<any>window).$ = $;
 require("./req/renderer/commonBehaviour");
@@ -30,10 +32,19 @@ $
                 replyChannel : "projectSelection"
             }
         );
+        projectsView.addView(viewMgr.views,"projects");
+        viewMgr.changeView("projectsView");
         ipc.on
         (
             "projectSelection",function(event,arg)
-            {}
+            {
+                if(arg.action == "getKey" || arg.action == "keyChange")
+                {
+                    if(arg.key == "operations" && arg.val !== undefined)
+                    {
+                    }
+                }
+            }
         )
     }
 );
