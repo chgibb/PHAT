@@ -39,6 +39,7 @@ var persistState = require('./persistState');
 
 (<any>global).state = {};
 
+require('./ProjectSelection');
 require('./toolBar');
 require('./Input');
 require('./QC');
@@ -282,7 +283,7 @@ app.on
 		const menu = electron.Menu.buildFromTemplate(menuTemplate);
 		electron.Menu.setApplicationMenu(menu);
 
-		winMgr.windowCreators["toolBar"].Create();
+		winMgr.windowCreators["projectSelection"].Create();
 		
 		atomicOp.register("generateFastQCReport",GenerateQCReport);
 		atomicOp.register("indexFasta",IndexFasta);
