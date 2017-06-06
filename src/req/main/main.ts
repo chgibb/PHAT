@@ -27,6 +27,7 @@ import {DownloadAndInstallUpdate} from "./../operations/DownloadAndInstallUpdate
 import * as winMgr from "./winMgr";
 
 import {File} from "./../file";
+import {rebuildRTDirectory} from "./rebuildRTDirectory";
 import alignData from "./../alignData";
 import {CircularFigure} from "./../renderer/circularFigure";
 
@@ -96,7 +97,7 @@ app.on
 			fs.mkdirSync("resources/app/cdata");
 		}
 		catch(err){}
-		try
+		/*try
 		{
 			fs.mkdirSync("resources/app/rt");
 			fs.mkdirSync("resources/app/rt/QCReports");
@@ -104,7 +105,7 @@ app.on
 			fs.mkdirSync("resources/app/rt/AlignmentArtifacts");
 			fs.mkdirSync("resources/app/rt/circularFigures");
 		}
-		catch(err){}
+		catch(err){}*/
 
 		const menuTemplate: Array<Electron.MenuItemOptions> = [
 		{
