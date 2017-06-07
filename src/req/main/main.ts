@@ -521,6 +521,10 @@ ipc.on(
 			});
 			winMgr.closeAllExcept("toolBar");
 		}
+		else if(arg.opName == "newProject")
+		{
+			atomicOp.addOperation("newProject",arg.name);
+		}
 	}
 );
 atomicOp.updates.on(
