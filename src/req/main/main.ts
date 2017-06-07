@@ -681,6 +681,7 @@ atomicOp.updates.on(
 
 			dataMgr.clearData();
 			dataMgr.loadData("resources/app/rt/rt.json");
+			dataMgr.setKey("application","project",op.proj);
 
 			winMgr.windowCreators["toolBar"].Create();
 
