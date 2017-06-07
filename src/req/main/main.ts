@@ -531,7 +531,40 @@ ipc.on(
 		}
 		else if(arg.opName == "openProject")
 		{
-			atomicOp.addOperation("openProject",arg.proj);
+			let isCurrentlyLoaded = false;
+			try
+			{
+				let rt = jsonFile.readFileSync("resources/app/rt/rt.json");
+
+				if(rt)
+				{
+					if(rt.application)
+					{
+						if(rt.project)
+						{
+							//The project we're trying to load was the last one opened.
+							//No need to unpack it again
+							if(rt.project.uuid == arg.proj.uuid)
+								isCurrentlyLoaded = true;
+							else
+								isCurrentlyLoaded = false;
+						}
+						else
+							isCurrentlyLoaded = false;
+					}
+					else
+						isCurrentlyLoaded = false;
+				}
+				else
+					isCurrentlyLoaded = false;
+			}
+			catch(err){isCurrentlyLoaded = false;}
+
+			if(isCurrentlyLoaded)
+				finishLoadingProject(arg.proj);
+
+			if(!isCurrentlyLoaded)
+				atomicOp.addOperation("openProject",arg.proj);
 		}
 	}
 );
