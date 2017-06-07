@@ -52,7 +52,7 @@ export class OpenProject extends atomic.AtomicOperation
                         data : self.proj
                     }
                 );
-            },500
+            },10
         );
 
     }
