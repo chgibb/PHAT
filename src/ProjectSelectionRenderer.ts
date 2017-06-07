@@ -1,12 +1,17 @@
 import * as electron from "electron";
 const ipc = electron.ipcRenderer;
 
+
+
+const jsonFile = require("jsonfile");
+const Dialogs = require("dialogs");
+const dialogs = Dialogs();
+
 import {AtomicOperation} from "./req/operations/atomicOperations"
 import {AtomicOperationIPC} from "./req/atomicOperationsIPC";
 import {GetKeyEvent,KeySubEvent,SaveKeyEvent} from "./req/ipcEvents";
 
-const Dialogs = require("dialogs");
-const dialogs = Dialogs();
+import {ProjectManifest,manifestsPath} from "./req/projectManifest";
 
 import {checkServerPermission} from "./req/checkServerPermission";
 import formatByteString from "./req/renderer/formatByteString";
@@ -19,10 +24,20 @@ import * as $ from "jquery";
 (<any>window).$ = $;
 require("./req/renderer/commonBehaviour");
 
+function refreshProjects() : void
+{
+    jsonFile.readFile(manifestsPath,function(err : string,obj : Array<ProjectManifest>){
+        let projectsView = <projectsView.ProjectsView>viewMgr.getViewByName("projectsView");
+        projectsView.projects = obj;
+        viewMgr.render();
+    });
+}
+
 $
 (
     function()
     {
+        refreshProjects();
         ipc.send(
             "keySub",
             <KeySubEvent>{
@@ -42,6 +57,7 @@ $
                 {
                     if(arg.key == "operations" && arg.val !== undefined)
                     {
+                        refreshProjects();
                     }
                 }
             }
