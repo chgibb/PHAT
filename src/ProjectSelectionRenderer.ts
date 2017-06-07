@@ -47,6 +47,12 @@ $
                         key : "auth",
                         val : {token : token}
                     }
+                );
+                ipc.send(
+                    "runOperation",
+                    <AtomicOperationIPC>{
+                        opName : "checkForUpdate"
+                    }
                 );           
             }).catch((err : string) => {
                 let remote = electron.remote;
@@ -83,8 +89,37 @@ $
                                 `;
                                 return;
                             }
+                            if(ops[i].flags.done && ops[i].flags.success && ops[i].name == "checkForUpdate")
+                            {
+                                dialogs.confirm(
+                                    `PHAT ${ops[i].extraData.tag_name} is available. Download and install?`,
+                                    `More PHATness`,
+                                    (ok : boolean) => {
+                                        if(ok)
+                                        {
+                                            ipc.send(
+                                                "runOperation",
+                                                    <AtomicOperationIPC>{
+                                                        opName : "downloadAndInstallUpdate"
+                                                    }
+                                            );
+                                        }
+                                    }
+                                );
+                            }
+                            if(ops[i].name == "downloadAndInstallUpdate" && ops[i].extraData !== undefined)
+                            {
+                                document.body.innerHTML = `
+                                    <h1>Downloaded: ${formatByteString(ops[i].extraData.downloadProgress)}</h1><br />
+                                    <h2>PHAT will close itself when the download is complete. Please wait a few minutes before restarting PHAT.</h2>
+
+                                `;
+                                return;
+                            }
+                            if(ops[i].name == "newProject")
+                                refreshProjects();
                         }
-                        refreshProjects();
+                        
                     }
                 }
             }

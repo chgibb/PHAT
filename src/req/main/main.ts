@@ -523,7 +523,7 @@ ipc.on(
 				asset : asset,
 				token : token
 			});
-			winMgr.closeAllExcept("toolBar");
+			winMgr.closeAllExcept("projectSelection");
 		}
 		else if(arg.opName == "newProject")
 		{
@@ -698,8 +698,9 @@ atomicOp.updates.on(
 		if(op.flags.success)
 		{
 			dataMgr.setKey("application","downloadedUpdate",true);
-			dataMgr.saveData();
-			atomicOp.addOperation("saveCurrentProject",dataMgr.getKey("application","project"));
+			//dataMgr.saveData();
+			app.quit();
+			//atomicOp.addOperation("saveCurrentProject",dataMgr.getKey("application","project"));
 		}
 	}
 );
