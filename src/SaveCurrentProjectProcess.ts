@@ -27,6 +27,7 @@ process.on
                         flags : flags,
                     }
                 );
+                process.exit(0);
             }).catch((err) => {
                 flags.done = true;
                 flags.failure = true;
@@ -38,6 +39,7 @@ process.on
                         data : err
                     }
                 );
+                process.exit(1);
             });
         }
     }  
