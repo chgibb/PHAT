@@ -4,6 +4,7 @@ const app = electron.app;
 import * as winMgr from "./winMgr";
 import fsAccess from "./../fsAccess";
 import * as dataMgr from "./dataMgr";
+import * as atomicOp from "./../operations/atomicOperations";
 winMgr.windowCreators["toolBar"] =
 {
 	Create : function()
@@ -29,7 +30,7 @@ winMgr.windowCreators["toolBar"] =
 					if(!dataMgr.getKey("application","downloadedUpdate"))
 					{
 						dataMgr.saveData();
-						app.quit();
+						atomicOp.addOperation("saveCurrentProject",dataMgr.getKey("application","project"));
 					}
 				}
 			)

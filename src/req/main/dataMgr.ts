@@ -118,6 +118,11 @@ export function setKey(channel : string,key : string,val : any) : boolean
     }
 }
 
+export function clearData() : void
+{
+    data = {};
+}
+
 export function stringifyData(
     replacer?: (key: string, value: any) => any,
     space?: string | number
@@ -163,6 +168,4 @@ export function removeSubscriberFromKey(sub : KeySubObj)
 		}
 	}
 }
-
-
 

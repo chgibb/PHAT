@@ -14,6 +14,14 @@ import {CircularFigure} from "./req/renderer/circularFigure";
 import {SpawnRequestParams} from "./req/JobIPC";
 import * as dataMgr from "./req/main/dataMgr";
 
+import {ProjectManifest,manifestsPath} from "./req/projectManifest";
+
+import {NewProject} from "./req/operations/NewProject";
+import {OpenProject} from "./req/operations/OpenProject";
+import {SaveCurrentProject} from "./req/operations//SaveCurrentProject";
+
+const jsonFile = require("jsonfile");
+
 dataMgr.setKey("application","jobErrorLog","jobErrorLog.txt");
 dataMgr.setKey("application","jobVerboseLog","jobVerboseLog.txt");
 
@@ -24,7 +32,7 @@ try
 	fs.mkdirSync("resources/app/cdata");
 }
 catch(err){}
-try
+/*try
 {
 	fs.mkdirSync("resources/app/rt");
 	fs.mkdirSync("resources/app/rt/QCReports");
@@ -32,7 +40,7 @@ try
 	fs.mkdirSync("resources/app/rt/AlignmentArtifacts");
 	fs.mkdirSync("resources/app/rt/circularFigures");
 }
-catch(err){}
+catch(err){}*/
 
 atomic.register("generateFastQCReport",GenerateQCReport);
 atomic.register("indexFasta",IndexFasta);
@@ -42,6 +50,10 @@ atomic.register("renderSNPTrackForContig",RenderSNPTrackForContig);
 
 atomic.register("checkForUpdate",CheckForUpdate);
 atomic.register("downloadAndInstallUpdate",DownloadAndInstallUpdate);
+
+atomic.register("newProject",NewProject);
+atomic.register("openProject",OpenProject);
+atomic.register("saveCurrentProject",SaveCurrentProject);
 
 let L6R1R1 : Fastq = new Fastq('data/L6R1.R1.fastq');
 let L6R1R2 : Fastq = new Fastq('data/L6R1.R2.fastq');
@@ -185,7 +197,262 @@ atomic.updates.on(
 	}
 )
 
+atomic.updates.on(
+	"newProject",function(op : NewProject)
+	{
+		if(op.flags.done)
+			assert.runningEvents -= 1;
+	}
+);
+
+atomic.updates.on(
+	"openProject",function(op : NewProject)
+	{
+		if(op.flags.done)
+			assert.runningEvents -= 1;
+		if(op.flags.failure)
+		{
+			console.log(op.extraData);
+			process.exit(1);
+		}
+	}
+);
+
+atomic.updates.on(
+	"saveCurrentProject",function(op : SaveCurrentProject)
+	{
+		if(op.flags.done)
+			assert.runningEvents -= 1;
+		if(op.flags.failure)
+		{
+			console.log(op.extraData);
+			process.exit(1);
+		}
+	}
+);
+
+function fastQReportGeneration()
+{
+	assert.assert(function(){
+		return true;
+	},'--------------------------------------------------------',0);
+
+
+	assert.assert(function(){
+		assert.runningEvents += 1;
+		console.log(`Starting report generation for ${L6R1R1.path}`);
+		atomic.addOperation("generateFastQCReport",L6R1R1);
+		return true;
+	},'',0);
+
+	assert.assert(function(){
+		assert.runningEvents += 1;
+		console.log(`Starting report generation for ${L6R1R2.path}`);
+		atomic.addOperation("generateFastQCReport",L6R1R2);
+		return true;
+	},'',0);
+
+	assert.assert(function(){
+		return true;
+	},'--------------------------------------------------------',0);
+}
+
+function indexHPV16()
+{
+	assert.assert(function(){
+		assert.runningEvents += 1;
+		console.log(`Starting to index ${hpv16.path}`);
+		atomic.addOperation("indexFasta",hpv16);
+		return true;
+	},'',0);
+}
+
+function indexHPV18()
+{
+	assert.assert(function(){
+		assert.runningEvents += 1;
+		console.log(`Starting to index ${hpv18.path}`);
+		atomic.addOperation("indexFasta",hpv18);
+		return true;
+	},'',0);
+}
+
+function validateHPV16Index()
+{
+	assert.assert(function(){
+		return hpv16.indexed;
+	},'HPV16 was indexed',0);
+
+	assert.assert(function(){
+		return hpv16.contigs.length == 1 ? true : false
+	},'HPV16 has 1 contig',0);
+
+	assert.assert(function(){
+		return hpv16.contigs[0].bp == 7906 ? true : false;
+	},'HPV16 has correct number of base pairs',0);
+}
+
+function validateHPV18Index()
+{
+	assert.assert(function(){
+		return hpv18.indexed;
+	},'HPV18 was indexed',0);
+
+	assert.assert(function(){
+		return hpv18.contigs.length == 1 ? true : false
+	},'HPV18 has 1 contig',0);
+
+	assert.assert(function(){
+		return hpv18.contigs[0].bp == 7857 ? true : false;
+	},'HPV18 has correct number of base pairs',0);
+
+}
+
+function alignR1ToHPV16()
+{
+	assert.assert(function(){
+
+		console.log("aligning L6R1.R1, L6R1.R2 against HPV16");
+		atomic.addOperation("runAlignment",{fasta : hpv16,fastq1 : L6R1R1,fastq2 : L6R1R2,type : "patho"})
+
+		assert.runningEvents += 1;
+		return true;
+	},'',0);
+}
+
+function alignR1ToHPV18()
+{
+	assert.assert(function(){
+
+		console.log("aligning L6R1.R1, L6R1.R2 against HPV18");
+		atomic.addOperation("runAlignment",{fasta : hpv18,fastq1 : L6R1R1,fastq2 : L6R1R2,type : "patho"})
+
+		assert.runningEvents += 1;
+	return true;
+	},'',0);
+}
+
+function validateR1ToHPV16Alignment()
+{
+	assert.assert(function(){
+		return L6R1HPV16Alignment.summary.reads == 2689 ? true : false;
+
+	},'Alignment has correct number of reads',0);
+
+	assert.assert(function(){
+		return L6R1HPV16Alignment.summary.mates == 4696 ? true : false;
+
+	},'Alignment has correct number of mates',0);
+
+	assert.assert(function(){
+		return L6R1HPV16Alignment.summary.overallAlignmentRate == 12.96 ? true : false;
+
+	},'Alignment has correct alignment rate	',0);
+
+	assert.assert(function(){
+		return L6R1HPV16Alignment.varScanSNPSummary.minCoverage == 8 ? true : false;
+
+	},'Alignment has correct minimum coverage',0);
+
+	assert.assert(function(){
+		return L6R1HPV16Alignment.varScanSNPSummary.minVarFreq == 0.2 ? true : false;
+
+	},'Alignment has correct minimum variable frequency',0);
+
+	assert.assert(function(){
+		return L6R1HPV16Alignment.varScanSNPSummary.minAvgQual == 15 ? true : false;
+
+	},'Alignment has correct minimum average quality',0);
+
+	assert.assert(function(){
+		return L6R1HPV16Alignment.varScanSNPSummary.pValueThresh == 0.01 ? true : false;
+
+	},'Alignment has correct p-value threshold',0);
+
+	assert.assert(function(){
+		return L6R1HPV16Alignment.varScanSNPSummary.SNPsReported == 8 ? true : false;
+
+	},'Alignment has correct predicted SNPs',0);
+
+	assert.assert(function(){
+		return L6R1HPV16Alignment.varScanSNPSummary.indelsReported == 0 ? true : false;
+
+	},'Alignment has correct predicted indels',0);
+
+}
+
+function validateR1ToHPV18Alignment()
+{
+	assert.assert(function(){
+		return L6R1HPV18Alignment.summary.reads == 2689 ? true : false;
+
+	},'Alignment has correct number of reads',0);
+
+	assert.assert(function(){
+		return L6R1HPV18Alignment.summary.mates == 5378 ? true : false;
+
+	},'Alignment has correct number of mates',0);
+
+	assert.assert(function(){
+		return L6R1HPV18Alignment.summary.overallAlignmentRate == 0 ? true : false;
+
+	},'Alignment has correct alignment rate	',0);
+
+	assert.assert(function(){
+		return L6R1HPV18Alignment.varScanSNPSummary.minCoverage == 8 ? true : false;
+
+	},'Alignment has correct minimum coverage',0);
+
+	assert.assert(function(){
+		return L6R1HPV18Alignment.varScanSNPSummary.minVarFreq == 0.2 ? true : false;
+
+	},'Alignment has correct minimum variable frequency',0);
+
+	assert.assert(function(){
+		return L6R1HPV18Alignment.varScanSNPSummary.minAvgQual == 15 ? true : false;
+
+	},'Alignment has correct minimum average quality',0);
+
+	assert.assert(function(){
+		return L6R1HPV18Alignment.varScanSNPSummary.pValueThresh == 0.01 ? true : false;
+
+	},'Alignment has correct p-value threshold',0);
+
+	assert.assert(function(){
+		return L6R1HPV18Alignment.varScanSNPSummary.SNPsReported == 0 ? true : false;
+
+	},'Alignment has correct predicted SNPs',0);
+
+	assert.assert(function(){
+		return L6R1HPV18Alignment.varScanSNPSummary.indelsReported == 0 ? true : false;
+
+	},'Alignment has correct predicted indels',0);
+}
+
+function renderHPV16FigureTracks()
+{
+	assert.assert(function(){
+		hpv16Figure = new CircularFigure("HPV16 Figure",hpv16.uuid,hpv16.contigs);
+		atomic.addOperation("renderCoverageTrackForContig",{circularFigure : hpv16Figure,contiguuid:hpv16Figure.contigs[0].uuid,alignData:L6R1HPV16Alignment});
+		assert.runningEvents += 1;
+		return true;
+	},'',0);
+	assert.assert(function(){
+		return true;
+	},'--------------------------------------------------------',0);
+
+	assert.assert(function(){
+		atomic.addOperation("renderSNPTrackForContig",{circularFigure : hpv16Figure,contiguuid:hpv16Figure.contigs[0].uuid,alignData:L6R1HPV16Alignment});
+		assert.runningEvents += 1;
+		return true;
+	},'',0);
+	assert.assert(function(){
+		return true;
+	},'--------------------------------------------------------',0);
+}
+
 setInterval(function(){atomic.runOperations(1);},1000);
+
 
 assert.assert(function(){
 	return true;
@@ -204,6 +471,72 @@ assert.assert(function(){
 },'--------------------------------------------------------',0);
 */
 
+assert.assert(function(){
+	assert.runningEvents += 1;
+
+	atomic.addOperation("newProject","Test Project1");
+	return true;
+},'',0);
+
+assert.assert(function(){
+
+	assert.runningEvents += 1;
+
+	let projectManifest : Array<ProjectManifest> = jsonFile.readFileSync(manifestsPath);
+
+	if(!projectManifest)
+	{
+		return false;
+	}
+
+	atomic.addOperation("openProject",projectManifest[0]);
+	return true;
+
+},'',0);
+
+
+fastQReportGeneration();
+
+indexHPV16();
+
+
+validateHPV16Index();
+
+
+indexHPV18();
+
+validateHPV18Index();
+
+
+
+
+assert.assert(function(){
+	return true;
+},'--------------------------------------------------------',0);
+
+alignR1ToHPV16();
+
+validateR1ToHPV16Alignment();
+
+alignR1ToHPV18();
+
+validateR1ToHPV18Alignment();
+
+
+
+
+
+assert.assert(function(){
+	assert.runningEvents += 1;
+	let projectManifest : Array<ProjectManifest> = jsonFile.readFileSync(manifestsPath);
+
+	if(!projectManifest)
+	{
+		return false;
+	}
+	atomic.addOperation("saveCurrentProject",projectManifest[0]);
+	return true;
+},'',0);
 
 assert.assert(function(){
 	return true;
@@ -211,197 +544,27 @@ assert.assert(function(){
 
 
 assert.assert(function(){
-	assert.runningEvents += 1;
-	console.log(`Starting report generation for ${L6R1R1.path}`);
-	atomic.addOperation("generateFastQCReport",L6R1R1);
-	return true;
-},'',0);
-
-assert.assert(function(){
-	assert.runningEvents += 1;
-	console.log(`Starting report generation for ${L6R1R2.path}`);
-	atomic.addOperation("generateFastQCReport",L6R1R2);
-	return true;
-},'',0);
-
-assert.assert(function(){
-	return true;
-},'--------------------------------------------------------',0);
-
-assert.assert(function(){
-	assert.runningEvents += 1;
-	console.log(`Starting to index ${hpv16.path}`);
-	atomic.addOperation("indexFasta",hpv16);
-	return true;
-},'',0);
-
-assert.assert(function(){
-	return hpv16.indexed;
-},'HPV16 was indexed',0);
-
-assert.assert(function(){
-	return hpv16.contigs.length == 1 ? true : false
-},'HPV16 has 1 contig',0);
-
-assert.assert(function(){
-	return hpv16.contigs[0].bp == 7906 ? true : false;
-},'HPV16 has correct number of base pairs',0);
-
-
-assert.assert(function(){
-	assert.runningEvents += 1;
-	console.log(`Starting to index ${hpv18.path}`);
-	atomic.addOperation("indexFasta",hpv18);
-	return true;
-},'',0);
-
-
-assert.assert(function(){
-	return hpv18.indexed;
-},'HPV18 was indexed',0);
-
-assert.assert(function(){
-	return hpv18.contigs.length == 1 ? true : false
-},'HPV18 has 1 contig',0);
-
-assert.assert(function(){
-	return hpv18.contigs[0].bp == 7857 ? true : false;
-},'HPV18 has correct number of base pairs',0);
-
-
-assert.assert(function(){
-	return true;
-},'--------------------------------------------------------',0);
-
-assert.assert(function(){
-
-	console.log("aligning L6R1.R1, L6R1.R2 against HPV16");
-	atomic.addOperation("runAlignment",{fasta : hpv16,fastq1 : L6R1R1,fastq2 : L6R1R2,type : "patho"})
 
 	assert.runningEvents += 1;
+
+	let projectManifest : Array<ProjectManifest> = jsonFile.readFileSync(manifestsPath);
+
+	if(!projectManifest)
+	{
+		return false;
+	}
+
+	atomic.addOperation("openProject",projectManifest[0]);
 	return true;
+
 },'',0);
 
-assert.assert(function(){
-	return L6R1HPV16Alignment.summary.reads == 2689 ? true : false;
+validateHPV16Index();
+validateHPV18Index();
+validateR1ToHPV16Alignment();
+validateR1ToHPV18Alignment();
 
-},'Alignment has correct number of reads',0);
-
-assert.assert(function(){
-	return L6R1HPV16Alignment.summary.mates == 4696 ? true : false;
-
-},'Alignment has correct number of mates',0);
-
-assert.assert(function(){
-	return L6R1HPV16Alignment.summary.overallAlignmentRate == 12.96 ? true : false;
-
-},'Alignment has correct alignment rate	',0);
-
-assert.assert(function(){
-	return L6R1HPV16Alignment.varScanSNPSummary.minCoverage == 8 ? true : false;
-
-},'Alignment has correct minimum coverage',0);
-
-assert.assert(function(){
-	return L6R1HPV16Alignment.varScanSNPSummary.minVarFreq == 0.2 ? true : false;
-
-},'Alignment has correct minimum variable frequency',0);
-
-assert.assert(function(){
-	return L6R1HPV16Alignment.varScanSNPSummary.minAvgQual == 15 ? true : false;
-
-},'Alignment has correct minimum average quality',0);
-
-assert.assert(function(){
-	return L6R1HPV16Alignment.varScanSNPSummary.pValueThresh == 0.01 ? true : false;
-
-},'Alignment has correct p-value threshold',0);
-
-assert.assert(function(){
-	return L6R1HPV16Alignment.varScanSNPSummary.SNPsReported == 8 ? true : false;
-
-},'Alignment has correct predicted SNPs',0);
-
-assert.assert(function(){
-	return L6R1HPV16Alignment.varScanSNPSummary.indelsReported == 0 ? true : false;
-
-},'Alignment has correct predicted indels',0);
-
-
-assert.assert(function(){
-
-	console.log("aligning L6R1.R1, L6R1.R2 against HPV18");
-	atomic.addOperation("runAlignment",{fasta : hpv18,fastq1 : L6R1R1,fastq2 : L6R1R2,type : "patho"})
-
-	assert.runningEvents += 1;
-	return true;
-},'',0);
-
-assert.assert(function(){
-	return L6R1HPV18Alignment.summary.reads == 2689 ? true : false;
-
-},'Alignment has correct number of reads',0);
-
-assert.assert(function(){
-	return L6R1HPV18Alignment.summary.mates == 5378 ? true : false;
-
-},'Alignment has correct number of mates',0);
-
-assert.assert(function(){
-	return L6R1HPV18Alignment.summary.overallAlignmentRate == 0 ? true : false;
-
-},'Alignment has correct alignment rate	',0);
-
-assert.assert(function(){
-	return L6R1HPV18Alignment.varScanSNPSummary.minCoverage == 8 ? true : false;
-
-},'Alignment has correct minimum coverage',0);
-
-assert.assert(function(){
-	return L6R1HPV18Alignment.varScanSNPSummary.minVarFreq == 0.2 ? true : false;
-
-},'Alignment has correct minimum variable frequency',0);
-
-assert.assert(function(){
-	return L6R1HPV18Alignment.varScanSNPSummary.minAvgQual == 15 ? true : false;
-
-},'Alignment has correct minimum average quality',0);
-
-assert.assert(function(){
-	return L6R1HPV18Alignment.varScanSNPSummary.pValueThresh == 0.01 ? true : false;
-
-},'Alignment has correct p-value threshold',0);
-
-assert.assert(function(){
-	return L6R1HPV18Alignment.varScanSNPSummary.SNPsReported == 0 ? true : false;
-
-},'Alignment has correct predicted SNPs',0);
-
-assert.assert(function(){
-	return L6R1HPV18Alignment.varScanSNPSummary.indelsReported == 0 ? true : false;
-
-},'Alignment has correct predicted indels',0);
-
-
-assert.assert(function(){
-	hpv16Figure = new CircularFigure("HPV16 Figure",hpv16.uuid,hpv16.contigs);
-	atomic.addOperation("renderCoverageTrackForContig",{circularFigure : hpv16Figure,contiguuid:hpv16Figure.contigs[0].uuid,alignData:L6R1HPV16Alignment});
-	assert.runningEvents += 1;
-	return true;
-},'',0);
-assert.assert(function(){
-	return true;
-},'--------------------------------------------------------',0);
-
-assert.assert(function(){
-	atomic.addOperation("renderSNPTrackForContig",{circularFigure : hpv16Figure,contiguuid:hpv16Figure.contigs[0].uuid,alignData:L6R1HPV16Alignment});
-	assert.runningEvents += 1;
-	return true;
-},'',0);
-assert.assert(function(){
-	return true;
-},'--------------------------------------------------------',0);
-
+renderHPV16FigureTracks();
 
 assert.runAsserts();
 

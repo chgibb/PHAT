@@ -24,9 +24,16 @@ import {RenderSNPTrackForContig} from "./../operations/RenderSNPTrack";
 import {CheckForUpdate} from "./../operations/CheckForUpdate";
 import {DownloadAndInstallUpdate} from "./../operations/DownloadAndInstallUpdate";
 
+import {ProjectManifest,manifestsPath} from "./../projectManifest";
+
+import {NewProject} from "./../operations/NewProject";
+import {OpenProject} from "./../operations/OpenProject";
+import {SaveCurrentProject} from "./../operations//SaveCurrentProject";
+
 import * as winMgr from "./winMgr";
 
 import {File} from "./../file";
+import {rebuildRTDirectory} from "./rebuildRTDirectory";
 import alignData from "./../alignData";
 import {CircularFigure} from "./../renderer/circularFigure";
 
@@ -39,6 +46,7 @@ var persistState = require('./persistState');
 
 (<any>global).state = {};
 
+require('./ProjectSelection');
 require('./toolBar');
 require('./Input');
 require('./QC');
@@ -47,6 +55,19 @@ require('./Output');
 require('./Pathogen');
 //require('./Host');
 require('./circularGenomeBuilder');
+
+//final steps to load project after OpenProject operation has unpacked the project tarball
+function finishLoadingProject(proj : ProjectManifest) : void
+{
+	atomicOp.clearOperationsQueue();
+
+	dataMgr.clearData();
+	dataMgr.loadData("resources/app/rt/rt.json");
+	dataMgr.setKey("application","project",proj);
+
+	winMgr.windowCreators["toolBar"].Create();
+	winMgr.closeAllExcept("toolBar");
+}
 
 try
 {
@@ -93,15 +114,6 @@ app.on
 		try
 		{
 			fs.mkdirSync("resources/app/cdata");
-		}
-		catch(err){}
-		try
-		{
-			fs.mkdirSync("resources/app/rt");
-			fs.mkdirSync("resources/app/rt/QCReports");
-			fs.mkdirSync("resources/app/rt/indexes");
-			fs.mkdirSync("resources/app/rt/AlignmentArtifacts");
-			fs.mkdirSync("resources/app/rt/circularFigures");
 		}
 		catch(err){}
 
@@ -282,7 +294,7 @@ app.on
 		const menu = electron.Menu.buildFromTemplate(menuTemplate);
 		electron.Menu.setApplicationMenu(menu);
 
-		winMgr.windowCreators["toolBar"].Create();
+		winMgr.windowCreators["projectSelection"].Create();
 		
 		atomicOp.register("generateFastQCReport",GenerateQCReport);
 		atomicOp.register("indexFasta",IndexFasta);
@@ -291,7 +303,11 @@ app.on
 		atomicOp.register("renderSNPTrackForContig",RenderSNPTrackForContig);
 
 		atomicOp.register("checkForUpdate",CheckForUpdate);
-		atomicOp.register("downloadAndInstallUpdate",DownloadAndInstallUpdate);		
+		atomicOp.register("downloadAndInstallUpdate",DownloadAndInstallUpdate);
+
+		atomicOp.register("newProject",NewProject);
+		atomicOp.register("openProject",OpenProject);
+		atomicOp.register("saveCurrentProject",SaveCurrentProject);	
 
 		setInterval(function(){atomicOp.runOperations(1);},2500);
 		//After an update has been installed, update the updater with new binaries.
@@ -307,11 +323,11 @@ app.on
 (
 	'will-quit',function() 
 	{
-			dataMgr.setKey("application","operations",{});
-			console.log("cleared operations");
-			dataMgr.saveData();
-			console.log("saved data");
-			process.exit(0);
+			//dataMgr.setKey("application","operations",{});
+			//console.log("cleared operations");
+			//dataMgr.saveData();
+			//console.log("saved data");
+			//process.exit(0);
     		//app.quit();
   		}
 );
@@ -507,7 +523,51 @@ ipc.on(
 				asset : asset,
 				token : token
 			});
-			winMgr.closeAllExcept("toolBar");
+			winMgr.closeAllExcept("projectSelection");
+		}
+		else if(arg.opName == "newProject")
+		{
+			atomicOp.addOperation("newProject",arg.name);
+		}
+
+		else if(arg.opName == "openProject")
+		{
+			let isCurrentlyLoaded = false;
+			try
+			{
+				let rt = jsonFile.readFileSync("resources/app/rt/rt.json");
+
+				if(rt)
+				{
+					if(rt.application)
+					{
+						if(rt.project)
+						{
+							//The project we're trying to load was the last one opened.
+							//No need to unpack it again
+							if(rt.project.uuid == arg.proj.uuid)
+								isCurrentlyLoaded = true;
+							else
+								isCurrentlyLoaded = false;
+						}
+						else
+							isCurrentlyLoaded = false;
+					}
+					else
+						isCurrentlyLoaded = false;
+				}
+				else
+					isCurrentlyLoaded = false;
+			}
+			catch(err){isCurrentlyLoaded = false;}
+
+			if(isCurrentlyLoaded){
+				console.log("last loaded same project");
+				finishLoadingProject(arg.proj);
+			}
+
+			if(!isCurrentlyLoaded)
+				atomicOp.addOperation("openProject",arg.proj);
 		}
 	}
 );
@@ -638,8 +698,41 @@ atomicOp.updates.on(
 		if(op.flags.success)
 		{
 			dataMgr.setKey("application","downloadedUpdate",true);
-			console.log("calling quit");
+			//dataMgr.saveData();
 			app.quit();
+			//atomicOp.addOperation("saveCurrentProject",dataMgr.getKey("application","project"));
 		}
 	}
-)
+);
+
+atomicOp.updates.on(
+	"newProject",function(op : NewProject)
+	{
+		dataMgr.setKey("application","operations",atomicOp.operationsQueue);
+		winMgr.publishChangeForKey("application","operations");
+	}
+);
+
+atomicOp.updates.on(
+	"openProject",function(op : OpenProject)
+	{
+		dataMgr.setKey("application","operations",atomicOp.operationsQueue);
+		winMgr.publishChangeForKey("application","operations");
+		if(op.flags.done && op.flags.success)
+		{
+			finishLoadingProject(op.proj);
+		}
+	}
+);
+atomicOp.updates.on(
+	"saveCurrentProject",function(op : SaveCurrentProject)
+	{
+		if(op.flags.done)
+		{
+			if(op.flags.failure)
+				throw new Error("There was an error saving your project");
+			app.quit();
+		}
+
+	}
+);

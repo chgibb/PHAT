@@ -21,34 +21,7 @@ $
 (
     function()
     {
-        /*
-            This method is only for internal testing in order to limit access to the application
-            to collaborators. This needs to be removed for the public release. token should be
-            a GitHub oAuth token.
-        */
-        dialogs.prompt("Enter Access Token","",function(token : string){
-            checkServerPermission(token).then(() => {
-                ipc.send(
-                    "saveKey",
-                    <SaveKeyEvent>{
-                        action : "saveKey",
-                        channel : "application",
-                        key : "auth",
-                        val : {token : token}
-                    }
-                );
-                ipc.send(
-                    "runOperation",
-                    <AtomicOperationIPC>{
-                        opName : "checkForUpdate"
-                    }
-                );
-                
-            }).catch((err : string) => {
-                let remote = electron.remote;
-                remote.app.quit();
-            });
-        });
+
         
         document.getElementById("input").onclick = function(this : HTMLElement,ev : MouseEvent){
             ipc.send("openWindow",{refName : "input"});
@@ -90,14 +63,6 @@ $
                         let ops : Array<AtomicOperation> = <Array<AtomicOperation>>arg.val;
                         for(let i = 0; i != ops.length; ++i)
                         {
-                            if(ops[i].name == "downloadAndInstallUpdate")
-                            {
-                                document.body.innerHTML = `
-                                    <h1>Downloaded: ${formatByteString(ops[i].extraData.downloadProgress)}</h1><br />
-                                    <h2>PHAT will close itself when the download is complete. Please wait a few minutes before restarting PHAT.</h2>
-
-                                `;
-                            }
                             if(ops[i].flags.done && ops[i].name != "checkForUpdate")
                             {
                                 let notification : Notification = new Notification(ops[i].flags.success ? "Success" : "Failure",<NotificationOptions>{
@@ -119,25 +84,6 @@ $
                                         })()}
                                     `
                                 });
-                            }
-                            if(ops[i].flags.done && ops[i].flags.success && ops[i].name == "checkForUpdate")
-                            {
-                                //console.log(ops[i]);
-                                dialogs.confirm(
-                                    `PHAT ${ops[i].extraData.tag_name} is available. Download and install?`,
-                                    `More PHATness`,
-                                    (ok : boolean) => {
-                                        if(ok)
-                                        {
-                                            ipc.send(
-                                                "runOperation",
-                                                    <AtomicOperationIPC>{
-                                                        opName : "downloadAndInstallUpdate"
-                                                    }
-                                            );
-                                        }
-                                    }
-                                );
                             }
                         }
                     }

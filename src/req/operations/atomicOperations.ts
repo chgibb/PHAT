@@ -109,6 +109,11 @@ export let operationsQueue : Array<AtomicOperation> = new Array<AtomicOperation>
 
 export let updates : EventEmitter = new EventEmitter();
 
+export function clearOperationsQueue()
+{
+    operationsQueue = new Array<AtomicOperation>();
+}
+
 export function register(opName : string,op : typeof AtomicOperation) : void
 {
     for(let i = 0; i != registeredOperations.length; ++i)

@@ -1,0 +1,13 @@
+@import "common/buttonshadow";
+@import "common/colors";
+
+.window-color{
+  background-color: $windowbg-color;
+}
+#title{
+  text-align: left;
+}
+
+.activeHover:hover{
+    font-weight: bold;
+}
