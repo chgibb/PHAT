@@ -2,8 +2,8 @@ export interface ProjectManifest
 {
     alias : string;
     tarBall : string;
-    lastOpened : string;
-    created : string;
+    lastOpened : number;
+    created : number;
     uuid : string;
 }
 

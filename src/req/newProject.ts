@@ -19,8 +19,8 @@ export function newProject(name : string) : Promise<{}>
         projects.push({
             alias : name,
             tarBall : `resources/app/projects/${uuid}.phat`,
-            lastOpened : Date.now().toString(),
-            created : Date.now().toString(),
+            lastOpened : Date.now(),
+            created : Date.now(),
             uuid : uuid
         });
         jsonFile.writeFileSync(manifestsPath,projects,{spaces : 4});
