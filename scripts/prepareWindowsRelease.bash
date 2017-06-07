@@ -16,7 +16,12 @@ mv resources/app/newinstallUpdateProcess.exe resources/app/installUpdateProcess.
 cd ../
 mv phat-win32-x64/*.tar.gz . 
 
+cd phat-win32-x64
 
+jar -cMf phat-win32-x64-portable.zip .
+
+cd ../
+mv phat-win32-x64/*.zip .
 
 node scripts/buildWinInstaller
 
