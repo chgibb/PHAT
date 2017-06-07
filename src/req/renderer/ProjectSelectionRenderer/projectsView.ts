@@ -26,12 +26,17 @@ export class ProjectsView extends View
                     "<h2>You have no projects</h2>";
                 if(this.projects)
                 {
+                    if(this.projects.length == 0)
+                        return res;
                     for(let i = 0; i != this.projects.length; ++i)
                     {
+                        let lastOpened = new Date(this.projects[i].lastOpened);
+                        let created = new Date(this.projects[i].created);
+
                         res += `
                             <h4>${this.projects[i].alias}</h4><br />
-                            <h6>Last Opened: ${this.projects[i].lastOpened}</h6><br />
-                            <h6>Created: ${this.projects[i].created}</h6><br />
+                            <h6>Last Opened: ${lastOpened}</h6><br />
+                            <h6>Created: ${created}</h6><br />
                         `;
                     }
                 }
