@@ -525,6 +525,10 @@ ipc.on(
 		{
 			atomicOp.addOperation("newProject",arg.name);
 		}
+		else if(arg.opName == "openProject")
+		{
+			atomicOp.addOperation("openProject",arg.proj);
+		}
 	}
 );
 atomicOp.updates.on(
@@ -666,4 +670,22 @@ atomicOp.updates.on(
 		dataMgr.setKey("application","operations",atomicOp.operationsQueue);
 		winMgr.publishChangeForKey("application","operations");
 	}
-)
+);
+
+atomicOp.updates.on(
+	"openProject",function(op : OpenProject)
+	{
+		if(op.flags.done && op.flags.success)
+		{
+			atomicOp.clearOperationsQueue();
+
+			dataMgr.clearData();
+			dataMgr.loadData("resources/app/rt/rt.json");
+
+			winMgr.windowCreators["toolBar"].Create();
+
+			winMgr.closeAllExcept("toolBar");
+			
+		}
+	}
+);
