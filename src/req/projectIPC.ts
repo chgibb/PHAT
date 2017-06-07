@@ -1,5 +1,5 @@
 import {ProjectManifest} from "./projectManifest"
-interface ProjectIPC
+export interface ProjectIPC
 {
     action : "newProject" | "openProject" | "saveCurrentProject";
     name : string;
