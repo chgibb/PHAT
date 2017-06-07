@@ -323,11 +323,11 @@ app.on
 (
 	'will-quit',function() 
 	{
-			dataMgr.setKey("application","operations",{});
-			console.log("cleared operations");
-			dataMgr.saveData();
-			console.log("saved data");
-			process.exit(0);
+			//dataMgr.setKey("application","operations",{});
+			//console.log("cleared operations");
+			//dataMgr.saveData();
+			//console.log("saved data");
+			//process.exit(0);
     		//app.quit();
   		}
 );
@@ -529,6 +529,7 @@ ipc.on(
 		{
 			atomicOp.addOperation("newProject",arg.name);
 		}
+
 		else if(arg.opName == "openProject")
 		{
 			let isCurrentlyLoaded = false;
@@ -695,8 +696,8 @@ atomicOp.updates.on(
 		if(op.flags.success)
 		{
 			dataMgr.setKey("application","downloadedUpdate",true);
-			console.log("calling quit");
-			app.quit();
+			dataMgr.saveData();
+			atomicOp.addOperation("saveCurrentProject",dataMgr.getKey("application","project"));
 		}
 	}
 );
@@ -716,5 +717,17 @@ atomicOp.updates.on(
 		{
 			finishLoadingProject(op.proj);
 		}
+	}
+);
+atomicOp.updates.on(
+	"saveCurrentProject",function(op : SaveCurrentProject)
+	{
+		if(op.flags.done)
+		{
+			if(op.flags.failure)
+				throw new Error("There was an error saving your project");
+			app.quit();
+		}
+
 	}
 );
