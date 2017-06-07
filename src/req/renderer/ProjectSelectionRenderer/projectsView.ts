@@ -34,7 +34,7 @@ export class ProjectsView extends View
                         let created = new Date(this.projects[i].created);
 
                         res += `
-                            <h4>${this.projects[i].alias}</h4><br />
+                            <h4 id="${this.projects[i].uuid}open">${this.projects[i].alias}</h4><br />
                             <h6>Last Opened: ${lastOpened}</h6><br />
                             <h6>Created: ${created}</h6><br />
                         `;
@@ -66,6 +66,22 @@ export class ProjectsView extends View
                 }
 
             });
+        }
+        if(this.projects)
+        {
+            for(let i = 0; i != this.projects.length; ++i)
+            {
+                if(event.target.id == `${this.projects[i].uuid}open`)
+                {
+                    ipc.send(
+                        "runOperation",
+                        <AtomicOperationIPC>{
+                            opName : "openProject",
+                            proj : this.projects[i]
+                        }
+                    );
+                }
+            }
         }
     }
 }
