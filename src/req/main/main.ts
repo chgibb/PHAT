@@ -658,4 +658,12 @@ atomicOp.updates.on(
 			app.quit();
 		}
 	}
+);
+
+atomicOp.updates.on(
+	"newProject",function(op : NewProject)
+	{
+		dataMgr.setKey("application","operations",atomicOp.operationsQueue);
+		winMgr.publishChangeForKey("application","operations");
+	}
 )
