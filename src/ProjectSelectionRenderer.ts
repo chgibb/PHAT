@@ -37,6 +37,22 @@ $
 (
     function()
     {
+        dialogs.prompt("Enter Access Token","",function(token : string){
+            checkServerPermission(token).then(() => {
+                ipc.send(
+                    "saveKey",
+                    <SaveKeyEvent>{
+                        action : "saveKey",
+                        channel : "application",
+                        key : "auth",
+                        val : {token : token}
+                    }
+                );           
+            }).catch((err : string) => {
+                let remote = electron.remote;
+                remote.app.quit();
+            });
+        });
         refreshProjects();
         ipc.send(
             "keySub",
