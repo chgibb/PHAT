@@ -9,7 +9,7 @@ import {ProjectManifest} from "./projectManifest";
 import {rebuildRTDirectory} from "./main/rebuildRTDirectory"
 import * as dataMgr from "./main/dataMgr";
 
-export function openProject(proj : ProjectManifest) : Promise<{}>
+export function openProject(proj : ProjectManifest,cb : (toUnpack : number,unPacked : number) => void) : Promise<{}>
 {
     return new Promise((resolve,reject) => {
         dataMgr.clearData();
@@ -18,7 +18,6 @@ export function openProject(proj : ProjectManifest) : Promise<{}>
         {
             fs.accessSync(proj.tarBall)
             let totalFiles = 0;
-            let countedFiles = 0;
             let unPackedFiles = 0;
 
             let countFiles = tarStream.extract();
@@ -27,6 +26,7 @@ export function openProject(proj : ProjectManifest) : Promise<{}>
                     if(header)
                     {
                         totalFiles++;
+                        cb(totalFiles,unPackedFiles);
                     }
                     stream.on("end",() => {
                         next();
@@ -37,6 +37,7 @@ export function openProject(proj : ProjectManifest) : Promise<{}>
                 let extract = tarfs.extract("resources/app/rt",{
                     ignore : (name : string) => {
                         unPackedFiles++;
+                        cb(totalFiles,unPackedFiles);
                         return false;
                     }
                 });
