@@ -715,6 +715,8 @@ atomicOp.updates.on(
 atomicOp.updates.on(
 	"openProject",function(op : OpenProject)
 	{
+		dataMgr.setKey("application","operations",atomicOp.operationsQueue);
+		winMgr.publishChangeForKey("application","operations");
 		if(op.flags.done && op.flags.success)
 		{
 			finishLoadingProject(op.proj);
