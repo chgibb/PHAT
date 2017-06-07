@@ -1,6 +1,6 @@
 {
   "name": "phat",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "Pathogen Host Analysis Tool",
   "main": "main.js",
   "scripts": {
