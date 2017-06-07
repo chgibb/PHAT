@@ -56,6 +56,19 @@ require('./Pathogen');
 //require('./Host');
 require('./circularGenomeBuilder');
 
+//final steps to load project after OpenProject operation has unpacked the project tarball
+function finishLoadingProject(proj : ProjectManifest) : void
+{
+	atomicOp.clearOperationsQueue();
+
+	dataMgr.clearData();
+	dataMgr.loadData("resources/app/rt/rt.json");
+	dataMgr.setKey("application","project",proj);
+
+	winMgr.windowCreators["toolBar"].Create();
+	winMgr.closeAllExcept("toolBar");
+}
+
 try
 {
 	dataMgr.loadData("resources/app/rt/rt.json");
@@ -677,16 +690,7 @@ atomicOp.updates.on(
 	{
 		if(op.flags.done && op.flags.success)
 		{
-			atomicOp.clearOperationsQueue();
-
-			dataMgr.clearData();
-			dataMgr.loadData("resources/app/rt/rt.json");
-			dataMgr.setKey("application","project",op.proj);
-
-			winMgr.windowCreators["toolBar"].Create();
-
-			winMgr.closeAllExcept("toolBar");
-			
+			finishLoadingProject(op.proj);
 		}
 	}
 );
