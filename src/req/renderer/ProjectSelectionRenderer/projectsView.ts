@@ -1,10 +1,15 @@
 /// <reference types="jquery" />
+import {ipcRenderer} from "electron";
+let ipc = ipcRenderer;
 const Dialogs = require("dialogs");
 const dialogs = Dialogs();
 
+import {ProjectManifest} from "./../../projectManifest";
+import {AtomicOperationIPC} from "./../../atomicOperationsIPC";
 import {View} from "./../viewMgr";
 export class ProjectsView extends View
 {
+    public projects : Array<ProjectManifest>;
     public constructor(div : string)
     {
         super("projectsView",div);
@@ -26,6 +31,17 @@ export class ProjectsView extends View
         if(event.target.id == "createNewProject")
         {
             dialogs.prompt("Project Name","New Project",function(text : string){
+
+                if(text)
+                {
+                    ipc.send(
+                        "runOperation",
+                        <AtomicOperationIPC>{
+                            opName : "newProject",
+                            name : text
+                        }
+                    );
+                }
 
             });
         }
