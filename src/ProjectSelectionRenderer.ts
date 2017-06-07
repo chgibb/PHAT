@@ -57,6 +57,17 @@ $
                 {
                     if(arg.key == "operations" && arg.val !== undefined)
                     {
+                        let ops : Array<AtomicOperation> = <Array<AtomicOperation>>arg.val;
+                        for(let i = 0; i != ops.length; ++i)
+                        {
+                            if(ops[i].name == "openProject")
+                            {
+                                document.body.innerHTML = `
+                                    <h1>Unpacked ${ops[i].extraData.unPacked} of ${ops[i].extraData.toUnpack}</h1>
+                                `;
+                                return;
+                            }
+                        }
                         refreshProjects();
                     }
                 }

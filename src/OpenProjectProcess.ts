@@ -4,6 +4,17 @@ import {openProject} from "./req//openProject";
 
 let proj : ProjectManifest;
 let flags : CompletionFlags = new CompletionFlags();
+
+function progressCallBack(toUnpack : number,unPacked : number) : void
+{
+    process.send(
+        <AtomicOperationForkEvent>{
+            update : true,
+            flags : flags,
+            data : {toUnpack : toUnpack,unPacked : unPacked}
+        }
+    )
+}
 process.on
 (
     "message",function(ev : AtomicOperationForkEvent)
@@ -17,7 +28,7 @@ process.on
 
         if(ev.run == true)
         {
-            openProject(proj).then(() => {
+            openProject(proj,progressCallBack).then(() => {
                 flags.done = true;
                 flags.failure = false;
                 flags.success = true;
