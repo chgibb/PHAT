@@ -87,7 +87,7 @@ $
                         let ops : Array<AtomicOperation> = <Array<AtomicOperation>>arg.val;
                         for(let i = 0; i != ops.length; ++i)
                         {
-                            if(ops[i].name == "openProject")
+                            if(ops[i].name == "openProject" && ops[i].extraData !== undefined)
                             {
                                 document.body.innerHTML = `
                                     <h1>Unpacked ${ops[i].extraData.unPacked} of ${ops[i].extraData.toUnpack}</h1>

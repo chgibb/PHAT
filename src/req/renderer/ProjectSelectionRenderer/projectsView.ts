@@ -77,6 +77,7 @@ export class ProjectsView extends View
                 {
                     this.projects[i].lastOpened = Date.now();
                     jsonFile.writeFileSync(manifestsPath,this.projects);
+                    document.getElementById(this.div).innerHTML = "Preparing";
                     ipc.send(
                         "runOperation",
                         <AtomicOperationIPC>{
