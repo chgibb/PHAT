@@ -1,10 +1,12 @@
 /// <reference types="jquery" />
 import {ipcRenderer} from "electron";
 let ipc = ipcRenderer;
+
+const jsonFile = require("jsonfile");
 const Dialogs = require("dialogs");
 const dialogs = Dialogs();
 
-import {ProjectManifest} from "./../../projectManifest";
+import {ProjectManifest,manifestsPath} from "./../../projectManifest";
 import {AtomicOperationIPC} from "./../../atomicOperationsIPC";
 import {View} from "./../viewMgr";
 export class ProjectsView extends View
@@ -34,9 +36,9 @@ export class ProjectsView extends View
                         let created = new Date(this.projects[i].created);
 
                         res += `
-                            <h4 id="${this.projects[i].uuid}open">${this.projects[i].alias}</h4><br />
-                            <h6>Last Opened: ${lastOpened}</h6><br />
-                            <h6>Created: ${created}</h6><br />
+                            <h4 class="activeHover" id="${this.projects[i].uuid}open">${this.projects[i].alias}</h4>
+                            <h6>Last Opened: ${lastOpened}</h6>
+                            <h6>Created: ${created}</h6>
                         `;
                     }
                 }
@@ -73,6 +75,8 @@ export class ProjectsView extends View
             {
                 if(event.target.id == `${this.projects[i].uuid}open`)
                 {
+                    this.projects[i].lastOpened = Date.now();
+                    jsonFile.writeFileSync(manifestsPath,this.projects);
                     ipc.send(
                         "runOperation",
                         <AtomicOperationIPC>{
