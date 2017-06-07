@@ -561,8 +561,10 @@ ipc.on(
 			}
 			catch(err){isCurrentlyLoaded = false;}
 
-			if(isCurrentlyLoaded)
+			if(isCurrentlyLoaded){
+				console.log("last loaded same project");
 				finishLoadingProject(arg.proj);
+			}
 
 			if(!isCurrentlyLoaded)
 				atomicOp.addOperation("openProject",arg.proj);
