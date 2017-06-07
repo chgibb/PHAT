@@ -1,4 +1,5 @@
 import {SpawnRequestParams} from "./JobIPC";
+import {ProjectManifest} from "./projectManifest"
 import {Fasta} from "./fasta";
 import Fastq from "./fastq";
 import {CompletionFlags} from "./operations/atomicOperations";
@@ -24,6 +25,9 @@ export interface AtomicOperationIPC
     alignParams? : {fasta : Fasta,fastq1 : Fastq,fastq2 : Fastq,type : "patho" | "host"};
 
     token? : string;
+
+    name? : string;
+    proj? : ProjectManifest;
 }
 
 /**

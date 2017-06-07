@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<script>
+			var startUp = performance.now();
+		</script>
+		<meta charset="UTF-8">
+		<link rel="stylesheet" type="text/css" href="styles/ProjectSelection.css">
+		<link rel="stylesheet" type="text/css" href="bootstrap.min.css">
+		<title>Select Project</title>
+  </head>
+  <body class="window-color">
+  	<script>
+		  require("./bootStrapCodeCache")("resources/app/ProjectSelectionRenderer.js","./ProjectSelectionRenderer","resources/app/cdata/ProjectSelectionRenderer.cdata");
+	</script>
+    <script>
+	    console.log("Start up took "+(performance.now()-startUp+"ms"));
+	</script>
+	<div id="projects">
+	</div>
+  </body>
+</html>

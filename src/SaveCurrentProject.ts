@@ -1,0 +1,2 @@
+import requireDyn from "./req/requireDyn";
+requireDyn("./bootStrapCodeCache")("resources/app/SaveCurrentProjectProcess.js","./SaveCurrentProjectProcess","resources/app/cdata/SaveCurrentProjectProcess.cdata");
