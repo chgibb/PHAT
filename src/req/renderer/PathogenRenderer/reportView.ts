@@ -58,14 +58,17 @@ export class ReportView extends viewMgr.View
                                         found++;
                                         continue;
                                     }
-                                    if(this.selectedFastqInputs[k].uuid == this.aligns[i].fastqs[1].uuid)
+                                    if(this.aligns[i].fastqs[1])
                                     {
-                                        found++;
-                                        continue;
+                                        if(this.selectedFastqInputs[k].uuid == this.aligns[i].fastqs[1].uuid)
+                                        {
+                                            found++;
+                                            continue;
+                                        }
                                     }
                                 }
                             }
-                            if(found == 3)
+                            if(found >= 2)
                             {
                                 res += `
                                     <tr>
