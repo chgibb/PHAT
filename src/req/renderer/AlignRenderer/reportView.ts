@@ -199,8 +199,8 @@ export class ReportView extends viewMgr.View
                 Only run the alignment (bowtie2) if two fastQ's have been selected, 
                 AND a Fasta has been selected.
             */
-            if (this.selectedFasta && selected_fastq_count >= 2) {
-                //alert("P.H.A.T will now align your selection.\nThis may take a few minutes.")
+            if(this.selectedFasta && selected_fastq_count >= 1) 
+            {
                 ipc.send(
                     "runOperation",<AtomicOperationIPC>{
                         opName : "runAlignment",
@@ -212,11 +212,8 @@ export class ReportView extends viewMgr.View
                         }
                     }
                 );
-            } else {
-                alert(selected_fastq_count >= 2 ? "You need to select a Fasta file!" : "You need to select two FastQ files!");
-            }
+            } 
             
-
             this.setConfirmOptions();
 
             viewMgr.render();

@@ -34,10 +34,18 @@ export function bowTie2Align(op : RunAlignment) : Promise<{}>
             args.push("resources/app/bowtie2");
         args.push("-x");
         args.push(`resources/app/rt/indexes/${op.fasta.uuid}`);
-        args.push("-1");
-        args.push(op.fastq1.path);
-        args.push("-2");
-        args.push(op.fastq2.path);
+        if(op.fastq2 !== undefined)
+        {
+            args.push("-1");
+            args.push(op.fastq1.path);
+            args.push("-2");
+            args.push(op.fastq2.path);
+        }
+        else
+        {
+            args.push("-U");
+            args.push(op.fastq1.path);
+        }
         args.push("-S");
         args.push(`resources/app/rt/AlignmentArtifacts/${op.alignData.uuid}/out.sam`);
 
@@ -48,7 +56,10 @@ export function bowTie2Align(op : RunAlignment) : Promise<{}>
             invokeString += " ";
         }
         op.alignData.invokeString = invokeString;
-        op.alignData.alias = `${op.fastq1.alias}, ${op.fastq2.alias}; ${op.fasta.alias}`;
+        if(op.fastq2 !== undefined)
+            op.alignData.alias = `${op.fastq1.alias}, ${op.fastq2.alias}; ${op.fasta.alias}`;
+        else
+            op.alignData.alias = `${op.fastq1.alias}; ${op.fasta.alias}`;
         fs.mkdirSync(`resources/app/rt/AlignmentArtifacts/${op.alignData.uuid}`);
         fs.mkdirSync(`resources/app/rt/AlignmentArtifacts/${op.alignData.uuid}/contigCoverage`);
         op.bowtieJob = new Job(op.bowtie2Exe,args,"",true,jobCallBack,{});
