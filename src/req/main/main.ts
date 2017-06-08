@@ -64,6 +64,18 @@ function finishLoadingProject(proj : ProjectManifest) : void
 	dataMgr.clearData();
 	dataMgr.loadData("resources/app/rt/rt.json");
 	dataMgr.setKey("application","project",proj);
+	let jobErrorLog = dataMgr.getKey("application","jobErrorLog");
+	let jobVerboseLog = dataMgr.getKey("application","jobVerboseLog");
+
+	try
+	{
+		fs.unlink(jobErrorLog,function(err : NodeJS.ErrnoException){});
+		fs.unlink(jobVerboseLog,function(err : NodeJS.ErrnoException){});
+	}
+	catch(err){}
+
+	dataMgr.setKey("application","jobErrorLog","jobErrorLog.txt");
+	dataMgr.setKey("application","jobVerboseLog","jobVerboseLog.txt");
 
 	winMgr.windowCreators["toolBar"].Create();
 	winMgr.closeAllExcept("toolBar");
@@ -78,18 +90,7 @@ catch(err)
 	
 }
 {
-	let jobErrorLog = dataMgr.getKey("application","jobErrorLog");
-	let jobVerboseLog = dataMgr.getKey("application","jobVerboseLog");
-
-	try
-	{
-		fs.unlink(jobErrorLog,function(err : NodeJS.ErrnoException){});
-		fs.unlink(jobVerboseLog,function(err : NodeJS.ErrnoException){});
-	}
-	catch(err){}
-
-	dataMgr.setKey("application","jobErrorLog","jobErrorLog.txt");
-	dataMgr.setKey("application","jobVerboseLog","jobVerboseLog.txt");
+	
 
 }
 
