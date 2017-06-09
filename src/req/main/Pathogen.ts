@@ -1,5 +1,5 @@
 import * as winMgr from "./winMgr";
-import fsAccess from "./../fsAccess";
+import {getReadable} from "./../getAppPath";
 
 
 winMgr.windowCreators["pathogen"] = 
@@ -12,7 +12,7 @@ winMgr.windowCreators["pathogen"] =
 				"Pathogen",
 				"pathogen",
 				1000,800,
-				fsAccess("resources/app/Pathogen.html"),
+				"file://"+getReadable("Pathogen.html"),
 				false,false,
 				500,300
 			)
