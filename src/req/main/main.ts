@@ -86,19 +86,6 @@ function finishLoadingProject(proj : ProjectManifest) : void
 	winMgr.closeAllExcept("toolBar");
 }
 
-try
-{
-	dataMgr.loadData("resources/app/rt/rt.json");
-}
-catch(err)
-{
-	
-}
-{
-	
-
-}
-
 app.on
 (
 	'ready',function()
