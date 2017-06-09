@@ -1,6 +1,7 @@
 import {EventEmitter} from "events";
 import * as fs from "fs";
 import {SpawnRequestParams} from "./../JobIPC";
+import * as dataMgr from "./../main/dataMgr";
 
 import * as rimraf from "rimraf";
 export abstract class AtomicOperation
@@ -192,6 +193,14 @@ export function addOperation(opName : string,data : any) : void
                     cleanGeneratedArtifacts(op);
                     if(op.flags.failure)
                         cleanDestinationArtifacts(op);
+                    fs.appendFile(
+                        dataMgr.getKey("application","operationTimerLog"),
+                        `${operationsQueue[i].name} end ${operationsQueue[i].startString}\n`,
+                        function(err : NodeJS.ErrnoException){
+                        if(err)
+                            throw err;
+                        }
+                    );
                 }
                 updates.emit(op.name,op);
             }
@@ -220,6 +229,16 @@ export function runOperations(maxRunning : number) : void
             operationsQueue[i].run();
             operationsQueue[i].running = true;
             currentRunning++;
+            operationsQueue[i].startEpoch = Date.now();
+            operationsQueue[i].startString = new Date(operationsQueue[i].startEpoch).toDateString();
+            fs.appendFile(
+                dataMgr.getKey("application","operationTimerLog"),
+                `${operationsQueue[i].name} start ${operationsQueue[i].startString}\n`,
+                function(err : NodeJS.ErrnoException){
+                    if(err)
+                        throw err;
+                }
+            );
         }
         
     }
