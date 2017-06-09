@@ -10,6 +10,12 @@ export abstract class AtomicOperation
 
     public generatedArtifactsDirectories : Array<string>;
 	public destinationArtifactsDirectories : Array<string>;
+
+    public startEpoch : number;
+    public endEpoch : number;
+    public startString : string;
+    public endString : string;
+
     public constructor()
     {
         this.generatedArtifacts = new Array<string>();
