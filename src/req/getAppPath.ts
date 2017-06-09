@@ -22,18 +22,21 @@ function getElectronApp()
 
 export function getReadable(relativePath : string) : string
 {
-    return app.getAppPath()+relativePath;
+    getElectronApp();
+    return app.getAppPath()+"/"+relativePath;
 }
 
 export function getWritable(relativePath : string) : string
 {
+    getElectronApp();
     if(getEdition() == "portable")
         return getReadable(relativePath);
-    return app.getPath("userData")+relativePath;
+    return app.getPath("userData")+"/"+relativePath;
 }
 
 export function getReadableAndWritable(relativePath : string) : string
 {
+    getElectronApp();
     return getWritable(relativePath);
 }
 
