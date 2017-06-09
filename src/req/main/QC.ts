@@ -1,5 +1,5 @@
 import * as winMgr from "./winMgr";
-import fsAccess from "./../fsAccess";
+import {getReadable} from "./../getAppPath";
 
 winMgr.windowCreators["QC"] = 
 {
@@ -12,7 +12,7 @@ winMgr.windowCreators["QC"] =
 				"QC",
 				1000,
 				800,
-				fsAccess("resources/app/QC.html"),
+				"file://"+getReadable("QC.html"),
 				false,false,
 				550,150
 			)
