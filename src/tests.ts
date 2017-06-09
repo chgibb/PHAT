@@ -13,6 +13,13 @@ import {Fasta} from "./req/fasta";
 import {CircularFigure} from "./req/renderer/circularFigure";
 import {SpawnRequestParams} from "./req/JobIPC";
 import * as dataMgr from "./req/main/dataMgr";
+import {setReadableBasePath,setWritableBasePath,setReadableAndWritableBasePath} from "./req/getAppPath";
+
+let basePath = "resources/app";
+setReadableBasePath(basePath);
+setWritableBasePath(basePath);
+setReadableAndWritableBasePath(basePath);
+
 
 import {ProjectManifest,manifestsPath} from "./req/projectManifest";
 
