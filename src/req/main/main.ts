@@ -77,8 +77,6 @@ function finishLoadingProject(proj : ProjectManifest) : void
 	dataMgr.setKey("application","jobErrorLog","jobErrorLog.txt");
 	dataMgr.setKey("application","jobVerboseLog","jobVerboseLog.txt");
 
-	dataMgr.setKey("application","operationTimerLog","operationTimerLog.txt");
-
 	winMgr.windowCreators["toolBar"].Create();
 	winMgr.closeAllExcept("toolBar");
 }
