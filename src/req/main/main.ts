@@ -9,6 +9,11 @@ const ipc = electron.ipcMain;
 const app = electron.app;
 if(require('electron-squirrel-startup')) app.quit();
 
+
+console.log("app Path: "+app.getAppPath());
+console.log("app data: "+app.getPath("appData"));
+console.log("user data: "+app.getPath("userData"));
+
 const BrowserWindow = electron.BrowserWindow;
 const jsonFile = require("jsonfile");
 
