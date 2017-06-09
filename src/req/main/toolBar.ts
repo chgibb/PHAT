@@ -31,6 +31,7 @@ winMgr.windowCreators["toolBar"] =
 					{
 						dataMgr.saveData();
 						atomicOp.addOperation("saveCurrentProject",dataMgr.getKey("application","project"));
+						winMgr.closeAllExcept("toolBar");
 					}
 				}
 			)
