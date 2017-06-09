@@ -1,6 +1,7 @@
 import * as electron from "electron";
 let app : Electron.App = null;
 
+import {getEdition,setEditionSource} from "./getEdition";
 export function isRenderer() : boolean
 {
     return (process && process.type == "renderer");
@@ -26,6 +27,8 @@ export function getReadable(relativePath : string) : string
 
 export function getWritable(relativePath : string) : string
 {
+    if(getEdition() == "portable")
+        return getReadable(relativePath);
     return app.getPath("userData")+relativePath;
 }
 
@@ -33,3 +36,5 @@ export function getReadableAndWritable(relativePath : string) : string
 {
     return getWritable(relativePath);
 }
+
+setEditionSource(getReadable("edition"));
