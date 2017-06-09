@@ -431,7 +431,7 @@ export function renderSNPTrack(
             SNPTracks += `
                 <plasmidtrack width="20" trackstyle="fill-opacity:0.0" radius="{{genome.radius}}">
                     <trackmarker start="${SNPPositions[i].position}" markerstyle="stroke:${SNPPositions[i].colour};stroke-dasharray:2,2;stroke-width:2px;" wadjust="{{genome.radius+${SNPPositions[i].adjust}}}">
-                        <markerlabel style="font-size:20px" text="${SNPPositions[i].from}${SNPPositions[i].relativePosition}${SNPPositions[i].to}" vadjust="{{genome.radius+${SNPPositions[i].adjust}}}"></markerlabel>
+                        <markerlabel style="font-size:20px;fill:${SNPPositions[i].colour}" text="${SNPPositions[i].from}${SNPPositions[i].relativePosition}${SNPPositions[i].to}" vadjust="{{genome.radius+${SNPPositions[i].adjust}}}"></markerlabel>
                     </trackmarker>
                 </plasmidtrack> 
                 `;
