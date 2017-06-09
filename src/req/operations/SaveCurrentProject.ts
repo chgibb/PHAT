@@ -3,6 +3,8 @@ import * as cp from "child_process";
 import * as atomic from "./atomicOperations";
 import {AtomicOperationForkEvent} from "./../atomicOperationsIPC";
 
+import {getReadable,getWritable,getReadableAndWritable} from "./../getAppPath";
+
 import {ProjectManifest,manifestsPath} from "./../projectManifest";
 export class SaveCurrentProject extends atomic.AtomicOperation
 {
@@ -49,7 +51,10 @@ export class SaveCurrentProject extends atomic.AtomicOperation
                 self.saveCurrentProjectProcess.send(
                     <AtomicOperationForkEvent>{
                         setData : true,
-                        data : self.proj
+                        data : self.proj,
+                        readableBasePath : getReadable(""),
+                        writableBasePath : getWritable(""),
+                        readableAndWritableBasePath : getReadableAndWritable("")
                     }
                 );
             },500
