@@ -10,6 +10,12 @@ export abstract class AtomicOperation
 
     public generatedArtifactsDirectories : Array<string>;
 	public destinationArtifactsDirectories : Array<string>;
+
+    public startEpoch : number;
+    public endEpoch : number;
+    public startDate : Date;
+    public endDate : Date;
+
     public constructor()
     {
         this.generatedArtifacts = new Array<string>();
@@ -186,6 +192,16 @@ export function addOperation(opName : string,data : any) : void
                     cleanGeneratedArtifacts(op);
                     if(op.flags.failure)
                         cleanDestinationArtifacts(op);
+                    op.endEpoch = Date.now();
+                    op.endDate = new Date(op.endEpoch);
+                    fs.appendFile(
+                        "operationTimerLog.txt",
+                        `${op.name} end ${op.endDate}\n`,
+                        function(err : NodeJS.ErrnoException){
+                        if(err)
+                            throw err;
+                        }
+                    );
                 }
                 updates.emit(op.name,op);
             }
@@ -214,6 +230,16 @@ export function runOperations(maxRunning : number) : void
             operationsQueue[i].run();
             operationsQueue[i].running = true;
             currentRunning++;
+            operationsQueue[i].startEpoch = Date.now();
+            operationsQueue[i].startDate = new Date(operationsQueue[i].startEpoch);
+            fs.appendFile(
+                "operationTimerLog.txt",
+                `${operationsQueue[i].name} start ${operationsQueue[i].startDate}\n`,
+                function(err : NodeJS.ErrnoException){
+                    if(err)
+                        throw err;
+                }
+            );
         }
         
     }
