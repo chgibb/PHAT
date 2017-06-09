@@ -1,6 +1,5 @@
 /// <reference types="electron" />
 
-//import * as electron from "electron";
 let app : Electron.App = null;
 
 import {getEdition,setEditionSource} from "./getEdition";
@@ -53,6 +52,11 @@ export function setReadableAndWritableBasePath(path : string)
     readableAndWritableBasePath = path;
 }
 
+/*
+    Will try to detect Electron environment (main/renderer) and initialize base paths acoordingly if they
+    have not yet been set for the current process. Will fail to initiliaze under Node and will throw an exception.
+    Under Node, each paths setPath methods must be called before their corresponding get methods
+*/
 export function getReadable(relativePath : string) : string
 {
     if(!readableBasePath)
@@ -75,11 +79,6 @@ export function getWritable(relativePath : string) : string
             setWritableBasePath(app.getPath("userData"));
     }
     return writableBasePath+"/"+relativePath;
-    /*
-    getElectronApp();
-    if(getEdition() == "portable")
-        return getReadable(relativePath);
-    return app.getPath("userData")+"/"+relativePath;*/
 }
 
 export function getReadableAndWritable(relativePath : string) : string
@@ -92,10 +91,4 @@ export function getReadableAndWritable(relativePath : string) : string
             setReadableAndWritableBasePath(app.getPath("userData"));
     }
     return readableAndWritableBasePath+"/"+relativePath;
-    /*
-    getElectronApp();
-    return getWritable(relativePath);*/
 }
-/*
-setEditionSource(getReadable("edition"));
-*/
