@@ -21,7 +21,7 @@ export class OpenProject extends atomic.AtomicOperation
     public run() : void
     {
         let self = this;
-        this.openProjectProcess = cp.fork("resources/app/OpenProject.js");
+        this.openProjectProcess = cp.fork(getReadable("OpenProject.js"));
 
         self.openProjectProcess.on(
             "message",function(ev : AtomicOperationForkEvent)
