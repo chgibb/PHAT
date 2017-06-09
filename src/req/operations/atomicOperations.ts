@@ -1,7 +1,6 @@
 import {EventEmitter} from "events";
 import * as fs from "fs";
 import {SpawnRequestParams} from "./../JobIPC";
-import * as dataMgr from "./../main/dataMgr";
 
 import * as rimraf from "rimraf";
 export abstract class AtomicOperation
@@ -14,8 +13,8 @@ export abstract class AtomicOperation
 
     public startEpoch : number;
     public endEpoch : number;
-    public startString : string;
-    public endString : string;
+    public startDate : Date;
+    public endDate : Date;
 
     public constructor()
     {
@@ -193,9 +192,11 @@ export function addOperation(opName : string,data : any) : void
                     cleanGeneratedArtifacts(op);
                     if(op.flags.failure)
                         cleanDestinationArtifacts(op);
+                    op.endEpoch = Date.now();
+                    op.endDate = new Date(op.endEpoch);
                     fs.appendFile(
-                        dataMgr.getKey("application","operationTimerLog"),
-                        `${operationsQueue[i].name} end ${operationsQueue[i].startString}\n`,
+                        "operationTimerLog.txt",
+                        `${op.name} end ${op.endDate}\n`,
                         function(err : NodeJS.ErrnoException){
                         if(err)
                             throw err;
@@ -230,10 +231,10 @@ export function runOperations(maxRunning : number) : void
             operationsQueue[i].running = true;
             currentRunning++;
             operationsQueue[i].startEpoch = Date.now();
-            operationsQueue[i].startString = new Date(operationsQueue[i].startEpoch).toDateString();
+            operationsQueue[i].startDate = new Date(operationsQueue[i].startEpoch);
             fs.appendFile(
-                dataMgr.getKey("application","operationTimerLog"),
-                `${operationsQueue[i].name} start ${operationsQueue[i].startString}\n`,
+                "operationTimerLog.txt",
+                `${operationsQueue[i].name} start ${operationsQueue[i].startDate}\n`,
                 function(err : NodeJS.ErrnoException){
                     if(err)
                         throw err;
