@@ -1,6 +1,7 @@
 import * as cp from "child_process";
 
 import * as atomic from "./atomicOperations";
+import {getReadable,getReadableAndWritable} from "./../getAppPath";
 export class InstallUpdate extends atomic.AtomicOperation
 {
     public installUpdateJob : cp.ChildProcess;
@@ -19,7 +20,7 @@ export class InstallUpdate extends atomic.AtomicOperation
         let self = this;
         try
         {
-            this.installUpdateJob = cp.fork("resources/app/installUpdate.js");
+            this.installUpdateJob = cp.fork(getReadable("installUpdate.js"));
             this.installUpdateJob.on
             (
                 "message",function(data : any)
