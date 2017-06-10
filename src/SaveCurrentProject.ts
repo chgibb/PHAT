@@ -1,2 +1,8 @@
-import requireDyn from "./req/requireDyn";
-requireDyn("./bootStrapCodeCache")("resources/app/SaveCurrentProjectProcess.js","./SaveCurrentProjectProcess","resources/app/cdata/SaveCurrentProjectProcess.cdata");
+import {getReadable,getReadableAndWritable} from "./req/getAppPath";
+import {bootStrapCodeCache} from "./req/bootStrapCodeCache";
+
+bootStrapCodeCache(
+    getReadable("SaveCurrentProjectProcess.js"),
+    "./SaveCurrentProjectProcess",
+    getReadableAndWritable("SaveCurrentProjectProcess.cdata")
+);
