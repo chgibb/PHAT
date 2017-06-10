@@ -54,14 +54,23 @@ export function setReadableAndWritableBasePath(path : string)
 
 function getLinuxConfigDir() : string
 {
-    if(process.platform == "linux")
+    if(process.env.HOME)
     {
-        if(process.env.HOME)
-        {
-            return process.env.HOME+"/.config/phat";
-        }
+        return process.env.HOME+"/.config/phat";
     }
     return undefined;
+}
+
+function getWin32ConfigDir() : string
+{
+    return undefined;
+}
+
+function getConfigDir() : string
+{
+    if(process.platform == "linux")
+        return getLinuxConfigDir();
+    return undefined
 }
 
 /*
@@ -86,7 +95,16 @@ export function getWritable(relativePath : string) : string
     if(!writableBasePath)
     {
         if(!getElectronApp())
-            throw new Error("No readable base path set");
+        {
+            let configDir = getConfigDir();
+            if(configDir)
+            {
+                setWritableBasePath(configDir);
+                return writableBasePath+"/"+relativePath;
+            }
+            else
+                throw new Error("No readable base path set");
+        }
         else
             setWritableBasePath(app.getPath("userData"));
     }
@@ -98,7 +116,16 @@ export function getReadableAndWritable(relativePath : string) : string
     if(!readableAndWritableBasePath)
     {
         if(!getElectronApp())
-            throw new Error("No readable/writable base path set");
+        {
+            let configDir = getConfigDir();
+            if(configDir)
+            {
+                setReadableAndWritableBasePath(configDir);
+                return readableAndWritableBasePath+"/"+relativePath;
+            }
+            else
+                throw new Error("No readable/writable base path set");
+        }
         else
             setReadableAndWritableBasePath(app.getPath("userData"));
     }
