@@ -1,6 +1,5 @@
 import * as winMgr from "./winMgr";
-import fsAccess from "./../fsAccess";
-
+import {getReadable} from "./../getAppPath";
 
 winMgr.windowCreators["circularGenomeBuilder"] = 
 {
@@ -12,7 +11,7 @@ winMgr.windowCreators["circularGenomeBuilder"] =
 				"circularGenomeBuilder",
 				"circularGenomeBuilder",
 				928,300,
-				fsAccess("resources/app/circularGenomeBuilder.html"),
+				"file://"+getReadable("circularGenomeBuilder.html"),
 				false,false,
 				500,150	
 			)
