@@ -94,13 +94,6 @@ function finishLoadingProject(proj : ProjectManifest) : void
 
 app.on
 (
-	'ready',function()
-	{
-	}
-);
-
-app.on
-(
 	'activate',function()
 	{	
 	}
