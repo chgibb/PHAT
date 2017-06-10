@@ -7,12 +7,20 @@ const app = remote.app;
 const jsonFile = require("jsonfile");
 const Dialogs = require("dialogs");
 const dialogs = Dialogs();
+import {getReadable,getWritable,getReadableAndWritable} from "./req/getAppPath";
+
+getReadable("");
+getWritable("");
+getReadableAndWritable("");
+
+import {ProjectManifest,getProjectManifests,setManifestsPath} from "./req/projectManifest";
+setManifestsPath(getReadableAndWritable(""));
 
 import {AtomicOperation} from "./req/operations/atomicOperations"
 import {AtomicOperationIPC} from "./req/atomicOperationsIPC";
 import {GetKeyEvent,KeySubEvent,SaveKeyEvent} from "./req/ipcEvents";
 
-import {ProjectManifest,manifestsPath} from "./req/projectManifest";
+
 
 import {checkServerPermission} from "./req/checkServerPermission";
 import formatByteString from "./req/renderer/formatByteString";
@@ -27,7 +35,7 @@ require("./req/renderer/commonBehaviour");
 
 function refreshProjects() : void
 {
-    jsonFile.readFile(manifestsPath,function(err : string,obj : Array<ProjectManifest>){
+    jsonFile.readFile(getProjectManifests(),function(err : string,obj : Array<ProjectManifest>){
         let projectsView = <projectsView.ProjectsView>viewMgr.getViewByName("projectsView");
         projectsView.projects = obj;
         viewMgr.render();

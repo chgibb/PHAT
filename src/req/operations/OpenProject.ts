@@ -5,7 +5,7 @@ import {AtomicOperationForkEvent} from "./../atomicOperationsIPC";
 
 import {getReadable,getWritable,getReadableAndWritable} from "./../getAppPath";
 
-import {ProjectManifest,manifestsPath} from "./../projectManifest";
+import {ProjectManifest} from "./../projectManifest";
 export class OpenProject extends atomic.AtomicOperation
 {
     public proj : ProjectManifest;

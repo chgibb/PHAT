@@ -13,7 +13,7 @@ import {Fasta} from "./req/fasta";
 import {CircularFigure} from "./req/renderer/circularFigure";
 import {SpawnRequestParams} from "./req/JobIPC";
 import * as dataMgr from "./req/main/dataMgr";
-import {setReadableBasePath,setWritableBasePath,setReadableAndWritableBasePath} from "./req/getAppPath";
+import {setReadableBasePath,setWritableBasePath,setReadableAndWritableBasePath,getReadableAndWritable} from "./req/getAppPath";
 
 let basePath = "resources/app";
 setReadableBasePath(basePath);
@@ -21,7 +21,8 @@ setWritableBasePath(basePath);
 setReadableAndWritableBasePath(basePath);
 
 
-import {ProjectManifest,manifestsPath} from "./req/projectManifest";
+import {ProjectManifest,getProjectManifests,setManifestsPath} from "./req/projectManifest";
+setManifestsPath(getReadableAndWritable(""));
 
 import {NewProject} from "./req/operations/NewProject";
 import {OpenProject} from "./req/operations/OpenProject";
@@ -489,7 +490,7 @@ assert.assert(function(){
 
 	assert.runningEvents += 1;
 
-	let projectManifest : Array<ProjectManifest> = jsonFile.readFileSync(manifestsPath);
+	let projectManifest : Array<ProjectManifest> = jsonFile.readFileSync(getProjectManifests());
 
 	if(!projectManifest)
 	{
@@ -535,7 +536,7 @@ validateR1ToHPV18Alignment();
 
 assert.assert(function(){
 	assert.runningEvents += 1;
-	let projectManifest : Array<ProjectManifest> = jsonFile.readFileSync(manifestsPath);
+	let projectManifest : Array<ProjectManifest> = jsonFile.readFileSync(getProjectManifests());
 
 	if(!projectManifest)
 	{
@@ -554,7 +555,7 @@ assert.assert(function(){
 
 	assert.runningEvents += 1;
 
-	let projectManifest : Array<ProjectManifest> = jsonFile.readFileSync(manifestsPath);
+	let projectManifest : Array<ProjectManifest> = jsonFile.readFileSync(getProjectManifests());
 
 	if(!projectManifest)
 	{

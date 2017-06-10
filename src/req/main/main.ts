@@ -13,6 +13,11 @@ if(require('electron-squirrel-startup')) app.quit();
 console.log("app Path: "+app.getAppPath());
 console.log("app data: "+app.getPath("appData"));
 console.log("user data: "+app.getPath("userData"));
+import {getReadable,getWritable,getReadableAndWritable} from "./../getAppPath";
+getReadable("");
+getWritable("");
+getReadableAndWritable("");
+
 
 const BrowserWindow = electron.BrowserWindow;
 const jsonFile = require("jsonfile");
@@ -29,7 +34,8 @@ import {RenderSNPTrackForContig} from "./../operations/RenderSNPTrack";
 import {CheckForUpdate} from "./../operations/CheckForUpdate";
 import {DownloadAndInstallUpdate} from "./../operations/DownloadAndInstallUpdate";
 
-import {ProjectManifest,manifestsPath} from "./../projectManifest";
+import {ProjectManifest,getProjectManifests,setManifestsPath} from "./../projectManifest";
+setManifestsPath(getReadableAndWritable(""));
 
 import {NewProject} from "./../operations/NewProject";
 import {OpenProject} from "./../operations/OpenProject";

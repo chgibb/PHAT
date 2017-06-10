@@ -6,7 +6,7 @@ const jsonFile = require("jsonfile");
 const Dialogs = require("dialogs");
 const dialogs = Dialogs();
 
-import {ProjectManifest,manifestsPath} from "./../../projectManifest";
+import {ProjectManifest,getProjectManifests} from "./../../projectManifest";
 import {AtomicOperationIPC} from "./../../atomicOperationsIPC";
 import {View} from "./../viewMgr";
 export class ProjectsView extends View
@@ -76,7 +76,7 @@ export class ProjectsView extends View
                 if(event.target.id == `${this.projects[i].uuid}open`)
                 {
                     this.projects[i].lastOpened = Date.now();
-                    jsonFile.writeFileSync(manifestsPath,this.projects);
+                    jsonFile.writeFileSync(getProjectManifests(),this.projects);
                     document.getElementById(this.div).innerHTML = "Preparing";
                     ipc.send(
                         "runOperation",
