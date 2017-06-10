@@ -55,7 +55,7 @@
     "electron-installer-debian": "^0.5.2",
     "electron-ipc-stream": "^0.2.0",
     "electron-packager": "^8.0.0",
-    "electron": "1.4.13",
+    "electron-prebuilt": "^1.1.2",
     "electron-squirrel-startup": "^1.0.0",
     "electron-winstaller": "^2.5.2",
     "fs-extra": "^2.0.0",
