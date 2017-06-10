@@ -1,7 +1,7 @@
 import * as fs from "fs";
 
-let editionString = "";
-let editionSource = "edition"
+let editionString : string = undefined;
+let editionSource = process.cwd()+"/edition";
 
 function getEditionString()
 {
