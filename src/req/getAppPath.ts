@@ -4,10 +4,14 @@ import * as path from "path";
 
 let app : Electron.App = null;
 
-import {getEdition,setEditionSource} from "./getEdition";
+import {getEdition} from "./getEdition";
+
 let readableBasePath : string = undefined;
 let writableBasePath : string = undefined;
 let readableAndWritableBasePath : string = undefined;
+
+let isPortable = /(portable)/i;
+
 export function isRenderer() : boolean
 {
     return (process && process.type == "renderer");
@@ -115,6 +119,8 @@ export function getReadable(relativePath : string) : string
 
 export function getWritable(relativePath : string) : string
 {
+    if(isPortable.test(getEdition()))
+        return getReadable(relativePath);
     if(!writableBasePath)
     {
         if(!getElectronApp())
@@ -136,6 +142,8 @@ export function getWritable(relativePath : string) : string
 
 export function getReadableAndWritable(relativePath : string) : string
 {
+    if(isPortable.test(getEdition()))
+        return getReadable(relativePath);
     if(!readableAndWritableBasePath)
     {
         if(!getElectronApp())
