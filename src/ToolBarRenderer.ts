@@ -3,15 +3,7 @@ const ipc = electron.ipcRenderer;
 
 import {AtomicOperation} from "./req/operations/atomicOperations"
 import {AtomicOperationIPC} from "./req/atomicOperationsIPC";
-import {GetKeyEvent,KeySubEvent,SaveKeyEvent} from "./req/ipcEvents";
-
-const Dialogs = require("dialogs");
-const dialogs = Dialogs();
-
-import {checkServerPermission} from "./req/checkServerPermission";
-import formatByteString from "./req/renderer/formatByteString";
-
-import * as viewMgr from "./req/renderer/viewMgr";
+import {KeySubEvent} from "./req/ipcEvents";
 
 import * as $ from "jquery";
 (<any>window).$ = $;
