@@ -5,6 +5,7 @@ import {Fasta,getFaiPath} from "./../fasta";
 import Fastq from "./../fastq";
 import alignData from "./../alignData"
 import {SpawnRequestParams} from "./../JobIPC";
+import {getReadable,getReadableAndWritable} from "./../getAppPath";
 import {Job,JobCallBackObject} from "./../main/Job";
 import {parseBowTie2AlignmentReport} from "./../bowTie2AlignmentReportParser";
 
@@ -63,13 +64,13 @@ export class RunAlignment extends atomic.AtomicOperation
         this.samToolsMPileupFlags = new atomic.CompletionFlags();
         this.varScanMPileup2SNPFlags = new atomic.CompletionFlags();
 
-        this.samToolsExe = 'resources/app/samtools';
+        this.samToolsExe = getReadable('samtools');
         if(process.platform == "linux")
-            this.bowtie2Exe = 'resources/app/bowtie2';
+            this.bowtie2Exe = getReadable('bowtie2');
         else if(process.platform == "win32")
-            this.bowtie2Exe = 'resources/app/perl/perl/bin/perl.exe';
+            this.bowtie2Exe = getReadable('perl/perl/bin/perl.exe');
 
-        this.varScanExe = "resources/app/varscan.jar";
+        this.varScanExe = getReadable("varscan.jar");
     }
     public setData(
         data : {
@@ -90,7 +91,7 @@ export class RunAlignment extends atomic.AtomicOperation
             this.alignData.fasta = this.fasta;
             this.alignData.fastqs.push(this.fastq1,this.fastq2);
             this.generatedArtifacts.push(`${this.fasta.path}.fai`);
-            this.destinationArtifactsDirectories.push(`resources/app/rt/AlignmentArtifacts/${this.alignData.uuid}`);
+            this.destinationArtifactsDirectories.push(getReadableAndWritable(`rt/AlignmentArtifacts/${this.alignData.uuid}`));
         }
     //bowtie2-align -> samtools view -> samtools sort -> samtools index -> samtools depth -> separate out coverage data
     //-> samtools faidx -> samtools mpileup -> varscan pileup2snp
