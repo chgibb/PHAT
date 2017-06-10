@@ -315,7 +315,6 @@ export function renderCoverageTrack(
             for(let k = 0; k != depths[i].positions.length; ++k)
             {
                 let offset = 1;
-                let prev = depths[i].positions[k];
                 let initial = k; 
                 while(depths[i].positions[k + offset] == depths[i].positions[initial] + offset)
                 {
