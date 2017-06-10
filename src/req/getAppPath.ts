@@ -67,6 +67,14 @@ function getLinuxConfigDir() : string
     return undefined;
 }
 
+function getWin32ConfigDir() : string
+{
+    if(process.env.APPDATA)
+    {
+        return process.env.APPDATA+"/phat";
+    }
+    return undefined;
+}
 function getReadableDir() : string
 {
     //If we're running under Electron then execPath will be of the form:
@@ -79,15 +87,14 @@ function getReadableDir() : string
         return process.cwd()+"/resources/app";
 }
 
-function getWin32ConfigDir() : string
-{
-    return undefined;
-}
+
 
 function getConfigDir() : string
 {
     if(process.platform == "linux")
         return getLinuxConfigDir();
+    else if(process.platform == "win32")
+        return getWin32ConfigDir();
     return undefined
 }
 
