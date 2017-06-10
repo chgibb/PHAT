@@ -12,9 +12,6 @@ process.on
         if(ev.setData == true)
         {
             proj = ev.data;
-            setReadableBasePath(ev.readableBasePath);
-            setWritableBasePath(ev.writableBasePath);
-            setReadableAndWritableBasePath(ev.readableAndWritableBasePath);
             process.send(<AtomicOperationForkEvent>{finishedSettingData : true});
             return;
         }

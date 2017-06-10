@@ -1,5 +1,3 @@
-import * as fs from "fs";
-
 import * as electron from "electron";
 const ipc = electron.ipcRenderer;
 
@@ -21,7 +19,7 @@ $
         
         ipc.send(
             "getKey",
-            {
+            <GetKeyEvent>{
                 action : "getKey",
                 channel : "align",
                 key : "aligns",
@@ -30,7 +28,7 @@ $
         );
         ipc.send(
             "getKey",
-            {
+            <GetKeyEvent>{
                 action : "getKey",
                 channel : "input",
                 key : "fastqInputs",
@@ -39,7 +37,7 @@ $
         );
         ipc.send(
             "getKey",
-            {
+            <GetKeyEvent>{
                 action : "getKey",
                 channel : "input",
                 key : "fastaInputs",
@@ -49,7 +47,7 @@ $
 
         ipc.send(
             "keySub",
-            {
+            <KeySubEvent>{
                 action : "keySub",
                 channel : "input",
                 key : "fastqInputs",
@@ -58,7 +56,7 @@ $
         );
         ipc.send(
             "keySub",
-            {
+            <KeySubEvent>{
                 action : "keySub",
                 channel : "input",
                 key : "fastaInputs",
@@ -67,7 +65,7 @@ $
         );
         ipc.send(
             "keySub",
-            {
+            <KeySubEvent>{
                 action : "keySub",
                 channel : "align",
                 key : "aligns",
