@@ -4,7 +4,7 @@ import * as readline from "readline";
 const uuidv4 : () => string = require("uuid/v4");
 import * as mkdirp from "mkdirp";
 
-import {getReadable,getReadableAndWritable} from "./../getAppPath";
+import {getReadableAndWritable} from "./../getAppPath";
 import * as fastaContigLoader from "./../fastaContigLoader";
 import * as plasmidTrack from "./circularGenome/plasmidTrack";
 import * as trackLabel from "./circularGenome/trackLabel";
