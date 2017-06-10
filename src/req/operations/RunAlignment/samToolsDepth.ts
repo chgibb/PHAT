@@ -1,6 +1,7 @@
 import * as fs from "fs";
 import * as readline from "readline";
 
+import {getReadable,getReadableAndWritable} from "./../../getAppPath";
 import {RunAlignment} from "./../RunAlignment";
 import {SpawnRequestParams} from "./../../JobIPC";
 import {Job,JobCallBackObject} from "./../../main/Job";
@@ -26,7 +27,7 @@ export function samToolsDepth(op : RunAlignment) : Promise<{}>
                                 function(){
                                     op.samToolsCoverageFileStream.end();
                                     let rl : readline.ReadLine = readline.createInterface(<readline.ReadLineOptions>{
-                                        input : fs.createReadStream(`resources/app/rt/AlignmentArtifacts/${op.alignData.uuid}/depth.coverage`)
+                                        input : fs.createReadStream(getReadableAndWritable(`rt/AlignmentArtifacts/${op.alignData.uuid}/depth.coverage`))
                                     });
                                     rl.on("line",function(line){
                                         //distill output from samtools depth into individual contig coverage files identified by uuid and without the contig name.
@@ -38,7 +39,7 @@ export function samToolsDepth(op : RunAlignment) : Promise<{}>
                                             {
                                                 if(coverageTokens[k] == contigTokens[0])
                                                 {
-                                                    fs.appendFileSync(`resources/app/rt/AlignmentArtifacts/${op.alignData.uuid}/contigCoverage/${op.fasta.contigs[i].uuid}`,`${coverageTokens[k+1]} ${coverageTokens[k+2]}\n`);
+                                                    fs.appendFileSync(getReadableAndWritable(`rt/AlignmentArtifacts/${op.alignData.uuid}/contigCoverage/${op.fasta.contigs[i].uuid}`),`${coverageTokens[k+1]} ${coverageTokens[k+2]}\n`);
                                                 }
                                             }
                                         }
@@ -61,7 +62,7 @@ export function samToolsDepth(op : RunAlignment) : Promise<{}>
     op.samToolsExe,
         <Array<string>>[
             "depth",
-            `resources/app/rt/AlignmentArtifacts/${op.alignData.uuid}/out.sorted.bam`
+            getReadableAndWritable(`rt/AlignmentArtifacts/${op.alignData.uuid}/out.sorted.bam`)
         ],"",true,jobCallBack,{}
     );
     try
@@ -72,6 +73,6 @@ export function samToolsDepth(op : RunAlignment) : Promise<{}>
     {
         return reject(err);
     }
-    op.samToolsCoverageFileStream = fs.createWriteStream(`resources/app/rt/AlignmentArtifacts/${op.alignData.uuid}/depth.coverage`)
+    op.samToolsCoverageFileStream = fs.createWriteStream(getReadableAndWritable(`rt/AlignmentArtifacts/${op.alignData.uuid}/depth.coverage`))
     });
 }
