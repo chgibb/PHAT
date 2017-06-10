@@ -2,7 +2,6 @@
  * Standardizes passing of handlers to data models
  * @module res/renderer/model
  */
-import {SpawnRequestParams} from "./../JobIPC";
 export abstract class DataModelMgr
 {
     public channel : string;
