@@ -2,7 +2,6 @@ import * as fs from "fs";
 
 import * as mkdirp from "mkdirp";
 const tarfs = require("tar-fs");
-const tarStream = require("tar-stream");
 
 import {getReadableAndWritable} from "./getAppPath";
 import {ProjectManifest} from "./projectManifest";
