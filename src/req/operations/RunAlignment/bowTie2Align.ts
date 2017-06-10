@@ -1,5 +1,6 @@
 import * as fs from "fs";
 
+import {getReadable,getReadableAndWritable} from "./../../getAppPath";
 import {RunAlignment} from "./../RunAlignment";
 import {SpawnRequestParams} from "./../../JobIPC";
 import {Job,JobCallBackObject} from "./../../main/Job";
@@ -31,9 +32,9 @@ export function bowTie2Align(op : RunAlignment) : Promise<{}>
         };
         let args : Array<string> = new Array<string>();
         if(process.platform == "win32")
-            args.push("resources/app/bowtie2");
+            args.push(getReadable("bowtie2"));
         args.push("-x");
-        args.push(`resources/app/rt/indexes/${op.fasta.uuid}`);
+        args.push(getReadableAndWritable(`rt/indexes/${op.fasta.uuid}`));
         if(op.fastq2 !== undefined)
         {
             args.push("-1");
@@ -47,7 +48,7 @@ export function bowTie2Align(op : RunAlignment) : Promise<{}>
             args.push(op.fastq1.path);
         }
         args.push("-S");
-        args.push(`resources/app/rt/AlignmentArtifacts/${op.alignData.uuid}/out.sam`);
+        args.push(getReadableAndWritable(`rt/AlignmentArtifacts/${op.alignData.uuid}/out.sam`));
 
         let invokeString = "";
         for(let i = 0; i != args.length; ++i)
@@ -60,8 +61,8 @@ export function bowTie2Align(op : RunAlignment) : Promise<{}>
             op.alignData.alias = `${op.fastq1.alias}, ${op.fastq2.alias}; ${op.fasta.alias}`;
         else
             op.alignData.alias = `${op.fastq1.alias}; ${op.fasta.alias}`;
-        fs.mkdirSync(`resources/app/rt/AlignmentArtifacts/${op.alignData.uuid}`);
-        fs.mkdirSync(`resources/app/rt/AlignmentArtifacts/${op.alignData.uuid}/contigCoverage`);
+        fs.mkdirSync(getReadableAndWritable(`rt/AlignmentArtifacts/${op.alignData.uuid}`));
+        fs.mkdirSync(getReadableAndWritable(`rt/AlignmentArtifacts/${op.alignData.uuid}/contigCoverage`));
         op.bowtieJob = new Job(op.bowtie2Exe,args,"",true,jobCallBack,{});
         try
         {
