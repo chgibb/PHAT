@@ -1,7 +1,8 @@
 /// <reference types="jquery" />
 import * as Path from "path";
 
-import requireDyn from "./../../requireDyn";
+import {bootStrapCodeCache} from "./../../bootStrapCodeCache";
+import {getReadable,getReadableAndWritable} from "./../../getAppPath";
 import Fastq from "./../../fastq";
 import {Fasta,get2BitPath} from "./../../fasta";
 import alignData from "./../../alignData";
@@ -24,7 +25,13 @@ export class PileUpView extends viewMgr.View
     onMount()
     {
         if(!(<any>window).pileup)
-            require("./bootStrapCodeCache")("resources/app/pileup.js","./pileup","resources/app/cdata/pileup.cdata");
+        {
+            bootStrapCodeCache(
+                getReadable("/pileup.js"),
+                "./pileup",
+                getReadableAndWritable("pileup.cdata")
+            );
+        }
         var twoBit;
         var refName;
         var bam;
