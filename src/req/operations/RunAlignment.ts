@@ -1,7 +1,7 @@
 import * as fs from "fs";
 import * as readline from "readline";
 import * as atomic from "./atomicOperations";
-import {Fasta} from "./../fasta";
+import {Fasta,getFaiPath} from "./../fasta";
 import Fastq from "./../fastq";
 import alignData from "./../alignData"
 import {SpawnRequestParams} from "./../JobIPC";
@@ -83,7 +83,7 @@ export class RunAlignment extends atomic.AtomicOperation
             this.fastq1 = data.fastq1;
             this.fastq2 = data.fastq2;
 
-            this.faiPath = `resources/app/rt/indexes/${this.fasta.uuid}.fai`;
+            this.faiPath = getFaiPath(this.fasta);
 
             this.alignData = new alignData();
             this.alignData.type = data.type;
