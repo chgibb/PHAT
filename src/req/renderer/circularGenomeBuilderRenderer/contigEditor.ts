@@ -1,9 +1,4 @@
 /// <reference types="jquery" />
-import * as fs from "fs";
-import * as util from "util";
-
-import * as electron from "electron";
-const ipc = electron.ipcRenderer;
 
 const Dialogs = require("dialogs");
 const dialogs = Dialogs();
