@@ -3,7 +3,7 @@ import * as Path from "path";
 
 import requireDyn from "./../../requireDyn";
 import Fastq from "./../../fastq";
-import {Fasta} from "./../../fasta";
+import {Fasta,get2BitPath} from "./../../fasta";
 import alignData from "./../../alignData";
 import * as viewMgr from "./../viewMgr";
 
@@ -36,7 +36,7 @@ export class PileUpView extends viewMgr.View
         {
             if(this.aligns[i].uuid == this.report)
             {
-                twoBit = this.aligns[i].fasta.twoBit;
+                twoBit = get2BitPath(this.aligns[i].fasta);
                 contig = this.aligns[i].fasta.contigs[0].name.split(' ')[0];
                 bam = "resources/app/rt/AlignmentArtifacts/"+this.report+"/out.sorted.bam";
                 bai = "resources/app/rt/AlignmentArtifacts/"+this.report+"/out.sorted.bam.bai";
