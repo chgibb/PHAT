@@ -5,9 +5,9 @@ import * as path from "path";
 let app : Electron.App = null;
 
 import {getEdition,setEditionSource} from "./getEdition";
-let readableBasePath = ""
-let writableBasePath = "";
-let readableAndWritableBasePath = "";
+let readableBasePath : string = undefined;
+let writableBasePath : string = undefined;
+let readableAndWritableBasePath : string = undefined;
 export function isRenderer() : boolean
 {
     return (process && process.type == "renderer");
@@ -65,7 +65,14 @@ function getLinuxConfigDir() : string
 
 function getReadableDir() : string
 {
-    return path.dirname(process.execPath)+"/resources/app";
+    //If we're running under Electron then execPath will be of the form:
+    // /absolute/path/to/app-plat-xarch/app.exe
+    if(getElectronApp())
+        return path.dirname(process.execPath)+"/resources/app";
+    
+    //tests on CI run under NodeJS directly inside of the Electron application structure
+    else
+        return process.cwd()+"/resources/app";
 }
 
 function getWin32ConfigDir() : string
