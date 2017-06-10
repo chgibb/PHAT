@@ -27,7 +27,7 @@ export class PileUpView extends viewMgr.View
         if(!(<any>window).pileup)
         {
             bootStrapCodeCache(
-                getReadable("/pileup.js"),
+                getReadable("pileup.js"),
                 "./pileup",
                 getReadableAndWritable("pileup.cdata")
             );
