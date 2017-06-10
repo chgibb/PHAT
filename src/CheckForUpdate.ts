@@ -1,2 +1,8 @@
-import requireDyn from "./req/requireDyn";
-requireDyn("./bootStrapCodeCache")("resources/app/CheckForUpdateProcess.js","./CheckForUpdateProcess","resources/app/cdata/CheckForUpdateProcess.cdata");
+import {getReadable,getReadableAndWritable} from "./req/getAppPath";
+import {bootStrapCodeCache} from "./req/bootStrapCodeCache";
+
+bootStrapCodeCache(
+    getReadable("CheckForUpdateProcess.js"),
+    "./CheckForUpdateProcess",
+    getReadableAndWritable("CheckForUpdateProcess.cdata")
+);
