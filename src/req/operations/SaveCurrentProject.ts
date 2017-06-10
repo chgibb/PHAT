@@ -2,7 +2,6 @@ import * as cp from "child_process";
 
 import * as atomic from "./atomicOperations";
 import {AtomicOperationForkEvent} from "./../atomicOperationsIPC";
-
 import {getReadable,getWritable,getReadableAndWritable} from "./../getAppPath";
 
 import {ProjectManifest,getProjectManifests} from "./../projectManifest";
@@ -21,7 +20,7 @@ export class SaveCurrentProject extends atomic.AtomicOperation
     public run() : void
     {
         let self = this;
-        this.saveCurrentProjectProcess = cp.fork("resources/app/SaveCurrentProject.js");
+        this.saveCurrentProjectProcess = cp.fork(getReadable("SaveCurrentProject.js"));
 
         self.saveCurrentProjectProcess.on(
             "message",function(ev : AtomicOperationForkEvent)
