@@ -5,10 +5,7 @@ import {Fasta} from "./../fasta";
 import {AtomicOperationIPC} from "./../atomicOperationsIPC";
 import canRead from "./canRead";
 
-import * as fs from "fs";
-
 import {DataModelMgr} from "./model";
-import {SpawnRequestParams} from "./../JobIPC";
 
 export default class Input extends DataModelMgr
 {
