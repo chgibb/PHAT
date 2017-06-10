@@ -54,7 +54,7 @@ export class IndexFasta extends atomic.AtomicOperation
         this.faToTwoBitExe = getReadable('faToTwoBit');
         this.samToolsExe = getReadable('samtools');
         if(process.platform == "linux")
-            this.bowtie2BuildExe = getReadable('app/bowtie2-build');
+            this.bowtie2BuildExe = getReadable('bowtie2-build');
         else if(process.platform == "win32")
             this.bowtie2BuildExe = getReadable('python/python.exe');
     }
