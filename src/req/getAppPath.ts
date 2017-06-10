@@ -52,6 +52,18 @@ export function setReadableAndWritableBasePath(path : string)
     readableAndWritableBasePath = path;
 }
 
+function getLinuxConfigDir() : string
+{
+    if(process.platform == "linux")
+    {
+        if(process.env.HOME)
+        {
+            return process.env.HOME+"/.config/phat";
+        }
+    }
+    return undefined;
+}
+
 /*
     Will try to detect Electron environment (main/renderer) and initialize base paths acoordingly if they
     have not yet been set for the current process. Will fail to initiliaze under Node and will throw an exception.
