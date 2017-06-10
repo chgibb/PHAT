@@ -13,12 +13,14 @@ import {Fasta} from "./req/fasta";
 import {CircularFigure} from "./req/renderer/circularFigure";
 import {SpawnRequestParams} from "./req/JobIPC";
 import * as dataMgr from "./req/main/dataMgr";
+import {rebuildRTDirectory} from "./req/main/rebuildRTDirectory"
 import {setReadableBasePath,setWritableBasePath,setReadableAndWritableBasePath,getReadableAndWritable} from "./req/getAppPath";
 
 let basePath = "resources/app";
 setReadableBasePath(basePath);
 setWritableBasePath(basePath);
 setReadableAndWritableBasePath(basePath);
+rebuildRTDirectory();
 
 
 import {ProjectManifest,getProjectManifests,setManifestsPath} from "./req/projectManifest";
