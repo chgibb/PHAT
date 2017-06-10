@@ -18,6 +18,7 @@ getReadable("");
 getWritable("");
 getReadableAndWritable("");
 
+import {getEdition} from "./../getEdition";
 
 const BrowserWindow = electron.BrowserWindow;
 const jsonFile = require("jsonfile");
@@ -483,14 +484,24 @@ ipc.on(
 				token = auth.token
 			//if checkForUpdate was not successful, this will not be set
 			asset = dataMgr.getKey("application","availableUpdate");
-			if(!asset)
-				return;
-			atomicOp.addOperation("downloadAndInstallUpdate",
+
+			//If we're running a portable edition then we can use our auto updater
+			let isPortable = /(portable)/i;
+			if(isPortable.test(getEdition()))
 			{
-				asset : asset,
-				token : token
-			});
-			winMgr.closeAllExcept("projectSelection");
+				if(!asset)
+					return;
+				atomicOp.addOperation("downloadAndInstallUpdate",
+				{
+					asset : asset,
+					token : token
+				});
+				winMgr.closeAllExcept("projectSelection");
+			}
+			else
+			{
+				electron.shell.openExternal("https://github.com/chgibb/PHAT/releases");
+			}
 		}
 		else if(arg.opName == "newProject")
 		{
