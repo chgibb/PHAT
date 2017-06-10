@@ -13,8 +13,18 @@ import {Fasta} from "./req/fasta";
 import {CircularFigure} from "./req/renderer/circularFigure";
 import {SpawnRequestParams} from "./req/JobIPC";
 import * as dataMgr from "./req/main/dataMgr";
+import {rebuildRTDirectory} from "./req/main/rebuildRTDirectory"
+import {setReadableBasePath,setWritableBasePath,setReadableAndWritableBasePath,getReadableAndWritable} from "./req/getAppPath";
 
-import {ProjectManifest,manifestsPath} from "./req/projectManifest";
+let basePath = "resources/app";
+setReadableBasePath(basePath);
+setWritableBasePath(basePath);
+setReadableAndWritableBasePath(basePath);
+rebuildRTDirectory();
+
+
+import {ProjectManifest,getProjectManifests,setManifestsPath} from "./req/projectManifest";
+setManifestsPath(getReadableAndWritable(""));
 
 import {NewProject} from "./req/operations/NewProject";
 import {OpenProject} from "./req/operations/OpenProject";
@@ -26,21 +36,6 @@ dataMgr.setKey("application","jobErrorLog","jobErrorLog.txt");
 dataMgr.setKey("application","jobVerboseLog","jobVerboseLog.txt");
 
 var assert = require("./req/tests/assert");
-
-try
-{
-	fs.mkdirSync("resources/app/cdata");
-}
-catch(err){}
-/*try
-{
-	fs.mkdirSync("resources/app/rt");
-	fs.mkdirSync("resources/app/rt/QCReports");
-	fs.mkdirSync("resources/app/rt/indexes");
-	fs.mkdirSync("resources/app/rt/AlignmentArtifacts");
-	fs.mkdirSync("resources/app/rt/circularFigures");
-}
-catch(err){}*/
 
 atomic.register("generateFastQCReport",GenerateQCReport);
 atomic.register("indexFasta",IndexFasta);
@@ -482,7 +477,7 @@ assert.assert(function(){
 
 	assert.runningEvents += 1;
 
-	let projectManifest : Array<ProjectManifest> = jsonFile.readFileSync(manifestsPath);
+	let projectManifest : Array<ProjectManifest> = jsonFile.readFileSync(getProjectManifests());
 
 	if(!projectManifest)
 	{
@@ -528,7 +523,7 @@ validateR1ToHPV18Alignment();
 
 assert.assert(function(){
 	assert.runningEvents += 1;
-	let projectManifest : Array<ProjectManifest> = jsonFile.readFileSync(manifestsPath);
+	let projectManifest : Array<ProjectManifest> = jsonFile.readFileSync(getProjectManifests());
 
 	if(!projectManifest)
 	{
@@ -547,7 +542,7 @@ assert.assert(function(){
 
 	assert.runningEvents += 1;
 
-	let projectManifest : Array<ProjectManifest> = jsonFile.readFileSync(manifestsPath);
+	let projectManifest : Array<ProjectManifest> = jsonFile.readFileSync(getProjectManifests());
 
 	if(!projectManifest)
 	{

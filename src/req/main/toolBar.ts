@@ -2,7 +2,7 @@ import * as electron from "electron";
 const ipc = electron.ipcMain;
 const app = electron.app;
 import * as winMgr from "./winMgr";
-import fsAccess from "./../fsAccess";
+import {getReadable} from "./../getAppPath";
 import * as dataMgr from "./dataMgr";
 import * as atomicOp from "./../operations/atomicOperations";
 winMgr.windowCreators["toolBar"] =
@@ -15,7 +15,7 @@ winMgr.windowCreators["toolBar"] =
 				"P. H. A. T.",
 				"toolBar",
 				540,84,
-				fsAccess("resources/app/ToolBar.html"),
+				"file://"+getReadable("ToolBar.html"),
 				false,false,
 				540,84
 			)

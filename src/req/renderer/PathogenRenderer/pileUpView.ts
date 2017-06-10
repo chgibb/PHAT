@@ -1,9 +1,10 @@
 /// <reference types="jquery" />
 import * as Path from "path";
 
-import requireDyn from "./../../requireDyn";
+import {bootStrapCodeCache} from "./../../bootStrapCodeCache";
+import {getReadable,getReadableAndWritable} from "./../../getAppPath";
 import Fastq from "./../../fastq";
-import {Fasta} from "./../../fasta";
+import {Fasta,get2BitPath} from "./../../fasta";
 import alignData from "./../../alignData";
 import * as viewMgr from "./../viewMgr";
 
@@ -24,7 +25,13 @@ export class PileUpView extends viewMgr.View
     onMount()
     {
         if(!(<any>window).pileup)
-            require("./bootStrapCodeCache")("resources/app/pileup.js","./pileup","resources/app/cdata/pileup.cdata");
+        {
+            bootStrapCodeCache(
+                getReadable("pileup.js"),
+                "./pileup",
+                getReadableAndWritable("pileup.cdata")
+            );
+        }
         var twoBit;
         var refName;
         var bam;
@@ -36,10 +43,10 @@ export class PileUpView extends viewMgr.View
         {
             if(this.aligns[i].uuid == this.report)
             {
-                twoBit = this.aligns[i].fasta.twoBit;
+                twoBit = get2BitPath(this.aligns[i].fasta);
                 contig = this.aligns[i].fasta.contigs[0].name.split(' ')[0];
-                bam = "resources/app/rt/AlignmentArtifacts/"+this.report+"/out.sorted.bam";
-                bai = "resources/app/rt/AlignmentArtifacts/"+this.report+"/out.sorted.bam.bai";
+                bam = getReadableAndWritable("rt/AlignmentArtifacts/"+this.report+"/out.sorted.bam");
+                bai = getReadableAndWritable("rt/AlignmentArtifacts/"+this.report+"/out.sorted.bam.bai");
                 bamName = this.aligns[i].alias;
                 break;
             }

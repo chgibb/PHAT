@@ -1,3 +1,4 @@
+import {getReadable,getReadableAndWritable} from "./../../getAppPath";
 import {RunAlignment} from "./../RunAlignment";
 import {SpawnRequestParams} from "./../../JobIPC";
 import {Job,JobCallBackObject} from "./../../main/Job";
@@ -31,9 +32,9 @@ export function samToolsView(op : RunAlignment) : Promise<{}>
             <string[]>[
                 "view",
                 "-bS",
-                `resources/app/rt/AlignmentArtifacts/${op.alignData.uuid}/out.sam`,
+                getReadableAndWritable(`rt/AlignmentArtifacts/${op.alignData.uuid}/out.sam`),
                 "-o",
-                `resources/app/rt/AlignmentArtifacts/${op.alignData.uuid}/out.bam`,
+                getReadableAndWritable(`rt/AlignmentArtifacts/${op.alignData.uuid}/out.bam`),
             ],
             "",true,jobCallBack,{}
         );

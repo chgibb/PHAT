@@ -1,5 +1,5 @@
 import * as winMgr from "./winMgr";
-import fsAccess from "./../fsAccess";
+import {getReadable} from "./../getAppPath";
 
 winMgr.windowCreators["output"] = 
 {
@@ -11,7 +11,7 @@ winMgr.windowCreators["output"] =
 				"Output",
 				"output",
 				1379,649,
-				fsAccess("resources/app/Output.html"),
+				"file://"+getReadable("Output.html"),
 				false,false,
 				650,420
 			)

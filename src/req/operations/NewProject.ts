@@ -2,7 +2,7 @@ const jsonFile = require("jsonfile");
 const uuidv4 : () => string = require("uuid/v4");
 
 import * as atomic from "./atomicOperations";
-import {ProjectManifest,manifestsPath} from "./../projectManifest";
+import {ProjectManifest,getProjectManifests} from "./../projectManifest";
 import {newProject} from "./../newProject";
 export class NewProject extends atomic.AtomicOperation
 {

@@ -1,6 +1,8 @@
 import {EventEmitter} from "events";
 import * as fs from "fs";
+
 import {SpawnRequestParams} from "./../JobIPC";
+import {getReadableAndWritable} from "./../getAppPath";
 
 import * as rimraf from "rimraf";
 export abstract class AtomicOperation
@@ -195,7 +197,7 @@ export function addOperation(opName : string,data : any) : void
                     op.endEpoch = Date.now();
                     op.endDate = new Date(op.endEpoch);
                     fs.appendFile(
-                        "operationTimerLog.txt",
+                        getReadableAndWritable("operationTimerLog.txt"),
                         `${op.name} end ${op.endDate}\n`,
                         function(err : NodeJS.ErrnoException){
                         if(err)
@@ -233,7 +235,7 @@ export function runOperations(maxRunning : number) : void
             operationsQueue[i].startEpoch = Date.now();
             operationsQueue[i].startDate = new Date(operationsQueue[i].startEpoch);
             fs.appendFile(
-                "operationTimerLog.txt",
+                getReadableAndWritable("operationTimerLog.txt"),
                 `${operationsQueue[i].name} start ${operationsQueue[i].startDate}\n`,
                 function(err : NodeJS.ErrnoException){
                     if(err)

@@ -52,6 +52,7 @@ if [[ "$OSTYPE" == "linux-gnu" ]]; then
 	printf "Copying built files\n"
 	cp -R dist/** phat-linux-x64/resources/app > /dev/null
 	printf "Done\n"
+	echo portable > phat-linux-x64/edition
 	
 	#remove dist
 	rm -rf dist
@@ -62,6 +63,7 @@ if [[ "$OSTYPE" == "cygwin" ]]; then
 	printf "Copying built files\n"
 	cp -R dist/** phat-win32-x64/resources/app > /dev/null
 	printf "Done\n"
+	echo portable > phat-win32-x64/edition
 
 	#remove dist
 	rm -rf dist

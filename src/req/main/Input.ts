@@ -1,5 +1,5 @@
 import * as winMgr from "./winMgr";
-import fsAccess from "./../fsAccess";
+import {getReadable} from "./../getAppPath";
 
 winMgr.windowCreators["input"] = 
 {
@@ -11,7 +11,7 @@ winMgr.windowCreators["input"] =
 				"Input",
 				"input",
 				928,300,
-				fsAccess("resources/app/Input.html"),
+				"file://"+getReadable("Input.html"),
 				false,false, 545, 85
 			)
 		);

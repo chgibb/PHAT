@@ -33,10 +33,6 @@ setTimeout
                                     function()
                                     {
                                         let patho = winMgr.getWindowsByName("pathogen");
-                                        patho[0].webContents.executeJavaScript(
-                                            `
-                                                require("./bootStrapCodeCache")("resources/app/pileup.js","./pileup","resources/app/cdata/pileup.cdata");
-                                            `);
                                         winMgr.windowCreators["output"].Create();
                                         setTimeout
                                         (

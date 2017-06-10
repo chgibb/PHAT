@@ -1,5 +1,6 @@
 import * as fs from "fs";
 
+import {getReadable,getReadableAndWritable} from "./../../getAppPath";
 import {RunAlignment} from "./../RunAlignment";
 import {SpawnRequestParams} from "./../../JobIPC";
 import {Job,JobCallBackObject} from "./../../main/Job";
@@ -47,7 +48,7 @@ export function varScanMPileup2SNP(op : RunAlignment) : Promise<{}>
                 "-jar",
                 op.varScanExe,
                 "mpileup2snp",
-                `resources/app/rt/AlignmentArtifacts/${op.alignData.uuid}/pileup.mpileup`
+                getReadableAndWritable(`rt/AlignmentArtifacts/${op.alignData.uuid}/pileup.mpileup`)
             ],"",true,jobCallBack,{}
         );
         try
@@ -58,6 +59,6 @@ export function varScanMPileup2SNP(op : RunAlignment) : Promise<{}>
         {
             return reject(err);
         }
-        op.varScanMPileup2SNPStdOutStream = fs.createWriteStream(`resources/app/rt/AlignmentArtifacts/${op.alignData.uuid}/snps.vcf`);
+        op.varScanMPileup2SNPStdOutStream = fs.createWriteStream(getReadableAndWritable(`rt/AlignmentArtifacts/${op.alignData.uuid}/snps.vcf`));
     });
 }

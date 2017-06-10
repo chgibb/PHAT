@@ -3,12 +3,14 @@ import * as fs from "fs";
 const fse = require("fs-extra");
 
 import * as atomic from "./atomicOperations";
-import {Fasta} from "./../fasta";
+import {Fasta,get2BitPath,getFaiPath} from "./../fasta";
 import {Contig,FastaContigLoader} from "./../fastaContigLoader";
 import {getQCReportSummaries} from "./../QCReportSummary";
 import trimPath from "./../trimPath";
 import {makeValidID} from "./../MakeValidID";
 import {SpawnRequestParams} from "./../JobIPC";
+
+import {getReadable,getReadableAndWritable} from "./../getAppPath";
 
 import {Job,JobCallBackObject} from "./../main/Job";
 
@@ -49,30 +51,27 @@ export class IndexFasta extends atomic.AtomicOperation
         //the size threshold between being 32-bit and being 64-bit
         this.bowtieSizeThreshold = 4294967096;
 
-        this.faToTwoBitExe = 'resources/app/faToTwoBit';
-        this.samToolsExe = 'resources/app/samtools';
+        this.faToTwoBitExe = getReadable('faToTwoBit');
+        this.samToolsExe = getReadable('samtools');
         if(process.platform == "linux")
-            this.bowtie2BuildExe = 'resources/app/bowtie2-build';
+            this.bowtie2BuildExe = getReadable('bowtie2-build');
         else if(process.platform == "win32")
-            this.bowtie2BuildExe = 'resources/app/python/python.exe';
+            this.bowtie2BuildExe = getReadable('python/python.exe');
     }
     public setData(data : Fasta) : void
     {
         this.fasta = data;
 
-        this.twoBitPath = `resources/app/rt/indexes/${this.fasta.uuid}.2bit`;
+        this.twoBitPath = get2BitPath(this.fasta);
         this.destinationArtifacts.push(this.twoBitPath);
 
-        this.fasta.twoBit = this.twoBitPath;
-
-        this.faiPath = `resources/app/rt/indexes/${this.fasta.uuid}.fai`;
+        this.faiPath = getFaiPath(this.fasta);
         this.destinationArtifacts.push(this.faiPath);
-        this.fasta.fai = this.faiPath;
 
         //samtool faidx will write the .fai beside the input fasta
         this.generatedArtifacts.push(`${this.fasta.path}.fai`);
 
-        this.bowTieIndexPath = `resources/app/rt/indexes/${this.fasta.uuid}`;
+        this.bowTieIndexPath = getReadableAndWritable(`rt/indexes/${this.fasta.uuid}`);
 
         //if 64-bit, add a 1 to the file extension
         let x64 : string = (this.fasta.size > this.bowtieSizeThreshold ? "1" : "");

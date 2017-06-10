@@ -108,7 +108,7 @@ function compileCache(jsFile : string,cdata : string) : number
     On failure to compile jsFile, failure to write cdata or failure to load cdata,
     falls back on calling require(jsModule)
 */
-function bootStrapCodeCache(jsFile : string,jsModule : string,cdata : string) : void
+export function bootStrapCodeCache(jsFile : string,jsModule : string,cdata : string) : void
 {
 	let cacheStatus : number = loadFromCache(jsFile,cdata);
 	//cdata exists, is valid and has been executed
@@ -136,4 +136,3 @@ function bootStrapCodeCache(jsFile : string,jsModule : string,cdata : string) : 
 		throw new Error("Fatal error: Could not load file "+jsFile);
 	}
 }
-module.exports = bootStrapCodeCache;

@@ -1,7 +1,8 @@
 const jsonFile = require("jsonfile");
 const uuidv4 : () => string = require("uuid/v4");
 
-import {ProjectManifest,manifestsPath} from "./projectManifest";
+import {getReadableAndWritable} from "./getAppPath";
+import {ProjectManifest,getProjectManifests} from "./projectManifest";
 
 export function newProject(name : string) : Promise<{}>
 {
@@ -9,7 +10,7 @@ export function newProject(name : string) : Promise<{}>
         let projects : Array<ProjectManifest>;
         try
         {
-             projects = jsonFile.readFileSync(manifestsPath);
+             projects = jsonFile.readFileSync(getProjectManifests());
         }
         catch(err)
         {
@@ -18,12 +19,12 @@ export function newProject(name : string) : Promise<{}>
         let uuid : string = uuidv4();
         projects.push({
             alias : name,
-            tarBall : `resources/app/projects/${uuid}.phat`,
+            tarBall : getReadableAndWritable(`projects/${uuid}.phat`),
             lastOpened : Date.now(),
             created : Date.now(),
             uuid : uuid
         });
-        jsonFile.writeFileSync(manifestsPath,projects,{spaces : 4});
+        jsonFile.writeFileSync(getProjectManifests(),projects,{spaces : 4});
         resolve();
     });
 }
