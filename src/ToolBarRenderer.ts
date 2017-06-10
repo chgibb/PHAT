@@ -2,7 +2,6 @@ import * as electron from "electron";
 const ipc = electron.ipcRenderer;
 
 import {AtomicOperation} from "./req/operations/atomicOperations"
-import {AtomicOperationIPC} from "./req/atomicOperationsIPC";
 import {KeySubEvent} from "./req/ipcEvents";
 
 import * as $ from "jquery";
