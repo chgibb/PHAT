@@ -50,10 +50,7 @@ export class SaveCurrentProject extends atomic.AtomicOperation
                 self.saveCurrentProjectProcess.send(
                     <AtomicOperationForkEvent>{
                         setData : true,
-                        data : self.proj,
-                        readableBasePath : getReadable(""),
-                        writableBasePath : getWritable(""),
-                        readableAndWritableBasePath : getReadableAndWritable("")
+                        data : self.proj
                     }
                 );
             },500

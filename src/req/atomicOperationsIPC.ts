@@ -45,8 +45,4 @@ export interface AtomicOperationForkEvent
     run? : boolean;
     update? : boolean;
     flags? : CompletionFlags;
-
-    readableBasePath? : string;
-    writableBasePath? : string;
-    readableAndWritableBasePath? : string;
 }
