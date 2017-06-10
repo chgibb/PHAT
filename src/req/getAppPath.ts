@@ -1,5 +1,7 @@
 /// <reference types="electron" />
 
+import * as path from "path";
+
 let app : Electron.App = null;
 
 import {getEdition,setEditionSource} from "./getEdition";
@@ -61,6 +63,11 @@ function getLinuxConfigDir() : string
     return undefined;
 }
 
+function getReadableDir() : string
+{
+    return path.dirname(process.execPath)+"/resources/app";
+}
+
 function getWin32ConfigDir() : string
 {
     return undefined;
@@ -83,7 +90,16 @@ export function getReadable(relativePath : string) : string
     if(!readableBasePath)
     {
         if(!getElectronApp())
-            throw new Error("No readable base path set");
+        {
+            let readable = getReadableDir();
+            if(readable)
+            {
+                setReadableBasePath(readable);
+                return readableBasePath+"/"+relativePath;
+            }
+            else
+                throw new Error("No readable base path set");
+        }
         else
             setReadableBasePath(app.getAppPath());
     }
