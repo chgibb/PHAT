@@ -62,16 +62,11 @@ export class IndexFasta extends atomic.AtomicOperation
     {
         this.fasta = data;
 
-        //this.twoBitPath = getReadableAndWritable(`rt/indexes/${this.fasta.uuid}.2bit`);
         this.twoBitPath = get2BitPath(this.fasta);
         this.destinationArtifacts.push(this.twoBitPath);
 
-        //this.fasta.twoBit = this.twoBitPath;
-
-        //this.faiPath = getReadableAndWritable(`rt/indexes/${this.fasta.uuid}.fai`);
         this.faiPath = getFaiPath(this.fasta);
         this.destinationArtifacts.push(this.faiPath);
-        //this.fasta.fai = this.faiPath;
 
         //samtool faidx will write the .fai beside the input fasta
         this.generatedArtifacts.push(`${this.fasta.path}.fai`);
