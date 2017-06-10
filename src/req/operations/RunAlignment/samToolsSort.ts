@@ -1,3 +1,4 @@
+import {getReadable,getReadableAndWritable} from "./../../getAppPath";
 import {RunAlignment} from "./../RunAlignment";
 import {SpawnRequestParams} from "./../../JobIPC";
 import {Job,JobCallBackObject} from "./../../main/Job";
@@ -24,9 +25,9 @@ export function samToolsSort(op : RunAlignment) : Promise<{}>
                 }
             }
         }
-        let input : string = `resources/app/rt/AlignmentArtifacts/${op.alignData.uuid}/out.bam`;
+        let input : string = getReadableAndWritable(`rt/AlignmentArtifacts/${op.alignData.uuid}/out.bam`);
         let output : string;
-        output = `resources/app/rt/AlignmentArtifacts/${op.alignData.uuid}/out.sorted.bam`
+        output = getReadableAndWritable(`rt/AlignmentArtifacts/${op.alignData.uuid}/out.sorted.bam`)
 
         let args : Array<string> = new Array<string>();
         args = <Array<string>>[
