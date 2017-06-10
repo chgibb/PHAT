@@ -503,7 +503,7 @@ ipc.on(
 			let isCurrentlyLoaded = false;
 			try
 			{
-				let rt = jsonFile.readFileSync("resources/app/rt/rt.json");
+				let rt = jsonFile.readFileSync(getReadableAndWritable("rt/rt.json"));
 
 				if(rt)
 				{
