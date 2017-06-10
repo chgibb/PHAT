@@ -1,13 +1,23 @@
 import * as fs from "fs";
+import * as path from "path";
 
 let editionString : string = undefined;
-let editionSource = process.cwd()+"/edition";
+//Assume not testing/CI
+let editionSource = path.dirname(process.execPath)+"/edition";
 
 function getEditionString()
 {
     if(!editionString)
     {
-        editionString = (<any>fs.readFileSync(editionSource));
+        try
+        {
+            editionString = (<any>fs.readFileSync(editionSource));
+        }
+        catch(err)
+        {
+            editionSource = process.cwd()+"/edition";
+            editionString = (<any>fs.readFileSync(editionSource));
+        }
     }
 }
 
