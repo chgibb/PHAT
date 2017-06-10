@@ -1,5 +1,4 @@
 import {View} from "./../viewMgr";
-import {makeValidID,findOriginalInput} from "./../../MakeValidID";
 import Input from "./../Input";
 var buildInclusiveSearchFilter = require('./../buildInclusiveSearchFilter.js');
 export class FastqView extends View
