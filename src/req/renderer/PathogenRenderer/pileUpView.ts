@@ -3,7 +3,6 @@ import * as Path from "path";
 
 import {bootStrapCodeCache} from "./../../bootStrapCodeCache";
 import {getReadable,getReadableAndWritable} from "./../../getAppPath";
-import Fastq from "./../../fastq";
 import {Fasta,get2BitPath} from "./../../fasta";
 import alignData from "./../../alignData";
 import * as viewMgr from "./../viewMgr";
