@@ -1,2 +1,8 @@
-import requireDyn from "./req/requireDyn";
-requireDyn("./bootStrapCodeCache")("resources/app/RenderCoverageTrackProcess.js","./RenderCoverageTrackProcess","resources/app/cdata/RenderCoverageTrackProcess.cdata");
+import {getReadable,getReadableAndWritable} from "./req/getAppPath";
+import {bootStrapCodeCache} from "./req/bootStrapCodeCache";
+
+bootStrapCodeCache(
+    getReadable("RenderCoverageTrackProcess.js"),
+    "./RenderCoverageTrackProcess",
+    getReadableAndWritable("RenderCoverageTrackProcess.cdata")
+);
