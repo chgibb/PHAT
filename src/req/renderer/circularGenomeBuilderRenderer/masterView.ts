@@ -5,7 +5,6 @@ const ipc = electron.ipcRenderer;
 
 import {SaveKeyEvent} from "./../../ipcEvents";
 import * as viewMgr from "./../viewMgr";
-import {DataModelMgr} from "./../model";
 import {CircularFigure,} from "./../circularFigure";
 import {Fasta} from "./../../fasta";
 

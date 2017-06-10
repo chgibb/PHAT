@@ -1,16 +1,13 @@
 /// <reference types="jquery" />
 /// <reference path="./../angularStub.d.ts" />
 import * as fs from "fs";
-import * as util from "util";
 
 import * as electron from "electron";
-const ipc = electron.ipcRenderer;
 const dialog = electron.remote.dialog;
 
 const Dialogs = require("dialogs");
 const dialogs = Dialogs();
 
-import {AtomicOperationIPC} from "./../../atomicOperationsIPC";
 import * as viewMgr from "./../viewMgr";
 import * as masterView from "./masterView";
 import {ContigEditor} from "./contigEditor";
@@ -18,11 +15,6 @@ import {ContigCreator} from "./contigCreator";
 import alignData from "./../../alignData";
 import * as cf from "./../circularFigure";
 import * as plasmid from "./../circularGenome/plasmid";
-import * as plasmidTrack from "./../circularGenome/plasmidTrack";
-import * as trackLabel from "./../circularGenome/trackLabel";
-import * as trackMarker from "./../circularGenome/trackMarker";
-import * as markerLabel from "./../circularGenome/markerLabel";
-import * as trackScale from "./../circularGenome/trackScale";
 
 require("angular");
 require("angularplasmid");
@@ -108,7 +100,6 @@ export class GenomeView extends viewMgr.View
         this.genome.width =this.genome.radius*10;
         //Re center figure
         this.postRender();
-        let self = this;
     }
     public showBPTrackOnChange()
     {
