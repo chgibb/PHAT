@@ -45,8 +45,8 @@ export class PileUpView extends viewMgr.View
             {
                 twoBit = get2BitPath(this.aligns[i].fasta);
                 contig = this.aligns[i].fasta.contigs[0].name.split(' ')[0];
-                bam = "resources/app/rt/AlignmentArtifacts/"+this.report+"/out.sorted.bam";
-                bai = "resources/app/rt/AlignmentArtifacts/"+this.report+"/out.sorted.bam.bai";
+                bam = getReadableAndWritable("rt/AlignmentArtifacts/"+this.report+"/out.sorted.bam");
+                bai = getReadableAndWritable("rt/AlignmentArtifacts/"+this.report+"/out.sorted.bam.bai");
                 bamName = this.aligns[i].alias;
                 break;
             }
