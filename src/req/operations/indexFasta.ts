@@ -51,12 +51,12 @@ export class IndexFasta extends atomic.AtomicOperation
         //the size threshold between being 32-bit and being 64-bit
         this.bowtieSizeThreshold = 4294967096;
 
-        this.faToTwoBitExe = 'resources/app/faToTwoBit';
-        this.samToolsExe = 'resources/app/samtools';
+        this.faToTwoBitExe = getReadable('faToTwoBit');
+        this.samToolsExe = getReadable('samtools');
         if(process.platform == "linux")
-            this.bowtie2BuildExe = 'resources/app/bowtie2-build';
+            this.bowtie2BuildExe = getReadable('app/bowtie2-build');
         else if(process.platform == "win32")
-            this.bowtie2BuildExe = 'resources/app/python/python.exe';
+            this.bowtie2BuildExe = getReadable('python/python.exe');
     }
     public setData(data : Fasta) : void
     {
