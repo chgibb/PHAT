@@ -7,6 +7,7 @@ const tarStream = require("tar-stream");
 const gunzip = require("gunzip-maybe");
 
 import {AtomicOperationForkEvent,AtomicOperationIPC,CompletionFlags} from "./req/atomicOperationsIPC";
+import {getReadable,getWritable,getReadableAndWritable} from "./req/getAppPath";
 
 let flags : CompletionFlags = new CompletionFlags();
 
@@ -63,11 +64,11 @@ process.on
                         For Windows, we call into ICSharpCode's C# archive library to unpack the update and then restart PHAT.
                     */
                     if(process.platform == "linux")
-                        cp.spawnSync("resources/app/installUpdateProcess");
+                        cp.spawnSync(getReadable("installUpdateProcess"));
                     if(process.platform == "win32")
                     {
                         let installer = cp.spawn(
-                            "resources/app/installUpdateProcess.exe",<Array<string>>[],
+                            getReadable("installUpdateProcess.exe"),<Array<string>>[],
                             <cp.SpawnOptions>{
                                 detached : true,
                                 stdio : "ignore"
