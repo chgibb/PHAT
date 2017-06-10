@@ -110,12 +110,6 @@ app.on
 (
 	'ready',function()
 	{
-		try
-		{
-			fs.mkdirSync("resources/app/cdata");
-		}
-		catch(err){}
-
 		const menuTemplate: Array<Electron.MenuItemOptions> = [
 		{
 			label: 'File',
