@@ -53,7 +53,6 @@ var keySub = require('./keySub');
 
 var pjson = require('./package.json');
 
-var persistState = require('./persistState');
 
 (<any>global).state = {};
 
