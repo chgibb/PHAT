@@ -5,7 +5,7 @@ const tarfs = require("tar-fs");
 const tarStream = require("tar-stream");
 
 import {getReadableAndWritable} from "./getAppPath";
-import {ProjectManifest,getProjectManifests} from "./projectManifest";
+import {ProjectManifest} from "./projectManifest";
 
 export function saveCurrentProject(proj : ProjectManifest) : Promise<{}>
 {
