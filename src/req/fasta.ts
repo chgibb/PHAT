@@ -2,6 +2,7 @@ import {File} from "./file";
 import {Contig} from "./fastaContigLoader";
 import {makeValidID} from "./MakeValidID";
 import trimPath from "./trimPath";
+import {getReadableAndWritable} from "./getAppPath";
 export class Fasta extends File
 {
     public alias : string;
@@ -15,9 +16,7 @@ export class Fasta extends File
     public host : boolean;
     public pathogen : boolean;
     public type : string;
-    public twoBit : string;
     public contigs : Array<Contig>;
-    public fai : string;
     public constructor(path : string)
     {
         /**
@@ -44,8 +43,16 @@ export class Fasta extends File
         this.host = false;
         this.pathogen = false;
         this.type = "";
-        this.twoBit = "";
         this.contigs = new Array<Contig>();
-        this.fai = "";
     }
+}
+
+export function getFaiPath(fasta : Fasta) : string
+{
+    return getReadableAndWritable(`rt/indexes/${fasta.uuid}.fai`);
+}
+
+export function get2BitPath(fasta : Fasta) : string
+{
+    return getReadableAndWritable(`rt/indexes/${fasta.uuid}.2bit`);
 }
