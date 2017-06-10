@@ -24,9 +24,11 @@ deploy:
   provider: releases
   api_key:
     secure: S3RVGnsIa4MApOMDckyaOXghyb0MZcLTAgcqrySZdl7B1YKLnwu92bamZvPkxXnTA7cWME3gMlhI3++gh9cGJmtpTRKUvNdIdC4EJh6sGGhjrvkSalKuBYkvm4CoLQA72xtLCpjb6q+V60EsWzY0GtMrUOs6ADhbchBmWHFZSio3a8lrmgGT4gn6jxOBhAlBz6X4lifY7ibTHl8e0cu5HZzclBdzIiFcYR+HhzkOI90X5UxWDVSHj4qVtwilAawk9QMxyED60QT36G7bn2GCaUV9uNSS2MoqIobuCfJDV9SapFVjnLx5MzFiOgyyuF0gbnM4+S4/d4cboEC3o6m37YMGS2RKA+c3IfY6T0zGWlKV3bEcpGXLkI2mM0MmB88vseI5b+Dl8vpxESUytewD7OUUS3JvIT0aMjuqhUFDrHhyrNKregE+I+1F5VJfi8v/4GmcT1c81tcZiPBSOoK1jnGEwAzsYFpPlVBadsvJii/8Jz4djh6OAQ/NukxfkkwcHTxJpDRTZMrCjrtAYSXMz666foim5FwxJKR4TwYBXIQCgWs0hVSc2K5zALhhll4Nf4w8kaxRIFS8A9UzRPMH8QZEjFiR6lsk6K3nLKLTsvteBka/u8cZFrJyRp/q4XdJUihOAFuAg7vtA5vNXW5dqhboX7BA6zooZj8XLT9uk20=
+  file_glob : true
   file:
     - phat-linux-x64.tar.gz
     - phat-linux-x64-update.tar.gz
+    - phat*.deb
   skip_cleanup: true
   on:
     repo: chgibb/PHAT
