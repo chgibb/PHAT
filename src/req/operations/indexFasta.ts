@@ -1,18 +1,10 @@
-import * as fs from "fs";
-
-const fse = require("fs-extra");
-
 import * as atomic from "./atomicOperations";
 import {Fasta,get2BitPath,getFaiPath} from "./../fasta";
-import {Contig,FastaContigLoader} from "./../fastaContigLoader";
-import {getQCReportSummaries} from "./../QCReportSummary";
-import trimPath from "./../trimPath";
-import {makeValidID} from "./../MakeValidID";
-import {SpawnRequestParams} from "./../JobIPC";
+import {FastaContigLoader} from "./../fastaContigLoader";
 
 import {getReadable,getReadableAndWritable} from "./../getAppPath";
 
-import {Job,JobCallBackObject} from "./../main/Job";
+import {Job} from "./../main/Job";
 
 import {bowTie2Build} from "./indexFasta/bowTie2Build";
 import {faToTwoBit} from "./indexFasta/faToTwoBit";
