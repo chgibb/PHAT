@@ -34,7 +34,7 @@ $
 
         ipc.send(
             "keySub",
-            {
+            <KeySubEvent>{
                 action : "keySub",
                 channel : "input",
                 key : "fastqInputs",
@@ -43,7 +43,7 @@ $
         );
         ipc.send(
             "keySub",
-            {
+            <KeySubEvent>{
                 action : "keySub",
                 channel : "QC",
                 key : "QCData",
@@ -54,7 +54,7 @@ $
 
         ipc.send(
             "getKey",
-            {
+            <KeySubEvent>{
                 action : "keySub",
                 channel : "input",
                 key : "fastqInputs",
@@ -63,7 +63,7 @@ $
         );
         ipc.send(
             "getKey",
-            {
+            <KeySubEvent>{
                 action : "keySub",
                 channel : "QC",
                 key : "QCData",
