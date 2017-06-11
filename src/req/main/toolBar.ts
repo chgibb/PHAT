@@ -1,6 +1,4 @@
 import * as electron from "electron";
-const ipc = electron.ipcMain;
-const app = electron.app;
 import * as winMgr from "./winMgr";
 import {getReadable} from "./../getAppPath";
 import * as dataMgr from "./dataMgr";
