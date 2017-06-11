@@ -1,6 +1,6 @@
 import * as fs from "fs";
 
-import {QCData,QCSummary} from "./QCData";
+import {QCSummary} from "./QCData";
 export function getStatus(token : string) : string | undefined
 {
     if(token.match(new RegExp("(pass)")))

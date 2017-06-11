@@ -1,9 +1,8 @@
-import * as fs from "fs";
-import * as readline from "readline";
 import * as cp from "child_process";
 
 import * as atomic from "./atomicOperations";
 import {AtomicOperationForkEvent} from "./../atomicOperationsIPC";
+import {getReadable} from "./../getAppPath";
 
 import alignData from "./../alignData"
 import * as cf from "./../renderer/circularFigure";
@@ -34,7 +33,7 @@ export class RenderCoverageTrackForContig extends atomic.AtomicOperation
     public run() : void
     {
         let self = this;
-        this.renderCoverageTrackProcess = cp.fork("resources/app/RenderCoverageTrack.js");
+        this.renderCoverageTrackProcess = cp.fork(getReadable("RenderCoverageTrack.js"));
         self.renderCoverageTrackProcess.on(
             "message",function(ev : AtomicOperationForkEvent)
             {

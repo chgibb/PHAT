@@ -1,12 +1,11 @@
 import * as fs from "fs";
-import * as readline from "readline";
+
 import * as atomic from "./atomicOperations";
-import {Fasta} from "./../fasta";
+import {Fasta,getFaiPath} from "./../fasta";
 import Fastq from "./../fastq";
 import alignData from "./../alignData"
-import {SpawnRequestParams} from "./../JobIPC";
-import {Job,JobCallBackObject} from "./../main/Job";
-import {parseBowTie2AlignmentReport} from "./../bowTie2AlignmentReportParser";
+import {getReadable,getReadableAndWritable} from "./../getAppPath";
+import {Job} from "./../main/Job";
 
 import {bowTie2Align} from "./RunAlignment/bowTie2Align";
 import {samToolsDepth} from "./RunAlignment/samToolsDepth";
@@ -63,13 +62,13 @@ export class RunAlignment extends atomic.AtomicOperation
         this.samToolsMPileupFlags = new atomic.CompletionFlags();
         this.varScanMPileup2SNPFlags = new atomic.CompletionFlags();
 
-        this.samToolsExe = 'resources/app/samtools';
+        this.samToolsExe = getReadable('samtools');
         if(process.platform == "linux")
-            this.bowtie2Exe = 'resources/app/bowtie2';
+            this.bowtie2Exe = getReadable('bowtie2');
         else if(process.platform == "win32")
-            this.bowtie2Exe = 'resources/app/perl/perl/bin/perl.exe';
+            this.bowtie2Exe = getReadable('perl/perl/bin/perl.exe');
 
-        this.varScanExe = "resources/app/varscan.jar";
+        this.varScanExe = getReadable("varscan.jar");
     }
     public setData(
         data : {
@@ -83,14 +82,14 @@ export class RunAlignment extends atomic.AtomicOperation
             this.fastq1 = data.fastq1;
             this.fastq2 = data.fastq2;
 
-            this.faiPath = `resources/app/rt/indexes/${this.fasta.uuid}.fai`;
+            this.faiPath = getFaiPath(this.fasta);
 
             this.alignData = new alignData();
             this.alignData.type = data.type;
             this.alignData.fasta = this.fasta;
             this.alignData.fastqs.push(this.fastq1,this.fastq2);
             this.generatedArtifacts.push(`${this.fasta.path}.fai`);
-            this.destinationArtifactsDirectories.push(`resources/app/rt/AlignmentArtifacts/${this.alignData.uuid}`);
+            this.destinationArtifactsDirectories.push(getReadableAndWritable(`rt/AlignmentArtifacts/${this.alignData.uuid}`));
         }
     //bowtie2-align -> samtools view -> samtools sort -> samtools index -> samtools depth -> separate out coverage data
     //-> samtools faidx -> samtools mpileup -> varscan pileup2snp

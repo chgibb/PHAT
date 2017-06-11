@@ -1,4 +1,3 @@
-import {SpawnRequestParams} from "./JobIPC";
 import {ProjectManifest} from "./projectManifest"
 import {Fasta} from "./fasta";
 import Fastq from "./fastq";

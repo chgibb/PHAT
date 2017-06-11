@@ -1,8 +1,4 @@
 import * as viewMgr from "./../../viewMgr";
-import * as masterView from "./../masterView";
-import {GenomeView} from "./../genomeView";
-import alignData from "./../../../alignData";
-import * as cf from "./../../circularFigure";
 
 export class NoReference extends viewMgr.View
 {

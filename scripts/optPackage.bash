@@ -31,4 +31,4 @@ mv realMain.js main.js
 
 rm -rf rt
 rm -rf projects
-rm -rf projectsManifest.json
+rm -rf projectManifests.json

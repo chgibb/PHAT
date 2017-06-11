@@ -30,8 +30,6 @@ export class QCSummary
 //returns 'pass', 'warn', 'fail', or 'No Data'
 export function getQCSummaryByNameOfReportByIndex(fastqInputs : Array<Fastq>,index : number,summary : string) : string
 {
-    let res = "";
-	let str = "";
     try
     {
         for(let i = 0; i != fastqInputs[index].QCData.summary.length; ++i)

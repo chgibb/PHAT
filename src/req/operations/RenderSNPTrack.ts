@@ -2,6 +2,7 @@ import * as cp from "child_process";
 
 import * as atomic from "./atomicOperations";
 import {AtomicOperationForkEvent} from "./../atomicOperationsIPC";
+import {getReadable} from "./../getAppPath";
 
 import alignData from "./../alignData"
 import * as cf from "./../renderer/circularFigure";
@@ -32,7 +33,7 @@ export class RenderSNPTrackForContig extends atomic.AtomicOperation
     public run() : void
     {
         let self = this;
-        this.renderSNPTrackProcess = cp.fork("resources/app/RenderSNPTrack.js");
+        this.renderSNPTrackProcess = cp.fork(getReadable("RenderSNPTrack.js"));
         self.renderSNPTrackProcess.on(
             "message",function(ev : AtomicOperationForkEvent)
             {

@@ -3,16 +3,24 @@
  * @module req/main/main
  */
 import * as fs from "fs";
-import * as cp from "child_process";
 import * as electron from "electron";
 const ipc = electron.ipcMain;
 const app = electron.app;
 if(require('electron-squirrel-startup')) app.quit();
 
-const BrowserWindow = electron.BrowserWindow;
+
+console.log("app Path: "+app.getAppPath());
+console.log("app data: "+app.getPath("appData"));
+console.log("user data: "+app.getPath("userData"));
+import {getReadable,getWritable,getReadableAndWritable} from "./../getAppPath";
+getReadable("");
+getWritable("");
+getReadableAndWritable("");
+
+import {getEdition} from "./../getEdition";
+
 const jsonFile = require("jsonfile");
 
-import {Job} from "./Job";
 import * as dataMgr from "./dataMgr";
 import * as atomicOp from "./../operations/atomicOperations";
 import {AtomicOperationIPC} from "./../atomicOperationsIPC";
@@ -24,7 +32,8 @@ import {RenderSNPTrackForContig} from "./../operations/RenderSNPTrack";
 import {CheckForUpdate} from "./../operations/CheckForUpdate";
 import {DownloadAndInstallUpdate} from "./../operations/DownloadAndInstallUpdate";
 
-import {ProjectManifest,manifestsPath} from "./../projectManifest";
+import {ProjectManifest,setManifestsPath} from "./../projectManifest";
+setManifestsPath(getReadableAndWritable(""));
 
 import {NewProject} from "./../operations/NewProject";
 import {OpenProject} from "./../operations/OpenProject";
@@ -33,16 +42,13 @@ import {SaveCurrentProject} from "./../operations//SaveCurrentProject";
 import * as winMgr from "./winMgr";
 
 import {File} from "./../file";
-import {rebuildRTDirectory} from "./rebuildRTDirectory";
 import alignData from "./../alignData";
 import {CircularFigure} from "./../renderer/circularFigure";
 
 import {GetKeyEvent,SaveKeyEvent,KeySubEvent} from "./../ipcEvents";
-var keySub = require('./keySub');
 
 var pjson = require('./package.json');
 
-var persistState = require('./persistState');
 
 (<any>global).state = {};
 
@@ -62,7 +68,7 @@ function finishLoadingProject(proj : ProjectManifest) : void
 	atomicOp.clearOperationsQueue();
 
 	dataMgr.clearData();
-	dataMgr.loadData("resources/app/rt/rt.json");
+	dataMgr.loadData(getReadableAndWritable("rt/rt.json"));
 	dataMgr.setKey("application","project",proj);
 	let jobErrorLog = dataMgr.getKey("application","jobErrorLog");
 	let jobVerboseLog = dataMgr.getKey("application","jobVerboseLog");
@@ -74,32 +80,12 @@ function finishLoadingProject(proj : ProjectManifest) : void
 	}
 	catch(err){}
 
-	dataMgr.setKey("application","jobErrorLog","jobErrorLog.txt");
-	dataMgr.setKey("application","jobVerboseLog","jobVerboseLog.txt");
+	dataMgr.setKey("application","jobErrorLog",getReadableAndWritable("jobErrorLog.txt"));
+	dataMgr.setKey("application","jobVerboseLog",getReadableAndWritable("jobVerboseLog.txt"));
 
 	winMgr.windowCreators["toolBar"].Create();
 	winMgr.closeAllExcept("toolBar");
 }
-
-try
-{
-	dataMgr.loadData("resources/app/rt/rt.json");
-}
-catch(err)
-{
-	
-}
-{
-	
-
-}
-
-app.on
-(
-	'ready',function()
-	{
-	}
-);
 
 app.on
 (
@@ -112,34 +98,10 @@ app.on
 (
 	'ready',function()
 	{
-		try
-		{
-			fs.mkdirSync("resources/app/cdata");
-		}
-		catch(err){}
-
 		const menuTemplate: Array<Electron.MenuItemOptions> = [
 		{
 			label: 'File',
 			submenu: [
-			{
-				label: 'Clear workspace', 
-				accelerator: 'Control+Shift+Q', 
-				click ()  
-				{    
-					electron.shell.moveItemToTrash("resources/app/rt"); 
-					electron.dialog.showMessageBox( 
-					{ 
-						type: "info", 
-						title: 'Important', 
-						message: 'You will need to restart PHAT.', 
-						detail: 'The workspace data was cleared and will be refreshed on next load.', 
-						buttons: ['OK'] 
-					});
-				} 
-			}, 
-			{ 
-			},
 			{
 				label: 'Preferences',
 				accelerator: 'Control+,'
@@ -312,8 +274,8 @@ app.on
 
 		setInterval(function(){atomicOp.runOperations(1);},2500);
 		//After an update has been installed, update the updater with new binaries.
-		fs.rename("resources/app/newCSharpCode.SharpZipLib.dll","resources/app/ICSharpCode.SharpZipLib.dll",function(err : NodeJS.ErrnoException){});
-		fs.rename("resources/app/newinstallUpdateProcess.exe","resources/app/installUpdateProcess.exe",function(err : NodeJS.ErrnoException){});
+		fs.rename(getReadableAndWritable("newCSharpCode.SharpZipLib.dll"),getReadableAndWritable("ICSharpCode.SharpZipLib.dll"),function(err : NodeJS.ErrnoException){});
+		fs.rename(getReadableAndWritable("newinstallUpdateProcess.exe"),getReadableAndWritable("installUpdateProcess.exe"),function(err : NodeJS.ErrnoException){});
 
 		fs.unlink("phat.update",function(err : NodeJS.ErrnoException){});
 	}
@@ -517,14 +479,24 @@ ipc.on(
 				token = auth.token
 			//if checkForUpdate was not successful, this will not be set
 			asset = dataMgr.getKey("application","availableUpdate");
-			if(!asset)
-				return;
-			atomicOp.addOperation("downloadAndInstallUpdate",
+
+			//If we're running a portable edition then we can use our auto updater
+			let isPortable = /(portable)/i;
+			if(isPortable.test(getEdition()))
 			{
-				asset : asset,
-				token : token
-			});
-			winMgr.closeAllExcept("projectSelection");
+				if(!asset)
+					return;
+				atomicOp.addOperation("downloadAndInstallUpdate",
+				{
+					asset : asset,
+					token : token
+				});
+				winMgr.closeAllExcept("projectSelection");
+			}
+			else
+			{
+				electron.shell.openExternal("https://github.com/chgibb/PHAT/releases");
+			}
 		}
 		else if(arg.opName == "newProject")
 		{
@@ -536,7 +508,7 @@ ipc.on(
 			let isCurrentlyLoaded = false;
 			try
 			{
-				let rt = jsonFile.readFileSync("resources/app/rt/rt.json");
+				let rt = jsonFile.readFileSync(getReadableAndWritable("rt/rt.json"));
 
 				if(rt)
 				{

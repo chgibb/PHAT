@@ -1,7 +1,10 @@
 import * as fs from "fs";
 import * as readline from "readline";
+
 const uuidv4 : () => string = require("uuid/v4");
 import * as mkdirp from "mkdirp";
+
+import {getReadableAndWritable} from "./../getAppPath";
 import * as fastaContigLoader from "./../fastaContigLoader";
 import * as plasmidTrack from "./circularGenome/plasmidTrack";
 import * as trackLabel from "./circularGenome/trackLabel";
@@ -221,14 +224,14 @@ export function cacheBaseFigure(figure : CircularFigure) : void
 {
     try
     {
-        fs.mkdirSync(`resources/app/rt/circularFigures/${figure.uuid}`);
+        fs.mkdirSync(getReadableAndWritable(`rt/circularFigures/${figure.uuid}`));
     }
     catch(err){}
-    fs.writeFileSync(`resources/app/rt/circularFigures/${figure.uuid}/baseFigure`,renderBaseFigure(figure));
+    fs.writeFileSync(getReadableAndWritable(`rt/circularFigures/${figure.uuid}/baseFigure`),renderBaseFigure(figure));
 }
 export function getBaseFigureFromCache(figure : CircularFigure) : string
 {
-    return (<any>fs.readFileSync(`resources/app/rt/circularFigures/${figure.uuid}/baseFigure`));
+    return (<any>fs.readFileSync(getReadableAndWritable(`rt/circularFigures/${figure.uuid}/baseFigure`)));
 }
 
 //Walk the figures contigs clockwise and return the offset of the beginning of contig specified
@@ -260,7 +263,7 @@ export function renderCoverageTrack(
     let coverageTracks : string = "";
     //Stream the distilled samtools depth data from the specified alignment for the specified contig
     let rl : readline.ReadLine = readline.createInterface(<readline.ReadLineOptions>{
-        input : fs.createReadStream(`resources/app/rt/AlignmentArtifacts/${align.uuid}/contigCoverage/${contiguuid}`)
+        input : fs.createReadStream(getReadableAndWritable(`rt/AlignmentArtifacts/${align.uuid}/contigCoverage/${contiguuid}`))
     });
     let baseBP = getBaseBP(figure,contiguuid);
     if(baseBP == -1)
@@ -312,7 +315,6 @@ export function renderCoverageTrack(
             for(let k = 0; k != depths[i].positions.length; ++k)
             {
                 let offset = 1;
-                let prev = depths[i].positions[k];
                 let initial = k; 
                 while(depths[i].positions[k + offset] == depths[i].positions[initial] + offset)
                 {
@@ -341,7 +343,7 @@ export function cacheCoverageTrack(
 {
     try
     {
-        mkdirp.sync(`resources/app/rt/circularFigures/${figure.uuid}/coverage/${align.uuid}/${contiguuid}`);
+        mkdirp.sync(getReadableAndWritable(`rt/circularFigures/${figure.uuid}/coverage/${align.uuid}/${contiguuid}`));
     }
     catch(err){}
     renderCoverageTrack(
@@ -352,7 +354,7 @@ export function cacheCoverageTrack(
             if(status == true)
             {
                 let trackRecord = new RenderedCoverageTrackRecord(align.uuid,contiguuid,figure.uuid,colour,"");
-                trackRecord.path = `resources/app/rt/circularFigures/${figure.uuid}/coverage/${align.uuid}/${contiguuid}/${trackRecord.uuid}`;
+                trackRecord.path = getReadableAndWritable(`rt/circularFigures/${figure.uuid}/coverage/${align.uuid}/${contiguuid}/${trackRecord.uuid}`);
                 fs.writeFileSync(trackRecord.path,coverageTracks);
                 figure.renderedCoverageTracks.push(trackRecord);
             }
@@ -381,7 +383,7 @@ export function renderSNPTrack(
     let SNPTracks : string = "";
 
     let rl : readline.ReadLine = readline.createInterface(<readline.ReadLineOptions>{
-        input : fs.createReadStream(`resources/app/rt/AlignmentArtifacts/${align.uuid}/snps.vcf`)
+        input : fs.createReadStream(getReadableAndWritable(`rt/AlignmentArtifacts/${align.uuid}/snps.vcf`))
     });
 
     let baseBP = getBaseBP(figure,contiguuid);
@@ -431,7 +433,7 @@ export function renderSNPTrack(
             SNPTracks += `
                 <plasmidtrack width="20" trackstyle="fill-opacity:0.0" radius="{{genome.radius}}">
                     <trackmarker start="${SNPPositions[i].position}" markerstyle="stroke:${SNPPositions[i].colour};stroke-dasharray:2,2;stroke-width:2px;" wadjust="{{genome.radius+${SNPPositions[i].adjust}}}">
-                        <markerlabel style="font-size:20px" text="${SNPPositions[i].from}${SNPPositions[i].relativePosition}${SNPPositions[i].to}" vadjust="{{genome.radius+${SNPPositions[i].adjust}}}"></markerlabel>
+                        <markerlabel style="font-size:20px;fill:${SNPPositions[i].colour}" text="${SNPPositions[i].from}${SNPPositions[i].relativePosition}${SNPPositions[i].to}" vadjust="{{genome.radius+${SNPPositions[i].adjust}}}"></markerlabel>
                     </trackmarker>
                 </plasmidtrack> 
                 `;
@@ -450,7 +452,7 @@ export function cacheSNPTrack(
 {
     try
     {
-        mkdirp.sync(`resources/app/rt/circularFigures/${figure.uuid}/snp/${align.uuid}/${contiguuid}`);
+        mkdirp.sync(getReadableAndWritable(`rt/circularFigures/${figure.uuid}/snp/${align.uuid}/${contiguuid}`));
     }
     catch(err){}
     renderSNPTrack(
@@ -461,7 +463,7 @@ export function cacheSNPTrack(
             if(status == true)
             {
                 let trackRecord = new RenderedSNPTrackRecord(align.uuid,contiguuid,figure.uuid,colour,"");
-                trackRecord.path = `resources/app/rt/circularFigures/${figure.uuid}/snp/${align.uuid}/${contiguuid}/${trackRecord.uuid}`;
+                trackRecord.path = getReadableAndWritable(`rt/circularFigures/${figure.uuid}/snp/${align.uuid}/${contiguuid}/${trackRecord.uuid}`);
                 fs.writeFileSync(trackRecord.path,SNPTracks);
                 figure.renderedSNPTracks.push(trackRecord);
             }

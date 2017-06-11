@@ -1,3 +1,4 @@
+import {getReadableAndWritable} from "./../../getAppPath";
 import {RunAlignment} from "./../RunAlignment";
 import {SpawnRequestParams} from "./../../JobIPC";
 import {Job,JobCallBackObject} from "./../../main/Job";
@@ -28,8 +29,8 @@ export function samToolsIndex(op : RunAlignment) : Promise<{}>
             op.samToolsExe,
             <Array<string>>[
                 "index",
-                `resources/app/rt/AlignmentArtifacts/${op.alignData.uuid}/out.sorted.bam`,
-                `resources/app/rt/AlignmentArtifacts/${op.alignData.uuid}/out.sorted.bam.bai`
+                getReadableAndWritable(`rt/AlignmentArtifacts/${op.alignData.uuid}/out.sorted.bam`),
+                getReadableAndWritable(`rt/AlignmentArtifacts/${op.alignData.uuid}/out.sorted.bam.bai`)
             ],"",true,jobCallBack,{}
         );
         try

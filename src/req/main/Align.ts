@@ -1,5 +1,5 @@
 import * as winMgr from "./winMgr";
-import fsAccess from "./../fsAccess";
+import {getReadable} from "./../getAppPath";
 
 winMgr.windowCreators["align"] = 
 {
@@ -11,7 +11,7 @@ winMgr.windowCreators["align"] =
 				"Align",
 				"align",
 				1000,800,
-				fsAccess("resources/app/Align.html"),
+				"file://"+getReadable("Align.html"),
 				false,false,
 				500,300
 			)

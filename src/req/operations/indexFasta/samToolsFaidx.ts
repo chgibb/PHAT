@@ -1,5 +1,3 @@
-import * as fs from "fs";
-
 const fse = require("fs-extra");
 
 import {IndexFasta} from "./../indexFasta";

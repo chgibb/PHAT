@@ -1,9 +1,3 @@
-import * as fs from "fs";
-
-import {GetKeyEvent,KeyChangeEvent} from "./../ipcEvents";
-
-import * as winMgr from "./winMgr";
-
 const jsonFile = require("jsonfile");
 
 let data : any = {};

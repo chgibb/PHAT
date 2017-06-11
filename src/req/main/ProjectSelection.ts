@@ -2,7 +2,7 @@ import * as electron from "electron";
 const app = electron.app;
 import * as winMgr from "./winMgr";
 import * as dataMgr from "./dataMgr";
-import fsAccess from "./../fsAccess";
+import {getReadable} from "./../getAppPath";
 
 winMgr.windowCreators["projectSelection"] = 
 {
@@ -14,7 +14,7 @@ winMgr.windowCreators["projectSelection"] =
 				"ProjectSelection",
 				"projectSelection",
 				400,800,
-				fsAccess("resources/app/ProjectSelection.html"),
+				"file://"+getReadable("ProjectSelection.html"),
 				false,false, 10, 10
 			)
 		);

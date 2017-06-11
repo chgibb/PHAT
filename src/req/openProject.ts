@@ -5,6 +5,7 @@ const tarfs = require("tar-fs");
 const tarStream = require("tar-stream");
 const gunzip = require("gunzip-maybe");
 
+import {getReadableAndWritable} from "./getAppPath";
 import {ProjectManifest} from "./projectManifest";
 import {rebuildRTDirectory} from "./main/rebuildRTDirectory"
 import * as dataMgr from "./main/dataMgr";
@@ -13,7 +14,7 @@ export function openProject(proj : ProjectManifest,cb : (toUnpack : number,unPac
 {
     return new Promise((resolve,reject) => {
         dataMgr.clearData();
-        rimraf.sync("resources/app/rt");
+        rimraf.sync(getReadableAndWritable("rt"));
         try
         {
             fs.accessSync(proj.tarBall)
@@ -34,7 +35,7 @@ export function openProject(proj : ProjectManifest,cb : (toUnpack : number,unPac
                     stream.resume();
             });
             countFiles.on("finish",() => {
-                let extract = tarfs.extract("resources/app/rt",{
+                let extract = tarfs.extract(getReadableAndWritable("rt"),{
                     ignore : (name : string) => {
                         unPackedFiles++;
                         cb(totalFiles,unPackedFiles);

@@ -1,2 +1,8 @@
-import requireDyn from "./req/requireDyn";
-requireDyn("./bootStrapCodeCache")("resources/app/RenderSNPTrackProcess.js","./RenderSNPTrackProcess","resources/app/cdata/RenderSNPTrackProcess.cdata");
+import {getReadable,getReadableAndWritable} from "./req/getAppPath";
+import {bootStrapCodeCache} from "./req/bootStrapCodeCache";
+
+bootStrapCodeCache(
+    getReadable("RenderSNPTrackProcess.js"),
+    "./RenderSNPTrackProcess",
+    getReadableAndWritable("RenderSNPTrackProcess.cdata")
+);

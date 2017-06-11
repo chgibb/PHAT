@@ -1,8 +1,8 @@
-import * as fs from "fs";
 import * as cp from "child_process";
 
 import * as atomic from "./atomicOperations";
 import {AtomicOperationForkEvent,AtomicOperationIPC} from "./../atomicOperationsIPC";
+import {getReadable} from "./../getAppPath";
 export class DownloadAndInstallUpdate extends atomic.AtomicOperation
 {
     public asset : any;
@@ -20,7 +20,7 @@ export class DownloadAndInstallUpdate extends atomic.AtomicOperation
     public run() : void
     {
         let self = this;
-        this.downloadAndInstallUpdateProcess = cp.fork("resources/app/DownloadAndInstallUpdate.js");
+        this.downloadAndInstallUpdateProcess = cp.fork(getReadable("DownloadAndInstallUpdate.js"));
         this.downloadAndInstallUpdateProcess.on(
             "message",function(ev : AtomicOperationForkEvent)
             {

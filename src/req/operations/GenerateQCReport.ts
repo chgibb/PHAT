@@ -1,13 +1,11 @@
-import * as cp from "child_process"
-
 const fse = require("fs-extra");
 
 import * as atomic from "./atomicOperations";
 import Fastq from "./../fastq";
 import {getQCReportSummaries} from "./../QCReportSummary";
 import trimPath from "./../trimPath";
-import {makeValidID} from "./../MakeValidID";
 import {SpawnRequestParams} from "./../JobIPC";
+import {getReadable,getReadableAndWritable} from "./../getAppPath";
 
 import {Job,JobCallBackObject} from "./../main/Job";
 export class GenerateQCReport extends atomic.AtomicOperation
@@ -38,7 +36,7 @@ export class GenerateQCReport extends atomic.AtomicOperation
 		this.generatedArtifacts.push(remainder+trimmed+".zip");
 
 		this.srcDir = remainder+trimmed;
-		this.destDir = 'resources/app/rt/QCReports/'+data.uuid;
+		this.destDir = getReadableAndWritable('rt/QCReports/'+data.uuid);
 
 		this.destinationArtifactsDirectories.push(this.destDir);
 	}
@@ -46,16 +44,16 @@ export class GenerateQCReport extends atomic.AtomicOperation
 	{
 		//Set path to fastqc entry file
 		if(process.platform == "linux")
-            this.fastQCPath = 'resources/app/FastQC/fastqc';
+            this.fastQCPath = getReadable('FastQC/fastqc');
         else if(process.platform == "win32")
-            this.fastQCPath = 'resources/app/perl/perl/bin/perl.exe';
+            this.fastQCPath = getReadable('perl/perl/bin/perl.exe');
 
 		//figure out arg ordering based on platform
 		let args : Array<string>;
         if(process.platform == "linux")
             args = [this.fastq.path];
         else if(process.platform == "win32")
-            args = ['resources/app/FastQC/fastqc',this.fastq.path];
+            args = [getReadable('FastQC/fastqc'),this.fastq.path];
 
 		//Running FastQC with certain versions of OpenJDK occasionally crash it.
 		//One of the first things in the stdout when this happens is "fatal error"

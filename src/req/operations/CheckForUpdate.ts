@@ -1,8 +1,8 @@
-import * as fs from "fs";
 import * as cp from "child_process";
 
 import * as atomic from "./atomicOperations";
 import {AtomicOperationForkEvent,AtomicOperationIPC} from "./../atomicOperationsIPC";
+import {getReadable} from "./../getAppPath";
 export class CheckForUpdate extends atomic.AtomicOperation
 {
     public token : string;
@@ -21,7 +21,7 @@ export class CheckForUpdate extends atomic.AtomicOperation
     public run() : void
     {
         let self = this;
-        this.checkForUpdateProcess = cp.fork("resources/app/CheckForUpdate.js");
+        this.checkForUpdateProcess = cp.fork(getReadable("CheckForUpdate.js"));
         this.checkForUpdateProcess.on(
             "message",function(ev : AtomicOperationForkEvent)
             {

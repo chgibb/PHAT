@@ -1,5 +1,6 @@
 import * as fs from "fs";
 
+import {getReadable} from "./../../getAppPath";
 import {IndexFasta} from "./../indexFasta";
 
 import {SpawnRequestParams} from "./../../JobIPC";
@@ -41,7 +42,7 @@ export function bowTie2Build(op : IndexFasta) : Promise<string | undefined>
         else if(process.platform == "win32")
         {
             bowTieArgs = [
-                `resources/app/bowtie2-build`,
+                getReadable(`bowtie2-build`),
                 `"${op.fasta.path}"`,
                 `"${op.bowTieIndexPath}"`
             ];

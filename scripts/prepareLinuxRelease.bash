@@ -8,4 +8,10 @@ tar -zcvf phat-linux-x64.tar.gz --exclude=*.tar.gz *
 tar -zcvf phat-linux-x64-update.tar.gz --exclude=*.tar.gz *
 
 cd ../
-mv phat-linux-x64/*.tar.gz . 
+mv phat-linux-x64/*.tar.gz .
+
+echo installed > phat-linux-x64/edition
+
+node scripts/buildDebianInstaller
+
+mv deb/*.deb .
