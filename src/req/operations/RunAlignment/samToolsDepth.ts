@@ -1,7 +1,7 @@
 import * as fs from "fs";
 import * as readline from "readline";
 
-import {getReadable,getReadableAndWritable} from "./../../getAppPath";
+import {getReadableAndWritable} from "./../../getAppPath";
 import {RunAlignment} from "./../RunAlignment";
 import {SpawnRequestParams} from "./../../JobIPC";
 import {Job,JobCallBackObject} from "./../../main/Job";

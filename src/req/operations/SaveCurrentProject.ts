@@ -2,9 +2,9 @@ import * as cp from "child_process";
 
 import * as atomic from "./atomicOperations";
 import {AtomicOperationForkEvent} from "./../atomicOperationsIPC";
-import {getReadable,getWritable,getReadableAndWritable} from "./../getAppPath";
+import {getReadable} from "./../getAppPath";
 
-import {ProjectManifest,getProjectManifests} from "./../projectManifest";
+import {ProjectManifest} from "./../projectManifest";
 export class SaveCurrentProject extends atomic.AtomicOperation
 {
     public proj : ProjectManifest;
