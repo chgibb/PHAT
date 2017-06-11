@@ -1,9 +1,8 @@
-import * as fs from "fs";
 import * as cp from "child_process";
 
 import * as atomic from "./atomicOperations";
 import {AtomicOperationForkEvent,AtomicOperationIPC} from "./../atomicOperationsIPC";
-import {getReadable,getWritable,getReadableAndWritable} from "./../getAppPath";
+import {getReadable} from "./../getAppPath";
 export class DownloadAndInstallUpdate extends atomic.AtomicOperation
 {
     public asset : any;
