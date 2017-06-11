@@ -1,5 +1,5 @@
 import {File} from "./file";
-import {QCData,QCSummary} from "./QCData";
+import {QCData} from "./QCData";
 import {makeValidID} from "./MakeValidID";
 import trimPath from "./trimPath";
 export default class Fastq extends File
