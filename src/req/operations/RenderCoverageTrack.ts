@@ -1,10 +1,8 @@
-import * as fs from "fs";
-import * as readline from "readline";
 import * as cp from "child_process";
 
 import * as atomic from "./atomicOperations";
 import {AtomicOperationForkEvent} from "./../atomicOperationsIPC";
-import {getReadable,getWritable,getReadableAndWritable} from "./../getAppPath";
+import {getReadable} from "./../getAppPath";
 
 import alignData from "./../alignData"
 import * as cf from "./../renderer/circularFigure";
