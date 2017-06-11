@@ -1,7 +1,7 @@
 import * as cp from "child_process";
 
 import * as atomic from "./atomicOperations";
-import {getReadable,getReadableAndWritable} from "./../getAppPath";
+import {getReadable} from "./../getAppPath";
 export class InstallUpdate extends atomic.AtomicOperation
 {
     public installUpdateJob : cp.ChildProcess;
