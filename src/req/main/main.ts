@@ -3,7 +3,6 @@
  * @module req/main/main
  */
 import * as fs from "fs";
-import * as cp from "child_process";
 import * as electron from "electron";
 const ipc = electron.ipcMain;
 const app = electron.app;
@@ -20,10 +19,8 @@ getReadableAndWritable("");
 
 import {getEdition} from "./../getEdition";
 
-const BrowserWindow = electron.BrowserWindow;
 const jsonFile = require("jsonfile");
 
-import {Job} from "./Job";
 import * as dataMgr from "./dataMgr";
 import * as atomicOp from "./../operations/atomicOperations";
 import {AtomicOperationIPC} from "./../atomicOperationsIPC";
@@ -35,7 +32,7 @@ import {RenderSNPTrackForContig} from "./../operations/RenderSNPTrack";
 import {CheckForUpdate} from "./../operations/CheckForUpdate";
 import {DownloadAndInstallUpdate} from "./../operations/DownloadAndInstallUpdate";
 
-import {ProjectManifest,getProjectManifests,setManifestsPath} from "./../projectManifest";
+import {ProjectManifest,setManifestsPath} from "./../projectManifest";
 setManifestsPath(getReadableAndWritable(""));
 
 import {NewProject} from "./../operations/NewProject";
@@ -45,12 +42,10 @@ import {SaveCurrentProject} from "./../operations//SaveCurrentProject";
 import * as winMgr from "./winMgr";
 
 import {File} from "./../file";
-import {rebuildRTDirectory} from "./rebuildRTDirectory";
 import alignData from "./../alignData";
 import {CircularFigure} from "./../renderer/circularFigure";
 
 import {GetKeyEvent,SaveKeyEvent,KeySubEvent} from "./../ipcEvents";
-var keySub = require('./keySub');
 
 var pjson = require('./package.json');
 
