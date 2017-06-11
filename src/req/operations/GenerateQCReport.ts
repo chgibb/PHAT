@@ -1,12 +1,9 @@
-import * as cp from "child_process"
-
 const fse = require("fs-extra");
 
 import * as atomic from "./atomicOperations";
 import Fastq from "./../fastq";
 import {getQCReportSummaries} from "./../QCReportSummary";
 import trimPath from "./../trimPath";
-import {makeValidID} from "./../MakeValidID";
 import {SpawnRequestParams} from "./../JobIPC";
 import {getReadable,getReadableAndWritable} from "./../getAppPath";
 
