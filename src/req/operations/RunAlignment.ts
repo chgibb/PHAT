@@ -1,13 +1,11 @@
 import * as fs from "fs";
-import * as readline from "readline";
+
 import * as atomic from "./atomicOperations";
 import {Fasta,getFaiPath} from "./../fasta";
 import Fastq from "./../fastq";
 import alignData from "./../alignData"
-import {SpawnRequestParams} from "./../JobIPC";
 import {getReadable,getReadableAndWritable} from "./../getAppPath";
-import {Job,JobCallBackObject} from "./../main/Job";
-import {parseBowTie2AlignmentReport} from "./../bowTie2AlignmentReportParser";
+import {Job} from "./../main/Job";
 
 import {bowTie2Align} from "./RunAlignment/bowTie2Align";
 import {samToolsDepth} from "./RunAlignment/samToolsDepth";
