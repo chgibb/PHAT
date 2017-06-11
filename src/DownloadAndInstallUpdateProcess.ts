@@ -2,12 +2,9 @@ import * as fs from "fs";
 import * as cp from "child_process";
 
 let GitHubReleases = require("github-releases");
-const tarfs = require("tar-fs");
-const tarStream = require("tar-stream");
-const gunzip = require("gunzip-maybe");
 
-import {AtomicOperationForkEvent,AtomicOperationIPC,CompletionFlags} from "./req/atomicOperationsIPC";
-import {getReadable,getWritable,getReadableAndWritable} from "./req/getAppPath";
+import {AtomicOperationForkEvent,CompletionFlags} from "./req/atomicOperationsIPC";
+import {getReadable} from "./req/getAppPath";
 
 let flags : CompletionFlags = new CompletionFlags();
 

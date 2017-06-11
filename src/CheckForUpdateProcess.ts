@@ -1,4 +1,4 @@
-import {AtomicOperationForkEvent,AtomicOperationIPC,CompletionFlags} from "./req/atomicOperationsIPC";
+import {AtomicOperationForkEvent,CompletionFlags} from "./req/atomicOperationsIPC";
 import * as getUpdate from "./req/getLatestUpdate";
 
 let flags : CompletionFlags = new CompletionFlags();

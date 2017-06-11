@@ -1,5 +1,3 @@
-import {setReadableBasePath,setWritableBasePath,setReadableAndWritableBasePath} from "./req/getAppPath"
-
 import {AtomicOperationForkEvent,CompletionFlags} from "./req/atomicOperationsIPC";
 import {ProjectManifest} from "./req/projectManifest";
 import {openProject} from "./req//openProject";
@@ -24,9 +22,6 @@ process.on
         if(ev.setData == true)
         {
             proj = ev.data;
-            /*setReadableBasePath(ev.readableBasePath);
-            setWritableBasePath(ev.writableBasePath);
-            setReadableAndWritableBasePath(ev.readableAndWritableBasePath);*/
             process.send(<AtomicOperationForkEvent>{finishedSettingData : true});
             return;
         }

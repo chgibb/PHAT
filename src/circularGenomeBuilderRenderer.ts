@@ -5,7 +5,6 @@ import * as masterView from "./req/renderer/circularGenomeBuilderRenderer/master
 import * as genomeView from "./req/renderer/circularGenomeBuilderRenderer/genomeView";
 import * as rightPanelView from "./req/renderer/circularGenomeBuilderRenderer/rightPanel";
 import {CircularFigure,} from "./req/renderer/circularFigure";
-import {SpawnRequestParams} from "./req/JobIPC";
 import {GetKeyEvent,KeySubEvent} from "./req/ipcEvents";
 
 require("./req/renderer/commonBehaviour");
