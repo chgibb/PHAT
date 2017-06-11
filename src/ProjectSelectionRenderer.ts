@@ -18,7 +18,7 @@ setManifestsPath(getReadableAndWritable(""));
 
 import {AtomicOperation} from "./req/operations/atomicOperations"
 import {AtomicOperationIPC} from "./req/atomicOperationsIPC";
-import {GetKeyEvent,KeySubEvent,SaveKeyEvent} from "./req/ipcEvents";
+import {KeySubEvent,SaveKeyEvent} from "./req/ipcEvents";
 
 
 
