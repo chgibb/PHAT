@@ -39,13 +39,7 @@ export function samToolsDepth(op : RunAlignment) : Promise<{}>
                                             {
                                                 if(coverageTokens[k] == contigTokens[0])
                                                 {
-                                                    fs.appendFile(
-                                                        getReadableAndWritable(`rt/AlignmentArtifacts/${op.alignData.uuid}/contigCoverage/${op.fasta.contigs[i].uuid}`),
-                                                        `${coverageTokens[k+1]} ${coverageTokens[k+2]}\n`,
-                                                        function(err : NodeJS.ErrnoException){
-                                                            if(err)
-                                                                reject(`Could not write contig coverage ${err}`);
-                                                    });
+                                                    fs.appendFileSync(getReadableAndWritable(`rt/AlignmentArtifacts/${op.alignData.uuid}/contigCoverage/${op.fasta.contigs[i].uuid}`),`${coverageTokens[k+1]} ${coverageTokens[k+2]}\n`);
                                                 }
                                             }
                                         }
