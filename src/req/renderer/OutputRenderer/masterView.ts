@@ -29,6 +29,7 @@ export class View extends viewMgr.View
         if(this.firstRender)
         {
             this.rightPanelOpen = false;
+            this.firstRender = false;
             return `
                 <button id="rightPanel" class="rightSlideOutPanel">Options</button>
                 <div id="rightSlideOutPanel" class="rightSlideOutPanel">
