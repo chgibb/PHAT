@@ -1,6 +1,10 @@
 import * as viewMgr from "./../viewMgr";
 import * as rightPanel from "./rightPanel";
 
+import Fastq from "./../../fastq"
+import {Fasta} from "./../../fasta";
+import alignData from "./../../alignData";
+
 export function addView(arr : Array<viewMgr.View>,div : string)
 {
     arr.push(new View(div));
@@ -10,6 +14,9 @@ export class View extends viewMgr.View
     public views : Array<viewMgr.View>;
     public firstRender = true;
     public rightPanelOpen = false;
+    public alignData : Array<alignData>;
+    public fastqInputs : Array<Fastq>;
+    public fastaInputs : Array<Fasta>;
 
     public displayInfo : "QCInfo" | "RefSeqInfo" | "AlignmentInfo";
     public constructor(div : string)
