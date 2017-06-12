@@ -13,8 +13,20 @@ export class RightPanel extends viewMgr.View
     {
         return `
             <div>
-                <input style="display:inline-block;" id="QCRadio" type="radio" name="selectedInfo" />
-                    <p style="display:inline-block;">FastQ QC Info</p>
+                <div style="display:inline-block;">
+                    <input style="display:inline-block;" id="QCRadio" type="radio" name="selectedInfo" />
+                        <p style="display:inline-block;">FastQ QC Info</p>
+                </div>
+
+                <div style="display:inline-block;">
+                    <input style="display:inline-block;" id="RefSeqRadio" type="radio" name="selectedInfo" />
+                        <p style="display:inline-block;">Ref Seq Info</p>
+                </div>
+
+                <div style="display:inline-block;">
+                    <input style="display:inline-block;" id="AlignRadio" type="radio" name="selectedInfo" />
+                        <p style="display:inline-block;">Alignment Info</p>
+                </div>
             </div>
         `;
     }
