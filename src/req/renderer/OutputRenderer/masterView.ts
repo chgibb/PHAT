@@ -10,10 +10,13 @@ export class View extends viewMgr.View
     public views : Array<viewMgr.View>;
     public firstRender = true;
     public rightPanelOpen = false;
+
+    public displayInfo : "QCInfo" | "RefSeqInfo" | "AlignmentInfo";
     public constructor(div : string)
     {
         super("masterView",div);
         this.views = new Array<viewMgr.View>();
+        this.displayInfo = "QCInfo";
     }
     public onMount() : void
     {

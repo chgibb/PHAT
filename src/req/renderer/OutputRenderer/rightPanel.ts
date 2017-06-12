@@ -1,4 +1,5 @@
 import * as viewMgr from "./../viewMgr";
+import * as masterView from "./masterView";
 
 export class RightPanel extends viewMgr.View
 {
@@ -31,9 +32,31 @@ export class RightPanel extends viewMgr.View
         `;
     }
 
-    public postRender() : void{}
+    public postRender() : void
+    {
+        let masterView = <masterView.View>viewMgr.getViewByName("masterView");
+        try
+        {
+            if(masterView.displayInfo == "QCInfo")
+            {
+                (<HTMLInputElement>document.getElementById("QCRadio")).checked = true;
+            }
+            if(masterView.displayInfo == "RefSeqInfo")
+            {
+                (<HTMLInputElement>document.getElementById("RefSeqRadio")).checked = true;
+            }
+            if(masterView.displayInfo == "AlignmentInfo")
+            {
+                (<HTMLInputElement>document.getElementById("AlignRadio")).checked = true;
+            }
+        }
+        catch(err){}
+    }
     public dataChanged() : void{}
-    public divClickEvents(event : JQueryEventObject) : void{}
+    public divClickEvents(event : JQueryEventObject) : void
+    {
+
+    }
 }
 
 export function addView(arr : Array<viewMgr.View>,div : string)
