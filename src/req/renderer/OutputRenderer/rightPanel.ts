@@ -11,9 +11,11 @@ export class RightPanel extends viewMgr.View
     public onUnMount() : void{}
     public renderView() : string
     {
-        console.log("rendered panel");
         return `
-            <input type="radio" /><p>FastQ QC Info</p>
+            <div>
+                <input style="display:inline-block;" id="QCRadio" type="radio" name="selectedInfo" />
+                    <p style="display:inline-block;">FastQ QC Info</p>
+            </div>
         `;
     }
 
