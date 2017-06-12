@@ -1,8 +1,35 @@
 import * as viewMgr from "./../viewMgr";
 import * as masterView from "./masterView";
 
+export interface FastQInfoSelection
+{
+    alias : boolean;
+    fullName : boolean;
+    sizeInBytes : boolean;
+    formattedSize : boolean;
+    numberOfSequences : boolean;
+    PBSQ : boolean;
+    PSQS : boolean;
+    PSGCC : boolean;
+    SDL : boolean;
+    ORS : boolean;
+}
+
+export interface FastaInfoSelection
+{
+
+}
+
+export interface AlignmentInfoSelection
+{
+
+}
+
 export class RightPanel extends viewMgr.View
 {
+    public fastQInfoSelection : FastQInfoSelection;
+    public fastaInfoSelection : FastaInfoSelection;
+    public alignmentInfoSelection : AlignmentInfoSelection;
     public constructor(name : string,div : string)
     {
         super(name,div);
@@ -29,6 +56,17 @@ export class RightPanel extends viewMgr.View
                         <p style="display:inline-block;">Alignment Info</p>
                 </div>
             </div>
+            ${(()=>{
+                let res = "";
+
+                let masterView = <masterView.View>viewMgr.getViewByName("masterView");
+                if(masterView.displayInfo == "QCInfo" && masterView.fastqInputs)
+                {
+
+                }
+
+                return res;
+            })()}
         `;
     }
 
