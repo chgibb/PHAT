@@ -371,6 +371,14 @@ function validateR1ToHPV16Alignment()
 
 	},'Alignment has correct predicted indels',0);
 
+	assert.assert(function(){
+		return L6R1HPV16Alignment.idxStatsReport[0].mappedReads == 697 ? true : false;
+	},`Alignment has correct number of mapped reads`,0);
+
+	assert.assert(function(){
+		return L6R1HPV16Alignment.idxStatsReport[0].unMappedReads == 15 ? true : false;
+	},`Alignment has correct number of unmapped reads`,0);
+
 }
 
 function validateR1ToHPV18Alignment()
@@ -419,6 +427,14 @@ function validateR1ToHPV18Alignment()
 		return L6R1HPV18Alignment.varScanSNPSummary.indelsReported == 0 ? true : false;
 
 	},'Alignment has correct predicted indels',0);
+
+	assert.assert(function(){
+		return L6R1HPV18Alignment.idxStatsReport[0].mappedReads == 0 ? true : false;
+	},`Alignment has correct number of mapped reads`,0);
+
+	assert.assert(function(){
+		return L6R1HPV18Alignment.idxStatsReport[0].unMappedReads == 0 ? true : false;
+	},`Alignment has correct number of unmapped reads`,0);
 }
 
 function renderHPV16FigureTracks()
