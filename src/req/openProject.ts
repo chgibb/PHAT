@@ -15,9 +15,10 @@ export function openProject(proj : ProjectManifest,cb : (toUnpack : number,unPac
     return new Promise((resolve,reject) => {
         dataMgr.clearData();
         rimraf.sync(getReadableAndWritable("rt"));
+        let projectTarBall = getReadableAndWritable(`projects/${proj.uuid}`);
         try
         {
-            fs.accessSync(proj.tarBall)
+            fs.accessSync(projectTarBall)
             let totalFiles = 0;
             let unPackedFiles = 0;
 
@@ -45,9 +46,9 @@ export function openProject(proj : ProjectManifest,cb : (toUnpack : number,unPac
                 extract.on("finish",() => {
                     resolve();
                 });
-                let unPackStream = fs.createReadStream(proj.tarBall).pipe(gunzip()).pipe(extract);
+                let unPackStream = fs.createReadStream(projectTarBall).pipe(gunzip()).pipe(extract);
             });
-            fs.createReadStream(proj.tarBall).pipe(gunzip()).pipe(countFiles);
+            fs.createReadStream(projectTarBall).pipe(gunzip()).pipe(countFiles);
         }
         catch(err)
         {

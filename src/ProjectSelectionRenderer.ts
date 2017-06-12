@@ -13,8 +13,7 @@ getReadable("");
 getWritable("");
 getReadableAndWritable("");
 
-import {ProjectManifest,getProjectManifests,setManifestsPath} from "./req/projectManifest";
-setManifestsPath(getReadableAndWritable(""));
+import {ProjectManifest,getProjectManifests} from "./req/projectManifest";
 
 import {AtomicOperation} from "./req/operations/atomicOperations"
 import {AtomicOperationIPC} from "./req/atomicOperationsIPC";

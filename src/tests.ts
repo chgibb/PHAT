@@ -21,8 +21,7 @@ setReadableAndWritableBasePath(basePath);
 rebuildRTDirectory();
 
 
-import {ProjectManifest,getProjectManifests,setManifestsPath} from "./req/projectManifest";
-setManifestsPath(getReadableAndWritable(""));
+import {ProjectManifest,getProjectManifests} from "./req/projectManifest";
 
 import {NewProject} from "./req/operations/NewProject";
 import {OpenProject} from "./req/operations/OpenProject";

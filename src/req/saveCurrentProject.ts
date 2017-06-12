@@ -10,7 +10,8 @@ export function saveCurrentProject(proj : ProjectManifest) : Promise<{}>
 {
     return new Promise((resolve,reject) => {
         mkdirp.sync(getReadableAndWritable("projects"));
-        const ostream = fs.createWriteStream(proj.tarBall);
+        let projectTarBall = getReadableAndWritable(`projects/${proj.uuid}`);
+        const ostream = fs.createWriteStream(projectTarBall);
         ostream.on("error",(error : string) => {reject(error);});
         ostream.on("close",() => {
             resolve();

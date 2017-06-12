@@ -19,7 +19,6 @@ export function newProject(name : string) : Promise<{}>
         let uuid : string = uuidv4();
         projects.push({
             alias : name,
-            tarBall : getReadableAndWritable(`projects/${uuid}.phat`),
             lastOpened : Date.now(),
             created : Date.now(),
             uuid : uuid

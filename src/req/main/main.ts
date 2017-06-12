@@ -32,8 +32,7 @@ import {RenderSNPTrackForContig} from "./../operations/RenderSNPTrack";
 import {CheckForUpdate} from "./../operations/CheckForUpdate";
 import {DownloadAndInstallUpdate} from "./../operations/DownloadAndInstallUpdate";
 
-import {ProjectManifest,setManifestsPath} from "./../projectManifest";
-setManifestsPath(getReadableAndWritable(""));
+import {ProjectManifest} from "./../projectManifest";
 
 import {NewProject} from "./../operations/NewProject";
 import {OpenProject} from "./../operations/OpenProject";
