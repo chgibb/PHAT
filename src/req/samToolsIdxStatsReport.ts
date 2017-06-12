@@ -1,7 +1,7 @@
 export interface SamToolsIdxStatsReport
 {
     refSeqName : string;
-    seqLength : string;
+    seqLength : number;
     mappedReads : number;
     unMappedReads : number
 }
@@ -18,7 +18,7 @@ export function samToolsIdxStatsReportParser(report : string) : Array<SamToolsId
         
         res.push(<SamToolsIdxStatsReport>{
             refSeqName : tokens[0],
-            seqLength : tokens[1],
+            seqLength : parseInt(tokens[1]),
             mappedReads : parseInt(tokens[2]),
             unMappedReads : parseInt(tokens[3])
         });
