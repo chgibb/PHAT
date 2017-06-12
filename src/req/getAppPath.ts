@@ -79,10 +79,9 @@ function getReadableDir() : string
 {
     //If we're running under Electron then execPath will be of the form:
     // /absolute/path/to/app-plat-xarch/app.exe
-    if(getElectronApp())
+    //If we're running a forked process then process.versions["electron"] will be undefined
+    if(process.versions["electron"] || !isPortable.test(getEdition()))
         return path.dirname(process.execPath)+"/resources/app";
-    
-    //tests on CI run under NodeJS directly inside of the Electron application structure
     else
         return process.cwd()+"/resources/app";
 }
@@ -107,19 +106,8 @@ export function getReadable(relativePath : string) : string
 {
     if(!readableBasePath)
     {
-        if(!getElectronApp())
-        {
-            let readable = getReadableDir();
-            if(readable)
-            {
-                setReadableBasePath(readable);
-                return readableBasePath+"/"+relativePath;
-            }
-            else
-                throw new Error("No readable base path set");
-        }
-        else
-            setReadableBasePath(app.getAppPath());
+        setReadableBasePath(getReadableDir());
+        return readableBasePath+"/"+relativePath;
     }
     return readableBasePath+"/"+relativePath;
 }
@@ -130,42 +118,13 @@ export function getWritable(relativePath : string) : string
         return getReadable(relativePath);
     if(!writableBasePath)
     {
-        if(!getElectronApp())
-        {
-            let configDir = getConfigDir();
-            if(configDir)
-            {
-                setWritableBasePath(configDir);
-                return writableBasePath+"/"+relativePath;
-            }
-            else
-                throw new Error("No readable base path set");
-        }
-        else
-            setWritableBasePath(app.getPath("userData"));
+        setWritableBasePath(getConfigDir());
+        return writableBasePath+"/"+relativePath;
     }
     return writableBasePath+"/"+relativePath;
 }
 
 export function getReadableAndWritable(relativePath : string) : string
 {
-    if(isPortable.test(getEdition()))
-        return getReadable(relativePath);
-    if(!readableAndWritableBasePath)
-    {
-        if(!getElectronApp())
-        {
-            let configDir = getConfigDir();
-            if(configDir)
-            {
-                setReadableAndWritableBasePath(configDir);
-                return readableAndWritableBasePath+"/"+relativePath;
-            }
-            else
-                throw new Error("No readable/writable base path set");
-        }
-        else
-            setReadableAndWritableBasePath(app.getPath("userData"));
-    }
-    return readableAndWritableBasePath+"/"+relativePath;
+    return getWritable(relativePath);
 }
