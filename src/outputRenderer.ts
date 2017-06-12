@@ -5,7 +5,6 @@ import {GetKeyEvent,KeySubEvent} from "./req/ipcEvents";
 import * as viewMgr from "./req/renderer/viewMgr";
 
 import * as masterView from "./req/renderer/OutputRenderer/masterView";
-import * as reportView from "./req/renderer/OutputRenderer/reportView";
 
 import * as $ from "jquery";
 (<any>window).$ = $;
@@ -15,7 +14,7 @@ $
     function()
     {
         masterView.addView(viewMgr.views,"view");
-        viewMgr.changeView("masterReportView");
+        viewMgr.changeView("masterView");
 
 
         viewMgr.render();
@@ -25,8 +24,8 @@ $
             {
                 if(arg.action === "getKey" || arg.action === "keyChange")
                 {
-                    if(arg.key == "fastqInputs" && arg.val !== undefined)
-                        (<reportView.ReportView>viewMgr.getViewByName("report",(<masterView.MasterView>viewMgr.getViewByName("masterReportView")).views)).fastqInputs = arg.val;
+                    //if(arg.key == "fastqInputs" && arg.val !== undefined)
+                     //   (<reportView.ReportView>viewMgr.getViewByName("report",(<masterView.MasterView>viewMgr.getViewByName("masterReportView")).views)).fastqInputs = arg.val;
                 }
                 viewMgr.render();
             }
