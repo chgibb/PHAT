@@ -14,6 +14,7 @@ import {samToolsSort} from "./RunAlignment/samToolsSort";
 import {samToolsView} from "./RunAlignment/samToolsView";
 import {samToolsFaidx} from "./indexFasta/samToolsFaidx";
 import {samToolsMPileup} from "./RunAlignment/samToolsMPileup";
+import {samToolsIdxStats} from "./RunAlignment/samToolsIdxStats";
 
 import {varScanMPileup2SNP} from "./RunAlignment/varScanMPileup2SNP"
 
@@ -36,11 +37,13 @@ export class RunAlignment extends atomic.AtomicOperation
     public samToolsViewJob : Job;
     public samToolsDepthJob : Job;
     public samToolsMPileupJob : Job;
+    public samToolsIdxStatsJob : Job;
     public faiJob : Job;
     public varScanMPileup2SNPJob : Job;
 
     public samToolsCoverageFileStream : fs.WriteStream;
     public samToolsMPileupStream : fs.WriteStream;
+    public samToolsIdxStatsStream : fs.WriteStream;
     public varScanMPileup2SNPStdOutStream : fs.WriteStream;
 
     public bowtieFlags : atomic.CompletionFlags;
@@ -49,6 +52,7 @@ export class RunAlignment extends atomic.AtomicOperation
     public samToolsViewFlags : atomic.CompletionFlags;
     public samToolsDepthFlags : atomic.CompletionFlags;
     public samToolsMPileupFlags : atomic.CompletionFlags;
+    public samToolsIdxStatsFlags : atomic.CompletionFlags;
     public varScanMPileup2SNPFlags : atomic.CompletionFlags;
     constructor()
     {
@@ -60,6 +64,7 @@ export class RunAlignment extends atomic.AtomicOperation
         this.samToolsViewFlags = new atomic.CompletionFlags();
         this.samToolsDepthFlags = new atomic.CompletionFlags();
         this.samToolsMPileupFlags = new atomic.CompletionFlags();
+        this.samToolsIdxStatsFlags = new atomic.CompletionFlags();
         this.varScanMPileup2SNPFlags = new atomic.CompletionFlags();
 
         this.samToolsExe = getReadable('samtools');
@@ -128,9 +133,16 @@ export class RunAlignment extends atomic.AtomicOperation
 
                                         self.setSuccess(self.varScanMPileup2SNPFlags);
 
-                                        self.setSuccess(self.flags);
-                                        self.update();
+                                        samToolsIdxStats(self).then((result) => {
 
+                                            self.setSuccess(self.samToolsIdxStatsFlags);
+
+                                            self.setSuccess(self.flags);
+                                            self.update();
+
+                                        }).catch((err) => {
+                                            self.abortOperationWithMessage(err);
+                                        });
                                     }).catch((err) => {
                                         self.abortOperationWithMessage(err);
                                     });

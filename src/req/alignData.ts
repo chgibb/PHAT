@@ -5,6 +5,7 @@ import Fastq from "./fastq";
 import {Fasta} from "./fasta";
 import {Bowtie2Report} from "./bowTie2AlignmentReportParser";
 import {varScanMPileup2SNPReport} from "./varScanMPileup2SNPReportParser";
+import {SamToolsIdxStatsReport} from "./samToolsIdxStatsReport";
 export default class alignData
 {
     public uuid : string;
@@ -19,6 +20,7 @@ export default class alignData
     public summaryText : string;
     public varScanSNPSummary : varScanMPileup2SNPReport;
     public varScanSNPReport : string;
+    public idxStatsReport : Array<SamToolsIdxStatsReport>; 
     public constructor()
     {
         this.fastqs = new Array();
