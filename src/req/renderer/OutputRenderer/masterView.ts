@@ -17,7 +17,7 @@ export class View extends viewMgr.View
     }
     public onMount() : void
     {
-        rightPanel.addView(this.views,"rightSlideOutPanel");
+        rightPanel.addView(this.views,"rightSlideOutPanelView");
         for(let i = 0; i != this.views.length; ++i)
         {
             this.views[i].onMount();

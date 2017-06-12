@@ -69,5 +69,6 @@ $
                 replyChannel : "output"
             }
         );
+        viewMgr.render();
     }
 );

@@ -11,6 +11,7 @@ export class RightPanel extends viewMgr.View
     public onUnMount() : void{}
     public renderView() : string
     {
+        console.log("rendered panel");
         return `
             <input type="radio" /><p>FastQ QC Info</p>
         `;
