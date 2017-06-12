@@ -29,7 +29,7 @@ export function samToolsIdxStats(op : RunAlignment) : Promise<{}>
                                 op.alignData.idxStatsReport = samToolsIdxStatsReportParser(
                                     <any>fs.readFileSync(
                                         getReadableAndWritable(`rt/AlignmentArtifacts/${op.alignData.uuid}/idxstats`)
-                                    )
+                                    ).toString()
                                 );
                                 resolve();
                             },500
