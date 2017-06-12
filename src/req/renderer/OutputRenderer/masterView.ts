@@ -1,4 +1,5 @@
 import * as viewMgr from "./../viewMgr";
+import * as rightPanel from "./rightPanel";
 
 export function addView(arr : Array<viewMgr.View>,div : string)
 {
@@ -16,7 +17,11 @@ export class View extends viewMgr.View
     }
     public onMount() : void
     {
-
+        rightPanel.addView(this.views,"rightSlideOutPanel");
+        for(let i = 0; i != this.views.length; ++i)
+        {
+            this.views[i].onMount();
+        }
     }
     public onUnMount() : void{}
     public renderView() : string
@@ -26,7 +31,7 @@ export class View extends viewMgr.View
             this.rightPanelOpen = false;
             return `
                 <button id="rightPanel" class="rightSlideOutPanel">Options</button>
-                <div id="rightSlideOutPanel class="rightSlideOutPanel">
+                <div id="rightSlideOutPanel" class="rightSlideOutPanel">
                     <div id="rightSlideOutPanelView">
                     </div>
                 <div id="reportView">
@@ -53,6 +58,32 @@ export class View extends viewMgr.View
 
     public divClickEvents(event : JQueryEventObject) : void
     {
-
+        let self = this;
+        console.log(event.target.id);
+        if(event.target.id == "rightPanel")
+        {
+            $("#rightSlideOutPanel").animate
+            (
+                {
+                    "margin-right" : 
+                    (
+                        function()
+                        {
+                            if(!self.rightPanelOpen)
+                            {
+                                self.rightPanelOpen = true;
+                                return "+=50%";
+                            }
+                            if(self.rightPanelOpen)
+                            {
+                                self.rightPanelOpen = false;
+                                return "-=50%";
+                            }
+                            return "";
+                        }
+                    )()
+                }
+            );
+        }
     }
 }
