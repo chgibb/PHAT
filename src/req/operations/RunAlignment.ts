@@ -14,6 +14,7 @@ import {samToolsSort} from "./RunAlignment/samToolsSort";
 import {samToolsView} from "./RunAlignment/samToolsView";
 import {samToolsFaidx} from "./indexFasta/samToolsFaidx";
 import {samToolsMPileup} from "./RunAlignment/samToolsMPileup";
+import {samToolsIdxStats} from "./RunAlignment/samToolsIdxStats";
 
 import {varScanMPileup2SNP} from "./RunAlignment/varScanMPileup2SNP"
 
@@ -132,9 +133,16 @@ export class RunAlignment extends atomic.AtomicOperation
 
                                         self.setSuccess(self.varScanMPileup2SNPFlags);
 
-                                        self.setSuccess(self.flags);
-                                        self.update();
+                                        samToolsIdxStats(self).then((result) => {
 
+                                            self.setSuccess(self.samToolsIdxStatsFlags);
+
+                                            self.setSuccess(self.flags);
+                                            self.update();
+
+                                        }).catch((err) => {
+                                            self.abortOperationWithMessage(err);
+                                        });
                                     }).catch((err) => {
                                         self.abortOperationWithMessage(err);
                                     });
