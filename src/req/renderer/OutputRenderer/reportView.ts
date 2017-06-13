@@ -2,6 +2,8 @@ import * as viewMgr from "./../viewMgr";
 import * as masterView from "./masterView";
 import * as rightPanel from "./rightPanel";
 
+import {getQCSummaryByNameOfReportByIndex} from "./../../QCData"
+
 export function addView(arr : Array<viewMgr.View>,div : string)
 {
     arr.push(new View(div));
@@ -38,6 +40,39 @@ export class View extends viewMgr.View
                                 ${rightPanel.fastQInfoSelection.ORS != false ? "<th>Over Represented Sequences</th>" : ""}
                             </tr>
 
+                    ${(()=>{
+                            let res = "";
+                            for(let i = 0; i != masterView.fastqInputs.length; ++i)
+                            {
+                                if(masterView.fastqInputs[i].checked)
+                                {
+                                    res += "<tr>";
+                                    if(rightPanel.alignmentInfoSelection.alias)
+                                        res += `<td>${masterView.fastqInputs[i].alias}</td>`;
+                                    if(rightPanel.alignmentInfoSelection.fullName)
+                                        res += `<td>${masterView.fastqInputs[i].absPath}</td>`;
+                                    if(rightPanel.alignmentInfoSelection.sizeInBytes)
+                                        res += `<td>${masterView.fastqInputs[i].size}</td>`;
+                                    if(rightPanel.alignmentInfoSelection.formattedSize)
+                                        res += `<td>${masterView.fastqInputs[i].sizeString}</td>`;
+                                    if(rightPanel.alignmentInfoSelection.numberOfSequences)
+                                        res += `<td>${masterView.fastqInputs[i].sequences}</td>`;
+                                    if(rightPanel.alignmentInfoSelection.PBSQ)
+                                        res += `<td>${getQCSummaryByNameOfReportByIndex(masterView.fastqInputs,i,"Per base sequence quality")}</td>`;
+                                    if(rightPanel.alignmentInfoSelection.PSQS)
+                                        res += `<td>${getQCSummaryByNameOfReportByIndex(masterView.fastqInputs,i,"Per sequence quality scores")}</td>`;
+                                    if(rightPanel.alignmentInfoSelection.PSGCC)
+                                        res += `<td>${getQCSummaryByNameOfReportByIndex(masterView.fastqInputs,i,"Per sequence GC content")}</td>`;
+                                    if(rightPanel.alignmentInfoSelection.SDL)
+                                        res += `<td>${getQCSummaryByNameOfReportByIndex(masterView.fastqInputs,i,"Sequence Duplication Levels")}</td>`;
+                                    if(rightPanel.alignmentInfoSelection.ORS)
+                                        res += `<td>${getQCSummaryByNameOfReportByIndex(masterView.fastqInputs,i,"Overrepresented sequences")}</td>`;
+                                    res += "</tr>";
+                                }
+                            }
+                            return res;
+                        })()}
+
                         </table>
                     `;
                 }
@@ -62,6 +97,8 @@ export class View extends viewMgr.View
                                 ${rightPanel.alignmentInfoSelection.dateRan != false ? "<th>Date Ran</th>" : ""}
                                 ${rightPanel.alignmentInfoSelection.SNPPositions != false ? "<th>SNP Positions</th>" : ""}
                             </tr>
+
+                        
 
                         </table>
                     `;
