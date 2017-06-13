@@ -41,31 +41,31 @@ export class View extends viewMgr.View
                             </tr>
 
                     ${(()=>{
-                            let res = "";
+                            
                             for(let i = 0; i != masterView.fastqInputs.length; ++i)
                             {
                                 if(masterView.fastqInputs[i].checked)
                                 {
                                     res += "<tr>";
-                                    if(rightPanel.alignmentInfoSelection.alias)
+                                    if(rightPanel.fastQInfoSelection.alias)
                                         res += `<td>${masterView.fastqInputs[i].alias}</td>`;
-                                    if(rightPanel.alignmentInfoSelection.fullName)
+                                    if(rightPanel.fastQInfoSelection.fullName)
                                         res += `<td>${masterView.fastqInputs[i].absPath}</td>`;
-                                    if(rightPanel.alignmentInfoSelection.sizeInBytes)
+                                    if(rightPanel.fastQInfoSelection.sizeInBytes)
                                         res += `<td>${masterView.fastqInputs[i].size}</td>`;
-                                    if(rightPanel.alignmentInfoSelection.formattedSize)
+                                    if(rightPanel.fastQInfoSelection.formattedSize)
                                         res += `<td>${masterView.fastqInputs[i].sizeString}</td>`;
-                                    if(rightPanel.alignmentInfoSelection.numberOfSequences)
+                                    if(rightPanel.fastQInfoSelection.numberOfSequences)
                                         res += `<td>${masterView.fastqInputs[i].sequences}</td>`;
-                                    if(rightPanel.alignmentInfoSelection.PBSQ)
+                                    if(rightPanel.fastQInfoSelection.PBSQ)
                                         res += `<td>${getQCSummaryByNameOfReportByIndex(masterView.fastqInputs,i,"Per base sequence quality")}</td>`;
-                                    if(rightPanel.alignmentInfoSelection.PSQS)
+                                    if(rightPanel.fastQInfoSelection.PSQS)
                                         res += `<td>${getQCSummaryByNameOfReportByIndex(masterView.fastqInputs,i,"Per sequence quality scores")}</td>`;
-                                    if(rightPanel.alignmentInfoSelection.PSGCC)
+                                    if(rightPanel.fastQInfoSelection.PSGCC)
                                         res += `<td>${getQCSummaryByNameOfReportByIndex(masterView.fastqInputs,i,"Per sequence GC content")}</td>`;
-                                    if(rightPanel.alignmentInfoSelection.SDL)
+                                    if(rightPanel.fastQInfoSelection.SDL)
                                         res += `<td>${getQCSummaryByNameOfReportByIndex(masterView.fastqInputs,i,"Sequence Duplication Levels")}</td>`;
-                                    if(rightPanel.alignmentInfoSelection.ORS)
+                                    if(rightPanel.fastQInfoSelection.ORS)
                                         res += `<td>${getQCSummaryByNameOfReportByIndex(masterView.fastqInputs,i,"Overrepresented sequences")}</td>`;
                                     res += "</tr>";
                                 }
