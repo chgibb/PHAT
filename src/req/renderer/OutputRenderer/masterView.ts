@@ -27,52 +27,8 @@ export class View extends viewMgr.View
     }
     public onMount() : void
     {
-        rightPanel.addView(this.views,"rightSlideOutPanelView");
-        for(let i = 0; i != this.views.length; ++i)
-        {
-            this.views[i].onMount();
-        }
-    }
-    public onUnMount() : void{}
-    public renderView() : string
-    {
-        if(this.firstRender)
-        {
-            this.rightPanelOpen = false;
-            this.firstRender = false;
-            return `
-                <button id="rightPanel" class="rightSlideOutPanel">Options</button>
-                <div id="rightSlideOutPanel" class="rightSlideOutPanel">
-                    <div id="rightSlideOutPanelView">
-                    </div>
-                <div id="reportView">
-                </div>
-            `;
-        }
-        for(let i = 0; i != this.views.length; ++i)
-        {
-            this.views[i].render();
-        }
-        this.postRender();
-        return undefined;
-    }
-
-    public postRender() : void
-    {
-        for(let i = 0; i != this.views.length; ++i)
-        {
-            this.views[i].postRender();
-        }
-    }
-
-    public dataChanged() : void{}
-
-    public divClickEvents(event : JQueryEventObject) : void
-    {
         let self = this;
-        console.log(event.target.id);
-        if(event.target.id == "rightPanel")
-        {
+        (<HTMLInputElement>document.getElementById("rightPanel")).onclick = function(this : HTMLElement,ev : MouseEvent){
             $("#rightSlideOutPanel").animate
             (
                 {
@@ -96,5 +52,42 @@ export class View extends viewMgr.View
                 }
             );
         }
+        rightPanel.addView(this.views,"rightSlideOutPanelView");
+        for(let i = 0; i != this.views.length; ++i)
+        {
+            this.views[i].mount();
+        }
+    }
+    public onUnMount() : void{}
+    public renderView() : string
+    {
+        if(this.firstRender)
+        {
+            this.rightPanelOpen = false;
+            this.firstRender = false;
+        }
+        for(let i = 0; i != this.views.length; ++i)
+        {
+            this.views[i].render();
+        }
+        this.postRender();
+        return undefined;
+    }
+
+    public postRender() : void
+    {
+        for(let i = 0; i != this.views.length; ++i)
+        {
+            this.views[i].postRender();
+        }
+    }
+
+    public dataChanged() : void{}
+
+    public divClickEvents(event : JQueryEventObject) : void
+    {
+        let self = this;
+        console.log(event.target.id);
+        
     }
 }
