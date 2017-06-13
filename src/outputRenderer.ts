@@ -40,16 +40,6 @@ $
                 replyChannel : "output"
             }
         );
-        ipc.send(
-            "keySub",
-            <KeySubEvent>{
-                action : "keySub",
-                channel : "QC",
-                key : "QCData",
-                replyChannel : "output"
-            }
-        );
-
 
         ipc.send(
             "getKey",
@@ -60,15 +50,7 @@ $
                 replyChannel : "output"
             }
         );
-        ipc.send(
-            "getKey",
-            <KeySubEvent>{
-                action : "keySub",
-                channel : "QC",
-                key : "QCData",
-                replyChannel : "output"
-            }
-        );
+
         viewMgr.render();
     }
 );
