@@ -26,6 +26,20 @@ $
                 {
                     //if(arg.key == "fastqInputs" && arg.val !== undefined)
                      //   (<reportView.ReportView>viewMgr.getViewByName("report",(<masterView.MasterView>viewMgr.getViewByName("masterReportView")).views)).fastqInputs = arg.val;
+                
+                     let masterView = <masterView.View>viewMgr.getViewByName("masterView");
+                     if(arg.key == "fastqInputs" && arg.val !== undefined)
+                     {
+                         masterView.fastqInputs = arg.val;
+                     }
+                     if(arg.key == "fastaInputs" && arg.val !== undefined)
+                     {
+                        masterView.fastaInputs = arg.val;
+                     }
+                     if(arg.key == "aligns" && arg.val !== undefined)
+                     {
+                        masterView.alignData = arg.val;
+                     }
                 }
                 viewMgr.render();
             }
