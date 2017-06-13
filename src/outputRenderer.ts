@@ -71,6 +71,26 @@ $
             }
         );
 
+        ipc.send(
+            "getKey",
+            <GetKeyEvent>{
+                action : "getKey",
+                channel : "align",
+                key : "aligns",
+                replyChannel : "output"
+            }
+        );
+
+        ipc.send(
+            "keySub",
+            <KeySubEvent>{
+                action : "keySub",
+                channel : "align",
+                key : "aligns",
+                replyChannel : "output"
+            }
+        );
+
         viewMgr.render();
     }
 );
