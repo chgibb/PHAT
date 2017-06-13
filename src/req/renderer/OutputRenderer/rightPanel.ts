@@ -72,7 +72,7 @@ export class AlignmentInfoSelection
     }
 }
 
-export class RightPanel extends viewMgr.View
+export class View extends viewMgr.View
 {
     public fastQInfoSelection : FastQInfoSelection;
     public refSeqInfoSelection : FastaInfoSelection;
@@ -197,15 +197,47 @@ export class RightPanel extends viewMgr.View
         {
             if(masterView.displayInfo == "QCInfo")
             {
+                //restore tab radios
                 (<HTMLInputElement>document.getElementById("QCInfo")).checked = true;
+                //restore individual options checkboxs
+                for(let i in this.fastQInfoSelection)
+                {
+                    try
+                    {
+                        (<HTMLInputElement>document.getElementById(i)).checked = this.fastQInfoSelection[i];
+                    }
+                    catch(err){}
+                }
             }
             if(masterView.displayInfo == "RefSeqInfo")
             {
                 (<HTMLInputElement>document.getElementById("RefSeqInfo")).checked = true;
+                for(let i in this.refSeqInfoSelection)
+                {
+                    if(this.refSeqInfoSelection.hasOwnProperty(i))
+                    {
+                        try
+                        {
+                            (<HTMLInputElement>document.getElementById(i)).checked = this.refSeqInfoSelection[i];
+                        }
+                        catch(err){}
+                    }
+                }
             }
             if(masterView.displayInfo == "AlignmentInfo")
             {
                 (<HTMLInputElement>document.getElementById("AlignmentInfo")).checked = true;
+                for(let i in this.alignmentInfoSelection)
+                {
+                    if(this.alignmentInfoSelection.hasOwnProperty(i))
+                    {
+                        try
+                        {
+                            (<HTMLInputElement>document.getElementById(i)).checked = this.alignmentInfoSelection[i];
+                        }
+                        catch(err){}
+                    }
+                }
             }
         }
         catch(err){}
@@ -213,7 +245,6 @@ export class RightPanel extends viewMgr.View
     public dataChanged() : void{}
     public divClickEvents(event : JQueryEventObject) : void
     {
-        console.log(event.target.id);
         let masterView = <masterView.View>viewMgr.getViewByName("masterView");
         if(event.target.id == "QCInfo" || event.target.id == "RefSeqInfo" || event.target.id == "AlignmentInfo")
         {
@@ -221,32 +252,35 @@ export class RightPanel extends viewMgr.View
             viewMgr.render();
             return;
         }
-        try
+        if(event.target.id)
         {
-            if(event.target.id)
+            let checked = (
+                <HTMLInputElement>document.getElementById(event.target.id)
+            ).checked;
+            if(masterView.displayInfo == "QCInfo")
             {
-                if(masterView.displayInfo == "QCInfo")
-                {
-                    this.fastQInfoSelection[event.target.id] = true;
-                    return;
-                }
-                else if(masterView.displayInfo == "RefSeqInfo")
-                {
-                    this.refSeqInfoSelection[event.target.id] = true;
-                    return;
-                }
-                else if(masterView.displayInfo == "AlignmentInfo")
-                {
-                    this.alignmentInfoSelection[event.target.id] = true;
-                    return;
-                }
+                this.fastQInfoSelection[event.target.id] = checked;
+                viewMgr.render();
+                return;
+            }
+            else if(masterView.displayInfo == "RefSeqInfo")
+            {
+                this.refSeqInfoSelection[event.target.id] = checked;
+                viewMgr.render();
+                return;
+            }
+            else if(masterView.displayInfo == "AlignmentInfo")
+            {
+                    
+                this.alignmentInfoSelection[event.target.id] = checked;
+                viewMgr.render();
+                return;
             }
         }
-        catch(err){}
     }
 }
 
 export function addView(arr : Array<viewMgr.View>,div : string)
 {
-    arr.push(new RightPanel("rightPanel",div));
+    arr.push(new View("rightPanel",div));
 }

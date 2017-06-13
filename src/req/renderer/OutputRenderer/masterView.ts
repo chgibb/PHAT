@@ -1,5 +1,6 @@
 import * as viewMgr from "./../viewMgr";
 import * as rightPanel from "./rightPanel";
+import * as reportView from "./reportView";
 
 import Fastq from "./../../fastq"
 import {Fasta} from "./../../fasta";
@@ -53,6 +54,7 @@ export class View extends viewMgr.View
             );
         }
         rightPanel.addView(this.views,"rightSlideOutPanelView");
+        reportView.addView(this.views,"reportView");
         for(let i = 0; i != this.views.length; ++i)
         {
             this.views[i].mount();
