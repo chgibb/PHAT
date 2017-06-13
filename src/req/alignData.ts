@@ -10,6 +10,8 @@ export default class alignData
 {
     public uuid : string;
     public fastqs : Array<Fastq>;
+    public size : number;
+    public sizeString : string;
     public dateStampString : string;
     public dateStamp : string;
     public alias : string;

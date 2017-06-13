@@ -1,80 +1,38 @@
 import * as viewMgr from "./../viewMgr";
-import {DataModelMgr} from "./../model";
+import * as rightPanel from "./rightPanel";
 import * as reportView from "./reportView";
 
-import XLSExportDialog from "./XLSExportDialog";
-import CSVExportDialog from "./CSVExportDialog";
-export class MasterView extends viewMgr.View
+import Fastq from "./../../fastq"
+import {Fasta} from "./../../fasta";
+import alignData from "./../../alignData";
+
+export function addView(arr : Array<viewMgr.View>,div : string)
+{
+    arr.push(new View(div));
+}
+export class View extends viewMgr.View
 {
     public views : Array<viewMgr.View>;
-    public firstRender : boolean;
-    public rightPanelOpen : boolean;
-    public constructor(div : string,model? : DataModelMgr)
+    public firstRender = true;
+    public rightPanelOpen = false;
+    public alignData : Array<alignData>;
+    public fastqInputs : Array<Fastq>;
+    public fastaInputs : Array<Fasta>;
+
+    public displayInfo : "QCInfo" | "RefSeqInfo" | "AlignmentInfo";
+    public constructor(div : string)
     {
-        super("masterReportView",div,model);
+        super("masterView",div);
         this.views = new Array<viewMgr.View>();
-        this.firstRender = true;
-        this.rightPanelOpen = false;
+        this.displayInfo = "QCInfo";
+        this.fastqInputs = new Array<Fastq>();
+        this.fastaInputs = new Array<Fasta>();
+        this.alignData = new Array<alignData>();
     }
-    onMount()
-    { 
-        reportView.addView(this.views,"report");
-        for(let i = 0; i != this.views.length; ++i)
-        {
-            this.views[i].onMount();
-        }
-    }
-    onUnMount(){}
-    renderView()
+    public onMount() : void
     {
-        if(this.firstRender)
-        {
-            this.firstRender = false;
-            return `
-                <button id="optionsButton" class="optionsButton">Options</button>
-                        
-                <div id="rightSlideOutPanel" class="rightSlideOutPanel">
-                    <input type="checkbox" id="alias">Alias</input>
-                    <input type="checkbox" id="fullName">Full Path</input>
-                    <input type="checkbox" id="sizeInBytes">Size In Bytes</input>
-                    <br />
-                    <input type="checkbox" id="formattedSize">Formatted Size</input>
-                    <input type="checkbox" id="numberOfSequences">Number of Sequences</input>
-                    <br />
-                    <input type="checkbox" id="PBSQ">Per Base Sequence Quality</input>
-                    <br />
-                    <input type="checkbox" id="PSQS">Per Sequence Quality Score</input>
-                    <br />
-                    <input type="checkbox" id="PSGCC">Per Sequence GC Content</input>
-                    <br />
-                    <input type="checkbox" id="SDL">Sequence Duplication Levels</input>
-                    <br />
-                    <input type="checkbox" id="ORS">Over Represented Sequences</input>
-                    <br />
-                    <p>Export To:</p>
-			        <input type="radio" name="exportOptions" id="exportToXLS">Excel</input>
-			        <input type="radio" name="exportOptions" id="exportToCSV">CSV</input>
-			        <button id="exportData">Export</button>
-                </div>
-                <div id="report">
-                </div>
-            `;
-        }
-        for(let i = 0; i != this.views.length; ++i)
-        {
-            this.views[i].render();
-        }
-        return undefined;
-    }
-    postRender(){}
-    dataChanged(){}
-    divClickEvents(event : JQueryEventObject)
-    {
-        if(!event || !event.target || !event.target.id)
-            return;
-        if(event.target.id == "optionsButton")
-        {
-            let me = this;
+        let self = this;
+        (<HTMLInputElement>document.getElementById("rightPanel")).onclick = function(this : HTMLElement,ev : MouseEvent){
             $("#rightSlideOutPanel").animate
             (
                 {
@@ -82,35 +40,59 @@ export class MasterView extends viewMgr.View
                     (
                         function()
                         {
-                            me.rightPanelOpen = !me.rightPanelOpen;
-                            return (me.rightPanelOpen == true ? "+" : "-")+"=50%";
+                            if(!self.rightPanelOpen)
+                            {
+                                self.rightPanelOpen = true;
+                                return "+=50%";
+                            }
+                            if(self.rightPanelOpen)
+                            {
+                                self.rightPanelOpen = false;
+                                return "-=50%";
+                            }
+                            return "";
                         }
                     )()
                 }
             );
         }
-        if(document.getElementById(event.target.id) && 
-            (<HTMLInputElement>document.getElementById(event.target.id)).type == "checkbox")
+        rightPanel.addView(this.views,"rightSlideOutPanelView");
+        reportView.addView(this.views,"reportView");
+        for(let i = 0; i != this.views.length; ++i)
         {
-            (<any>viewMgr.getViewByName("report",this.views))[event.target.id] = $("#"+event.target.id).is(":checked");
-            viewMgr.render();
-        }
-        if(event.target.id == "exportData")
-        {
-            if($("#exportToXLS").is(":checked"))
-            {
-                XLSExportDialog(viewMgr.getViewByName("report",this.views).renderView());
-            }
-
-            if($("#exportToCSV").is(":checked"))
-            {
-                CSVExportDialog(viewMgr.getViewByName("report", this.views).renderView());
-            }
+            this.views[i].mount();
         }
     }
-}
+    public onUnMount() : void{}
+    public renderView() : string
+    {
+        if(this.firstRender)
+        {
+            this.rightPanelOpen = false;
+            this.firstRender = false;
+        }
+        for(let i = 0; i != this.views.length; ++i)
+        {
+            this.views[i].render();
+        }
+        this.postRender();
+        return undefined;
+    }
 
-export function addView(arr : Array<viewMgr.View>,div : string,model? : DataModelMgr) : void
-{
-    arr.push(new MasterView(div,model));
+    public postRender() : void
+    {
+        for(let i = 0; i != this.views.length; ++i)
+        {
+            this.views[i].postRender();
+        }
+    }
+
+    public dataChanged() : void{}
+
+    public divClickEvents(event : JQueryEventObject) : void
+    {
+        let self = this;
+        console.log(event.target.id);
+        
+    }
 }
