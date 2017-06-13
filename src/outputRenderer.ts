@@ -51,6 +51,26 @@ $
             }
         );
 
+        ipc.send(
+            "keySub",
+            <KeySubEvent>{
+                action : "keySub",
+                channel : "input",
+                key : "fastaInputs",
+                replyChannel : "output"
+            }
+        );
+
+        ipc.send(
+            "getKey",
+            <KeySubEvent>{
+                action : "keySub",
+                channel : "input",
+                key : "fastaInputs",
+                replyChannel : "output"
+            }
+        );
+
         viewMgr.render();
     }
 );
