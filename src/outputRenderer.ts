@@ -5,7 +5,6 @@ import {GetKeyEvent,KeySubEvent} from "./req/ipcEvents";
 import * as viewMgr from "./req/renderer/viewMgr";
 
 import * as masterView from "./req/renderer/OutputRenderer/masterView";
-import * as reportView from "./req/renderer/OutputRenderer/reportView";
 
 import * as $ from "jquery";
 (<any>window).$ = $;
@@ -14,8 +13,8 @@ $
 (
     function()
     {
-        masterView.addView(viewMgr.views,"view");
-        viewMgr.changeView("masterReportView");
+        masterView.addView(viewMgr.views,"");
+        viewMgr.changeView("masterView");
 
 
         viewMgr.render();
@@ -25,8 +24,22 @@ $
             {
                 if(arg.action === "getKey" || arg.action === "keyChange")
                 {
-                    if(arg.key == "fastqInputs" && arg.val !== undefined)
-                        (<reportView.ReportView>viewMgr.getViewByName("report",(<masterView.MasterView>viewMgr.getViewByName("masterReportView")).views)).fastqInputs = arg.val;
+                    //if(arg.key == "fastqInputs" && arg.val !== undefined)
+                     //   (<reportView.ReportView>viewMgr.getViewByName("report",(<masterView.MasterView>viewMgr.getViewByName("masterReportView")).views)).fastqInputs = arg.val;
+                
+                     let masterView = <masterView.View>viewMgr.getViewByName("masterView");
+                     if(arg.key == "fastqInputs" && arg.val !== undefined)
+                     {
+                         masterView.fastqInputs = arg.val;
+                     }
+                     if(arg.key == "fastaInputs" && arg.val !== undefined)
+                     {
+                        masterView.fastaInputs = arg.val;
+                     }
+                     if(arg.key == "aligns" && arg.val !== undefined)
+                     {
+                        masterView.alignData = arg.val;
+                     }
                 }
                 viewMgr.render();
             }
@@ -41,16 +54,6 @@ $
                 replyChannel : "output"
             }
         );
-        ipc.send(
-            "keySub",
-            <KeySubEvent>{
-                action : "keySub",
-                channel : "QC",
-                key : "QCData",
-                replyChannel : "output"
-            }
-        );
-
 
         ipc.send(
             "getKey",
@@ -61,14 +64,47 @@ $
                 replyChannel : "output"
             }
         );
+
+        ipc.send(
+            "keySub",
+            <KeySubEvent>{
+                action : "keySub",
+                channel : "input",
+                key : "fastaInputs",
+                replyChannel : "output"
+            }
+        );
+
         ipc.send(
             "getKey",
             <KeySubEvent>{
                 action : "keySub",
-                channel : "QC",
-                key : "QCData",
+                channel : "input",
+                key : "fastaInputs",
                 replyChannel : "output"
             }
         );
+
+        ipc.send(
+            "getKey",
+            <GetKeyEvent>{
+                action : "getKey",
+                channel : "align",
+                key : "aligns",
+                replyChannel : "output"
+            }
+        );
+
+        ipc.send(
+            "keySub",
+            <KeySubEvent>{
+                action : "keySub",
+                channel : "align",
+                key : "aligns",
+                replyChannel : "output"
+            }
+        );
+
+        viewMgr.render();
     }
 );

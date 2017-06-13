@@ -1,6 +1,8 @@
 import * as fs from "fs";
 
 import * as atomic from "./atomicOperations";
+import {getFolderSize} from "./../getFolderSize";
+import formatByteString from "./../renderer/formatByteString";
 import {Fasta,getFaiPath} from "./../fasta";
 import Fastq from "./../fastq";
 import alignData from "./../alignData"
@@ -137,9 +139,12 @@ export class RunAlignment extends atomic.AtomicOperation
 
                                             self.setSuccess(self.samToolsIdxStatsFlags);
 
+                                            self.alignData.size = getFolderSize(getReadableAndWritable(`rt/AlignmentArtifacts/${self.alignData.uuid}`));
+                                            self.alignData.sizeString = formatByteString(self.alignData.size);
+
                                             self.setSuccess(self.flags);
                                             self.update();
-
+                                            
                                         }).catch((err) => {
                                             self.abortOperationWithMessage(err);
                                         });

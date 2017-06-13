@@ -9,11 +9,16 @@
         <link rel="stylesheet" type="text/css" href="styles/Output.css">
   	</head>
 	<body>
+		<button id="rightPanel" class="rightSlideOutPanel">Options</button>
+        <div id="rightSlideOutPanel" class="rightSlideOutPanel">
+        	<div id="rightSlideOutPanelView">
+            </div>
+        </div>
+		<div id="reportView">
+        </div>
 		<script>
 			require("./Output");
 		</script>
-		<div id="view">
-		</div>
 		<script>
 			console.log("Start up took "+(performance.now()-startUp+"ms"));
 		</script>
