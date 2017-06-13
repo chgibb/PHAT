@@ -41,36 +41,36 @@ export class View extends viewMgr.View
                             </tr>
 
                     ${(()=>{
-                            
-                            for(let i = 0; i != masterView.fastqInputs.length; ++i)
+                        let res = "";
+                        for(let i = 0; i != masterView.fastqInputs.length; ++i)
+                        {
+                            if(masterView.fastqInputs[i].checked)
                             {
-                                if(masterView.fastqInputs[i].checked)
-                                {
-                                    res += "<tr>";
-                                    if(rightPanel.fastQInfoSelection.alias)
-                                        res += `<td>${masterView.fastqInputs[i].alias}</td>`;
-                                    if(rightPanel.fastQInfoSelection.fullName)
-                                        res += `<td>${masterView.fastqInputs[i].absPath}</td>`;
-                                    if(rightPanel.fastQInfoSelection.sizeInBytes)
-                                        res += `<td>${masterView.fastqInputs[i].size}</td>`;
-                                    if(rightPanel.fastQInfoSelection.formattedSize)
-                                        res += `<td>${masterView.fastqInputs[i].sizeString}</td>`;
-                                    if(rightPanel.fastQInfoSelection.numberOfSequences)
-                                        res += `<td>${masterView.fastqInputs[i].sequences}</td>`;
-                                    if(rightPanel.fastQInfoSelection.PBSQ)
-                                        res += `<td>${getQCSummaryByNameOfReportByIndex(masterView.fastqInputs,i,"Per base sequence quality")}</td>`;
-                                    if(rightPanel.fastQInfoSelection.PSQS)
-                                        res += `<td>${getQCSummaryByNameOfReportByIndex(masterView.fastqInputs,i,"Per sequence quality scores")}</td>`;
-                                    if(rightPanel.fastQInfoSelection.PSGCC)
-                                        res += `<td>${getQCSummaryByNameOfReportByIndex(masterView.fastqInputs,i,"Per sequence GC content")}</td>`;
-                                    if(rightPanel.fastQInfoSelection.SDL)
-                                        res += `<td>${getQCSummaryByNameOfReportByIndex(masterView.fastqInputs,i,"Sequence Duplication Levels")}</td>`;
-                                    if(rightPanel.fastQInfoSelection.ORS)
-                                        res += `<td>${getQCSummaryByNameOfReportByIndex(masterView.fastqInputs,i,"Overrepresented sequences")}</td>`;
-                                    res += "</tr>";
-                                }
+                                res += "<tr>";
+                                if(rightPanel.fastQInfoSelection.alias)
+                                    res += `<td>${masterView.fastqInputs[i].alias}</td>`;
+                                if(rightPanel.fastQInfoSelection.fullName)
+                                    res += `<td>${masterView.fastqInputs[i].absPath}</td>`;
+                                if(rightPanel.fastQInfoSelection.sizeInBytes)
+                                    res += `<td>${masterView.fastqInputs[i].size}</td>`;
+                                if(rightPanel.fastQInfoSelection.formattedSize)
+                                    res += `<td>${masterView.fastqInputs[i].sizeString}</td>`;
+                                if(rightPanel.fastQInfoSelection.numberOfSequences)
+                                    res += `<td>${masterView.fastqInputs[i].sequences}</td>`;
+                                if(rightPanel.fastQInfoSelection.PBSQ)
+                                    res += `<td>${getQCSummaryByNameOfReportByIndex(masterView.fastqInputs,i,"Per base sequence quality")}</td>`;
+                                if(rightPanel.fastQInfoSelection.PSQS)
+                                    res += `<td>${getQCSummaryByNameOfReportByIndex(masterView.fastqInputs,i,"Per sequence quality scores")}</td>`;
+                                if(rightPanel.fastQInfoSelection.PSGCC)
+                                    res += `<td>${getQCSummaryByNameOfReportByIndex(masterView.fastqInputs,i,"Per sequence GC content")}</td>`;
+                                if(rightPanel.fastQInfoSelection.SDL)
+                                    res += `<td>${getQCSummaryByNameOfReportByIndex(masterView.fastqInputs,i,"Sequence Duplication Levels")}</td>`;
+                                if(rightPanel.fastQInfoSelection.ORS)
+                                    res += `<td>${getQCSummaryByNameOfReportByIndex(masterView.fastqInputs,i,"Overrepresented sequences")}</td>`;
+                                res += "</tr>";
                             }
-                            return res;
+                        }
+                        return res;
                         })()}
 
                         </table>
@@ -79,6 +79,7 @@ export class View extends viewMgr.View
 
                 if(masterView.displayInfo == "AlignmentInfo")
                 {
+                    let res = "";
                     res += `
                         <table style="width:100%">
                             <tr>
@@ -98,7 +99,85 @@ export class View extends viewMgr.View
                                 ${rightPanel.alignmentInfoSelection.SNPPositions != false ? "<th>SNP Positions</th>" : ""}
                             </tr>
 
-                        
+                    ${(()=>{
+                        let res = "";
+                        for(let i = 0; i != masterView.alignData.length; ++i)
+                        {
+                            let foundFastqs = 0;
+                            let foundRefSeqs = 0;
+                            for(let k = 0; k != masterView.fastqInputs.length; ++k)
+                            {
+                                if(masterView.alignData[i].fastqs[0])
+                                {
+                                    if(masterView.fastqInputs[k].uuid == masterView.alignData[i].fastqs[0].uuid)
+                                    {
+                                        foundFastqs++;
+                                    }
+                                }
+                                if(masterView.alignData[i].fastqs[1])
+                                {
+                                    if(masterView.fastqInputs[k].uuid == masterView.alignData[i].fastqs[1].uuid)
+                                    {
+                                        foundFastqs++;
+                                    }
+                                }
+                                if(foundFastqs >= 1)
+                                    break;
+                            }
+                            for(let k = 0; k != masterView.fastaInputs.length; ++k)
+                            {
+                                if(masterView.alignData[i].fasta.uuid == masterView.fastaInputs[k].uuid)
+                                    foundRefSeqs++;
+                                if(foundRefSeqs >= 1)
+                                    break;
+                            }
+                            if(foundFastqs >= 1 && foundRefSeqs >= 1)
+                            {
+                                res += "<tr>";
+                                if(rightPanel.alignmentInfoSelection.alias)
+                                    res += `<td>${masterView.alignData[i].alias}</td>`;
+
+                                if(rightPanel.alignmentInfoSelection.sizeInBytes)
+                                    res += `<td>${0}</td>`;
+
+                                if(rightPanel.alignmentInfoSelection.formattedSize)
+                                    res += `<td>${0}</td>`;
+
+                                if(rightPanel.alignmentInfoSelection.reads)
+                                    res += `<td>${masterView.alignData[i].summary.reads}</td>`;
+
+                                if(rightPanel.alignmentInfoSelection.mates)
+                                    res += `<td>${masterView.alignData[i].summary.mates}</td>`;
+
+                                if(rightPanel.alignmentInfoSelection.overallAlignmentRate)
+                                    res += `<td>${masterView.alignData[i].summary.overallAlignmentRate}</td>`;
+
+                                if(rightPanel.alignmentInfoSelection.minimumCoverage)
+                                    res += `<td>${masterView.alignData[i].varScanSNPSummary.minCoverage}</td>`;
+
+                                if(rightPanel.alignmentInfoSelection.minimumVariableFrequency)
+                                    res += `<td>${masterView.alignData[i].varScanSNPSummary.minVarFreq}</td>`;
+
+                                if(rightPanel.alignmentInfoSelection.minimumAverageQuality)
+                                    res += `<td>${masterView.alignData[i].varScanSNPSummary.minAvgQual}</td>`;
+
+                                if(rightPanel.alignmentInfoSelection.pValueThreshold)
+                                    res += `<td>${masterView.alignData[i].varScanSNPSummary.pValueThresh}</td>`;
+
+                                if(rightPanel.alignmentInfoSelection.SNPsPredicted)
+                                    res += `<td>${masterView.alignData[i].varScanSNPSummary.SNPsReported}</td>`;
+
+                                if(rightPanel.alignmentInfoSelection.indelsPredicted)
+                                    res += `<td>${masterView.alignData[i].varScanSNPSummary.indelsReported}</td>`;
+
+                                if(rightPanel.alignmentInfoSelection.dateRan)
+                                    res += `<td>${masterView.alignData[i].dateStampString}</td>`;
+
+                                
+                            }
+                        }
+                        return res;
+                    })()}
 
                         </table>
                     `;
