@@ -72,10 +72,10 @@ export function renderAlignmentReportTable() : string
                         res += `<td>${masterView.alignData[i].alias}</td>`;
 
                     if(rightPanel.alignmentInfoSelection.sizeInBytes)
-                        res += `<td>${0}</td>`;
+                        res += `<td>${masterView.alignData[i].size}</td>`;
 
                     if(rightPanel.alignmentInfoSelection.formattedSize)
-                        res += `<td>${0}</td>`;
+                        res += `<td>${masterView.alignData[i].sizeString}</td>`;
 
                     if(rightPanel.alignmentInfoSelection.reads)
                         res += `<td>${masterView.alignData[i].summary.reads}</td>`;
