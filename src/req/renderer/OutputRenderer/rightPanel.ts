@@ -13,22 +13,37 @@ export interface FastQInfoSelection
     PSGCC : boolean;
     SDL : boolean;
     ORS : boolean;
+    [index : string] : boolean;
 }
 
 export interface FastaInfoSelection
 {
-
+    [index : string] : boolean;
 }
 
 export interface AlignmentInfoSelection
 {
-
+    alias : boolean;
+    sizeInBytes : boolean;
+    formattedSize : boolean;
+    reads : boolean;
+    mates : boolean;
+    overallAlignmentRate : boolean;
+    minimumCoverage : boolean;
+    minimumVariableFrequency : boolean;
+    minimumAverageQuality : boolean;
+    pValueThreshold : boolean;
+    SNPsPredicted : boolean;
+    indelsPredicted : boolean;
+    dateRan : boolean;
+    SNPPositions : boolean;
+    [index : string] : boolean;
 }
 
 export class RightPanel extends viewMgr.View
 {
     public fastQInfoSelection : FastQInfoSelection;
-    public fastaInfoSelection : FastaInfoSelection;
+    public refSeqInfoSelection : FastaInfoSelection;
     public alignmentInfoSelection : AlignmentInfoSelection;
     public constructor(name : string,div : string)
     {
@@ -65,19 +80,73 @@ export class RightPanel extends viewMgr.View
                         <input type="checkbox" id="alias">Alias</input>
                         <input type="checkbox" id="fullName">Full Path</input>
                         <input type="checkbox" id="sizeInBytes">Size In Bytes</input>
-                        <br />
                         <input type="checkbox" id="formattedSize">Formatted Size</input>
+                        <br />
+                        
                         <input type="checkbox" id="numberOfSequences">Number of Sequences</input>
                         <br />
+
                         <input type="checkbox" id="PBSQ">Per Base Sequence Quality</input>
                         <br />
+
                         <input type="checkbox" id="PSQS">Per Sequence Quality Score</input>
                         <br />
+
                         <input type="checkbox" id="PSGCC">Per Sequence GC Content</input>
                         <br />
+
                         <input type="checkbox" id="SDL">Sequence Duplication Levels</input>
                         <br />
+
                         <input type="checkbox" id="ORS">Over Represented Sequences</input>
+                    `;
+                }
+                if(masterView.displayInfo == "RefSeqInfo")
+                {
+                    res += `
+
+                    `;
+                }
+                if(masterView.displayInfo == "AlignmentInfo")
+                {
+                    res += `
+                        <input type="checkbox" id="alias">Alias</input>
+                        <input type="checkbox" id="sizeInBytes">Size In Bytes</input>
+                        <input type="checkbox" id="formattedSize">Formatted Size</input>
+                        <br />
+
+                        <input type="checkbox" id="reads">Reads</input>
+                        <br />
+
+                        <input type="checkbox" id="mates">Mates</input>
+                        <br />
+
+                        <input type="checkbox" id="overallAlignmentRate">Overall Alignment Rate %</input>
+                        <br />
+
+                        <input type="checkbox" id="minimumCoverage">Minimum Coverage</input>
+                        <br />
+
+                        <input type="checkbox" id="minimumVariableFrequency">Minimum Variable Frequency</input>
+                        <br />
+
+                        <input type="checkbox" id="minimumAverageQuality">Minimum Average Quality</input>
+                        <br />
+
+                        <input type="checkbox" id="pValueThreshold">P-Value Threshold</input>
+                        <br />
+
+                        <input type="checkbox" id="SNPsPredicted">SNPs Predicted</input>
+                        <br />
+
+                        <input type="checkbox" id="indelsPredicted">Indels Predicted</input>
+                        <br />
+
+                        <input type="checkbox" id="dateRan">Date Ran</input>
+                        <br />
+
+                        <input type="checkbox" id="SNPPositions">SNP Positions</input>
+                        <br />
                     `;
                 }
 
@@ -115,7 +184,30 @@ export class RightPanel extends viewMgr.View
         {
             masterView.displayInfo = event.target.id;
             viewMgr.render();
+            return;
         }
+        try
+        {
+            if(event.target.id)
+            {
+                if(masterView.displayInfo == "QCInfo")
+                {
+                    this.fastQInfoSelection[event.target.id] = true;
+                    return;
+                }
+                else if(masterView.displayInfo == "RefSeqInfo")
+                {
+                    this.refSeqInfoSelection[event.target.id] = true;
+                    return;
+                }
+                else if(masterView.displayInfo == "AlignmentInfo")
+                {
+                    this.alignmentInfoSelection[event.target.id] = true;
+                    return;
+                }
+            }
+        }
+        catch(err){}
     }
 }
 
