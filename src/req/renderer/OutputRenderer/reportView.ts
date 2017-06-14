@@ -6,6 +6,7 @@ import {getQCSummaryByNameOfReportByIndex} from "./../../QCData"
 
 import {renderQCReportTable} from "./reportView/renderQCReportTable";
 import {renderAlignmentReportTable} from "./reportView/renderAlignmentReportTable";
+import {renderSNPPositionsTable} from "./reportView/renderSNPPositionsTable";
 
 export function addView(arr : Array<viewMgr.View>,div : string)
 {
@@ -26,6 +27,7 @@ export class View extends viewMgr.View
         return `
             ${renderQCReportTable()}
             ${renderAlignmentReportTable()}
+            ${renderSNPPositionsTable()}
 
         `;
     }
