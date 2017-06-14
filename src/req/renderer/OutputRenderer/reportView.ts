@@ -19,10 +19,12 @@ export function addView(arr : Array<viewMgr.View>,div : string)
 export class View extends viewMgr.View
 {
     public inspectingUUID : string;
+    public vcfRows : Array<VCF2JSONRow>;
     public constructor(div : string)
     {
         super("reportView",div);
         this.inspectingUUID = "";
+        this.vcfRows = new Array<VCF2JSONRow>();
     }
     public onMount() : void{}
     public onUnMount() : void{}
@@ -31,25 +33,27 @@ export class View extends viewMgr.View
         let masterView = <masterView.View>viewMgr.getViewByName("masterView");
         let rightPanel = <rightPanel.View>viewMgr.getViewByName("rightPanel",masterView.views);
 
-        let rows : Array<VCF2JSONRow> = new Array<VCF2JSONRow>();
+        
 
         //if we're looking at SNP position, refresh table information if the alignment being inspected has changed
         if(masterView.displayInfo == "SNPPositions")
         {
             if(this.inspectingUUID != masterView.inspectingUUID)
             {
-                rows = JSON.parse(
+                this.vcfRows = JSON.parse(
                             fs.readFileSync(getReadableAndWritable(`rt/AlignmentArtifacts/${masterView.inspectingUUID}/snps.json`)
                     ).toString()
                 );
                 this.inspectingUUID = masterView.inspectingUUID;
             }
         }
+        else
+            this.vcfRows = new Array<VCF2JSONRow>();
 
         return `
             ${renderQCReportTable()}
             ${renderAlignmentReportTable()}
-            ${renderSNPPositionsTable(rows)}
+            ${renderSNPPositionsTable(this.vcfRows)}
 
         `;
     }
