@@ -98,7 +98,7 @@ export function renderAlignmentReportTable() : string
                         res += `<td>${masterView.alignData[i].varScanSNPSummary.pValueThresh}</td>`;
 
                     if(rightPanel.alignmentInfoSelection.SNPsPredicted)
-                        res += `<td>${masterView.alignData[i].varScanSNPSummary.SNPsReported}</td>`;
+                        res += `<td class="activeHover" id="${masterView.alignData[i].uuid}">${masterView.alignData[i].varScanSNPSummary.SNPsReported}</td>`;
 
                     if(rightPanel.alignmentInfoSelection.indelsPredicted)
                         res += `<td>${masterView.alignData[i].varScanSNPSummary.indelsReported}</td>`;
