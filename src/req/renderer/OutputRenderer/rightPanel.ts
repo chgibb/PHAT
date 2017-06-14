@@ -71,6 +71,21 @@ export class AlignmentInfoSelection
     }
 }
 
+export class SNPPositionsInfoSelection
+{
+    public chrom : boolean;
+    public position : boolean;
+    public ref : boolean;
+    public var : boolean;
+    public consCovReads1Reads2FreqPValue : boolean;
+    public strandFilterR1R1R2R2pVal : boolean;
+    public samplesRef : boolean;
+    public samplesHet : boolean;
+    public samplesHom : boolean;
+    public samplesNC : boolean;
+    public consCovReads1Reads2FreqPValue2 : boolean;
+}
+
 export class View extends viewMgr.View
 {
     public fastQInfoSelection : FastQInfoSelection;
@@ -177,6 +192,44 @@ export class View extends viewMgr.View
                         <br />
 
                         <input type="checkbox" id="dateRan">Date Ran</input>
+                        <br />
+                    `;
+                }
+
+                if(masterView.displayInfo == "SNPPositions")
+                {
+                    res += `
+                        <input type="checkbox" id="chrom">Chrom</input>
+                        <br />
+
+                        <input type="checkbox" id="position">Position</input>
+                        <br />
+
+                        <input type="checkbox" id="ref">Ref</input>
+                        <br />
+
+                        <input type="checkbox" id="var">Var</input>
+                        <br />
+
+                        <input type="checkbox" id="consCovReads1Reads2FreqPValue">Cons:Cov:Reads1:Reads2:Freq:P-value</input>
+                        <br />
+
+                        <input type="checkbox" id="strandFilterR1R1R2R2pVal">StrandFilter:R1+:R1-:R2+:R2-:pval</input>
+                        <br />
+
+                        <input type="checkbox" id="samplesRef">SamplesRef</input>
+                        <br />
+
+                        <input type="checkbox" id="samplesHet">SamplesHet</input>
+                        <br />
+
+                        <input type="checkbox" id="samplesHom">SamplesHom</input>
+                        <br />
+
+                        <input type="checkbox" id="samplesNC">SamplesNC</input>
+                        <br />
+
+                        <input type="checkbox" id="consCovReads1Reads2FreqPValue2">Cons:Cov:Reads1:Reads2:Freq:P-value</input>
                         <br />
                     `;
                 }
