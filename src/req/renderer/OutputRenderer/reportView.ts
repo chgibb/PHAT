@@ -31,5 +31,20 @@ export class View extends viewMgr.View
     }
     public postRender() : void{}
     public dataChanged() : void{}
-    public divClickEvents(event : JQueryEventObject) : void{}
+    public divClickEvents(event : JQueryEventObject) : void
+    {
+        if(!event.target.id)
+            return;
+        let masterView = <masterView.View>viewMgr.getViewByName("masterView");
+        for(let i = 0; i != masterView.alignData.length; ++i)
+        {
+            if(event.target.id == masterView.alignData[i].uuid)
+            {
+                masterView.inspectingUUID = masterView.alignData[i].uuid;
+                masterView.displayInfo = "SNPPositions";
+                viewMgr.render();
+                return;
+            }
+        }
+    }
 }
