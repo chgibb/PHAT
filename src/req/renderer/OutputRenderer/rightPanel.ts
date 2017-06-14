@@ -50,7 +50,6 @@ export class AlignmentInfoSelection
     public SNPsPredicted : boolean;
     public indelsPredicted : boolean;
     public dateRan : boolean;
-    public SNPPositions : boolean;
     [index : string] : boolean;
     public constructor()
     {
@@ -72,17 +71,49 @@ export class AlignmentInfoSelection
     }
 }
 
+export class SNPPositionsInfoSelection
+{
+    public chrom : boolean;
+    public position : boolean;
+    public ref : boolean;
+    public var : boolean;
+    public consCovReads1Reads2FreqPValue : boolean;
+    public strandFilterR1R1R2R2pVal : boolean;
+    public samplesRef : boolean;
+    public samplesHet : boolean;
+    public samplesHom : boolean;
+    public samplesNC : boolean;
+    public consCovReads1Reads2FreqPValue2 : boolean;
+    [index : string] : boolean;
+    public constructor()
+    {
+        this.chrom = false;
+        this.position = false;
+        this.ref = false;
+        this.var = false;
+        this.consCovReads1Reads2FreqPValue = false;
+        this.strandFilterR1R1R2R2pVal = false;
+        this.samplesRef = false;
+        this.samplesHet = false;
+        this.samplesHom = false;
+        this.samplesNC = false;
+        this.consCovReads1Reads2FreqPValue2 = false;
+    }
+}
+
 export class View extends viewMgr.View
 {
     public fastQInfoSelection : FastQInfoSelection;
     public refSeqInfoSelection : FastaInfoSelection;
     public alignmentInfoSelection : AlignmentInfoSelection;
+    public snpPositionsInfoSelection : SNPPositionsInfoSelection;
     public constructor(name : string,div : string)
     {
         super(name,div);
         this.fastQInfoSelection = new FastQInfoSelection();
         this.refSeqInfoSelection = new FastaInfoSelection();
         this.alignmentInfoSelection = new AlignmentInfoSelection();
+        this.snpPositionsInfoSelection = new SNPPositionsInfoSelection();
     }
 
     public onMount() : void{}
@@ -179,8 +210,61 @@ export class View extends viewMgr.View
 
                         <input type="checkbox" id="dateRan">Date Ran</input>
                         <br />
+                    `;
+                }
 
-                        <input type="checkbox" id="SNPPositions">SNP Positions</input>
+                if(masterView.displayInfo == "SNPPositions")
+                {
+                    res += `
+
+
+                        ${(()=>{
+                            let inspectingAlignMarkup = "";
+                            for(let i = 0; i != masterView.alignData.length; ++i)
+                            {
+                                if(masterView.inspectingUUID == masterView.alignData[i].uuid)
+                                {
+                                    inspectingAlignMarkup += `
+                                        <h5>SNP Reporting for ${masterView.alignData[i].alias}</h5>
+                                    `;
+                                    return inspectingAlignMarkup;
+                                }
+                            }
+                            throw new Error("No alignment to inspect");
+                        })()}
+
+
+                        <input type="checkbox" id="chrom">Chrom</input>
+                        <br />
+
+                        <input type="checkbox" id="position">Position</input>
+                        <br />
+
+                        <input type="checkbox" id="ref">Ref</input>
+                        <br />
+
+                        <input type="checkbox" id="var">Var</input>
+                        <br />
+
+                        <input type="checkbox" id="consCovReads1Reads2FreqPValue">Cons:Cov:Reads1:Reads2:Freq:P-value</input>
+                        <br />
+
+                        <input type="checkbox" id="strandFilterR1R1R2R2pVal">StrandFilter:R1+:R1-:R2+:R2-:pval</input>
+                        <br />
+
+                        <input type="checkbox" id="samplesRef">SamplesRef</input>
+                        <br />
+
+                        <input type="checkbox" id="samplesHet">SamplesHet</input>
+                        <br />
+
+                        <input type="checkbox" id="samplesHom">SamplesHom</input>
+                        <br />
+
+                        <input type="checkbox" id="samplesNC">SamplesNC</input>
+                        <br />
+
+                        <input type="checkbox" id="consCovReads1Reads2FreqPValue2">Cons:Cov:Reads1:Reads2:Freq:P-value</input>
                         <br />
                     `;
                 }
@@ -193,6 +277,7 @@ export class View extends viewMgr.View
     public postRender() : void
     {
         let masterView = <masterView.View>viewMgr.getViewByName("masterView");
+        console.log("post render");
         try
         {
             if(masterView.displayInfo == "QCInfo")
@@ -239,6 +324,21 @@ export class View extends viewMgr.View
                     }
                 }
             }
+            if(masterView.displayInfo == "SNPPositions")
+            {
+                for(let i in this.snpPositionsInfoSelection)
+                {
+                    if(this.snpPositionsInfoSelection.hasOwnProperty(i))
+                    {
+                        try
+                        {
+                            (<HTMLInputElement>document.getElementById(i)).checked = this.snpPositionsInfoSelection[i];
+                            console.log("restored "+i+" to "+this.snpPositionsInfoSelection[i]);
+                        }
+                        catch(err){}
+                    }
+                }
+            }
         }
         catch(err){}
     }
@@ -273,6 +373,12 @@ export class View extends viewMgr.View
             {
                     
                 this.alignmentInfoSelection[event.target.id] = checked;
+                viewMgr.render();
+                return;
+            }
+            else if(masterView.displayInfo == "SNPPositions")
+            {
+                this.snpPositionsInfoSelection[event.target.id] = checked;
                 viewMgr.render();
                 return;
             }

@@ -5,6 +5,7 @@ import {RunAlignment} from "./../RunAlignment";
 import {SpawnRequestParams} from "./../../JobIPC";
 import {Job,JobCallBackObject} from "./../../main/Job";
 import {varScanMPileup2SNPReportParser} from "./../../varScanMPileup2SNPReportParser";
+import {varScanMPileup2SNPVCF2JSON} from "./../../varScanMPileup2SNPVCF2JSON";
 
 export function varScanMPileup2SNP(op : RunAlignment) : Promise<{}>
 {
@@ -31,6 +32,16 @@ export function varScanMPileup2SNP(op : RunAlignment) : Promise<{}>
                             function(){
                                 op.varScanMPileup2SNPStdOutStream.end();
                                 op.alignData.varScanSNPSummary = varScanMPileup2SNPReportParser(op.alignData.varScanSNPReport);
+                                fs.writeFileSync(
+                                    getReadableAndWritable(`rt/AlignmentArtifacts/${op.alignData.uuid}/snps.json`),
+                                    JSON.stringify(
+                                        varScanMPileup2SNPVCF2JSON(
+                                            fs.readFileSync(
+                                                getReadableAndWritable(`rt/AlignmentArtifacts/${op.alignData.uuid}/snps.vcf`)
+                                            ).toString()
+                                        ),undefined,4
+                                    )
+                                );
                                 resolve();
                             },500
                         );
