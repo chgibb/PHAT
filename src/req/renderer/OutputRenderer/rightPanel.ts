@@ -84,6 +84,21 @@ export class SNPPositionsInfoSelection
     public samplesHom : boolean;
     public samplesNC : boolean;
     public consCovReads1Reads2FreqPValue2 : boolean;
+    [index : string] : boolean;
+    public constructor()
+    {
+        this.chrom = false;
+        this.position = false;
+        this.ref = false;
+        this.var = false;
+        this.consCovReads1Reads2FreqPValue = false;
+        this.strandFilterR1R1R2R2pVal = false;
+        this.samplesRef = false;
+        this.samplesHet = false;
+        this.samplesHom = false;
+        this.samplesNC = false;
+        this.consCovReads1Reads2FreqPValue2 = false;
+    }
 }
 
 export class View extends viewMgr.View
@@ -91,12 +106,14 @@ export class View extends viewMgr.View
     public fastQInfoSelection : FastQInfoSelection;
     public refSeqInfoSelection : FastaInfoSelection;
     public alignmentInfoSelection : AlignmentInfoSelection;
+    public snpPositionsInfoSelection : SNPPositionsInfoSelection;
     public constructor(name : string,div : string)
     {
         super(name,div);
         this.fastQInfoSelection = new FastQInfoSelection();
         this.refSeqInfoSelection = new FastaInfoSelection();
         this.alignmentInfoSelection = new AlignmentInfoSelection();
+        this.snpPositionsInfoSelection = new SNPPositionsInfoSelection();
     }
 
     public onMount() : void{}
@@ -260,6 +277,7 @@ export class View extends viewMgr.View
     public postRender() : void
     {
         let masterView = <masterView.View>viewMgr.getViewByName("masterView");
+        console.log("post render");
         try
         {
             if(masterView.displayInfo == "QCInfo")
@@ -306,6 +324,21 @@ export class View extends viewMgr.View
                     }
                 }
             }
+            if(masterView.displayInfo == "SNPPositions")
+            {
+                for(let i in this.snpPositionsInfoSelection)
+                {
+                    if(this.snpPositionsInfoSelection.hasOwnProperty(i))
+                    {
+                        try
+                        {
+                            (<HTMLInputElement>document.getElementById(i)).checked = this.snpPositionsInfoSelection[i];
+                            console.log("restored "+i+" to "+this.snpPositionsInfoSelection[i]);
+                        }
+                        catch(err){}
+                    }
+                }
+            }
         }
         catch(err){}
     }
@@ -340,6 +373,12 @@ export class View extends viewMgr.View
             {
                     
                 this.alignmentInfoSelection[event.target.id] = checked;
+                viewMgr.render();
+                return;
+            }
+            else if(masterView.displayInfo == "SNPPositions")
+            {
+                this.snpPositionsInfoSelection[event.target.id] = checked;
                 viewMgr.render();
                 return;
             }
