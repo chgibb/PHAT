@@ -20,3 +20,8 @@ button.rightSlideOutPanel
 {
     float : right;
 }
+
+.activeHover:hover{
+	font-weight: bold;
+	cursor: pointer;
+}
