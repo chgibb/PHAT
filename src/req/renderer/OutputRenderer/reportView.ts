@@ -47,8 +47,6 @@ export class View extends viewMgr.View
                 this.inspectingUUID = masterView.inspectingUUID;
             }
         }
-        else
-            this.vcfRows = new Array<VCF2JSONRow>();
 
         return `
             ${renderQCReportTable()}
