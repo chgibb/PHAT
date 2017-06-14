@@ -50,7 +50,6 @@ export class AlignmentInfoSelection
     public SNPsPredicted : boolean;
     public indelsPredicted : boolean;
     public dateRan : boolean;
-    public SNPPositions : boolean;
     [index : string] : boolean;
     public constructor()
     {
@@ -178,9 +177,6 @@ export class View extends viewMgr.View
                         <br />
 
                         <input type="checkbox" id="dateRan">Date Ran</input>
-                        <br />
-
-                        <input type="checkbox" id="SNPPositions">SNP Positions</input>
                         <br />
                     `;
                 }

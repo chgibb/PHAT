@@ -27,7 +27,6 @@ export function renderAlignmentReportTable() : string
                     ${rightPanel.alignmentInfoSelection.SNPsPredicted != false ? "<th>SNPs Predicted</th>" : ""}
                     ${rightPanel.alignmentInfoSelection.indelsPredicted != false ? "<th>Indels Predicted</th>" : ""}
                     ${rightPanel.alignmentInfoSelection.dateRan != false ? "<th>Date Ran</th>" : ""}
-                    ${rightPanel.alignmentInfoSelection.SNPPositions != false ? "<th>SNP Positions</th>" : ""}
                 </tr>
             `;
             return res;
