@@ -1,8 +1,12 @@
+import * as fs from "fs";
+
+import {getReadableAndWritable} from "./../../getAppPath";
 import * as viewMgr from "./../viewMgr";
 import * as masterView from "./masterView";
 import * as rightPanel from "./rightPanel";
 
 import {getQCSummaryByNameOfReportByIndex} from "./../../QCData"
+import {VCF2JSONRow} from "./../../varScanMPileup2SNPVCF2JSON";
 
 import {renderQCReportTable} from "./reportView/renderQCReportTable";
 import {renderAlignmentReportTable} from "./reportView/renderAlignmentReportTable";
@@ -14,9 +18,11 @@ export function addView(arr : Array<viewMgr.View>,div : string)
 }
 export class View extends viewMgr.View
 {
+    public inspectingUUID : string;
     public constructor(div : string)
     {
         super("reportView",div);
+        this.inspectingUUID = "";
     }
     public onMount() : void{}
     public onUnMount() : void{}
@@ -24,10 +30,26 @@ export class View extends viewMgr.View
     {
         let masterView = <masterView.View>viewMgr.getViewByName("masterView");
         let rightPanel = <rightPanel.View>viewMgr.getViewByName("rightPanel",masterView.views);
+
+        let rows : Array<VCF2JSONRow> = new Array<VCF2JSONRow>();
+
+        //if we're looking at SNP position, refresh table information if the alignment being inspected has changed
+        if(masterView.displayInfo == "SNPPositions")
+        {
+            if(this.inspectingUUID != masterView.inspectingUUID)
+            {
+                rows = JSON.parse(
+                            fs.readFileSync(getReadableAndWritable(`rt/AlignmentArtifacts/${masterView.inspectingUUID}/snps.json`)
+                    ).toString()
+                );
+                this.inspectingUUID = masterView.inspectingUUID;
+            }
+        }
+
         return `
             ${renderQCReportTable()}
             ${renderAlignmentReportTable()}
-            ${renderSNPPositionsTable()}
+            ${renderSNPPositionsTable(rows)}
 
         `;
     }
