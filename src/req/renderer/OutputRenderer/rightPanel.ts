@@ -199,6 +199,24 @@ export class View extends viewMgr.View
                 if(masterView.displayInfo == "SNPPositions")
                 {
                     res += `
+
+
+                        ${(()=>{
+                            let inspectingAlignMarkup = "";
+                            for(let i = 0; i != masterView.alignData.length; ++i)
+                            {
+                                if(masterView.inspectingUUID == masterView.alignData[i].uuid)
+                                {
+                                    inspectingAlignMarkup += `
+                                        <h5>SNP Reporting for ${masterView.alignData[i].alias}</h5>
+                                    `;
+                                    return inspectingAlignMarkup;
+                                }
+                            }
+                            throw new Error("No alignment to inspect");
+                        })()}
+
+
                         <input type="checkbox" id="chrom">Chrom</input>
                         <br />
 
