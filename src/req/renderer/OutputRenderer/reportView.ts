@@ -77,6 +77,11 @@ export class View extends viewMgr.View
             }
             if(event.target.id == masterView.alignData[i].uuid+"ViewAlignment")
             {
+                if(!masterView.alignData[i].summary.overallAlignmentRate)
+                {
+                    alert(`Can't view an alignment with 0% alignment rate`);
+                    return;
+                }
                 ipc.send(
                     "runOperation",
                     <AtomicOperationIPC>{
