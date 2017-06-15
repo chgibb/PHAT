@@ -3,7 +3,6 @@ const ipc = electron.ipcRenderer;
 import * as viewMgr from "./req/renderer/viewMgr";
 
 import * as pileUpView from "./req/renderer/PileupRenderer/pileUpView";
-import * as reportView from "./req/renderer/PileupRenderer/reportView";
 
 import Fastq from "./req/fastq";
 import {Fasta} from "./req/fasta";
@@ -19,12 +18,8 @@ $
     function()
     {
         pileUpView.addView(viewMgr.views,"view");
-        reportView.addView(viewMgr.views,"view");
-
 
         viewMgr.changeView("report");
-
-
 
         ipc.on
         (
