@@ -1,5 +1,9 @@
 import * as fs from "fs";
 
+import * as electron from "electron";
+const ipc = electron.ipcRenderer;
+
+import {AtomicOperationIPC} from "./../../atomicOperationsIPC";
 import {getReadableAndWritable} from "./../../getAppPath";
 import * as viewMgr from "./../viewMgr";
 import * as masterView from "./masterView";
@@ -64,12 +68,21 @@ export class View extends viewMgr.View
         let masterView = <masterView.View>viewMgr.getViewByName("masterView");
         for(let i = 0; i != masterView.alignData.length; ++i)
         {
-            if(event.target.id == masterView.alignData[i].uuid)
+            if(event.target.id == masterView.alignData[i].uuid+"ViewSNPs")
             {
                 masterView.inspectingUUID = masterView.alignData[i].uuid;
                 masterView.displayInfo = "SNPPositions";
                 viewMgr.render();
                 return;
+            }
+            if(event.target.id == masterView.alignData[i].uuid+"ViewAlignment")
+            {
+                ipc.send(
+                    "runOperation",
+                    <AtomicOperationIPC>{
+                        opName : "openPileupViewer",
+                    }
+                );
             }
         }
     }

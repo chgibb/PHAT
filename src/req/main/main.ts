@@ -31,6 +31,7 @@ import {RenderCoverageTrackForContig} from "./../operations/RenderCoverageTrack"
 import {RenderSNPTrackForContig} from "./../operations/RenderSNPTrack";
 import {CheckForUpdate} from "./../operations/CheckForUpdate";
 import {DownloadAndInstallUpdate} from "./../operations/DownloadAndInstallUpdate";
+import {OpenPileupViewer} from "./../operations/OpenPileupViewer";
 
 import {ProjectManifest} from "./../projectManifest";
 
@@ -269,7 +270,9 @@ app.on
 
 		atomicOp.register("newProject",NewProject);
 		atomicOp.register("openProject",OpenProject);
-		atomicOp.register("saveCurrentProject",SaveCurrentProject);	
+		atomicOp.register("saveCurrentProject",SaveCurrentProject);
+
+		atomicOp.register("openPileupViewer",OpenPileupViewer);	
 
 		setInterval(function(){atomicOp.runOperations(1);},2500);
 		//After an update has been installed, update the updater with new binaries.
@@ -540,6 +543,10 @@ ipc.on(
 
 			if(!isCurrentlyLoaded)
 				atomicOp.addOperation("openProject",arg.proj);
+		}
+		else if(arg.opName == "openPileupViewer")
+		{
+			atomicOp.addOperation("openPileupViewer",{});
 		}
 	}
 );
