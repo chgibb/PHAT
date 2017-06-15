@@ -11,6 +11,9 @@ import {Fasta} from "./req/fasta";
 import * as $ from "jquery";
 (<any>window).$ = $;
 require("./req/renderer/commonBehaviour");
+
+const pileup = require("./../forDist/pileup");
+(<any>window).pileup = pileup;
 $
 (
     function()

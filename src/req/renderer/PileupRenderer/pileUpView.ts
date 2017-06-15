@@ -23,14 +23,6 @@ export class PileUpView extends viewMgr.View
     }
     onMount()
     {
-        if(!(<any>window).pileup)
-        {
-            bootStrapCodeCache(
-                getReadable("pileup.js"),
-                "./pileup",
-                getReadableAndWritable("pileup.cdata")
-            );
-        }
         var twoBit;
         var refName;
         var bam;
