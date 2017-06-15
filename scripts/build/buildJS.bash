@@ -31,7 +31,6 @@ do
 	fi
 done
 
-cp scripts/opt/bootStrapCodeCache.js dist
 cleanTSArtifacts
 
 
