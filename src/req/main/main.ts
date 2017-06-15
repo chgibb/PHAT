@@ -546,7 +546,7 @@ ipc.on(
 		}
 		else if(arg.opName == "openPileupViewer")
 		{
-			atomicOp.addOperation("openPileupViewer",{});
+			atomicOp.addOperation("openPileupViewer",arg.pileupViewerParams);
 		}
 	}
 );

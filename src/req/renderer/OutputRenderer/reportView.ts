@@ -81,6 +81,12 @@ export class View extends viewMgr.View
                     "runOperation",
                     <AtomicOperationIPC>{
                         opName : "openPileupViewer",
+                        pileupViewerParams : {
+                            align : masterView.alignData[i],
+                            contig : masterView.alignData[i].fasta.contigs[0].name.split(' ')[0],
+                            start : 0,
+                            stop : 100
+                        }
                     }
                 );
             }
