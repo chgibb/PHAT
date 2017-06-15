@@ -26,6 +26,22 @@ export class OpenPileupViewer extends atomic.AtomicOperation
     public run() : void
     {
         winMgr.windowCreators["pileup"].Create();
+
+        let viewers = winMgr.getWindowsByName("pileup");
+        let viewer = viewers[viewers.length-1];
+
+        let pileupOptions = {
+                align : this.align,
+                contig : this.contig,
+                start : this.start,
+                stop : this.stop
+            }
+        setTimeout(
+            function(){
+                viewer.webContents.send("pileup",pileupOptions);
+            },500
+        );
+
         this.setSuccess(this.flags);
         this.update();
     }
