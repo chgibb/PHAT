@@ -64,7 +64,7 @@ fi
 #for everything in the top level of forDist (should be cross platform stuff only in the top level)
 for f in forDist/*
 do
-    if [[ "forDist/pileup.js" ]]; then
+    if [[ "$f" == "forDist/pileup.js" ]]; then
         continue
     fi
     #if linux then copy into the created electron linux package
