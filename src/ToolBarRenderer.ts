@@ -23,8 +23,8 @@ $
         document.getElementById("align").onclick = function(this : HTMLElement,ev : MouseEvent){
             ipc.send("openWindow",{refName : "align"});
         }
-        document.getElementById("pathogen").onclick = function(this : HTMLElement,ev : MouseEvent){
-            ipc.send("openWindow",{refName : "pathogen"});
+        document.getElementById("pileup").onclick = function(this : HTMLElement,ev : MouseEvent){
+            ipc.send("openWindow",{refName : "pileup"});
         }
         document.getElementById("output").onclick = function(this : HTMLElement,ev : MouseEvent){
             ipc.send("openWindow",{refName : "output"});
