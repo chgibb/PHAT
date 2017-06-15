@@ -2,17 +2,17 @@ import * as winMgr from "./winMgr";
 import {getReadable} from "./../getAppPath";
 
 
-winMgr.windowCreators["pathogen"] = 
+winMgr.windowCreators["pileup"] = 
 {
 	Create : function() 
 	{
 		winMgr.pushWindow(
-			"pathogen",
+			"pileup",
 			winMgr.createWithDefault(
-				"Pathogen",
-				"pathogen",
+				"Pileup",
+				"pileup",
 				1000,800,
-				"file://"+getReadable("Pathogen.html"),
+				"file://"+getReadable("Pileup.html"),
 				false,false,
 				500,300
 			)
