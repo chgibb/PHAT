@@ -57,7 +57,7 @@ require('./Input');
 require('./QC');
 require('./Align');
 require('./Output');
-require('./Pathogen');
+require('./Pileup');
 //require('./Host');
 require('./circularGenomeBuilder');
 
