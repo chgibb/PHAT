@@ -35,7 +35,7 @@ export class OpenPileupViewer extends atomic.AtomicOperation
                 contig : this.contig,
                 start : this.start,
                 stop : this.stop
-            }
+            };
         setTimeout(
             function(){
                 viewer.webContents.send("pileup",pileupOptions);

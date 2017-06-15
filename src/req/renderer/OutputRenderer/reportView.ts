@@ -90,6 +90,35 @@ export class View extends viewMgr.View
                     }
                 );
             }
+            if(masterView.alignData[i].uuid == masterView.inspectingUUID)
+            {
+                for(let k = 0; k != this.vcfRows.length; ++k)
+                {
+                    if(event.target.id == `viewSNP${k}`)
+                    {
+                        //trim off leading text
+                        let snpPos = parseInt(event.target.id.replace(/(viewSNP)/,""));
+                        //set beginning position in viewer offset by 20
+                        let start = parseInt(this.vcfRows[snpPos].position)-20;
+                        //offset end by 40 to center SNP in viewer
+                        let stop = start+40;
+                        let contig = this.vcfRows[snpPos].chrom;
+                        ipc.send(
+                            "runOperation",
+                            <AtomicOperationIPC>{
+                                opName : "openPileupViewer",
+                                pileupViewerParams : {
+                                    align : masterView.alignData[i],
+                                    contig : contig,
+                                    start : start,
+                                    stop : stop
+                                }
+                            }
+                        );
+                        return;
+                    }
+                }
+            }
         }
     }
 }
