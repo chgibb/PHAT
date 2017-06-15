@@ -2,8 +2,8 @@ import * as electron from "electron";
 const ipc = electron.ipcRenderer;
 import * as viewMgr from "./req/renderer/viewMgr";
 
-import * as pileUpView from "./req/renderer/PathogenRenderer/pileUpView";
-import * as reportView from "./req/renderer/PathogenRenderer/reportView";
+import * as pileUpView from "./req/renderer/PileupRenderer/pileUpView";
+import * as reportView from "./req/renderer/PileupRenderer/reportView";
 
 import Fastq from "./req/fastq";
 import {Fasta} from "./req/fasta";
@@ -25,7 +25,7 @@ $
 
         ipc.on
         (
-            'pathogen',function(event,arg)
+            'pileup',function(event,arg)
             {
                 if(arg.action === "getKey" || arg.action === "keyChange")
                 {
@@ -81,7 +81,7 @@ $
                 action : "getKey",
                 channel : "input",
                 key : "fastqInputs",
-                replyChannel : "pathogen"
+                replyChannel : "pileup"
             }
         );
         ipc.send(
@@ -90,7 +90,7 @@ $
                 action : "getKey",
                 channel : "input",
                 key : "fastaInputs",
-                replyChannel : "pathogen"
+                replyChannel : "pileup"
             }
         );
         ipc.send(
@@ -99,7 +99,7 @@ $
                 action : "getKey",
                 channel : "align",
                 key : "aligns",
-                replyChannel : "pathogen"
+                replyChannel : "pileup"
             }
         );
 
@@ -110,7 +110,7 @@ $
                 action : "keySub",
                 channel : "input",
                 key : "fastqInputs",
-                replyChannel : "pathogen"
+                replyChannel : "pileup"
             }
         );
         ipc.send(
@@ -119,7 +119,7 @@ $
                 action : "keySub",
                 channel : "input",
                 key : "fastaInputs",
-                replyChannel : "pathogen"
+                replyChannel : "pileup"
             }
         );
         ipc.send(
@@ -128,7 +128,7 @@ $
                 action : "keySub",
                 channel : "align",
                 key : "aligns",
-                replyChannel : "pathogen"
+                replyChannel : "pileup"
             }
         );
 
