@@ -31,6 +31,7 @@ import {RenderCoverageTrackForContig} from "./../operations/RenderCoverageTrack"
 import {RenderSNPTrackForContig} from "./../operations/RenderSNPTrack";
 import {CheckForUpdate} from "./../operations/CheckForUpdate";
 import {DownloadAndInstallUpdate} from "./../operations/DownloadAndInstallUpdate";
+import {OpenPileupViewer} from "./../operations/OpenPileupViewer";
 
 import {ProjectManifest} from "./../projectManifest";
 
@@ -57,7 +58,7 @@ require('./Input');
 require('./QC');
 require('./Align');
 require('./Output');
-require('./Pathogen');
+require('./Pileup');
 //require('./Host');
 require('./circularGenomeBuilder');
 
@@ -269,9 +270,11 @@ app.on
 
 		atomicOp.register("newProject",NewProject);
 		atomicOp.register("openProject",OpenProject);
-		atomicOp.register("saveCurrentProject",SaveCurrentProject);	
+		atomicOp.register("saveCurrentProject",SaveCurrentProject);
 
-		setInterval(function(){atomicOp.runOperations(1);},2500);
+		atomicOp.register("openPileupViewer",OpenPileupViewer);	
+
+		setInterval(function(){atomicOp.runOperations(1);},100);
 		//After an update has been installed, update the updater with new binaries.
 		fs.rename(getReadableAndWritable("newCSharpCode.SharpZipLib.dll"),getReadableAndWritable("ICSharpCode.SharpZipLib.dll"),function(err : NodeJS.ErrnoException){});
 		fs.rename(getReadableAndWritable("newinstallUpdateProcess.exe"),getReadableAndWritable("installUpdateProcess.exe"),function(err : NodeJS.ErrnoException){});
@@ -540,6 +543,10 @@ ipc.on(
 
 			if(!isCurrentlyLoaded)
 				atomicOp.addOperation("openProject",arg.proj);
+		}
+		else if(arg.opName == "openPileupViewer")
+		{
+			atomicOp.addOperation("openPileupViewer",arg.pileupViewerParams);
 		}
 	}
 );

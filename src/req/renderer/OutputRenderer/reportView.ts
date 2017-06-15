@@ -1,5 +1,9 @@
 import * as fs from "fs";
 
+import * as electron from "electron";
+const ipc = electron.ipcRenderer;
+
+import {AtomicOperationIPC} from "./../../atomicOperationsIPC";
 import {getReadableAndWritable} from "./../../getAppPath";
 import * as viewMgr from "./../viewMgr";
 import * as masterView from "./masterView";
@@ -64,12 +68,61 @@ export class View extends viewMgr.View
         let masterView = <masterView.View>viewMgr.getViewByName("masterView");
         for(let i = 0; i != masterView.alignData.length; ++i)
         {
-            if(event.target.id == masterView.alignData[i].uuid)
+            if(event.target.id == masterView.alignData[i].uuid+"ViewSNPs")
             {
                 masterView.inspectingUUID = masterView.alignData[i].uuid;
                 masterView.displayInfo = "SNPPositions";
                 viewMgr.render();
                 return;
+            }
+            if(event.target.id == masterView.alignData[i].uuid+"ViewAlignment")
+            {
+                if(!masterView.alignData[i].summary.overallAlignmentRate)
+                {
+                    alert(`Can't view an alignment with 0% alignment rate`);
+                    return;
+                }
+                ipc.send(
+                    "runOperation",
+                    <AtomicOperationIPC>{
+                        opName : "openPileupViewer",
+                        pileupViewerParams : {
+                            align : masterView.alignData[i],
+                            contig : masterView.alignData[i].fasta.contigs[0].name.split(' ')[0],
+                            start : 0,
+                            stop : 100
+                        }
+                    }
+                );
+            }
+            if(masterView.alignData[i].uuid == masterView.inspectingUUID)
+            {
+                for(let k = 0; k != this.vcfRows.length; ++k)
+                {
+                    if(event.target.id == `viewSNP${k}`)
+                    {
+                        //trim off leading text
+                        let snpPos = parseInt(event.target.id.replace(/(viewSNP)/,""));
+                        //set beginning position in viewer offset by 20
+                        let start = parseInt(this.vcfRows[snpPos].position)-20;
+                        //offset end by 40 to center SNP in viewer
+                        let stop = start+40;
+                        let contig = this.vcfRows[snpPos].chrom;
+                        ipc.send(
+                            "runOperation",
+                            <AtomicOperationIPC>{
+                                opName : "openPileupViewer",
+                                pileupViewerParams : {
+                                    align : masterView.alignData[i],
+                                    contig : contig,
+                                    start : start,
+                                    stop : stop
+                                }
+                            }
+                        );
+                        return;
+                    }
+                }
             }
         }
     }

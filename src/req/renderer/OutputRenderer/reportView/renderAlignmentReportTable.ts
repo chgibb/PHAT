@@ -68,7 +68,7 @@ export function renderAlignmentReportTable() : string
                 {
                     res += "<tr>";
                     if(rightPanel.alignmentInfoSelection.alias)
-                        res += `<td>${masterView.alignData[i].alias}</td>`;
+                        res += `<td class="activeHover" id="${masterView.alignData[i].uuid}ViewAlignment">${masterView.alignData[i].alias}</td>`;
 
                     if(rightPanel.alignmentInfoSelection.sizeInBytes)
                         res += `<td>${masterView.alignData[i].size}</td>`;
@@ -98,7 +98,7 @@ export function renderAlignmentReportTable() : string
                         res += `<td>${masterView.alignData[i].varScanSNPSummary.pValueThresh}</td>`;
 
                     if(rightPanel.alignmentInfoSelection.SNPsPredicted)
-                        res += `<td class="activeHover" id="${masterView.alignData[i].uuid}">${masterView.alignData[i].varScanSNPSummary.SNPsReported}</td>`;
+                        res += `<td class="activeHover" id="${masterView.alignData[i].uuid}ViewSNPs">${masterView.alignData[i].varScanSNPSummary.SNPsReported}</td>`;
 
                     if(rightPanel.alignmentInfoSelection.indelsPredicted)
                         res += `<td>${masterView.alignData[i].varScanSNPSummary.indelsReported}</td>`;
