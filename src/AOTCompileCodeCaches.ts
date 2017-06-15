@@ -27,12 +27,12 @@ setTimeout
                         (
                             function()
                             {
-                                winMgr.windowCreators["pathogen"].Create();
+                                winMgr.windowCreators["pileup"].Create();
                                 setTimeout
                                 (
                                     function()
                                     {
-                                        let patho = winMgr.getWindowsByName("pathogen");
+                                        let patho = winMgr.getWindowsByName("pileup");
                                         winMgr.windowCreators["output"].Create();
                                         setTimeout
                                         (
