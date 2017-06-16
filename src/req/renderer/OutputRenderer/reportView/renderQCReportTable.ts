@@ -23,7 +23,7 @@ export function renderQCReportTable() : string
                         ${rightPanel.fastQInfoSelection.PBSQ != false ? "<th>Per Base Sequence Quality</th>" : ""}
                         ${rightPanel.fastQInfoSelection.PSQS != false ? "<th>Per Sequence Quality Score</th>" : ""}
                         ${rightPanel.fastQInfoSelection.PSGCC != false ? "<th>Per Sequence GC Content</th>" : ""}
-                        ${rightPanel.fastQInfoSelection.SDL != false ? "<th>Sequence Duplication Levelsias</th>" : ""}
+                        ${rightPanel.fastQInfoSelection.SDL != false ? "<th>Sequence Duplication Levels</th>" : ""}
                         ${rightPanel.fastQInfoSelection.ORS != false ? "<th>Over Represented Sequences</th>" : ""}
                     </tr>
             `;
