@@ -15,6 +15,7 @@ import {VCF2JSONRow} from "./../../varScanMPileup2SNPVCF2JSON";
 import {renderQCReportTable} from "./reportView/renderQCReportTable";
 import {renderAlignmentReportTable} from "./reportView/renderAlignmentReportTable";
 import {renderSNPPositionsTable} from "./reportView/renderSNPPositionsTable";
+import {renderMappedReadsPerContigTable} from "./reportView/renderMappedReadsPerContigTable";
 
 export function addView(arr : Array<viewMgr.View>,div : string)
 {
@@ -54,6 +55,7 @@ export class View extends viewMgr.View
             ${renderQCReportTable()}
             ${renderAlignmentReportTable()}
             ${renderSNPPositionsTable(this.vcfRows)}
+            ${renderMappedReadsPerContigTable()}
 
         `;
     }
