@@ -93,6 +93,18 @@ export class View extends viewMgr.View
                     }
                 );
             }
+            if(event.target.id == masterView.alignData[i].uuid+"AlignmentRate")
+            {
+                if(!masterView.alignData[i].summary.overallAlignmentRate)
+                {
+                    alert(`Can't view an alignment with 0% alignment rate`);
+                    return;
+                }
+                masterView.inspectingUUID = masterView.alignData[i].uuid;
+                masterView.displayInfo = "MappedReadsPerContigInfo";
+                viewMgr.render();
+                return;
+            }
             if(masterView.alignData[i].uuid == masterView.inspectingUUID)
             {
                 for(let k = 0; k != this.vcfRows.length; ++k)
