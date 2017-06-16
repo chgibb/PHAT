@@ -277,7 +277,6 @@ export class View extends viewMgr.View
     public postRender() : void
     {
         let masterView = <masterView.View>viewMgr.getViewByName("masterView");
-        console.log("post render");
         try
         {
             if(masterView.displayInfo == "QCInfo")
@@ -333,7 +332,6 @@ export class View extends viewMgr.View
                         try
                         {
                             (<HTMLInputElement>document.getElementById(i)).checked = this.snpPositionsInfoSelection[i];
-                            console.log("restored "+i+" to "+this.snpPositionsInfoSelection[i]);
                         }
                         catch(err){}
                     }
