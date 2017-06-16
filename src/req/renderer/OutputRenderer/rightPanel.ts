@@ -87,10 +87,10 @@ export class SNPPositionsInfoSelection
     [index : string] : boolean;
     public constructor()
     {
-        this.chrom = false;
-        this.position = false;
-        this.ref = false;
-        this.var = false;
+        this.chrom = true;
+        this.position = true;
+        this.ref = true;
+        this.var = true;
         this.consCovReads1Reads2FreqPValue = false;
         this.strandFilterR1R1R2R2pVal = false;
         this.samplesRef = false;
