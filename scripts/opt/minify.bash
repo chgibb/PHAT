@@ -8,7 +8,7 @@ fi
 
 for f in $target/*.js
 do
-    if [[ "$f" != "$target/pileup.js" ]]; then
+    if [[ "$f" != "$target/PileupRenderer.js" ]]; then
         if [[ "$f" != "$target/tests.js" ]]; then
             printf "Compressing $f\n"
 

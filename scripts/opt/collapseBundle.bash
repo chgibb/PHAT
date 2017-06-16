@@ -8,7 +8,7 @@ fi
 
 for f in $target/*.js
 do
-    if [[ "$f" != "$target/pileup.js" ]]; then
+    if [[ "$f" != "$target/PileupRenderer.js" ]]; then
         printf "Collapsing bundle $f\n"
         ./node_modules/.bin/bundle-collapser $f > tmp
         if [ $? != 0 ]; then
