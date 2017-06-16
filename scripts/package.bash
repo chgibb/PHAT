@@ -64,6 +64,9 @@ fi
 #for everything in the top level of forDist (should be cross platform stuff only in the top level)
 for f in forDist/*
 do
+    if [[ "$f" == "forDist/pileup.js" ]]; then
+        continue
+    fi
     #if linux then copy into the created electron linux package
     if [[ "$OSTYPE" == "linux-gnu" ]]; then
         cp $f phat-linux-x64/resources/app
