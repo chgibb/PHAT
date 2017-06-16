@@ -53,19 +53,19 @@ export class AlignmentInfoSelection
     [index : string] : boolean;
     public constructor()
     {
-        this.alias = false;
+        this.alias = true;
         this.fullName = false;
         this.sizeInBytes = false;
-        this.formattedSize = false;
-        this.reads = false;
-        this.mates = false;
-        this.overallAlignmentRate = false;
+        this.formattedSize = true;
+        this.reads = true;
+        this.mates = true;
+        this.overallAlignmentRate = true;
         this.minimumCoverage = false;
         this.minimumVariableFrequency = false;
         this.minimumAverageQuality = false;
         this.pValueThreshold = false;
-        this.SNPsPredicted = false;
-        this.indelsPredicted = false;
+        this.SNPsPredicted = true;
+        this.indelsPredicted = true;
         this.dateRan = false;
         this.SNPPositions = false;
     }
