@@ -92,8 +92,6 @@ export class View extends viewMgr.View
 
     public divClickEvents(event : JQueryEventObject) : void
     {
-        let self = this;
-        console.log(event.target.id);
-        
+
     }
 }
