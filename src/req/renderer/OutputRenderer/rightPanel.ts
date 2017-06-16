@@ -268,6 +268,23 @@ export class View extends viewMgr.View
                         <br />
                     `;
                 }
+                if(masterView.displayInfo == "MappedReadsPerContigInfo")
+                {
+                    let found = false;
+                    for(let i = 0; i != masterView.alignData.length; ++i)
+                    {
+                        if(masterView.inspectingUUID == masterView.alignData[i].uuid)
+                        {
+                            res += `
+                                <h5>Mapped reads per contig for ${masterView.alignData[i].alias}</h5>
+                            `;
+                            found = true;
+                            break;
+                        }
+                    }
+                    if(!found)
+                        throw new Error("No alignment to inspect");
+                }
 
                 return res;
             })()}
