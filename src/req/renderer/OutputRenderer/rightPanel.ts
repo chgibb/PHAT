@@ -101,12 +101,29 @@ export class SNPPositionsInfoSelection
     }
 }
 
+export class MappedReadsPerContigInfoSelection
+{
+    public refSeqName : boolean;
+    public seqLength : boolean;
+    public mappedReads : boolean;
+    public unMappedReads : boolean;
+    [index : string] : boolean;
+    public constructor()
+    {
+        this.refSeqName = true;
+        this.seqLength = true;
+        this.mappedReads = true;
+        this.unMappedReads = true;
+    }
+}
+
 export class View extends viewMgr.View
 {
     public fastQInfoSelection : FastQInfoSelection;
     public refSeqInfoSelection : FastaInfoSelection;
     public alignmentInfoSelection : AlignmentInfoSelection;
     public snpPositionsInfoSelection : SNPPositionsInfoSelection;
+    public mapppedReadsPerContigInfoSelection : MappedReadsPerContigInfoSelection;
     public constructor(name : string,div : string)
     {
         super(name,div);
@@ -114,6 +131,7 @@ export class View extends viewMgr.View
         this.refSeqInfoSelection = new FastaInfoSelection();
         this.alignmentInfoSelection = new AlignmentInfoSelection();
         this.snpPositionsInfoSelection = new SNPPositionsInfoSelection();
+        this.mapppedReadsPerContigInfoSelection = new MappedReadsPerContigInfoSelection();
     }
 
     public onMount() : void{}
@@ -270,6 +288,19 @@ export class View extends viewMgr.View
                 }
                 if(masterView.displayInfo == "MappedReadsPerContigInfo")
                 {
+                    res += `
+                        <input type="checkbox" id="refSeqName">Contig Name</input>
+                        <br />
+
+                        <input type="checkbox" id="seqLength">Length </input>
+                        <br />
+
+                        <input type="checkbox" id="mappedReads">Mapped Reads</input>
+                        <br />
+
+                        <input type="checkbox" id="unMappedReads">Unmapped Reads</input>
+                        <br />
+                    `;
                     let found = false;
                     for(let i = 0; i != masterView.alignData.length; ++i)
                     {
@@ -354,6 +385,20 @@ export class View extends viewMgr.View
                     }
                 }
             }
+            if(masterView.displayInfo == "MappedReadsPerContigInfo")
+            {
+                for(let i in this.mapppedReadsPerContigInfoSelection)
+                {
+                    if(this.mapppedReadsPerContigInfoSelection.hasOwnProperty(i))
+                    {
+                        try
+                        {
+                            (<HTMLInputElement>document.getElementById(i)).checked = this.mapppedReadsPerContigInfoSelection[i];
+                        }
+                        catch(err){}
+                    }
+                }
+            }
         }
         catch(err){}
     }
@@ -394,6 +439,12 @@ export class View extends viewMgr.View
             else if(masterView.displayInfo == "SNPPositions")
             {
                 this.snpPositionsInfoSelection[event.target.id] = checked;
+                viewMgr.render();
+                return;
+            }
+            else if(masterView.displayInfo == "MappedReadsPerContigInfo")
+            {
+                this.mapppedReadsPerContigInfoSelection[event.target.id] = checked;
                 viewMgr.render();
                 return;
             }
