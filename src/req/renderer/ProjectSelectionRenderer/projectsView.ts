@@ -25,7 +25,7 @@ export class ProjectsView extends View
             ${(()=>{
                 let res = "";
                 if(!this.projects)
-                    "<h2>You have no projects</h2>";
+                    return "<h2>You have no projects</h2>";
                 if(this.projects)
                 {
                     if(this.projects.length == 0)
