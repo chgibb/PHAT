@@ -292,7 +292,7 @@ export class View extends viewMgr.View
                         <input type="checkbox" id="refSeqName">Contig Name</input>
                         <br />
 
-                        <input type="checkbox" id="seqLength">Length </input>
+                        <input type="checkbox" id="seqLength">Length</input>
                         <br />
 
                         <input type="checkbox" id="mappedReads">Mapped Reads</input>
