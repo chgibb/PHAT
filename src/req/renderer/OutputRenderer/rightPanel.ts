@@ -16,16 +16,16 @@ export class FastQInfoSelection
     [index : string] : boolean;
     public constructor()
     {
-        this.alias = false;
+        this.alias = true;
         this.fullName = false;
         this.sizeInBytes = false;
-        this.formattedSize = false;
+        this.formattedSize = true;
         this.numberOfSequences = false;
-        this.PBSQ = false;
-        this.PSQS = false;
-        this.PSGCC = false;
-        this.SDL = false;
-        this.ORS = false;
+        this.PBSQ = true;
+        this.PSQS = true;
+        this.PSGCC = true;
+        this.SDL = true;
+        this.ORS = true;
     }
     
 }
