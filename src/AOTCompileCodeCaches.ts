@@ -27,12 +27,11 @@ setTimeout
                         (
                             function()
                             {
-                                //winMgr.windowCreators["pileup"].Create();
+                                winMgr.windowCreators["pileup"].Create();
                                 setTimeout
                                 (
                                     function()
                                     {
-                                        let patho = winMgr.getWindowsByName("pileup");
                                         winMgr.windowCreators["output"].Create();
                                         setTimeout
                                         (
