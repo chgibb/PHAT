@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script>
+            var startUp = performance.now();
+		</script>
+		<meta charset="UTF-8">
+        <link rel="stylesheet" type="text/css" href="styles/pileup.css">
+        <link rel="stylesheet" type="text/css" href="styles/Pileup.css">
+    </head>
+    <body>
+        <div id="view">
+        </div>
+        <script>
+            require("./OperationViewer");
+        </script>
+    </body>
+    <script>
+        console.log("Start up took "+(performance.now()-startUp+"ms"));
+    </script>
+</html>
