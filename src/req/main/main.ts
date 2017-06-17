@@ -208,6 +208,8 @@ ipc.on
 ipc.on(
 	"runOperation",function(event,arg : AtomicOperationIPC)
 	{
+		dataMgr.setKey("application","operations",atomicOp.operationsQueue);
+		winMgr.publishChangeForKey("application","operations");
 		if(arg.opName =="indexFasta" || arg.opName == "generateFastQCReport")
 		{
 			let list : Array<File> = dataMgr.getKey(arg.channel,arg.key);
@@ -391,6 +393,8 @@ ipc.on(
 		{
 			atomicOp.addOperation("openPileupViewer",arg.pileupViewerParams);
 		}
+		dataMgr.setKey("application","operations",atomicOp.operationsQueue);
+		winMgr.publishChangeForKey("application","operations");
 	}
 );
 atomicOp.updates.on(
