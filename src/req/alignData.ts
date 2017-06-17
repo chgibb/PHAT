@@ -71,3 +71,7 @@ export function getCoverageForContig(alignData : alignData,contigUUID : string) 
 {
     return getReadableAndWritable(`rt/AlignmentArtifacts/${alignData.uuid}/contigCoverage/${contigUUID}`);
 }
+export function getMPileup(alignData : alignData) : string
+{
+    return getReadableAndWritable(`rt/AlignmentArtifacts/${alignData.uuid}/pileup.mpileup`);
+}
