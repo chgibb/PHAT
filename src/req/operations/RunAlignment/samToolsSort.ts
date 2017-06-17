@@ -1,15 +1,17 @@
-import {getReadableAndWritable} from "./../../getAppPath";
-import {RunAlignment} from "./../RunAlignment";
+import {getReadable,getReadableAndWritable} from "./../../getAppPath";
+import {alignData,getUnSortedBam,getSortedBam} from "./../../alignData";
 import {SpawnRequestParams} from "./../../JobIPC";
 import {Job,JobCallBackObject} from "./../../main/Job";
 
-export function samToolsSort(op : RunAlignment) : Promise<{}>
+export function samToolsSort(alignData : alignData) : Promise<{}>
 {
     return new Promise((resolve,reject) => {
+        let samToolsExe = getReadable('samtools');
+
         let jobCallBack : JobCallBackObject = {
             send(channel : string,params : SpawnRequestParams)
             {
-                if(params.processName == op.samToolsExe && params.args[0] == "sort")
+                if(params.processName == samToolsExe && params.args[0] == "sort")
                 {
                     if(params.done && params.retCode !== undefined)
                     {
@@ -19,15 +21,15 @@ export function samToolsSort(op : RunAlignment) : Promise<{}>
                         }
                         else
                         {
-                            return reject(`Failed to sort bam for ${op.alignData.alias}`);
+                            return reject(`Failed to sort bam for ${alignData.alias}`);
                         }
                     }
                 }
             }
         }
-        let input : string = getReadableAndWritable(`rt/AlignmentArtifacts/${op.alignData.uuid}/out.bam`);
+        let input : string = getUnSortedBam(alignData);
         let output : string;
-        output = getReadableAndWritable(`rt/AlignmentArtifacts/${op.alignData.uuid}/out.sorted.bam`)
+        output = getSortedBam(alignData);
 
         let args : Array<string> = new Array<string>();
         args = <Array<string>>[
@@ -36,10 +38,10 @@ export function samToolsSort(op : RunAlignment) : Promise<{}>
             "-o",
             output
         ];
-        op.samToolsSortJob = new Job(op.samToolsExe,args,"",true,jobCallBack,{});
+        let samToolsSortJob = new Job(samToolsExe,args,"",true,jobCallBack,{});
         try
         {
-            op.samToolsSortJob.Run();
+            samToolsSortJob.Run();
         }
         catch(err)
         {

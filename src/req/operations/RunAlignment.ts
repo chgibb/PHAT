@@ -113,7 +113,7 @@ export class RunAlignment extends atomic.AtomicOperation
                 self.setSuccess(self.samToolsViewFlags);
                 self.update();
 
-                samToolsSort(self).then((result) => {
+                samToolsSort(self.alignData).then((result) => {
 
                     self.setSuccess(self.samToolsIndexFlags);
                     self.update();
