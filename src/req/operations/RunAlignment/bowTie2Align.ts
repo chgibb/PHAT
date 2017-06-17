@@ -10,9 +10,9 @@ export function bowTie2Align(alignData : alignData,update : () => void) : Promis
     return new Promise((resolve,reject) => {
         let bowtie2Exe = "";
         if(process.platform == "linux")
-            this.bowtie2Exe = getReadable('bowtie2');
+            bowtie2Exe = getReadable('bowtie2');
         else if(process.platform == "win32")
-            this.bowtie2Exe = getReadable('perl/perl/bin/perl.exe');
+            bowtie2Exe = getReadable('perl/perl/bin/perl.exe');
 
         let jobCallBack : JobCallBackObject = {
             send(channel : string,params : SpawnRequestParams)
