@@ -1,15 +1,19 @@
 import * as fs from "fs";
 
-import {getReadableAndWritable} from "./../../getAppPath";
-import {RunAlignment} from "./../RunAlignment";
+import {getReadable} from "./../../getAppPath";
+import {alignData,getMPileup,getSNPsVCF,getSNPsJSON} from "./../../alignData";
 import {SpawnRequestParams} from "./../../JobIPC";
 import {Job,JobCallBackObject} from "./../../main/Job";
 import {varScanMPileup2SNPReportParser} from "./../../varScanMPileup2SNPReportParser";
 import {varScanMPileup2SNPVCF2JSON} from "./../../varScanMPileup2SNPVCF2JSON";
 
-export function varScanMPileup2SNP(op : RunAlignment) : Promise<{}>
+export function varScanMPileup2SNP(alignData : alignData) : Promise<{}>
 {
     return new Promise((resolve,reject) => {
+        let varScanExe = getReadable("varscan.jar");
+
+        let varScanMPileup2SNPStdOutStream : fs.WriteStream = fs.createWriteStream(getSNPsVCF(alignData));
+
         let jobCallBack : JobCallBackObject = {
             send(channel : string,params : SpawnRequestParams)
             {
@@ -17,11 +21,11 @@ export function varScanMPileup2SNP(op : RunAlignment) : Promise<{}>
                 {
                     if(params.stdout)
                     {
-                        op.varScanMPileup2SNPStdOutStream.write(params.unBufferedData);
+                        varScanMPileup2SNPStdOutStream.write(params.unBufferedData);
                     }
                     else if(params.stderr)
                     {
-                        op.alignData.varScanSNPReport += params.unBufferedData;
+                        alignData.varScanSNPReport += params.unBufferedData;
                     }
                 }
                 else if(params.done && params.retCode !== undefined)
@@ -30,14 +34,14 @@ export function varScanMPileup2SNP(op : RunAlignment) : Promise<{}>
                     {
                         setTimeout(
                             function(){
-                                op.varScanMPileup2SNPStdOutStream.end();
-                                op.alignData.varScanSNPSummary = varScanMPileup2SNPReportParser(op.alignData.varScanSNPReport);
+                                varScanMPileup2SNPStdOutStream.end();
+                                alignData.varScanSNPSummary = varScanMPileup2SNPReportParser(alignData.varScanSNPReport);
                                 fs.writeFileSync(
-                                    getReadableAndWritable(`rt/AlignmentArtifacts/${op.alignData.uuid}/snps.json`),
+                                    getSNPsJSON(alignData),
                                     JSON.stringify(
                                         varScanMPileup2SNPVCF2JSON(
                                             fs.readFileSync(
-                                                getReadableAndWritable(`rt/AlignmentArtifacts/${op.alignData.uuid}/snps.vcf`)
+                                                getSNPsVCF(alignData)
                                             ).toString()
                                         ),undefined,4
                                     )
@@ -48,28 +52,27 @@ export function varScanMPileup2SNP(op : RunAlignment) : Promise<{}>
                     }
                     else
                     {
-                        reject(`Failed to predict SNPs for ${op.alignData.alias}`);
+                        reject(`Failed to predict SNPs for ${alignData.alias}`);
                     }
                 }
             }
         }
-        op.varScanMPileup2SNPJob = new Job(
+        let varScanMPileup2SNPJob = new Job(
             "java",
             <Array<string>>[
                 "-jar",
-                op.varScanExe,
+                varScanExe,
                 "mpileup2snp",
-                getReadableAndWritable(`rt/AlignmentArtifacts/${op.alignData.uuid}/pileup.mpileup`)
+                getMPileup(alignData)
             ],"",true,jobCallBack,{}
         );
         try
         {
-            op.varScanMPileup2SNPJob.Run();
+            varScanMPileup2SNPJob.Run();
         }
         catch(err)
         {
             return reject(err);
         }
-        op.varScanMPileup2SNPStdOutStream = fs.createWriteStream(getReadableAndWritable(`rt/AlignmentArtifacts/${op.alignData.uuid}/snps.vcf`));
     });
 }

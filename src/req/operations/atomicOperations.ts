@@ -85,6 +85,9 @@ export abstract class AtomicOperation
     public update : () => void;
 
     public spawnUpdate : SpawnRequestParams;
+    public progressMessage : string;
+    public step : number;
+    public totalSteps : number;
     public extraData : any;
 
     public abortOperationWithMessage(msg : string) : void

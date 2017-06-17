@@ -1,6 +1,6 @@
 import * as atomic from "./atomicOperations";
 import * as winMgr from "./../main/winMgr";
-import alignData from "./../alignData";
+import {alignData} from "./../alignData";
 export class OpenPileupViewer extends atomic.AtomicOperation
 {
     public align : alignData;

@@ -36,7 +36,6 @@ export function getLatestUpdate(userName : string,repo : string,token : string) 
         ).then((arg : any) => {
             for(let i = arg.data.length-1; i != -1; i--)
             {
-                console.log(arg.data[i]);
                 if(semver.satisfies(arg.data[i].tag_name,">"+pjson.version))
                 {
                     for(let k = 0; k != arg.data[i].assets.length; ++k)

@@ -1,5 +1,3 @@
-import * as fs from "fs";
-
 export interface VCF2JSONRow
 {
     chrom : string;
@@ -20,7 +18,6 @@ export function varScanMPileup2SNPVCF2JSON(vcf : string) : Array<VCF2JSONRow>
     let res : Array<VCF2JSONRow> = new Array<VCF2JSONRow>();
 
     let lines = vcf.split(/\n/);
-    console.log(lines);
 
     //skip header line at 0
     for(let i = 1; i != lines.length; ++i)

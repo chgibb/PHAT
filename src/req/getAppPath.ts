@@ -48,14 +48,17 @@ function getElectronApp() : boolean
 export function setReadableBasePath(path : string)
 {
     readableBasePath = path;
+    console.log(`Readable base path set to: ${path}`);
 } 
 export function setWritableBasePath(path : string)
 {
     writableBasePath = path;
+    console.log(`Writable base path set to: ${path}`);
 }
 export function setReadableAndWritableBasePath(path : string)
 {
     readableAndWritableBasePath = path;
+    console.log(`Readableand writable base path set to: ${path}`);
 }
 
 function getLinuxConfigDir() : string

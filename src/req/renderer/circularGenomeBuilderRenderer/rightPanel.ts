@@ -6,7 +6,7 @@ import * as selectTracks from "./rightPanel/selectTracks";
 import * as noReference from "./rightPanel/noReference";
 import * as noCoverage from "./rightPanel/noCoverage";
 import {GenomeView} from "./genomeView";
-import alignData from "./../../alignData";
+import {alignData} from "./../../alignData";
 import * as cf from "./../circularFigure";
 
 export class RightPanel extends viewMgr.View

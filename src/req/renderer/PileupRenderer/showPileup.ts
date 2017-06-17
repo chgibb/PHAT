@@ -1,8 +1,8 @@
 import * as path from "path";
 
-import {getReadable,getReadableAndWritable} from "./../../getAppPath";
-import {Fasta,get2BitPath} from "./../../fasta";
-import alignData from "./../../alignData";
+import {getReadableAndWritable} from "./../../getAppPath";
+import {get2BitPath} from "./../../fasta";
+import {alignData} from "./../../alignData";
 
 let viewer : any;
 
