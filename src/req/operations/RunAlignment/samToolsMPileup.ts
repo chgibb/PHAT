@@ -1,6 +1,6 @@
 import * as fs from "fs";
 
-import {getReadable,getReadableAndWritable} from "./../../getAppPath";
+import {getReadable} from "./../../getAppPath";
 import {alignData,getSortedBam,getMPileup} from "./../../alignData";
 import {SpawnRequestParams} from "./../../JobIPC";
 import {Job,JobCallBackObject} from "./../../main/Job";
