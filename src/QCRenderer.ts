@@ -79,24 +79,14 @@ $
                             if(operations[i].name == "generateFastQCReport")
                             {
                                 let op : GenerateQCReport = (<any>operations[i]);
-                                //notify user on failure
-                                /*if(op.flags.failure)
-                                {
-                                    alert(`Failed to generate report for ${op.fastq.alias}`);
-                                    if(op.hasJVMCrashed)
-                                    {
-                                        alert(`Java Virtual Machine has crashed`);
-                                    }
-                                    viewMgr.render();
-                                }*/
                                 //Check for stdout from FastQC
-                                if(op.spawnUpdate && op.spawnUpdate.unBufferedData)
+                                if(op.progressMessage)
                                 {
                                     //if its not garbled
-                                    if(validFastQCOut.test(op.spawnUpdate.unBufferedData))
+                                    if(validFastQCOut.test(op.progressMessage))
                                     {
                                         //extract percentage
-                                        let regResult = trimOutFastQCPercentage.exec(op.spawnUpdate.unBufferedData);
+                                        let regResult = trimOutFastQCPercentage.exec(op.progressMessage);
                                         if(regResult && regResult[0])
                                         {
                                             //find the fastq in the table corresponding to the one being processed and

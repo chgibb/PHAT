@@ -93,7 +93,7 @@ export class GenerateQCReport extends atomic.AtomicOperation
 				if(!self.fastQCFlags.success)
 				{
 					//Forward data through normally
-					self.spawnUpdate = params;
+					self.progressMessage = params.unBufferedData;
 				 	self.update();
 				}
 				else if(self.fastQCFlags.success)
