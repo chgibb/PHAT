@@ -1,4 +1,4 @@
-import {getReadable,getReadableAndWritable} from "./../../getAppPath";
+import {getReadable} from "./../../getAppPath";
 import {alignData,getUnSortedBam,getSortedBam} from "./../../alignData";
 import {SpawnRequestParams} from "./../../JobIPC";
 import {Job,JobCallBackObject} from "./../../main/Job";
