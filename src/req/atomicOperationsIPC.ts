@@ -52,4 +52,6 @@ export interface AtomicOperationForkEvent
     run? : boolean;
     update? : boolean;
     flags? : CompletionFlags;
+    progressMessage? : string;
+    step? : number;
 }
