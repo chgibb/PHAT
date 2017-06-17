@@ -131,11 +131,11 @@ export class RunAlignment extends atomic.AtomicOperation
 
                                     self.setSuccess(self.samToolsMPileupFlags);
 
-                                    varScanMPileup2SNP(self).then((result) => {
+                                    varScanMPileup2SNP(self.alignData).then((result) => {
 
                                         self.setSuccess(self.varScanMPileup2SNPFlags);
 
-                                        samToolsIdxStats(self).then((result) => {
+                                        samToolsIdxStats(self.alignData).then((result) => {
 
                                             self.setSuccess(self.samToolsIdxStatsFlags);
 

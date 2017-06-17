@@ -1,14 +1,18 @@
 import * as fs from "fs";
 
-import {getReadableAndWritable} from "./../../getAppPath";
-import {RunAlignment} from "./../RunAlignment";
+import {getReadable,getReadableAndWritable} from "./../../getAppPath";
+import {alignData,getSortedBam,getIdxStats} from "./../../alignData";
 import {SpawnRequestParams} from "./../../JobIPC";
 import {Job,JobCallBackObject} from "./../../main/Job";
 import {samToolsIdxStatsReportParser} from "./../../samToolsIdxStatsReport";
 
-export function samToolsIdxStats(op : RunAlignment) : Promise<{}>
+export function samToolsIdxStats(alignData : alignData) : Promise<{}>
 {
     return new Promise((resolve,reject) => {
+        let samToolsExe = getReadable('samtools');
+
+        let samToolsIdxStatsStream : fs.WriteStream = fs.createWriteStream(getIdxStats(alignData));
+
         let jobCallBack : JobCallBackObject = {
             send(channel : string,params : SpawnRequestParams)
             {
@@ -16,7 +20,7 @@ export function samToolsIdxStats(op : RunAlignment) : Promise<{}>
                 {
                     if(params.stdout)
                     {
-                        op.samToolsIdxStatsStream.write(params.unBufferedData);
+                        samToolsIdxStatsStream.write(params.unBufferedData);
                     }
                 }
                 else if(params.done && params.retCode !== undefined)
@@ -25,10 +29,10 @@ export function samToolsIdxStats(op : RunAlignment) : Promise<{}>
                     {
                         setTimeout(
                             function(){
-                                op.samToolsIdxStatsStream.end();
-                                op.alignData.idxStatsReport = samToolsIdxStatsReportParser(
+                                samToolsIdxStatsStream.end();
+                                alignData.idxStatsReport = samToolsIdxStatsReportParser(
                                     <any>fs.readFileSync(
-                                        getReadableAndWritable(`rt/AlignmentArtifacts/${op.alignData.uuid}/idxstats`)
+                                        getIdxStats(alignData)
                                     ).toString()
                                 );
                                 resolve();
@@ -37,26 +41,26 @@ export function samToolsIdxStats(op : RunAlignment) : Promise<{}>
                     }
                     else
                     {
-                        reject(`Failed to get index statistics for ${op.alignData.alias}`);
+                        reject(`Failed to get index statistics for ${alignData.alias}`);
                     }
                 }
             }
         };
-        op.samToolsIdxStatsJob = new Job(
-            op.samToolsExe,
+        let samToolsIdxStatsJob = new Job(
+            samToolsExe,
             <Array<string>>[
                 "idxstats",
-                getReadableAndWritable(`rt/AlignmentArtifacts/${op.alignData.uuid}/out.sorted.bam`)
+                getSortedBam(alignData)
             ],"",true,jobCallBack,{}
         );
         try
         {
-            op.samToolsIdxStatsJob.Run();
+            samToolsIdxStatsJob.Run();
         }
         catch(err)
         {
             return reject(err);
         }
-        op.samToolsIdxStatsStream = fs.createWriteStream(getReadableAndWritable(`rt/AlignmentArtifacts/${op.alignData.uuid}/idxstats`));
+        
     });
 }
