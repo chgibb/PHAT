@@ -108,7 +108,7 @@ export class RunAlignment extends atomic.AtomicOperation
             self.setSuccess(self.bowtieFlags);
             self.update();
 
-            samToolsView(self).then((result) => {
+            samToolsView(self.alignData).then((result) => {
 
                 self.setSuccess(self.samToolsViewFlags);
                 self.update();
