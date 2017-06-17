@@ -57,6 +57,7 @@ require('./Output');
 require('./Pileup');
 //require('./Host');
 require('./circularGenomeBuilder');
+require('./OperationViewer');
 
 //final steps to load project after OpenProject operation has unpacked the project tarball
 function finishLoadingProject(proj : ProjectManifest) : void
@@ -114,6 +115,12 @@ app.on
 		{
 			label: 'View',
 			submenu: [
+				{
+					label : "Operations",
+					click(){
+						winMgr.windowCreators["operationViewer"].Create();
+					}
+				},
 			{
 				role: 'resetzoom'
 			},
