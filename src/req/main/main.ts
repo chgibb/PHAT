@@ -83,6 +83,7 @@ function finishLoadingProject(proj : ProjectManifest) : void
 
 	winMgr.windowCreators["toolBar"].Create();
 	winMgr.closeAllExcept("toolBar");
+
 }
 
 app.on
