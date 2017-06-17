@@ -47,9 +47,9 @@ $
             {
                 if(arg.action == "getKey" || arg.action == "keyChange")
                 {
+                    let res = ``;
                     if(arg.key == "operations" && arg.val !== undefined)
                     {
-                        let res = ``;
                         let ops : Array<AtomicOperation> = <Array<AtomicOperation>>arg.val;
                         for(let i = 0; i != ops.length; ++i)
                         {
