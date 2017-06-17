@@ -59,3 +59,7 @@ export function getSortedBam(alignData : alignData) : string
 {
     return getReadableAndWritable(`rt/AlignmentArtifacts/${alignData.uuid}/out.sorted.bam`);
 }
+export function getSortBamIndex(alignData : alignData) : string
+{
+    return getReadableAndWritable(`rt/AlignmentArtifacts/${alignData.uuid}/out.sorted.bam.bai`);
+}
