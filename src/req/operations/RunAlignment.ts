@@ -123,7 +123,7 @@ export class RunAlignment extends atomic.AtomicOperation
                         self.setSuccess(self.samToolsIndexFlags);
                         self.update();
 
-                        samToolsDepth(self).then((result) => {
+                        samToolsDepth(self.alignData).then((result) => {
 
                             samToolsFaidx(self).then((result) => {
 
