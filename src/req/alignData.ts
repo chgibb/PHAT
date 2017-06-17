@@ -63,3 +63,11 @@ export function getSortBamIndex(alignData : alignData) : string
 {
     return getReadableAndWritable(`rt/AlignmentArtifacts/${alignData.uuid}/out.sorted.bam.bai`);
 }
+export function getCoverage(alignData : alignData) : string
+{
+    return getReadableAndWritable(`rt/AlignmentArtifacts/${alignData.uuid}/depth.coverage`);
+}
+export function getCoverageForContig(alignData : alignData,contigUUID : string) : string
+{
+    return getReadableAndWritable(`rt/AlignmentArtifacts/${alignData.uuid}/contigCoverage/${contigUUID}`);
+}
