@@ -3,7 +3,7 @@ import * as readline from "readline";
 
 
 import {alignData,getSortedBam,getCoverage,getCoverageForContig} from "./../../alignData";
-import {getReadable,getReadableAndWritable} from "./../../getAppPath";
+import {getReadable} from "./../../getAppPath";
 import {SpawnRequestParams} from "./../../JobIPC";
 import {Job,JobCallBackObject} from "./../../main/Job";
 
