@@ -1,5 +1,8 @@
-/**
- * Main entry point for the main application process.
- * @module main
- */
-require("./req/main/main");
+import {getReadable,getReadableAndWritable} from "./req/getAppPath";
+import {bootStrapCodeCache} from "./req/bootStrapCodeCache";
+
+bootStrapCodeCache(
+    getReadable("mainProcess.js"),
+    "./mainProcess",
+    getReadableAndWritable("mainProcess.cdata")
+);
