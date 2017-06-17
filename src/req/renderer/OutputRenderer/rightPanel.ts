@@ -16,16 +16,16 @@ export class FastQInfoSelection
     [index : string] : boolean;
     public constructor()
     {
-        this.alias = false;
+        this.alias = true;
         this.fullName = false;
         this.sizeInBytes = false;
-        this.formattedSize = false;
+        this.formattedSize = true;
         this.numberOfSequences = false;
-        this.PBSQ = false;
-        this.PSQS = false;
-        this.PSGCC = false;
-        this.SDL = false;
-        this.ORS = false;
+        this.PBSQ = true;
+        this.PSQS = true;
+        this.PSGCC = true;
+        this.SDL = true;
+        this.ORS = true;
     }
     
 }
@@ -53,19 +53,19 @@ export class AlignmentInfoSelection
     [index : string] : boolean;
     public constructor()
     {
-        this.alias = false;
+        this.alias = true;
         this.fullName = false;
         this.sizeInBytes = false;
-        this.formattedSize = false;
-        this.reads = false;
-        this.mates = false;
-        this.overallAlignmentRate = false;
+        this.formattedSize = true;
+        this.reads = true;
+        this.mates = true;
+        this.overallAlignmentRate = true;
         this.minimumCoverage = false;
         this.minimumVariableFrequency = false;
         this.minimumAverageQuality = false;
         this.pValueThreshold = false;
-        this.SNPsPredicted = false;
-        this.indelsPredicted = false;
+        this.SNPsPredicted = true;
+        this.indelsPredicted = true;
         this.dateRan = false;
         this.SNPPositions = false;
     }
@@ -87,10 +87,10 @@ export class SNPPositionsInfoSelection
     [index : string] : boolean;
     public constructor()
     {
-        this.chrom = false;
-        this.position = false;
-        this.ref = false;
-        this.var = false;
+        this.chrom = true;
+        this.position = true;
+        this.ref = true;
+        this.var = true;
         this.consCovReads1Reads2FreqPValue = false;
         this.strandFilterR1R1R2R2pVal = false;
         this.samplesRef = false;
@@ -101,12 +101,29 @@ export class SNPPositionsInfoSelection
     }
 }
 
+export class MappedReadsPerContigInfoSelection
+{
+    public refSeqName : boolean;
+    public seqLength : boolean;
+    public mappedReads : boolean;
+    public unMappedReads : boolean;
+    [index : string] : boolean;
+    public constructor()
+    {
+        this.refSeqName = true;
+        this.seqLength = true;
+        this.mappedReads = true;
+        this.unMappedReads = true;
+    }
+}
+
 export class View extends viewMgr.View
 {
     public fastQInfoSelection : FastQInfoSelection;
     public refSeqInfoSelection : FastaInfoSelection;
     public alignmentInfoSelection : AlignmentInfoSelection;
     public snpPositionsInfoSelection : SNPPositionsInfoSelection;
+    public mapppedReadsPerContigInfoSelection : MappedReadsPerContigInfoSelection;
     public constructor(name : string,div : string)
     {
         super(name,div);
@@ -114,6 +131,7 @@ export class View extends viewMgr.View
         this.refSeqInfoSelection = new FastaInfoSelection();
         this.alignmentInfoSelection = new AlignmentInfoSelection();
         this.snpPositionsInfoSelection = new SNPPositionsInfoSelection();
+        this.mapppedReadsPerContigInfoSelection = new MappedReadsPerContigInfoSelection();
     }
 
     public onMount() : void{}
@@ -268,6 +286,36 @@ export class View extends viewMgr.View
                         <br />
                     `;
                 }
+                if(masterView.displayInfo == "MappedReadsPerContigInfo")
+                {
+                    res += `
+                        <input type="checkbox" id="refSeqName">Contig Name</input>
+                        <br />
+
+                        <input type="checkbox" id="seqLength">Length</input>
+                        <br />
+
+                        <input type="checkbox" id="mappedReads">Mapped Reads</input>
+                        <br />
+
+                        <input type="checkbox" id="unMappedReads">Unmapped Reads</input>
+                        <br />
+                    `;
+                    let found = false;
+                    for(let i = 0; i != masterView.alignData.length; ++i)
+                    {
+                        if(masterView.inspectingUUID == masterView.alignData[i].uuid)
+                        {
+                            res += `
+                                <h5>Mapped reads per contig for ${masterView.alignData[i].alias}</h5>
+                            `;
+                            found = true;
+                            break;
+                        }
+                    }
+                    if(!found)
+                        throw new Error("No alignment to inspect");
+                }
 
                 return res;
             })()}
@@ -277,7 +325,6 @@ export class View extends viewMgr.View
     public postRender() : void
     {
         let masterView = <masterView.View>viewMgr.getViewByName("masterView");
-        console.log("post render");
         try
         {
             if(masterView.displayInfo == "QCInfo")
@@ -333,7 +380,20 @@ export class View extends viewMgr.View
                         try
                         {
                             (<HTMLInputElement>document.getElementById(i)).checked = this.snpPositionsInfoSelection[i];
-                            console.log("restored "+i+" to "+this.snpPositionsInfoSelection[i]);
+                        }
+                        catch(err){}
+                    }
+                }
+            }
+            if(masterView.displayInfo == "MappedReadsPerContigInfo")
+            {
+                for(let i in this.mapppedReadsPerContigInfoSelection)
+                {
+                    if(this.mapppedReadsPerContigInfoSelection.hasOwnProperty(i))
+                    {
+                        try
+                        {
+                            (<HTMLInputElement>document.getElementById(i)).checked = this.mapppedReadsPerContigInfoSelection[i];
                         }
                         catch(err){}
                     }
@@ -379,6 +439,12 @@ export class View extends viewMgr.View
             else if(masterView.displayInfo == "SNPPositions")
             {
                 this.snpPositionsInfoSelection[event.target.id] = checked;
+                viewMgr.render();
+                return;
+            }
+            else if(masterView.displayInfo == "MappedReadsPerContigInfo")
+            {
+                this.mapppedReadsPerContigInfoSelection[event.target.id] = checked;
                 viewMgr.render();
                 return;
             }

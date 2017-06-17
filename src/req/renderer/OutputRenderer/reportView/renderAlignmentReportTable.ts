@@ -83,7 +83,7 @@ export function renderAlignmentReportTable() : string
                         res += `<td>${masterView.alignData[i].summary.mates}</td>`;
 
                     if(rightPanel.alignmentInfoSelection.overallAlignmentRate)
-                        res += `<td>${masterView.alignData[i].summary.overallAlignmentRate}</td>`;
+                        res += `<td class="activeHover" id="${masterView.alignData[i].uuid}AlignmentRate">${masterView.alignData[i].summary.overallAlignmentRate}</td>`;
 
                     if(rightPanel.alignmentInfoSelection.minimumCoverage)
                         res += `<td>${masterView.alignData[i].varScanSNPSummary.minCoverage}</td>`;
