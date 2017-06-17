@@ -15,6 +15,7 @@ import {VCF2JSONRow} from "./../../varScanMPileup2SNPVCF2JSON";
 import {renderQCReportTable} from "./reportView/renderQCReportTable";
 import {renderAlignmentReportTable} from "./reportView/renderAlignmentReportTable";
 import {renderSNPPositionsTable} from "./reportView/renderSNPPositionsTable";
+import {renderMappedReadsPerContigTable} from "./reportView/renderMappedReadsPerContigTable";
 
 export function addView(arr : Array<viewMgr.View>,div : string)
 {
@@ -37,8 +38,6 @@ export class View extends viewMgr.View
         let masterView = <masterView.View>viewMgr.getViewByName("masterView");
         let rightPanel = <rightPanel.View>viewMgr.getViewByName("rightPanel",masterView.views);
 
-        
-
         //if we're looking at SNP position, refresh table information if the alignment being inspected has changed
         if(masterView.displayInfo == "SNPPositions")
         {
@@ -56,6 +55,7 @@ export class View extends viewMgr.View
             ${renderQCReportTable()}
             ${renderAlignmentReportTable()}
             ${renderSNPPositionsTable(this.vcfRows)}
+            ${renderMappedReadsPerContigTable()}
 
         `;
     }
@@ -94,6 +94,18 @@ export class View extends viewMgr.View
                         }
                     }
                 );
+            }
+            if(event.target.id == masterView.alignData[i].uuid+"AlignmentRate")
+            {
+                if(!masterView.alignData[i].summary.overallAlignmentRate)
+                {
+                    alert(`Can't view an alignment with 0% alignment rate`);
+                    return;
+                }
+                masterView.inspectingUUID = masterView.alignData[i].uuid;
+                masterView.displayInfo = "MappedReadsPerContigInfo";
+                viewMgr.render();
+                return;
             }
             if(masterView.alignData[i].uuid == masterView.inspectingUUID)
             {

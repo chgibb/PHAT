@@ -19,7 +19,7 @@ export class View extends viewMgr.View
     public fastqInputs : Array<Fastq>;
     public fastaInputs : Array<Fasta>;
 
-    public displayInfo : "QCInfo" | "RefSeqInfo" | "AlignmentInfo" | "SNPPositions";
+    public displayInfo : "QCInfo" | "RefSeqInfo" | "AlignmentInfo" | "SNPPositions" | "MappedReadsPerContigInfo";
     public inspectingUUID : string;
     public constructor(div : string)
     {
@@ -92,8 +92,6 @@ export class View extends viewMgr.View
 
     public divClickEvents(event : JQueryEventObject) : void
     {
-        let self = this;
-        console.log(event.target.id);
-        
+
     }
 }
