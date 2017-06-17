@@ -24,9 +24,9 @@ function update() : void
     process.send(<AtomicOperationForkEvent>{
         update : true,
         flags : flags,
+        step : step,
+        progressMessage : progressMessage,
         data : {
-            step : step,
-            progressMessage : progressMessage,
             alignData : align
         }
     });
@@ -101,6 +101,7 @@ process.on(
                                                 flags.done = true;
                                                 flags.success = true;
                                                 update();
+                                                process.exit(0);
 
                                             });
                                         });
