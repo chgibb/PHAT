@@ -6,8 +6,8 @@
             "type" : "node",
             "request" : "launch",
             "cwd" : "${workspaceRoot}/phat-linux-x64",
-            "runtimeExecutable" : "${workspaceRoot}/phat",
-        "program" : "${workSpaceRoot}/resources/app/main.js",
+            "runtimeExecutable" : "${workspaceRoot}/phat-linux-x64/phat",
+        "program" : "${workspaceRoot}/phat-linux-x64/resources/app/main.js",
         "protocol" : "legacy"
         }
     ]
