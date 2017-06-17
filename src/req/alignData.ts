@@ -1,12 +1,13 @@
 const uuidv4 : () => string = require("uuid/v4");
 
 let dFormat = require('./dateFormat');
+import {getReadableAndWritable} from "./getAppPath";
 import Fastq from "./fastq";
 import {Fasta} from "./fasta";
 import {Bowtie2Report} from "./bowTie2AlignmentReportParser";
 import {varScanMPileup2SNPReport} from "./varScanMPileup2SNPReportParser";
 import {SamToolsIdxStatsReport} from "./samToolsIdxStatsReport";
-export default class alignData
+export class alignData
 {
     public uuid : string;
     public fastqs : Array<Fastq>;
@@ -36,4 +37,17 @@ export default class alignData
         this.dateStampString = dFormat.formatDateStamp(this.dateStamp);
         this.uuid = uuidv4();
     }
+}
+
+export function getArtifactDir(alignData : alignData) : string
+{
+    return getReadableAndWritable(`rt/AlignmentArtifacts/${alignData.uuid}`);
+}
+export function getCoverageDir(alignData : alignData) : string
+{
+    return getReadableAndWritable(`rt/AlignmentArtifacts/${alignData.uuid}/contigCoverage`)
+}
+export function getSam(alignData : alignData) : string
+{
+    return getReadableAndWritable(`rt/AlignmentArtifacts/${alignData.uuid}/out.sam`);
 }

@@ -1,5 +1,5 @@
 import {AtomicOperationForkEvent,CompletionFlags} from "./req/atomicOperationsIPC";
-import alignData from "./req/alignData"
+import {alignData} from "./req/alignData"
 import * as cf from "./req/renderer/circularFigure";
 
 let align : alignData;

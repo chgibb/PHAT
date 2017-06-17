@@ -42,7 +42,7 @@ import {SaveCurrentProject} from "./../operations//SaveCurrentProject";
 import * as winMgr from "./winMgr";
 
 import {File} from "./../file";
-import alignData from "./../alignData";
+import {alignData} from "./../alignData";
 import {CircularFigure} from "./../renderer/circularFigure";
 
 import {GetKeyEvent,SaveKeyEvent,KeySubEvent} from "./../ipcEvents";

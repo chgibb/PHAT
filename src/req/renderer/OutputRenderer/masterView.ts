@@ -4,7 +4,7 @@ import * as reportView from "./reportView";
 
 import Fastq from "./../../fastq"
 import {Fasta} from "./../../fasta";
-import alignData from "./../../alignData";
+import {alignData} from "./../../alignData";
 
 export function addView(arr : Array<viewMgr.View>,div : string)
 {

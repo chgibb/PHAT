@@ -12,7 +12,7 @@ import * as viewMgr from "./../viewMgr";
 import * as masterView from "./masterView";
 import {ContigEditor} from "./contigEditor";
 import {ContigCreator} from "./contigCreator";
-import alignData from "./../../alignData";
+import {alignData} from "./../../alignData";
 import * as cf from "./../circularFigure";
 import * as plasmid from "./../circularGenome/plasmid";
 

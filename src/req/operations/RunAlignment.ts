@@ -5,7 +5,7 @@ import {getFolderSize} from "./../getFolderSize";
 import formatByteString from "./../renderer/formatByteString";
 import {Fasta,getFaiPath} from "./../fasta";
 import Fastq from "./../fastq";
-import alignData from "./../alignData"
+import {alignData} from "./../alignData"
 import {getReadable,getReadableAndWritable} from "./../getAppPath";
 import {Job} from "./../main/Job";
 
@@ -103,7 +103,7 @@ export class RunAlignment extends atomic.AtomicOperation
     public run() : void
     {
         let self = this;
-        bowTie2Align(this).then((result) => {
+        bowTie2Align(this.alignData,()=>{}).then((result) => {
 
             self.setSuccess(self.bowtieFlags);
             self.update();
