@@ -75,3 +75,15 @@ export function getMPileup(alignData : alignData) : string
 {
     return getReadableAndWritable(`rt/AlignmentArtifacts/${alignData.uuid}/pileup.mpileup`);
 }
+export function getSNPsVCF(alignData : alignData) : string
+{
+    return getReadableAndWritable(`rt/AlignmentArtifacts/${alignData.uuid}/snps.vcf`);
+}
+export function getSNPsJSON(alignData : alignData) : string
+{
+    return getReadableAndWritable(`rt/AlignmentArtifacts/${alignData.uuid}/snps.json`);
+}
+export function getIdxStats(alignData : alignData) : string
+{
+    return getReadableAndWritable(`rt/AlignmentArtifacts/${alignData.uuid}/idxstats`);
+}
