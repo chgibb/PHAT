@@ -125,7 +125,7 @@ export class RunAlignment extends atomic.AtomicOperation
 
                         samToolsDepth(self.alignData).then((result) => {
 
-                            samToolsFaidx(self).then((result) => {
+                            samToolsFaidx(self.alignData.fasta).then((result) => {
 
                                 samToolsMPileup(self).then((result) => {
 

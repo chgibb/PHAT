@@ -1,14 +1,16 @@
 const fse = require("fs-extra");
 
-import {IndexFasta} from "./../indexFasta";
-import {RunAlignment} from "./../RunAlignment";
-
+import {getReadable} from "./../../getAppPath";
+import {alignData} from "./../../alignData";
+import {Fasta,getFaiPath} from "./../../fasta";
 import {SpawnRequestParams} from "./../../JobIPC";
 import {Job,JobCallBackObject} from "./../../main/Job";
 
-export function samToolsFaidx(op : IndexFasta | RunAlignment) : Promise<{}>
+export function samToolsFaidx(fasta : Fasta) : Promise<{}>
 {
     return new Promise((resolve,reject) => {
+        let samToolsExe = getReadable('samtools');
+
         let jobCallBack : JobCallBackObject = {
             send(channel : string,params : SpawnRequestParams)
             {
@@ -20,7 +22,7 @@ export function samToolsFaidx(op : IndexFasta | RunAlignment) : Promise<{}>
                             function(){
                                 try
                                 {
-                                    fse.copy(`${op.fasta.path}.fai`,op.faiPath,function(err : string){
+                                    fse.copy(`${fasta.path}.fai`,getFaiPath(fasta),function(err : string){
                                         if(err)
                                             reject(err);
                                         resolve();
@@ -35,21 +37,21 @@ export function samToolsFaidx(op : IndexFasta | RunAlignment) : Promise<{}>
                     }
                     else
                     {
-                        return reject(`Failed to create fai index for ${op.fasta.alias}`);
+                        return reject(`Failed to create fai index for ${fasta.alias}`);
                     }
                 }
             }
         }
-        op.faiJob = new Job(
-            op.samToolsExe,
+        let faiJob = new Job(
+            samToolsExe,
             <Array<string>>[
                 "faidx",
-                op.fasta.path
+                fasta.path
             ],"",true,jobCallBack,{}
         );
         try
         {
-            op.faiJob.Run();
+            faiJob.Run();
         }
         catch(err)
         {
