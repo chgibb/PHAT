@@ -51,3 +51,7 @@ export function getSam(alignData : alignData) : string
 {
     return getReadableAndWritable(`rt/AlignmentArtifacts/${alignData.uuid}/out.sam`);
 }
+export function getUnSortedBam(alignData : alignData) : string
+{
+    return getReadableAndWritable(`rt/AlignmentArtifacts/${alignData.uuid}/out.bam`);
+}
