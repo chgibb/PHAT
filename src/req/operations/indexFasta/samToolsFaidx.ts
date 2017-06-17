@@ -1,7 +1,6 @@
 const fse = require("fs-extra");
 
 import {getReadable} from "./../../getAppPath";
-import {alignData} from "./../../alignData";
 import {Fasta,getFaiPath} from "./../../fasta";
 import {SpawnRequestParams} from "./../../JobIPC";
 import {Job,JobCallBackObject} from "./../../main/Job";
