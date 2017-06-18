@@ -1,21 +1,25 @@
 import * as fs from "fs";
 
-import {getReadableAndWritable} from "./../../getAppPath";
-import {RunAlignment} from "./../RunAlignment";
+import {getReadable} from "./../../getAppPath";
+import {alignData,getSortedBam,getMPileup} from "./../../alignData";
 import {SpawnRequestParams} from "./../../JobIPC";
 import {Job,JobCallBackObject} from "./../../main/Job";
 
-export function samToolsMPileup(op : RunAlignment) : Promise<{}>
+export function samToolsMPileup(alignData : alignData) : Promise<{}>
 {
     return new Promise((resolve,reject) => {
+        let samToolsExe = getReadable('samtools');
+
+        let samToolsMPileupStream = fs.createWriteStream(getMPileup(alignData));
+
         let jobCallBack : JobCallBackObject = {
             send(channel : string,params : SpawnRequestParams)
             {
-                if(params.processName == op.samToolsExe && params.args[0] == "mpileup")
+                if(params.processName == samToolsExe && params.args[0] == "mpileup")
                 {
                     if(params.unBufferedData && params.stdout)
                     {
-                        op.samToolsMPileupStream.write(params.unBufferedData);
+                        samToolsMPileupStream.write(params.unBufferedData);
                     }
                     else if(params.done && params.retCode !== undefined)
                     {
@@ -23,36 +27,36 @@ export function samToolsMPileup(op : RunAlignment) : Promise<{}>
                         {
                             setTimeout(
                                 function(){
-                                    op.samToolsMPileupStream.end();
+                                    samToolsMPileupStream.end();
                                     resolve();
                                 },500
                             );
                         }
                         else
                         {
-                            reject(`Failed to generate pileup for ${op.alignData.alias}`);
+                            reject(`Failed to generate pileup for ${alignData.alias}`);
                         }
                     }
                 }
             }
         }
-        op.samToolsMPileupJob = new Job(
-            op.samToolsExe,
+        let samToolsMPileupJob = new Job(
+            samToolsExe,
             <Array<string>>[
                 "mpileup",
                 "-f",
-                op.fasta.path,
-                getReadableAndWritable(`rt/AlignmentArtifacts/${op.alignData.uuid}/out.sorted.bam`)
+                alignData.fasta.path,
+                getSortedBam(alignData)
             ],"",true,jobCallBack,{}
         );
         try
         {
-            op.samToolsMPileupJob.Run();
+            samToolsMPileupJob.Run();
         }
         catch(err)
         {
             return reject(err);
         }
-        op.samToolsMPileupStream = fs.createWriteStream(getReadableAndWritable(`rt/AlignmentArtifacts/${op.alignData.uuid}/pileup.mpileup`));
+        
     });
 }

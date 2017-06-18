@@ -45,9 +45,6 @@ $
 (
     function()
     {
-                console.log("app Path: "+app.getAppPath());
-console.log("app data: "+app.getPath("appData"));
-console.log("user data: "+app.getPath("userData"));
         /*
             This method is only for internal testing in order to limit access to the application
             to collaborators. This needs to be removed for the public release. token should be

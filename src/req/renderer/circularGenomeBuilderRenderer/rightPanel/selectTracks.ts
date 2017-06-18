@@ -6,7 +6,7 @@ import * as viewMgr from "./../../viewMgr";
 import * as masterView from "./../masterView";
 import {GenomeView} from "./../genomeView";
 import {RightPanel} from "./../rightPanel";
-import alignData from "./../../../alignData";
+import {alignData} from "./../../../alignData";
 import * as cf from "./../../circularFigure";
 
 require("@claviska/jquery-minicolors");

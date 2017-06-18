@@ -1,16 +1,18 @@
-import {getReadableAndWritable} from "./../../getAppPath";
-import {RunAlignment} from "./../RunAlignment";
+import {getReadable} from "./../../getAppPath";
+import {alignData,getSam,getUnSortedBam} from "./../../alignData";
 import {SpawnRequestParams} from "./../../JobIPC";
 import {Job,JobCallBackObject} from "./../../main/Job";
 import {parseBowTie2AlignmentReport} from "./../../bowTie2AlignmentReportParser";
 
-export function samToolsView(op : RunAlignment) : Promise<{}>
+export function samToolsView(alignData : alignData) : Promise<{}>
 {
     return new Promise((resolve,reject) => {
+        let samToolsExe = getReadable('samtools');
+
         let jobCallBack : JobCallBackObject = {
             send(channel : string,params : SpawnRequestParams)
             {
-                if(params.processName == op.samToolsExe && params.args[0] == "view")
+                if(params.processName == samToolsExe && params.args[0] == "view")
                 {
                     if(params.done && params.retCode !== undefined)
                     {
@@ -26,21 +28,21 @@ export function samToolsView(op : RunAlignment) : Promise<{}>
                 }
             }
         }
-        op.alignData.summary = parseBowTie2AlignmentReport(op.alignData.summaryText);
-        op.samToolsViewJob = new Job(
-            op.samToolsExe,
+        alignData.summary = parseBowTie2AlignmentReport(alignData.summaryText);
+        let samToolsViewJob = new Job(
+            samToolsExe,
             <string[]>[
                 "view",
                 "-bS",
-                getReadableAndWritable(`rt/AlignmentArtifacts/${op.alignData.uuid}/out.sam`),
+                getSam(alignData),
                 "-o",
-                getReadableAndWritable(`rt/AlignmentArtifacts/${op.alignData.uuid}/out.bam`),
+                getUnSortedBam(alignData)
             ],
             "",true,jobCallBack,{}
         );
         try
         {
-            op.samToolsViewJob.Run();
+            samToolsViewJob.Run();
         }
         catch(err)
         {

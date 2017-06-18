@@ -4,7 +4,7 @@ import * as atomic from "./atomicOperations";
 import {AtomicOperationForkEvent} from "./../atomicOperationsIPC";
 import {getReadable} from "./../getAppPath";
 
-import alignData from "./../alignData"
+import {alignData} from "./../alignData"
 import * as cf from "./../renderer/circularFigure";
 export class RenderSNPTrackForContig extends atomic.AtomicOperation
 {

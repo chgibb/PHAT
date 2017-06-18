@@ -9,7 +9,6 @@ import * as viewMgr from "./../viewMgr";
 import * as masterView from "./masterView";
 import * as rightPanel from "./rightPanel";
 
-import {getQCSummaryByNameOfReportByIndex} from "./../../QCData"
 import {VCF2JSONRow} from "./../../varScanMPileup2SNPVCF2JSON";
 
 import {renderQCReportTable} from "./reportView/renderQCReportTable";

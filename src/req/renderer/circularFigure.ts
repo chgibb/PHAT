@@ -12,7 +12,7 @@ import * as trackMarker from "./circularGenome/trackMarker";
 import * as markerLabel from "./circularGenome/markerLabel";
 import * as trackScale from "./circularGenome/trackScale";
 
-import alignData from "./../alignData";
+import {alignData} from "./../alignData";
 export class Contig extends fastaContigLoader.Contig
 {
     public color? : string = "";

@@ -6,7 +6,7 @@ import {RenderCoverageTrackForContig} from "./req/operations/RenderCoverageTrack
 import {RenderSNPTrackForContig} from "./req/operations/RenderSNPTrack";
 import {CheckForUpdate} from "./req/operations/CheckForUpdate";
 import {DownloadAndInstallUpdate} from "./req/operations/DownloadAndInstallUpdate";
-import alignData from "./req/alignData";
+import {alignData} from "./req/alignData";
 import Fastq from "./req/fastq";
 import {Fasta} from "./req/fasta";
 import {CircularFigure} from "./req/renderer/circularFigure";

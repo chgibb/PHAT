@@ -1,21 +1,26 @@
 import * as fs from "fs";
 
+import {alignData,getArtifactDir,getCoverageDir,getSam} from "./../../alignData";
 import {getReadable,getReadableAndWritable} from "./../../getAppPath";
-import {RunAlignment} from "./../RunAlignment";
 import {SpawnRequestParams} from "./../../JobIPC";
 import {Job,JobCallBackObject} from "./../../main/Job";
 
-export function bowTie2Align(op : RunAlignment) : Promise<{}>
+export function bowTie2Align(alignData : alignData,update : () => void) : Promise<{}>
 {
     return new Promise((resolve,reject) => {
+        let bowtie2Exe = "";
+        if(process.platform == "linux")
+            bowtie2Exe = getReadable('bowtie2');
+        else if(process.platform == "win32")
+            bowtie2Exe = getReadable('perl/perl/bin/perl.exe');
+
         let jobCallBack : JobCallBackObject = {
             send(channel : string,params : SpawnRequestParams)
             {
-                if(params.processName == op.bowtie2Exe)
+                if(params.processName == bowtie2Exe)
                 {
                     if(params.unBufferedData)
-                        op.alignData.summaryText += params.unBufferedData;
-                    op.spawnUpdate = params;
+                        alignData.summaryText += params.unBufferedData;
                     if(params.done && params.retCode !== undefined)
                     {
                         if(params.retCode == 0)
@@ -30,25 +35,28 @@ export function bowTie2Align(op : RunAlignment) : Promise<{}>
                 }
             }
         };
+        
+
         let args : Array<string> = new Array<string>();
+
         if(process.platform == "win32")
             args.push(getReadable("bowtie2"));
         args.push("-x");
-        args.push(getReadableAndWritable(`rt/indexes/${op.fasta.uuid}`));
-        if(op.fastq2 !== undefined)
+        args.push("\""+getReadableAndWritable(`rt/indexes/${alignData.fasta.uuid}`)+"\"");
+        if(alignData.fastqs[1] !== undefined)
         {
             args.push("-1");
-            args.push(op.fastq1.path);
+            args.push(alignData.fastqs[0].path);
             args.push("-2");
-            args.push(op.fastq2.path);
+            args.push(alignData.fastqs[1].path);
         }
         else
         {
             args.push("-U");
-            args.push(op.fastq1.path);
+            args.push(alignData.fastqs[0].path);
         }
         args.push("-S");
-        args.push(getReadableAndWritable(`rt/AlignmentArtifacts/${op.alignData.uuid}/out.sam`));
+        args.push(getSam(alignData));
 
         let invokeString = "";
         for(let i = 0; i != args.length; ++i)
@@ -56,22 +64,23 @@ export function bowTie2Align(op : RunAlignment) : Promise<{}>
             invokeString += args[i];
             invokeString += " ";
         }
-        op.alignData.invokeString = invokeString;
-        if(op.fastq2 !== undefined)
-            op.alignData.alias = `${op.fastq1.alias}, ${op.fastq2.alias}; ${op.fasta.alias}`;
+        alignData.invokeString = invokeString;
+        if(alignData.fastqs[1] !== undefined)
+            alignData.alias = `${alignData.fastqs[0].alias}, ${alignData.fastqs[1].alias}; ${alignData.fasta.alias}`;
         else
-            op.alignData.alias = `${op.fastq1.alias}; ${op.fasta.alias}`;
-        fs.mkdirSync(getReadableAndWritable(`rt/AlignmentArtifacts/${op.alignData.uuid}`));
-        fs.mkdirSync(getReadableAndWritable(`rt/AlignmentArtifacts/${op.alignData.uuid}/contigCoverage`));
-        op.bowtieJob = new Job(op.bowtie2Exe,args,"",true,jobCallBack,{});
+            alignData.alias = `${alignData.fastqs[0].alias}; ${alignData.fasta.alias}`;
+        fs.mkdirSync(getArtifactDir(alignData));
+        fs.mkdirSync(getCoverageDir(alignData));
+        let bowtieJob = new Job(bowtie2Exe,args,"",true,jobCallBack,{});
+        bowtieJob.vLog = getReadableAndWritable("bowTieLog.txt");
         try
         {
-            op.bowtieJob.Run();
+            bowtieJob.Run();
         }
         catch(err)
         {
             return reject(err);
         }
-        op.update();
+        update();
     });
 }
