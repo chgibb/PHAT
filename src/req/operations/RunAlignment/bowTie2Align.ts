@@ -42,7 +42,7 @@ export function bowTie2Align(alignData : alignData,update : () => void) : Promis
         if(process.platform == "win32")
             args.push(getReadable("bowtie2"));
         args.push("-x");
-        args.push(getReadableAndWritable(`rt/indexes/${alignData.fasta.uuid}`));
+        args.push("\""+getReadableAndWritable(`rt/indexes/${alignData.fasta.uuid}`)+"\"");
         if(alignData.fastqs[1] !== undefined)
         {
             args.push("-1");
@@ -72,6 +72,7 @@ export function bowTie2Align(alignData : alignData,update : () => void) : Promis
         fs.mkdirSync(getArtifactDir(alignData));
         fs.mkdirSync(getCoverageDir(alignData));
         let bowtieJob = new Job(bowtie2Exe,args,"",true,jobCallBack,{});
+        bowtieJob.vLog = getReadableAndWritable("bowTieLog.txt");
         try
         {
             bowtieJob.Run();
