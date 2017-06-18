@@ -42,7 +42,6 @@ function getElectronApp() : boolean
     {
         return false;
     }
-    
 }
 
 export function setReadableBasePath(path : string)
@@ -110,9 +109,9 @@ export function getReadable(relativePath : string) : string
     if(!readableBasePath)
     {
         setReadableBasePath(getReadableDir());
-        return readableBasePath+"/"+relativePath;
+        return path.resolve(path.normalize(readableBasePath+"/"+relativePath));
     }
-    return readableBasePath+"/"+relativePath;
+    return path.resolve(path.normalize(readableBasePath+"/"+relativePath));
 }
 
 export function getWritable(relativePath : string) : string
@@ -122,9 +121,9 @@ export function getWritable(relativePath : string) : string
     if(!writableBasePath)
     {
         setWritableBasePath(getConfigDir());
-        return writableBasePath+"/"+relativePath;
+        return path.resolve(path.normalize(writableBasePath+"/"+relativePath));
     }
-    return writableBasePath+"/"+relativePath;
+    return path.resolve(path.normalize(writableBasePath+"/"+relativePath));
 }
 
 export function getReadableAndWritable(relativePath : string) : string
