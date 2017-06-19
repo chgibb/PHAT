@@ -3,13 +3,13 @@ export default function tokenizedHTMLArrayToXLS(html : Array<string>) : string
     let isTable = new RegExp("(<table)","i");
     let isTableEnd = new RegExp("(</table>)","i");
 
-    let isTableRow = new RegExp("(<tr>)","i");
+    let isTableRow = new RegExp("(<tr)","i");
     let isTableRowEnd = new RegExp("(</tr>)","i");
 
-    let isTableData = new RegExp("(<td>)","i");
+    let isTableData = new RegExp("(<td)","i");
     let isTableDataEnd = new RegExp("(</td>)","i");
 
-    let isTableHeader = new RegExp("(<th>)","i");
+    let isTableHeader = new RegExp("(<th)","i");
     let isTableHeaderEnd = new RegExp("(</th>)","i");
 
     let isTBody = new RegExp("<tbody>","i");
