@@ -1,5 +1,8 @@
 import * as viewMgr from "./../viewMgr";
 import * as masterView from "./masterView";
+import * as reportView from "./reportView";
+import {CSVExportDialog} from "./CSVExportDialog";
+import {XLSExportDialog} from "./XLSExportDialog";
 
 export class FastQInfoSelection
 {
@@ -319,8 +322,8 @@ export class View extends viewMgr.View
                 res += `
                     <br />
                     <br />
-                    <input type="radio" name="exportType">Excel</input>
-                    <input type="radio" name="exportType">CSV</input>
+                    <input type="radio" id="XLSExport" name="exportType">Excel</input>
+                    <input type="radio" id="CSVExport" name="exportType">CSV</input>
                     <br />
                     <button id="exportReport">Export</button
                 `;
@@ -418,6 +421,17 @@ export class View extends viewMgr.View
         {
             masterView.displayInfo = event.target.id;
             viewMgr.render();
+            return;
+        }
+        if(event.target.id == "exportReport")
+        {   
+            let reportView = <reportView.View>viewMgr.getViewByName("reportView",masterView.views);
+
+            if((<HTMLInputElement>document.getElementById("XLSExport")).checked)
+            {
+                XLSExportDialog(reportView.renderView());
+            }
+
             return;
         }
         if(event.target.id)
