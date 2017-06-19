@@ -4,6 +4,7 @@ bash scripts/build.bash
 rm -rf tests
 mkdir tests
 mkdir tests/data
+mkdir "tests/data with spaces"
 mkdir tests/resources
 
 if [[ "$OSTYPE" == "linux-gnu" ]]; then
