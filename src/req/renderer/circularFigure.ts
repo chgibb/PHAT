@@ -384,10 +384,6 @@ export function renderSNPTrack(
 {
     let SNPTracks : string = "";
 
-   /* let rl : readline.ReadLine = readline.createInterface(<readline.ReadLineOptions>{
-        input : fs.createReadStream(getReadableAndWritable(`rt/AlignmentArtifacts/${align.uuid}/snps.vcf`))
-    });*/
-
     let baseBP = getBaseBP(figure,contiguuid);
     if(baseBP == -1)
         throw new Error("Could not get base position of "+figure.name+" for reference");
@@ -449,44 +445,6 @@ export function renderSNPTrack(
         }
         cb(true,SNPTracks);
 
-    /*rl.on("line",function(line : string){
-        let tokens = line.split(/\s/g);
-
-        for(let i = 0; i != figure.contigs.length; ++i)
-        {
-            if(tokens[0] == (figure.contigs[i].name.split(/\s/g))[0])
-            {
-                SNPPositions.push({
-                    position : baseBP + parseInt(tokens[1]),
-                    relativePosition : parseInt(tokens[1]),
-                    from : tokens[2],
-                    to : tokens[3],
-                    adjust : 20,
-                    colour : colour
-                });
-            }
-        }
-    });
-    rl.on("close",function(){
-
-        SNPPositions.sort(function(a : SNPPosition,b : SNPPosition){return a.position - b.position;});
-
-        for(let i = 0; i != SNPPositions.length; ++i)
-        {
-            for(let k = 0; k != SNPPositions.length; ++k)
-            {
-                if(i != k && i < k)
-                {
-                    if((SNPPositions[k].position - SNPPositions[i].position) <= 85)
-                    {
-                        SNPPositions[k].adjust += 85;
-                    }
-                }
-            }
-        }
-
-        
-    });*/
 }
 
 export function cacheSNPTrack(
