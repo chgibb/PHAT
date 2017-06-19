@@ -47,16 +47,34 @@ atomic.register("newProject",NewProject);
 atomic.register("openProject",OpenProject);
 atomic.register("saveCurrentProject",SaveCurrentProject);
 
-let L6R1R1 : Fastq = new Fastq('data/L6R1.R1.fastq');
-let L6R1R2 : Fastq = new Fastq('data/L6R1.R2.fastq');
+let L6R1R1 : Fastq;
+let L6R1R2 : Fastq;
 
-let hpv16 : Fasta = new Fasta("data/HPV16ref_genomes.fasta");
-let hpv18 : Fasta = new Fasta("data/HPV18ref_genomes.fasta");
+let hpv16 : Fasta;
+let hpv18 : Fasta;
 
 let L6R1HPV16Alignment : alignData;
 let L6R1HPV18Alignment : alignData;
 
 let hpv16Figure : CircularFigure;
+
+function loadTestDataNoSpaces()
+{
+	L6R1R1 = new Fastq('data/L6R1.R1.fastq');
+	L6R1R2 = new Fastq('data/L6R1.R2.fastq');
+
+	hpv16 = new Fasta("data/HPV16ref_genomes.fasta");
+	hpv18 = new Fasta("data/HPV18ref_genomes.fasta");
+}
+function loadTestDataSpaces()
+{
+	L6R1R1 = new Fastq('data with spaces/L6R1.R1.fastq');
+	L6R1R2 = new Fastq('data with spaces/L6R1.R2.fastq');
+
+	hpv16 = new Fasta("data with spaces/HPV16ref_genomes.fasta");
+	hpv18 = new Fasta("data with spaces/HPV18ref_genomes.fasta");
+}
+
 
 atomic.updates.on(
 	"generateFastQCReport",function(op : atomic.AtomicOperation)
@@ -573,6 +591,36 @@ validateR1ToHPV16Alignment();
 validateR1ToHPV18Alignment();
 
 renderHPV16FigureTracks();
+
+loadTestDataSpaces();
+
+
+fastQReportGeneration();
+
+indexHPV16();
+
+
+validateHPV16Index();
+
+
+indexHPV18();
+
+validateHPV18Index();
+
+
+
+
+assert.assert(function(){
+	return true;
+},'--------------------------------------------------------',0);
+
+alignR1ToHPV16();
+
+validateR1ToHPV16Alignment();
+
+alignR1ToHPV18();
+
+validateR1ToHPV18Alignment();
 
 assert.runAsserts();
 
