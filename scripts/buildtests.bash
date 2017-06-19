@@ -20,6 +20,7 @@ if [[ "$OSTYPE" == "cygwin" ]]; then
 	echo portable > tests/edition
 fi
 cp -r testData/* tests/data
+cp -r testData/* "tests/data with spaces"
 
 mkdir guiTests
 ./node_modules/.bin/tsc
