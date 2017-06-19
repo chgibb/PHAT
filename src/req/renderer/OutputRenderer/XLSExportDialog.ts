@@ -5,7 +5,7 @@ import * as fs from "fs";
 import tokenizeHTMLString from "./../tokenizeHTMLString";
 import tokenizedHTMLArrayToXLS from "./../tokenizedHTMLArrayToXLS";
 
-export default function XLSExportDialog(htmlString : string) : void
+export function XLSExportDialog(htmlString : string) : void
 {
     dialog.showSaveDialog(
         {

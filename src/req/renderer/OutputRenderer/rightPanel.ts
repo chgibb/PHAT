@@ -1,5 +1,8 @@
 import * as viewMgr from "./../viewMgr";
 import * as masterView from "./masterView";
+import * as reportView from "./reportView";
+import {CSVExportDialog} from "./CSVExportDialog";
+import {XLSExportDialog} from "./XLSExportDialog";
 
 export class FastQInfoSelection
 {
@@ -316,6 +319,14 @@ export class View extends viewMgr.View
                     if(!found)
                         throw new Error("No alignment to inspect");
                 }
+                res += `
+                    <br />
+                    <br />
+                    <input type="radio" id="XLSExport" name="exportType">Excel</input>
+                    <input type="radio" id="CSVExport" name="exportType">CSV</input>
+                    <br />
+                    <button id="exportReport">Export</button
+                `;
 
                 return res;
             })()}
@@ -410,6 +421,22 @@ export class View extends viewMgr.View
         {
             masterView.displayInfo = event.target.id;
             viewMgr.render();
+            return;
+        }
+        if(event.target.id == "exportReport")
+        {   
+            let reportView = <reportView.View>viewMgr.getViewByName("reportView",masterView.views);
+
+            if((<HTMLInputElement>document.getElementById("XLSExport")).checked)
+            {
+                XLSExportDialog(reportView.renderView());
+            }
+
+            if((<HTMLInputElement>document.getElementById("CSVExport")).checked)
+            {
+                CSVExportDialog(reportView.renderView());
+            }
+
             return;
         }
         if(event.target.id)
