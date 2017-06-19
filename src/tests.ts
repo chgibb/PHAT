@@ -74,6 +74,7 @@ function loadTestDataSpaces()
 	hpv16 = new Fasta("data with spaces/HPV16ref_genomes.fasta");
 	hpv18 = new Fasta("data with spaces/HPV18ref_genomes.fasta");
 }
+loadTestDataNoSpaces();
 
 
 atomic.updates.on(
@@ -496,7 +497,10 @@ assert.assert(function(){
 	return true;
 },'--------------------------------------------------------',0);
 */
-
+assert.assert(function(){
+	loadTestDataNoSpaces();
+	return true;
+},'--------------------------------------------------------',0);
 assert.assert(function(){
 	assert.runningEvents += 1;
 
@@ -536,9 +540,7 @@ validateHPV18Index();
 
 
 
-assert.assert(function(){
-	return true;
-},'--------------------------------------------------------',0);
+
 
 alignR1ToHPV16();
 
@@ -592,9 +594,12 @@ validateR1ToHPV18Alignment();
 
 renderHPV16FigureTracks();
 
-loadTestDataSpaces();
 
 
+assert.assert(function(){
+	loadTestDataSpaces();
+	return true;
+},'--------------------------------------------------------',0);
 fastQReportGeneration();
 
 indexHPV16();
