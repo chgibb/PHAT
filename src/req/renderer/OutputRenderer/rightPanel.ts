@@ -432,6 +432,11 @@ export class View extends viewMgr.View
                 XLSExportDialog(reportView.renderView());
             }
 
+            if((<HTMLInputElement>document.getElementById("CSVExport")).checked)
+            {
+                CSVExportDialog(reportView.renderView());
+            }
+
             return;
         }
         if(event.target.id)
