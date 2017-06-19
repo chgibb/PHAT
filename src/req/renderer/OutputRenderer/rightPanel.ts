@@ -316,6 +316,14 @@ export class View extends viewMgr.View
                     if(!found)
                         throw new Error("No alignment to inspect");
                 }
+                res += `
+                    <br />
+                    <br />
+                    <input type="radio" name="exportType">Excel</input>
+                    <input type="radio" name="exportType">CSV</input>
+                    <br />
+                    <button id="exportReport">Export</button
+                `;
 
                 return res;
             })()}
