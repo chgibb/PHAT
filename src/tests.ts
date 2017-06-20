@@ -9,7 +9,7 @@ import {DownloadAndInstallUpdate} from "./req/operations/DownloadAndInstallUpdat
 import {alignData} from "./req/alignData";
 import Fastq from "./req/fastq";
 import {Fasta} from "./req/fasta";
-import {getPath} from "./req/file";
+import {getPath,importIntoProject} from "./req/file";
 import {CircularFigure} from "./req/renderer/circularFigure";
 import * as dataMgr from "./req/main/dataMgr";
 import {rebuildRTDirectory} from "./req/main/rebuildRTDirectory"
@@ -74,6 +74,13 @@ function loadTestDataSpaces()
 
 	hpv16 = new Fasta("data with spaces/HPV16ref_genomes.fasta");
 	hpv18 = new Fasta("data with spaces/HPV18ref_genomes.fasta");
+
+	importIntoProject(L6R1R1);
+	importIntoProject(L6R1R2);
+	importIntoProject(hpv16);
+	importIntoProject(hpv18);
+
+
 }
 loadTestDataNoSpaces();
 
