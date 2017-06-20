@@ -45,7 +45,7 @@ export class FastqView extends View
 		        (
 			        "<tr><td><input type='checkbox' id='",this.model.fastqInputs[i].uuid,"'></input></td>",
 			        "<td>",this.model.fastqInputs[i].alias,"</td>",
-			        `<td id="${this.model.fastqInputs[i].uuid}Import">`,this.model.fastqInputs[i].imported ? "In Project" : getPath(this.model.fastqInputs[i]) ,"</td>",
+			        `<td id="${this.model.fastqInputs[i].uuid}Import" class="activeHover">`,this.model.fastqInputs[i].imported ? "In Project" : getPath(this.model.fastqInputs[i]) ,"</td>",
 			        "<td>",this.model.fastqInputs[i].sizeString,"</td>",
 			        "</tr>"
                 );
