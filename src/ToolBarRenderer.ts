@@ -40,16 +40,6 @@ $
             }
         );
 
-        ipc.send(
-            "getKey",
-            <GetKeyEvent>{
-                action : "getKey",
-                channel : "application",
-                key : "operations",
-                replyChannel : "toolBar"
-            }
-        );
-
         ipc.on
         (
             "toolBar",function(event,arg)
