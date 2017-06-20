@@ -218,7 +218,6 @@ ipc.on(
 			{
 				if(list[i].uuid == arg.uuid)
 				{
-					console.log(`Found ${list[i].path}`);
 					let tmp = {};
 					Object.assign(tmp,list[i]);
 					atomicOp.addOperation(arg.opName,tmp);
