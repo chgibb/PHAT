@@ -21,17 +21,21 @@ winMgr.windowCreators["toolBar"] =
 		if(toolBarWindow.length > 0)
 		{
 			toolBarWindow[0].on(
-				"closed",function()
+				"close",function(e)
 				{
 					//Let the download -> install handoff handle app quitting and data saving
-					if(!dataMgr.getKey("application","downloadedUpdate"))
+					if(!dataMgr.getKey("application","downloadedUpdate") && !dataMgr.getKey("application","finishedSavingProject"))
 					{
 						dataMgr.saveData();
 						atomicOp.addOperation("saveCurrentProject",dataMgr.getKey("application","project"));
+						dataMgr.setKey("application","operations",atomicOp.operationsQueue);
+						winMgr.publishChangeForKey("application","operations");
 						winMgr.closeAllExcept("toolBar");
+						e.preventDefault();
+						//e.returnValue = false;
 					}
 				}
-			)
+			);
 		}
 	}
 };
