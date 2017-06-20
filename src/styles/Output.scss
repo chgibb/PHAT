@@ -2,6 +2,7 @@
 @import "common/table";
 @import "common/td";
 @import "common/th";
+@import "common/activeHover";
 div.rightSlideOutPanel
 {
     margin-right: -50%;
@@ -21,7 +22,3 @@ button.rightSlideOutPanel
     float : right;
 }
 
-.activeHover:hover{
-	font-weight: bold;
-	cursor: pointer;
-}
