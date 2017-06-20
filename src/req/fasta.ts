@@ -1,11 +1,9 @@
 import {File} from "./file";
 import {Contig} from "./fastaContigLoader";
 import {makeValidID} from "./MakeValidID";
-import trimPath from "./trimPath";
 import {getReadableAndWritable} from "./getAppPath";
 export class Fasta extends File
 {
-    public alias : string;
     public checked : boolean;
     public sizeString : string;
     public sequences : number;
@@ -33,7 +31,6 @@ export class Fasta extends File
          * @prop {boolean} pathogen - Whether this file is a pathogen reference
          */
         super(path);
-        this.alias = trimPath(path);
         this.checked = false;
         this.sequences = 0;
         this.validID = makeValidID(path);
