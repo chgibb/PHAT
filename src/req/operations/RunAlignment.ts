@@ -5,6 +5,7 @@ import {AtomicOperationForkEvent} from "./../atomicOperationsIPC";
 import {getReadable} from "./../getAppPath";
 import {Fasta,getFaiPath} from "./../fasta";
 import Fastq from "./../fastq";
+import {getPath} from "./../file";
 import {alignData,getArtifactDir} from "./../alignData"
 
 export class RunAlignment extends atomic.AtomicOperation
@@ -35,7 +36,7 @@ export class RunAlignment extends atomic.AtomicOperation
             this.alignData.type = data.type;
             this.alignData.fasta = this.fasta;
             this.alignData.fastqs.push(this.fastq1,this.fastq2);
-            this.generatedArtifacts.push(`${this.fasta.path}.fai`);
+            this.generatedArtifacts.push(`${getPath(this.fasta)}.fai`);
             this.destinationArtifactsDirectories.push(getArtifactDir(this.alignData));
         }
 

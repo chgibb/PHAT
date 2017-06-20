@@ -2,6 +2,7 @@ import {IndexFasta} from "./../indexFasta";
 
 import {SpawnRequestParams} from "./../../JobIPC";
 import {Job,JobCallBackObject} from "./../../main/Job";
+import {getPath} from "./../../file";
 
 export function faToTwoBit(op : IndexFasta) : Promise<{}>
 {
@@ -25,7 +26,7 @@ export function faToTwoBit(op : IndexFasta) : Promise<{}>
         op.twoBitJob = new Job(
             op.faToTwoBitExe,
             <Array<string>>[
-                op.fasta.path,
+                getPath(op.fasta),
                 op.twoBitPath
             ],"",true,jobCallBack,{}
         );
