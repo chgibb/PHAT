@@ -105,6 +105,7 @@ export function renderAlignmentReportTable() : string
 
                     if(rightPanel.alignmentInfoSelection.dateRan)
                         res += `<td>${masterView.alignData[i].dateStampString}</td>`;
+                    res += "</tr>";
                 }
             }
             return res;

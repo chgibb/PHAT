@@ -1,6 +1,7 @@
 import * as fs from "fs";
 import * as readline from "readline";
 
+const jsonFile = require("jsonfile");
 const uuidv4 : () => string = require("uuid/v4");
 import * as mkdirp from "mkdirp";
 
@@ -12,7 +13,8 @@ import * as trackMarker from "./circularGenome/trackMarker";
 import * as markerLabel from "./circularGenome/markerLabel";
 import * as trackScale from "./circularGenome/trackScale";
 
-import {alignData} from "./../alignData";
+import {alignData,getSNPsJSON} from "./../alignData";
+import {VCF2JSONRow} from "./../varScanMPileup2SNPVCF2JSON";
 export class Contig extends fastaContigLoader.Contig
 {
     public color? : string = "";
@@ -382,53 +384,56 @@ export function renderSNPTrack(
 {
     let SNPTracks : string = "";
 
-    let rl : readline.ReadLine = readline.createInterface(<readline.ReadLineOptions>{
-        input : fs.createReadStream(getReadableAndWritable(`rt/AlignmentArtifacts/${align.uuid}/snps.vcf`))
-    });
-
     let baseBP = getBaseBP(figure,contiguuid);
     if(baseBP == -1)
         throw new Error("Could not get base position of "+figure.name+" for reference");
 
     let SNPPositions : Array<SNPPosition> = new Array<SNPPosition>();
 
-    rl.on("line",function(line : string){
-        let tokens = line.split(/\s/g);
+    let SNPs : Array<VCF2JSONRow>;
+    SNPs = jsonFile.readFileSync(getSNPsJSON(align));
 
-        for(let i = 0; i != figure.contigs.length; ++i)
+    let contigName = "";
+
+    for(let i = 0; i != figure.contigs.length; ++i)
+    {
+        if(figure.contigs[i].uuid == contiguuid)
         {
-            if(tokens[0] == (figure.contigs[i].name.split(/\s/g))[0])
-            {
-                SNPPositions.push({
-                    position : baseBP + parseInt(tokens[1]),
-                    relativePosition : parseInt(tokens[1]),
-                    from : tokens[2],
-                    to : tokens[3],
-                    adjust : 20,
-                    colour : colour
-                });
-            }
+            contigName = figure.contigs[i].name;
+            break;
         }
-    });
-    rl.on("close",function(){
+    }
 
-        SNPPositions.sort(function(a : SNPPosition,b : SNPPosition){return a.position - b.position;});
-
-        for(let i = 0; i != SNPPositions.length; ++i)
+    for(let i = 0; i != SNPs.length; ++i)
+    {
+        if(SNPs[i].chrom == (contigName.split(/\s/g))[0])
         {
-            for(let k = 0; k != SNPPositions.length; ++k)
+            SNPPositions.push(<SNPPosition>{
+                position : baseBP + parseInt(SNPs[i].position),
+                relativePosition : parseInt(SNPs[i].position),
+                from : SNPs[i].ref,
+                to : SNPs[i].var,
+                adjust : 20,
+                colour : colour
+            });
+        }
+    }
+    SNPPositions.sort(function(a : SNPPosition,b : SNPPosition){return a.position - b.position;});
+
+    for(let i = 0; i != SNPPositions.length; ++i)
+    {
+        for(let k = 0; k != SNPPositions.length; ++k)
+        {
+            if(i != k && i < k)
             {
-                if(i != k && i < k)
+                if((SNPPositions[k].position - SNPPositions[i].position) <= 85)
                 {
-                    if((SNPPositions[k].position - SNPPositions[i].position) <= 85)
-                    {
-                        SNPPositions[k].adjust += 85;
-                    }
+                    SNPPositions[k].adjust += 85;
                 }
             }
         }
-
-        for(let i = 0; i != SNPPositions.length; ++i)
+    }
+    for(let i = 0; i != SNPPositions.length; ++i)
         {
             SNPTracks += `
                 <plasmidtrack width="20" trackstyle="fill-opacity:0.0" radius="{{genome.radius}}">
@@ -439,7 +444,7 @@ export function renderSNPTrack(
                 `;
         }
         cb(true,SNPTracks);
-    });
+
 }
 
 export function cacheSNPTrack(

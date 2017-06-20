@@ -4,6 +4,7 @@ bash scripts/build.bash
 rm -rf tests
 mkdir tests
 mkdir tests/data
+mkdir "tests/data with spaces"
 mkdir tests/resources
 
 if [[ "$OSTYPE" == "linux-gnu" ]]; then
@@ -19,6 +20,7 @@ if [[ "$OSTYPE" == "cygwin" ]]; then
 	echo portable > tests/edition
 fi
 cp -r testData/* tests/data
+cp -r testData/* "tests/data with spaces"
 
 mkdir guiTests
 ./node_modules/.bin/tsc

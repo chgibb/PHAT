@@ -4,7 +4,7 @@ import * as fs from "fs";
 
 import tokenizeHTMLString from "./../tokenizeHTMLString";
 import tokenizedHTMLArrayToCSV from "./../tokenizedHTMLArrayToCSV";
-export default function CSVExportDialog(htmlString : string) : void
+export function CSVExportDialog(htmlString : string) : void
 {
     dialog.showSaveDialog(
         {
