@@ -149,7 +149,7 @@ export class FastqView extends View
         }
         for(let i = 0; i != this.model.fastqInputs.length; ++i)
         {
-            if(event.target.id == `${this.model.fastqInputs[i].uuid}Import`)
+            if(event.target.id == `${this.model.fastqInputs[i].uuid}Import` && !this.model.fastqInputs[i].imported)
             {
                 dialogs.confirm(
                     `Copy ${this.model.fastqInputs[i].alias} into project?`,
