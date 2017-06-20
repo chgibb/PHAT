@@ -1,5 +1,7 @@
 import {View} from "./../viewMgr";
 import Input from "./../Input";
+import {getPath} from "./../../file";
+
 var buildInclusiveSearchFilter = require('./../buildInclusiveSearchFilter.js');
 
 export class FastaView extends View
@@ -44,7 +46,7 @@ export class FastaView extends View
 		        (
 			        "<tr><td><input type='checkbox' id='",this.model.fastaInputs[i].uuid,"'></input></td>",
 			        "<td id='",this.model.fastaInputs[i].uuid+"_p","'>",this.model.fastaInputs[i].alias,"</td>",
-			        "<td>",this.model.fastaInputs[i].absPath,"</td>",
+			        "<td>",getPath(this.model.fastaInputs[i]),"</td>",
 			        "<td>",this.model.fastaInputs[i].sizeString,"</td>",
                     "<td>","<input type='radio' id='",this.model.fastaInputs[i].uuid+"_path","' name='",this.model.fastaInputs[i].uuid,"'></input></td>",
                     "<td>","<input type='radio' id='",this.model.fastaInputs[i].uuid+"_host","' name='",this.model.fastaInputs[i].uuid,"'></input></td>",

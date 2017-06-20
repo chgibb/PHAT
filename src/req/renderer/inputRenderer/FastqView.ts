@@ -1,5 +1,7 @@
 import {View} from "./../viewMgr";
 import Input from "./../Input";
+import {getPath} from "./../../file";
+
 var buildInclusiveSearchFilter = require('./../buildInclusiveSearchFilter.js');
 export class FastqView extends View
 {
@@ -40,7 +42,7 @@ export class FastqView extends View
 		        (
 			        "<tr><td><input type='checkbox' id='",this.model.fastqInputs[i].uuid,"'></input></td>",
 			        "<td>",this.model.fastqInputs[i].alias,"</td>",
-			        "<td>",this.model.fastqInputs[i].absPath,"</td>",
+			        "<td>",getPath(this.model.fastqInputs[i]),"</td>",
 			        "<td>",this.model.fastqInputs[i].sizeString,"</td>",
 			        "</tr>"
                 );
