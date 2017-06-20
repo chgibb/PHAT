@@ -3,6 +3,7 @@
 @import "common/td";
 @import "common/th";
 @import "common/tableCell";
+@import "common/activeHover";
 .inputFilterBox
 {
     @extend .tableCell;
