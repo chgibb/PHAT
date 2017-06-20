@@ -7,4 +7,5 @@ export function rebuildRTDirectory() : void
 	fs.mkdirSync(getReadableAndWritable("rt/indexes"));
 	fs.mkdirSync(getReadableAndWritable("rt/AlignmentArtifacts"));
 	fs.mkdirSync(getReadableAndWritable("rt/circularFigures"));
+	fs.mkdirSync(getReadableAndWritable("rt/imported"));
 }
