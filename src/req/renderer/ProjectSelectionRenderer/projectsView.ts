@@ -9,6 +9,7 @@ const dialogs = Dialogs();
 import {ProjectManifest,getProjectManifests} from "./../../projectManifest";
 import {AtomicOperationIPC} from "./../../atomicOperationsIPC";
 import {View} from "./../viewMgr";
+import {exportProjectBrowseDialog} from "./exportProjectBrowseDialog";
 export class ProjectsView extends View
 {
     public projects : Array<ProjectManifest>;
@@ -37,7 +38,7 @@ export class ProjectsView extends View
 
                         res += `
                             <h4 class="activeHover" id="${this.projects[i].uuid}open">${this.projects[i].alias}</h4>
-expo                            <h6 class="activeHover" id="${this.projects[i].uuid}export">Export</h6>
+                            <h6 class="activeHover" id="${this.projects[i].uuid}export">Export</h6>
                             <h6>Last Opened: ${lastOpened}</h6>
                             <h6>Created: ${created}</h6>
                         `;
@@ -89,7 +90,7 @@ expo                            <h6 class="activeHover" id="${this.projects[i].u
                 }
                 if(event.target.id == `${this.projects[i].uuid}export`)
                 {
-
+                    exportProjectBrowseDialog(this.projects[i]);
                 }
             }
         }
