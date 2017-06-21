@@ -10,6 +10,7 @@ addons:
     - xvfb
     - g++-5
     - fakeroot
+    - snapcraft
 install:
 - export DISPLAY=':99.0'
 - Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
@@ -30,6 +31,7 @@ deploy:
     - phat-linux-x64-portable.tar.gz
     - phat-linux-x64-update.tar.gz
     - phat*.deb
+    - phat*.snap
   skip_cleanup: true
   on:
     repo: chgibb/PHAT

@@ -15,3 +15,7 @@ echo installed > phat-linux-x64/edition
 node scripts/buildDebianInstaller
 
 mv deb/*.deb .
+
+node_modules/.bin/electron-builder --prepackaged=phat-linux-x64 --linux snap
+
+mv dist/*.snap .
