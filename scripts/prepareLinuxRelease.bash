@@ -16,6 +16,10 @@ node scripts/buildDebianInstaller
 
 mv deb/*.deb .
 
+sudo add-apt-repository ppa:snappy-dev/tools
+sudo apt-get update
+sudo apt-get install snapcraft
+
 node_modules/.bin/electron-builder --prepackaged=phat-linux-x64 --linux snap
 
 mv dist/*.snap .
