@@ -23,6 +23,7 @@ export class ProjectsView extends viewMgr.View
     {
         return `
             <button id="createNewProject">Create New Project</button>
+            <button id="importFromFile">Import Project From File</button>
             ${(()=>{
                 let res = "";
                 if(!this.projects)
@@ -70,6 +71,10 @@ export class ProjectsView extends viewMgr.View
                 }
 
             });
+        }
+        if(event.target.id == "importFromFile")
+        {
+            
         }
         if(this.projects)
         {
