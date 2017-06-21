@@ -6,7 +6,7 @@ const tarStream = require("tar-stream");
 const gunzip = require("gunzip-maybe");
 
 import {getReadableAndWritable} from "./getAppPath";
-import {ProjectManifest} from "./projectManifest";
+import {ProjectManifest,getTarBallPath} from "./projectManifest";
 import {rebuildRTDirectory} from "./main/rebuildRTDirectory"
 import * as dataMgr from "./main/dataMgr";
 
@@ -15,7 +15,7 @@ export function openProject(proj : ProjectManifest,cb : (toUnpack : number,unPac
     return new Promise((resolve,reject) => {
         dataMgr.clearData();
         rimraf.sync(getReadableAndWritable("rt"));
-        let projectTarBall = getReadableAndWritable(`projects/${proj.uuid}`);
+        let projectTarBall = getTarBallPath(proj);
         try
         {
             fs.accessSync(projectTarBall)
