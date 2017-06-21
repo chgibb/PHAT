@@ -1,6 +1,7 @@
 import * as atomic from "./atomicOperations";
 import {Fasta,get2BitPath,getFaiPath} from "./../fasta";
 import {FastaContigLoader} from "./../fastaContigLoader";
+import {getPath} from "./../file";
 
 import {getReadable,getReadableAndWritable} from "./../getAppPath";
 
@@ -61,7 +62,7 @@ export class IndexFasta extends atomic.AtomicOperation
         this.destinationArtifacts.push(this.faiPath);
 
         //samtool faidx will write the .fai beside the input fasta
-        this.generatedArtifacts.push(`${this.fasta.path}.fai`);
+        this.generatedArtifacts.push(`${getPath(this.fasta)}.fai`);
 
         this.bowTieIndexPath = getReadableAndWritable(`rt/indexes/${this.fasta.uuid}`);
 
@@ -107,7 +108,7 @@ export class IndexFasta extends atomic.AtomicOperation
                             self.update();
                         }
                     );
-                    contigLoader.beginRefStream(self.fasta.path);
+                    contigLoader.beginRefStream(getPath(self.fasta));
 
                 }).catch((err) => {
                     self.abortOperationWithMessage(err);

@@ -2,6 +2,7 @@ import * as viewMgr from "./../../viewMgr";
 import * as masterView from "./../masterView";
 import * as rightPanel from "./../rightPanel";
 import {getQCSummaryByNameOfReportByIndex} from "./../../../QCData"
+import {getPath} from "./../../../file";
 
 export function renderQCReportTable() : string
 {
@@ -40,7 +41,7 @@ export function renderQCReportTable() : string
                             res += `<td>${masterView.fastqInputs[i].alias}</td>`;
 
                         if(rightPanel.fastQInfoSelection.fullName)
-                            res += `<td>${masterView.fastqInputs[i].absPath}</td>`;
+                            res += `<td>${getPath(masterView.fastqInputs[i])}</td>`;
 
                         if(rightPanel.fastQInfoSelection.sizeInBytes)
                             res += `<td>${masterView.fastqInputs[i].size}</td>`;

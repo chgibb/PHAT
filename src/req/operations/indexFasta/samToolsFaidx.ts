@@ -2,6 +2,7 @@ const fse = require("fs-extra");
 
 import {getReadable} from "./../../getAppPath";
 import {Fasta,getFaiPath} from "./../../fasta";
+import {getPath} from "./../../file";
 import {SpawnRequestParams} from "./../../JobIPC";
 import {Job,JobCallBackObject} from "./../../main/Job";
 
@@ -21,7 +22,7 @@ export function samToolsFaidx(fasta : Fasta) : Promise<{}>
                             function(){
                                 try
                                 {
-                                    fse.copy(`${fasta.path}.fai`,getFaiPath(fasta),function(err : string){
+                                    fse.copy(`${getPath(fasta)}.fai`,getFaiPath(fasta),function(err : string){
                                         if(err)
                                             reject(err);
                                         resolve();
@@ -45,7 +46,7 @@ export function samToolsFaidx(fasta : Fasta) : Promise<{}>
             samToolsExe,
             <Array<string>>[
                 "faidx",
-                fasta.path
+                getPath(fasta)
             ],"",true,jobCallBack,{}
         );
         try

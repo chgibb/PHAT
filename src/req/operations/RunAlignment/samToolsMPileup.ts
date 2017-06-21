@@ -4,6 +4,7 @@ import {getReadable} from "./../../getAppPath";
 import {alignData,getSortedBam,getMPileup} from "./../../alignData";
 import {SpawnRequestParams} from "./../../JobIPC";
 import {Job,JobCallBackObject} from "./../../main/Job";
+import {getPath} from "./../../file";
 
 export function samToolsMPileup(alignData : alignData) : Promise<{}>
 {
@@ -45,7 +46,7 @@ export function samToolsMPileup(alignData : alignData) : Promise<{}>
             <Array<string>>[
                 "mpileup",
                 "-f",
-                alignData.fasta.path,
+                getPath(alignData.fasta),
                 getSortedBam(alignData)
             ],"",true,jobCallBack,{}
         );

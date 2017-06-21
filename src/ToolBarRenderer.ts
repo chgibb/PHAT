@@ -2,7 +2,7 @@ import * as electron from "electron";
 const ipc = electron.ipcRenderer;
 
 import {AtomicOperation} from "./req/operations/atomicOperations"
-import {KeySubEvent} from "./req/ipcEvents";
+import {KeySubEvent,GetKeyEvent} from "./req/ipcEvents";
 
 import * as $ from "jquery";
 (<any>window).$ = $;
@@ -46,11 +46,15 @@ $
             {
                 if(arg.action == "getKey" || arg.action == "keyChange")
                 {
-                    if(arg.key == "operations" && arg.val !== undefined)
+                    if(arg.key == "operations" && arg.val !== undefined && arg.val.length)
                     {
                         let ops : Array<AtomicOperation> = <Array<AtomicOperation>>arg.val;
                         for(let i = 0; i != ops.length; ++i)
                         {
+                            if(ops[i].name == "saveCurrentProject")
+                            {
+                                document.body.innerHTML = `<h1>Saving Project</h1>`;
+                            }
                             if(ops[i].flags.done && ops[i].name != "checkForUpdate")
                             {
                                 let notification : Notification = new Notification(ops[i].flags.success ? "Success" : "Failure",<NotificationOptions>{
