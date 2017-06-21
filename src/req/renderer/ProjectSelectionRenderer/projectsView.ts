@@ -10,6 +10,7 @@ import {ProjectManifest,getProjectManifests} from "./../../projectManifest";
 import {AtomicOperationIPC} from "./../../atomicOperationsIPC";
 import * as viewMgr from "./../viewMgr";
 import {exportProjectBrowseDialog} from "./exportProjectBrowseDialog";
+import {importProjectBrowseDialog} from "./importProjectBrowseDialog";
 export class ProjectsView extends viewMgr.View
 {
     public projects : Array<ProjectManifest>;
@@ -74,7 +75,17 @@ export class ProjectsView extends viewMgr.View
         }
         if(event.target.id == "importFromFile")
         {
-
+            importProjectBrowseDialog().then((path) => {
+                ipc.send(
+                    "runOperation",
+                    <AtomicOperationIPC>{
+                        opName : "openProject",
+                        externalProjectPath : path
+                    }
+                );
+            }).catch((err) => {
+                throw err
+            });
         }
         if(this.projects)
         {
