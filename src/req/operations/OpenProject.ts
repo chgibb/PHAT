@@ -9,14 +9,19 @@ import {ProjectManifest} from "./../projectManifest";
 export class OpenProject extends atomic.AtomicOperation
 {
     public proj : ProjectManifest;
+    public externalProjectPath : string;
     public openProjectProcess : cp.ChildProcess;
     constructor()
     {
         super();
     }
-    public setData(data : ProjectManifest)
+    public setData(data : {
+        proj : ProjectManifest,
+        externalProjectPath : string
+    }) : void
     {
-        this.proj = data;
+        this.proj = data.proj;
+        this.externalProjectPath = data.externalProjectPath;
     }
     public run() : void
     {
@@ -51,7 +56,10 @@ export class OpenProject extends atomic.AtomicOperation
                 self.openProjectProcess.send(
                     <AtomicOperationForkEvent>{
                         setData : true,
-                        data : self.proj,
+                        data : {
+                            proj : self.proj,
+                            externalProjectPath : self.externalProjectPath
+                        },
                         readableBasePath : getReadable(""),
                         writableBasePath : getWritable(""),
                         readableAndWritableBasePath : getReadableAndWritable("")
