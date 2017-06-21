@@ -12,14 +12,16 @@ export function saveCurrentProject(proj : ProjectManifest) : Promise<{}>
         mkdirp.sync(getReadableAndWritable("projects"));
         let projectTarBall = getTarBallPath(proj);
         const ostream = fs.createWriteStream(projectTarBall);
-        ostream.on("error",(error : string) => {reject(error);});
+        ostream.on("error",(error : string) => {
+            reject(error);
+        });
         ostream.on("close",() => {
             resolve();
         });
       
         let pack = tarfs.pack(getReadableAndWritable("rt")).pipe(ostream);
-        pack.on("error",function(err : string){
-            reject(err);
+        pack.on("error",function(error : string){
+            reject(error);
         });
         pack.on("close",function(){
             resolve();
