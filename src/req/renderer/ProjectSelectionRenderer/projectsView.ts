@@ -37,6 +37,7 @@ export class ProjectsView extends View
 
                         res += `
                             <h4 class="activeHover" id="${this.projects[i].uuid}open">${this.projects[i].alias}</h4>
+                            <h6 class="activeHover" id="${this.projects[i].uuid}export">Export</h6>
                             <h6>Last Opened: ${lastOpened}</h6>
                             <h6>Created: ${created}</h6>
                         `;
@@ -85,6 +86,10 @@ export class ProjectsView extends View
                             proj : this.projects[i]
                         }
                     );
+                }
+                if(event.target.id == `${this.projects[i].uuid}export`)
+                {
+                    
                 }
             }
         }
