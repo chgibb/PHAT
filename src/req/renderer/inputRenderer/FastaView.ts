@@ -1,5 +1,10 @@
+const Dialogs = require("dialogs");
+const dialogs = Dialogs();
+
 import {View} from "./../viewMgr";
 import Input from "./../Input";
+import {getPath,importIntoProject} from "./../../file";
+
 var buildInclusiveSearchFilter = require('./../buildInclusiveSearchFilter.js');
 
 export class FastaView extends View
@@ -44,7 +49,7 @@ export class FastaView extends View
 		        (
 			        "<tr><td><input type='checkbox' id='",this.model.fastaInputs[i].uuid,"'></input></td>",
 			        "<td id='",this.model.fastaInputs[i].uuid+"_p","'>",this.model.fastaInputs[i].alias,"</td>",
-			        "<td>",this.model.fastaInputs[i].absPath,"</td>",
+			        `<td id="${this.model.fastaInputs[i].uuid}Import" class="activeHover">`,this.model.fastaInputs[i].imported ? "In Project" : getPath(this.model.fastaInputs[i]) ,"</td>",
 			        "<td>",this.model.fastaInputs[i].sizeString,"</td>",
                     "<td>","<input type='radio' id='",this.model.fastaInputs[i].uuid+"_path","' name='",this.model.fastaInputs[i].uuid,"'></input></td>",
                     "<td>","<input type='radio' id='",this.model.fastaInputs[i].uuid+"_host","' name='",this.model.fastaInputs[i].uuid,"'></input></td>",
@@ -179,6 +184,24 @@ export class FastaView extends View
                         return;
                     }
                 }
+            }
+        }
+        for(let i = 0; i != this.model.fastaInputs.length; ++i)
+        {
+            if(event.target.id == `${this.model.fastaInputs[i].uuid}Import` && !this.model.fastaInputs[i].imported)
+            {
+                dialogs.confirm(
+                    `Copy ${this.model.fastaInputs[i].alias} into project?`,
+                    ``,
+                    (ok : boolean) => {
+                        if(ok)
+                        {
+                            importIntoProject(this.model.fastaInputs[i]);
+                            this.dataChanged();
+                        }
+                    }
+                );
+                return;
             }
         }
     }

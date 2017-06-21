@@ -2,6 +2,7 @@ import {SaveKeyEvent} from "./../ipcEvents";
 
 import Fastq from "./../fastq";
 import {Fasta} from "./../fasta";
+import {getPath} from "./../file";
 import {AtomicOperationIPC} from "./../atomicOperationsIPC";
 import canRead from "./canRead";
 
@@ -48,7 +49,7 @@ export default class Input extends DataModelMgr
             return false;
         for(let i = 0; i != this.fastqInputs.length; ++i)
         {
-            if(this.fastqInputs[i].path == path || this.fastqInputs[i].absPath == path)
+            if(getPath(this.fastqInputs[i]) == path)
             {
                 return false;
             }
@@ -65,7 +66,7 @@ export default class Input extends DataModelMgr
             throw new Error("Comma in path");
         for(let i = 0; i != this.fastaInputs.length; ++i)
         {
-            if(this.fastaInputs[i].path == path || this.fastaInputs[i].absPath == path)
+            if(getPath(this.fastaInputs[i]) == path)
             {
                 return false;
             }

@@ -4,6 +4,7 @@ import {alignData,getArtifactDir,getCoverageDir,getSam} from "./../../alignData"
 import {getReadable,getReadableAndWritable} from "./../../getAppPath";
 import {SpawnRequestParams} from "./../../JobIPC";
 import {Job,JobCallBackObject} from "./../../main/Job";
+import {getPath} from "./../../file";
 
 export function bowTie2Align(alignData : alignData,update : () => void) : Promise<{}>
 {
@@ -46,14 +47,14 @@ export function bowTie2Align(alignData : alignData,update : () => void) : Promis
         if(alignData.fastqs[1] !== undefined)
         {
             args.push("-1");
-            args.push(alignData.fastqs[0].path);
+            args.push(getPath(alignData.fastqs[0]));
             args.push("-2");
-            args.push(alignData.fastqs[1].path);
+            args.push(getPath(alignData.fastqs[1]));
         }
         else
         {
             args.push("-U");
-            args.push(alignData.fastqs[0].path);
+            args.push(getPath(alignData.fastqs[0]));
         }
         args.push("-S");
         args.push(getSam(alignData));

@@ -5,6 +5,7 @@ import Fastq from "./../fastq";
 import {getQCReportSummaries} from "./../QCReportSummary";
 import trimPath from "./../trimPath";
 import {SpawnRequestParams} from "./../JobIPC";
+import {getPath} from "./../file";
 import {getReadable,getReadableAndWritable} from "./../getAppPath";
 
 import {Job,JobCallBackObject} from "./../main/Job";
@@ -26,9 +27,9 @@ export class GenerateQCReport extends atomic.AtomicOperation
 	{
 		this.fastq = data;
 
-		let trimmed : string = trimPath(this.fastq.path);
+		let trimmed : string = trimPath(getPath(this.fastq));
 
-		let remainder = this.fastq.path.substr(0,this.fastq.path.length-trimmed.length);
+		let remainder = getPath(this.fastq).substr(0,getPath(this.fastq).length-trimmed.length);
 
 		trimmed = trimmed.replace(new RegExp('(.fastq)','g'),'_fastqc');
 
@@ -51,9 +52,9 @@ export class GenerateQCReport extends atomic.AtomicOperation
 		//figure out arg ordering based on platform
 		let args : Array<string>;
         if(process.platform == "linux")
-            args = [this.fastq.path];
+            args = [getPath(this.fastq)];
         else if(process.platform == "win32")
-            args = [getReadable('FastQC/fastqc'),this.fastq.path];
+            args = [getReadable('FastQC/fastqc'),getPath(this.fastq)];
 
 		//Running FastQC with certain versions of OpenJDK occasionally crash it.
 		//One of the first things in the stdout when this happens is "fatal error"

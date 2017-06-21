@@ -2,6 +2,7 @@ import * as fs from "fs";
 
 import {getReadable} from "./../../getAppPath";
 import {IndexFasta} from "./../indexFasta";
+import {getPath} from "./../../file";
 
 import {SpawnRequestParams} from "./../../JobIPC";
 import {Job,JobCallBackObject} from "./../../main/Job";
@@ -38,12 +39,12 @@ export function bowTie2Build(op : IndexFasta) : Promise<string | undefined>
         }
         let bowTieArgs : Array<string> = new Array<string>();
         if(process.platform == "linux")
-            bowTieArgs = [op.fasta.path,op.bowTieIndexPath];
+            bowTieArgs = [getPath(op.fasta),op.bowTieIndexPath];
         else if(process.platform == "win32")
         {
             bowTieArgs = [
                 getReadable(`bowtie2-build`),
-                `"${op.fasta.path}"`,
+                `"${getPath(op.fasta)}"`,
                 `"${op.bowTieIndexPath}"`
             ];
         }

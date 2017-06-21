@@ -9,6 +9,7 @@ import {DownloadAndInstallUpdate} from "./req/operations/DownloadAndInstallUpdat
 import {alignData} from "./req/alignData";
 import Fastq from "./req/fastq";
 import {Fasta} from "./req/fasta";
+import {getPath,importIntoProject} from "./req/file";
 import {CircularFigure} from "./req/renderer/circularFigure";
 import * as dataMgr from "./req/main/dataMgr";
 import {rebuildRTDirectory} from "./req/main/rebuildRTDirectory"
@@ -73,6 +74,13 @@ function loadTestDataSpaces()
 
 	hpv16 = new Fasta("data with spaces/HPV16ref_genomes.fasta");
 	hpv18 = new Fasta("data with spaces/HPV18ref_genomes.fasta");
+
+	importIntoProject(L6R1R1);
+	importIntoProject(L6R1R2);
+	importIntoProject(hpv16);
+	importIntoProject(hpv18);
+
+
 }
 loadTestDataNoSpaces();
 
@@ -83,13 +91,13 @@ atomic.updates.on(
 		if(op.flags.failure)
 		{
 			console.log(
-				`Failed generating QC report for ${(<GenerateQCReport>op).fastq.path}
+				`Failed generating QC report for ${getPath((<GenerateQCReport>op).fastq)}
 				${op.extraData}`
 				);
 		}
 		else if(op.flags.success)
 		{
-			console.log(`Completed generating QC report for ${(<GenerateQCReport>op).fastq.path}`);
+			console.log(`Completed generating QC report for ${getPath((<GenerateQCReport>op).fastq)}`);
 		}
 		if(op.flags.done)
 			assert.runningEvents -= 1;
@@ -102,13 +110,13 @@ atomic.updates.on(
 		if(op.flags.failure)
 		{
 			console.log(
-				`Failed indexing ${(<IndexFasta>op).fasta.path}
+				`Failed indexing ${getPath((<IndexFasta>op).fasta)}
 				${op.extraData}`
 				);
 		}
 		else if(op.flags.success)
 		{
-			console.log(`Completed indexing ${(<IndexFasta>op).fasta.path}`);
+			console.log(`Completed indexing ${getPath((<IndexFasta>op).fasta)}`);
 		}
 		if(op.flags.done)
 			assert.runningEvents -= 1;
@@ -251,14 +259,14 @@ function fastQReportGeneration()
 
 	assert.assert(function(){
 		assert.runningEvents += 1;
-		console.log(`Starting report generation for ${L6R1R1.path}`);
+		console.log(`Starting report generation for ${getPath(L6R1R1)}`);
 		atomic.addOperation("generateFastQCReport",L6R1R1);
 		return true;
 	},'',0);
 
 	assert.assert(function(){
 		assert.runningEvents += 1;
-		console.log(`Starting report generation for ${L6R1R2.path}`);
+		console.log(`Starting report generation for ${getPath(L6R1R2)}`);
 		atomic.addOperation("generateFastQCReport",L6R1R2);
 		return true;
 	},'',0);
@@ -272,7 +280,7 @@ function indexHPV16()
 {
 	assert.assert(function(){
 		assert.runningEvents += 1;
-		console.log(`Starting to index ${hpv16.path}`);
+		console.log(`Starting to index ${getPath(hpv16)}`);
 		atomic.addOperation("indexFasta",hpv16);
 		return true;
 	},'',0);
@@ -282,7 +290,7 @@ function indexHPV18()
 {
 	assert.assert(function(){
 		assert.runningEvents += 1;
-		console.log(`Starting to index ${hpv18.path}`);
+		console.log(`Starting to index ${getPath(hpv18)}`);
 		atomic.addOperation("indexFasta",hpv18);
 		return true;
 	},'',0);

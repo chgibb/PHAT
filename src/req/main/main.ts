@@ -65,6 +65,8 @@ function finishLoadingProject(proj : ProjectManifest) : void
 {
 	atomicOp.clearOperationsQueue();
 
+	dataMgr.setKey("application","finishedSavingProject",false);
+
 	dataMgr.clearData();
 	dataMgr.loadData(getReadableAndWritable("rt/rt.json"));
 	dataMgr.setKey("application","project",proj);
@@ -218,7 +220,6 @@ ipc.on(
 			{
 				if(list[i].uuid == arg.uuid)
 				{
-					console.log(`Found ${list[i].path}`);
 					let tmp = {};
 					Object.assign(tmp,list[i]);
 					atomicOp.addOperation(arg.opName,tmp);
@@ -554,10 +555,13 @@ atomicOp.updates.on(
 atomicOp.updates.on(
 	"saveCurrentProject",function(op : SaveCurrentProject)
 	{
+		dataMgr.setKey("application","operations",atomicOp.operationsQueue);
+		winMgr.publishChangeForKey("application","operations");
 		if(op.flags.done)
 		{
 			if(op.flags.failure)
 				throw new Error("There was an error saving your project");
+			dataMgr.setKey("application","finishedSavingProject",true);
 			app.quit();
 		}
 

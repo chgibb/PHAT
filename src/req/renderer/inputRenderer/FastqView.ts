@@ -1,5 +1,10 @@
+const Dialogs = require("dialogs");
+const dialogs = Dialogs();
+
 import {View} from "./../viewMgr";
 import Input from "./../Input";
+import {getPath,importIntoProject} from "./../../file";
+
 var buildInclusiveSearchFilter = require('./../buildInclusiveSearchFilter.js');
 export class FastqView extends View
 {
@@ -40,7 +45,7 @@ export class FastqView extends View
 		        (
 			        "<tr><td><input type='checkbox' id='",this.model.fastqInputs[i].uuid,"'></input></td>",
 			        "<td>",this.model.fastqInputs[i].alias,"</td>",
-			        "<td>",this.model.fastqInputs[i].absPath,"</td>",
+			        `<td id="${this.model.fastqInputs[i].uuid}Import" class="activeHover">`,this.model.fastqInputs[i].imported ? "In Project" : getPath(this.model.fastqInputs[i]) ,"</td>",
 			        "<td>",this.model.fastqInputs[i].sizeString,"</td>",
 			        "</tr>"
                 );
@@ -141,6 +146,24 @@ export class FastqView extends View
             }
             //inform the renderer of an update
             this.dataChanged();    
+        }
+        for(let i = 0; i != this.model.fastqInputs.length; ++i)
+        {
+            if(event.target.id == `${this.model.fastqInputs[i].uuid}Import` && !this.model.fastqInputs[i].imported)
+            {
+                dialogs.confirm(
+                    `Copy ${this.model.fastqInputs[i].alias} into project?`,
+                    ``,
+                    (ok : boolean) => {
+                        if(ok)
+                        {
+                            importIntoProject(this.model.fastqInputs[i]);
+                            this.dataChanged();
+                        }
+                    }
+                );
+                return;
+            }
         }
     }
 }
