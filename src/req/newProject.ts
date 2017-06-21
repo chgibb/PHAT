@@ -21,7 +21,9 @@ export function newProject(name : string) : Promise<{}>
             alias : name,
             lastOpened : Date.now(),
             created : Date.now(),
-            uuid : uuid
+            uuid : uuid,
+            isExternal : false,
+            externalPath : ""
         });
         jsonFile.writeFileSync(getProjectManifests(),projects,{spaces : 4});
         resolve();
