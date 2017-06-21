@@ -8,9 +8,9 @@ const dialogs = Dialogs();
 
 import {ProjectManifest,getProjectManifests} from "./../../projectManifest";
 import {AtomicOperationIPC} from "./../../atomicOperationsIPC";
-import {View} from "./../viewMgr";
+import * as viewMgr from "./../viewMgr";
 import {exportProjectBrowseDialog} from "./exportProjectBrowseDialog";
-export class ProjectsView extends View
+export class ProjectsView extends viewMgr.View
 {
     public projects : Array<ProjectManifest>;
     public constructor(div : string)
@@ -90,13 +90,16 @@ export class ProjectsView extends View
                 }
                 if(event.target.id == `${this.projects[i].uuid}export`)
                 {
-                    exportProjectBrowseDialog(this.projects[i]);
+                    document.getElementById(this.div).innerHTML = `<h1>Exporting ${this.projects[i].alias}</h1>`;
+                    exportProjectBrowseDialog(this.projects[i],() => {
+                        viewMgr.render();
+                    });
                 }
             }
         }
     }
 }
-export function addView(arr : Array<View>,div : string) : void
+export function addView(arr : Array<viewMgr.View>,div : string) : void
 {
     arr.push(new ProjectsView(div));
 }
