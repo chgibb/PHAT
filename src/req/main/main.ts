@@ -69,7 +69,13 @@ function finishLoadingProject(proj : ProjectManifest) : void
 
 	dataMgr.clearData();
 	dataMgr.loadData(getReadableAndWritable("rt/rt.json"));
-	dataMgr.setKey("application","project",proj);
+	
+	//If we're loading an interal project, set the project object in the runtime manifest accordingly
+	//If we're loading externally, openProjectProcess will detect and patch it in appropriately
+	//openProjectProcess patches it with the appropriate tar ball path on each load in case the project file has been moved since it was last used.
+	//This ensures that when saveProjectProcess looks for a tar ball path to save to, that it is up to date.
+	if(proj)
+		dataMgr.setKey("application","project",proj);
 	let jobErrorLog = dataMgr.getKey("application","jobErrorLog");
 	let jobVerboseLog = dataMgr.getKey("application","jobVerboseLog");
 
@@ -354,42 +360,10 @@ ipc.on(
 
 		else if(arg.opName == "openProject")
 		{
-			let isCurrentlyLoaded = false;
-			try
-			{
-				let rt = jsonFile.readFileSync(getReadableAndWritable("rt/rt.json"));
-
-				if(rt)
-				{
-					if(rt.application)
-					{
-						if(rt.project)
-						{
-							//The project we're trying to load was the last one opened.
-							//No need to unpack it again
-							if(rt.project.uuid == arg.proj.uuid)
-								isCurrentlyLoaded = true;
-							else
-								isCurrentlyLoaded = false;
-						}
-						else
-							isCurrentlyLoaded = false;
-					}
-					else
-						isCurrentlyLoaded = false;
-				}
-				else
-					isCurrentlyLoaded = false;
-			}
-			catch(err){isCurrentlyLoaded = false;}
-
-			if(isCurrentlyLoaded){
-				console.log("last loaded same project");
-				finishLoadingProject(arg.proj);
-			}
-
-			if(!isCurrentlyLoaded)
-				atomicOp.addOperation("openProject",arg.proj);
+			atomicOp.addOperation("openProject",{
+				proj : arg.proj,
+				externalProjectPath : arg.externalProjectPath
+			});
 		}
 		else if(arg.opName == "openPileupViewer")
 		{
@@ -509,7 +483,6 @@ atomicOp.updates.on(
 atomicOp.updates.on(
 	"checkForUpdate",function(op : CheckForUpdate)
 	{
-		console.log(op);
 		dataMgr.setKey("application","operations",atomicOp.operationsQueue);
 		winMgr.publishChangeForKey("application","operations");
 		if(op.flags.success)

@@ -35,7 +35,7 @@ export function saveData() : void
     }
     catch(err)
     {
-        console.log(err);
+        
     }
 }
 

@@ -527,7 +527,7 @@ assert.assert(function(){
 		return false;
 	}
 
-	atomic.addOperation("openProject",projectManifest[0]);
+	atomic.addOperation("openProject",{proj : projectManifest[0]});
 	return true;
 
 },'',0);
@@ -590,7 +590,7 @@ assert.assert(function(){
 		return false;
 	}
 
-	atomic.addOperation("openProject",projectManifest[0]);
+	atomic.addOperation("openProject",{proj : projectManifest[0]});
 	return true;
 
 },'',0);

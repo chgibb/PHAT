@@ -3,6 +3,7 @@ import {ProjectManifest} from "./req/projectManifest";
 import {openProject} from "./req//openProject";
 
 let proj : ProjectManifest;
+let externalProjectPath : string;
 let flags : CompletionFlags = new CompletionFlags();
 
 function progressCallBack(toUnpack : number,unPacked : number) : void
@@ -21,14 +22,15 @@ process.on
     {
         if(ev.setData == true)
         {
-            proj = ev.data;
+            proj = ev.data.proj;
+            externalProjectPath = ev.data.externalProjectPath;
             process.send(<AtomicOperationForkEvent>{finishedSettingData : true});
             return;
         }
 
         if(ev.run == true)
         {
-            openProject(proj,progressCallBack).then(() => {
+            openProject(proj,progressCallBack,externalProjectPath).then(() => {
                 flags.done = true;
                 flags.failure = false;
                 flags.success = true;
