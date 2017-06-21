@@ -509,7 +509,6 @@ atomicOp.updates.on(
 atomicOp.updates.on(
 	"checkForUpdate",function(op : CheckForUpdate)
 	{
-		console.log(op);
 		dataMgr.setKey("application","operations",atomicOp.operationsQueue);
 		winMgr.publishChangeForKey("application","operations");
 		if(op.flags.success)
