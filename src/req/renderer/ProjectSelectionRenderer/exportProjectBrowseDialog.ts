@@ -5,7 +5,7 @@ const dialog = electron.remote.dialog;
 
 import {ProjectManifest,getTarBallPath} from "./../../projectManifest";
 
-export function exportProjectBrowseDialog(proj : ProjectManifest) : void
+export function exportProjectBrowseDialog(proj : ProjectManifest,cb : () => void) : void
 {
     dialog.showSaveDialog(
         {
@@ -26,7 +26,9 @@ export function exportProjectBrowseDialog(proj : ProjectManifest) : void
                     if(err)
                         throw err;
                     else
-                        alert("Finished exporting "+proj.alias);
+                    {
+                        cb();
+                    }
                 }
             );
         }
