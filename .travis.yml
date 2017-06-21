@@ -6,7 +6,7 @@ addons:
   apt:
     sources:
       - ubuntu-toolchain-r-test
-      - snappy-dev/tools-proposed
+      - sourceline: 'ppa:snappy-dev/tools'
     packages:
     - xvfb
     - g++-5
