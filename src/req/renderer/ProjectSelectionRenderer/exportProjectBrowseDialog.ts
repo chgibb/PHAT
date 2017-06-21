@@ -5,32 +5,34 @@ const dialog = electron.remote.dialog;
 
 import {ProjectManifest,getTarBallPath} from "./../../projectManifest";
 
-export function exportProjectBrowseDialog(proj : ProjectManifest,cb : () => void) : void
+export function exportProjectBrowseDialog(proj : ProjectManifest) : Promise<undefined>
 {
-    dialog.showSaveDialog(
-        {
-            filters : [
-                {
-                    name : "PHAT Project",
-                    extensions : ["phat"]
-                }
-            ]
-        },
-        function(fileName : string)
-        {
-            if(fileName === undefined)
-                return;
-            
-            fse.copy(
-                getTarBallPath(proj),fileName,(err : Error) => {
-                    if(err)
-                        throw err;
-                    else
+    return new Promise((resolve,reject) => {
+        dialog.showSaveDialog(
+            {
+                filters : [
                     {
-                        cb();
+                        name : "PHAT Project",
+                        extensions : ["phat"]
                     }
-                }
-            );
-        }
-    );
+                ]
+            },
+            function(fileName : string)
+            {
+                if(fileName === undefined)
+                    return;
+            
+                fse.copy(
+                    getTarBallPath(proj),fileName,(err : Error) => {
+                        if(err)
+                            reject(err);
+                        else
+                        {
+                            resolve();
+                        }
+                    }
+                );
+            }
+        );
+    });
 }

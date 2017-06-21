@@ -74,7 +74,7 @@ export class ProjectsView extends viewMgr.View
         }
         if(event.target.id == "importFromFile")
         {
-            
+
         }
         if(this.projects)
         {
@@ -96,8 +96,10 @@ export class ProjectsView extends viewMgr.View
                 if(event.target.id == `${this.projects[i].uuid}export`)
                 {
                     document.getElementById(this.div).innerHTML = `<h1>Exporting ${this.projects[i].alias}</h1>`;
-                    exportProjectBrowseDialog(this.projects[i],() => {
+                    exportProjectBrowseDialog(this.projects[i]).then(() => {
                         viewMgr.render();
+                    }).catch((err) => {
+                        throw err;
                     });
                 }
             }
