@@ -60,7 +60,7 @@ export function openProject(
                         let rt = jsonFile.readFileSync(getReadableAndWritable("rt/rt.json"));
                         rt.application.project.isExternal = true;
                         rt.application.project.externalPath = externalProjectPath;
-                        jsonFile.writeFileSync(getReadableAndWritable("rt/rt.json"));   
+                        jsonFile.writeFileSync(getReadableAndWritable("rt/rt.json"),rt);   
                     }
                     resolve();
                 });
