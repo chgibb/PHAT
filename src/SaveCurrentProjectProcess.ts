@@ -59,7 +59,6 @@ process.on("uncaughtException",function(err : string){
 });
 
 process.on("unhandledRejection",function(err : string){
-    console.log("ERROR "+err);
     flags.done = true;
     flags.failure = true;
     flags.success = false;
