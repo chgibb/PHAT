@@ -7,10 +7,13 @@ addons:
   apt:
     sources:
       - ubuntu-toolchain-r-test
+      - sourceline: 'ppa:snappy-dev/tools'
     packages:
     - xvfb
     - g++-5
     - fakeroot
+    - snappy-tools
+    - bzr
 install:
 - export DISPLAY=':99.0'
 - Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
