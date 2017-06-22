@@ -1,9 +1,11 @@
 import * as fs from "fs";
 import * as path from "path";
 
+import {getReadable} from "./getAppPath";
 let editionString : string = undefined;
 //Assume not testing/CI
-let editionSource = path.dirname(process.execPath)+"/edition";
+//let editionSource = path.dirname(process.execPath)+"/edition";
+let editionSource = getReadable("edition.txt");
 
 function getEditionString()
 {
