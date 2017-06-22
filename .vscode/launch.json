@@ -7,8 +7,17 @@
             "request" : "launch",
             "cwd" : "${workspaceRoot}/phat-linux-x64",
             "runtimeExecutable" : "${workspaceRoot}/phat-linux-x64/phat",
-        "program" : "${workspaceRoot}/phat-linux-x64/resources/app/main.js",
-        "protocol" : "legacy"
+            "program" : "${workspaceRoot}/phat-linux-x64/resources/app/main.js",
+            "protocol" : "legacy"
+        },
+        {
+            "name" : "Debug Win32",
+            "type" : "node",
+            "request" : "launch",
+            "cwd" : "${workspaceRoot}/phat-win32-x64",
+            "runtimeExecutable" : "${workspaceRoot}/phat-win32-x64/phat.exe",
+            "program" : "${workspaceRoot}/phat-win32-x64/resources/app/main.js",
+            "protocol" : "legacy"
         }
     ]
 }
