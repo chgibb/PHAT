@@ -21,7 +21,7 @@ mv deb/*.deb .
 #sudo apt-get install snapcraft
 wget https://launchpad.net/ubuntu/+source/snapcraft/2.26+17.04.1/+build/11947357/+files/snapcraft_2.26+17.04.1_all.deb
 
-sudo dpk -i snapcraft_2.26+17.04.1_all.deb
+sudo dpkg -i snapcraft_2.26+17.04.1_all.deb
 
 node_modules/.bin/electron-builder --prepackaged=phat-linux-x64 --linux snap
 
