@@ -23,6 +23,8 @@ mv deb/*.deb .
 
 #sudo dpkg -i snapcraft_2.26+17.04.1_all.deb
 
+snapcraft -v
+
 node_modules/.bin/electron-builder --prepackaged=phat-linux-x64 --linux snap
 
 mv dist/*.snap .
