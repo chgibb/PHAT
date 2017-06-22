@@ -13,6 +13,7 @@ addons:
     - g++-5
     - fakeroot
     - snappy-tools
+    - snapcraft
     - bzr
 install:
 - export DISPLAY=':99.0'
