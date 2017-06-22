@@ -11,15 +11,7 @@ function getEditionString()
 {
     if(!editionString)
     {
-        try
-        {
-            editionString = (<any>fs.readFileSync(editionSource));
-        }
-        catch(err)
-        {
-            editionSource = process.cwd()+"/edition";
-            editionString = (<any>fs.readFileSync(editionSource));
-        }
+        editionString = (<any>fs.readFileSync(editionSource));
     }
 }
 
