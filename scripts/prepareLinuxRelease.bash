@@ -10,7 +10,7 @@ tar -zcvf phat-linux-x64-update.tar.gz --exclude=*.tar.gz *
 cd ../
 mv phat-linux-x64/*.tar.gz .
 
-echo installed > phat-linux-x64/edition
+echo installed > phat-linux-x64/resources/app/edition.txt
 
 node scripts/buildDebianInstaller
 
