@@ -30,5 +30,14 @@ setTimeout(function(){
                 els[0].click();
             }
         `);
+        setTimeout(function(){
+            let toolBar = winMgr.getWindowsByName("toolBar");
+            if(!toolBar || toolBar.length > 1 || toolBar.length == 0)
+            {
+                console.log("Failed to open tool bar!");
+                process.exit(1);
+            }
+            toolBar[0].close();
+        },1000);
     },1000);
 },1500);
