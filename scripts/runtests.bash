@@ -1,20 +1,20 @@
  #!/bin/bash
 (set -o igncr) 2>/dev/null && set -o igncr; # For Cygwin on Windows compaibility
 
-cd tests
+#cd tests
 
-node tests.js
-if [ $? != 0 ]; then
-	cat jobVerboseLog.txt
-	cat jobErrorLog.txt
-	exit 1
-fi
+#node tests.js
+#if [ $? != 0 ]; then
+#	cat jobVerboseLog.txt
+#	cat jobErrorLog.txt
+#	exit 1
+#fi
 
-cd ../
+#cd ../
 
 for f in guiTests/*.js
 do
-	bash scripts/build.bash
+	#bash scripts/build.bash
 
 	if [[ "$OSTYPE" == "linux-gnu" ]]; then
 		cd phat-linux-x64
@@ -43,6 +43,9 @@ do
 		cd phat-win32-x64
 	fi
 	./phat
+	if [ $? != 0 ]; then
+		exit 1
+	fi
 	cd ../
 
 done
