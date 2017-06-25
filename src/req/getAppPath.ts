@@ -1,8 +1,5 @@
-/// <reference types="electron" />
-
+import * as fs from "fs";
 import * as path from "path";
-
-let app : Electron.App = null;
 
 import {getEdition} from "./getEdition";
 
@@ -11,38 +8,6 @@ let writableBasePath : string = undefined;
 let readableAndWritableBasePath : string = undefined;
 
 let isPortable = /(portable)/i;
-
-export function isRenderer() : boolean
-{
-    return (process && process.type == "renderer");
-}
-
-function getElectronApp() : boolean
-{
-    let electron = undefined;
-    try
-    {
-        electron = require("electron");
-        if(app)
-            return true;
-        //electron.app is undefined in renderer
-        if(isRenderer())
-        {
-            app = electron.remote.app;
-            return true;
-        }
-        else
-        {
-            app = electron.app;
-            return true;
-        }
-    }
-    //require("electron") throws module not found in Node
-    catch(err)
-    {
-        return false;
-    }
-}
 
 export function setReadableBasePath(path : string)
 {
@@ -79,16 +44,21 @@ function getWin32ConfigDir() : string
 }
 function getReadableDir() : string
 {
-    //If we're running under Electron then execPath will be of the form:
-    // /absolute/path/to/app-plat-xarch/app.exe
-    //If we're running a forked process then process.versions["electron"] will be undefined
-    if(process.versions["electron"] || !isPortable.test(getEdition()))
-        return path.dirname(process.execPath)+"/resources/app";
-    else
-        return process.cwd()+"/resources/app";
+    let electronBaseDir = "";
+    let CIBaseDir = "";
+    let InstalledBaseDir = "";
+    electronBaseDir = path.dirname(process.execPath)+"/resources/app";
+
+    if(fs.existsSync(electronBaseDir))
+        return electronBaseDir;
+
+    CIBaseDir = process.cwd()+"/resources/app";
+
+    if(fs.existsSync(CIBaseDir))
+        return CIBaseDir;
+    
+    return undefined;
 }
-
-
 
 function getConfigDir() : string
 {
@@ -99,11 +69,6 @@ function getConfigDir() : string
     return undefined
 }
 
-/*
-    Will try to detect Electron environment (main/renderer) and initialize base paths acoordingly if they
-    have not yet been set for the current process. Will fail to initiliaze under Node and will throw an exception.
-    Under Node, each paths setPath methods must be called before their corresponding get methods
-*/
 export function getReadable(relativePath : string) : string
 {
     if(!readableBasePath)
