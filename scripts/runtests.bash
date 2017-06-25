@@ -1,16 +1,16 @@
  #!/bin/bash
 (set -o igncr) 2>/dev/null && set -o igncr; # For Cygwin on Windows compaibility
 
-#cd tests
+cd tests
 
-#node tests.js
-#if [ $? != 0 ]; then
-#	cat jobVerboseLog.txt
-#	cat jobErrorLog.txt
-#	exit 1
-#fi
+node tests.js
+if [ $? != 0 ]; then
+	cat jobVerboseLog.txt
+	cat jobErrorLog.txt
+	exit 1
+fi
 
-#cd ../
+cd ../
 
 for f in guiTests/*.js
 do
