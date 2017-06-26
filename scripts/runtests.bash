@@ -14,7 +14,7 @@ cd ../
 
 for f in guiTests/*.js
 do
-	bash scripts/build.bash
+	#bash scripts/build.bash
 
 	if [[ "$OSTYPE" == "linux-gnu" ]]; then
 		cd phat-linux-x64
@@ -43,6 +43,9 @@ do
 		cd phat-win32-x64
 	fi
 	./phat
+	if [ $? != 0 ]; then
+		exit 1
+	fi
 	cd ../
 
 done
