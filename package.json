@@ -52,6 +52,7 @@
     "browserify": "^13.1.0",
     "bundle-collapser": "^1.2.1",
     "dialogs": "^1.1.19",
+    "electron-builder": "^19.7.1",
     "electron-installer-debian": "^0.5.2",
     "electron-ipc-stream": "^0.2.0",
     "electron-packager": "^8.0.0",

@@ -15,3 +15,14 @@ echo installed > phat-linux-x64/resources/app/edition.txt
 node scripts/buildDebianInstaller
 
 mv deb/*.deb .
+
+#sudo add-apt-repository ppa:snappy-dev/tools -y
+#sudo apt-get update
+#sudo apt-get install snapcraft
+#wget https://launchpad.net/ubuntu/+source/snapcraft/2.26+17.04.1/+build/11947357/+files/snapcraft_2.26+17.04.1_all.deb
+
+#sudo dpkg -i snapcraft_2.26+17.04.1_all.deb
+
+node_modules/.bin/electron-builder --prepackaged=phat-linux-x64 --linux rpm
+
+mv dist/*.AppImage .
