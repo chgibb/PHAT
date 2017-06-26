@@ -2,8 +2,12 @@ import tarfile
 import time
 import os
 import subprocess
+
 time.sleep(5);
-tar = tarfile.open("phat.update")
-tar.extractall()
-tar.close()
-pid = subprocess.call(["./phat"])
+try:
+    tar = tarfile.open("phat.update")
+    tar.extractall()
+    tar.close()
+except IOError as e:
+    pass
+
