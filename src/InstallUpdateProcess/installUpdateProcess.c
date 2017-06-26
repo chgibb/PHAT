@@ -24,7 +24,7 @@ int main(int arg,char*argv[])
     close(STDOUT_FILENO);
     close(STDERR_FILENO);
 
-    int res = execl("/usr/bin/python","/usr/bin/python","resources/app/installUpdateProcess.py",(char*)NULL);
+    int res = execl("resources/app/installUpdateNotificationLinux","resources/app/installUpdateNotificationLinux",(char*)NULL);
     FILE*file = fopen("execlerror","w");
     fprintf(file,"%d %d",res,errno);
     return 0;
