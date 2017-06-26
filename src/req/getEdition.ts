@@ -9,12 +9,32 @@ let editionString : string = undefined;
 */
 function getEditionSource() : string
 {
-    let baseDir = "";
-    if(process.versions["electron"])
-        baseDir = path.dirname(process.execPath)+"/resources/app";
-    else
-        baseDir = process.cwd()+"/resources/app";
-    return path.resolve(path.normalize(baseDir+"/edition.txt"))
+    let electronBaseDir = "";
+    let electronEditionFile = "";
+
+    let CIBaseDir = "";
+    let CIEditionFile = "";
+
+    let InstalledBaseDir = "";
+    let InstalledEditionFile = "";
+
+    electronBaseDir = path.dirname(process.execPath)+"/resources/app/";
+
+    electronEditionFile = path.resolve(path.normalize(electronBaseDir+"edition.txt"));
+
+    CIBaseDir = process.cwd()+"/resources/app/";
+    CIEditionFile = path.resolve(path.normalize(CIBaseDir+"edition.txt"));
+
+    InstalledBaseDir = electronBaseDir;
+    InstalledEditionFile = electronEditionFile;
+
+
+    if(fs.existsSync(electronEditionFile))
+        return electronEditionFile;
+    if(fs.existsSync(CIEditionFile))
+        return CIEditionFile;
+    
+    throw new Error("Could not determine edition file path");
 } 
 
 function getEditionString()
