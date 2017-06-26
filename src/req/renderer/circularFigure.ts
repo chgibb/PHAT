@@ -65,7 +65,6 @@ export class RenderedTrackRecord
     public uuidAlign : string;
     public uuidContig : string;
     public uuidFigure : string;
-    public path : string;
     public checked : boolean;
     public colour : string;
     public constructor(
@@ -79,7 +78,6 @@ export class RenderedTrackRecord
             this.uuidAlign = uuidAlign;
             this.uuidContig = uuidContig;
             this.uuidFigure = uuidFigure;
-            this.path = path;
             this.checked = false;
             this.colour = colour;
         }
@@ -356,12 +354,16 @@ export function cacheCoverageTrack(
             if(status == true)
             {
                 let trackRecord = new RenderedCoverageTrackRecord(align.uuid,contiguuid,figure.uuid,colour,"");
-                trackRecord.path = getReadableAndWritable(`rt/circularFigures/${figure.uuid}/coverage/${align.uuid}/${contiguuid}/${trackRecord.uuid}`);
-                fs.writeFileSync(trackRecord.path,coverageTracks);
+                fs.writeFileSync(getCachedCoverageTrackPath(trackRecord),coverageTracks);
                 figure.renderedCoverageTracks.push(trackRecord);
             }
             cb(status,coverageTracks);
     },colour);
+}
+
+export function getCachedCoverageTrackPath(trackRecord : RenderedCoverageTrackRecord) : string
+{
+    return getReadableAndWritable(`rt/circularFigures/${trackRecord.uuidFigure}/coverage/${trackRecord.uuidAlign}/${trackRecord.uuidContig}/${trackRecord.uuid}`);
 }
 
 interface SNPPosition
@@ -468,10 +470,14 @@ export function cacheSNPTrack(
             if(status == true)
             {
                 let trackRecord = new RenderedSNPTrackRecord(align.uuid,contiguuid,figure.uuid,colour,"");
-                trackRecord.path = getReadableAndWritable(`rt/circularFigures/${figure.uuid}/snp/${align.uuid}/${contiguuid}/${trackRecord.uuid}`);
-                fs.writeFileSync(trackRecord.path,SNPTracks);
+                fs.writeFileSync(getCachedSNPTrackPath(trackRecord),SNPTracks);
                 figure.renderedSNPTracks.push(trackRecord);
             }
             cb(status,SNPTracks);
         },colour);
+}
+
+export function getCachedSNPTrackPath(trackRecord : RenderedSNPTrackRecord) : string
+{
+    return getReadableAndWritable(`rt/circularFigures/${trackRecord.uuidFigure}/snp/${trackRecord.uuidAlign}/${trackRecord.uuidContig}/${trackRecord.uuid}`);
 }
