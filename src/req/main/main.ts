@@ -128,9 +128,37 @@ app.on
 
 		setInterval(function(){atomicOp.runOperations(1);},100);
 		//After an update has been installed, update the updater with new binaries.
-		fs.rename(getReadableAndWritable("newCSharpCode.SharpZipLib.dll"),getReadableAndWritable("ICSharpCode.SharpZipLib.dll"),function(err : NodeJS.ErrnoException){});
-		fs.rename(getReadableAndWritable("newinstallUpdateProcess.exe"),getReadableAndWritable("installUpdateProcess.exe"),function(err : NodeJS.ErrnoException){});
-
+		if(process.platform == "win32")
+		{
+			fs.rename(
+				getReadableAndWritable("newCSharpCode.SharpZipLib.dll"),
+				getReadableAndWritable("ICSharpCode.SharpZipLib.dll"),
+				function(err : NodeJS.ErrnoException){}
+			);
+			fs.rename(
+				getReadableAndWritable("newinstallUpdateProcess.exe"),
+				getReadableAndWritable("installUpdateProcess.exe"),
+				function(err : NodeJS.ErrnoException){}
+			);
+		}
+		if(process.platform == "linux")
+		{
+			fs.rename(
+				getReadableAndWritable("newinstallUpdateNotificationLinux"),
+				getReadableAndWritable("installUpdateNotificationLinux"),
+				function(err : NodeJS.ErrnoException){}
+			);
+			fs.rename(
+				getReadableAndWritable("newinstallUpdateProcess"),
+				getReadableAndWritable("installUpdateProcess"),
+				function(err : NodeJS.ErrnoException){}
+			);
+			fs.rename(
+				getReadableAndWritable("newinstallUpdateProcess.py"),
+				getReadableAndWritable("installUpdateProcess.py"),
+				function(err : NodeJS.ErrnoException){}
+			);
+		}
 		fs.unlink("phat.update",function(err : NodeJS.ErrnoException){});
 	}
 );
