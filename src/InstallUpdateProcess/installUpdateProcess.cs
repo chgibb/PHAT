@@ -29,8 +29,6 @@ namespace phat
     	        gzipStream.Close();
     	        inStream.Close();
 
-                //Process.Start(new ProcessStartInfo("phat.exe"));
-                system("start phat.exe");
             }
             //Adapted from answer by ekad http://stackoverflow.com/questions/21307789/how-to-save-exception-in-txt-file
             catch(Exception ex)
