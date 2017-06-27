@@ -21,6 +21,8 @@ export function importProjectBrowseDialog() : Promise<string>
             },
             function(files : Array<string>)
             {
+                if(!files)
+                    resolve(undefined);
                 if(files[0])
                     resolve(files[0]);
                 else
