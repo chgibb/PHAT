@@ -24,7 +24,7 @@ int WINAPI WinMain(HINSTANCE hInstance,HINSTANCE hPrevInst,LPTSTR lpCmdLine,int 
         WS_OVERLAPPEDWINDOW,            // Window style
 
         // Size and position
-        CW_USEDEFAULT, CW_USEDEFAULT, 100, 100,
+        CW_USEDEFAULT, CW_USEDEFAULT, 900, 100,
 
         NULL,       // Parent window    
         NULL,       // Menu
@@ -64,7 +64,13 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
             PAINTSTRUCT ps;
             HDC hdc = BeginPaint(hwnd, &ps);
 
-            FillRect(hdc, &ps.rcPaint, (HBRUSH) (COLOR_WINDOW+1));
+            HBRUSH brush = CreateSolidBrush((COLORREF)(RGB(255,255,255)));
+
+            FillRect(hdc, &ps.rcPaint, brush);
+
+            LPCTSTR text = "PHAT is updating. Do not close this window or shutdown your computer. This window will close automatically.";
+
+            TextOut(hdc,0,0,text,lstrlen(text));
 
             EndPaint(hwnd, &ps);
         }
