@@ -5,10 +5,10 @@
 
 # PHAT - Pathogen Host Analysis Tool  
 ### Latest Releases
-* [Windows Installer](https://github.com/chgibb/PHAT/releases/download/0.0.30/phat-win32-x64-setup.exe)  
-* [Ubuntu Linux Debian Package](https://github.com/chgibb/PHAT/releases/download/0.0.30/phat_0.0.30_amd64.deb)  
-* [Windows Portable](https://github.com/chgibb/PHAT/releases/download/0.0.30/phat-win32-x64-portable.zip)  
-* [Linux Portable](https://github.com/chgibb/PHAT/releases/download/0.0.30/phat-linux-x64-portable.tar.gz)
+* [Windows Installer](https://github.com/chgibb/PHAT/releases/download/0.0.31/phat-win32-x64-setup.exe)  
+* [Ubuntu Linux Debian Package](https://github.com/chgibb/PHAT/releases/download/0.0.31/phat_0.0.31_amd64.deb)  
+* [Windows Portable](https://github.com/chgibb/PHAT/releases/download/0.0.31/phat-win32-x64-portable.zip)  
+* [Linux Portable](https://github.com/chgibb/PHAT/releases/download/0.0.31/phat-linux-x64-portable.tar.gz)
 #### Experimental Releases
 * [Red Hat Package Manager](https://github.com/chgibb/PHAT/releases/download/0.0.31/phat-0.0.31.x86_64.rpm)
 
