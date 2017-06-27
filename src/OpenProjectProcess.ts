@@ -58,6 +58,22 @@ process.on
     }  
 );
 process.on("uncaughtException",function(err : string){
+    console.log(err);
+    flags.done = true;
+    flags.failure = true;
+    flags.success = false;
+    process.send(
+        <AtomicOperationForkEvent>{
+            update : true,
+            flags : flags,
+            data : err
+        }
+    );
+    process.exit(1);
+});
+
+process.on("unhandledRejection",function(err : string){
+    console.log(err);
     flags.done = true;
     flags.failure = true;
     flags.success = false;

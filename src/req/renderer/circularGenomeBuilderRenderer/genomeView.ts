@@ -183,7 +183,10 @@ export class GenomeView extends viewMgr.View
                             {
                                 if(self.genome.renderedCoverageTracks[i].checked)
                                 {
-                                    res += (<any>fs.readFileSync(self.genome.renderedCoverageTracks[i].path));
+                                   res += (<any>fs.readFileSync(
+                                            cf.getCachedCoverageTrackPath(
+                                                self.genome.renderedCoverageTracks[i]
+                                            )));
                                 }
                             }
                             return res;
@@ -194,7 +197,10 @@ export class GenomeView extends viewMgr.View
                             {
                                 if(self.genome.renderedSNPTracks[i].checked)
                                 {
-                                    res += (<any>fs.readFileSync(self.genome.renderedSNPTracks[i].path));
+                                    res += (<any>fs.readFileSync(
+                                            cf.getCachedSNPTrackPath(
+                                                self.genome.renderedSNPTracks[i]
+                                            )));
                                 }
                             }
                             return res;
