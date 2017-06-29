@@ -76,6 +76,8 @@ export class ProjectsView extends viewMgr.View
         if(event.target.id == "importFromFile")
         {
             importProjectBrowseDialog().then((path) => {
+                if(!path)
+                    return;
                 ipc.send(
                     "runOperation",
                     <AtomicOperationIPC>{
