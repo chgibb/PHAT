@@ -2,7 +2,6 @@ using System;
 using System.Threading;
 using System.IO;
 using System.Diagnostics;
-using System.Runtime.InteropServices;
 
 using ICSharpCode.SharpZipLib.GZip;
 using ICSharpCode.SharpZipLib.Tar;
@@ -10,15 +9,16 @@ namespace phat
 {
     public class procMain
     {
-        [DllImport("msvcrt.dll")]
-		public static extern int system(string cmd);
-
         //Adapted from https://github.com/icsharpcode/SharpZipLib/wiki/GZip-and-Tar-Samples
-        public static void Main(String[] args)
+        public static int Main(String[] args)
         {
+            Process notification = new Process();
             try
             {
                 Thread.Sleep(5000);
+                notification.StartInfo.UseShellExecute = false;
+                notification.StartInfo.FileName = "resources\\app\\installUpdateNotificationWin32.exe";
+                notification.Start();
                 Stream inStream = File.OpenRead("phat.update");
     	        Stream gzipStream = new GZipInputStream(inStream);
     
@@ -39,7 +39,11 @@ namespace phat
                     "" + Environment.NewLine + "Date :" + DateTime.Now.ToString());
                     writer.WriteLine(Environment.NewLine + "-----------------------------------------------------------------------------" + Environment.NewLine);
                 }
+                notification.Kill();
+                return 1;
             }
+            notification.Kill();
+            return 0;
         }
     }
 }
