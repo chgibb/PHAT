@@ -44,7 +44,7 @@ environment:
   OSTYPE: 'cygwin'
   APPVEYOR: true
   APPVEYOR_RDP_PASSWORD:
-    secure: UfeTFhnuOSYfI7hZ6/mdz3N8jjpYJLskMDxUwx4X/94=
+    secure: vR9G9F+rHt8aGtofqsoRh2blpRC8Dy1yd1OtN7LvE18=
 
 notifications:
   - provider: Slack
