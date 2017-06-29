@@ -15,10 +15,11 @@ namespace phat
             Process notification = new Process();
             try
             {
-                Thread.Sleep(5000);
-                notification.StartInfo.UseShellExecute = false;
+                notification.StartInfo.UseShellExecute = true;
                 notification.StartInfo.FileName = "resources\\app\\installUpdateNotificationWin32.exe";
+                notification.StartInfo.Verb = "runas";
                 notification.Start();
+                Thread.Sleep(5000);
                 Stream inStream = File.OpenRead("phat.update");
     	        Stream gzipStream = new GZipInputStream(inStream);
     
