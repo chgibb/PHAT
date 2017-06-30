@@ -2,6 +2,10 @@
 import {ipcRenderer} from "electron";
 let ipc = ipcRenderer;
 
+const Dialogs = require("dialogs");
+const dialogs = Dialogs();
+
+import {AtomicOperationIPC} from "./../../atomicOperationsIPC";
 import * as viewMgr from "./../viewMgr";
 
 export class SplashView extends viewMgr.View
@@ -37,7 +41,25 @@ export class SplashView extends viewMgr.View
     {}
     public divClickEvents(event : JQueryEventObject) : void
     {
-        
+        if(event.target.id == "createNewProject")
+        {
+            dialogs.prompt("Project Name","New Project",function(text : string){
+                if(text)
+                {
+                    ipc.send(
+                        "runOperation",
+                        <AtomicOperationIPC>{
+                            opName : "newProject",
+                            name : text
+                        }
+                    );
+                }
+            });
+        }
+        if(event.target.id == "openProject")
+        {
+            viewMgr.changeView("openProjectView");
+        }
     }
 }
 export function addView(arr : Array<viewMgr.View>,div : string) : void
