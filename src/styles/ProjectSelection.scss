@@ -2,14 +2,11 @@
 @import "common/colors";
 @import "common/outerCenteredDiv";
 @import "common/innerCenteredDiv";
+@import "common/activeHover";
 
 .window-color{
   background-color: $windowbg-color;
 }
 #title{
   text-align: left;
-}
-
-.activeHover:hover{
-    font-weight: bold;
 }
