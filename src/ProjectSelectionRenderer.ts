@@ -23,6 +23,7 @@ import formatByteString from "./req/renderer/formatByteString";
 import * as viewMgr from "./req/renderer/viewMgr";
 
 import * as projectsView from "./req/renderer/ProjectSelectionRenderer/projectsView";
+import * as splashView from "./req/renderer/ProjectSelectionRenderer/splashView";
 
 import * as $ from "jquery";
 (<any>window).$ = $;
@@ -78,8 +79,9 @@ $
                 replyChannel : "projectSelection"
             }
         );
-        projectsView.addView(viewMgr.views,"projects");
-        viewMgr.changeView("projectsView");
+        projectsView.addView(viewMgr.views,"view");
+        splashView.addView(viewMgr.views,"view")
+        viewMgr.changeView("splashView");
         ipc.on
         (
             "projectSelection",function(event,arg)
