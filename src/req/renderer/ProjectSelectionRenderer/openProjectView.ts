@@ -41,7 +41,7 @@ export class OpenProjectView extends viewMgr.View
                     {
                         res += `
                             <div class="projectCell">
-                                <h4 class="activeHover" style="display:flex;margin-right:50px;" id="${this.projects[i].uuid}">${this.projects[i].alias}</h4>
+                                <h4 class="activeHover" style="display:flex;margin-right:50px;" id="${this.projects[i].uuid}Open">${this.projects[i].alias}</h4>
                                 <button class="activeHover" style="display:inline-block;">Export</button>
                             </div>
                             <br />
