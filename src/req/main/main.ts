@@ -140,6 +140,11 @@ app.on
 				getReadableAndWritable("installUpdateProcess.exe"),
 				function(err : NodeJS.ErrnoException){}
 			);
+			fs.rename(
+				getReadableAndWritable("newinstallUpdateNotificationWin32.exe"),
+				getReadableAndWritable("installUpdateNotificationWin32.exe"),
+				function(err : NodeJS.ErrnoException){}
+			);
 		}
 		if(process.platform == "linux")
 		{
