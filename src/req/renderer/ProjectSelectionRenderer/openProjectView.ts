@@ -34,10 +34,21 @@ export class OpenProjectView extends viewMgr.View
         return `
 
             ${(()=>{
-                let res = `<button id="goBack">Go Back</button>`;
+                let res = `<button id="goBack">Go Back</button><br /><br />`;
                 if(this.projects)
                 {
-
+                    for(let i = 0; i != this.projects.length; ++i)
+                    {
+                        res += `
+                            <div class="projectCell">
+                                <h4 class="activeHover" style="display:flex;margin-right:50px;" id="${this.projects[i].uuid}">${this.projects[i].alias}</h4>
+                                <button class="activeHover" style="display:inline-block;">Export</button>
+                            </div>
+                            <br />
+                            <br />
+                            <br />
+                        `;
+                    }
                 }
                 if(!this.projects || this.projects.length == 0)
                 {
