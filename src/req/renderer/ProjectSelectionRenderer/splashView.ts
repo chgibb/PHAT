@@ -19,9 +19,12 @@ export class SplashView extends viewMgr.View
                 <h2><b>Pathogen Host Analysis Tool</b></h2>
                 <div class="innerCenteredDiv">
                     <br />
+                    <br />
                     <button class="activeHover">Open Project</button>
                     <br />
+                    <br />
                     <button class="activeHover">Create New Project</button>
+                    <br />
                     <br />
                     <button class="activeHover">Help</button>
                 </div>
