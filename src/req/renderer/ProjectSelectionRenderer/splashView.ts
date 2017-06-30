@@ -20,13 +20,13 @@ export class SplashView extends viewMgr.View
                 <div class="innerCenteredDiv">
                     <br />
                     <br />
-                    <button class="activeHover">Open Project</button>
+                    <button class="activeHover" id="openProject">Open Project</button>
                     <br />
                     <br />
-                    <button class="activeHover">Create New Project</button>
+                    <button class="activeHover" id="createNewProject">Create New Project</button>
                     <br />
                     <br />
-                    <button class="activeHover">Help</button>
+                    <button class="activeHover" id="help">Help</button>
                 </div>
             </div>
         `;
@@ -37,7 +37,7 @@ export class SplashView extends viewMgr.View
     {}
     public divClickEvents(event : JQueryEventObject) : void
     {
-
+        
     }
 }
 export function addView(arr : Array<viewMgr.View>,div : string) : void
