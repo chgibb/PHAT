@@ -15,7 +15,9 @@ export class SplashView extends viewMgr.View
     public renderView() : string
     {
         return `
-            <h1>Pathogen Host Analysis Tool</h1>
+            <div class="innerCenteredDiv">
+                <h2><b>Pathogen Host Analysis Tool</b></h2>
+            </div>
         `;
     }
     public postRender() : void
