@@ -17,6 +17,14 @@ export class SplashView extends viewMgr.View
         return `
             <div class="innerCenteredDiv">
                 <h2><b>Pathogen Host Analysis Tool</b></h2>
+                <div class="innerCenteredDiv">
+                    <br />
+                    <button class="activeHover">Open Project</button>
+                    <br />
+                    <button class="activeHover">Create New Project</button>
+                    <br />
+                    <button class="activeHover">Help</button>
+                </div>
             </div>
         `;
     }
