@@ -71,6 +71,27 @@ export class OpenProjectView extends viewMgr.View
         if(event.target.id == "goBack")
         {
             viewMgr.changeView("splashView");
+            return;
+        }
+        if(this.projects)
+        {
+            for(let i = 0; i != this.projects.length; ++i)
+            {
+                if(event.target.id == `${this.projects[i].uuid}Open`)
+                {
+                    this.projects[i].lastOpened = Date.now();
+                    document.getElementById(this.div).innerHTML = "Preparing";
+                    jsonFile.writeFileSync(getProjectManifests(),this.projects);
+                    ipc.send(
+                        "runOperation",
+                        <AtomicOperationIPC>{
+                            opName : "openProject",
+                            proj : this.projects[i]
+                        }
+                    );
+                    return;
+                }
+            }
         }
     }
 }
