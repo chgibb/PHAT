@@ -1,4 +1,4 @@
-console.log("Started GUI test for New Project");
+/*console.log("Started GUI test for New Project");
 require("./../req/main/main");
 
 import * as winMgr from "./../req/main/winMgr";
@@ -41,3 +41,4 @@ setTimeout(function(){
         },1000);
     },1000);
 },1500);
+*/

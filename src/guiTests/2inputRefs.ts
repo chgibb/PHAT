@@ -1,4 +1,4 @@
-console.log("Started GUI test for ref seq inputing");
+/*console.log("Started GUI test for ref seq inputing");
 require("./../req/main/main");
 
 import * as path from "path";
@@ -83,3 +83,4 @@ atomicOp.updates.on("indexFasta",function(op : IndexFasta){
         winMgr.getWindowsByName("toolBar")[0].close();
     }
 });
+*/
