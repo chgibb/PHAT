@@ -45,8 +45,6 @@ export class OpenProjectView extends viewMgr.View
                                 <button class="activeHover" style="display:inline-block;">Export</button>
                             </div>
                             <br />
-                            <br />
-                            <br />
                         `;
                     }
                 }
