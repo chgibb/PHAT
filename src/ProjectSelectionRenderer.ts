@@ -9,10 +9,6 @@ const Dialogs = require("dialogs");
 const dialogs = Dialogs();
 import {getReadable,getWritable,getReadableAndWritable} from "./req/getAppPath";
 
-getReadable("");
-getWritable("");
-getReadableAndWritable("");
-
 import {ProjectManifest,getProjectManifests} from "./req/projectManifest";
 
 import {AtomicOperation} from "./req/operations/atomicOperations"
