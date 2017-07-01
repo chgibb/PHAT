@@ -73,7 +73,6 @@ export function bowTie2Align(alignData : alignData,update : () => void) : Promis
         fs.mkdirSync(getArtifactDir(alignData));
         fs.mkdirSync(getCoverageDir(alignData));
         let bowtieJob = new Job(bowtie2Exe,args,"",true,jobCallBack,{});
-        bowtieJob.vLog = getReadableAndWritable("bowTieLog.txt");
         try
         {
             bowtieJob.Run();
