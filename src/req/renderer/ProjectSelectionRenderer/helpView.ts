@@ -15,6 +15,20 @@ export class HelpView extends viewMgr.View
     public renderView() : string
     {
         return `
+            <button class="activeHover" id="goBack">Go Back</button>
+            <div class="innerCenteredDiv">
+                <br />
+                <br />
+                <button class="helpAndTutorials" id="helpAndTutorials">Help and Tutorials</button>
+                <br />
+                <br />
+                <button class="activeHover" id="howToUse">How To Use PHAT</button>
+                <br />
+                <br />
+                <button class="activeHover" id="sendUsFeedBack">Send Us Feedback</button>
+                <button class="activeHover" id="makeBetter">Help Us Make PHAT Better For Everyone</button>
+                
+            </div>
         `;
     }
     public postRender() : void{}
