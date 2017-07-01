@@ -1,5 +1,4 @@
-process.exit(0);
-/*console.log("Started GUI test for New Project");
+console.log("Started GUI test for New Project");
 require("./../req/main/main");
 
 import * as winMgr from "./../req/main/winMgr";
@@ -24,13 +23,22 @@ setTimeout(function(){
     `);
     setTimeout(function(){
         projSelection[0].webContents.executeJavaScript(`
-            let els = document.getElementsByClassName("activeHover");
-            let isOpenLink = /open/i;
-            if(isOpenLink.test(els[0].id))
-            {
-                els[0].click();
-            }
+            document.getElementById("openProject").click();
         `);
+        setTimeout(function(){
+            projSelection[0].webContents.executeJavaScript(`
+                let els = document.getElementsByClassName("activeHover");
+                let isOpenLink = /Open/;
+                for(let i = 0; i != els.length; ++i)
+                {
+                    if(isOpenLink.test(els[i].id))
+                    {
+                        els[i].click();
+                        break;
+                    }
+                }
+            `);
+        },500);
         setTimeout(function(){
             let toolBar = winMgr.getWindowsByName("toolBar");
             if(!toolBar || toolBar.length > 1 || toolBar.length == 0)
@@ -39,7 +47,6 @@ setTimeout(function(){
                 process.exit(1);
             }
             toolBar[0].close();
-        },1000);
+        },3000);
     },1000);
 },1500);
-*/
