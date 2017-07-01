@@ -2,7 +2,7 @@ import {ProjectManifest} from "./projectManifest"
 import {Fasta} from "./fasta";
 import Fastq from "./fastq";
 import {alignData} from "./alignData";
-import {CompletionFlags} from "./operations/atomicOperations";
+import {CompletionFlags,LogRecord} from "./operations/atomicOperations";
 export {CompletionFlags} from "./operations/atomicOperations";
 
 /**
@@ -53,6 +53,7 @@ export interface AtomicOperationForkEvent
     run? : boolean;
     update? : boolean;
     flags? : CompletionFlags;
+    logRecord? : LogRecord;
     progressMessage? : string;
     step? : number;
 }
