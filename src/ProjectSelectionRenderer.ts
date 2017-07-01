@@ -9,10 +9,6 @@ const Dialogs = require("dialogs");
 const dialogs = Dialogs();
 import {getReadable,getWritable,getReadableAndWritable} from "./req/getAppPath";
 
-getReadable("");
-getWritable("");
-getReadableAndWritable("");
-
 import {ProjectManifest,getProjectManifests} from "./req/projectManifest";
 
 import {AtomicOperation} from "./req/operations/atomicOperations"
@@ -27,6 +23,11 @@ import formatByteString from "./req/renderer/formatByteString";
 import * as viewMgr from "./req/renderer/viewMgr";
 
 import * as projectsView from "./req/renderer/ProjectSelectionRenderer/projectsView";
+import * as splashView from "./req/renderer/ProjectSelectionRenderer/splashView";
+import * as openProjectView from "./req/renderer/ProjectSelectionRenderer/openProjectView";
+import * as helpView from "./req/renderer/ProjectSelectionRenderer/helpView";
+
+import {citationText} from "./req/renderer/citationText";
 
 import * as $ from "jquery";
 (<any>window).$ = $;
@@ -45,6 +46,10 @@ $
 (
     function()
     {
+        document.body.innerHTML += `
+            <br />
+            <p>${citationText}</p>
+        `;
         /*
             This method is only for internal testing in order to limit access to the application
             to collaborators. This needs to be removed for the public release. token should be
@@ -82,8 +87,11 @@ $
                 replyChannel : "projectSelection"
             }
         );
-        projectsView.addView(viewMgr.views,"projects");
-        viewMgr.changeView("projectsView");
+        projectsView.addView(viewMgr.views,"view");
+        splashView.addView(viewMgr.views,"view")
+        openProjectView.addView(viewMgr.views,"view");
+        helpView.addView(viewMgr.views,"view");
+        viewMgr.changeView("splashView");
         ipc.on
         (
             "projectSelection",function(event,arg)
@@ -136,6 +144,7 @@ $
                     }
                 }
             }
-        )
+        );
+        
     }
 );
