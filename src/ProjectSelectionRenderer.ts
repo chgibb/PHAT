@@ -25,6 +25,7 @@ import * as viewMgr from "./req/renderer/viewMgr";
 import * as projectsView from "./req/renderer/ProjectSelectionRenderer/projectsView";
 import * as splashView from "./req/renderer/ProjectSelectionRenderer/splashView";
 import * as openProjectView from "./req/renderer/ProjectSelectionRenderer/openProjectView";
+import * as helpView from "./req/renderer/ProjectSelectionRenderer/helpView";
 
 import {citationText} from "./req/renderer/citationText";
 
@@ -89,6 +90,7 @@ $
         projectsView.addView(viewMgr.views,"view");
         splashView.addView(viewMgr.views,"view")
         openProjectView.addView(viewMgr.views,"view");
+        helpView.addView(viewMgr.views,"view");
         viewMgr.changeView("splashView");
         ipc.on
         (
