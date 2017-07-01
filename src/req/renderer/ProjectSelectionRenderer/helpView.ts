@@ -19,13 +19,15 @@ export class HelpView extends viewMgr.View
             <div class="innerCenteredDiv">
                 <br />
                 <br />
-                <button class="helpAndTutorials" id="helpAndTutorials">Help and Tutorials</button>
+                <button class="activeHover" id="helpAndTutorials">Help and Tutorials</button>
                 <br />
                 <br />
                 <button class="activeHover" id="howToUse">How To Use PHAT</button>
                 <br />
                 <br />
                 <button class="activeHover" id="sendUsFeedBack">Send Us Feedback</button>
+                <br />
+                <br />
                 <button class="activeHover" id="makeBetter">Help Us Make PHAT Better For Everyone</button>
                 
             </div>
@@ -35,6 +37,11 @@ export class HelpView extends viewMgr.View
     public dataChanged() : void{}
     public divClickEvents(event : JQueryEventObject) : void
     {
+        if(event.target.id == "goBack")
+        {
+            viewMgr.changeView("splashView");
+            return;
+        }
     }
 }
 export function addView(arr : Array<viewMgr.View>,div : string) : void
