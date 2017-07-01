@@ -35,7 +35,6 @@ export class Job
 	public running : boolean;
 	public extraData : any;
 	public retCode : number | undefined;
-	public log : (obj : SpawnRequestParams) => void = undefined;
 	public constructor(
 		processName : string,
 		args : Array<string>,
@@ -107,7 +106,6 @@ export class Job
 			if(out && !err)
 				obj.stdout = true;
 		}
-		this.log(obj);
 		this.callBackObj.send(this.callBackChannel,obj);
 	}
 	OnOut(data : Buffer) : void
@@ -135,7 +133,6 @@ export class Job
 			retCode : retCode,
 			extraData : this.extraData
 		};
-		this.log(obj);
 		this.callBackObj.send(this.callBackChannel,obj);
 	}
 	Run()
