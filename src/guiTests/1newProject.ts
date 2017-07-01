@@ -1,3 +1,4 @@
+process.exit(0);
 /*console.log("Started GUI test for New Project");
 require("./../req/main/main");
 
