@@ -36,8 +36,8 @@ export class OpenProjectView extends viewMgr.View
 
             ${(()=>{
                 let res = `
-                    <button id="goBack">Go Back</button>
-                    <button id="openFromFile">Open From File</button>
+                    <button class="activeHover" id="goBack">Go Back</button>
+                    <button class="activeHover" id="openFromFile">Open From File</button>
                     <br />
                     <br />
                 `;
