@@ -49,6 +49,8 @@ export interface AtomicOperationForkEvent
     setData? : boolean;
     finishedSettingData? : boolean;
     data? : any;
+    name? : string;
+    description? : string;
 
     run? : boolean;
     update? : boolean;
