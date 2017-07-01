@@ -67,6 +67,7 @@
     "jquery": "^2.2.4",
     "jsdoc": "^3.4.3",
     "jsonfile": "^2.4.0",
+    "minimist": "^1.2.0",
     "mkdirp": "^0.5.1",
     "nwsjs": "^0.2.0",
     "optimize-js": "^1.0.3",
