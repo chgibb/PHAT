@@ -17,6 +17,8 @@ export abstract class AtomicOperation
 	public destinationArtifactsDirectories : Array<string>;
 
     public logKey : string;
+    public closeLogOnFailure = true;
+    public closeLogOnSuccess = true;
 
     public constructor()
     {
@@ -203,11 +205,17 @@ export function addOperation(opName : string,data : any) : void
                     if(op.flags.failure)
                     {
                         cleanDestinationArtifacts(op);
-                        closeLog(op.logKey,"failure");
+                        if(op.closeLogOnFailure)
+                        {
+                            recordLogRecord(closeLog(op.logKey,"failure"));
+                        }
                     }
                     else if(op.flags.success)
                     {
-                        closeLog(op.logKey,"success");
+                        if(op.closeLogOnSuccess)
+                        {
+                            recordLogRecord(closeLog(op.logKey,"success"));
+                        }
                     }
                 }
                 updates.emit(op.name,op);
@@ -326,6 +334,9 @@ export function closeLog(uuid : string,status : string) : LogRecord | undefined
 
 export function recordLogRecord(record : LogRecord) : void
 {
+    if(record === undefined)
+        return;
+    mkdirp.sync(getReadableAndWritable(`logs`));
     fs.appendFileSync(logRecordFile,JSON.stringify(record));
 }
 
