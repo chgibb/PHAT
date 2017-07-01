@@ -5,6 +5,7 @@ const uuidv4 : () => string = require("uuid/v4");
 import * as rimraf from "rimraf";
 import * as mkdirp from "mkdirp";
 
+import {AtomicOperationForkEvent} from "./../atomicOperationsIPC";
 import {SpawnRequestParams} from "./../JobIPC";
 import {getReadableAndWritable} from "./../getAppPath";
 
@@ -113,6 +114,39 @@ export class ForkLogger extends AtomicOperation
     }
     public setData(data : any){}
     public run(){}
+}
+
+export function handleForkFailures(logger? : ForkLogger,progressMessage? : string)
+{
+    let signalFailure = function(err : string){
+        let flags : CompletionFlags;
+        flags.done = true;
+        flags.failure = true;
+        flags.success = false;
+
+        let failureObj = <AtomicOperationForkEvent>{
+            update : true,
+            flags : flags,
+            data : err,
+            progressMessage : progressMessage
+        };
+        if(logger !== undefined)
+        {
+            logger.logObject(failureObj);
+            failureObj.logRecord = closeLog(logger.logKey,"failure");
+        }
+
+        process.send(failureObj);
+        process.exit(1);
+
+    }
+    process.on("uncaughtException",function(err : string){
+        signalFailure(err);
+    });
+
+    process.on("unhandledRejection",function(err : string){
+        signalFailure(err);
+    });
 }
 
 export class CompletionFlags
