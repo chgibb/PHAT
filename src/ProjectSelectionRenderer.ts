@@ -26,6 +26,8 @@ import * as projectsView from "./req/renderer/ProjectSelectionRenderer/projectsV
 import * as splashView from "./req/renderer/ProjectSelectionRenderer/splashView";
 import * as openProjectView from "./req/renderer/ProjectSelectionRenderer/openProjectView";
 
+import {citationText} from "./req/renderer/citationText";
+
 import * as $ from "jquery";
 (<any>window).$ = $;
 require("./req/renderer/commonBehaviour");
@@ -43,6 +45,10 @@ $
 (
     function()
     {
+        document.body.innerHTML += `
+            <br />
+            <p>${citationText}</p>
+        `;
         /*
             This method is only for internal testing in order to limit access to the application
             to collaborators. This needs to be removed for the public release. token should be
@@ -136,6 +142,7 @@ $
                     }
                 }
             }
-        )
+        );
+        
     }
 );
