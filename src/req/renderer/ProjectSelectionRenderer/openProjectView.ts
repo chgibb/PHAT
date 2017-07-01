@@ -6,6 +6,7 @@ const jsonFile = require("jsonfile");
 
 import {ProjectManifest,getProjectManifests} from "./../../projectManifest";
 import {exportProjectBrowseDialog} from "./exportProjectBrowseDialog";
+import {importProjectBrowseDialog} from "./importProjectBrowseDialog";
 import {AtomicOperationIPC} from "./../../atomicOperationsIPC";
 import * as viewMgr from "./../viewMgr";
 
@@ -78,6 +79,22 @@ export class OpenProjectView extends viewMgr.View
         {
             viewMgr.changeView("splashView");
             return;
+        }
+        if(event.target.id == "openFromFile")
+        {
+            importProjectBrowseDialog().then((path) => {
+                if(!path)
+                    return;
+                ipc.send(
+                    "runOperation",
+                    <AtomicOperationIPC>{
+                        opName : "openProject",
+                        externalProjectPath : path
+                    }
+                );
+            }).catch((err) => {
+                throw err
+            });
         }
         if(this.projects)
         {
