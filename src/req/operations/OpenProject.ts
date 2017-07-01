@@ -25,12 +25,14 @@ export class OpenProject extends atomic.AtomicOperation
     }
     public run() : void
     {
+        this.logKey = atomic.openLog(this.name,"Open Project");
         let self = this;
         this.openProjectProcess = cp.fork(getReadable("OpenProject.js"));
 
         self.openProjectProcess.on(
             "message",function(ev : AtomicOperationForkEvent)
             {
+                self.logObject(ev);
                 if(ev.finishedSettingData == true)
                 {
                     self.openProjectProcess.send(
