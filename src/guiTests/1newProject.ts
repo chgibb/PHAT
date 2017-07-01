@@ -15,7 +15,5 @@ async function runTest() : Promise<void>
     await closeToolBar();
 }
 setTimeout(function(){
-
     runTest();
-
 },1000);
