@@ -292,14 +292,14 @@ export function openLog(name : string,description : string) : string
     return uuid;
 }
 
-export function closeLog(uuid : string,status : string) : void
+export function closeLog(uuid : string,status : string) : LogRecord | undefined
 {
     for(let i = 0; i != openLogStreams.length; ++i)
     {
         if(openLogStreams[i].uuid == uuid)
         {
             openLogStreams[i].stream.close();
-            let logRecord : LogRecord = <LogRecord>{};
+            let logRecord : LogRecord = new LogRecord();
 
             logRecord.endEpoch = Date.now();
 
@@ -318,11 +318,15 @@ export function closeLog(uuid : string,status : string) : void
 
             logRecord.runTime = Math.abs((<any>end) - (<any>start));
 
-            fs.appendFileSync(logRecordFile,JSON.stringify(logRecord));
-
-            return;
+            return logRecord;
         }
     }
+    return undefined;
+}
+
+export function recordLogRecord(record : LogRecord) : void
+{
+    fs.appendFileSync(logRecordFile,JSON.stringify(record));
 }
 
 export function logString(uuid : string,data : string) : void
