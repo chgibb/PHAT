@@ -88,7 +88,7 @@ process.on(
                                 step++;
                                 update();
 
-                                samToolsFaidx(align.fasta).then((result) => {
+                                samToolsFaidx(align.fasta,logger).then((result) => {
 
                                     progressMessage = "Generating pileup";
                                     step++;

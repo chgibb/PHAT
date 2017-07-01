@@ -89,7 +89,7 @@ export class IndexFasta extends atomic.AtomicOperation
             self.setSuccess(self.twoBitFlags);
             self.update();
 
-            samToolsFaidx(self.fasta).then((result) => {
+            samToolsFaidx(self.fasta,self).then((result) => {
 
                 self.setSuccess(self.faiFlags);
                 self.update();
