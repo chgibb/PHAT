@@ -58,7 +58,7 @@ process.on(
         if(ev.run == true)
         {
             update();
-            bowTie2Align(align,()=>{}).then((result) => {
+            bowTie2Align(align,logger).then((result) => {
 
                 progressMessage = "Converting SAM to BAM";
                 step++;
