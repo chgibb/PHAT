@@ -15,16 +15,6 @@ export interface JobCallBackObject
 		callBackChannel : string,params : SpawnRequestParams
 	) => void;
 }
-let jobLogger : (obj : SpawnRequestParams) => void = undefined;
-export function setLogFunction(logFunction : (obj : SpawnRequestParams) => void) : void
-{
-	jobLogger = logFunction;
-}
-function logJob(obj : SpawnRequestParams) : void
-{
-	if(jobLogger)
-		jobLogger(obj);
-}
 export class Job
 {
     /**  
@@ -45,6 +35,7 @@ export class Job
 	public running : boolean;
 	public extraData : any;
 	public retCode : number | undefined;
+	public log : (obj : SpawnRequestParams) => void = undefined;
 	public constructor(
 		processName : string,
 		args : Array<string>,
@@ -116,7 +107,7 @@ export class Job
 			if(out && !err)
 				obj.stdout = true;
 		}
-		logJob(obj);
+		this.log(obj);
 		this.callBackObj.send(this.callBackChannel,obj);
 	}
 	OnOut(data : Buffer) : void
@@ -144,7 +135,7 @@ export class Job
 			retCode : retCode,
 			extraData : this.extraData
 		};
-		logJob(obj);
+		this.log(obj);
 		this.callBackObj.send(this.callBackChannel,obj);
 	}
 	Run()
