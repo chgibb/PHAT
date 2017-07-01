@@ -1,8 +1,11 @@
 /// <reference types="jquery" />
-import {ipcRenderer} from "electron";
-let ipc = ipcRenderer;
+import * as electron from "electron";
+const ipc = electron.ipcRenderer;
+const remote = electron.remote;
 
 import * as viewMgr from "./../viewMgr";
+
+const pjson = require("./package.json");
 
 export class HelpView extends viewMgr.View
 {
@@ -40,6 +43,26 @@ export class HelpView extends viewMgr.View
         if(event.target.id == "goBack")
         {
             viewMgr.changeView("splashView");
+            return;
+        }
+        if(event.target.id == "helpAndTutorials")
+        {
+            remote.shell.openExternal(`${pjson.repository.url}/wiki`);
+            return;
+        }
+        if(event.target.id == "howToUse")
+        {
+            remote.shell.openExternal(`${pjson.repository.url}/wiki/How-to-use-P.H.A.T`);
+            return;
+        }
+        if(event.target.id == "sendUsFeedBack")
+        {
+            remote.shell.openExternal(`${pjson.repository.url}/issues`);
+            return;
+        }
+        if(event.target.id == "makeBetter")
+        {
+            remote.shell.openExternal(`${pjson.repository.url}/pulls`);
             return;
         }
     }
