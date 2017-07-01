@@ -76,15 +76,6 @@ function finishLoadingProject(proj : ProjectManifest) : void
 	//This ensures that when saveProjectProcess looks for a tar ball path to save to, that it is up to date.
 	if(proj)
 		dataMgr.setKey("application","project",proj);
-	let jobErrorLog = dataMgr.getKey("application","jobErrorLog");
-	let jobVerboseLog = dataMgr.getKey("application","jobVerboseLog");
-
-	try
-	{
-		fs.unlink(jobErrorLog,function(err : NodeJS.ErrnoException){});
-		fs.unlink(jobVerboseLog,function(err : NodeJS.ErrnoException){});
-	}
-	catch(err){}
 
 	dataMgr.setKey("application","jobErrorLog",getReadableAndWritable("jobErrorLog.txt"));
 	dataMgr.setKey("application","jobVerboseLog",getReadableAndWritable("jobVerboseLog.txt"));
