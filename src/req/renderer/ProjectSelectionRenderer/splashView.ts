@@ -55,10 +55,17 @@ export class SplashView extends viewMgr.View
                     );
                 }
             });
+            return;
         }
         if(event.target.id == "openProject")
         {
             viewMgr.changeView("openProjectView");
+            return;
+        }
+        if(event.target.id == "help")
+        {
+            viewMgr.changeView("helpView");
+            return;
         }
     }
 }
