@@ -104,6 +104,17 @@ export abstract class AtomicOperation
         logString(this.logKey,JSON.stringify(obj));
     }
 }
+
+export class ForkLogger extends AtomicOperation
+{
+    public constructor()
+    {
+        super();
+    }
+    public setData(data : any){}
+    public run(){}
+}
+
 export class CompletionFlags
 {
     public done : boolean;
