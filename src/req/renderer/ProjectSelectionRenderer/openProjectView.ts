@@ -5,6 +5,7 @@ let ipc = ipcRenderer;
 const jsonFile = require("jsonfile");
 
 import {ProjectManifest,getProjectManifests} from "./../../projectManifest";
+import {exportProjectBrowseDialog} from "./exportProjectBrowseDialog";
 import {AtomicOperationIPC} from "./../../atomicOperationsIPC";
 import * as viewMgr from "./../viewMgr";
 
@@ -42,7 +43,7 @@ export class OpenProjectView extends viewMgr.View
                         res += `
                             <div class="projectCell">
                                 <h4 class="activeHover" style="display:flex;margin-right:50px;" id="${this.projects[i].uuid}Open">${this.projects[i].alias}</h4>
-                                <button class="activeHover" style="display:inline-block;">Export</button>
+                                <button class="activeHover" style="display:inline-block;" id="${this.projects[i].uuid}Export">Export</button>
                             </div>
                             <br />
                         `;
@@ -90,6 +91,15 @@ export class OpenProjectView extends viewMgr.View
                         }
                     );
                     return;
+                }
+                if(event.target.id == `${this.projects[i].uuid}Export`)
+                {
+                    document.getElementById(this.div).innerHTML = `<h3>Exporting ${this.projects[i].alias}</h3>`;
+                    exportProjectBrowseDialog(this.projects[i]).then(() => {
+                        viewMgr.render();
+                    }).catch((err) => {
+                        throw err;
+                    });
                 }
             }
         }
