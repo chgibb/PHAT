@@ -35,7 +35,12 @@ export class OpenProjectView extends viewMgr.View
         return `
 
             ${(()=>{
-                let res = `<button id="goBack">Go Back</button><br /><br />`;
+                let res = `
+                    <button id="goBack">Go Back</button>
+                    <button id="openFromFile">Open From File</button>
+                    <br />
+                    <br />
+                `;
                 if(this.projects)
                 {
                     for(let i = 0; i != this.projects.length; ++i)
