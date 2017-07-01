@@ -263,7 +263,7 @@ export function runOperations(maxRunning : number) : void
 }
 
 let logRecordFile = getReadableAndWritable(`logs/logRecords`);
-class LogRecord
+export class LogRecord
 {
     name : string = "";
     description : string = "";
