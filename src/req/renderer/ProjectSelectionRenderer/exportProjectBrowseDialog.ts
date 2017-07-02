@@ -20,7 +20,7 @@ export function exportProjectBrowseDialog(proj : ProjectManifest) : Promise<unde
             function(fileName : string)
             {
                 if(fileName === undefined)
-                    return;
+                    return resolve();
             
                 fse.copy(
                     getTarBallPath(proj),fileName,(err : Error) => {
