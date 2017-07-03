@@ -4,6 +4,7 @@ export async function indexRefs() : Promise<void>
 {
     return new Promise<void>((resolve,reject) => {
         setTimeout(function(){
+            console.log("indexing ref seqs");
             let input = winMgr.getWindowsByName("input");
             if(!input || input.length == 0)
             {
