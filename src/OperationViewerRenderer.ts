@@ -63,10 +63,12 @@ $
                     let res = ``;
                     let masterView = <masterView.View>viewMgr.getViewByName("masterView");
                     let logView = <logView.View>viewMgr.getViewByName("logView",masterView.views);
+                    let runningView = <runningView.View>viewMgr.getViewByName("runningView",masterView.views);
                     logView.dataChanged();
+                    runningView.ops = new Array<AtomicOperation>();
                     if(arg.key == "operations" && arg.val !== undefined)
                     {
-                        let runningView = <runningView.View>viewMgr.getViewByName("runningView",masterView.views);
+                        
                         runningView.ops = <Array<AtomicOperation>>arg.val;
                         
                         /*
