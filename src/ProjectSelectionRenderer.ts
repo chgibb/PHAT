@@ -1,13 +1,9 @@
 import * as electron from "electron";
 const ipc = electron.ipcRenderer;
-const remote = electron.remote;
-const app = remote.app;
-
 
 const jsonFile = require("jsonfile");
 const Dialogs = require("dialogs");
 const dialogs = Dialogs();
-import {getReadable,getWritable,getReadableAndWritable} from "./req/getAppPath";
 
 import {ProjectManifest,getProjectManifests} from "./req/projectManifest";
 
