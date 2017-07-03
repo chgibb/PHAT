@@ -7,6 +7,7 @@ import * as viewMgr from "./req/renderer/viewMgr";
 
 import * as masterView from "./req/renderer/OperationViewerRenderer/masterView";
 import * as runningView from "./req/renderer/OperationViewerRenderer/runningView";
+import * as logView from "./req/renderer/OperationViewerRenderer/logView";
 
 import * as $ from "jquery";
 (<any>window).$ = $;
@@ -60,12 +61,14 @@ $
                 if(arg.action == "getKey" || arg.action == "keyChange")
                 {
                     let res = ``;
+                    let masterView = <masterView.View>viewMgr.getViewByName("masterView");
+                    let logView = <logView.View>viewMgr.getViewByName("logView",masterView.views);
+                    logView.dataChanged();
                     if(arg.key == "operations" && arg.val !== undefined)
                     {
-                        let masterView = <masterView.View>viewMgr.getViewByName("masterView");
                         let runningView = <runningView.View>viewMgr.getViewByName("runningView",masterView.views);
                         runningView.ops = <Array<AtomicOperation>>arg.val;
-                        viewMgr.render();
+                        
                         /*
                         let ops : Array<AtomicOperation> = <Array<AtomicOperation>>arg.val;
                         for(let i = 0; i != ops.length; ++i)
@@ -98,6 +101,7 @@ $
                         document.getElementById("view").innerHTML = res;
                         */
                     }
+                    viewMgr.render();
                 }
             }
         )
