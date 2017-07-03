@@ -19,21 +19,31 @@ function postRender(view : viewMgr.View) : void
     $("#runningView").css("height",$(window).height()/2+"px");
 }
 viewMgr.setPostRender(postRender);
+
+let pingOperations = setInterval(function(){
+    console.log("running ping");
+    ipc.send(
+        "getKey",
+        <GetKeyEvent>{
+            action : "getKey",
+            channel : "application",
+            key : "operations",
+            replyChannel : "operationViewer"
+        }
+    );
+    console.log("done running ping");
+},3000);
+window.addEventListener("unload",function(){
+    clearInterval(pingOperations);
+});
 $
 (
     function()
     {
+        console.log("adding views");
         masterView.addView(viewMgr.views,"");
         viewMgr.changeView("masterView");
-        ipc.send(
-            "keySub",
-            <KeySubEvent>{
-                action : "keySub",
-                channel : "application",
-                key : "operations",
-                replyChannel : "operationViewer"
-            }
-        );
+        console.log('done adding views');
         ipc.send(
             "getKey",
             <GetKeyEvent>{
@@ -43,69 +53,28 @@ $
                 replyChannel : "operationViewer"
             }
         );
-        setInterval(function(){
-            ipc.send(
-                "getKey",
-                <GetKeyEvent>{
-                    action : "getKey",
-                    channel : "application",
-                    key : "operations",
-                    replyChannel : "operationViewer"
-                }
-            );
-        },500);
         ipc.on
         (
             "operationViewer",function(event,arg)
             {
-                if(arg.action == "getKey" || arg.action == "keyChange")
+                if(arg.action == "getKey")
                 {
+                    console.log("getkey");
                     let res = ``;
                     let masterView = <masterView.View>viewMgr.getViewByName("masterView");
                     let logView = <logView.View>viewMgr.getViewByName("logView",masterView.views);
                     let runningView = <runningView.View>viewMgr.getViewByName("runningView",masterView.views);
                     logView.dataChanged();
-                    runningView.ops = new Array<AtomicOperation>();
+                    //runningView.ops = new Array<AtomicOperation>();
                     if(arg.key == "operations" && arg.val !== undefined)
                     {
                         
-                        runningView.ops = <Array<AtomicOperation>>arg.val;
-                        
-                        /*
-                        let ops : Array<AtomicOperation> = <Array<AtomicOperation>>arg.val;
-                        for(let i = 0; i != ops.length; ++i)
-                        {
-                            try
-                            {
-                                if(!ops[i].running)
-                                {
-                                    res += `<p>${ops[i].name}: Queued</p><br />`;
-                                }
-                                if(ops[i].running)
-                                {
-                                    res += `<p>${ops[i].name}: Running</p><br />
-
-                                        ${(()=>{
-                                            if(ops[i].progressMessage)
-                                            {
-                                                return `<p>${ops[i].progressMessage}</p><br />`;
-                                            }
-                                            else
-                                            {
-                                                return "";
-                                            }
-                                        })()}
-                                    `;
-                                }
-                            }
-                            catch(err){}
-                        }
-                        document.getElementById("view").innerHTML = res;
-                        */
+                        //runningView.ops = <Array<AtomicOperation>>arg.val;
                     }
                     viewMgr.render();
                 }
             }
         )
+        viewMgr.render();
     }
 );
