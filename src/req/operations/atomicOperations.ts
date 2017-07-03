@@ -398,9 +398,10 @@ export function logString(uuid : string,data : string) : void
     }
 }
 
-export async function getLogRecords() : Promise<Array<LogRecord>>
+export async function getLogRecords(last : number) : Promise<Array<LogRecord>>
 {
     return new Promise<Array<LogRecord>>((resolve,reject) => {
+        let lines : Array<string> = new Array<string>();
         let res : Array<LogRecord> = new Array<LogRecord>();
         try
         {
@@ -408,9 +409,18 @@ export async function getLogRecords() : Promise<Array<LogRecord>>
                 input : fs.createReadStream(logRecordFile)
             });
             rl.on("line",function(line : string){
-                res.push(JSON.parse(line));
+                lines.push(line);
             });
             rl.on("close",function(){
+                lines = lines.reverse();
+                for(let i = 0; i != last; ++i)
+                {
+                    if(i == lines.length)
+                    {
+                        return resolve(res);
+                    }
+                    res.push(JSON.parse(lines[i]));
+                }
                 resolve(res);
             });
         }
