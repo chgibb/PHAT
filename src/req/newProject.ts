@@ -1,7 +1,6 @@
 const jsonFile = require("jsonfile");
 const uuidv4 : () => string = require("uuid/v4");
 
-import {getReadableAndWritable} from "./getAppPath";
 import {ProjectManifest,getProjectManifests} from "./projectManifest";
 
 export function newProject(name : string) : Promise<{}>

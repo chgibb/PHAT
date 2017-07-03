@@ -1,6 +1,5 @@
 /// <reference types="jquery" />
 import * as electron from "electron";
-const ipc = electron.ipcRenderer;
 const remote = electron.remote;
 
 import * as viewMgr from "./../viewMgr";

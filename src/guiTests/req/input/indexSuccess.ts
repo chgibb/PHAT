@@ -1,4 +1,3 @@
-import * as winMgr from "./../../../req/main/winMgr";
 import * as atomicOp from "./../../../req/operations/atomicOperations";
 import {IndexFasta} from "./../../../req/operations/indexFasta";
 export async function indexSuccess() : Promise<boolean>
