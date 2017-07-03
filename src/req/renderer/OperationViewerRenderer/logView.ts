@@ -1,5 +1,3 @@
-
-
 import * as viewMgr from "./../viewMgr";
 
 import {LogRecord,getLogRecords} from "./../../operations/atomicOperations" 
@@ -21,14 +19,15 @@ export class View extends viewMgr.View
     public dataChanged() : void
     {
         let self = this;
-        getLogRecords().then((records : Array<LogRecord>) => {
+        console.log("fetching log records");
+        getLogRecords(2).then((records : Array<LogRecord>) => {
             self.logRecords = records
+            console.log("got records");
         });
     }
     public divClickEvents(event : JQueryEventObject) : void{}
     public renderView() : string
     {
-        console.log(this.logRecords);
         return `
             <table style="width:100%">
                 <tr>
