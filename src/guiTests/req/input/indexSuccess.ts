@@ -1,4 +1,3 @@
-import * as winMgr from "./../../../req/main/winMgr";
 import * as atomicOp from "./../../../req/operations/atomicOperations";
 import {IndexFasta} from "./../../../req/operations/indexFasta";
 export async function indexSuccess() : Promise<boolean>
@@ -12,6 +11,7 @@ export async function indexSuccess() : Promise<boolean>
             }
             if(op.flags.done && op.flags.success)
             {
+                console.log("succeeded indexing");
                 resolve(true);
             }
         });

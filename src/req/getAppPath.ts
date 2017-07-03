@@ -46,7 +46,6 @@ function getReadableDir() : string
 {
     let electronBaseDir = "";
     let CIBaseDir = "";
-    let InstalledBaseDir = "";
     electronBaseDir = path.dirname(process.execPath)+"/resources/app";
 
     if(fs.existsSync(electronBaseDir))

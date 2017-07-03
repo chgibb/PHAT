@@ -4,6 +4,7 @@ export async function selectAllRefs() : Promise<void>
 {
     return new Promise<void>((resolve,reject) => {
         setTimeout(function(){
+            console.log("selecting all refs");
             let input = winMgr.getWindowsByName("input");
             if(!input || input.length == 0)
             {

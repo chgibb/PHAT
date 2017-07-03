@@ -4,6 +4,7 @@ export async function openRefSeqView() : Promise<void>
 {
     return new Promise<void>((resolve,reject) => {
         setTimeout(function(){
+            console.log("opening ref seq tab");
             let input = winMgr.getWindowsByName("input");
             if(!input || input.length == 0)
             {

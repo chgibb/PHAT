@@ -7,7 +7,6 @@ import * as winMgr from "./req/main/winMgr";
 
 //This script bootstraps the apps main process and opens each window so code caches
 //for each window can be ahead of time compiled. This gets invoked through optPackage.bash
-const sleep = require("./req/sleep");
 setTimeout
 (
     function()
