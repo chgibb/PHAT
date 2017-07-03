@@ -12,6 +12,7 @@ export async function indexSuccess() : Promise<boolean>
             }
             if(op.flags.done && op.flags.success)
             {
+                console.log("succeeded indexing");
                 resolve(true);
             }
         });
