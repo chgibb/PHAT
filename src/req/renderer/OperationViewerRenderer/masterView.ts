@@ -1,5 +1,6 @@
 import * as viewMgr from "./../viewMgr";
 import * as runningView from "./runningView";
+import * as logView from "./logView";
 export class View extends viewMgr.View
 {
     public views : Array<viewMgr.View>;
@@ -11,6 +12,7 @@ export class View extends viewMgr.View
     public onMount() : void
     {
         runningView.addView(this.views,"runningView");
+        logView.addView(this.views,"logView");
         for(let i = 0; i != this.views.length; ++i)
         {
             this.views[i].mount();
