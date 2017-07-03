@@ -50,6 +50,7 @@ $
                     let res = ``;
                     if(arg.key == "operations" && arg.val !== undefined)
                     {
+                        /*
                         let ops : Array<AtomicOperation> = <Array<AtomicOperation>>arg.val;
                         for(let i = 0; i != ops.length; ++i)
                         {
@@ -79,6 +80,7 @@ $
                             catch(err){}
                         }
                         document.getElementById("view").innerHTML = res;
+                        */
                     }
                 }
             }
