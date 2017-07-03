@@ -13,6 +13,7 @@ export function bowTie2Build(op : IndexFasta) : Promise<string | undefined>
         let jobCallBack : JobCallBackObject = {
             send(channel : string,params : SpawnRequestParams)
             {
+                op.logObject(params);
                 if(params.done && params.retCode !== undefined)
                 {
                     if(params.retCode == 0)
