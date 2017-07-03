@@ -8,6 +8,7 @@ export class View extends viewMgr.View
     public constructor(div : string)
     {
         super("runningView",div);
+        this.ops = new Array<AtomicOperation>();
 
     }
     public onMount() : void{}
@@ -23,8 +24,32 @@ export class View extends viewMgr.View
                     <th>Name</th>
                     <th>Status</th>
                     <th>Message</th>
-                    <th>Started</th>
                 </tr>
+                ${(()=>{
+                    let res = "";
+                    if(!this.ops)
+                        return res;
+                    for(let i = 0; i != this.ops.length; ++i)
+                    {
+                        if(!this.ops[i])
+                            continue;
+                        res += `
+                            <tr>
+                                <td>${this.ops[i].name}</td>
+                                <td>${this.ops[i].running != false ? "Running" : "Queued"}</td>
+                                <td>${(()=>{
+                                    if(this.ops[i].progressMessage)
+                                        return this.ops[i].progressMessage
+                                    if(this.ops[i].extraData)
+                                        return this.ops[i].extraData
+                                    return "";
+                                })()}</td>
+                            
+                            </tr>
+                        `;
+                    }
+                    return res;
+                })()}
 
             </table>
         `;
