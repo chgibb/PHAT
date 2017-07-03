@@ -2,6 +2,7 @@ import {EventEmitter} from "events";
 import * as fs from "fs";
 
 const uuidv4 : () => string = require("uuid/v4");
+const fsr = require("fs-backwards-stream");
 import * as rimraf from "rimraf";
 import * as mkdirp from "mkdirp";
 
@@ -395,4 +396,39 @@ export function logString(uuid : string,data : string) : void
             return;
         }
     }
+}
+
+export async function getLogRecords() : Promise<Array<LogRecord>>
+{
+    return new Promise<Array<LogRecord>>((resolve,reject) => {
+        let res : Array<LogRecord> = new Array<LogRecord>();
+
+        let str : string = "";
+
+        const stream : fs.ReadStream = fsr(logRecordFile);
+        
+        stream.on("data",function(buff : Buffer){
+            str += buff.toString();
+        });
+
+        stream.on("close",function(){
+
+            let lines = str.split("\n");
+            for(let i = 0; i != lines.length; ++i)
+            {
+                try
+                {
+                    res.push(JSON.parse(lines[i]));
+                }
+                catch(err){}
+            }
+
+            resolve(res);
+        });
+        stream.on("error",function(err : string){
+            throw err;
+        });
+
+        
+    });
 }
