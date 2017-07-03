@@ -382,7 +382,7 @@ export function recordLogRecord(record : LogRecord) : void
     if(record === undefined)
         return;
     mkdirp.sync(getReadableAndWritable(`logs`));
-    fs.appendFileSync(logRecordFile,JSON.stringify(record));
+    fs.appendFileSync(logRecordFile,JSON.stringify(record)+"\n");
 }
 
 export function logString(uuid : string,data : string) : void
