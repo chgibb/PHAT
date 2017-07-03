@@ -12,6 +12,12 @@ import * as $ from "jquery";
 (<any>window).$ = $;
 require("./req/renderer/commonBehaviour");
 
+function postRender(view : viewMgr.View) : void
+{
+    $("#logView").css("height",$(window).height()/2+"px");
+    $("#runningView").css("height",$(window).height()/2+"px");
+}
+viewMgr.setPostRender(postRender);
 $
 (
     function()
