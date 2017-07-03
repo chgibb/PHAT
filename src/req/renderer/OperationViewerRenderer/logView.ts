@@ -47,8 +47,8 @@ export class View extends viewMgr.View
                                 <td>${this.logRecords[i].name}</td>
                                 <td>${this.logRecords[i].description}</td>
                                 <td>${this.logRecords[i].status}</td>
-                                <td>${this.logRecords[i].name}</td>
-                                <td>${this.logRecords[i].startEpoch}</td>
+                                <td>${this.logRecords[i].runTime}</td>
+                                <td>${new Date(this.logRecords[i].startEpoch)}</td>
                             </tr>
                         `;
                     }
