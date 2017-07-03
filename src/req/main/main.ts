@@ -16,8 +16,6 @@ getReadableAndWritable("");
 import {getEdition} from "./../getEdition";
 import {appMenu} from "./appMenu";
 
-const jsonFile = require("jsonfile");
-
 import * as dataMgr from "./dataMgr";
 import * as atomicOp from "./../operations/atomicOperations";
 import {AtomicOperationIPC} from "./../atomicOperationsIPC";
