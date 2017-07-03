@@ -3,6 +3,10 @@ const ipc = electron.ipcRenderer;
 
 import {AtomicOperation} from "./req/operations/atomicOperations"
 import {GetKeyEvent,KeySubEvent} from "./req/ipcEvents";
+import * as viewMgr from "./req/renderer/viewMgr";
+
+import * as masterView from "./req/renderer/OperationViewerRenderer/masterView";
+import * as runningView from "./req/renderer/OperationViewerRenderer/runningView";
 
 import * as $ from "jquery";
 (<any>window).$ = $;
@@ -12,6 +16,8 @@ $
 (
     function()
     {
+        masterView.addView(viewMgr.views,"");
+        viewMgr.changeView("masterView");
         ipc.send(
             "keySub",
             <KeySubEvent>{
@@ -50,6 +56,10 @@ $
                     let res = ``;
                     if(arg.key == "operations" && arg.val !== undefined)
                     {
+                        let masterView = <masterView.View>viewMgr.getViewByName("masterView");
+                        let runningView = <runningView.View>viewMgr.getViewByName("runningView",masterView.views);
+                        runningView.ops = <Array<AtomicOperation>>arg.val;
+                        viewMgr.render();
                         /*
                         let ops : Array<AtomicOperation> = <Array<AtomicOperation>>arg.val;
                         for(let i = 0; i != ops.length; ++i)
