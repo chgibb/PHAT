@@ -35,7 +35,7 @@ export class View extends viewMgr.View
                     <th>Name</th>
                     <th>Description</th>
                     <th>Status</th>
-                    <th>Runtime</th>
+                    <th>Runtime (ms)</th>
                     <th>Started</th>
                 </tr>
                 ${(()=>{
