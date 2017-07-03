@@ -1,21 +1,34 @@
+
+
 import * as viewMgr from "./../viewMgr";
 
-import {LogRecord} from "./../../operations/atomicOperations"
+import {LogRecord,getLogRecords} from "./../../operations/atomicOperations" 
 
 export class View extends viewMgr.View
 {
+    public logRecords : Array<LogRecord>;
     public constructor(div : string)
     {
-        super("runningView",div);
-
+        super("logView",div);
+        this.logRecords = new Array<LogRecord>();
     }
-    public onMount() : void{}
+    public onMount() : void
+    {
+        this.dataChanged();
+    }
     public onUnMount() : void{}
     public postRender() : void{}
-    public dataChanged() : void{}
+    public dataChanged() : void
+    {
+        let self = this;
+        getLogRecords().then((records : Array<LogRecord>) => {
+            self.logRecords = records
+        });
+    }
     public divClickEvents(event : JQueryEventObject) : void{}
     public renderView() : string
     {
+        console.log(this.logRecords);
         return `
             <table style="width:100%">
                 <tr>
@@ -25,6 +38,22 @@ export class View extends viewMgr.View
                     <th>Runtime</th>
                     <th>Started</th>
                 </tr>
+                ${(()=>{
+                    let res = "";
+                    for(let i = 0; i != this.logRecords.length; ++i)
+                    {
+                        res += `
+                            <tr>
+                                <td>${this.logRecords[i].name}</td>
+                                <td>${this.logRecords[i].description}</td>
+                                <td>${this.logRecords[i].status}</td>
+                                <td>${this.logRecords[i].name}</td>
+                                <td>${this.logRecords[i].startEpoch}</td>
+                            </tr>
+                        `;
+                    }
+                    return res;
+                })()}
 
             </table>
         `;
