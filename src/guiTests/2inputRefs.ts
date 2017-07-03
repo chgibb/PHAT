@@ -1,15 +1,6 @@
 console.log("Started GUI test for ref seq inputing");
 require("./../req/main/main");
 
-import * as path from "path";
-
-import * as winMgr from "./../req/main/winMgr";
-import * as dataMgr from "./../req/main/dataMgr";
-import * as atomicOp from "./../req/operations/atomicOperations";
-import {IndexFasta} from "./../req/operations/indexFasta";
-
-import {Fasta} from "./../req/fasta";
-
 import {openProjectsView} from "./req/projectSelection/openProjectsView";
 import {openFirstProject} from "./req/projectSelection/openFirstProject";
 import {openInputWindow} from "./req/input/openInputWindow";
