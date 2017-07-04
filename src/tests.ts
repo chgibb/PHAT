@@ -1,3 +1,5 @@
+/*
+
 import * as atomic from "./req/operations/atomicOperations";
 import {GenerateQCReport} from "./req/operations/GenerateQCReport";
 import {IndexFasta} from "./req/operations/indexFasta";
@@ -505,6 +507,7 @@ assert.assert(function(){
 	return true;
 },'--------------------------------------------------------',0);
 */
+/*
 assert.assert(function(){
 	loadTestDataNoSpaces();
 	return true;
@@ -637,3 +640,93 @@ validateR1ToHPV18Alignment();
 
 assert.runAsserts();
 
+*/
+import * as atomic from "./req/operations/atomicOperations";
+import {registerOperations} from "./req/tests/registerOperations";
+
+import {rebuildRTDirectory} from "./req/main/rebuildRTDirectory";
+
+import * as L6R1R1 from "./req/tests/L6R1R1";
+import * as L6R1R2 from "./req/tests/L6R1R2";
+import * as hpv16Ref from "./req/tests/hpv16Ref";
+import * as hpv18Ref from "./req/tests/hpv18Ref";
+
+import {testFastQCReportGeneration} from "./req/tests/testFastQCReportGeneration";
+import {testHPV16Index} from "./req/tests/testHPV16Index";
+
+let opsRunner = setInterval(function(){atomic.runOperations(1);},1000);
+async function runTests() : Promise<void>
+{
+	return new Promise<void>(async (resolve,reject) => {
+
+		console.log("Generating FastQC report for L6R1R1");
+		atomic.addOperation("generateFastQCReport",L6R1R1.get());
+		try
+		{
+			await testFastQCReportGeneration();
+		}
+		catch(err){}
+
+		console.log("Generating FastQC report for L6R1R2");
+    	atomic.addOperation("generateFastQCReport",L6R1R2.get());
+		try
+		{
+			await testFastQCReportGeneration();
+		}
+		catch(err){}
+
+		console.log("Starting to index hpv16");
+		atomic.addOperation("indexFasta",hpv16Ref.get());
+		try
+		{
+			await testHPV16Index();
+		}
+		catch(err)
+		{
+			console.log("test index threw exception");
+			return reject();
+		}
+
+		resolve();
+	});
+
+}
+setTimeout(function(){
+	(async function(){
+		rebuildRTDirectory();
+		registerOperations();
+
+		L6R1R1.loadNoSpaces();
+		L6R1R2.loadNoSpaces();
+		hpv16Ref.loadNoSpaces();
+
+		try
+		{
+			await runTests();
+		}
+		catch(err)
+		{
+			console.log("run tests threw exception");
+			clearInterval(opsRunner);
+			process.exit(1);
+		}
+
+		L6R1R1.loadSpaces();
+		L6R1R2.loadSpaces();
+		hpv16Ref.loadNoSpaces();
+
+		try
+		{
+			await runTests();
+		}
+		catch(err)
+		{
+			console.log("run tests threw exception");
+			clearInterval(opsRunner);
+			process.exit(1);
+		}
+
+		clearInterval(opsRunner);
+		process.exit(0);
+	})();
+},1000);
