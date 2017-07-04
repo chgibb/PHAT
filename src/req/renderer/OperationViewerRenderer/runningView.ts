@@ -36,7 +36,7 @@ export class View extends viewMgr.View
                         res += `
                             <tr>
                                 <td>${this.ops[i].name}</td>
-                                <td>${this.ops[i].running != false ? "Running" : "Queued"}</td>
+                                <td>${this.ops[i].running === true ? "Running" : "Queued"}</td>
                                 <td></td>
                             
                             </tr>
