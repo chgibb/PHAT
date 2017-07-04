@@ -12,7 +12,7 @@ winMgr.windowCreators["operationViewer"] =
 				"operationViewer",
 				1000,800,
 				"file://"+getReadable("OperationViewer.html"),
-				true,false,
+				false,false,
 				500,300
 			)
 		);
