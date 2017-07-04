@@ -1,4 +1,5 @@
 import {AtomicOperationForkEvent,CompletionFlags} from "./req/atomicOperationsIPC";
+import * as atomic from "./req/operations/atomicOperations";
 import {alignData,getArtifactDir} from "./req/alignData";
 import {getFolderSize} from "./req/getFolderSize";
 import formatByteString from "./req/renderer/formatByteString";
@@ -18,10 +19,12 @@ let align : alignData;
 let step = 1;
 let progressMessage = "Aligning";
 
+let logger : atomic.ForkLogger = new atomic.ForkLogger();
+atomic.handleForkFailures(logger);
 
 function update() : void
 {
-    process.send(<AtomicOperationForkEvent>{
+    let update = <AtomicOperationForkEvent>{
         update : true,
         flags : flags,
         step : step,
@@ -29,7 +32,16 @@ function update() : void
         data : {
             alignData : align
         }
-    });
+    };
+    if(flags.done)
+    {
+        if(flags.success)
+            update.logRecord = atomic.closeLog(logger.logKey,"success");
+        else if(flags.failure)
+            update.logRecord = atomic.closeLog(logger.logKey,"failure");
+    }
+    logger.logObject(update);
+    process.send(update);
 }
 
 
@@ -37,6 +49,7 @@ process.on(
     "message",function(ev : AtomicOperationForkEvent){
         if(ev.setData == true)
         {
+            logger.logKey = atomic.openLog(ev.name,ev.description);
             align = ev.data.alignData;
             process.send(<AtomicOperationForkEvent>{
                 finishedSettingData : true
@@ -45,7 +58,7 @@ process.on(
         if(ev.run == true)
         {
             update();
-            bowTie2Align(align,()=>{}).then((result) => {
+            bowTie2Align(align,logger).then((result) => {
 
                 progressMessage = "Converting SAM to BAM";
                 step++;
@@ -75,7 +88,7 @@ process.on(
                                 step++;
                                 update();
 
-                                samToolsFaidx(align.fasta).then((result) => {
+                                samToolsFaidx(align.fasta,logger).then((result) => {
 
                                     progressMessage = "Generating pileup";
                                     step++;
@@ -115,34 +128,3 @@ process.on(
         }
     }
 );
-
-process.on("uncaughtException",function(err : string){
-    flags.done = true;
-    flags.failure = true;
-    flags.success = false;
-    process.send(
-        <AtomicOperationForkEvent>{
-            update : true,
-            flags : flags,
-            data : err,
-            progressMessage : progressMessage
-        }
-    );
-    process.exit(1);
-});
-
-process.on("unhandledRejection",function(err : string){
-    console.log("ERROR "+err);
-    flags.done = true;
-    flags.failure = true;
-    flags.success = false;
-    process.send(
-        <AtomicOperationForkEvent>{
-            update : true,
-            flags : flags,
-            data : err,
-            progressMessage : progressMessage
-        }
-    );
-    process.exit(1);
-});

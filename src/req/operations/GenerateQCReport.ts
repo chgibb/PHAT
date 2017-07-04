@@ -18,6 +18,7 @@ export class GenerateQCReport extends atomic.AtomicOperation
 	public fastq : Fastq;
 	public destDir : string;
 	public srcDir : string;
+	public logKey : string;
 	constructor()
 	{
 		super();
@@ -43,6 +44,7 @@ export class GenerateQCReport extends atomic.AtomicOperation
 	}
 	public run() : void
 	{
+		this.logKey = atomic.openLog(this.name,"FastQC Report Generation");
 		//Set path to fastqc entry file
 		if(process.platform == "linux")
             this.fastQCPath = getReadable('FastQC/fastqc');
@@ -65,6 +67,7 @@ export class GenerateQCReport extends atomic.AtomicOperation
 		let fastQCCallBack : JobCallBackObject = {
 			send(channel : string,params : SpawnRequestParams)
 			{
+				self.logObject(params);
 				if(self.flags.done)
 					return;			
 				if(params.unBufferedData)

@@ -20,11 +20,15 @@ export class CheckForUpdate extends atomic.AtomicOperation
     }
     public run() : void
     {
+        this.closeLogOnFailure = true;
+        this.closeLogOnSuccess = true;
+        this.logKey = atomic.openLog(this.name,"Check for Update");
         let self = this;
         this.checkForUpdateProcess = cp.fork(getReadable("CheckForUpdate.js"));
         this.checkForUpdateProcess.on(
             "message",function(ev : AtomicOperationForkEvent)
             {
+                self.logObject(ev);
                 if(ev.finishedSettingData == true)
                 {
                     self.checkForUpdateProcess.send(

@@ -151,7 +151,13 @@ export function setPreRender(
 ) : void
 {
     preRender = func;
-} 
+}
+export function setPostRender(
+    func : (view : View) => void
+) : void
+{
+    postRender = func;
+}
 
 export function render(preRenderArg? : (view : View) => void,postRenderArg? : (view : View) => void,targetArr? : Array<View>) : void
 {
