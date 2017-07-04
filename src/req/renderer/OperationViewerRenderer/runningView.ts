@@ -37,13 +37,7 @@ export class View extends viewMgr.View
                             <tr>
                                 <td>${this.ops[i].name}</td>
                                 <td>${this.ops[i].running != false ? "Running" : "Queued"}</td>
-                                <td>${(()=>{
-                                    if(this.ops[i].progressMessage)
-                                        return this.ops[i].progressMessage
-                                    if(this.ops[i].extraData)
-                                        return this.ops[i].extraData
-                                    return "";
-                                })()}</td>
+                                <td></td>
                             
                             </tr>
                         `;
