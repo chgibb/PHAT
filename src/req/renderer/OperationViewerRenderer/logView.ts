@@ -20,7 +20,7 @@ export class View extends viewMgr.View
     {
         let self = this;
         console.log("fetching log records");
-        getLogRecords(2).then((records : Array<LogRecord>) => {
+        getLogRecords(10).then((records : Array<LogRecord>) => {
             self.logRecords = records
             console.log("got records");
         });
