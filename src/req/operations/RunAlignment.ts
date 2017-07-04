@@ -42,6 +42,8 @@ export class RunAlignment extends atomic.AtomicOperation
 
     public run() : void
     {
+        this.closeLogOnFailure = false;
+        this.closeLogOnSuccess = false;
         let self = this;
         this.runAlignmentProcess = cp.fork(getReadable("RunAlignment.js"));
         self.runAlignmentProcess.on(
@@ -61,6 +63,10 @@ export class RunAlignment extends atomic.AtomicOperation
                     {
                         self.alignData = ev.data.alignData;
                     }
+                    if(ev.flags.done)
+                    {
+                        atomic.recordLogRecord(ev.logRecord);
+                    }
                     self.step = ev.step;
                     self.progressMessage = ev.progressMessage;
                     console.log(self.step+" "+self.progressMessage);
@@ -75,7 +81,9 @@ export class RunAlignment extends atomic.AtomicOperation
                         setData : true,
                         data : {
                             alignData : self.alignData
-                        }
+                        },
+                        name : self.name,
+                        description : "Run Alignment"
                     }
                 );
             },500

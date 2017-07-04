@@ -12,3 +12,4 @@ fi
 rm -rf $target/rt
 rm -rf $target/projects
 rm -rf $target/projectManifests.json
+rm -rf $target/logs

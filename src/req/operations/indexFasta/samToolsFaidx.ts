@@ -1,12 +1,13 @@
 const fse = require("fs-extra");
 
+import * as atomic from "./../atomicOperations";
 import {getReadable} from "./../../getAppPath";
 import {Fasta,getFaiPath} from "./../../fasta";
 import {getPath} from "./../../file";
 import {SpawnRequestParams} from "./../../JobIPC";
 import {Job,JobCallBackObject} from "./../../main/Job";
 
-export function samToolsFaidx(fasta : Fasta) : Promise<{}>
+export function samToolsFaidx(fasta : Fasta,logger : atomic.AtomicOperation) : Promise<{}>
 {
     return new Promise((resolve,reject) => {
         let samToolsExe = getReadable('samtools');
@@ -14,6 +15,7 @@ export function samToolsFaidx(fasta : Fasta) : Promise<{}>
         let jobCallBack : JobCallBackObject = {
             send(channel : string,params : SpawnRequestParams)
             {
+                logger.logObject(params);
                 if(params.done && params.retCode !== undefined)
                 {
                     if(params.retCode == 0)

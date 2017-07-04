@@ -13,6 +13,7 @@ export class NewProject extends atomic.AtomicOperation
     }
     public run() : void
     {
+        this.logKey = atomic.openLog(this.name,"Create New Project");
         let self = this;
         newProject(this.proj).then(() => {
 
