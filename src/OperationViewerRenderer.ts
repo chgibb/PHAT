@@ -60,16 +60,15 @@ $
                 if(arg.action == "getKey")
                 {
                     console.log("getkey");
-                    let res = ``;
                     let masterView = <masterView.View>viewMgr.getViewByName("masterView");
                     let logView = <logView.View>viewMgr.getViewByName("logView",masterView.views);
                     let runningView = <runningView.View>viewMgr.getViewByName("runningView",masterView.views);
                     logView.dataChanged();
-                    //runningView.ops = new Array<AtomicOperation>();
-                    if(arg.key == "operations" && arg.val !== undefined)
+                    runningView.ops = null;
+                    if(arg.key == "operations" && arg.val !== undefined && Array.isArray(arg.val))
                     {
-                        
-                        //runningView.ops = <Array<AtomicOperation>>arg.val;
+                        runningView.ops = new Array<AtomicOperation>();
+                        runningView.ops = runningView.ops.concat(arg.val);
                     }
                     viewMgr.render();
                 }
