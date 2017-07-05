@@ -4,7 +4,7 @@ import * as hpv16Ref from "./hpv16Ref";
 export async function testHPV16Index() : Promise<void>
 {
     return new Promise<void>((resolve,reject) => {
-        atomic.updates.on("indexFasta",function(op : IndexFasta){
+        atomic.updates.removeAllListeners().on("indexFasta",function(op : IndexFasta){
             if(op.flags.failure)
             {
                 console.log(`Failed to index ${op.fasta.alias}`);
