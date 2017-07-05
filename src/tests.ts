@@ -653,6 +653,7 @@ import * as hpv18Ref from "./req/tests/hpv18Ref";
 
 import {testFastQCReportGeneration} from "./req/tests/testFastQCReportGeneration";
 import {testHPV16Index} from "./req/tests/testHPV16Index";
+import {testHPV18Index} from "./req/tests/testHPV18Index";
 
 let opsRunner = setInterval(function(){atomic.runOperations(1);},1000);
 async function runTests() : Promise<void>
@@ -687,6 +688,18 @@ async function runTests() : Promise<void>
 			return reject();
 		}
 
+		console.log("Starting to index hpv18");
+		atomic.addOperation("indexFasta",hpv18Ref.get());
+		try
+		{
+			await testHPV18Index();
+		}
+		catch(err)
+		{
+			console.log("test index threw exception");
+			return reject();
+		}
+
 		resolve();
 	});
 
@@ -699,6 +712,7 @@ setTimeout(function(){
 		L6R1R1.loadNoSpaces();
 		L6R1R2.loadNoSpaces();
 		hpv16Ref.loadNoSpaces();
+		hpv18Ref.loadNoSpaces();
 
 		try
 		{
