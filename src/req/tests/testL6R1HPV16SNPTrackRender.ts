@@ -19,12 +19,12 @@ export async function testL6R1HPV16SNPTrackRenderer() : Promise<void>
         atomic.updates.removeAllListeners().on("renderSNPTrackForContig",function(op : RenderSNPTrackForContig){
             if(op.flags.success)
             {
-                console.log("Successfully rendered SNP track");
+                console.log(`Successfully rendered SNP track for ${op.circularFigure.name}`);
                 return resolve();
             }
             else if(op.flags.failure)
             {
-                console.log("Failed to render SNP track");
+                console.log(`Failed to render SNP track for ${op.circularFigure.name}`);
                 return reject();
             }
         });
