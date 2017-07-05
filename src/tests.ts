@@ -654,6 +654,7 @@ import * as hpv18Ref from "./req/tests/hpv18Ref";
 import {testFastQCReportGeneration} from "./req/tests/testFastQCReportGeneration";
 import {testHPV16Index} from "./req/tests/testHPV16Index";
 import {testHPV18Index} from "./req/tests/testHPV18Index";
+import {testL6R1HPV16Alignment} from "./req/tests/testL6R1HPV16Alignment";
 
 let opsRunner = setInterval(function(){atomic.runOperations(1);},1000);
 async function runTests() : Promise<void>
@@ -697,6 +698,25 @@ async function runTests() : Promise<void>
 		catch(err)
 		{
 			console.log("test index threw exception");
+			return reject();
+		}
+
+		console.log("Starting to align L6R1R1, L6R1R2 against hpv16");
+		atomic.addOperation(
+			"runAlignment",
+			{
+				fasta : hpv16Ref.get(),
+				fastq1 : L6R1R1.get(),
+				fastq2 : L6R1R2.get()
+			}
+		);
+		try
+		{
+			await testL6R1HPV16Alignment();
+		}
+		catch(err)
+		{
+			console.log("test alignment threw exception");
 			return reject();
 		}
 
