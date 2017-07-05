@@ -19,12 +19,12 @@ export async function testL6R1HPV16CoverageTrackRenderer() : Promise<void>
         atomic.updates.removeAllListeners().on("renderCoverageTrackForContig",function(op : RenderCoverageTrackForContig){
             if(op.flags.success)
             {
-                console.log("Successfully rendered coverage track");
+                console.log(`Successfully rendered coverage track for ${op.circularFigure.name}`);
                 return resolve();
             }
             else if(op.flags.failure)
             {
-                console.log("Failed to render coverage track");
+                console.log(`Failed to render coverage track for ${op.circularFigure.name}`);
                 return reject();
             }
         });
