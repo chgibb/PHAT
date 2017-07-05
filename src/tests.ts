@@ -728,6 +728,7 @@ setTimeout(function(){
 		L6R1R1.loadSpaces();
 		L6R1R2.loadSpaces();
 		hpv16Ref.loadNoSpaces();
+		hpv18Ref.loadNoSpaces();
 
 		try
 		{
