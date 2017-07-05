@@ -35,7 +35,7 @@ export class View extends viewMgr.View
                     <th>Description</th>
                     <th>Status</th>
                     <th>Runtime (ms)</th>
-                    <th>Started</th>
+                    <th>Time Started</th>
                 </tr>
                 ${(()=>{
                     let res = "";
