@@ -658,6 +658,8 @@ import {testL6R1HPV16Alignment} from "./req/tests/testL6R1HPV16Alignment";
 import {testL6R1HPV18Alignment} from "./req/tests/testL6R1HPV18Alignment"
 import {testL6R1HPV16CoverageTrackRenderer} from "./req/tests/testL6R1HPV16CoverageTrackRender";
 import {testL6R1HPV16SNPTrackRenderer} from "./req/tests/testL6R1HPV16SNPTrackRender";
+import {testL6R1HPV18CoverageTrackRenderer} from "./req/tests/testL6R1HPV18CoverageTrackRender";
+import {testL6R1HPV18SNPTrackRenderer} from "./req/tests/testL6R1HPV18SNPTrackRender";
 
 let opsRunner = setInterval(function(){atomic.runOperations(1);},1000);
 async function runTests() : Promise<void>
@@ -761,6 +763,28 @@ async function runTests() : Promise<void>
 		catch(err)
 		{
 			console.log("SNP track rendering threw exception");
+			return reject();
+		}
+
+		console.log("Rendering coverage track for L6R1 alignment against HPV18")
+		try
+		{
+			await testL6R1HPV18CoverageTrackRenderer();
+		}
+		catch(err)
+		{
+			console.log("coverage track rendering threw exception");
+			return reject();
+		}
+
+		console.log("Rendering SNP track for L6R1 alignment against HPV18")
+		try
+		{
+			await testL6R1HPV18SNPTrackRenderer();
+		}
+		catch(err)
+		{
+			console.log("coverage track rendering threw exception");
 			return reject();
 		}
 
