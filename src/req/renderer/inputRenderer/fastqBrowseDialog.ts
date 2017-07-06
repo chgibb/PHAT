@@ -1,8 +1,6 @@
 import * as electron from "electron";
 const dialog = electron.remote.dialog;
-
-import Input from "./../Input";
-export default function showFastqBrowseDialog(input : Input) : void
+export default function showFastqBrowseDialog() : void
 {
 	dialog.showOpenDialog
 	(
@@ -28,7 +26,7 @@ export default function showFastqBrowseDialog(input : Input) : void
 		function(files : Array<string>)
 		{
 			//if files were selected
-			if(files)
+			/*if(files)
 			{
 				for(let i : number = 0; i != files.length; ++i)
 				{
@@ -39,7 +37,7 @@ export default function showFastqBrowseDialog(input : Input) : void
 					}
                 }
 				input.postFastqInputs();
-			}
+			}*/
 		}
 	);
 }
