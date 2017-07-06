@@ -1,7 +1,6 @@
 import * as viewMgr from "./../viewMgr";
 import * as fastqView from "./FastqView";
 import * as fastaView from "./FastaView";
-import {getReadable} from "./../../getAppPath";
 export class View extends viewMgr.View
 {
     public views : Array<viewMgr.View>;
