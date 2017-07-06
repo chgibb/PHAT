@@ -1,19 +1,21 @@
 import * as viewMgr from "./../viewMgr";
 import {getReadable} from "./../../getAppPath";
+import {fastqBrowseDialog} from "./fastqBrowseDialog"
+import Fastq from "./../../fastq";
 export class View extends viewMgr.View
 {
-    public searchFilter : RegExp;
-    public filterString : string;
+    public fastqInputs : Array<Fastq>;
     public constructor(div : string)
     {
         super("fastqView",div);
+        this.fastqInputs = new Array<Fastq>();
     }
     public onMount() : void{}
     public onUnMount() : void{}
     public renderView() : string
     {
         return `
-            <img class="topButton activeHover" src="${getReadable("img/browseButton.png")}">
+            <img class="topButton activeHover" id="browseFastqFiles" src="${getReadable("img/browseButton.png")}">
             <h5>Read Files</h5>
             <table style="width:100%;">
                 <tr>
@@ -21,6 +23,20 @@ export class View extends viewMgr.View
                     <th>Path</th>
                     <th>Size</th>
                 </tr>
+                ${(()=>{
+                    let res = "";
+                    for(let i = 0; i != this.fastqInputs.length; ++i)
+                    {
+                        res += `
+                            <tr>
+                                <td>${this.fastqInputs[i].alias}</td>
+                                <td>${this.fastqInputs[i].path}</td>
+                                <td>${this.fastqInputs[i].sizeString}</td>
+                            </tr>
+                        `;
+                    }
+                    return res;
+                })()}
             </table>
         `;
     }
@@ -30,7 +46,12 @@ export class View extends viewMgr.View
     }
     public divClickEvents(event : JQueryEventObject) : void
     {
-
+        console.log(event.target);
+        
+        if(event.target.id == "browseFastqFiles")
+        {
+            fastqBrowseDialog();
+        }
     }
     public dataChanged() : void{}
 }

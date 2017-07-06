@@ -15,6 +15,10 @@ export class View extends viewMgr.View
     {
         fastqView.addView(this.views,"fastqView");
         fastaView.addView(this.views,"fastaView");
+        for(let i = 0 ; i != this.views.length; ++i)
+        {
+            this.views[i].mount();
+        }
     }
     public onUnMount() : void{}
     public renderView() : string
@@ -42,7 +46,8 @@ export class View extends viewMgr.View
     }
     public divClickEvents(event : JQueryEventObject) : void
     {
-
+        console.log("masterView");
+        console.log(event.target);
     }
     public dataChanged() : void{}
 }

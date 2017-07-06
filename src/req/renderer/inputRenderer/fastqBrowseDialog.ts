@@ -1,6 +1,9 @@
 import * as electron from "electron";
 const dialog = electron.remote.dialog;
-export default function showFastqBrowseDialog() : void
+const ipc = electron.ipcRenderer;
+
+import {AtomicOperationIPC} from "./../../atomicOperationsIPC";
+export function fastqBrowseDialog() : void
 {
 	dialog.showOpenDialog
 	(
@@ -25,6 +28,19 @@ export default function showFastqBrowseDialog() : void
 		},
 		function(files : Array<string>)
 		{
+			if(files)
+			{
+				for(let i = 0; i != files.length; ++i)
+				{
+					ipc.send(
+						"runOperation",
+						<AtomicOperationIPC>{
+							opName : "inputFastqFile",
+							filePath : files[i]
+						}
+					);
+				}
+			}
 			//if files were selected
 			/*if(files)
 			{
