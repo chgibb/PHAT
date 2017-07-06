@@ -1,5 +1,5 @@
 import * as viewMgr from "./../viewMgr";
-
+import {getReadable} from "./../../getAppPath";
 export class View extends viewMgr.View
 {
     public searchFilter : RegExp;
@@ -13,17 +13,15 @@ export class View extends viewMgr.View
     public renderView() : string
     {
         return `
-            <div class="outerCenteredDiv">
-                <div class="innerCenteredDiv">
-                    <h2>Read Files</h2>
-                </div>
-            </div>
-            <table style="width:100%">
+            <img class="topButton" src="${getReadable("img/browseButton.png")}">
+            <h5>Read Files</h5>
+            <table style="width:100%;">
                 <tr>
-                    <th>Sample</th>
+                    <th>Sample Name</th>
+                    <th>Path</th>
+                    <th>Size</th>
                 </tr>
             </table>
-
         `;
     }
     public postRender() : void
