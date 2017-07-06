@@ -13,7 +13,7 @@ export class View extends viewMgr.View
     public renderView() : string
     {
         return `
-            <img class="topButton" src="${getReadable("img/browseButton.png")}">
+            <img class="topButton activeHover" src="${getReadable("img/browseButton.png")}">
             <h5>Reference Sequence Files</h5>
             <table style="width:100%;">
                 <tr>
