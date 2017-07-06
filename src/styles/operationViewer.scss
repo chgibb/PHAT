@@ -1,0 +1,7 @@
+@import "common/colors";
+table, th, td 
+{
+    border : 1px solid $border-color;
+	background-color : $bg-color;
+    border-collapse : collapse;
+}

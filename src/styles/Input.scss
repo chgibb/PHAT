@@ -4,6 +4,8 @@
 @import "common/th";
 @import "common/tableCell";
 @import "common/activeHover";
+@import "common/outerCenteredDiv";
+@import "common/innerCenteredDiv";
 .inputFilterBox
 {
     @extend .tableCell;
