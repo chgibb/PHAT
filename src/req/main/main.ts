@@ -28,6 +28,8 @@ import {CheckForUpdate} from "./../operations/CheckForUpdate";
 import {DownloadAndInstallUpdate} from "./../operations/DownloadAndInstallUpdate";
 import {OpenPileupViewer} from "./../operations/OpenPileupViewer";
 
+import {InputFastqFile} from "./../operations/inputFastqFile";
+
 import {ProjectManifest} from "./../projectManifest";
 
 import {NewProject} from "./../operations/NewProject";
@@ -36,7 +38,8 @@ import {SaveCurrentProject} from "./../operations//SaveCurrentProject";
 
 import * as winMgr from "./winMgr";
 
-import {File} from "./../file";
+import {File,getPath} from "./../file";
+import Fastq from "./../fastq";
 import {alignData} from "./../alignData";
 import {CircularFigure} from "./../renderer/circularFigure";
 
@@ -113,7 +116,8 @@ app.on
 		atomicOp.register("openProject",OpenProject);
 		atomicOp.register("saveCurrentProject",SaveCurrentProject);
 
-		atomicOp.register("openPileupViewer",OpenPileupViewer);	
+		atomicOp.register("openPileupViewer",OpenPileupViewer);
+		atomicOp.register("inputFastqFile",InputFastqFile);
 
 		setInterval(function(){atomicOp.runOperations(1);},100);
 		//After an update has been installed, update the updater with new binaries.
@@ -391,6 +395,18 @@ ipc.on(
 		{
 			atomicOp.addOperation("openPileupViewer",arg.pileupViewerParams);
 		}
+		else if(arg.opName == "inputFastqFile")
+		{
+			let fastqs : Array<Fastq> = dataMgr.getKey("input","fastqInputs");
+			for(let i = 0; i != fastqs.length; ++i)
+			{
+				if(getPath(fastqs[i]) == arg.filePath)
+				{
+					return;
+				}
+			}
+			atomicOp.addOperation("inputFastqFile",arg.filePath);
+		}
 		dataMgr.setKey("application","operations",atomicOp.operationsQueue);
 		winMgr.publishChangeForKey("application","operations");
 	}
@@ -498,6 +514,21 @@ atomicOp.updates.on(
 					break;
 				}
 			}
+		}
+	}
+);
+
+atomicOp.updates.on(
+	"inputFastqFile",function(op : InputFastqFile)
+	{
+		dataMgr.setKey("application","operations",atomicOp.operationsQueue);
+		winMgr.publishChangeForKey("application","operations");
+		if(op.flags.success)
+		{
+			let fastqs = dataMgr.getKey("input","fastqInputs");
+			fastqs.push(op.fastq);
+			dataMgr.setKey("input","fastqInputs",fastqs);
+			winMgr.publishChangeForKey("input","fastqInputs");
 		}
 	}
 );
