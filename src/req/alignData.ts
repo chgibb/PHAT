@@ -18,7 +18,6 @@ export class alignData
     public alias : string;
     public invokeString : string;
     public fasta : Fasta;
-    public type : string;
     public summary : Bowtie2Report;
     public summaryText : string;
     public varScanSNPSummary : varScanMPileup2SNPReport;
@@ -31,7 +30,6 @@ export class alignData
         this.dateStamp = "";
         this.alias = "";
         this.invokeString = "";
-        this.type = "";
         this.summaryText = "";
         this.dateStamp = dFormat.generateFixedSizeDateStamp();
         this.dateStampString = dFormat.formatDateStamp(this.dateStamp);
