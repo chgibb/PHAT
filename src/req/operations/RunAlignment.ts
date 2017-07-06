@@ -24,8 +24,7 @@ export class RunAlignment extends atomic.AtomicOperation
         data : {
             fasta : Fasta,
             fastq1 : Fastq,
-            fastq2 : Fastq,
-            type : string
+            fastq2 : Fastq
         }) : void
         {
             this.fasta = data.fasta;
@@ -33,7 +32,6 @@ export class RunAlignment extends atomic.AtomicOperation
             this.fastq2 = data.fastq2;
 
             this.alignData = new alignData();
-            this.alignData.type = data.type;
             this.alignData.fasta = this.fasta;
             this.alignData.fastqs.push(this.fastq1,this.fastq2);
             this.generatedArtifacts.push(`${getPath(this.fasta)}.fai`);

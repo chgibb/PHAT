@@ -22,7 +22,7 @@ export interface AtomicOperationIPC
     alignuuid? : string;
     figureuuid? : string;
     colour? : string;
-    alignParams? : {fasta : Fasta,fastq1 : Fastq,fastq2 : Fastq,type : "patho" | "host"};
+    alignParams? : {fasta : Fasta,fastq1 : Fastq,fastq2 : Fastq};
 
     token? : string;
 
