@@ -41,19 +41,6 @@ export function fastqBrowseDialog() : void
 					);
 				}
 			}
-			//if files were selected
-			/*if(files)
-			{
-				for(let i : number = 0; i != files.length; ++i)
-				{
-                	//create new items if not already existing
-					if(!input.fastqExists(files[i]))
-					{
-                        input.addFastq(files[i]);
-					}
-                }
-				input.postFastqInputs();
-			}*/
 		}
 	);
 }
