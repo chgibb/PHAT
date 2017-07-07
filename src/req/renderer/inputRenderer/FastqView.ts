@@ -1,6 +1,5 @@
 import * as viewMgr from "./../viewMgr";
 import {getReadable} from "./../../getAppPath";
-import {fastqBrowseDialog} from "./fastqBrowseDialog"
 import Fastq from "./../../fastq";
 export class View extends viewMgr.View
 {
@@ -47,11 +46,6 @@ export class View extends viewMgr.View
     public divClickEvents(event : JQueryEventObject) : void
     {
         console.log(event.target);
-        
-        if(event.target.id == "browseFastqFiles")
-        {
-            fastqBrowseDialog();
-        }
     }
     public dataChanged() : void{}
 }

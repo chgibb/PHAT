@@ -1,6 +1,7 @@
 import * as viewMgr from "./../viewMgr";
 import * as fastqView from "./FastqView";
 import * as fastaView from "./FastaView";
+import {fastqBrowseDialog} from "./fastqBrowseDialog"
 export class View extends viewMgr.View
 {
     public views : Array<viewMgr.View>;
@@ -48,6 +49,10 @@ export class View extends viewMgr.View
     {
         console.log("masterView");
         console.log(event.target);
+        if(event.target.id == "browseFastqFiles")
+        {
+            fastqBrowseDialog();
+        }
     }
     public dataChanged() : void{}
 }
