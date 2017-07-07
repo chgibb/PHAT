@@ -28,9 +28,9 @@ export class View extends viewMgr.View
         {
             this.firstRender = false;
             return `
-                <div id="fastqView" style="width:50%">
+                <div id="fastqView" style="height:45%;width:100%;overflow-y:hidden;">
                 </div>
-                <div id="fastaView" style="width:50%">
+                <div id="fastaView" style="height:45%;width:100%;">
                 </div>
             `;
         }
