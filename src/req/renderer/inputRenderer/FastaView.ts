@@ -1,12 +1,13 @@
 import * as viewMgr from "./../viewMgr";
 import {getReadable} from "./../../getAppPath";
+import {Fasta} from "./../../fasta";
 export class View extends viewMgr.View
 {
-    public searchFilter : RegExp;
-    public filterString : string;
+    public fastaInputs : Array<Fasta>;
     public constructor(div : string)
     {
         super("fastaView",div);
+        this.fastaInputs = new Array<Fasta>();
     }
     public onMount() : void{}
     public onUnMount() : void{}
@@ -33,6 +34,20 @@ export class View extends viewMgr.View
                         <th>Size</th>
                         <th>Indexed</th>
                     </tr>
+                    ${(()=>{
+                        let res = "";
+                        for(let i = 0; i != this.fastaInputs.length; ++i)
+                        {
+                            res += `
+                                <tr>
+                                    <td>${this.fastaInputs[i].alias}</td>
+                                    <td>${this.fastaInputs[i].path}</td>
+                                    <td>${this.fastaInputs[i].sizeString}</td>
+                                </tr>
+                            `;
+                        }
+                        return res;
+                    })()}
                 </table>
             </div>
         `;
