@@ -7,6 +7,7 @@ import * as viewMgr from "./req/renderer/viewMgr";
 
 import * as masterView from "./req/renderer/inputRenderer/masterView";
 import * as fastqView from "./req/renderer/inputRenderer/FastqView";
+import * as fastaView from "./req/renderer/inputRenderer/FastaView";
 import * as $ from "jquery";
 (<any>window).$ = $;
 require("./req/renderer/commonBehaviour");
@@ -14,11 +15,12 @@ require("./req/renderer/commonBehaviour");
 function postRender(view : viewMgr.View) : void
 {
     let fastqView = $("#fastqView");
-    fastqView.css("height",$(window).height()/2+"px");
+    if(fastqView)
+        fastqView.css("height",$(window).height()/2+"px");
     let fastaView = $("#fastaView");
-    fastaView.css("height",$(window).height()/2+"px");
+    if(fastaView)
+        fastaView.css("height",$(window).height()/2+"px");
 }
-viewMgr.setPostRender(postRender);
 $(window).resize
 (
 	function()
@@ -30,6 +32,7 @@ $
 (
     function()
     {
+        viewMgr.setPostRender(postRender);
         masterView.addView(viewMgr.views,'view');
 
         viewMgr.changeView("masterView");
@@ -85,6 +88,7 @@ $
 				{
                     let masterView = <masterView.View>viewMgr.getViewByName("masterView");
                     let fastqView = <fastqView.View>viewMgr.getViewByName("fastqView",masterView.views);
+                    let fastaView = <fastaView.View>viewMgr.getViewByName("fastaView",masterView.views);
 					if(arg.key == 'fastqInputs')
 					{
                         if(arg.val !== undefined)
@@ -96,13 +100,15 @@ $
 					{
                         if(arg.val !== undefined)
                         {
-                            //input.fastaInputs = arg.val;
+                            fastaView.fastaInputs = arg.val;
                         }
                     }
                 }
                 viewMgr.render();
+
             }
         );
         viewMgr.render();
+        window.dispatchEvent(new Event("resize"));
     }
 );
