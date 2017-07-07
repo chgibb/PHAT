@@ -29,6 +29,7 @@ import {DownloadAndInstallUpdate} from "./../operations/DownloadAndInstallUpdate
 import {OpenPileupViewer} from "./../operations/OpenPileupViewer";
 
 import {InputFastqFile} from "./../operations/inputFastqFile";
+import {InputFastaFile} from "./../operations/inputFastaFile";
 
 import {ProjectManifest} from "./../projectManifest";
 
@@ -40,6 +41,7 @@ import * as winMgr from "./winMgr";
 
 import {File,getPath} from "./../file";
 import Fastq from "./../fastq";
+import {Fasta} from "./../fasta";
 import {alignData} from "./../alignData";
 import {CircularFigure} from "./../renderer/circularFigure";
 
@@ -118,6 +120,7 @@ app.on
 
 		atomicOp.register("openPileupViewer",OpenPileupViewer);
 		atomicOp.register("inputFastqFile",InputFastqFile);
+		atomicOp.register("inputFastaFile",InputFastaFile);
 
 		setInterval(function(){atomicOp.runOperations(1);},100);
 		//After an update has been installed, update the updater with new binaries.
@@ -410,6 +413,21 @@ ipc.on(
 			}
 			atomicOp.addOperation("inputFastqFile",arg.filePath);
 		}
+		else if(arg.opName == "inputFastaFile")
+		{
+			let fastas : Array<Fasta> = dataMgr.getKey("input","fastaInputs");
+			if(fastas)
+			{
+				for(let i = 0; i != fastas.length; ++i)
+				{
+					if(getPath(fastas[i]) == arg.filePath)
+					{
+						return;
+					}
+				}
+			}
+			atomicOp.addOperation("inputFastaFile",arg.filePath);
+		}
 		dataMgr.setKey("application","operations",atomicOp.operationsQueue);
 		winMgr.publishChangeForKey("application","operations");
 	}
@@ -537,6 +555,24 @@ atomicOp.updates.on(
 		}
 	}
 );
+
+atomicOp.updates.on(
+	"inputFastaFile",function(op : InputFastaFile)
+	{
+		dataMgr.setKey("application","operations",atomicOp.operationsQueue);
+		winMgr.publishChangeForKey("application","operations");
+		if(op.flags.success)
+		{
+			let fastas : Array<Fasta> = dataMgr.getKey("input","fastaInputs");
+			if(!fastas)
+				fastas = new Array<Fasta>();
+			fastas.push(op.fasta);
+			dataMgr.setKey("input","fastaInputs",fastas);
+			winMgr.publishChangeForKey("input","fastaInputs");
+		}
+	}
+);
+
 
 atomicOp.updates.on(
 	"checkForUpdate",function(op : CheckForUpdate)
