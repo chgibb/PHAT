@@ -3,15 +3,21 @@ import * as fastqView from "./FastqView";
 import * as fastaView from "./FastaView";
 import {fastqBrowseDialog} from "./fastqBrowseDialog"
 import {fastaBrowseDialog} from "./fastaBrowseDialog";
+import Fastq from "./../../fastq";
+import {Fasta} from "./../../fasta";
 export class View extends viewMgr.View
 {
     public views : Array<viewMgr.View>;
     public firstRender : boolean;
+    public fastqInputs : Array<Fastq>;
+    public fastaInputs : Array<Fasta>;
     public constructor(div : string)
     {
         super("masterView",div);
         this.views = new Array<viewMgr.View>();
         this.firstRender = true;
+        this.fastqInputs = new Array<Fastq>();
+        this.fastaInputs = new Array<Fasta>();
     }
     public onMount() : void
     {
@@ -59,7 +65,15 @@ export class View extends viewMgr.View
             fastaBrowseDialog();
         }
     }
-    public dataChanged() : void{}
+    public dataChanged() : void
+    {
+        let fastqView = <fastqView.View>viewMgr.getViewByName("fastqView",this.views);
+        fastqView.fastqInputs = this.fastqInputs;
+
+        let fastaView = <fastaView.View>viewMgr.getViewByName("fastaView",this.views);
+        fastaView.fastaInputs = this.fastaInputs;
+
+    }
 }
 export function addView(arr : Array<viewMgr.View>,div : string) : void
 {

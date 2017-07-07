@@ -87,22 +87,21 @@ $
 			    if(arg.action == "getKey" || arg.action == "keyChange")
 				{
                     let masterView = <masterView.View>viewMgr.getViewByName("masterView");
-                    let fastqView = <fastqView.View>viewMgr.getViewByName("fastqView",masterView.views);
-                    let fastaView = <fastaView.View>viewMgr.getViewByName("fastaView",masterView.views);
 					if(arg.key == 'fastqInputs')
 					{
                         if(arg.val !== undefined)
                         {
-                            fastqView.fastqInputs = arg.val;
+                            masterView.fastqInputs = arg.val;
                         }
                     }
                     if(arg.key == 'fastaInputs')
 					{
                         if(arg.val !== undefined)
                         {
-                            fastaView.fastaInputs = arg.val;
+                            masterView.fastaInputs = arg.val;
                         }
                     }
+                    masterView.dataChanged();
                 }
                 viewMgr.render();
 

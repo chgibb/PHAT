@@ -38,7 +38,7 @@ export class View extends viewMgr.View
                         for(let i = 0; i != this.fastqInputs.length; ++i)
                         {
                             res += `
-                                <tr>
+                                <tr class="activeHover" id="${this.fastqInputs[i].uuid}Row">
                                     <td>${this.fastqInputs[i].alias}</td>
                                     <td>${this.fastqInputs[i].path}</td>
                                     <td>${this.fastqInputs[i].sizeString}</td>
@@ -54,6 +54,14 @@ export class View extends viewMgr.View
     public postRender() : void
     {
         $("#fastqTableDiv").css("height",$(`#${this.div}`).height()/2+"px");
+        for(let i = 0; i != this.fastqInputs.length; ++i)
+        {
+            if(this.fastqInputs[i].checked)
+            {
+                let row = document.getElementById(`${this.fastqInputs[i].uuid}Row`);
+                row.classList.add("selected");
+            }
+        }
     }
     public divClickEvents(event : JQueryEventObject) : void
     {
