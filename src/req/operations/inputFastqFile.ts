@@ -4,7 +4,7 @@ export class InputFastqFile extends atomic.AtomicOperation
 {
     public filePath : string;
     public fastq : Fastq;
-    constructor()
+    public constructor()
     {
         super();
     }
