@@ -398,11 +398,14 @@ ipc.on(
 		else if(arg.opName == "inputFastqFile")
 		{
 			let fastqs : Array<Fastq> = dataMgr.getKey("input","fastqInputs");
-			for(let i = 0; i != fastqs.length; ++i)
+			if(fastqs)
 			{
-				if(getPath(fastqs[i]) == arg.filePath)
+				for(let i = 0; i != fastqs.length; ++i)
 				{
-					return;
+					if(getPath(fastqs[i]) == arg.filePath)
+					{
+						return;
+					}
 				}
 			}
 			atomicOp.addOperation("inputFastqFile",arg.filePath);
@@ -525,7 +528,9 @@ atomicOp.updates.on(
 		winMgr.publishChangeForKey("application","operations");
 		if(op.flags.success)
 		{
-			let fastqs = dataMgr.getKey("input","fastqInputs");
+			let fastqs : Array<Fastq> = dataMgr.getKey("input","fastqInputs");
+			if(!fastqs)
+				fastqs = new Array<Fastq>();
 			fastqs.push(op.fastq);
 			dataMgr.setKey("input","fastqInputs",fastqs);
 			winMgr.publishChangeForKey("input","fastqInputs");
