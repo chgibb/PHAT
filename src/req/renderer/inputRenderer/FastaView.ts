@@ -15,14 +15,8 @@ export class View extends viewMgr.View
     {
         return `
             <div style="float:left;">
-                <h5>Reference Sequence Files</h5>
-                <img class="topButton activeHover" id="browseFastaFiles" src="${getReadable("img/browseButton.png")}">
+                <h5 style="margin-bottom:0px;">Reference Sequence Files</h5>
             </div>
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
             <br />
             <br />
             <br />
