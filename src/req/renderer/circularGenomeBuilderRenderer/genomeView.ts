@@ -10,8 +10,6 @@ const dialogs = Dialogs();
 
 import * as viewMgr from "./../viewMgr";
 import * as masterView from "./masterView";
-import {ContigEditor} from "./contigEditor";
-import {ContigCreator} from "./contigCreator";
 import {alignData} from "./../../alignData";
 import * as cf from "./../circularFigure";
 import * as plasmid from "./../circularGenome/plasmid";
@@ -34,8 +32,8 @@ export class GenomeView extends viewMgr.View
     public showContigCreator() : void
     {
         let masterView = <masterView.View>viewMgr.getViewByName("masterView");
-        let contigCreator = <ContigCreator>viewMgr.getViewByName("contigCreator",masterView.views);
-        contigCreator.show();
+        //let contigCreator = <ContigCreator>viewMgr.getViewByName("contigCreator",masterView.views);
+        //contigCreator.show();
         viewMgr.render();
     }
     public exportSVG()
@@ -68,9 +66,9 @@ export class GenomeView extends viewMgr.View
     public markerOnClick($event : any,$marker : any,uuid : string) : void
     {
         let masterView = <masterView.View>viewMgr.getViewByName("masterView");
-        let contigEditor = <ContigEditor>viewMgr.getViewByName("contigEditor",masterView.views);
-        contigEditor.contiguuid = uuid;
-        contigEditor.show();
+        //let contigEditor = <ContigEditor>viewMgr.getViewByName("contigEditor",masterView.views);
+        //contigEditor.contiguuid = uuid;
+        //contigEditor.show();
         viewMgr.render();
     }
     public figureNameOnClick() : void

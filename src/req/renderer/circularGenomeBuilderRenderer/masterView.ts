@@ -9,9 +9,12 @@ import {CircularFigure,} from "./../circularFigure";
 import {Fasta} from "./../../fasta";
 
 import * as GenomeView from "./genomeView";
-import * as RightPanel from "./rightPanel";
-import * as contigEditor from "./contigEditor";
-import * as contigCreator from "./contigCreator";
+
+import * as $ from "jquery";
+(<any>window).$ = $;
+(<any>window).jQuery = $;
+(<any>window).Tether = require("tether");
+require("bootstrap");
 export function addView(arr : Array<viewMgr.View>,div : string)
 {
     arr.push(new View(div));
@@ -37,9 +40,6 @@ export class View extends viewMgr.View
     public onMount() : void
     {
         GenomeView.addView(this.views,"genomeView");
-        RightPanel.addView(this.views,"rightSlideOutPanel");
-        contigEditor.addView(this.views,"contigEditor");
-        contigCreator.addView(this.views,"contigCreator");
         for(let i = 0; i != this.views.length; ++i)
         {
             this.views[i].onMount();
@@ -64,10 +64,7 @@ export class View extends viewMgr.View
             this.rightPanelOpen = false;
             this.firstRender = false;
             return `
-                    <div id="contigEditor" class="modal">
-                    </div>
-                    <div id="contigCreator" class="modal">
-                    </div>
+                    
                 `;
             }
             for(let i = 0; i != this.views.length; ++i)
@@ -100,11 +97,6 @@ export class View extends viewMgr.View
     }
     public divClickEvents(event : JQueryEventObject) : void
     {
-        
-    
-        let genomeView = <GenomeView.GenomeView>viewMgr.getViewByName("genomeView",this.views);
-        let rightPanel = <RightPanel.RightPanel>viewMgr.getViewByName("rightPanel",this.views);
-
-        
+        let genomeView = <GenomeView.GenomeView>viewMgr.getViewByName("genomeView",this.views);        
     }
 }
