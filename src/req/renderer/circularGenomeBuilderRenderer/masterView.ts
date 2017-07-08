@@ -58,6 +58,29 @@ export class View extends viewMgr.View
     }
     public renderView() : string
     {
+        let res = "";
+        for(let i = 0; i != this.fastaInputs.length; ++i)
+        {
+            if(this.fastaInputs[i].checked && this.fastaInputs[i].indexed)
+            {
+                res += `
+                    <li role="separator" class="divider"></li>
+                    <li><b>${this.fastaInputs[i].alias}</b></li>
+                    <li role="separator" class="divider"></li>
+                    <li><i><a href="#">New Figure</a></i></li>
+                `;
+                for(let j = 0; j != this.circularFigures.length; ++j)
+                {
+                    if(this.circularFigures[j].uuidFasta == this.fastaInputs[i].uuid)
+                    {
+                        res += `
+                            <li><a href="#">${this.circularFigures[j].name}</a></li>
+                        `;
+                    }
+                }
+            }
+        }
+        document.getElementById("figures").innerHTML = res;
         if(this.firstRender)
         {
             this.leftPanelOpen = false;
