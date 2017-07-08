@@ -3,12 +3,12 @@ const ipc = electron.ipcRenderer;
 
 import {SaveKeyEvent} from "./../../ipcEvents";
 import {AtomicOperationIPC} from "./../../atomicOperationsIPC";
+import {getReadable} from "./../../getAppPath";
 
 import * as viewMgr from "./../viewMgr";
 import * as fastqView from "./FastqView";
 import * as fastaView from "./FastaView";
-import {fastqBrowseDialog} from "./fastqBrowseDialog"
-import {fastaBrowseDialog} from "./fastaBrowseDialog";
+import {inputBrowseDialog} from "./inputBrowseDialog";
 import Fastq from "./../../fastq";
 import {Fasta} from "./../../fasta";
 export class View extends viewMgr.View
@@ -41,6 +41,7 @@ export class View extends viewMgr.View
         {
             this.firstRender = false;
             return `
+                <img class="topButton activeHover" id="browseInputFiles" src="${getReadable("img/browseButton.png")}">
                 <div id="fastqView" style="height:45%;width:100%;overflow-y:hidden;">
                 </div>
                 <div id="fastaView" style="height:45%;width:100%;">
@@ -60,14 +61,9 @@ export class View extends viewMgr.View
     }
     public divClickEvents(event : JQueryEventObject) : void
     {
-        if(event.target.id == "browseFastqFiles")
+        if(event.target.id == "browseInputFiles")
         {
-            fastqBrowseDialog();
-            return;
-        }
-        if(event.target.id == "browseFastaFiles")
-        {
-            fastaBrowseDialog();
+            inputBrowseDialog();
             return;
         }
         let shouldUpdate = false;
