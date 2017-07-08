@@ -64,43 +64,6 @@ export class View extends viewMgr.View
             this.rightPanelOpen = false;
             this.firstRender = false;
             return `
-                <button id="leftPanel" class="leftSlideOutPanel">Refs</button>
-                <button id="rightPanel" class="rightSlideOutPanel">Coverage Options</button>
-                <div id="rightSlideOutPanel" class="rightSlideOutPanel">
-                    <div id="rightSlideOutPanelView">
-                    </div>
-                </div>
-                <div id="leftSlideOutPanel" class="leftSlideOutPanel">
-                ${
-                    (
-                        ()=>
-                        {
-                            let res = "\n";
-                            if(this.fastaInputs)
-                            {
-                                for(let i = 0; i != this.fastaInputs.length; ++i)
-                                {
-                                    if(this.fastaInputs[i].checked && this.fastaInputs[i].indexed)
-                                    {
-                                        res += `<div id ="${this.fastaInputs[i].uuid}">
-                                                <h3>${this.fastaInputs[i].alias}</h3><br />
-                                                <button id="${this.fastaInputs[i].uuid}_newFigure" style="float:left;">New Figure</button><br /><br />
-                                                `;
-                                        for(let k = 0; k != this.circularFigures.length; ++k)
-                                        {
-                                            if(this.circularFigures[k].uuidFasta == this.fastaInputs[i].uuid)
-                                            {
-                                                res += `<div class="refFigureBlock"><input style="display:inline-block;" type="radio" id="${this.circularFigures[k].uuid}" name="selectedFigure" /><p style="display:inline-block;">${this.circularFigures[k].name}</p></div>`;
-                                            }
-                                        }
-                                        res += `</div>`;
-                                    }
-                                }
-                            }
-                            return res;
-                        }
-                    )()}
-                    </div>
                     <div id="contigEditor" class="modal">
                     </div>
                     <div id="contigCreator" class="modal">
@@ -137,87 +100,11 @@ export class View extends viewMgr.View
     }
     public divClickEvents(event : JQueryEventObject) : void
     {
-        let me = this;
-        if(event.target.id == "rightPanel")
-        {
-            $("#rightSlideOutPanel").animate
-            (
-                {
-                    "margin-right" : 
-                    (
-                        function()
-                        {
-                            if(!me.rightPanelOpen)
-                            {
-                                me.rightPanelOpen = true;
-                                return "+=50%";
-                            }
-                            if(me.rightPanelOpen)
-                            {
-                                me.rightPanelOpen = false;
-                                return "-=50%";
-                            }
-                            return "";
-                        }
-                    )()
-                }
-            );
-        }
-        if(event.target.id == "leftPanel")
-        {
-            $("#leftSlideOutPanel").animate
-            (
-                {
-                    "margin-left" : 
-                    (
-                        function()
-                        {
-                            if(!me.leftPanelOpen)
-                            {
-                                me.leftPanelOpen = true;
-                                return "+=50%";
-                            }
-                            if(me.leftPanelOpen)
-                            {
-                                me.leftPanelOpen = false;
-                                return "-=50%";
-                            }
-                            return "";
-                        }
-                    )()
-                }
-            );
-        }
+        
+    
         let genomeView = <GenomeView.GenomeView>viewMgr.getViewByName("genomeView",this.views);
         let rightPanel = <RightPanel.RightPanel>viewMgr.getViewByName("rightPanel",this.views);
 
-        if(this.fastaInputs)
-        {
-            for(let i = 0; i != this.fastaInputs.length; ++i)
-            {
-                if(event.target.id == `${this.fastaInputs[i].uuid}_newFigure`)
-                {
-                    this.circularFigures.push(new CircularFigure("New Figure",this.fastaInputs[i].uuid,this.fastaInputs[i].contigs));
-                    genomeView.genome = this.circularFigures[this.circularFigures.length - 1];
-                    this.dataChanged();
-                    this.firstRender = true;
-                    genomeView.firstRender = true;
-                    rightPanel.selectedAlignment = undefined;
-                    viewMgr.render();
-                    return;
-                }
-            }
-        }
-        for(let i : number = 0; i != this.circularFigures.length; ++i)
-        {
-            if(event.target.id == this.circularFigures[i].uuid)
-            {
-                genomeView.genome = this.circularFigures[i];
-                genomeView.firstRender = true;
-                rightPanel.selectedAlignment = undefined;
-                viewMgr.render();
-                return;
-            }
-        }
+        
     }
 }
