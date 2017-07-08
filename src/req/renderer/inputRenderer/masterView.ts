@@ -80,28 +80,32 @@ export class View extends viewMgr.View
                 {
                     row.classList.remove("selected");
                     this.fastqInputs[i].checked = false;
+                    shouldUpdate = true;
                     break;
                 }
                 else
                 {
                     row.classList.add("selected");
                     this.fastqInputs[i].checked = true;
+                    shouldUpdate = true;
                     break;
                 }
             }
         }
-        ipc.send(
-            "saveKey",
-            <SaveKeyEvent>{
-                action : "saveKey",
-                channel : "input",
-                key : "fastqInputs",
-                val : this.fastqInputs
-            }
-        );
+        
+        
+
         if(shouldUpdate)
         {
-            viewMgr.render();
+            ipc.send(
+                "saveKey",
+                <SaveKeyEvent>{
+                    action : "saveKey",
+                    channel : "input",
+                    key : "fastqInputs",
+                    val : this.fastqInputs
+                }
+            );
         }
     }
     public dataChanged() : void
