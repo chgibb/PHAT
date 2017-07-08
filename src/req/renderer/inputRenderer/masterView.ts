@@ -59,8 +59,6 @@ export class View extends viewMgr.View
     }
     public divClickEvents(event : JQueryEventObject) : void
     {
-        console.log("masterView");
-        console.log(event.target);
         if(event.target.id == "browseFastqFiles")
         {
             fastqBrowseDialog();
