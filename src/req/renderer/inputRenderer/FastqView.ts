@@ -38,10 +38,10 @@ export class View extends viewMgr.View
                         for(let i = 0; i != this.fastqInputs.length; ++i)
                         {
                             res += `
-                                <tr class="activeHover" id="${this.fastqInputs[i].uuid}Row">
-                                    <td>${this.fastqInputs[i].alias}</td>
-                                    <td>${this.fastqInputs[i].path}</td>
-                                    <td>${this.fastqInputs[i].sizeString}</td>
+                                <tr class="activeHover ${this.fastqInputs[i].uuid}Class" id="${this.fastqInputs[i].uuid}Row">
+                                    <td class="${this.fastqInputs[i].uuid}Class">${this.fastqInputs[i].alias}</td>
+                                    <td class="${this.fastqInputs[i].uuid}Class">${this.fastqInputs[i].path}</td>
+                                    <td class="${this.fastqInputs[i].uuid}Class">${this.fastqInputs[i].sizeString}</td>
                                 </tr>
                             `;
                         }
@@ -56,11 +56,11 @@ export class View extends viewMgr.View
         $("#fastqTableDiv").css("height",$(`#${this.div}`).height()/2+"px");
         for(let i = 0; i != this.fastqInputs.length; ++i)
         {
+            let row = document.getElementById(`${this.fastqInputs[i].uuid}Row`);
             if(this.fastqInputs[i].checked)
-            {
-                let row = document.getElementById(`${this.fastqInputs[i].uuid}Row`);
                 row.classList.add("selected");
-            }
+            else
+                row.classList.remove("selected");
         }
     }
     public divClickEvents(event : JQueryEventObject) : void

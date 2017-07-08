@@ -1,3 +1,8 @@
+import * as electron from "electron";
+const ipc = electron.ipcRenderer;
+
+import {SaveKeyEvent} from "./../../ipcEvents";
+
 import * as viewMgr from "./../viewMgr";
 import * as fastqView from "./FastqView";
 import * as fastaView from "./FastaView";
@@ -59,10 +64,46 @@ export class View extends viewMgr.View
         if(event.target.id == "browseFastqFiles")
         {
             fastqBrowseDialog();
+            return;
         }
         if(event.target.id == "browseFastaFiles")
         {
             fastaBrowseDialog();
+            return;
+        }
+        let shouldUpdate = false;
+        for(let i = 0; i != this.fastqInputs.length; ++i)
+        {
+            let classList = event.target.classList;
+            if(event.target.classList.contains(`${this.fastqInputs[i].uuid}Class`))
+            {
+                let row = document.getElementById(`${this.fastqInputs[i].uuid}Row`);
+                if(row.classList.contains("selected"))
+                {
+                    row.classList.remove("selected");
+                    this.fastqInputs[i].checked = false;
+                    break;
+                }
+                else
+                {
+                    row.classList.add("selected");
+                    this.fastqInputs[i].checked = true;
+                    break;
+                }
+            }
+        }
+        ipc.send(
+            "saveKey",
+            <SaveKeyEvent>{
+                action : "saveKey",
+                channel : "input",
+                key : "fastqInputs",
+                val : this.fastqInputs
+            }
+        );
+        if(shouldUpdate)
+        {
+            viewMgr.render();
         }
     }
     public dataChanged() : void
