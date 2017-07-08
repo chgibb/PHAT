@@ -39,10 +39,10 @@ export class View extends viewMgr.View
                         for(let i = 0; i != this.fastaInputs.length; ++i)
                         {
                             res += `
-                                <tr>
-                                    <td>${this.fastaInputs[i].alias}</td>
-                                    <td>${this.fastaInputs[i].path}</td>
-                                    <td>${this.fastaInputs[i].sizeString}</td>
+                                <tr class="activeHover ${this.fastaInputs[i].uuid}Class" id="${this.fastaInputs[i].uuid}Row">
+                                    <td class="${this.fastaInputs[i].uuid}Class">${this.fastaInputs[i].alias}</td>
+                                    <td class="${this.fastaInputs[i].uuid}Class">${this.fastaInputs[i].path}</td>
+                                    <td class="${this.fastaInputs[i].uuid}Class">${this.fastaInputs[i].sizeString}</td>
                                 </tr>
                             `;
                         }
@@ -55,6 +55,14 @@ export class View extends viewMgr.View
     public postRender() : void
     {
         $("#fastaTableDiv").css("height",$(`#${this.div}`).height()/2+"px");
+        for(let i = 0; i != this.fastaInputs.length; ++i)
+        {
+            let row = document.getElementById(`${this.fastaInputs[i].uuid}Row`);
+            if(this.fastaInputs[i].checked)
+                row.classList.add("selected");
+            else
+                row.classList.remove("selected");
+        }
     }
     public divClickEvents(event : JQueryEventObject) : void
     {

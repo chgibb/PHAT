@@ -93,7 +93,31 @@ export class View extends viewMgr.View
             }
         }
         
-        
+        if(!shouldUpdate)
+        {
+            for(let i = 0; i != this.fastaInputs.length; ++i)
+            {
+                let classList = event.target.classList;
+                if(event.target.classList.contains(`${this.fastaInputs[i].uuid}Class`))
+                {
+                    let row = document.getElementById(`${this.fastaInputs[i].uuid}Row`);
+                    if(row.classList.contains("selected"))
+                    {
+                        row.classList.remove("selected");
+                        this.fastaInputs[i].checked = false;
+                        shouldUpdate = true;
+                        break;
+                    }
+                    else
+                    {
+                        row.classList.add("selected");
+                        this.fastaInputs[i].checked = true;
+                        shouldUpdate = true;
+                        break;
+                    }
+                }
+            }
+        }
 
         if(shouldUpdate)
         {
@@ -104,6 +128,15 @@ export class View extends viewMgr.View
                     channel : "input",
                     key : "fastqInputs",
                     val : this.fastqInputs
+                }
+            );
+            ipc.send(
+                "saveKey",
+                <SaveKeyEvent>{
+                    action : "saveKey",
+                    channel : "input",
+                    key : "fastaInputs",
+                    val : this.fastaInputs
                 }
             );
         }
