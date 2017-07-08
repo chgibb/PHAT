@@ -2,6 +2,7 @@ import * as electron from "electron";
 const ipc = electron.ipcRenderer;
 
 import {SaveKeyEvent} from "./../../ipcEvents";
+import {AtomicOperationIPC} from "./../../atomicOperationsIPC";
 
 import * as viewMgr from "./../viewMgr";
 import * as fastqView from "./FastqView";
@@ -97,6 +98,19 @@ export class View extends viewMgr.View
         {
             for(let i = 0; i != this.fastaInputs.length; ++i)
             {
+                if(event.target.id == `${this.fastaInputs[i].uuid}Index`)
+                {
+                     ipc.send(
+                        "runOperation",
+                        <AtomicOperationIPC>{
+                            opName : "indexFasta",
+                            channel : "input",
+                            key : "fastaInputs",
+                            uuid : this.fastaInputs[i].uuid
+                        }
+                    );
+                    break;
+                }
                 let classList = event.target.classList;
                 if(event.target.classList.contains(`${this.fastaInputs[i].uuid}Class`))
                 {
