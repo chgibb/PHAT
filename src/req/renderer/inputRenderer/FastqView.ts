@@ -17,6 +17,7 @@ export class View extends viewMgr.View
             <div style="float:left;">
                 <h5>Read Files</h5>
                 <img class="topButton activeHover" id="browseFastqFiles" src="${getReadable("img/browseButton.png")}">
+                <input class="tableCell" style="margin-top:25px" type="text" placeholder="Search" />
             </div>
             <br />
             <br />
