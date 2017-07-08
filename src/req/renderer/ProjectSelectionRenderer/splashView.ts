@@ -20,18 +20,19 @@ export class SplashView extends viewMgr.View
     {
         return `
             <div class="innerCenteredDiv">
-                <h2><b>Pathogen Host Analysis Tool</b></h2>
-                <div class="innerCenteredDiv">
-                    <br />
-                    <br />
-                    <button class="activeHover" id="openProject">Open Project</button>
-                    <br />
-                    <br />
-                    <button class="activeHover" id="createNewProject">Create New Project</button>
-                    <br />
-                    <br />
-                    <button class="activeHover" id="help">Help</button>
-                </div>
+                <h2 style="margin-bottom:0px;margin-top:0px;"><b>Pathogen</b></h2>
+                <h2 style="margin-bottom:0px;margin-top:0px;"><b>Host</b></h2>
+                <h2 style="margin-bottom:0px;margin-top:0px;"><b>Analysis</b></h2>
+                <h2 style="margin-bottom:0px;margin-top:0px;"><b>Tool</b></h2>
+                <br />
+                <br />
+                <button class="activeHover" id="openProject">Open Project</button>
+                <br />
+                <br />
+                <button class="activeHover" id="createNewProject">Create New Project</button>
+                <br />
+                <br />
+                <button class="activeHover" id="help">Help</button>
             </div>
         `;
     }
