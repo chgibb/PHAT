@@ -76,16 +76,9 @@ export abstract class View
         let html : string = this.renderView();
         if(html)
         {
-            //prevent scrolling of the page on rerender.
-            let self = this;
-            setTimeout
-            (
-                function()
-                {
-                    document.getElementById(self.div).innerHTML = html;
-                    self.postRender();
-                },0
-            );
+            document.getElementById(this.div).innerHTML = html;
+            this.postRender();
+
         }
     }
     /*onChange(func)

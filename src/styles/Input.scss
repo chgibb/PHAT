@@ -4,6 +4,9 @@
 @import "common/th";
 @import "common/tableCell";
 @import "common/activeHover";
+@import "common/selected";
+@import "common/outerCenteredDiv";
+@import "common/innerCenteredDiv";
 .inputFilterBox
 {
     @extend .tableCell;
@@ -11,9 +14,17 @@
 	margin-left: -300px;
 	width :50%;
 }
-.viewTab
+.topButton
 {
   float : left;
-	margin: 18px 18px 18px 18px;
+  margin: 18px 18px 18px 18px;
 
+}
+.masterView
+{
+	display: flex;
+}
+.masterView > div
+{
+	flex: 1;
 }
