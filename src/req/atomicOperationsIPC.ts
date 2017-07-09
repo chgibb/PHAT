@@ -29,6 +29,7 @@ export interface AtomicOperationIPC
     name? : string;
     proj? : ProjectManifest;
     externalProjectPath? : string;
+    filePath? : string;
 
     pileupViewerParams? : {
         align : alignData,
