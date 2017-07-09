@@ -83,10 +83,10 @@ export class View extends viewMgr.View
             if(this.fastaInputs[i].checked && this.fastaInputs[i].indexed)
             {
                 res += `
-                    <li role="separator" class="divider"></li>
                     <li><b>${this.fastaInputs[i].alias}</b></li>
                     <li role="separator" class="divider"></li>
                     <li><i><a id="${this.fastaInputs[i].uuid}NewFigure" href="#">New Figure</a></i></li>
+                    <li role="separator" class="divider"></li>
                 `;
                 for(let j = 0; j != this.circularFigures.length; ++j)
                 {
@@ -97,6 +97,7 @@ export class View extends viewMgr.View
                         `;
                     }
                 }
+                res += `<li role="separator" class="divider"></li>`;
             }
         }
         document.getElementById("figures").innerHTML = res;
