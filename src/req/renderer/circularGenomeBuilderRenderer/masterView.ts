@@ -44,9 +44,28 @@ export class View extends viewMgr.View
         {
             this.views[i].onMount();
         }
+        let genomeView = <GenomeView.GenomeView>viewMgr.getViewByName("genomeView",this.views);
         let self = this;
         window.onbeforeunload = function(e){
             self.dataChanged();
+        }
+        document.getElementById("figures").onclick = function(this : HTMLElement,ev : MouseEvent){
+            for(let i = 0; i != self.fastaInputs.length; ++i)
+            {
+                if((<any>ev.target).id == `${self.fastaInputs[i].uuid}NewFigure`)
+                {
+                    self.circularFigures.push(new CircularFigure(
+                        "New Figure",
+                        self.fastaInputs[i].uuid,
+                        self.fastaInputs[i].contigs
+                    ));
+                    self.dataChanged();
+                    genomeView.genome = self.circularFigures[self.circularFigures.length - 1];
+                    genomeView.firstRender = true;
+                    viewMgr.render();
+                    return;
+                }
+            }
         }
     }
     public onUnMount() : void
@@ -67,14 +86,14 @@ export class View extends viewMgr.View
                     <li role="separator" class="divider"></li>
                     <li><b>${this.fastaInputs[i].alias}</b></li>
                     <li role="separator" class="divider"></li>
-                    <li><i><a href="#">New Figure</a></i></li>
+                    <li><i><a id="${this.fastaInputs[i].uuid}NewFigure" href="#">New Figure</a></i></li>
                 `;
                 for(let j = 0; j != this.circularFigures.length; ++j)
                 {
                     if(this.circularFigures[j].uuidFasta == this.fastaInputs[i].uuid)
                     {
                         res += `
-                            <li><a href="#">${this.circularFigures[j].name}</a></li>
+                            <li><a id="${this.circularFigures[j].uuid}Open"href="#">${this.circularFigures[j].name}</a></li>
                         `;
                     }
                 }
