@@ -12,16 +12,7 @@
         <script>
 			require("./Input");
 		</script>
-        <img class='viewTab' id='fastqButton' src="img/fastqButton.png">
-		<img class='viewTab' id='refSeqButton' src="img/refSeqButton.png">
-
-		<img class='viewTab' id='browseButton' src="img/browseButton.png">
-
-		<!--<input id='inputFilterBox' class='inputFilterBox' type='text' autofocus='autofocus' placeholder="Search" onchange="updateSearchFilter(this)" onkeypress="this.onchange()" onkeydown="this.onchange()" onpaste="this.onchange()" oninput="this.onchange()"  />-->
-
-		<!--<button id="chooseFile" name="chooseFile" onClick="openInputPicker()">Select Files</button>-->
-		<br />
-		<div id="loadedFiles">
+		<div id="view">
 		</div>
 		<script>
 			console.log("Start up took "+(performance.now()-startUp+"ms"));
