@@ -37,6 +37,19 @@ export class View extends viewMgr.View
         this.circularFigures = new Array<CircularFigure>();
         this.fastaInputs = new Array<Fasta>();
     }
+    public setFocusedFigureInDropDown() : void
+    {
+        let genomeView = <GenomeView.GenomeView>viewMgr.getViewByName("genomeView",this.views);
+        if(!genomeView.genome)
+            return;
+        for(let i = 0; i != this.circularFigures.length; ++i)
+        {
+            if(genomeView.genome.uuid == this.circularFigures[i].uuid)
+            {
+                document.getElementById(`${this.circularFigures[i].uuid}Open`).classList.add("selectedFigureInDropDown");
+            }
+        }
+    }
     public onMount() : void
     {
         GenomeView.addView(this.views,"genomeView");
@@ -63,6 +76,7 @@ export class View extends viewMgr.View
                     genomeView.genome = self.circularFigures[self.circularFigures.length - 1];
                     genomeView.firstRender = true;
                     viewMgr.render();
+                    self.setFocusedFigureInDropDown();
                     return;
                 }
             }
@@ -73,6 +87,7 @@ export class View extends viewMgr.View
                     genomeView.genome = self.circularFigures[i];
                     genomeView.firstRender = true;
                     viewMgr.render();
+                    self.setFocusedFigureInDropDown();
                     return;
                 }
             }
@@ -130,11 +145,11 @@ export class View extends viewMgr.View
     }
     public postRender() : void
     {
-        
         for(let i = 0; i != this.views.length; ++i)
         {
             this.views[i].postRender();
         }
+        this.setFocusedFigureInDropDown();
     }
     public dataChanged() : void
     {
