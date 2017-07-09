@@ -66,6 +66,16 @@ export class View extends viewMgr.View
                     return;
                 }
             }
+            for(let i = 0; i != self.circularFigures.length; ++i)
+            {
+                if((<any>ev.target).id == `${self.circularFigures[i].uuid}Open`)
+                {
+                    genomeView.genome = self.circularFigures[i];
+                    genomeView.firstRender = true;
+                    viewMgr.render();
+                    return;
+                }
+            }
         }
     }
     public onUnMount() : void
