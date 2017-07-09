@@ -146,7 +146,7 @@ export class GenomeView extends viewMgr.View
                 <div id="controls">
                     <button style="float:right;" ng-click="showContigCreator()">Add Contig</button>
                     <button style="float:right;" ng-click="exportSVG()">Export as SVG</button>
-                    <input type="number" ng-model="genome.radius" ng-change="inputRadiusOnChange()" min="0" max="1000" required>
+                    
                      <label>Show BP Positions:
                         <input type="checkbox" ng-model="genome.circularFigureBPTrackOptions.showLabels" ng-true-value="1" ng-false-value="0" ng-change="showBPTrackOnChange()">
                      </label>

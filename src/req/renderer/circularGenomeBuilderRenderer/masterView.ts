@@ -50,6 +50,13 @@ export class View extends viewMgr.View
             }
         }
     }
+    public setFigureRadiusInInput() : void
+    {
+        let genomeView = <GenomeView.GenomeView>viewMgr.getViewByName("genomeView",this.views);
+        if(!genomeView.genome)
+            return;
+        (<HTMLInputElement>document.getElementById("figureRadiusInput")).value = genomeView.genome.radius.toString();
+    }
     public onMount() : void
     {
         GenomeView.addView(this.views,"genomeView");
@@ -90,6 +97,15 @@ export class View extends viewMgr.View
                     self.setSelectedFigureInDropDown();
                     return;
                 }
+            }
+        }
+        document.getElementById("updateNavBarButton").onclick = function(this : HTMLElement,ev : MouseEvent){
+            let radius = parseInt((<HTMLInputElement>document.getElementById("figureRadiusInput")).value);
+            if(radius)
+            {
+                genomeView.genome.radius = radius;
+                genomeView.inputRadiusOnChange();
+                viewMgr.render();
             }
         }
     }
@@ -150,6 +166,9 @@ export class View extends viewMgr.View
             this.views[i].postRender();
         }
         this.setSelectedFigureInDropDown();
+        this.setFigureRadiusInInput();
+
+        
     }
     public dataChanged() : void
     {
