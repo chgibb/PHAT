@@ -19,6 +19,6 @@ export async function openFirstProject() : Promise<void>
                 }
             `);
             resolve();
-        },500);
+        },5000);
     });
 }
