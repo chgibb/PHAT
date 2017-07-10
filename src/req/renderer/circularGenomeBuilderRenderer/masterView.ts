@@ -10,6 +10,8 @@ import {Fasta} from "./../../fasta";
 
 import * as GenomeView from "./genomeView";
 
+import {writeAlignsModal} from "./writeAlignsModal";
+
 import * as $ from "jquery";
 (<any>window).$ = $;
 (<any>window).jQuery = $;
@@ -125,20 +127,8 @@ export class View extends viewMgr.View
         }
 
         document.getElementById("openModalAligns").onclick = function(this : HTMLElement,ev : MouseEvent){
-            let footer = `
-                <button type="button" class="btn btn-secondary" data-dismiss="modal" id="footerClose">Close</button>
-        		<button type="button" class="btn btn-primary" id="footerSave">Save changes</button>
-            `;
-            document.getElementById("modalFooter").innerHTML = footer;
+            writeAlignsModal();
             self.showModal();
-            document.getElementById("footerClose").onclick = function(this : HTMLElement,ev : MouseEvent){
-                alert("footerClose");
-            }
-            document.getElementById("footerSave").onclick = function(this : HTMLElement,ev : MouseEvent){
-                alert("footerSave");
-                self.dismissModal();
-            }
-            
         }
 
         document.getElementById("updateNavBarButton").onclick = function(this : HTMLElement,ev : MouseEvent){
