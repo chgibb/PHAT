@@ -36,6 +36,10 @@ export class View extends viewMgr.View
         (<any>$(".modal")).modal("show");
         document.getElementsByClassName("modal-backdrop")[0].classList.remove("modal-backdrop");
     }
+    public dismissModal() : void
+    {
+        (<any>$(".modal")).modal("hide");
+    }
     public setSelectedFigureInDropDown() : void
     {
         let genomeView = <GenomeView.GenomeView>viewMgr.getViewByName("genomeView",this.views);
@@ -121,7 +125,20 @@ export class View extends viewMgr.View
         }
 
         document.getElementById("openModalAligns").onclick = function(this : HTMLElement,ev : MouseEvent){
+            let footer = `
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" id="footerClose">Close</button>
+        		<button type="button" class="btn btn-primary" id="footerSave">Save changes</button>
+            `;
+            document.getElementById("modalFooter").innerHTML = footer;
             self.showModal();
+            document.getElementById("footerClose").onclick = function(this : HTMLElement,ev : MouseEvent){
+                alert("footerClose");
+            }
+            document.getElementById("footerSave").onclick = function(this : HTMLElement,ev : MouseEvent){
+                alert("footerSave");
+                self.dismissModal();
+            }
+            
         }
 
         document.getElementById("updateNavBarButton").onclick = function(this : HTMLElement,ev : MouseEvent){
