@@ -57,6 +57,24 @@ export class View extends viewMgr.View
             return;
         (<HTMLInputElement>document.getElementById("figureRadiusInput")).value = genomeView.genome.radius.toString();
     }
+    public setFigureBPIntervalInput() : void
+    {
+        let genomeView = <GenomeView.GenomeView>viewMgr.getViewByName("genomeView",this.views);
+        if(!genomeView.genome)
+            return;
+        (<HTMLInputElement>document.getElementById("figureBPIntervalInput")).value = genomeView.genome.circularFigureBPTrackOptions.interval.toString();
+    }
+    public setShowBPIntervalCheckBox() : void
+    {
+        let genomeView = <GenomeView.GenomeView>viewMgr.getViewByName("genomeView",this.views);
+        if(!genomeView.genome)
+            return;
+        let checkbox = (<HTMLInputElement>document.getElementById("showBPIntervalCheckBox"));
+        if(genomeView.genome.circularFigureBPTrackOptions.showLabels == 0)
+            checkbox.checked = false;
+        else if(genomeView.genome.circularFigureBPTrackOptions.showLabels == 1)
+            checkbox.checked = true;
+    }
     public onMount() : void
     {
         GenomeView.addView(this.views,"genomeView");
@@ -167,6 +185,8 @@ export class View extends viewMgr.View
         }
         this.setSelectedFigureInDropDown();
         this.setFigureRadiusInInput();
+        this.setFigureBPIntervalInput();
+        this.setShowBPIntervalCheckBox();
     }
     public dataChanged() : void
     {
