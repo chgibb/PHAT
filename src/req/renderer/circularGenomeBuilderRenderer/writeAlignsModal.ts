@@ -20,7 +20,7 @@ export function writeAlignsModal() : void
     }
     else if(genomeView.genome)
     {
-        if(!masterView.getAlignsForOpenGenome())
+        if(!aligns)
         {
             body = `
                 <p>Run alignments with this reference to generate coverage data to visualize.</p>
@@ -86,6 +86,15 @@ export function writeAlignsModal() : void
             masterView.dismissModal();
         }
     }
-    for(let)
+    if(aligns)
+    {
+        for(let i = 0; i != aligns.length; ++i)
+        {
+            document.getElementById(`${aligns[i].uuid}View`).onclick = function(this : HTMLElement,ev : MouseEvent){
+                masterView.alignsModalOpen = false;
+                writeAvailableTracksModal(aligns[i]);
+            }
+        }
+    }
     
 }
