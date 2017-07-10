@@ -142,30 +142,6 @@ export class GenomeView extends viewMgr.View
             //the page
             let $div = $(
                 `
-                <div id="controls">
-                    <button style="float:right;" ng-click="showContigCreator()">Add Contig</button>
-                    <button style="float:right;" ng-click="exportSVG()">Export as SVG</button>
-                    
-                     <label>Show BP Positions:
-                        <input type="checkbox" ng-model="genome.circularFigureBPTrackOptions.showLabels" ng-true-value="1" ng-false-value="0" ng-change="showBPTrackOnChange()">
-                     </label>
-                     ${(()=>{
-                         let res = ``;
-                         if(this.genome.circularFigureBPTrackOptions.showLabels)
-                         {
-                             res += `
-                                <br />
-                                <label>Interval:
-                                    <input type="number" ng-model="genome.circularFigureBPTrackOptions.interval" required>
-                                </label>
-                                <label>Show Inside Figure
-                                    <input type="checkbox" ng-model="genome.circularFigureBPTrackOptions.direction" ng-true-value="'in'" ng-false-value="'out'" ng-change="showBPTrackOnChange()">
-                                </label>
-                             `;
-                         }
-                         return res;
-                     })()}
-                </div>
                 <div id="${this.div}" style="z-index=-1;">
                     ${plasmid.add(
                     {

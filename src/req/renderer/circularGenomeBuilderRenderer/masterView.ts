@@ -31,6 +31,11 @@ export class View extends viewMgr.View
         this.circularFigures = new Array<CircularFigure>();
         this.fastaInputs = new Array<Fasta>();
     }
+    public showModal() : void
+    {
+        (<any>$(".modal")).modal("show");
+        document.getElementsByClassName("modal-backdrop")[0].classList.remove("modal-backdrop");
+    }
     public setSelectedFigureInDropDown() : void
     {
         let genomeView = <GenomeView.GenomeView>viewMgr.getViewByName("genomeView",this.views);
@@ -111,14 +116,33 @@ export class View extends viewMgr.View
                 }
             }
         }
+        document.getElementById("showBPIntervalCheckBox").onclick = function(this : HTMLElement,ev : MouseEvent){
+            document.getElementById("updateNavBarButton").click();
+        }
+
+        document.getElementById("openModalAligns").onclick = function(this : HTMLElement,ev : MouseEvent){
+            self.showModal();
+        }
+
         document.getElementById("updateNavBarButton").onclick = function(this : HTMLElement,ev : MouseEvent){
             let radius = parseInt((<HTMLInputElement>document.getElementById("figureRadiusInput")).value);
             if(radius)
-            {
                 genomeView.genome.radius = radius;
-                genomeView.inputRadiusOnChange();
-                viewMgr.render();
+
+            let trackInterval = parseInt((<HTMLInputElement>document.getElementById("figureBPIntervalInput")).value);
+            if(radius)
+                genomeView.genome.circularFigureBPTrackOptions.interval = trackInterval;
+
+            let showInterval = ((<HTMLInputElement>document.getElementById("showBPIntervalCheckBox")).checked);
+            if(showInterval !== undefined)
+            {
+                if(showInterval === true)
+                    genomeView.genome.circularFigureBPTrackOptions.showLabels = 1;
+                else
+                    genomeView.genome.circularFigureBPTrackOptions.showLabels = 0;
             }
+            
+            viewMgr.render();
         }
     }
     public onUnMount() : void
