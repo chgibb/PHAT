@@ -9,7 +9,7 @@ export function writeAlignsModal() : void
 
     let aligns = masterView.getAlignsForOpenGenome();
 
-    let title = `Coverage Options`;
+    let title = `Select Alignment`;
 
     let body = ``;
     if(!genomeView.genome)
