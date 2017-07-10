@@ -84,7 +84,6 @@ $
                         {
                             let masterView = <masterView.View>viewMgr.getViewByName("masterView");
                             masterView.fastaInputs = arg.val;
-                            masterView.firstRender = true;
                         }
                     }
                     if(arg.key == "aligns")
@@ -102,9 +101,7 @@ $
                             let masterView = <masterView.View>viewMgr.getViewByName("masterView");
                             let genomeView = <genomeView.GenomeView>viewMgr.getViewByName("genomeView",masterView.views);
                             let currentFigure = "";
-                            //Only update panels if theres been an additional figure created
-                            if((<Array<CircularFigure>>arg.val).length != masterView.circularFigures.length)
-                                masterView.firstRender = true;
+
                             //If there's currently a figure being edited then save its id
                             if(genomeView.genome)
                                 currentFigure = genomeView.genome.uuid;

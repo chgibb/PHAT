@@ -82,8 +82,7 @@ export class GenomeView extends viewMgr.View
                 cf.cacheBaseFigure(self.genome);
                 let masterView = <masterView.View>viewMgr.getViewByName("masterView");
                 let genomeView = <GenomeView>viewMgr.getViewByName("genomeView",masterView.views);
-                //Ensure updated cache gets used to render figure
-                masterView.firstRender = true;
+
                 genomeView.firstRender = true;
                 //Save changes
                 masterView.dataChanged();
