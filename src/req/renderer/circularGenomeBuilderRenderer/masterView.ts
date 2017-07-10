@@ -167,8 +167,6 @@ export class View extends viewMgr.View
         }
         this.setSelectedFigureInDropDown();
         this.setFigureRadiusInInput();
-
-        
     }
     public dataChanged() : void
     {
