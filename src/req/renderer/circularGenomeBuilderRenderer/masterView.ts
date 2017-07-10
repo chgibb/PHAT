@@ -7,6 +7,7 @@ import {SaveKeyEvent} from "./../../ipcEvents";
 import * as viewMgr from "./../viewMgr";
 import {CircularFigure,} from "./../circularFigure";
 import {Fasta} from "./../../fasta";
+import {alignData} from "./../../alignData";
 
 import * as GenomeView from "./genomeView";
 
@@ -25,13 +26,35 @@ export class View extends viewMgr.View
 {
     public views : Array<viewMgr.View>;
     public circularFigures : Array<CircularFigure>;
+    public alignData : Array<alignData>;
     public fastaInputs : Array<Fasta>;
+    public alignsModalOpen : boolean;
+    public availableTracksModalOpen : boolean;
     public constructor(div : string)
     {
         super("masterView",div);
         this.views = new Array<viewMgr.View>();
         this.circularFigures = new Array<CircularFigure>();
         this.fastaInputs = new Array<Fasta>();
+        this.alignsModalOpen = false;
+        this.availableTracksModalOpen = false;
+    }
+    public getAlignsForOpenGenome() : Array<alignData> | undefined
+    {
+        let res : Array<alignData> = new Array<alignData>();
+        let genomeView = <GenomeView.GenomeView>viewMgr.getViewByName("genomeView",this.views);
+        if(!this.alignData || !genomeView.genome)
+            return undefined;
+        for(let i = 0; i != this.alignData.length; ++i)
+        {
+            if(this.alignData[i].fasta.uuid == genomeView.genome.uuidFasta)
+            {
+                res.push(this.alignData[i]);
+            }
+        }
+        if(res.length == 0)
+            return undefined;
+        return res;
     }
     public showModal() : void
     {
@@ -127,6 +150,7 @@ export class View extends viewMgr.View
         }
 
         document.getElementById("openModalAligns").onclick = function(this : HTMLElement,ev : MouseEvent){
+            self.alignsModalOpen = true;
             writeAlignsModal();
             self.showModal();
         }
@@ -189,6 +213,8 @@ export class View extends viewMgr.View
         {
             this.views[i].render();
         }
+        if(this.alignsModalOpen)
+            writeAlignsModal();
         //viewMgr will not call postRender for a view that does no rendering so we'll do it explicitly
         this.postRender();
         return undefined;

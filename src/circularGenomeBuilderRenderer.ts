@@ -91,7 +91,7 @@ $
                         if(arg.val !== undefined)
                         {
                             let masterView = <masterView.View>viewMgr.getViewByName("masterView");
-                            
+                            masterView.alignData = arg.val;
                         }
                     }
                     if(arg.key == "circularFigures")
