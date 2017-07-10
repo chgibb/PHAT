@@ -22,18 +22,12 @@ export function addView(arr : Array<viewMgr.View>,div : string)
 export class View extends viewMgr.View
 {
     public views : Array<viewMgr.View>;
-    public firstRender : boolean;
-    public leftPanelOpen : boolean;
-    public rightPanelOpen : boolean;
     public circularFigures : Array<CircularFigure>;
     public fastaInputs : Array<Fasta>;
     public constructor(div : string)
     {
         super("masterView",div);
         this.views = new Array<viewMgr.View>();
-        this.firstRender = true;
-        this.leftPanelOpen = false;
-        this.rightPanelOpen = false;
         this.circularFigures = new Array<CircularFigure>();
         this.fastaInputs = new Array<Fasta>();
     }
@@ -160,22 +154,13 @@ export class View extends viewMgr.View
             }
         }
         document.getElementById("figures").innerHTML = res;
-        if(this.firstRender)
+        for(let i = 0; i != this.views.length; ++i)
         {
-            this.leftPanelOpen = false;
-            this.rightPanelOpen = false;
-            this.firstRender = false;
-            return `
-                    
-                `;
-            }
-            for(let i = 0; i != this.views.length; ++i)
-            {
-                this.views[i].render();
-            }
-            //viewMgr will not call postRender for a view that does no rendering so we'll do it explicitly
-            this.postRender();
-            return undefined;
+            this.views[i].render();
+        }
+        //viewMgr will not call postRender for a view that does no rendering so we'll do it explicitly
+        this.postRender();
+        return undefined;
     }
     public postRender() : void
     {
