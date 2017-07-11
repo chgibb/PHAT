@@ -33,7 +33,7 @@ export function writeAvailableTracksModal() : void
                 if(genomeView.genome.renderedCoverageTracks[i].uuidContig == selectedAlign.fasta.contigs[j].uuid)
                 {
                     body += `
-                        <p id="${genomeView.genome.renderedCoverageTracks[i].uuid}Available" class="activeHover">${selectedAlign.fasta.contigs[j].name}</p>
+                        <p id="${genomeView.genome.renderedCoverageTracks[i].uuid}Available" class="activeHover" style="color:${genomeView.genome.renderedCoverageTracks[i].colour}">${selectedAlign.fasta.contigs[j].name}</p>
                     `;
                     foundTrack = true;
                 }
@@ -60,7 +60,7 @@ export function writeAvailableTracksModal() : void
                 if(genomeView.genome.renderedSNPTracks[i].uuidContig == selectedAlign.fasta.contigs[j].uuid)
                 {
                     body += `
-                        <p id="${genomeView.genome.renderedSNPTracks[i].uuid}Available" class="activeHover">${selectedAlign.fasta.contigs[j].name}</p>
+                        <p id="${genomeView.genome.renderedSNPTracks[i].uuid}Available" class="activeHover" style="color:${genomeView.genome.renderedSNPTracks[i].colour}" >${selectedAlign.fasta.contigs[j].name}</p>
                     `;
                     foundTrack = true;
                 }
