@@ -29,12 +29,16 @@ export function displayFigure(self : GenomeView) : Promise<void>
             totalBP += self.genome.contigs[i].bp;
         }
 
+        setTimeout(function(){
+            document.getElementById("loadingText").innerText = "Getting templates...";
+        },10);
+
         //This is an unholy mess adapted from the example given inline in the
         //angular source code https://github.com/angular/angular.js/blob/master/src/auto/injector.js
         //We remove the div this view is bound to, recreate it and re render the angular template into it
         //Then we pass the div into angular to compile the templates and then finally inject it all back into
         //the page
-        document.getElementById("loadingText").innerText = "Getting templates...";
+        
         let $div = $(
             `
                 <div id="${self.div}" style="z-index=-1;">
@@ -82,7 +86,9 @@ export function displayFigure(self : GenomeView) : Promise<void>
         (
             function($compile : any)
             {
-                document.getElementById("loadingText").innerText = "Compiling templates...";
+                setTimeout(function(){
+                    document.getElementById("loadingText").innerText = "Compiling templates...";
+                },10);
                 //This should probably be done with an actual angular scope instead 
                 //of mutating the existing scope
                 let scope = angular.element($div).scope();
