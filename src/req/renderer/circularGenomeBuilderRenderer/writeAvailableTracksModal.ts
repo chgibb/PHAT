@@ -155,7 +155,7 @@ export function writeAvailableTracksModal() : void
     }
     for(let i = 0; i != genomeView.genome.contigs.length; ++i)
     {
-        //this will throw for the filler contig that doesn not get a control rendered for it
+        //this will throw for the filler contig that doesn't not get a control rendered for it
         try
         {
             document.getElementById(`${genomeView.genome.contigs[i].uuid}GenCoverage`).onclick = function(this : HTMLElement,ev : MouseEvent){
