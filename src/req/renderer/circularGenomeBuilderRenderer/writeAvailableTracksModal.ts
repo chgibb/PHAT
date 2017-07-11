@@ -150,6 +150,7 @@ export function writeAvailableTracksModal() : void
 
         masterView.availableTracksModalOpen = false;
         masterView.dismissModal();
+        masterView.dataChanged();
         viewMgr.render();
     }
     for(let i = 0; i != genomeView.genome.contigs.length; ++i)
