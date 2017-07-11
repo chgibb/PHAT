@@ -81,7 +81,6 @@ export function writeAlignsModal() : void
     if(genomeView.genome)
     {
         document.getElementById("footerSave").onclick = function(this : HTMLElement,ev : MouseEvent){
-            //alert("footerSave");
             masterView.alignsModalOpen = false;
             masterView.dismissModal();
         }
