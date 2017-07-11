@@ -34,6 +34,7 @@ export function displayFigure(self : GenomeView) : Promise<void>
         //We remove the div this view is bound to, recreate it and re render the angular template into it
         //Then we pass the div into angular to compile the templates and then finally inject it all back into
         //the page
+        document.getElementById("loadingText").innerText = "Getting templates...";
         let $div = $(
             `
                 <div id="${self.div}" style="z-index=-1;">
@@ -81,6 +82,7 @@ export function displayFigure(self : GenomeView) : Promise<void>
         (
             function($compile : any)
             {
+                document.getElementById("loadingText").innerText = "Compiling templates...";
                 //This should probably be done with an actual angular scope instead 
                 //of mutating the existing scope
                 let scope = angular.element($div).scope();
