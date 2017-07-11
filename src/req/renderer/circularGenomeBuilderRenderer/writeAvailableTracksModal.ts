@@ -33,7 +33,7 @@ export function writeAvailableTracksModal() : void
                 if(genomeView.genome.renderedCoverageTracks[i].uuidContig == selectedAlign.fasta.contigs[j].uuid)
                 {
                     body += `
-                        <p>${selectedAlign.fasta.contigs[j].name}</p>
+                        <p id="${genomeView.genome.renderedCoverageTracks[i].uuid}Available" class="activeHover">${selectedAlign.fasta.contigs[j].name}</p>
                     `;
                     foundTrack = true;
                 }
@@ -60,7 +60,7 @@ export function writeAvailableTracksModal() : void
                 if(genomeView.genome.renderedSNPTracks[i].uuidContig == selectedAlign.fasta.contigs[j].uuid)
                 {
                     body += `
-                        <p>${selectedAlign.fasta.contigs[j].name}</p>
+                        <p id="${genomeView.genome.renderedSNPTracks[i].uuid}Available" class="activeHover">${selectedAlign.fasta.contigs[j].name}</p>
                     `;
                     foundTrack = true;
                 }
@@ -120,8 +120,23 @@ export function writeAvailableTracksModal() : void
         masterView.availableTracksModalOpen = false;
     }
     document.getElementById("footerSave").onclick = function(this : HTMLElement,ev : MouseEvent){
-            masterView.availableTracksModalOpen = false;
-            masterView.dismissModal();
+        for(let i = 0; i != genomeView.genome.renderedCoverageTracks.length; ++i)
+        {
+            //save changes to selected tracks
+            let el = document.getElementById(`${genomeView.genome.renderedCoverageTracks[i].uuid}Available`);
+            if(el)
+            {
+                if(el.classList.contains("selected"))
+                    genomeView.genome.renderedCoverageTracks[i].checked = true;
+                else
+                    genomeView.genome.renderedCoverageTracks[i].checked = false;
+                genomeView.firstRender = true;
+            }
+        }
+
+        masterView.availableTracksModalOpen = false;
+        masterView.dismissModal();
+        viewMgr.render();
     }
     for(let i = 0; i != genomeView.genome.contigs.length; ++i)
     {
@@ -136,6 +151,24 @@ export function writeAvailableTracksModal() : void
                     colour : (<string>(<any>$(document.getElementById("colourPicker"))).minicolors("rgbString"))
                 }
             );
+        }
+    }
+    for(let i = 0; i != genomeView.genome.renderedCoverageTracks.length; ++i)
+    {
+        //select and unselect available tracks onclick
+        let el = document.getElementById(`${genomeView.genome.renderedCoverageTracks[i].uuid}Available`);
+        if(el)
+        {
+            if(genomeView.genome.renderedCoverageTracks[i].checked)
+            {
+                el.classList.add("selected");
+            }
+            el.onclick = function(this : HTMLElement,ev : MouseEvent){
+                if(el.classList.contains("selected"))
+                    el.classList.remove("selected");
+                else
+                    el.classList.add("selected");
+            }
         }
     }
 }
