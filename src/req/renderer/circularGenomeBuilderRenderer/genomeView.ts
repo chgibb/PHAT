@@ -14,6 +14,8 @@ import {alignData} from "./../../alignData";
 import * as cf from "./../circularFigure";
 import * as plasmid from "./../circularGenome/plasmid";
 
+import {writeLoadingModal} from "./writeLoadingModal";
+
 require("angular");
 require("angularplasmid");
 let app : any = angular.module('myApp',['angularplasmid']);
@@ -107,7 +109,7 @@ export class GenomeView extends viewMgr.View
     }
     public renderView() : string
     {
-        
+        let masterView = <masterView.View>viewMgr.getViewByName("masterView");
         let self = this;
 
         if(this.genome)
@@ -116,6 +118,10 @@ export class GenomeView extends viewMgr.View
             //Only render markup when we explicitly need to
             //All figure updates are handled through angular bindings
             if(this.firstRender){
+            masterView.loadingModal = true;
+            writeLoadingModal();
+            masterView.showModal();
+            
             try
             {
                 document.body.removeChild(document.getElementById("controls"));
@@ -202,6 +208,8 @@ export class GenomeView extends viewMgr.View
                     scope.firstRender = self.firstRender;
                     scope.div = self.div;
                     $compile($div)(scope);
+                    masterView.loadingModal = false;
+                    masterView.dismissModal();
                 }
             );
             

@@ -13,6 +13,7 @@ import * as GenomeView from "./genomeView";
 
 import {writeAlignsModal} from "./writeAlignsModal";
 import {writeAvailableTracksModal} from "./writeAvailableTracksModal";
+import {writeLoadingModal} from "./writeLoadingModal";
 
 import * as $ from "jquery";
 (<any>window).$ = $;
@@ -31,6 +32,7 @@ export class View extends viewMgr.View
     public fastaInputs : Array<Fasta>;
     public alignsModalOpen : boolean;
     public availableTracksModalOpen : boolean;
+    public loadingModal : boolean;
     public constructor(div : string)
     {
         super("masterView",div);
@@ -39,6 +41,7 @@ export class View extends viewMgr.View
         this.fastaInputs = new Array<Fasta>();
         this.alignsModalOpen = false;
         this.availableTracksModalOpen = false;
+        this.loadingModal = false;
     }
     public getAlignsForOpenGenome() : Array<alignData> | undefined
     {
@@ -173,7 +176,8 @@ export class View extends viewMgr.View
                 else
                     genomeView.genome.circularFigureBPTrackOptions.showLabels = 0;
             }
-            
+            genomeView.firstRender = true;
+            self.dataChanged();
             viewMgr.render();
         }
     }
@@ -218,6 +222,9 @@ export class View extends viewMgr.View
             writeAlignsModal();
         if(this.availableTracksModalOpen)
             writeAvailableTracksModal();
+
+        if(this.loadingModal)
+            writeLoadingModal();
         //viewMgr will not call postRender for a view that does no rendering so we'll do it explicitly
         this.postRender();
         return undefined;
