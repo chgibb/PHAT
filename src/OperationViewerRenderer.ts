@@ -41,7 +41,7 @@ $
     function()
     {
         console.log("adding views");
-        masterView.addView(viewMgr.views,"");
+        masterView.addView(viewMgr.views,"masterView");
         viewMgr.changeView("masterView");
         console.log('done adding views');
         ipc.send(
