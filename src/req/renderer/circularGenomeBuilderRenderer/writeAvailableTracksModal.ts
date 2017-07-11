@@ -23,6 +23,7 @@ export function writeAvailableTracksModal() : void
         <h4>Available Tracks</h4>   
         <h5>Coverage</h5>
     `;
+    let foundTrack = false;
     for(let i = 0; i != genomeView.genome.renderedCoverageTracks.length; ++i)
     {
         if(genomeView.genome.renderedCoverageTracks[i].uuidAlign == selectedAlign.uuid)
@@ -34,9 +35,43 @@ export function writeAvailableTracksModal() : void
                     body += `
                         <p>${selectedAlign.fasta.contigs[j].name}</p>
                     `;
+                    foundTrack = true;
                 }
             }
         }
+    }
+    if(!foundTrack)
+    {
+        body += `
+            <p>No coverage tracks available</p>
+        `;
+    }
+
+    foundTrack = false;
+    body += `
+        <h5>SNPs</h5>
+    `;
+    for(let i = 0; i != genomeView.genome.renderedSNPTracks.length; ++i)
+    {
+        if(genomeView.genome.renderedSNPTracks[i].uuidAlign == selectedAlign.uuid)
+        {
+            for(let j = 0; j != selectedAlign.fasta.contigs.length; ++j)
+            {
+                if(genomeView.genome.renderedSNPTracks[i].uuidContig == selectedAlign.fasta.contigs[j].uuid)
+                {
+                    body += `
+                        <p>${selectedAlign.fasta.contigs[j].name}</p>
+                    `;
+                    foundTrack = true;
+                }
+            }
+        }
+    }
+    if(!foundTrack)
+    {
+        body += `
+            <p>No SNP tracks available</p>
+        `;
     }
 
     body += `
