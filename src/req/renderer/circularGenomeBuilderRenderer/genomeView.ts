@@ -128,6 +128,9 @@ export class GenomeView extends viewMgr.View
                     displayFigure(self).then(() => {
                         masterView.loadingModal = false;
                         masterView.dismissModal();
+                        setTimeout(function(){
+                            window.dispatchEvent(new Event("resize"));
+                        },10);
                     });
                 },10);
             
