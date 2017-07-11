@@ -1,9 +1,18 @@
+import * as electron from "electron";
+const ipc = electron.ipcRenderer;
+
 import * as viewMgr from "./../viewMgr";
 import * as masterView from "./masterView";
 import * as genomeView from "./genomeView";
 import {alignData} from "./../../alignData";
+import {AtomicOperationIPC} from "./../../atomicOperationsIPC";
 require("@claviska/jquery-minicolors");
-export function writeAvailableTracksModal(align : alignData) : void
+let selectedAlign : alignData;
+export function setSelectedAlign(align : alignData) : void
+{
+    selectedAlign = align;
+}
+export function writeAvailableTracksModal() : void
 {
     let masterView = <masterView.View>viewMgr.getViewByName("masterView");
     let genomeView = <genomeView.GenomeView>viewMgr.getViewByName("genomeView",masterView.views);
@@ -16,14 +25,14 @@ export function writeAvailableTracksModal(align : alignData) : void
     `;
     for(let i = 0; i != genomeView.genome.renderedCoverageTracks.length; ++i)
     {
-        if(genomeView.genome.renderedCoverageTracks[i].uuidAlign == align.uuid)
+        if(genomeView.genome.renderedCoverageTracks[i].uuidAlign == selectedAlign.uuid)
         {
-            for(let j = 0; j != align.fasta.contigs.length; ++j)
+            for(let j = 0; j != selectedAlign.fasta.contigs.length; ++j)
             {
-                if(genomeView.genome.renderedCoverageTracks[i].uuidContig == align.fasta.contigs[j].uuid)
+                if(genomeView.genome.renderedCoverageTracks[i].uuidContig == selectedAlign.fasta.contigs[j].uuid)
                 {
                     body += `
-                        <p>${align.fasta.contigs[j].name}</p>
+                        <p>${selectedAlign.fasta.contigs[j].name}</p>
                     `;
                 }
             }
@@ -82,7 +91,16 @@ export function writeAvailableTracksModal(align : alignData) : void
     for(let i = 0; i != genomeView.genome.contigs.length; ++i)
     {
         document.getElementById(`${genomeView.genome.contigs[i].uuid}GenCoverage`).onclick = function(this : HTMLElement,ev : MouseEvent){
-
+            ipc.send(
+                "runOperation",
+                <AtomicOperationIPC>{
+                    opName : "renderCoverageTrackForContig",
+                    figureuuid : genomeView.genome.uuid,
+                    alignuuid : selectedAlign.uuid,
+                    uuid : genomeView.genome.contigs[i].uuid,
+                    colour : (<string>(<any>$(document.getElementById("colourPicker"))).minicolors("rgbString"))
+                }
+            );
         }
     }
 }

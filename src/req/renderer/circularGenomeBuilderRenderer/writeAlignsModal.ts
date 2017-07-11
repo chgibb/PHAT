@@ -1,7 +1,7 @@
 import * as viewMgr from "./../viewMgr";
 import * as masterView from "./masterView";
 import * as genomeView from "./genomeView";
-import {writeAvailableTracksModal} from "./writeAvailableTracksModal";
+import {writeAvailableTracksModal,setSelectedAlign} from "./writeAvailableTracksModal";
 export function writeAlignsModal() : void
 {
     let masterView = <masterView.View>viewMgr.getViewByName("masterView");
@@ -92,7 +92,9 @@ export function writeAlignsModal() : void
         {
             document.getElementById(`${aligns[i].uuid}View`).onclick = function(this : HTMLElement,ev : MouseEvent){
                 masterView.alignsModalOpen = false;
-                writeAvailableTracksModal(aligns[i]);
+                masterView.availableTracksModalOpen = true;
+                setSelectedAlign(aligns[i]);
+                writeAvailableTracksModal();
             }
         }
     }

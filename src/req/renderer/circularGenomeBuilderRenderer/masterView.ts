@@ -12,6 +12,7 @@ import {alignData} from "./../../alignData";
 import * as GenomeView from "./genomeView";
 
 import {writeAlignsModal} from "./writeAlignsModal";
+import {writeAvailableTracksModal} from "./writeAvailableTracksModal";
 
 import * as $ from "jquery";
 (<any>window).$ = $;
@@ -215,6 +216,8 @@ export class View extends viewMgr.View
         }
         if(this.alignsModalOpen)
             writeAlignsModal();
+        if(this.availableTracksModalOpen)
+            writeAvailableTracksModal();
         //viewMgr will not call postRender for a view that does no rendering so we'll do it explicitly
         this.postRender();
         return undefined;
