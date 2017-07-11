@@ -134,24 +134,56 @@ export function writeAvailableTracksModal() : void
             }
         }
 
+        for(let i = 0; i != genomeView.genome.renderedSNPTracks.length; ++i)
+        {
+            //save changes to selected tracks
+            let el = document.getElementById(`${genomeView.genome.renderedSNPTracks[i].uuid}Available`);
+            if(el)
+            {
+                if(el.classList.contains("selected"))
+                    genomeView.genome.renderedSNPTracks[i].checked = true;
+                else
+                    genomeView.genome.renderedSNPTracks[i].checked = false;
+                genomeView.firstRender = true;
+            }
+        }
+
         masterView.availableTracksModalOpen = false;
         masterView.dismissModal();
         viewMgr.render();
     }
     for(let i = 0; i != genomeView.genome.contigs.length; ++i)
     {
-        document.getElementById(`${genomeView.genome.contigs[i].uuid}GenCoverage`).onclick = function(this : HTMLElement,ev : MouseEvent){
-            ipc.send(
-                "runOperation",
-                <AtomicOperationIPC>{
-                    opName : "renderCoverageTrackForContig",
-                    figureuuid : genomeView.genome.uuid,
-                    alignuuid : selectedAlign.uuid,
-                    uuid : genomeView.genome.contigs[i].uuid,
-                    colour : (<string>(<any>$(document.getElementById("colourPicker"))).minicolors("rgbString"))
-                }
-            );
+        //this will throw for the filler contig that doesn not get a control rendered for it
+        try
+        {
+            document.getElementById(`${genomeView.genome.contigs[i].uuid}GenCoverage`).onclick = function(this : HTMLElement,ev : MouseEvent){
+                ipc.send(
+                    "runOperation",
+                    <AtomicOperationIPC>{
+                        opName : "renderCoverageTrackForContig",
+                        figureuuid : genomeView.genome.uuid,
+                        alignuuid : selectedAlign.uuid,
+                        uuid : genomeView.genome.contigs[i].uuid,
+                        colour : (<string>(<any>$(document.getElementById("colourPicker"))).minicolors("rgbString"))
+                    }
+                );
+            }
+
+            document.getElementById(`${genomeView.genome.contigs[i].uuid}GenSNPs`).onclick = function(this : HTMLElement,ev : MouseEvent){
+                ipc.send(
+                    "runOperation",
+                    <AtomicOperationIPC>{
+                        opName : "renderSNPTrackForContig",
+                        figureuuid : genomeView.genome.uuid,
+                        alignuuid : selectedAlign.uuid,
+                        uuid : genomeView.genome.contigs[i].uuid,
+                        colour : (<string>(<any>$(document.getElementById("colourPicker"))).minicolors("rgbString"))
+                    }
+                );
+            }
         }
+        catch(err){}
     }
     for(let i = 0; i != genomeView.genome.renderedCoverageTracks.length; ++i)
     {
@@ -160,6 +192,25 @@ export function writeAvailableTracksModal() : void
         if(el)
         {
             if(genomeView.genome.renderedCoverageTracks[i].checked)
+            {
+                el.classList.add("selected");
+            }
+            el.onclick = function(this : HTMLElement,ev : MouseEvent){
+                if(el.classList.contains("selected"))
+                    el.classList.remove("selected");
+                else
+                    el.classList.add("selected");
+            }
+        }
+    }
+
+    for(let i = 0; i != genomeView.genome.renderedSNPTracks.length; ++i)
+    {
+        //select and unselect available tracks onclick
+        let el = document.getElementById(`${genomeView.genome.renderedSNPTracks[i].uuid}Available`);
+        if(el)
+        {
+            if(genomeView.genome.renderedSNPTracks[i].checked)
             {
                 el.classList.add("selected");
             }
