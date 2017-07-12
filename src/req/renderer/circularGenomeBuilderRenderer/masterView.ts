@@ -170,6 +170,12 @@ export class View extends viewMgr.View
             self.showModal();
         }
 
+        document.getElementById("openContigCreator").onclick = function(this : HTMLElement,ev : MouseEvent){
+            self.contigCreatorModalOpen = true;
+            writeContigCreatorModal();
+            self.showModal();
+        }
+
         document.getElementById("updateNavBarButton").onclick = function(this : HTMLElement,ev : MouseEvent){
             let radius = parseInt((<HTMLInputElement>document.getElementById("figureRadiusInput")).value);
             if(radius)
