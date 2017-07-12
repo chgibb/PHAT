@@ -1,6 +1,7 @@
 import * as fs from "fs";
 
 import * as cf from "./../circularFigure";
+import * as tc from "./templateCache";
 import * as plasmid from "./../circularGenome/plasmid";
 import * as viewMgr from "./../viewMgr";
 import * as masterView from "./masterView";
@@ -54,6 +55,7 @@ export async function displayFigure(self : GenomeView) : Promise<void>
                 return new Promise<void>((resolve,reject) =>{
                     setImmediate(function(){
                         setImmediate(function(){
+                            tc.refreshCache(self.genome);
                             $div = $(
                             `
                                 <div id="${self.div}" style="z-index=-1;">
@@ -70,10 +72,7 @@ export async function displayFigure(self : GenomeView) : Promise<void>
                                         {
                                             if(self.genome.renderedCoverageTracks[i].checked)
                                             {
-                                                res += (<any>fs.readFileSync(
-                                                    cf.getCachedCoverageTrackPath(
-                                                        self.genome.renderedCoverageTracks[i]
-                                                )));
+                                                res += tc.getCachedCoverageTrack(self.genome.renderedCoverageTracks[i]);
                                             }
                                         }
                                         return res;
@@ -84,10 +83,7 @@ export async function displayFigure(self : GenomeView) : Promise<void>
                                         {
                                             if(self.genome.renderedSNPTracks[i].checked)
                                             {
-                                                res += (<any>fs.readFileSync(
-                                                    cf.getCachedSNPTrackPath(
-                                                        self.genome.renderedSNPTracks[i]
-                                                )));
+                                                res += tc.getCachedSNPTrack(self.genome.renderedSNPTracks[i]);
                                             }
                                         }
                                         return res;
