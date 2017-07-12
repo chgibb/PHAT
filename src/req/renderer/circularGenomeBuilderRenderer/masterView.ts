@@ -13,8 +13,10 @@ import * as GenomeView from "./genomeView";
 
 import {writeAlignsModal} from "./writeAlignsModal";
 import {writeAvailableTracksModal} from "./writeAvailableTracksModal";
-import {writeLoadingModal} from "./writeLoadingModal";
 import {writeContigEditorModal} from "./writeContigEditorModal";
+import {writeContigCreatorModal} from "./writeContigCreatorModal";
+import {writeLoadingModal} from "./writeLoadingModal";
+
 
 import * as $ from "jquery";
 (<any>window).$ = $;
@@ -34,6 +36,7 @@ export class View extends viewMgr.View
     public alignsModalOpen : boolean;
     public availableTracksModalOpen : boolean;
     public contigEditorModalOpen : boolean;
+    public contigCreatorModalOpen : boolean;
     public loadingModal : boolean;
     public constructor(div : string)
     {
@@ -43,6 +46,8 @@ export class View extends viewMgr.View
         this.fastaInputs = new Array<Fasta>();
         this.alignsModalOpen = false;
         this.availableTracksModalOpen = false;
+        this.contigEditorModalOpen = false;
+        this.contigCreatorModalOpen = false;
         this.loadingModal = false;
     }
     public getAlignsForOpenGenome() : Array<alignData> | undefined
@@ -230,6 +235,8 @@ export class View extends viewMgr.View
             writeAvailableTracksModal();
         if(this.contigEditorModalOpen)
             writeContigEditorModal();
+        if(this.contigCreatorModalOpen)
+            writeContigCreatorModal();
 
         if(this.loadingModal)
             writeLoadingModal();
