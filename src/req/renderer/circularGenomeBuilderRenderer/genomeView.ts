@@ -15,6 +15,7 @@ import * as cf from "./../circularFigure";
 import {displayFigure} from "./displayFigure";
 
 import {writeLoadingModal} from "./writeLoadingModal";
+import {setSelectedContigByUUID} from "./writeContigEditorModal";
 
 require("angular");
 require("angularplasmid");
@@ -71,6 +72,9 @@ export class GenomeView extends viewMgr.View
         //let contigEditor = <ContigEditor>viewMgr.getViewByName("contigEditor",masterView.views);
         //contigEditor.contiguuid = uuid;
         //contigEditor.show();
+        setSelectedContigByUUID(uuid);
+        masterView.contigEditorModalOpen = true;
+        masterView.showModal();
         viewMgr.render();
     }
     public figureNameOnClick() : void
@@ -145,20 +149,22 @@ export class GenomeView extends viewMgr.View
         {
             //get a reference to the div wrapping the rendered svg graphic of our figure
             let div = document.getElementById(this.div);
+            if(div)
+            {
+                //expand the div to the new window size
+                div.style.zIndex = "-1";
+                div.style.position = "absolute";
+                div.style.height = `${$(window).height()}px`;
+                div.style.width = `${$(window).width()}px`;
 
-            //expand the div to the new window size
-            div.style.zIndex = "-1";
-            div.style.position = "absolute";
-            div.style.height = `${$(window).height()}px`;
-            div.style.width = `${$(window).width()}px`;
-
-            let x = 0;
-            let y = 0;
-            //center the div in the window
-            x = ($(window).width()/2)-(this.genome.width/2);
-            y = ($(window).height()/2)-(this.genome.height/2);
-            div.style.left = `${x}px`;
-            div.style.top = `${y}px`;
+                let x = 0;
+                let y = 0;
+                //center the div in the window
+                x = ($(window).width()/2)-(this.genome.width/2);
+                y = ($(window).height()/2)-(this.genome.height/2);
+                div.style.left = `${x}px`;
+                div.style.top = `${y}px`;
+            }
         }
     }
     public dataChanged() : void{}
