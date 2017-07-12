@@ -5,12 +5,12 @@
 
 # PHAT - Pathogen Host Analysis Tool  
 ### Latest Releases
-* [Windows Installer](https://github.com/chgibb/PHAT/releases/download/0.0.34/phat-win32-x64-setup.exe)  
-* [Ubuntu Linux Debian Package](https://github.com/chgibb/PHAT/releases/download/0.0.34/phat_0.0.34_amd64.deb)  
-* [Windows Portable](https://github.com/chgibb/PHAT/releases/download/0.0.34/phat-win32-x64-portable.zip)  
-* [Linux Portable](https://github.com/chgibb/PHAT/releases/download/0.0.34/phat-linux-x64-portable.tar.gz)
+* [Windows Installer](https://github.com/chgibb/PHAT/releases/download/0.0.40/phat-win32-x64-setup.exe)  
+* [Ubuntu Linux Debian Package](https://github.com/chgibb/PHAT/releases/download/0.0.40/phat_0.0.40_amd64.deb)  
+* [Windows Portable](https://github.com/chgibb/PHAT/releases/download/0.0.40/phat-win32-x64-portable.zip)  
+* [Linux Portable](https://github.com/chgibb/PHAT/releases/download/0.0.40/phat-linux-x64-portable.tar.gz)
 #### Experimental Releases
-* [Red Hat Package Manager](https://github.com/chgibb/PHAT/releases/download/0.0.34/phat-0.0.34.x86_64.rpm)
+* [Red Hat Package Manager](https://github.com/chgibb/PHAT/releases/download/0.0.40/phat-0.0.40.x86_64.rpm)
 
 The Pathogen Host Analysis Tool (PHAT) is an application for processing and analyzing next-generation sequencing (NGS) data as it relates to relationships between pathogen and host organisms. PHAT provides quality control (QC) reporting on sequence files, alignment of sequence files against reference files, alignment viewing and Excel and comma separated values (CSV) output.
 
