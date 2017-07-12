@@ -45,10 +45,16 @@ export function writeContigEditorModal() : void
     let title = `Edit Contig ${contig.name}`;
     let body = ``;
     body += `
-        <h4>Name in Reference:</h4>
-        <h5>${contig.name}</h5>
-        <h4>Display Name:</h4>
-        <h5 id="contigAlias" class="activeHover">${editedAlias}</h5>
+        <h5>Name in Reference:</h4>
+        <h4>${contig.name}</h4>
+        <h5>Display Name:</h5>
+        <h4 id="contigAlias" class="activeHover">${editedAlias}</h4>
+        <br />
+        <h5>Text Colour</h5>
+        <input type="text" id="fontColourPicker" data-format="rgb" style="display:inline-block;" value="${contig.fontFill}">
+        <br />
+        <h5>Contig Fill Colour</h5>
+        <input type="text" id="fillColourPicker" data-format="rgb" value="${contig.color}">
     `; 
     let footer = `
         <button type="button" class="btn btn-secondary" data-dismiss="modal" id="footerClose">Cancel</button>
@@ -65,6 +71,10 @@ export function writeContigEditorModal() : void
 
     document.getElementById("footerSave").onclick = function(this : HTMLElement,ev : MouseEvent){
         contig.alias = editedAlias;
+        let colour : string = (<string>(<any>$(document.getElementById("fillColourPicker"))).minicolors("rgbString"));
+        let fontColour : string = (<string>(<any>$(document.getElementById("fontColourPicker"))).minicolors("rgbString"));
+        contig.color = colour;
+        contig.fontFill = fontColour;
         masterView.contigEditorModalOpen = false;
         masterView.dismissModal();
 
@@ -95,4 +105,26 @@ export function writeContigEditorModal() : void
             viewMgr.render();
         });
     }
+    let colourPicker = document.getElementById("fillColourPicker");
+    (<any>$(colourPicker)).minicolors({
+        control : "hue",
+        defaultValue : "",
+        format : "rgb",
+        keywords : "",
+        inline : false,
+        swatches : [],
+        theme : "default",
+        change : function(hex : string,opacity : string){}
+    });
+    let fontColourPicker = document.getElementById("fontColourPicker");
+    (<any>$(fontColourPicker)).minicolors({
+        control : "hue",
+        defaultValue : "",
+        format : "rgb",
+        keywords : "",
+        inline : false,
+        swatches : [],
+        theme : "default",
+        change : function(hex : string,opacity : string){}
+    });
 }
