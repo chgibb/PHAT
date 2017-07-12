@@ -28,10 +28,9 @@ export function displayFigure(self : GenomeView) : Promise<void>
         {
             totalBP += self.genome.contigs[i].bp;
         }
+        console.log("finished setup");
 
-        setTimeout(function(){
-            document.getElementById("loadingText").innerText = "Getting templates...";
-        },10);
+        
 
         //This is an unholy mess adapted from the example given inline in the
         //angular source code https://github.com/angular/angular.js/blob/master/src/auto/injector.js
@@ -39,7 +38,14 @@ export function displayFigure(self : GenomeView) : Promise<void>
         //Then we pass the div into angular to compile the templates and then finally inject it all back into
         //the page
         
-        let $div = $(
+        let $div : any;
+        process.nextTick(function(){
+            document.getElementById("loadingText").innerText = "Getting templates...";
+            console.log("set loading 1");
+        });
+        process.nextTick(function(){
+            
+            $div = $(
             `
                 <div id="${self.div}" style="z-index=-1;">
                     ${plasmid.add(
@@ -82,13 +88,19 @@ export function displayFigure(self : GenomeView) : Promise<void>
                 `
             );
         $(document.body).append($div);
+        console.log("appended div");
+    });
+    process.nextTick(function(){
+        document.getElementById("loadingText").innerText = "Compiling templates...";
+        console.log("set loading 2");
+    });
+    process.nextTick(function(){
         angular.element(document).injector().invoke
         (
             function($compile : any)
             {
-                setTimeout(function(){
-                    document.getElementById("loadingText").innerText = "Compiling templates...";
-                },10);
+                
+
                 //This should probably be done with an actual angular scope instead 
                 //of mutating the existing scope
                 let scope = angular.element($div).scope();
@@ -104,8 +116,10 @@ export function displayFigure(self : GenomeView) : Promise<void>
                 scope.firstRender = self.firstRender;
                 scope.div = self.div;
                 $compile($div)(scope);
+                console.log("finished compiling");
                 resolve();
             }
         );
+    });
     });
 }
