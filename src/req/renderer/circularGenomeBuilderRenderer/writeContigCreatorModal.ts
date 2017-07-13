@@ -10,13 +10,18 @@ export function writeContigCreatorModal() : void
     let genomeView = <genomeView.GenomeView>viewMgr.getViewByName("genomeView",masterView.views);
 
     let title = `Create New Contig`;
-    let body = ``;
+    let body = `
+        <h5>Start</h5>
+        <input type="text" id="contigStart" />
+        </br >
+        <h5>End</h5>
+        <input type="text" id="contigEnd" />
+    `;
 
     let footer = `
         <button type="button" class="btn btn-secondary" data-dismiss="modal" id="footerClose">Cancel</button>
         <button type="button" class="btn btn-primary" id="footerSave">Save changes</button>
     `;
-
 
     if(!genomeView.genome)
     {
@@ -39,8 +44,31 @@ export function writeContigCreatorModal() : void
     if(genomeView.genome)
     {
         document.getElementById("footerSave").onclick = function(this : HTMLElement,ev : MouseEvent){
+
+            let contig : cf.Contig = new cf.Contig();
+            cf.initContigForDisplay(contig);
+            contig.start = parseInt((<HTMLInputElement>document.getElementById("contigStart")).value);
+            contig.end = parseInt((<HTMLInputElement>document.getElementById("contigEnd")).value);
+
+            contig.alias = "New Contig";
+            contig.name = "Custom Contig";
+            genomeView.genome.customContigs.push(contig);
+
             masterView.contigCreatorModalOpen = false;
             masterView.dismissModal();
+            masterView.dataChanged();
+
+            masterView.loadingModal = true;
+            writeLoadingModal();
+            setTimeout(function(){
+                reCacheBaseFigure(genomeView.genome).then(() => {
+                    masterView.loadingModal = false;
+                    masterView.dismissModal();
+                    genomeView.firstRender = true;
+                    viewMgr.render();
+                });
+            },10);
+
             viewMgr.render();
         }
     }
