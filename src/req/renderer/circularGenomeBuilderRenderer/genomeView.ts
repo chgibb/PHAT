@@ -25,6 +25,7 @@ export class GenomeView extends viewMgr.View
     public genome : cf.CircularFigure;
     public firstRender : boolean;
     public alignData : Array<alignData>;
+    public scope : any;
     public constructor(name : string,div : string)
     {
         super(name,div);
@@ -32,6 +33,21 @@ export class GenomeView extends viewMgr.View
     }
     public onMount() : void{}
     public onUnMount() : void{}
+    public udpateScope(scope? : any) : void
+    {
+        if(scope)
+            this.scope = scope;
+        this.scope.genome = this.genome;
+        this.scope.alignData = this.alignData;
+        this.scope.markerOnClick = this.markerOnClick;
+        this.scope.figureNameOnClick = this.figureNameOnClick;
+        this.scope.inputRadiusOnChange = this.inputRadiusOnChange;
+        this.scope.showBPTrackOnChange = this.showBPTrackOnChange;
+        this.scope.exportSVG = this.exportSVG;
+        this.scope.postRender = this.postRender;
+        this.scope.firstRender = this.firstRender;
+        this.scope.div = this.div;
+    }
     public async serializeFigure() : Promise<string>
     {
         let self = this;

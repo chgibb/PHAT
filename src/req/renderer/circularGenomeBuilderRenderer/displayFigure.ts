@@ -109,16 +109,7 @@ export async function displayFigure(self : GenomeView) : Promise<void>
                                     //This should probably be done with an actual angular scope instead 
                                     //of mutating the existing scope
                                     let scope = angular.element($div).scope();
-                                    scope.genome = self.genome;
-                                    scope.alignData = self.alignData;
-                                    scope.markerOnClick = self.markerOnClick;
-                                    scope.figureNameOnClick = self.figureNameOnClick;
-                                    scope.inputRadiusOnChange = self.inputRadiusOnChange;
-                                    scope.showBPTrackOnChange = self.showBPTrackOnChange;
-                                    scope.exportSVG = self.exportSVG;
-                                    scope.postRender = self.postRender;
-                                    scope.firstRender = self.firstRender;
-                                    scope.div = self.div;
+                                    self.udpateScope(scope);
                                     $compile($div)(scope);
                                     console.log("finished compiling");
                                     resolve();
