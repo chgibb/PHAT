@@ -46,7 +46,7 @@ export function writeContigCreatorModal() : void
         document.getElementById("footerSave").onclick = function(this : HTMLElement,ev : MouseEvent){
 
             let contig : cf.Contig = new cf.Contig();
-            cf.initContigForDisplay(contig);
+            cf.initContigForDisplay(contig,true);
             contig.start = parseInt((<HTMLInputElement>document.getElementById("contigStart")).value);
             contig.end = parseInt((<HTMLInputElement>document.getElementById("contigEnd")).value);
 

@@ -45,9 +45,9 @@ export function writeContigEditorModal() : void
     let title = `Edit Contig ${contig.name}`;
     let body = ``;
     body += `
-        <h5>Name in Reference:</h4>
+        <h5>Name in Reference</h4>
         <h4>${contig.name}</h4>
-        <h5>Display Name:</h5>
+        <h5>Display Name</h5>
         <h4 id="contigAlias" class="activeHover">${editedAlias}</h4>
         <br />
         <h5>Text Colour</h5>
@@ -55,7 +55,21 @@ export function writeContigEditorModal() : void
         <br />
         <h5>Contig Fill Colour</h5>
         <input type="text" id="fillColourPicker" data-format="rgb" value="${contig.color}">
-    `; 
+    `;
+    //for custom contigs only
+    if(contig.allowPositionChange)
+    {
+        body += `
+            <h5>Vertical Adjustment</h5>
+            <input type="number" id="vAdjust" value="${contig.vAdjust}" />
+            <br />
+            <h5>Start</h5>
+            <input type="number" id="start" value="${contig.start}" />
+            <br />
+            <h5>End</h5>
+            <input type="number" id="end" value="${contig.end}" />
+        `;
+    } 
     let footer = `
         <button type="button" class="btn btn-secondary" data-dismiss="modal" id="footerClose">Cancel</button>
         <button type="button" class="btn btn-primary" id="footerSave">Save changes</button>
@@ -75,6 +89,16 @@ export function writeContigEditorModal() : void
         let fontColour : string = (<string>(<any>$(document.getElementById("fontColourPicker"))).minicolors("rgbString"));
         contig.color = colour;
         contig.fontFill = fontColour;
+        if(contig.allowPositionChange)
+        {
+            let vAdjust = parseInt((<HTMLInputElement>document.getElementById("vAdjust")).value);
+            let start = parseInt((<HTMLInputElement>document.getElementById("start")).value);
+            let end = parseInt((<HTMLInputElement>document.getElementById("end")).value);
+            contig.vAdjust = vAdjust;
+            contig.start = start;
+            contig.end = end;
+
+        }
         masterView.contigEditorModalOpen = false;
         masterView.dismissModal();
 
