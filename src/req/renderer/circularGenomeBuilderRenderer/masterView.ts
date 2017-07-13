@@ -80,6 +80,13 @@ export class View extends viewMgr.View
     {
         (<any>$(".modal")).modal("hide");
     }
+    public resetModalStates() : void
+    {
+        this.alignsModalOpen = false;
+        this.availableTracksModalOpen = false;
+        this.contigCreatorModalOpen = false;
+        this.contigEditorModalOpen = false;
+    }
     public setSelectedFigureInDropDown() : void
     {
         let genomeView = <GenomeView.GenomeView>viewMgr.getViewByName("genomeView",this.views);
@@ -197,6 +204,11 @@ export class View extends viewMgr.View
             self.dataChanged();
             viewMgr.render();
         }
+
+        //on modal dismissal
+        $("#modal").on('hidden.bs.modal',function(){
+            self.resetModalStates();
+        });
     }
     public onUnMount() : void
     {
