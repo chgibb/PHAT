@@ -32,13 +32,6 @@ export class GenomeView extends viewMgr.View
     }
     public onMount() : void{}
     public onUnMount() : void{}
-    public showContigCreator() : void
-    {
-        let masterView = <masterView.View>viewMgr.getViewByName("masterView");
-        //let contigCreator = <ContigCreator>viewMgr.getViewByName("contigCreator",masterView.views);
-        //contigCreator.show();
-        viewMgr.render();
-    }
     public exportSVG()
     {
         let self = this;
@@ -69,9 +62,6 @@ export class GenomeView extends viewMgr.View
     public markerOnClick($event : any,$marker : any,uuid : string) : void
     {
         let masterView = <masterView.View>viewMgr.getViewByName("masterView");
-        //let contigEditor = <ContigEditor>viewMgr.getViewByName("contigEditor",masterView.views);
-        //contigEditor.contiguuid = uuid;
-        //contigEditor.show();
         setSelectedContigByUUID(uuid);
         masterView.contigEditorModalOpen = true;
         masterView.showModal();

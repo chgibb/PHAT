@@ -116,7 +116,6 @@ export async function displayFigure(self : GenomeView) : Promise<void>
                                     scope.inputRadiusOnChange = self.inputRadiusOnChange;
                                     scope.showBPTrackOnChange = self.showBPTrackOnChange;
                                     scope.exportSVG = self.exportSVG;
-                                    scope.showContigCreator = self.showContigCreator;
                                     scope.postRender = self.postRender;
                                     scope.firstRender = self.firstRender;
                                     scope.div = self.div;
