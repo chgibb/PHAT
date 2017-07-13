@@ -183,6 +183,10 @@ export class View extends viewMgr.View
             self.showModal();
         }
 
+        document.getElementById("exportToSVG").onclick = function(this : HTMLElement,ev : MouseEvent){
+            genomeView.exportSVG();
+        }
+
         document.getElementById("updateNavBarButton").onclick = function(this : HTMLElement,ev : MouseEvent){
             let radius = parseInt((<HTMLInputElement>document.getElementById("figureRadiusInput")).value);
             if(radius)

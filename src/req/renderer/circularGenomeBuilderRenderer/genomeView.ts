@@ -32,6 +32,45 @@ export class GenomeView extends viewMgr.View
     }
     public onMount() : void{}
     public onUnMount() : void{}
+    public async serializeFigure() : Promise<string>
+    {
+        let self = this;
+        return new Promise<string>((resolve,reject) => {
+            (async function() : Promise<string>{
+                return new Promise<string>((resolve,reject) => {
+                    setImmediate(function(){
+                        setImmediate(function(){
+                            resolve(
+                                new XMLSerializer().serializeToString(
+                                    document.getElementById(self.div).children[0]
+                                )
+                            );
+                        });
+                    });
+                });
+            })().then((svg : string) => {
+                resolve(svg);
+            });
+        });
+    }
+    public async writeSVG(fileName : string,svg : string) : Promise<void>
+    {
+        let self = this;
+        return new Promise<void>((resolve,reject) => {
+            (async function() : Promise<void>{
+                return new Promise<void>((resolve,reject) => {
+                    setImmediate(function(){
+                        setImmediate(function(){
+                            fs.writeFileSync(fileName,svg);
+                            resolve();
+                        });
+                    });
+                });
+            })().then(() => {
+                resolve();
+            });
+        });
+    }
     public exportSVG()
     {
         let self = this;
@@ -54,7 +93,20 @@ export class GenomeView extends viewMgr.View
             {
                 if(fileName)
                 {
-                    fs.writeFileSync(fileName,new XMLSerializer().serializeToString(document.getElementById(self.div).children[0]));
+                    let masterView = <masterView.View>viewMgr.getViewByName("masterView");
+                    
+                    masterView.loadingModal = true;
+                    writeLoadingModal();
+                    masterView.showModal();
+                    document.getElementById("loadingText").innerText = "Serializing figure...";
+                    setTimeout(function(){
+                        self.serializeFigure().then((svg : string) =>{
+                            document.getElementById("loadingText").innerText = "Writing serialized figure...";
+                            self.writeSVG(fileName,svg).then(() => {
+                                masterView.dismissModal();
+                            });
+                        });
+                    },10);
                 }
             }
         );
