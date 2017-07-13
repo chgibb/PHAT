@@ -4,6 +4,7 @@ import * as electron from "electron";
 const ipc = electron.ipcRenderer;
 
 import {SaveKeyEvent} from "./../../ipcEvents";
+import {AtomicOperationIPC} from "./../../atomicOperationsIPC";
 import * as viewMgr from "./../viewMgr";
 import {CircularFigure,} from "./../circularFigure";
 import {Fasta} from "./../../fasta";
@@ -185,6 +186,16 @@ export class View extends viewMgr.View
 
         document.getElementById("exportToSVG").onclick = function(this : HTMLElement,ev : MouseEvent){
             genomeView.exportSVG();
+        }
+
+        document.getElementById("copyFigure").onclick = function(this : HTMLElement,ev : MouseEvent){
+            ipc.send(
+                "runOperation",
+                <AtomicOperationIPC>{
+                    opName : "copyCircularFigure",
+                    figureuuid : genomeView.genome.uuid
+                }
+            )
         }
 
         document.getElementById("updateNavBarButton").onclick = function(this : HTMLElement,ev : MouseEvent){

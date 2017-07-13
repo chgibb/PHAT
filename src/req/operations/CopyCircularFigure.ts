@@ -32,6 +32,7 @@ export class CopyCircularFigure extends atomic.AtomicOperation
                     if(err)
                         self.abortOperationWithMessage(err.message);
                     self.setSuccess(self.flags);
+                    self.update();
                 }
             );
         }
