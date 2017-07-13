@@ -12,10 +12,10 @@ export function writeContigCreatorModal() : void
     let title = `Create New Contig`;
     let body = `
         <h5>Start</h5>
-        <input type="text" id="contigStart" />
+        <input type="number" id="contigStart" />
         </br >
         <h5>End</h5>
-        <input type="text" id="contigEnd" />
+        <input type="number" id="contigEnd" />
     `;
 
     let footer = `
