@@ -17,6 +17,17 @@ export function writeContigCreatorModal() : void
         <button type="button" class="btn btn-primary" id="footerSave">Save changes</button>
     `;
 
+
+    if(!genomeView.genome)
+    {
+        body = `
+            <p>You must select a figure to edit before you can add contigs to it</p>
+        `;
+        footer = `
+            <button type="button" class="btn btn-secondary" data-dismiss="modal" id="footerClose">Got It</button>
+        `;
+    }
+
     document.getElementById("modalTitle").innerHTML = title;
     document.getElementById("modalBody").innerHTML = body;
     document.getElementById("modalFooter").innerHTML = footer;
@@ -25,10 +36,13 @@ export function writeContigCreatorModal() : void
         masterView.contigCreatorModalOpen = false;
     }
 
-    document.getElementById("footerSave").onclick = function(this : HTMLElement,ev : MouseEvent){
-        masterView.contigCreatorModalOpen = false;
-        masterView.dismissModal();
-        viewMgr.render();
+    if(genomeView.genome)
+    {
+        document.getElementById("footerSave").onclick = function(this : HTMLElement,ev : MouseEvent){
+            masterView.contigCreatorModalOpen = false;
+            masterView.dismissModal();
+            viewMgr.render();
+        }
     }
 
 }
