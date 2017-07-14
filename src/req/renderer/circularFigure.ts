@@ -49,8 +49,8 @@ export class CircularFigureBPTrackOptions
 {
     public interval : number;
     public vAdjust : number;
-    public showLabels : number;
-    public direction : string;
+    public showLabels : 0 | 1;
+    public direction : "in" | "out";
     constructor()
     {
         this.interval = 500;

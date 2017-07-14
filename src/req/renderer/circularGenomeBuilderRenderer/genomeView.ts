@@ -10,11 +10,12 @@ const dialogs = Dialogs();
 
 import * as viewMgr from "./../viewMgr";
 import * as masterView from "./masterView";
-import {ContigEditor} from "./contigEditor";
-import {ContigCreator} from "./contigCreator";
 import {alignData} from "./../../alignData";
 import * as cf from "./../circularFigure";
-import * as plasmid from "./../circularGenome/plasmid";
+import {displayFigure} from "./displayFigure";
+
+import {writeLoadingModal} from "./writeLoadingModal";
+import {setSelectedContigByUUID} from "./writeContigEditorModal";
 
 require("angular");
 require("angularplasmid");
@@ -24,6 +25,7 @@ export class GenomeView extends viewMgr.View
     public genome : cf.CircularFigure;
     public firstRender : boolean;
     public alignData : Array<alignData>;
+    public scope : any;
     public constructor(name : string,div : string)
     {
         super(name,div);
@@ -31,12 +33,59 @@ export class GenomeView extends viewMgr.View
     }
     public onMount() : void{}
     public onUnMount() : void{}
-    public showContigCreator() : void
+    public udpateScope(scope? : any) : void
     {
-        let masterView = <masterView.View>viewMgr.getViewByName("masterView");
-        let contigCreator = <ContigCreator>viewMgr.getViewByName("contigCreator",masterView.views);
-        contigCreator.show();
-        viewMgr.render();
+        if(scope)
+            this.scope = scope;
+        this.scope.genome = this.genome;
+        this.scope.alignData = this.alignData;
+        this.scope.markerOnClick = this.markerOnClick;
+        this.scope.figureNameOnClick = this.figureNameOnClick;
+        this.scope.inputRadiusOnChange = this.inputRadiusOnChange;
+        this.scope.showBPTrackOnChange = this.showBPTrackOnChange;
+        this.scope.exportSVG = this.exportSVG;
+        this.scope.postRender = this.postRender;
+        this.scope.firstRender = this.firstRender;
+        this.scope.div = this.div;
+    }
+    public async serializeFigure() : Promise<string>
+    {
+        let self = this;
+        return new Promise<string>((resolve,reject) => {
+            (async function() : Promise<string>{
+                return new Promise<string>((resolve,reject) => {
+                    setImmediate(function(){
+                        setImmediate(function(){
+                            resolve(
+                                new XMLSerializer().serializeToString(
+                                    document.getElementById(self.div).children[0]
+                                )
+                            );
+                        });
+                    });
+                });
+            })().then((svg : string) => {
+                resolve(svg);
+            });
+        });
+    }
+    public async writeSVG(fileName : string,svg : string) : Promise<void>
+    {
+        let self = this;
+        return new Promise<void>((resolve,reject) => {
+            (async function() : Promise<void>{
+                return new Promise<void>((resolve,reject) => {
+                    setImmediate(function(){
+                        setImmediate(function(){
+                            fs.writeFileSync(fileName,svg);
+                            resolve();
+                        });
+                    });
+                });
+            })().then(() => {
+                resolve();
+            });
+        });
     }
     public exportSVG()
     {
@@ -60,7 +109,20 @@ export class GenomeView extends viewMgr.View
             {
                 if(fileName)
                 {
-                    fs.writeFileSync(fileName,new XMLSerializer().serializeToString(document.getElementById(self.div).children[0]));
+                    let masterView = <masterView.View>viewMgr.getViewByName("masterView");
+                    
+                    masterView.loadingModal = true;
+                    writeLoadingModal();
+                    masterView.showModal();
+                    document.getElementById("loadingText").innerText = "Serializing figure...";
+                    setTimeout(function(){
+                        self.serializeFigure().then((svg : string) =>{
+                            document.getElementById("loadingText").innerText = "Writing serialized figure...";
+                            self.writeSVG(fileName,svg).then(() => {
+                                masterView.dismissModal();
+                            });
+                        });
+                    },10);
                 }
             }
         );
@@ -68,9 +130,9 @@ export class GenomeView extends viewMgr.View
     public markerOnClick($event : any,$marker : any,uuid : string) : void
     {
         let masterView = <masterView.View>viewMgr.getViewByName("masterView");
-        let contigEditor = <ContigEditor>viewMgr.getViewByName("contigEditor",masterView.views);
-        contigEditor.contiguuid = uuid;
-        contigEditor.show();
+        setSelectedContigByUUID(uuid);
+        masterView.contigEditorModalOpen = true;
+        masterView.showModal();
         viewMgr.render();
     }
     public figureNameOnClick() : void
@@ -84,8 +146,7 @@ export class GenomeView extends viewMgr.View
                 cf.cacheBaseFigure(self.genome);
                 let masterView = <masterView.View>viewMgr.getViewByName("masterView");
                 let genomeView = <GenomeView>viewMgr.getViewByName("genomeView",masterView.views);
-                //Ensure updated cache gets used to render figure
-                masterView.firstRender = true;
+
                 genomeView.firstRender = true;
                 //Save changes
                 masterView.dataChanged();
@@ -110,7 +171,7 @@ export class GenomeView extends viewMgr.View
     }
     public renderView() : string
     {
-        
+        let masterView = <masterView.View>viewMgr.getViewByName("masterView");
         let self = this;
 
         if(this.genome)
@@ -118,122 +179,28 @@ export class GenomeView extends viewMgr.View
             
             //Only render markup when we explicitly need to
             //All figure updates are handled through angular bindings
-            if(this.firstRender){
-            try
+            if(this.firstRender)
             {
-                document.body.removeChild(document.getElementById("controls"));
-            }
-            catch(err){}
-            try
-            {
-                //Remove the div this view is bound to
-                document.body.removeChild(document.getElementById(this.div));
-            }
-            catch(err){}
-            $("#"+this.div).remove();
-
-            let totalBP = 0;
-            for(let i = 0; i != this.genome.contigs.length; ++i)
-            {
-                totalBP += this.genome.contigs[i].bp;
-            }
-
-            //This is an unholy mess adapted from the example given inline in the
-            //angular source code https://github.com/angular/angular.js/blob/master/src/auto/injector.js
-            //We remove the div this view is bound to, recreate it and re render the angular template into it
-            //Then we pass the div into angular to compile the templates and then finally inject it all back into
-            //the page
-            let $div = $(
-                `
-                <div id="controls">
-                    <button style="float:right;" ng-click="showContigCreator()">Add Contig</button>
-                    <button style="float:right;" ng-click="exportSVG()">Export as SVG</button>
-                    <input type="number" ng-model="genome.radius" ng-change="inputRadiusOnChange()" min="0" max="1000" required>
-                     <label>Show BP Positions:
-                        <input type="checkbox" ng-model="genome.circularFigureBPTrackOptions.showLabels" ng-true-value="1" ng-false-value="0" ng-change="showBPTrackOnChange()">
-                     </label>
-                     ${(()=>{
-                         let res = ``;
-                         if(this.genome.circularFigureBPTrackOptions.showLabels)
-                         {
-                             res += `
-                                <br />
-                                <label>Interval:
-                                    <input type="number" ng-model="genome.circularFigureBPTrackOptions.interval" required>
-                                </label>
-                                <label>Show Inside Figure
-                                    <input type="checkbox" ng-model="genome.circularFigureBPTrackOptions.direction" ng-true-value="'in'" ng-false-value="'out'" ng-change="showBPTrackOnChange()">
-                                </label>
-                             `;
-                         }
-                         return res;
-                     })()}
-                </div>
-                <div id="${this.div}" style="z-index=-1;">
-                    ${plasmid.add(
-                    {
-                        sequenceLength : totalBP.toString(),
-                        plasmidHeight : "{{genome.height}}",
-                        plasmidWidth : "{{genome.width}}"
-                    })}
-                        ${cf.getBaseFigureFromCache(this.genome)}
-                        ${(()=>{
-                            let res = "";
-                            for(let i = 0; i != self.genome.renderedCoverageTracks.length; ++i)
-                            {
-                                if(self.genome.renderedCoverageTracks[i].checked)
-                                {
-                                   res += (<any>fs.readFileSync(
-                                            cf.getCachedCoverageTrackPath(
-                                                self.genome.renderedCoverageTracks[i]
-                                            )));
-                                }
-                            }
-                            return res;
-                        })()}
-                        ${(()=>{
-                            let res = "";
-                            for(let i = 0; i != self.genome.renderedSNPTracks.length; ++i)
-                            {
-                                if(self.genome.renderedSNPTracks[i].checked)
-                                {
-                                    res += (<any>fs.readFileSync(
-                                            cf.getCachedSNPTrackPath(
-                                                self.genome.renderedSNPTracks[i]
-                                            )));
-                                }
-                            }
-                            return res;
-                        })()}
-                    ${plasmid.end()}
-                </div>
-                `
-            );
-            $(document.body).append($div);
-            angular.element(document).injector().invoke
-            (
-                function($compile : any)
-                {
-                    //This should probably be done with an actual angular scope instead 
-                    //of mutating the existing scope
-                    let scope = angular.element($div).scope();
-                    scope.genome = self.genome;
-                    scope.alignData = self.alignData;
-                    scope.markerOnClick = self.markerOnClick;
-                    scope.figureNameOnClick = self.figureNameOnClick;
-                    scope.inputRadiusOnChange = self.inputRadiusOnChange;
-                    scope.showBPTrackOnChange = self.showBPTrackOnChange;
-                    scope.exportSVG = self.exportSVG;
-                    scope.showContigCreator = self.showContigCreator;
-                    scope.postRender = self.postRender;
-                    scope.firstRender = self.firstRender;
-                    scope.div = self.div;
-                    $compile($div)(scope);
-                }
-            );
+                masterView.loadingModal = true;
+                writeLoadingModal();
+                masterView.showModal();
+                
+                let self = this;
+                setTimeout(function(){
+                    displayFigure(self).then(() => {
+                        masterView.loadingModal = false;
+                        masterView.dismissModal();
+                        setTimeout(function(){
+                            window.dispatchEvent(new Event("resize"));
+                        },10);
+                    });
+                },10);
             
-            this.firstRender = false;
-        }}
+                this.firstRender = false;
+            }
+        }
+        else
+            return " ";
         return undefined;
     }
     public postRender() : void
@@ -242,20 +209,22 @@ export class GenomeView extends viewMgr.View
         {
             //get a reference to the div wrapping the rendered svg graphic of our figure
             let div = document.getElementById(this.div);
+            if(div)
+            {
+                //expand the div to the new window size
+                div.style.zIndex = "-1";
+                div.style.position = "absolute";
+                div.style.height = `${$(window).height()}px`;
+                div.style.width = `${$(window).width()}px`;
 
-            //expand the div to the new window size
-            div.style.zIndex = "-1";
-            div.style.position = "absolute";
-            div.style.height = `${$(window).height()}px`;
-            div.style.width = `${$(window).width()}px`;
-
-            let x = 0;
-            let y = 0;
-            //center the div in the window
-            x = ($(window).width()/2)-(this.genome.width/2);
-            y = ($(window).height()/2)-(this.genome.height/2);
-            div.style.left = `${x}px`;
-            div.style.top = `${y}px`;
+                let x = 0;
+                let y = 0;
+                //center the div in the window
+                x = ($(window).width()/2)-(this.genome.width/2);
+                y = ($(window).height()/2)-(this.genome.height/2);
+                div.style.left = `${x}px`;
+                div.style.top = `${y}px`;
+            }
         }
     }
     public dataChanged() : void{}
