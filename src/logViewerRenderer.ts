@@ -3,7 +3,7 @@ import * as fs from "fs";
 import * as electron from "electron";
 const ipc = electron.ipcRenderer;
 
-import {getReadableAndWritable} from "./req/getAppPath";
+import {streamLogToNode} from "./req/renderer/LogViewerRenderer/streamLogToNode";
 import {LogRecord} from "./req/operations/atomicOperations";
 require("./req/renderer/commonBehaviour");
 
@@ -16,11 +16,7 @@ ipc.on(
             <p>${logRecord.status}</p>
             <p>${logRecord.runTime}ms</p>
             <p>${new Date(logRecord.startEpoch)}</p>
-            <pre>${
-                (<any>fs.readFileSync(
-                    getReadableAndWritable(`logs/${logRecord.uuid}/log`)
-                ).toString())
-            }</pre>
         `;
+        streamLogToNode(logRecord,document.body);
     }
 );
