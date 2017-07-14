@@ -2,7 +2,7 @@ import * as fs from "fs";
 import * as readline from "readline";
 
 import {getReadableAndWritable} from "./../../getAppPath";
-import {LogRecord} from "./../..//operations/atomicOperations";
+import {LogRecord} from "./../../operations/atomicOperations";
 
 export async function streamLogToNode(logRecord : LogRecord,node : HTMLElement) : Promise<void>
 {
