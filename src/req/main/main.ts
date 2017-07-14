@@ -27,6 +27,7 @@ import {RenderSNPTrackForContig} from "./../operations/RenderSNPTrack";
 import {CheckForUpdate} from "./../operations/CheckForUpdate";
 import {DownloadAndInstallUpdate} from "./../operations/DownloadAndInstallUpdate";
 import {OpenPileupViewer} from "./../operations/OpenPileupViewer";
+import {OpenLogViewer} from "./../operations/OpenLogViewer";
 
 import {InputFastqFile} from "./../operations/inputFastqFile";
 import {InputFastaFile} from "./../operations/inputFastaFile";
@@ -122,6 +123,7 @@ app.on
 		atomicOp.register("saveCurrentProject",SaveCurrentProject);
 
 		atomicOp.register("openPileupViewer",OpenPileupViewer);
+		atomicOp.register("openLogViewer",OpenLogViewer)
 		atomicOp.register("inputFastqFile",InputFastqFile);
 		atomicOp.register("inputFastaFile",InputFastaFile);
 		atomicOp.register("copyCircularFigure",CopyCircularFigure);
@@ -402,6 +404,10 @@ ipc.on(
 		else if(arg.opName == "openPileupViewer")
 		{
 			atomicOp.addOperation("openPileupViewer",arg.pileupViewerParams);
+		}
+		else if(arg.opName == "openLogViewer")
+		{
+			atomicOp.addOperation("openLogViewer",{});
 		}
 		else if(arg.opName == "inputFastqFile")
 		{
