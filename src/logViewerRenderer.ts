@@ -11,7 +11,13 @@ ipc.on(
     "logViewer",
     function(event,arg){
         let logRecord : LogRecord = arg.logRecord;
-        document.body.innerHTML = `
+        if(logRecord.status == "failure")
+        {
+            document.body.innerHTML = `
+                <h4>This operation failed. Lines highlighted in red may point to the error</h4>
+            `;
+        }
+        document.body.innerHTML += `
             <p>Log for: ${logRecord.name}</p>
             <p>${logRecord.status}</p>
             <p>${logRecord.runTime}ms</p>
