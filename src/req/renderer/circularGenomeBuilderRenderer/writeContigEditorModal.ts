@@ -68,6 +68,10 @@ export function writeContigEditorModal() : void
             <br />
             <h5>End</h5>
             <input type="number" id="end" value="${contig.end}" />
+            <br />
+            <br />
+            <h5 style="color:red;" class="activeHover" id="deleteContig">Delete Contig</h5>
+
         `;
     } 
     let footer = `
@@ -128,6 +132,25 @@ export function writeContigEditorModal() : void
             masterView.showModal();
             viewMgr.render();
         });
+    }
+    if(contig.allowPositionChange)
+    {
+        document.getElementById("deleteContig").onclick = function(this : HTMLElement,ev : MouseEvent){
+            masterView.dismissModal();
+            dialogs.confirm("This cannot be undone",function(ok : boolean){
+                if(ok)
+                {
+                    for(let i = genomeView.genome.customContigs.length - 1; i != -1; i--)
+                    {
+                        if(genomeView.genome.customContigs[i].uuid == contig.uuid)
+                        {
+                            genomeView.genome.customContigs.splice(i,1);
+                            document.getElementById("footerSave").click();
+                        }
+                    }
+                }
+            });
+        }
     }
     let colourPicker = document.getElementById("fillColourPicker");
     (<any>$(colourPicker)).minicolors({
