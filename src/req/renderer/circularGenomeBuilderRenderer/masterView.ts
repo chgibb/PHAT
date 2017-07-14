@@ -195,7 +195,17 @@ export class View extends viewMgr.View
                     opName : "copyCircularFigure",
                     figureuuid : genomeView.genome.uuid
                 }
-            )
+            );
+        }
+
+        document.getElementById("deleteFigure").onclick = function(this : HTMLElement,ev : MouseEvent){
+            ipc.send(
+                "runOperation",
+                <AtomicOperationIPC>{
+                    opName : "deleteCircularFigure",
+                    figureuuid : genomeView.genome.uuid
+                }
+            );
         }
 
         document.getElementById("updateNavBarButton").onclick = function(this : HTMLElement,ev : MouseEvent){
