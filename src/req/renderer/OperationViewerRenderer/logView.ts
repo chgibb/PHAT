@@ -1,3 +1,7 @@
+import * as electron from "electron";
+const ipc = electron.ipcRenderer;
+
+import {AtomicOperationIPC} from "./../../atomicOperationsIPC";
 import * as viewMgr from "./../viewMgr";
 
 import {LogRecord,getLogRecords} from "./../../operations/atomicOperations" 
@@ -28,7 +32,23 @@ export class View extends viewMgr.View
             console.log("got records");
         });
     }
-    public divClickEvents(event : JQueryEventObject) : void{}
+    public divClickEvents(event : JQueryEventObject) : void
+    {
+        for(let i = 0; i != this.logRecords.length; ++i)
+            {
+                let classList = event.target.classList;
+                if(event.target.classList.contains(`${this.logRecords[i].uuid}Class`))
+                {
+                    ipc.send(
+                        "runOperation",
+                        <AtomicOperationIPC>{
+                            opName : "openLogViewer",
+                            logRecord : this.logRecords[i]
+                        }
+                    );
+                }
+            }
+    }
     public renderView() : string
     {
         return `
@@ -47,12 +67,12 @@ export class View extends viewMgr.View
                     for(let i = 0; i != this.logRecords.length; ++i)
                     {
                         res += `
-                            <tr>
-                                <td>${this.logRecords[i].name}</td>
-                                <td>${this.logRecords[i].description}</td>
-                                <td>${this.logRecords[i].status}</td>
-                                <td>${this.logRecords[i].runTime}</td>
-                                <td>${new Date(this.logRecords[i].startEpoch)}</td>
+                            <tr class="activeHover ${this.logRecords[i].uuid}Class id="${this.logRecords[i].uuid}Row">
+                                <td class="${this.logRecords[i].uuid}Class">${this.logRecords[i].name}</td>
+                                <td class="${this.logRecords[i].uuid}Class">${this.logRecords[i].description}</td>
+                                <td class="${this.logRecords[i].uuid}Class">${this.logRecords[i].status}</td>
+                                <td class="${this.logRecords[i].uuid}Class">${this.logRecords[i].runTime}</td>
+                                <td class="${this.logRecords[i].uuid}Class">${new Date(this.logRecords[i].startEpoch)}</td>
                             </tr>
                         `;
                     }
