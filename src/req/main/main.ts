@@ -31,6 +31,9 @@ import {OpenPileupViewer} from "./../operations/OpenPileupViewer";
 import {InputFastqFile} from "./../operations/inputFastqFile";
 import {InputFastaFile} from "./../operations/inputFastaFile";
 
+import {CopyCircularFigure} from "./../operations/CopyCircularFigure";
+import {DeleteCircularFigure} from "./../operations/DeleteCircularFigure";
+
 import {ProjectManifest} from "./../projectManifest";
 
 import {NewProject} from "./../operations/NewProject";
@@ -121,6 +124,8 @@ app.on
 		atomicOp.register("openPileupViewer",OpenPileupViewer);
 		atomicOp.register("inputFastqFile",InputFastqFile);
 		atomicOp.register("inputFastaFile",InputFastaFile);
+		atomicOp.register("copyCircularFigure",CopyCircularFigure);
+		atomicOp.register("deleteCircularFigure",DeleteCircularFigure);
 
 		setInterval(function(){atomicOp.runOperations(1);},100);
 		//After an update has been installed, update the updater with new binaries.
@@ -428,6 +433,40 @@ ipc.on(
 			}
 			atomicOp.addOperation("inputFastaFile",arg.filePath);
 		}
+		else if(arg.opName == "copyCircularFigure")
+		{
+			let circularFigures : Array<CircularFigure> = dataMgr.getKey("circularGenomeBuilder","circularFigures");
+			if(circularFigures)
+			{
+				let circularFigure : CircularFigure = <any>{};
+				for(let i = 0; i != circularFigures.length; ++i)
+				{
+					if(arg.figureuuid == circularFigures[i].uuid)
+					{
+						Object.assign(circularFigure,circularFigures[i]);
+						break;
+					}
+				}
+				atomicOp.addOperation("copyCircularFigure",circularFigure);
+			}
+		}
+		else if(arg.opName == "deleteCircularFigure")
+		{
+			let circularFigures : Array<CircularFigure> = dataMgr.getKey("circularGenomeBuilder","circularFigures");
+			if(circularFigures)
+			{
+				let circularFigure : CircularFigure = <any>{};
+				for(let i = 0; i != circularFigures.length; ++i)
+				{
+					if(arg.figureuuid == circularFigures[i].uuid)
+					{
+						Object.assign(circularFigure,circularFigures[i]);
+						break;
+					}
+				}
+				atomicOp.addOperation("deleteCircularFigure",circularFigure);
+			}
+		}
 		dataMgr.setKey("application","operations",atomicOp.operationsQueue);
 		winMgr.publishChangeForKey("application","operations");
 	}
@@ -573,6 +612,42 @@ atomicOp.updates.on(
 	}
 );
 
+atomicOp.updates.on(
+	"copyCircularFigure",function(op : CopyCircularFigure)
+	{
+		dataMgr.setKey("application","operations",atomicOp.operationsQueue);
+		winMgr.publishChangeForKey("application","operations");
+		if(op.flags.success)
+		{
+			let circularFigures : Array<CircularFigure> = dataMgr.getKey("circularGenomeBuilder","circularFigures");
+			circularFigures.push(op.newFigure);
+			dataMgr.setKey("circularGenomeBuilder","circularFigures",circularFigures);
+			winMgr.publishChangeForKey("circularGenomeBuilder","circularFigures");
+		}
+	}
+);
+
+atomicOp.updates.on(
+	"deleteCircularFigure",function(op : DeleteCircularFigure)
+	{
+		dataMgr.setKey("application","operations",atomicOp.operationsQueue);
+		winMgr.publishChangeForKey("application","operations");
+		if(op.flags.success)
+		{
+			let circularFigures : Array<CircularFigure> = dataMgr.getKey("circularGenomeBuilder","circularFigures");
+			for(let i = circularFigures.length - 1; i != -1; i--)
+			{
+				if(circularFigures[i].uuid == op.figure.uuid)
+				{
+					circularFigures.splice(i,1);
+					dataMgr.setKey("circularGenomeBuilder","circularFigures",circularFigures);
+					winMgr.publishChangeForKey("circularGenomeBuilder","circularFigures");
+					break;
+				}
+			}
+		}
+	}
+);
 
 atomicOp.updates.on(
 	"checkForUpdate",function(op : CheckForUpdate)

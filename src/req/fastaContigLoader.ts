@@ -64,7 +64,9 @@ export class FastaContigLoader extends EventEmitter
                     data[i] == "c" ||
                     data[i] == "C" ||
                     data[i] == "g" ||
-                    data[i] == "G")
+                    data[i] == "G" ||
+                    data[i] == "u" ||
+                    data[i] == "U")
                         self.contigs[self.contigIndex].bp += 1;
                 }
             }

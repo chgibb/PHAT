@@ -14,7 +14,7 @@ export async function closeToolBar() : Promise<void>
                 }
                 toolBar[0].close();
                 resolve();
-            },3000);
-        },3000);
+            },5000);
+        },5000);
     });
 }
