@@ -11,31 +11,37 @@ setTimeout
 (
     function()
     {
+        console.log("opening input");
         winMgr.windowCreators["input"].Create();
         setTimeout
         (
             function()
             {
+                console.log("opening QC");
                 winMgr.windowCreators["QC"].Create();
                 setTimeout
                 (
                     function()
                     {
+                        console.log("opening align");
                         winMgr.windowCreators["align"].Create();
                         setTimeout
                         (
                             function()
                             {
+                                console.log("opening pileup");
                                 winMgr.windowCreators["pileup"].Create();
                                 setTimeout
                                 (
                                     function()
                                     {
+                                        console.log("opening output");
                                         winMgr.windowCreators["output"].Create();
                                         setTimeout
                                         (
                                             function()
                                             {
+                                                console.log("opening circularGenomeBuilder");
                                                 winMgr.windowCreators["circularGenomeBuilder"].Create();
                                                 setTimeout
                                                 (
