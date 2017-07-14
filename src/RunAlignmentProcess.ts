@@ -64,25 +64,25 @@ process.on(
                 step++;
                 update();
 
-                samToolsView(align).then((result) => {
+                samToolsView(align,logger).then((result) => {
 
                     progressMessage = "Sorting BAM";
                     step++;
                     update();
 
-                    samToolsSort(align).then((result) => {
+                    samToolsSort(align,logger).then((result) => {
 
                         progressMessage = "Indexing BAM";
                         step++;
                         update();
 
-                        samToolsIndex(align).then((result) => {
+                        samToolsIndex(align,logger).then((result) => {
 
                             progressMessage = "Getting read depth";
                             step++;
                             update();
 
-                            samToolsDepth(align).then((result) => {
+                            samToolsDepth(align,logger).then((result) => {
 
                                 progressMessage = "Creating temporary reference index";
                                 step++;
@@ -94,19 +94,19 @@ process.on(
                                     step++;
                                     update();
 
-                                    samToolsMPileup(align).then((result) => {
+                                    samToolsMPileup(align,logger).then((result) => {
 
                                         progressMessage = "Predicting SNPs and indels";
                                         step++;
                                         update();
 
-                                        varScanMPileup2SNP(align).then((result) => {
+                                        varScanMPileup2SNP(align,logger).then((result) => {
 
                                             progressMessage = "Getting mapped reads";
                                             step++;
                                             update();
 
-                                            samToolsIdxStats(align).then((result) => {
+                                            samToolsIdxStats(align,logger).then((result) => {
 
                                                 step++;
                                                 align.size = getFolderSize(getArtifactDir(align));
