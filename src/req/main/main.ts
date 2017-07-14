@@ -63,9 +63,9 @@ require('./QC');
 require('./Align');
 require('./Output');
 require('./Pileup');
-//require('./Host');
 require('./circularGenomeBuilder');
 require('./OperationViewer');
+require('./logViewer');
 
 //final steps to load project after OpenProject operation has unpacked the project tarball
 function finishLoadingProject(proj : ProjectManifest) : void
@@ -407,7 +407,7 @@ ipc.on(
 		}
 		else if(arg.opName == "openLogViewer")
 		{
-			atomicOp.addOperation("openLogViewer",{});
+			atomicOp.addOperation("openLogViewer",arg.logRecord);
 		}
 		else if(arg.opName == "inputFastqFile")
 		{
