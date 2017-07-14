@@ -5,10 +5,12 @@ import {LogRecord,getLogRecords} from "./../../operations/atomicOperations"
 export class View extends viewMgr.View
 {
     public logRecords : Array<LogRecord>;
+    public recordDepth : number;
     public constructor(div : string)
     {
         super("logView",div);
         this.logRecords = new Array<LogRecord>();
+        this.recordDepth = 10;
     }
     public onMount() : void
     {
@@ -20,7 +22,8 @@ export class View extends viewMgr.View
     {
         let self = this;
         console.log("fetching log records");
-        getLogRecords(10).then((records : Array<LogRecord>) => {
+        this.recordDepth = parseInt((<HTMLInputElement>document.getElementById("recordDepth")).value);
+        getLogRecords(this.recordDepth).then((records : Array<LogRecord>) => {
             self.logRecords = records
             console.log("got records");
         });
@@ -39,6 +42,8 @@ export class View extends viewMgr.View
                 </tr>
                 ${(()=>{
                     let res = "";
+                    if(this.logRecords.length == 0)
+                        res += `<p>Loading...</p>`;
                     for(let i = 0; i != this.logRecords.length; ++i)
                     {
                         res += `
@@ -51,6 +56,7 @@ export class View extends viewMgr.View
                             </tr>
                         `;
                     }
+
                     return res;
                 })()}
 
