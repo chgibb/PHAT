@@ -3,6 +3,9 @@
 import * as electron from "electron";
 const ipc = electron.ipcRenderer;
 
+const Dialogs = require("dialogs");
+const dialogs = Dialogs();
+
 import {SaveKeyEvent} from "./../../ipcEvents";
 import {AtomicOperationIPC} from "./../../atomicOperationsIPC";
 import * as viewMgr from "./../viewMgr";
@@ -104,16 +107,20 @@ export class View extends viewMgr.View
     public setFigureRadiusInInput() : void
     {
         let genomeView = <GenomeView.GenomeView>viewMgr.getViewByName("genomeView",this.views);
+        let el = (<HTMLInputElement>document.getElementById("figureRadiusInput"));
         if(!genomeView.genome)
-            return;
-        (<HTMLInputElement>document.getElementById("figureRadiusInput")).value = genomeView.genome.radius.toString();
+            el.value = "";
+        else
+            el.value = genomeView.genome.radius.toString();
     }
     public setFigureBPIntervalInput() : void
     {
         let genomeView = <GenomeView.GenomeView>viewMgr.getViewByName("genomeView",this.views);
+        let el = (<HTMLInputElement>document.getElementById("figureBPIntervalInput"));
         if(!genomeView.genome)
-            return;
-        (<HTMLInputElement>document.getElementById("figureBPIntervalInput")).value = genomeView.genome.circularFigureBPTrackOptions.interval.toString();
+            el.value = "";
+        else
+            el.value = genomeView.genome.circularFigureBPTrackOptions.interval.toString();
     }
     public setShowBPIntervalCheckBox() : void
     {
@@ -185,10 +192,20 @@ export class View extends viewMgr.View
         }
 
         document.getElementById("exportToSVG").onclick = function(this : HTMLElement,ev : MouseEvent){
+            if(!genomeView.genome)
+            {
+                dialogs.alert("You must open a figure before you can export it");
+                return;
+            }
             genomeView.exportSVG();
         }
 
         document.getElementById("copyFigure").onclick = function(this : HTMLElement,ev : MouseEvent){
+            if(!genomeView.genome)
+            {
+                dialogs.alert("You must open a figure before you can copy it");
+                return;
+            }
             ipc.send(
                 "runOperation",
                 <AtomicOperationIPC>{
@@ -199,6 +216,11 @@ export class View extends viewMgr.View
         }
 
         document.getElementById("deleteFigure").onclick = function(this : HTMLElement,ev : MouseEvent){
+            if(!genomeView.genome)
+            {
+                dialogs.alert("You must open a figure before you can delete it");
+                return;
+            }
             ipc.send(
                 "runOperation",
                 <AtomicOperationIPC>{
@@ -209,6 +231,8 @@ export class View extends viewMgr.View
         }
 
         document.getElementById("updateNavBarButton").onclick = function(this : HTMLElement,ev : MouseEvent){
+            if(!genomeView.genome)
+                    return;
             let radius = parseInt((<HTMLInputElement>document.getElementById("figureRadiusInput")).value);
             if(radius)
                 genomeView.genome.radius = radius;

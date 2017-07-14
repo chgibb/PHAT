@@ -199,6 +199,8 @@ export class GenomeView extends viewMgr.View
                 this.firstRender = false;
             }
         }
+        else
+            return " ";
         return undefined;
     }
     public postRender() : void

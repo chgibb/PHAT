@@ -110,13 +110,20 @@ $
                             //reassign our current figure with the (potentially changed) new one
                             if(currentFigure)
                             {
+                                let found = false;
                                 for(let i : number = 0; i != masterView.circularFigures.length; ++i)
                                 {
                                     if(masterView.circularFigures[i].uuid == currentFigure)
                                     {
+                                        found = true;
                                         genomeView.genome = masterView.circularFigures[i];
                                         break;
                                     }
+                                }
+                                if(!found)
+                                {
+                                    genomeView.genome = undefined;
+                                    genomeView.firstRender = true;
                                 }
                             }
                             
