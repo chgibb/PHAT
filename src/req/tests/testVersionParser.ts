@@ -65,6 +65,41 @@ versionTests.push({
     expected : true,
     invalid : true
 });
+versionTests.push({
+    left : "1.0.0-beta.1",
+    right : "0.0.2",
+    expected : false,
+});
+versionTests.push({
+    left : "1.0.0-beta.1",
+    right : "0.1.78",
+    expected : false,
+});
+versionTests.push({
+    left : "1.0.0-beta.2",
+    right : "0.1.78-beta.57",
+    expected : true,
+});
+versionTests.push({
+    left : "1.0.0-beta.1",
+    right : "1.0.1",
+    expected : false,
+});
+versionTests.push({
+    left : "1.0.0-beta.570",
+    right : "1.0.0-beta.569",
+    expected : true,
+});
+versionTests.push({
+    left : "1.0.0-beta.5",
+    right : "0.9.56",
+    expected : false
+});
+versionTests.push({
+    left : "1.0.0-beta.569",
+    right : "1.0.0-beta.570",
+    expected : false
+});
 export async function testVersionParser() : Promise<void>
 {
     return new Promise<void>((resolve,reject) => {
