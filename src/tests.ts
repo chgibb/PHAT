@@ -8,6 +8,7 @@ import * as L6R1R2 from "./req/tests/L6R1R2";
 import * as hpv16Ref from "./req/tests/hpv16Ref";
 import * as hpv18Ref from "./req/tests/hpv18Ref";
 
+import {testVersionParser} from "./req/tests/testVersionParser";
 import {testFastQCReportGeneration} from "./req/tests/testFastQCReportGeneration";
 import {testHPV16Index} from "./req/tests/testHPV16Index";
 import {testHPV18Index} from "./req/tests/testHPV18Index";
@@ -18,10 +19,34 @@ import {testL6R1HPV16SNPTrackRenderer} from "./req/tests/testL6R1HPV16SNPTrackRe
 import {testL6R1HPV18CoverageTrackRenderer} from "./req/tests/testL6R1HPV18CoverageTrackRender";
 import {testL6R1HPV18SNPTrackRenderer} from "./req/tests/testL6R1HPV18SNPTrackRender";
 
+const pjson = require("./resources/app/package.json");
+import {isBeta,versionIsGreaterThan} from "./req/versionIsGreaterThan";
+
 let opsRunner = setInterval(function(){atomic.runOperations(1);},1000);
 async function runTests() : Promise<void>
 {
 	return new Promise<void>(async (resolve,reject) => {
+
+		console.log("Testing version parsing");
+		try
+		{
+			await testVersionParser();
+		}
+		catch(err)
+		{
+			return reject();
+		}
+		
+		console.log("Validating version in package.json")
+		try
+		{
+			let beta = isBeta(pjson.version);
+		}
+		catch(err)
+		{
+			console.log("Version in package.json is malformed");
+			return reject();
+		}
 
 		console.log("Generating FastQC report for L6R1R1");
 		atomic.addOperation("generateFastQCReport",L6R1R1.get());
@@ -144,7 +169,6 @@ async function runTests() : Promise<void>
 			console.log("coverage track rendering threw exception");
 			return reject();
 		}
-
 		resolve();
 	});
 
