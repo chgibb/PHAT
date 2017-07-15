@@ -1,17 +1,17 @@
 import * as winMgr from "./winMgr";
 import {getReadable} from "./../getAppPath";
 
-winMgr.windowCreators["pileup"] = 
+winMgr.windowCreators["logViewer"] = 
 {
 	Create : function() 
 	{
 		winMgr.pushWindow(
-			"pileup",
+			"logViewer",
 			winMgr.createWithDefault(
-				"Pileup",
-				"pileup",
+				"Log Viewer",
+				"logViewer",
 				1000,800,
-				"file://"+getReadable("Pileup.html"),
+				"file://"+getReadable("logViewer.html"),
 				false,false,
 				500,300
 			)

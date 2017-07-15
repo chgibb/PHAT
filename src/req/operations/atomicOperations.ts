@@ -250,6 +250,7 @@ export function addOperation(opName : string,data : any) : void
                     cleanGeneratedArtifacts(op);
                     if(op.flags.failure)
                     {
+                        op.logObject(op.extraData);
                         cleanDestinationArtifacts(op);
                         if(op.closeLogOnFailure)
                         {

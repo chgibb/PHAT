@@ -23,6 +23,7 @@ export interface AtomicOperationIPC
     figureuuid? : string;
     colour? : string;
     alignParams? : {fasta : Fasta,fastq1 : Fastq,fastq2 : Fastq};
+    logRecord? : LogRecord;
 
     token? : string;
 

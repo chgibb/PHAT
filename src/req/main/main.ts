@@ -27,6 +27,7 @@ import {RenderSNPTrackForContig} from "./../operations/RenderSNPTrack";
 import {CheckForUpdate} from "./../operations/CheckForUpdate";
 import {DownloadAndInstallUpdate} from "./../operations/DownloadAndInstallUpdate";
 import {OpenPileupViewer} from "./../operations/OpenPileupViewer";
+import {OpenLogViewer} from "./../operations/OpenLogViewer";
 
 import {InputFastqFile} from "./../operations/inputFastqFile";
 import {InputFastaFile} from "./../operations/inputFastaFile";
@@ -62,9 +63,9 @@ require('./QC');
 require('./Align');
 require('./Output');
 require('./Pileup');
-//require('./Host');
 require('./circularGenomeBuilder');
 require('./OperationViewer');
+require('./logViewer');
 
 //final steps to load project after OpenProject operation has unpacked the project tarball
 function finishLoadingProject(proj : ProjectManifest) : void
@@ -122,6 +123,7 @@ app.on
 		atomicOp.register("saveCurrentProject",SaveCurrentProject);
 
 		atomicOp.register("openPileupViewer",OpenPileupViewer);
+		atomicOp.register("openLogViewer",OpenLogViewer)
 		atomicOp.register("inputFastqFile",InputFastqFile);
 		atomicOp.register("inputFastaFile",InputFastaFile);
 		atomicOp.register("copyCircularFigure",CopyCircularFigure);
@@ -402,6 +404,10 @@ ipc.on(
 		else if(arg.opName == "openPileupViewer")
 		{
 			atomicOp.addOperation("openPileupViewer",arg.pileupViewerParams);
+		}
+		else if(arg.opName == "openLogViewer")
+		{
+			atomicOp.addOperation("openLogViewer",arg.logRecord);
 		}
 		else if(arg.opName == "inputFastqFile")
 		{
