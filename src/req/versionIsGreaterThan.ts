@@ -10,7 +10,7 @@ interface Version
     beta : number;
 }
 
-function isBeta(version : string) : boolean
+export function isBeta(version : string) : boolean
 {
     if(getBetaTag.test(version))
         return true;
