@@ -55,11 +55,17 @@ export function versionIsGreaterThan(l : string,r : string) : boolean
         let isLBaseSame = semver.satisfies(`${lVersions.base}`,`>=${rVersions.base}`);
         let isLBetaLarger = lVersions.beta > rVersions.beta;
 
-        if(isLBaseSame && isLBaseLarger)
+        if(isLBaseSame && isLBetaLarger)
             return true;
 
         else if(isLBaseLarger)
             return true;
+    }
+
+    //neither are betas
+    else if(rVersions.beta === undefined && lVersions.beta === undefined)
+    {
+        return semver.satisfies(`${lVersions.base}`,`>${rVersions.base}`);
     }
     return false;
 }
