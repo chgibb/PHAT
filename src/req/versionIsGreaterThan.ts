@@ -14,6 +14,10 @@ function isBeta(version : string) : boolean
 {
     if(getBetaTag.test(version))
         return true;
+    else if(/beta/.test(version))
+    {
+        throw new Error("Likely misspelled prerelease tag");
+    }
     return false;
 }
 
