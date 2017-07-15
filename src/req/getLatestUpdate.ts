@@ -2,6 +2,7 @@ let GitHubAPI = require("github-api");
 const pjson = require("./package.json");
 
 import {versionIsGreaterThan,isBeta} from "./versionIsGreaterThan";
+import {getAppSettings,writeAppSettings} from "./appSettings";
 
 let isRightOS : RegExp;
 if(process.platform == "linux")
@@ -35,6 +36,7 @@ export function getLatestUpdate(userName : string,repo : string,token : string) 
                     return reject(<Status>{status : -1,msg : error});
             }
         ).then((arg : any) => {
+            let updateChannel = getAppSettings().updateChannel;
             for(let i = arg.data.length-1; i != -1; i--)
             {
                 if(versionIsGreaterThan(arg.data[i].tag_name,pjson.version))
