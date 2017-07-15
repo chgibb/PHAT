@@ -4,6 +4,7 @@ interface VersionTests
     left : string;
     right : string;
     expected : boolean;
+    invalid? : boolean;
 }
 let versionTests = new Array<VersionTests>();
 versionTests.push({
@@ -52,16 +53,48 @@ versionTests.push({
     right : "1.10.2",
     expected : true
 });
+versionTests.push({
+    left : "0.01beta1",
+    right : "0.0.2",
+    expected : false,
+    invalid : true
+});
+versionTests.push({
+    left : "0.0.2",
+    right : "0.0.1-beta1",
+    expected : true,
+    invalid : true
+});
 export async function testVersionParser() : Promise<void>
 {
     return new Promise<void>((resolve,reject) => {
         for(let i = 0; i != versionTests.length; ++i)
         {
-            let res = versionIsGreaterThan(versionTests[i].left,versionTests[i].right);
-            console.log(`Expected ${versionTests[i].left} > ${versionTests[i].right} ${versionTests[i].expected}`);
-            console.log(`Got ${res}`);
-            if(res != versionTests[i].expected)
-                reject();
+            try
+            {
+                console.log(`Expected ${versionTests[i].left} > ${versionTests[i].right} ${versionTests[i].expected}`);
+                let res = versionIsGreaterThan(versionTests[i].left,versionTests[i].right);
+                console.log(`Got ${res}`);
+                if(versionTests[i].invalid)
+                {
+                    console.log("Was not invalid as expected");
+                    reject();
+                }
+                if(res != versionTests[i].expected)
+                    reject();
+            }
+            catch(err)
+            {
+                if(versionTests[i].invalid)
+                {
+                    console.log(`Invalid as expected`);
+                }
+                else
+                {
+                    console.log(`Was unexpectedly invalid`);
+                    reject();
+                }
+            }
         }
 
         resolve();
