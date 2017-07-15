@@ -105,6 +105,11 @@ versionTests.push({
     right : "0.0.50-beta.38",
     expected : true
 });
+versionTests.push({
+    left : "0.0.50-beta.1",
+    right : "0.0.48-beta.0",
+    expected : true
+});
 export async function testVersionParser() : Promise<void>
 {
     return new Promise<void>((resolve,reject) => {
