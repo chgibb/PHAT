@@ -100,6 +100,11 @@ versionTests.push({
     right : "1.0.0-beta.570",
     expected : false
 });
+versionTests.push({
+    left : "0.0.50",
+    right : "0.0.50-beta.38",
+    expected : true
+});
 export async function testVersionParser() : Promise<void>
 {
     return new Promise<void>((resolve,reject) => {
@@ -127,6 +132,7 @@ export async function testVersionParser() : Promise<void>
                 else
                 {
                     console.log(`Was unexpectedly invalid`);
+                    console.log(err);
                     reject();
                 }
             }
