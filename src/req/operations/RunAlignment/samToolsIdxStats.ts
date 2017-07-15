@@ -1,12 +1,13 @@
 import * as fs from "fs";
 
+import * as atomic from "./../atomicOperations";
 import {getReadable} from "./../../getAppPath";
 import {alignData,getSortedBam,getIdxStats} from "./../../alignData";
 import {SpawnRequestParams} from "./../../JobIPC";
 import {Job,JobCallBackObject} from "./../../main/Job";
 import {samToolsIdxStatsReportParser} from "./../../samToolsIdxStatsReport";
 
-export function samToolsIdxStats(alignData : alignData) : Promise<{}>
+export function samToolsIdxStats(alignData : alignData,logger : atomic.AtomicOperation) : Promise<{}>
 {
     return new Promise((resolve,reject) => {
         let samToolsExe = getReadable('samtools');
@@ -16,6 +17,7 @@ export function samToolsIdxStats(alignData : alignData) : Promise<{}>
         let jobCallBack : JobCallBackObject = {
             send(channel : string,params : SpawnRequestParams)
             {
+                logger.logObject(params);
                 if(params.unBufferedData)
                 {
                     if(params.stdout)

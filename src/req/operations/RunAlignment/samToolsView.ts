@@ -1,10 +1,11 @@
+import * as atomic from "./../atomicOperations";
 import {getReadable} from "./../../getAppPath";
 import {alignData,getSam,getUnSortedBam} from "./../../alignData";
 import {SpawnRequestParams} from "./../../JobIPC";
 import {Job,JobCallBackObject} from "./../../main/Job";
 import {parseBowTie2AlignmentReport} from "./../../bowTie2AlignmentReportParser";
 
-export function samToolsView(alignData : alignData) : Promise<{}>
+export function samToolsView(alignData : alignData,logger : atomic.AtomicOperation) : Promise<{}>
 {
     return new Promise((resolve,reject) => {
         let samToolsExe = getReadable('samtools');
@@ -12,6 +13,7 @@ export function samToolsView(alignData : alignData) : Promise<{}>
         let jobCallBack : JobCallBackObject = {
             send(channel : string,params : SpawnRequestParams)
             {
+                logger.logObject(params);
                 if(params.processName == samToolsExe && params.args[0] == "view")
                 {
                     if(params.done && params.retCode !== undefined)
