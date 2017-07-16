@@ -1,6 +1,8 @@
 let GitHubAPI = require("github-api");
-const semver = require("semver");
 const pjson = require("./package.json");
+
+import {versionIsGreaterThan,isBeta} from "./versionIsGreaterThan";
+import {getAppSettings,writeAppSettings} from "./appSettings";
 
 let isRightOS : RegExp;
 if(process.platform == "linux")
@@ -34,9 +36,20 @@ export function getLatestUpdate(userName : string,repo : string,token : string) 
                     return reject(<Status>{status : -1,msg : error});
             }
         ).then((arg : any) => {
+            let updateChannel = getAppSettings().updateChannel;
             for(let i = arg.data.length-1; i != -1; i--)
             {
-                if(semver.satisfies(arg.data[i].tag_name,">"+pjson.version))
+                let greaterThan = versionIsGreaterThan(arg.data[i].tag_name,pjson.version)
+            
+                if(!greaterThan && updateChannel == "beta")
+                {
+                    //try to check again as though current version was a beta
+                    if(!isBeta(pjson.version))
+                    {
+                        greaterThan = versionIsGreaterThan(arg.data[i].tag_name,`${pjson.version}-beta.0`);
+                    }
+                }
+                if(greaterThan)
                 {
                     for(let k = 0; k != arg.data[i].assets.length; ++k)
                     {
