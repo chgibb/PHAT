@@ -18,6 +18,7 @@ export class InputFastaFile extends atomic.AtomicOperation
         try
         {
             this.fasta = new Fasta(this.filePath);
+            this.fasta.checked = true;
         }
         catch(err)
         {
