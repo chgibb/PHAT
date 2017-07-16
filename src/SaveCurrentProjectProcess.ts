@@ -1,9 +1,11 @@
+import {handleForkFailures} from "./req/operations/atomicOperations";
 import {AtomicOperationForkEvent,CompletionFlags} from "./req/atomicOperationsIPC";
 import {ProjectManifest} from "./req/projectManifest";
 import {saveCurrentProject} from "./req//saveCurrentProject";
 
 let proj : ProjectManifest;
 let flags : CompletionFlags = new CompletionFlags();
+handleForkFailures();
 process.on
 (
     "message",function(ev : AtomicOperationForkEvent)
@@ -44,30 +46,4 @@ process.on
         }
     }  
 );
-process.on("uncaughtException",function(err : string){
-    flags.done = true;
-    flags.failure = true;
-    flags.success = false;
-    process.send(
-        <AtomicOperationForkEvent>{
-            update : true,
-            flags : flags,
-            data : err
-        }
-    );
-    process.exit(1);
-});
 
-process.on("unhandledRejection",function(err : string){
-    flags.done = true;
-    flags.failure = true;
-    flags.success = false;
-    process.send(
-        <AtomicOperationForkEvent>{
-            update : true,
-            flags : flags,
-            data : err
-        }
-    );
-    process.exit(1);
-});

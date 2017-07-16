@@ -13,7 +13,7 @@ $
 (
     function()
     {
-        masterView.addView(viewMgr.views,"");
+        masterView.addView(viewMgr.views,"masterView");
         viewMgr.changeView("masterView");
 
 

@@ -1,9 +1,10 @@
+import * as atomic from "./../atomicOperations";
 import {getReadable} from "./../../getAppPath";
 import {alignData,getSortedBam,getSortBamIndex} from "./../../alignData";
 import {SpawnRequestParams} from "./../../JobIPC";
 import {Job,JobCallBackObject} from "./../../main/Job";
 
-export function samToolsIndex(alignData : alignData) : Promise<{}>
+export function samToolsIndex(alignData : alignData,logger : atomic.AtomicOperation) : Promise<{}>
 {
     return new Promise((resolve,reject) => {
         let samToolsExe = getReadable('samtools');
@@ -11,6 +12,7 @@ export function samToolsIndex(alignData : alignData) : Promise<{}>
         let jobCallBack : JobCallBackObject = {
             send(channel : string,params : SpawnRequestParams)
             {
+                logger.logObject(params);
                 if(params.processName == samToolsExe && params.args[0] == "index")
                 {
                     if(params.done && params.retCode !== undefined)

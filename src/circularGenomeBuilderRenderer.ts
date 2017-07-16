@@ -3,7 +3,6 @@ let ipc = ipcRenderer;
 import * as viewMgr from "./req/renderer/viewMgr";
 import * as masterView from "./req/renderer/circularGenomeBuilderRenderer/masterView";
 import * as genomeView from "./req/renderer/circularGenomeBuilderRenderer/genomeView";
-import * as rightPanelView from "./req/renderer/circularGenomeBuilderRenderer/rightPanel";
 import {CircularFigure,} from "./req/renderer/circularFigure";
 import {GetKeyEvent,KeySubEvent} from "./req/ipcEvents";
 
@@ -85,7 +84,6 @@ $
                         {
                             let masterView = <masterView.View>viewMgr.getViewByName("masterView");
                             masterView.fastaInputs = arg.val;
-                            masterView.firstRender = true;
                         }
                     }
                     if(arg.key == "aligns")
@@ -93,8 +91,7 @@ $
                         if(arg.val !== undefined)
                         {
                             let masterView = <masterView.View>viewMgr.getViewByName("masterView");
-                            let rightPanelView = <rightPanelView.RightPanel>viewMgr.getViewByName("rightPanel",masterView.views);
-                            rightPanelView.alignData = arg.val;
+                            masterView.alignData = arg.val;
                         }
                     }
                     if(arg.key == "circularFigures")
@@ -104,9 +101,7 @@ $
                             let masterView = <masterView.View>viewMgr.getViewByName("masterView");
                             let genomeView = <genomeView.GenomeView>viewMgr.getViewByName("genomeView",masterView.views);
                             let currentFigure = "";
-                            //Only update panels if theres been an additional figure created
-                            if((<Array<CircularFigure>>arg.val).length != masterView.circularFigures.length)
-                                masterView.firstRender = true;
+
                             //If there's currently a figure being edited then save its id
                             if(genomeView.genome)
                                 currentFigure = genomeView.genome.uuid;
@@ -115,13 +110,20 @@ $
                             //reassign our current figure with the (potentially changed) new one
                             if(currentFigure)
                             {
+                                let found = false;
                                 for(let i : number = 0; i != masterView.circularFigures.length; ++i)
                                 {
                                     if(masterView.circularFigures[i].uuid == currentFigure)
                                     {
+                                        found = true;
                                         genomeView.genome = masterView.circularFigures[i];
                                         break;
                                     }
+                                }
+                                if(!found)
+                                {
+                                    genomeView.genome = undefined;
+                                    genomeView.firstRender = true;
                                 }
                             }
                             

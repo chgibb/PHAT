@@ -45,8 +45,6 @@ export class ReportView extends viewMgr.View
     public selectedFastqs : Array<Fastq>;
     public selectedFasta : Fasta;
 
-    public tab : "path" | "host";
-
     public confirmOptions : ConfirmOptions;
     public constructor(div : string)
     {
@@ -54,10 +52,7 @@ export class ReportView extends viewMgr.View
         this.fastqInputs = new Array<Fastq>();
         this.fastaInputs = new Array<Fasta>();
 
-
         this.selectedFastqs = new Array<Fastq>();
-
-        this.tab = "path";
 
         this.confirmOptions = new ConfirmOptions();
     }
@@ -106,9 +101,7 @@ export class ReportView extends viewMgr.View
         );
         for(let i = 0; i != this.fastaInputs.length; ++i)
         {
-            if(this.fastaInputs[i].indexed &&
-            this.fastaInputs[i].type == this.tab &&
-            this.fastaInputs[i].checked)
+            if(this.fastaInputs[i].indexed && this.fastaInputs[i].checked)
             {
                 html.push
                 (
@@ -161,14 +154,6 @@ export class ReportView extends viewMgr.View
         }
         this.populateSelectedFasta();
         this.populateSelectedFastqs();
-        if(event.target.id == "pathTab")
-        {
-            this.tab = "path";
-        }
-        if(event.target.id == "hostTab")
-        {
-            this.tab = "host";
-        }
         if(event.target.id == "alignButton")
         {
             let selected_fastq_count = 0;
@@ -207,8 +192,7 @@ export class ReportView extends viewMgr.View
                         alignParams : {
                             fasta : this.selectedFasta,
                             fastq1 : this.selectedFastqs[0],
-                            fastq2 : this.selectedFastqs[1],
-                            type : this.tab
+                            fastq2 : this.selectedFastqs[1]
                         }
                     }
                 );

@@ -11,9 +11,6 @@ export class Fasta extends File
     public indexed : boolean;
     public indexing : boolean;
     public indexes : Array<any>;
-    public host : boolean;
-    public pathogen : boolean;
-    public type : string;
     public contigs : Array<Contig>;
     public constructor(path : string)
     {
@@ -37,9 +34,6 @@ export class Fasta extends File
         this.indexed = false;
         this.indexing = false;
         this.indexes = new Array();
-        this.host = false;
-        this.pathogen = false;
-        this.type = "";
         this.contigs = new Array<Contig>();
     }
 }

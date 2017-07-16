@@ -35,7 +35,6 @@ export class View extends viewMgr.View
     public renderView() : string
     {
         let masterView = <masterView.View>viewMgr.getViewByName("masterView");
-        let rightPanel = <rightPanel.View>viewMgr.getViewByName("rightPanel",masterView.views);
 
         //if we're looking at SNP position, refresh table information if the alignment being inspected has changed
         if(masterView.displayInfo == "SNPPositions")

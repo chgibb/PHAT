@@ -1,4 +1,5 @@
 import {AtomicOperationForkEvent,CompletionFlags} from "./req/atomicOperationsIPC";
+import * as atomic from "./req/operations/atomicOperations";
 import {alignData,getArtifactDir} from "./req/alignData";
 import {getFolderSize} from "./req/getFolderSize";
 import formatByteString from "./req/renderer/formatByteString";
@@ -18,10 +19,12 @@ let align : alignData;
 let step = 1;
 let progressMessage = "Aligning";
 
+let logger : atomic.ForkLogger = new atomic.ForkLogger();
+atomic.handleForkFailures(logger);
 
 function update() : void
 {
-    process.send(<AtomicOperationForkEvent>{
+    let update = <AtomicOperationForkEvent>{
         update : true,
         flags : flags,
         step : step,
@@ -29,7 +32,16 @@ function update() : void
         data : {
             alignData : align
         }
-    });
+    };
+    if(flags.done)
+    {
+        if(flags.success)
+            update.logRecord = atomic.closeLog(logger.logKey,"success");
+        else if(flags.failure)
+            update.logRecord = atomic.closeLog(logger.logKey,"failure");
+    }
+    logger.logObject(update);
+    process.send(update);
 }
 
 
@@ -37,6 +49,7 @@ process.on(
     "message",function(ev : AtomicOperationForkEvent){
         if(ev.setData == true)
         {
+            logger.logKey = atomic.openLog(ev.name,ev.description);
             align = ev.data.alignData;
             process.send(<AtomicOperationForkEvent>{
                 finishedSettingData : true
@@ -45,55 +58,55 @@ process.on(
         if(ev.run == true)
         {
             update();
-            bowTie2Align(align,()=>{}).then((result) => {
+            bowTie2Align(align,logger).then((result) => {
 
                 progressMessage = "Converting SAM to BAM";
                 step++;
                 update();
 
-                samToolsView(align).then((result) => {
+                samToolsView(align,logger).then((result) => {
 
                     progressMessage = "Sorting BAM";
                     step++;
                     update();
 
-                    samToolsSort(align).then((result) => {
+                    samToolsSort(align,logger).then((result) => {
 
                         progressMessage = "Indexing BAM";
                         step++;
                         update();
 
-                        samToolsIndex(align).then((result) => {
+                        samToolsIndex(align,logger).then((result) => {
 
                             progressMessage = "Getting read depth";
                             step++;
                             update();
 
-                            samToolsDepth(align).then((result) => {
+                            samToolsDepth(align,logger).then((result) => {
 
                                 progressMessage = "Creating temporary reference index";
                                 step++;
                                 update();
 
-                                samToolsFaidx(align.fasta).then((result) => {
+                                samToolsFaidx(align.fasta,logger).then((result) => {
 
                                     progressMessage = "Generating pileup";
                                     step++;
                                     update();
 
-                                    samToolsMPileup(align).then((result) => {
+                                    samToolsMPileup(align,logger).then((result) => {
 
                                         progressMessage = "Predicting SNPs and indels";
                                         step++;
                                         update();
 
-                                        varScanMPileup2SNP(align).then((result) => {
+                                        varScanMPileup2SNP(align,logger).then((result) => {
 
                                             progressMessage = "Getting mapped reads";
                                             step++;
                                             update();
 
-                                            samToolsIdxStats(align).then((result) => {
+                                            samToolsIdxStats(align,logger).then((result) => {
 
                                                 step++;
                                                 align.size = getFolderSize(getArtifactDir(align));
@@ -115,34 +128,3 @@ process.on(
         }
     }
 );
-
-process.on("uncaughtException",function(err : string){
-    flags.done = true;
-    flags.failure = true;
-    flags.success = false;
-    process.send(
-        <AtomicOperationForkEvent>{
-            update : true,
-            flags : flags,
-            data : err,
-            progressMessage : progressMessage
-        }
-    );
-    process.exit(1);
-});
-
-process.on("unhandledRejection",function(err : string){
-    console.log("ERROR "+err);
-    flags.done = true;
-    flags.failure = true;
-    flags.success = false;
-    process.send(
-        <AtomicOperationForkEvent>{
-            update : true,
-            flags : flags,
-            data : err,
-            progressMessage : progressMessage
-        }
-    );
-    process.exit(1);
-});

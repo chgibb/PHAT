@@ -2,7 +2,7 @@ import {ProjectManifest} from "./projectManifest"
 import {Fasta} from "./fasta";
 import Fastq from "./fastq";
 import {alignData} from "./alignData";
-import {CompletionFlags} from "./operations/atomicOperations";
+import {CompletionFlags,LogRecord} from "./operations/atomicOperations";
 export {CompletionFlags} from "./operations/atomicOperations";
 
 /**
@@ -22,13 +22,15 @@ export interface AtomicOperationIPC
     alignuuid? : string;
     figureuuid? : string;
     colour? : string;
-    alignParams? : {fasta : Fasta,fastq1 : Fastq,fastq2 : Fastq,type : "patho" | "host"};
+    alignParams? : {fasta : Fasta,fastq1 : Fastq,fastq2 : Fastq};
+    logRecord? : LogRecord;
 
     token? : string;
 
     name? : string;
     proj? : ProjectManifest;
     externalProjectPath? : string;
+    filePath? : string;
 
     pileupViewerParams? : {
         align : alignData,
@@ -49,10 +51,13 @@ export interface AtomicOperationForkEvent
     setData? : boolean;
     finishedSettingData? : boolean;
     data? : any;
+    name? : string;
+    description? : string;
 
     run? : boolean;
     update? : boolean;
     flags? : CompletionFlags;
+    logRecord? : LogRecord;
     progressMessage? : string;
     step? : number;
 }

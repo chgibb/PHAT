@@ -3,8 +3,9 @@ import * as winMgr from "./../../../req/main/winMgr"
 export async function openFirstProject() : Promise<void>
 {
     return new Promise<void>((resolve,reject) => {
-        let projSelection = winMgr.getWindowsByName("projectSelection");
         setTimeout(function(){
+            console.log("opening first project");
+            let projSelection = winMgr.getWindowsByName("projectSelection");
             projSelection[0].webContents.executeJavaScript(`
                 let els = document.getElementsByClassName("activeHover");
                 let isOpenLink = /Open/;
@@ -18,6 +19,6 @@ export async function openFirstProject() : Promise<void>
                 }
             `);
             resolve();
-        },500);
+        },5000);
     });
 }

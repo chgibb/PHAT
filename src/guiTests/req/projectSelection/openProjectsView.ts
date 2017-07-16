@@ -3,8 +3,9 @@ import * as winMgr from "./../../../req/main/winMgr"
 export async function openProjectsView() : Promise<void>
 {
     return new Promise<void>((resolve,reject) => {
-        let projSelection = winMgr.getWindowsByName("projectSelection");
         setTimeout(function(){
+            console.log("opening projects view");
+            let projSelection = winMgr.getWindowsByName("projectSelection");
             projSelection[0].webContents.executeJavaScript(`
                 document.getElementById("openProject").click();
             `);

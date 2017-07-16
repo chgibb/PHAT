@@ -5,11 +5,18 @@
             var startUp = performance.now();
 		</script>
 		<meta charset="UTF-8">
-        <link rel="stylesheet" type="text/css" href="styles/pileup.css">
-        <link rel="stylesheet" type="text/css" href="styles/Pileup.css">
+        <link rel="stylesheet" type="text/css" href="styles/operationViewer.css">
     </head>
     <body>
-        <div id="view">
+        <h2>Operations History</h2>
+        <p>Number to show: </p><input type="number" value="10" id="recordDepth" />
+        <div id="logView" style="height:70%;width:100%;overflow-y:scroll;">
+            <p>Loading...</p>
+        </div>
+        <h2>Currently Running, Queued Operations</h2>
+        <div id="runningView" style="height:15%;width:100%;overflow-y:scroll;">
+        </div>
+        <div id="masterView">
         </div>
         <script>
             require("./OperationViewer");

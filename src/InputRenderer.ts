@@ -4,43 +4,38 @@ const ipc = electron.ipcRenderer;
 import {GetKeyEvent,KeySubEvent} from "./req/ipcEvents";
 
 import * as viewMgr from "./req/renderer/viewMgr";
-let debug = require("./req/renderer/sendDebugMessage");
-debug.initialize("input");
 
-import * as fastaView from "./req/renderer/inputRenderer/FastaView";
+import * as masterView from "./req/renderer/inputRenderer/masterView";
 import * as fastqView from "./req/renderer/inputRenderer/FastqView";
-
-import showFastaBrowseDialog from "./req/renderer/inputRenderer/fastaBrowseDialog";
-import showFastqBrowseDialog from "./req/renderer/inputRenderer/fastqBrowseDialog";
-import Input from "./req/renderer/Input";
-
+import * as fastaView from "./req/renderer/inputRenderer/FastaView";
 import * as $ from "jquery";
 (<any>window).$ = $;
 require("./req/renderer/commonBehaviour");
-let input = new Input ("input",ipc);
 
-function preRender(viewRef : viewMgr.View)
+function postRender(view : viewMgr.View) : void
 {
-    if(viewMgr.currView == 'fastq')
-    {
-        (<HTMLImageElement>document.getElementById('fastqButton')).src = 'img/fastqButtonActive.png';
-        (<HTMLImageElement>document.getElementById('refSeqButton')).src = 'img/refSeqButton.png';
-    }
-    else if(viewMgr.currView == 'fasta')
-    {
-        (<HTMLImageElement>document.getElementById('fastqButton')).src = 'img/fastqButton.png';
-        (<HTMLImageElement>document.getElementById('refSeqButton')).src = 'img/refSeqButtonActive.png';
-    }
+    let fastqView = $("#fastqView");
+    if(fastqView)
+        fastqView.css("height",$(window).height()/2+"px");
+    let fastaView = $("#fastaView");
+    if(fastaView)
+        fastaView.css("height",$(window).height()/2+"px");
 }
-viewMgr.setPreRender(preRender);
+$(window).resize
+(
+	function()
+	{
+        viewMgr.render();
+    }
+);
 $
 (
     function()
     {
-        fastaView.addView(viewMgr.views,'loadedFiles',input);
-        fastqView.addView(viewMgr.views,'loadedFiles',input);
+        viewMgr.setPostRender(postRender);
+        masterView.addView(viewMgr.views,'view');
 
-        viewMgr.changeView("fastq");
+        viewMgr.changeView("masterView");
 
         //get saved data
         ipc.send(
@@ -81,15 +76,7 @@ $
                 replyChannel : "input"
             }
         );
-        ipc.send(
-            "keySub",
-            <KeySubEvent>{
-                action : "keySub",
-                channel : "application",
-                key : "operations",
-                replyChannel : "input"
-            }
-        );
+        viewMgr.render();
 
         //on message from main process
         ipc.on
@@ -99,48 +86,28 @@ $
                 //reply from call to getState
 			    if(arg.action == "getKey" || arg.action == "keyChange")
 				{
+                    let masterView = <masterView.View>viewMgr.getViewByName("masterView");
 					if(arg.key == 'fastqInputs')
 					{
                         if(arg.val !== undefined)
                         {
-                            input.fastqInputs = arg.val;
+                            masterView.fastqInputs = arg.val;
                         }
                     }
                     if(arg.key == 'fastaInputs')
 					{
                         if(arg.val !== undefined)
                         {
-                            input.fastaInputs = arg.val;
+                            masterView.fastaInputs = arg.val;
                         }
                     }
-                    if(arg.key == "operations")
-                    {
-                        console.log(arg.val);
-                    }
+                    masterView.dataChanged();
                 }
                 viewMgr.render();
+
             }
         );
-        document.getElementById("fastqButton").onclick = function()
-        {
-            viewMgr.changeView("fastq");
-        }
-        document.getElementById("refSeqButton").onclick = function()
-        {
-            viewMgr.changeView("fasta");
-        }
-        document.getElementById("browseButton").onclick = function()
-        {
-            browse();
-        }
         viewMgr.render();
+        window.dispatchEvent(new Event("resize"));
     }
 );
-function browse()
-{
-    if(viewMgr.currView == 'fastq')
-        showFastqBrowseDialog(input);
-    if(viewMgr.currView == 'fasta')
-        showFastaBrowseDialog(input);
-}
-

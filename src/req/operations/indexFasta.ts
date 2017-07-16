@@ -82,14 +82,16 @@ export class IndexFasta extends atomic.AtomicOperation
     //faToTwoBit -> samTools faidx -> bowtie2-build -> ContigLoader
     public run() : void
     {
-        let self = this;
+        this.logKey = atomic.openLog(this.name,"Index Fasta");
 
+        let self = this;
+        
         faToTwoBit(self).then((result) => {
 
             self.setSuccess(self.twoBitFlags);
             self.update();
 
-            samToolsFaidx(self.fasta).then((result) => {
+            samToolsFaidx(self.fasta,self).then((result) => {
 
                 self.setSuccess(self.faiFlags);
                 self.update();

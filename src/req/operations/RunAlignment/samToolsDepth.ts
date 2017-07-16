@@ -1,13 +1,13 @@
 import * as fs from "fs";
 import * as readline from "readline";
 
-
+import * as atomic from "./../atomicOperations";
 import {alignData,getSortedBam,getCoverage,getCoverageForContig} from "./../../alignData";
 import {getReadable} from "./../../getAppPath";
 import {SpawnRequestParams} from "./../../JobIPC";
 import {Job,JobCallBackObject} from "./../../main/Job";
 
-export function samToolsDepth(alignData: alignData) : Promise<{}>
+export function samToolsDepth(alignData: alignData,logger : atomic.AtomicOperation) : Promise<{}>
 {
     return new Promise((resolve,reject) => {
         let samToolsExe = getReadable('samtools');
@@ -16,6 +16,7 @@ export function samToolsDepth(alignData: alignData) : Promise<{}>
         let jobCallBack : JobCallBackObject = {
             send(channel : string,params : SpawnRequestParams)
             {
+                logger.logObject(params);
                 if(params.processName == samToolsExe && params.args[0] == "depth")
                 {
                     if(params.unBufferedData)

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+  <head>
+        <script>
+			var startUp = performance.now();
+		</script>
+		<meta charset="UTF-8">
+        <link rel="stylesheet" type="text/css" href="styles/logViewer.css">
+  </head>
+  <body>
+      <script>
+        require("./logViewer");
+    </script>
+      <div id='view'>
+      </div>
+      <script>
+			console.log("Start up took "+(performance.now()-startUp+"ms"));
+		</script>
+  </body>
+</html>

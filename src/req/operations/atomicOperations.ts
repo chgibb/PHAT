@@ -1,10 +1,15 @@
 import {EventEmitter} from "events";
 import * as fs from "fs";
+import * as readline from "readline";
 
+const uuidv4 : () => string = require("uuid/v4");
+import * as rimraf from "rimraf";
+import * as mkdirp from "mkdirp";
+
+import {AtomicOperationForkEvent} from "./../atomicOperationsIPC";
 import {SpawnRequestParams} from "./../JobIPC";
 import {getReadableAndWritable} from "./../getAppPath";
 
-import * as rimraf from "rimraf";
 export abstract class AtomicOperation
 {
     public generatedArtifacts : Array<string>;
@@ -13,10 +18,9 @@ export abstract class AtomicOperation
     public generatedArtifactsDirectories : Array<string>;
 	public destinationArtifactsDirectories : Array<string>;
 
-    public startEpoch : number;
-    public endEpoch : number;
-    public startDate : Date;
-    public endDate : Date;
+    public logKey : string;
+    public closeLogOnFailure = true;
+    public closeLogOnSuccess = true;
 
     public constructor()
     {
@@ -96,7 +100,56 @@ export abstract class AtomicOperation
         this.extraData = msg;
         this.update();
     }
+
+    public logObject(obj : any) : void
+    {
+        logString(this.logKey,JSON.stringify(obj));
+    }
 }
+
+export class ForkLogger extends AtomicOperation
+{
+    public constructor()
+    {
+        super();
+    }
+    public setData(data : any){}
+    public run(){}
+}
+
+export function handleForkFailures(logger? : ForkLogger,progressMessage? : string)
+{
+    let signalFailure = function(err : string){
+        let flags : CompletionFlags;
+        flags.done = true;
+        flags.failure = true;
+        flags.success = false;
+
+        let failureObj = <AtomicOperationForkEvent>{
+            update : true,
+            flags : flags,
+            data : err,
+            progressMessage : progressMessage
+        };
+        if(logger !== undefined)
+        {
+            logger.logObject(failureObj);
+            failureObj.logRecord = closeLog(logger.logKey,"failure");
+        }
+
+        process.send(failureObj);
+        process.exit(1);
+
+    }
+    process.on("uncaughtException",function(err : string){
+        signalFailure(err);
+    });
+
+    process.on("unhandledRejection",function(err : string){
+        signalFailure(err);
+    });
+}
+
 export class CompletionFlags
 {
     public done : boolean;
@@ -196,17 +249,21 @@ export function addOperation(opName : string,data : any) : void
                 {
                     cleanGeneratedArtifacts(op);
                     if(op.flags.failure)
+                    {
+                        op.logObject(op.extraData);
                         cleanDestinationArtifacts(op);
-                    op.endEpoch = Date.now();
-                    op.endDate = new Date(op.endEpoch);
-                    fs.appendFile(
-                        getReadableAndWritable("operationTimerLog.txt"),
-                        `${op.name} end ${op.endDate}\n`,
-                        function(err : NodeJS.ErrnoException){
-                        if(err)
-                            throw err;
+                        if(op.closeLogOnFailure)
+                        {
+                            recordLogRecord(closeLog(op.logKey,"failure"));
                         }
-                    );
+                    }
+                    else if(op.flags.success)
+                    {
+                        if(op.closeLogOnSuccess)
+                        {
+                            recordLogRecord(closeLog(op.logKey,"success"));
+                        }
+                    }
                 }
                 updates.emit(op.name,op);
             }
@@ -235,16 +292,6 @@ export function runOperations(maxRunning : number) : void
             operationsQueue[i].run();
             operationsQueue[i].running = true;
             currentRunning++;
-            operationsQueue[i].startEpoch = Date.now();
-            operationsQueue[i].startDate = new Date(operationsQueue[i].startEpoch);
-            fs.appendFile(
-                getReadableAndWritable("operationTimerLog.txt"),
-                `${operationsQueue[i].name} start ${operationsQueue[i].startDate}\n`,
-                function(err : NodeJS.ErrnoException){
-                    if(err)
-                        throw err;
-                }
-            );
         }
         
     }
@@ -260,4 +307,124 @@ export function runOperations(maxRunning : number) : void
             }
         }
     }
+}
+
+export let logRecordFile = getReadableAndWritable(`logs/logRecords`);
+export class LogRecord
+{
+    name : string = "";
+    description : string = "";
+    status : string = "";
+    runTime : number = 0;
+    startEpoch : number = 0;
+    endEpoch : number = 0;
+    uuid : string = "";
+}
+
+interface OpenLogStream
+{
+    stream : fs.WriteStream;
+    startEpoch : number;
+    name : string;
+    description : string;
+    uuid : string;
+}
+let openLogStreams : Array<OpenLogStream> = new Array<OpenLogStream>();
+
+export function openLog(name : string,description : string) : string
+{
+    let uuid = uuidv4();
+    mkdirp.sync(getReadableAndWritable(`logs/${uuid}`));
+    openLogStreams.push(
+        <OpenLogStream>{
+            stream : fs.createWriteStream(getReadableAndWritable(`logs/${uuid}/log`)),
+            startEpoch : Date.now(),
+            name : name,
+            description : description,
+            uuid : uuid
+        }
+    );
+    return uuid;
+}
+
+export function closeLog(uuid : string,status : string) : LogRecord | undefined
+{
+    for(let i = 0; i != openLogStreams.length; ++i)
+    {
+        if(openLogStreams[i].uuid == uuid)
+        {
+            openLogStreams[i].stream.close();
+            let logRecord : LogRecord = new LogRecord();
+
+            logRecord.endEpoch = Date.now();
+
+            logRecord.name = openLogStreams[i].name;
+
+            logRecord.description = openLogStreams[i].description;
+
+            logRecord.status = status;
+
+            logRecord.startEpoch = openLogStreams[i].startEpoch;
+
+            logRecord.uuid = openLogStreams[i].uuid;
+
+            let start = new Date(logRecord.startEpoch);
+            let end = new Date(logRecord.endEpoch);
+
+            logRecord.runTime = Math.abs((<any>end) - (<any>start));
+
+            return logRecord;
+        }
+    }
+    return undefined;
+}
+
+export function recordLogRecord(record : LogRecord) : void
+{
+    if(record === undefined)
+        return;
+    mkdirp.sync(getReadableAndWritable(`logs`));
+    fs.appendFileSync(logRecordFile,JSON.stringify(record)+"\n");
+}
+
+export function logString(uuid : string,data : string) : void
+{
+    for(let i = 0; i != openLogStreams.length; ++i)
+    {
+        if(openLogStreams[i].uuid == uuid)
+        {
+            openLogStreams[i].stream.write("\n"+data);
+            return;
+        }
+    }
+}
+
+export async function getLogRecords(last : number) : Promise<Array<LogRecord>>
+{
+    return new Promise<Array<LogRecord>>((resolve,reject) => {
+        let lines : Array<string> = new Array<string>();
+        let res : Array<LogRecord> = new Array<LogRecord>();
+        try
+        {
+            let rl : readline.ReadLine = readline.createInterface(<readline.ReadLineOptions>{
+                input : fs.createReadStream(logRecordFile)
+            });
+            rl.on("line",function(line : string){
+                lines.push(line);
+            });
+            rl.on("close",function(){
+                lines = lines.reverse();
+                for(let i = 0; i != last; ++i)
+                {
+                    if(i == lines.length)
+                    {
+                        return resolve(res);
+                    }
+                    res.push(JSON.parse(lines[i]));
+                }
+                resolve(res);
+            });
+        }
+        catch(err){}        
+    });
 }

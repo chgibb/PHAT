@@ -1,7 +1,6 @@
 import * as winMgr from "./winMgr";
 import {getReadable} from "./../getAppPath";
 
-
 winMgr.windowCreators["pileup"] = 
 {
 	Create : function() 

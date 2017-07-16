@@ -16,8 +16,6 @@ getReadableAndWritable("");
 import {getEdition} from "./../getEdition";
 import {appMenu} from "./appMenu";
 
-const jsonFile = require("jsonfile");
-
 import * as dataMgr from "./dataMgr";
 import * as atomicOp from "./../operations/atomicOperations";
 import {AtomicOperationIPC} from "./../atomicOperationsIPC";
@@ -29,6 +27,13 @@ import {RenderSNPTrackForContig} from "./../operations/RenderSNPTrack";
 import {CheckForUpdate} from "./../operations/CheckForUpdate";
 import {DownloadAndInstallUpdate} from "./../operations/DownloadAndInstallUpdate";
 import {OpenPileupViewer} from "./../operations/OpenPileupViewer";
+import {OpenLogViewer} from "./../operations/OpenLogViewer";
+
+import {InputFastqFile} from "./../operations/inputFastqFile";
+import {InputFastaFile} from "./../operations/inputFastaFile";
+
+import {CopyCircularFigure} from "./../operations/CopyCircularFigure";
+import {DeleteCircularFigure} from "./../operations/DeleteCircularFigure";
 
 import {ProjectManifest} from "./../projectManifest";
 
@@ -38,7 +43,9 @@ import {SaveCurrentProject} from "./../operations//SaveCurrentProject";
 
 import * as winMgr from "./winMgr";
 
-import {File} from "./../file";
+import {File,getPath} from "./../file";
+import Fastq from "./../fastq";
+import {Fasta} from "./../fasta";
 import {alignData} from "./../alignData";
 import {CircularFigure} from "./../renderer/circularFigure";
 
@@ -56,9 +63,9 @@ require('./QC');
 require('./Align');
 require('./Output');
 require('./Pileup');
-//require('./Host');
 require('./circularGenomeBuilder');
 require('./OperationViewer');
+require('./logViewer');
 
 //final steps to load project after OpenProject operation has unpacked the project tarball
 function finishLoadingProject(proj : ProjectManifest) : void
@@ -76,15 +83,6 @@ function finishLoadingProject(proj : ProjectManifest) : void
 	//This ensures that when saveProjectProcess looks for a tar ball path to save to, that it is up to date.
 	if(proj)
 		dataMgr.setKey("application","project",proj);
-	let jobErrorLog = dataMgr.getKey("application","jobErrorLog");
-	let jobVerboseLog = dataMgr.getKey("application","jobVerboseLog");
-
-	try
-	{
-		fs.unlink(jobErrorLog,function(err : NodeJS.ErrnoException){});
-		fs.unlink(jobVerboseLog,function(err : NodeJS.ErrnoException){});
-	}
-	catch(err){}
 
 	dataMgr.setKey("application","jobErrorLog",getReadableAndWritable("jobErrorLog.txt"));
 	dataMgr.setKey("application","jobVerboseLog",getReadableAndWritable("jobVerboseLog.txt"));
@@ -124,7 +122,12 @@ app.on
 		atomicOp.register("openProject",OpenProject);
 		atomicOp.register("saveCurrentProject",SaveCurrentProject);
 
-		atomicOp.register("openPileupViewer",OpenPileupViewer);	
+		atomicOp.register("openPileupViewer",OpenPileupViewer);
+		atomicOp.register("openLogViewer",OpenLogViewer)
+		atomicOp.register("inputFastqFile",InputFastqFile);
+		atomicOp.register("inputFastaFile",InputFastaFile);
+		atomicOp.register("copyCircularFigure",CopyCircularFigure);
+		atomicOp.register("deleteCircularFigure",DeleteCircularFigure);
 
 		setInterval(function(){atomicOp.runOperations(1);},100);
 		//After an update has been installed, update the updater with new binaries.
@@ -402,6 +405,74 @@ ipc.on(
 		{
 			atomicOp.addOperation("openPileupViewer",arg.pileupViewerParams);
 		}
+		else if(arg.opName == "openLogViewer")
+		{
+			atomicOp.addOperation("openLogViewer",arg.logRecord);
+		}
+		else if(arg.opName == "inputFastqFile")
+		{
+			let fastqs : Array<Fastq> = dataMgr.getKey("input","fastqInputs");
+			if(fastqs)
+			{
+				for(let i = 0; i != fastqs.length; ++i)
+				{
+					if(getPath(fastqs[i]) == arg.filePath)
+					{
+						return;
+					}
+				}
+			}
+			atomicOp.addOperation("inputFastqFile",arg.filePath);
+		}
+		else if(arg.opName == "inputFastaFile")
+		{
+			let fastas : Array<Fasta> = dataMgr.getKey("input","fastaInputs");
+			if(fastas)
+			{
+				for(let i = 0; i != fastas.length; ++i)
+				{
+					if(getPath(fastas[i]) == arg.filePath)
+					{
+						return;
+					}
+				}
+			}
+			atomicOp.addOperation("inputFastaFile",arg.filePath);
+		}
+		else if(arg.opName == "copyCircularFigure")
+		{
+			let circularFigures : Array<CircularFigure> = dataMgr.getKey("circularGenomeBuilder","circularFigures");
+			if(circularFigures)
+			{
+				let circularFigure : CircularFigure = <any>{};
+				for(let i = 0; i != circularFigures.length; ++i)
+				{
+					if(arg.figureuuid == circularFigures[i].uuid)
+					{
+						Object.assign(circularFigure,circularFigures[i]);
+						break;
+					}
+				}
+				atomicOp.addOperation("copyCircularFigure",circularFigure);
+			}
+		}
+		else if(arg.opName == "deleteCircularFigure")
+		{
+			let circularFigures : Array<CircularFigure> = dataMgr.getKey("circularGenomeBuilder","circularFigures");
+			if(circularFigures)
+			{
+				let circularFigure : CircularFigure = <any>{};
+				for(let i = 0; i != circularFigures.length; ++i)
+				{
+					if(arg.figureuuid == circularFigures[i].uuid)
+					{
+						Object.assign(circularFigure,circularFigures[i]);
+						break;
+					}
+				}
+				atomicOp.addOperation("deleteCircularFigure",circularFigure);
+			}
+		}
 		dataMgr.setKey("application","operations",atomicOp.operationsQueue);
 		winMgr.publishChangeForKey("application","operations");
 	}
@@ -504,6 +575,77 @@ atomicOp.updates.on(
 				if(circularFigures[i].uuid == op.circularFigure.uuid)
 				{
 					circularFigures[i].renderedSNPTracks.push(op.circularFigure.renderedSNPTracks[op.circularFigure.renderedSNPTracks.length - 1]);
+					dataMgr.setKey("circularGenomeBuilder","circularFigures",circularFigures);
+					winMgr.publishChangeForKey("circularGenomeBuilder","circularFigures");
+					break;
+				}
+			}
+		}
+	}
+);
+
+atomicOp.updates.on(
+	"inputFastqFile",function(op : InputFastqFile)
+	{
+		dataMgr.setKey("application","operations",atomicOp.operationsQueue);
+		winMgr.publishChangeForKey("application","operations");
+		if(op.flags.success)
+		{
+			let fastqs : Array<Fastq> = dataMgr.getKey("input","fastqInputs");
+			if(!fastqs)
+				fastqs = new Array<Fastq>();
+			fastqs.push(op.fastq);
+			dataMgr.setKey("input","fastqInputs",fastqs);
+			winMgr.publishChangeForKey("input","fastqInputs");
+		}
+	}
+);
+
+atomicOp.updates.on(
+	"inputFastaFile",function(op : InputFastaFile)
+	{
+		dataMgr.setKey("application","operations",atomicOp.operationsQueue);
+		winMgr.publishChangeForKey("application","operations");
+		if(op.flags.success)
+		{
+			let fastas : Array<Fasta> = dataMgr.getKey("input","fastaInputs");
+			if(!fastas)
+				fastas = new Array<Fasta>();
+			fastas.push(op.fasta);
+			dataMgr.setKey("input","fastaInputs",fastas);
+			winMgr.publishChangeForKey("input","fastaInputs");
+		}
+	}
+);
+
+atomicOp.updates.on(
+	"copyCircularFigure",function(op : CopyCircularFigure)
+	{
+		dataMgr.setKey("application","operations",atomicOp.operationsQueue);
+		winMgr.publishChangeForKey("application","operations");
+		if(op.flags.success)
+		{
+			let circularFigures : Array<CircularFigure> = dataMgr.getKey("circularGenomeBuilder","circularFigures");
+			circularFigures.push(op.newFigure);
+			dataMgr.setKey("circularGenomeBuilder","circularFigures",circularFigures);
+			winMgr.publishChangeForKey("circularGenomeBuilder","circularFigures");
+		}
+	}
+);
+
+atomicOp.updates.on(
+	"deleteCircularFigure",function(op : DeleteCircularFigure)
+	{
+		dataMgr.setKey("application","operations",atomicOp.operationsQueue);
+		winMgr.publishChangeForKey("application","operations");
+		if(op.flags.success)
+		{
+			let circularFigures : Array<CircularFigure> = dataMgr.getKey("circularGenomeBuilder","circularFigures");
+			for(let i = circularFigures.length - 1; i != -1; i--)
+			{
+				if(circularFigures[i].uuid == op.figure.uuid)
+				{
+					circularFigures.splice(i,1);
 					dataMgr.setKey("circularGenomeBuilder","circularFigures",circularFigures);
 					winMgr.publishChangeForKey("circularGenomeBuilder","circularFigures");
 					break;

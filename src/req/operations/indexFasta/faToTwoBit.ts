@@ -10,6 +10,7 @@ export function faToTwoBit(op : IndexFasta) : Promise<{}>
         let jobCallBack : JobCallBackObject = {
             send(channel : string,params : SpawnRequestParams)
             {
+                op.logObject(params);
                 if(params.done && params.retCode !== undefined)
                 {
                     if(params.retCode == 0)

@@ -1,12 +1,13 @@
 import * as fs from "fs";
 
+import * as atomic from "./../atomicOperations";
 import {alignData,getArtifactDir,getCoverageDir,getSam} from "./../../alignData";
 import {getReadable,getReadableAndWritable} from "./../../getAppPath";
 import {SpawnRequestParams} from "./../../JobIPC";
 import {Job,JobCallBackObject} from "./../../main/Job";
 import {getPath} from "./../../file";
 
-export function bowTie2Align(alignData : alignData,update : () => void) : Promise<{}>
+export function bowTie2Align(alignData : alignData,logger : atomic.AtomicOperation) : Promise<{}>
 {
     return new Promise((resolve,reject) => {
         let bowtie2Exe = "";
@@ -18,6 +19,7 @@ export function bowTie2Align(alignData : alignData,update : () => void) : Promis
         let jobCallBack : JobCallBackObject = {
             send(channel : string,params : SpawnRequestParams)
             {
+                logger.logObject(params);
                 if(params.processName == bowtie2Exe)
                 {
                     if(params.unBufferedData)
@@ -73,7 +75,6 @@ export function bowTie2Align(alignData : alignData,update : () => void) : Promis
         fs.mkdirSync(getArtifactDir(alignData));
         fs.mkdirSync(getCoverageDir(alignData));
         let bowtieJob = new Job(bowtie2Exe,args,"",true,jobCallBack,{});
-        bowtieJob.vLog = getReadableAndWritable("bowTieLog.txt");
         try
         {
             bowtieJob.Run();
@@ -82,6 +83,5 @@ export function bowTie2Align(alignData : alignData,update : () => void) : Promis
         {
             return reject(err);
         }
-        update();
     });
 }

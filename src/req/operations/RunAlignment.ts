@@ -24,8 +24,7 @@ export class RunAlignment extends atomic.AtomicOperation
         data : {
             fasta : Fasta,
             fastq1 : Fastq,
-            fastq2 : Fastq,
-            type : string
+            fastq2 : Fastq
         }) : void
         {
             this.fasta = data.fasta;
@@ -33,7 +32,6 @@ export class RunAlignment extends atomic.AtomicOperation
             this.fastq2 = data.fastq2;
 
             this.alignData = new alignData();
-            this.alignData.type = data.type;
             this.alignData.fasta = this.fasta;
             this.alignData.fastqs.push(this.fastq1,this.fastq2);
             this.generatedArtifacts.push(`${getPath(this.fasta)}.fai`);
@@ -42,6 +40,8 @@ export class RunAlignment extends atomic.AtomicOperation
 
     public run() : void
     {
+        this.closeLogOnFailure = false;
+        this.closeLogOnSuccess = false;
         let self = this;
         this.runAlignmentProcess = cp.fork(getReadable("RunAlignment.js"));
         self.runAlignmentProcess.on(
@@ -61,6 +61,10 @@ export class RunAlignment extends atomic.AtomicOperation
                     {
                         self.alignData = ev.data.alignData;
                     }
+                    if(ev.flags.done)
+                    {
+                        atomic.recordLogRecord(ev.logRecord);
+                    }
                     self.step = ev.step;
                     self.progressMessage = ev.progressMessage;
                     console.log(self.step+" "+self.progressMessage);
@@ -75,7 +79,9 @@ export class RunAlignment extends atomic.AtomicOperation
                         setData : true,
                         data : {
                             alignData : self.alignData
-                        }
+                        },
+                        name : self.name,
+                        description : "Run Alignment"
                     }
                 );
             },500
