@@ -31,24 +31,31 @@ export class File
 
 export function importIntoProject(file : File) : Promise<Error> | undefined
 {
-    if(file.imported)
-        return undefined;
     return new Promise<Error>((resolve,reject) => {
-        fs.mkdirSync(getReadableAndWritable(`rt/imported/${file.uuid}`));
-        fse.copy(
-            getPath(file),
-            getReadableAndWritable(`rt/imported/${file.uuid}/${file.alias}`),
-            function(err : Error){
-                if(err)
-                    reject(err);
-                else
-                {
-                    file.path = `rt/imported/${file.uuid}/${file.alias}`;
-                    file.imported = true;
-                    resolve(undefined);
+        if(file.imported)
+            return reject(new Error(`${file.alias} has already been imported`));
+        try
+        {
+            fs.mkdirSync(getReadableAndWritable(`rt/imported/${file.uuid}`));
+            fse.copy(
+                getPath(file),
+                getReadableAndWritable(`rt/imported/${file.uuid}/${file.alias}`),
+                function(err : Error){
+                    if(err)
+                        reject(err);
+                    else
+                    {
+                        file.path = `rt/imported/${file.uuid}/${file.alias}`;
+                        file.imported = true;
+                        resolve(undefined);
+                    }
                 }
-            }
-        );
+            );
+        }
+        catch(err)
+        {
+            reject(err);
+        }
     });
 }
 
