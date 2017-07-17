@@ -6,8 +6,6 @@ import {ProjectManifest} from "./../projectManifest";
 //final steps to load project after OpenProject operation has unpacked the project tarball
 export function finishLoadingProject(proj : ProjectManifest) : void
 {
-	atomicOp.clearOperationsQueue();
-
 	dataMgr.setKey("application","finishedSavingProject",false);
 
 	dataMgr.clearData();
