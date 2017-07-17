@@ -44,7 +44,7 @@ export function getLatestUpdate(userName : string,repo : string,token : string) 
                 if(!greaterThan && updateChannel == "beta")
                 {
                     //try to check again as though current version was a beta
-                    if(!isBeta(pjson.version))
+                    if(!isBeta(pjson.version) && arg.data[i].tag_name != pjson.version)
                     {
                         greaterThan = versionIsGreaterThan(arg.data[i].tag_name,`${pjson.version}-beta.0`);
                     }

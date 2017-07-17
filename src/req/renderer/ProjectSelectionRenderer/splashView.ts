@@ -4,8 +4,11 @@ let ipc = ipcRenderer;
 
 const Dialogs = require("dialogs");
 const dialogs = Dialogs();
+const jsonFile = require("jsonfile");
 
 import {AtomicOperationIPC} from "./../../atomicOperationsIPC";
+import {AtomicOperation} from "./../../operations/atomicOperations";
+import {ProjectManifest,getProjectManifests} from "./../../projectManifest";
 import * as viewMgr from "./../viewMgr";
 
 export class SplashView extends viewMgr.View
@@ -54,6 +57,44 @@ export class SplashView extends viewMgr.View
                             name : text
                         }
                     );
+                    //wait for the response from newProject and then open the newly created project from the manifest
+                    new Promise<void>((resolve,reject) => {
+                        function doneOperation(event : any,arg : any){
+                            if(arg.action == "getKey" || arg.action == "keyChange")
+                            {
+                                if(arg.key == "operations" && arg.val !== undefined)
+                                {
+                                    let ops : Array<AtomicOperation> = <Array<AtomicOperation>>arg.val;
+                                    for(let i = 0 ; i != ops.length; ++i)
+                                    {
+                                        if(ops[i].name == "newProject")
+                                        {
+                                            if(ops[i].flags.done)
+                                            {
+                                                ipc.removeListener("projectSelection",doneOperation);
+                                                if(ops[i].flags.success)
+                                                    resolve();
+                                                else if(ops[i].flags.failure)
+                                                    reject();
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        ipc.on("projectSelection",doneOperation);
+                    }).then(() =>{
+                        let projects : Array<ProjectManifest> = (<Array<ProjectManifest>>jsonFile.readFileSync(getProjectManifests()));
+                        ipc.send(
+                            "runOperation",
+                            <AtomicOperationIPC>{
+                                opName : "openProject",
+                                proj : projects[projects.length - 1]
+                            }
+                        )
+                    }).catch(() => {
+                        alert("There was an error creating your project");
+                    });
                 }
             });
             return;
