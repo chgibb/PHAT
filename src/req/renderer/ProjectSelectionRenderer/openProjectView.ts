@@ -5,14 +5,17 @@ let ipc = ipcRenderer;
 const jsonFile = require("jsonfile");
 
 import {ProjectManifest,getProjectManifests} from "./../../projectManifest";
+import {getCurrentlyOpenProject} from "./getCurrentlyOpenProject";
 import {exportProjectBrowseDialog} from "./exportProjectBrowseDialog";
 import {importProjectBrowseDialog} from "./importProjectBrowseDialog";
 import {AtomicOperationIPC} from "./../../atomicOperationsIPC";
+
 import * as viewMgr from "./../viewMgr";
 
 export class OpenProjectView extends viewMgr.View
 {
     public projects : Array<ProjectManifest>;
+    public currentlyOpenProject : ProjectManifest;
     public constructor(div : string)
     {
         super("openProjectView",div);
@@ -29,6 +32,7 @@ export class OpenProjectView extends viewMgr.View
             projects = new Array<ProjectManifest>();
         }
         this.projects = projects;
+        this.currentlyOpenProject = getCurrentlyOpenProject();
     }
     public onUnMount() : void{}
     public renderView() : string
@@ -42,6 +46,14 @@ export class OpenProjectView extends viewMgr.View
                     <br />
                     <br />
                 `;
+                if(this.currentlyOpenProject)
+                {
+                    res += `
+                    <h3>Currently Open Project</h3>
+                    <h4 class="activeHover" style="display:flex;margin-right:50px;" id="currentlyOpen">${this.currentlyOpenProject.alias}</h4>
+                    <br />
+                    `;
+                }
                 if(this.projects)
                 {
                     for(let i = 0; i != this.projects.length; ++i)
@@ -55,7 +67,7 @@ export class OpenProjectView extends viewMgr.View
                         `;
                     }
                 }
-                if(!this.projects || this.projects.length == 0)
+                if((!this.projects || this.projects.length == 0) && !this.currentlyOpenProject)
                 {
                     res += `
                         <div class="innerCenteredDiv">
