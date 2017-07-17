@@ -22,7 +22,7 @@ export function setWritableBasePath(path : string)
 export function setReadableAndWritableBasePath(path : string)
 {
     readableAndWritableBasePath = path;
-    console.log(`Readableand writable base path set to: ${path}`);
+    console.log(`Readable and writable base path set to: ${path}`);
 }
 
 function getLinuxConfigDir() : string

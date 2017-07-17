@@ -18,6 +18,7 @@ export class InputFastqFile extends atomic.AtomicOperation
         try
         {
             this.fastq = new Fastq(this.filePath);
+            this.fastq.checked = true;
         }
         catch(err)
         {
