@@ -671,7 +671,7 @@ atomicOp.updates.on(
 			}
 		}
 	}
-)
+);
 
 atomicOp.updates.on(
 	"copyCircularFigure",function(op : CopyCircularFigure)
