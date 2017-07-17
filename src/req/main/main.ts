@@ -40,7 +40,8 @@ import {ProjectManifest} from "./../projectManifest";
 
 import {NewProject} from "./../operations/NewProject";
 import {OpenProject} from "./../operations/OpenProject";
-import {SaveCurrentProject} from "./../operations//SaveCurrentProject";
+import {SaveCurrentProject} from "./../operations/SaveCurrentProject";
+import {LoadCurrentlyOpenProject} from "./../operations/LoadCurrentlyOpenProject";
 
 import * as winMgr from "./winMgr";
 
@@ -101,6 +102,7 @@ app.on
 		atomicOp.register("newProject",NewProject);
 		atomicOp.register("openProject",OpenProject);
 		atomicOp.register("saveCurrentProject",SaveCurrentProject);
+		atomicOp.register("loadCurrentlyOpenProject",LoadCurrentlyOpenProject);
 
 		atomicOp.register("openPileupViewer",OpenPileupViewer);
 		atomicOp.register("openLogViewer",OpenLogViewer)
@@ -234,6 +236,7 @@ ipc.on
 ipc.on(
 	"runOperation",function(event,arg : AtomicOperationIPC)
 	{
+		console.log(arg);
 		dataMgr.setKey("application","operations",atomicOp.operationsQueue);
 		winMgr.publishChangeForKey("application","operations");
 		if(arg.opName =="indexFasta" || arg.opName == "generateFastQCReport")
@@ -381,6 +384,10 @@ ipc.on(
 				proj : arg.proj,
 				externalProjectPath : arg.externalProjectPath
 			});
+		}
+		else if(arg.opName == "loadCurrentlyOpenProject")
+		{
+			atomicOp.addOperation("loadCurrentlyOpenProject",{});
 		}
 		else if(arg.opName == "openPileupViewer")
 		{
@@ -768,5 +775,13 @@ atomicOp.updates.on(
 			app.quit();
 		}
 
+	}
+);
+
+atomicOp.updates.on(
+	"loadCurrentlyOpenProject",function(op : LoadCurrentlyOpenProject)
+	{
+		dataMgr.setKey("application","operations",atomicOp.operationsQueue);
+		winMgr.publishChangeForKey("application","operations");
 	}
 );

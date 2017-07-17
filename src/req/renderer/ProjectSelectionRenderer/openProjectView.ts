@@ -108,6 +108,16 @@ export class OpenProjectView extends viewMgr.View
                 throw err
             });
         }
+        if(event.target.id == "currentlyOpen")
+        {
+            ipc.send(
+                "runOperation",
+                <AtomicOperationIPC>{
+                    opName : "loadCurrentlyOpenProject"
+                }
+            );
+            return;
+        }
         if(this.projects)
         {
             for(let i = 0; i != this.projects.length; ++i)
