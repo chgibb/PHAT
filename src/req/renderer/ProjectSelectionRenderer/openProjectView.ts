@@ -5,7 +5,7 @@ let ipc = ipcRenderer;
 const jsonFile = require("jsonfile");
 
 import {ProjectManifest,getProjectManifests} from "./../../projectManifest";
-import {getCurrentlyOpenProject} from "./getCurrentlyOpenProject";
+import {getCurrentlyOpenProject} from "./../../getCurrentlyOpenProject";
 import {exportProjectBrowseDialog} from "./exportProjectBrowseDialog";
 import {importProjectBrowseDialog} from "./importProjectBrowseDialog";
 import {AtomicOperationIPC} from "./../../atomicOperationsIPC";
