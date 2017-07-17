@@ -46,6 +46,7 @@ export class View extends viewMgr.View
                 </div>
                 <div id="fastaView" style="height:45%;width:100%;">
                 </div>
+                <button id="importSelected">Imported Selected Files Into Project</button>
             `;
         }
         else
@@ -61,12 +62,42 @@ export class View extends viewMgr.View
     }
     public divClickEvents(event : JQueryEventObject) : void
     {
+        let shouldUpdate = false;
         if(event.target.id == "browseInputFiles")
         {
             inputBrowseDialog();
             return;
         }
-        let shouldUpdate = false;
+        if(event.target.id == "importSelected")
+        {
+            for(let i = 0; i != this.fastqInputs.length; ++i)
+            {
+                if(this.fastqInputs[i].checked)
+                {
+                    ipc.send(
+                        "runOperation",
+                        <AtomicOperationIPC>{
+                            opName : "importFileIntoProject",
+                            uuid : this.fastqInputs[i].uuid
+                        }
+                    );
+                }
+            }
+            for(let i = 0; i != this.fastaInputs.length; ++i)
+            {
+                if(this.fastaInputs[i].checked)
+                {
+                    ipc.send(
+                        "runOperation",
+                        <AtomicOperationIPC>{
+                            opName : "importFileIntoProject",
+                            uuid : this.fastaInputs[i].uuid
+                        }
+                    );
+                }
+            }
+        }
+        
         for(let i = 0; i != this.fastqInputs.length; ++i)
         {
             let classList = event.target.classList;

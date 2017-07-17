@@ -31,6 +31,7 @@ import {OpenLogViewer} from "./../operations/OpenLogViewer";
 
 import {InputFastqFile} from "./../operations/inputFastqFile";
 import {InputFastaFile} from "./../operations/inputFastaFile";
+import {ImportFileIntoProject} from "./../operations/ImportFileIntoProject";
 
 import {CopyCircularFigure} from "./../operations/CopyCircularFigure";
 import {DeleteCircularFigure} from "./../operations/DeleteCircularFigure";
@@ -126,6 +127,7 @@ app.on
 		atomicOp.register("openLogViewer",OpenLogViewer)
 		atomicOp.register("inputFastqFile",InputFastqFile);
 		atomicOp.register("inputFastaFile",InputFastaFile);
+		atomicOp.register("importFileIntoProject",ImportFileIntoProject);
 		atomicOp.register("copyCircularFigure",CopyCircularFigure);
 		atomicOp.register("deleteCircularFigure",DeleteCircularFigure);
 
@@ -439,6 +441,35 @@ ipc.on(
 			}
 			atomicOp.addOperation("inputFastaFile",arg.filePath);
 		}
+		else if(arg.opName == "importFileIntoProject")
+		{
+			let fastqInputs : Array<Fastq> = dataMgr.getKey("input","fastqInputs");
+			for(let i = 0; i != fastqInputs.length; ++i)
+			{
+				if(fastqInputs[i].uuid == arg.uuid)
+				{
+					if(fastqInputs[i].imported)
+						return;
+					let tmp = {};
+					Object.assign(tmp,fastqInputs[i]);
+					atomicOp.addOperation(arg.opName,tmp);
+					return;
+				}
+			}
+			let fastaInputs : Array<Fasta> = dataMgr.getKey("input","fastaInputs");
+			for(let i = 0; i != fastaInputs.length; ++i)
+			{
+				if(fastaInputs[i].uuid == arg.uuid)
+				{
+					if(fastaInputs[i].imported)
+						return;
+					let tmp = {};
+					Object.assign(tmp,fastaInputs[i]);
+					atomicOp.addOperation(arg.opName,tmp);
+					return;
+				}
+			}
+		}
 		else if(arg.opName == "copyCircularFigure")
 		{
 			let circularFigures : Array<CircularFigure> = dataMgr.getKey("circularGenomeBuilder","circularFigures");
@@ -617,6 +648,39 @@ atomicOp.updates.on(
 		}
 	}
 );
+
+atomicOp.updates.on(
+	"importFileIntoProject",function(op : ImportFileIntoProject)
+	{
+		dataMgr.setKey("application","operations",atomicOp.operationsQueue);
+		winMgr.publishChangeForKey("application","operations");
+		if(op.flags.success)
+		{
+			let fastqInputs : Array<Fastq> = dataMgr.getKey("input","fastqInputs");
+			for(let i = 0; i != fastqInputs.length; ++i)
+			{
+				if(fastqInputs[i].uuid == op.file.uuid)
+				{
+					fastqInputs[i] = <Fastq>op.file;
+					dataMgr.setKey("input","fastqInputs",fastqInputs);
+					winMgr.publishChangeForKey("input","fastqInputs");
+					return;
+				}
+			}
+			let fastaInputs : Array<Fasta> = dataMgr.getKey("input","fastaInputs");
+			for(let i = 0; i != fastaInputs.length; ++i)
+			{
+				if(fastaInputs[i].uuid == op.file.uuid)
+				{
+					fastaInputs[i] = <Fasta>op.file;
+					dataMgr.setKey("input","fastaInputs",fastaInputs);
+					winMgr.publishChangeForKey("input","fastaInputs");
+					return;
+				}
+			}
+		}
+	}
+)
 
 atomicOp.updates.on(
 	"copyCircularFigure",function(op : CopyCircularFigure)
