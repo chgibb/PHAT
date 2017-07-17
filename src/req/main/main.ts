@@ -423,29 +423,35 @@ ipc.on(
 		else if(arg.opName == "importFileIntoProject")
 		{
 			let fastqInputs : Array<Fastq> = dataMgr.getKey("input","fastqInputs");
-			for(let i = 0; i != fastqInputs.length; ++i)
+			if(fastqInputs)
 			{
-				if(fastqInputs[i].uuid == arg.uuid)
+				for(let i = 0; i != fastqInputs.length; ++i)
 				{
-					if(fastqInputs[i].imported)
+					if(fastqInputs[i].uuid == arg.uuid)
+					{
+						if(fastqInputs[i].imported)
+							return;
+						let tmp = {};
+						Object.assign(tmp,fastqInputs[i]);
+						atomicOp.addOperation(arg.opName,tmp);
 						return;
-					let tmp = {};
-					Object.assign(tmp,fastqInputs[i]);
-					atomicOp.addOperation(arg.opName,tmp);
-					return;
+					}
 				}
 			}
 			let fastaInputs : Array<Fasta> = dataMgr.getKey("input","fastaInputs");
-			for(let i = 0; i != fastaInputs.length; ++i)
+			if(fastaInputs)
 			{
-				if(fastaInputs[i].uuid == arg.uuid)
+				for(let i = 0; i != fastaInputs.length; ++i)
 				{
-					if(fastaInputs[i].imported)
+					if(fastaInputs[i].uuid == arg.uuid)
+					{
+						if(fastaInputs[i].imported)
+							return;
+						let tmp = {};
+						Object.assign(tmp,fastaInputs[i]);
+						atomicOp.addOperation(arg.opName,tmp);
 						return;
-					let tmp = {};
-					Object.assign(tmp,fastaInputs[i]);
-					atomicOp.addOperation(arg.opName,tmp);
-					return;
+					}
 				}
 			}
 		}
@@ -636,25 +642,31 @@ atomicOp.updates.on(
 		if(op.flags.success)
 		{
 			let fastqInputs : Array<Fastq> = dataMgr.getKey("input","fastqInputs");
-			for(let i = 0; i != fastqInputs.length; ++i)
+			if(fastqInputs)
 			{
-				if(fastqInputs[i].uuid == op.file.uuid)
+				for(let i = 0; i != fastqInputs.length; ++i)
 				{
-					fastqInputs[i] = <Fastq>op.file;
-					dataMgr.setKey("input","fastqInputs",fastqInputs);
-					winMgr.publishChangeForKey("input","fastqInputs");
-					return;
+					if(fastqInputs[i].uuid == op.file.uuid)
+					{
+						fastqInputs[i] = <Fastq>op.file;
+						dataMgr.setKey("input","fastqInputs",fastqInputs);
+						winMgr.publishChangeForKey("input","fastqInputs");
+						return;
+					}
 				}
 			}
 			let fastaInputs : Array<Fasta> = dataMgr.getKey("input","fastaInputs");
-			for(let i = 0; i != fastaInputs.length; ++i)
+			if(fastaInputs)
 			{
-				if(fastaInputs[i].uuid == op.file.uuid)
+				for(let i = 0; i != fastaInputs.length; ++i)
 				{
-					fastaInputs[i] = <Fasta>op.file;
-					dataMgr.setKey("input","fastaInputs",fastaInputs);
-					winMgr.publishChangeForKey("input","fastaInputs");
-					return;
+					if(fastaInputs[i].uuid == op.file.uuid)
+					{
+						fastaInputs[i] = <Fasta>op.file;
+						dataMgr.setKey("input","fastaInputs",fastaInputs);
+						winMgr.publishChangeForKey("input","fastaInputs");
+						return;
+					}
 				}
 			}
 		}
