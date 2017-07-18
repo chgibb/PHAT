@@ -112,6 +112,18 @@ app.on
 		atomicOp.register("copyCircularFigure",CopyCircularFigure);
 		atomicOp.register("deleteCircularFigure",DeleteCircularFigure);
 
+		//on completion of any operation, wait and then broadcast the queue to listening windows
+		atomicOp.setOnComplete(
+			function(op : atomicOp.AtomicOperation){
+				setTimeout(function(){
+					setImmediate(function(){
+						dataMgr.setKey("application","operations",atomicOp.operationsQueue);
+						winMgr.publishChangeForKey("application","operations");
+					});
+				},500);
+			}
+		);
+
 		setInterval(function(){atomicOp.runOperations(1);},100);
 		//After an update has been installed, update the updater with new binaries.
 		if(process.platform == "win32")
