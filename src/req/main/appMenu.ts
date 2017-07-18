@@ -114,7 +114,18 @@ export function appMenu() : Array<Electron.MenuItemOptions>
                     click(){
                         winMgr.windowCreators["operationViewer"].Create();
                     }
-                },
+                }
+			]
+		},
+		{
+			role: 'window',
+			submenu: [
+			    {
+				    role: 'minimize'
+			    },
+			    {
+				    role: 'close'
+			    },
 			    {
 				    role: 'resetzoom'
 			    },
@@ -132,17 +143,6 @@ export function appMenu() : Array<Electron.MenuItemOptions>
 			    },
 			    {
 				    role: 'toggledevtools'
-			    }
-			]
-		},
-		{
-			role: 'window',
-			submenu: [
-			    {
-				    role: 'minimize'
-			    },
-			    {
-				    role: 'close'
 			    }
 			]
 		},
