@@ -6,6 +6,7 @@ import * as viewMgr from "./../viewMgr";
 import Fastq from "./../../fastq";
 import {Fasta} from "./../../fasta";
 import {AtomicOperationIPC} from "./../../atomicOperationsIPC";
+import {getReadable} from "./../../getAppPath";
 export class ReportView extends viewMgr.View
 {
     public fastqInputs : Array<Fastq>;
@@ -83,9 +84,31 @@ export class ReportView extends viewMgr.View
                 return res;
             })()}
             </div>
-            <div>
+            <br />
+            <div style="display:inline-block;">
                 ${(()=>{
                     let res = "";
+                    let validSelection = false;
+                    if(this.selectedFastq1 && this.selectedFasta && !this.selectedFastq2)
+                    {
+                        validSelection = true;
+                        res += `
+                            <h3>Align ${this.selectedFastq1.alias}(unpaired), against ${this.selectedFasta.alias}</h3>
+                        `;
+                    }
+                    else if(this.selectedFastq1 && this.selectedFastq2 && this.selectedFasta)
+                    {
+                        validSelection = true;
+                        res += `
+                            <h3> Align ${this.selectedFastq1.alias}(forward), ${this.selectedFastq2.alias}(reverse), against ${this.selectedFasta.alias}</h3>
+                        `;
+                    }
+                    if(validSelection)
+                    {
+                        res += `
+                            <img id="alignButton" src="${getReadable("img/AlignButton.png")}" class="activeHover">
+                        `;
+                    }
                     return res;
                 })()}
             </div>
@@ -99,6 +122,20 @@ export class ReportView extends viewMgr.View
     }
     public divClickEvents(event : JQueryEventObject) : void
     {
+        if(event.target.id == "alignButton")
+        {
+            ipc.send(
+                "runOperation",
+                <AtomicOperationIPC>{
+                    opName : "runAlignment",
+                    alignParams : {
+                        fasta : this.selectedFasta,
+                        fastq1 : this.selectedFastq1,
+                        fastq2 : this.selectedFastq2
+                    }
+                }
+            );
+        }
         if(this.selectedFastq1 && event.target.id == this.selectedFastq1.uuid)
         {
             this.selectedFastq1 = undefined;
