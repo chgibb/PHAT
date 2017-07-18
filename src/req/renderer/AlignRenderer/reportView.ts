@@ -10,7 +10,8 @@ export class ReportView extends viewMgr.View
 {
     public fastqInputs : Array<Fastq>;
     public fastaInputs : Array<Fasta>;
-
+    public fastq1uuid : string;
+    public fastq2uuid : string;
     public constructor(div : string)
     {
         super('report',div);
@@ -38,7 +39,7 @@ export class ReportView extends viewMgr.View
                 {
                     res += `
                         <tr>
-                            <td>${this.fastqInputs[i].alias}</td>
+                            <td class="activeHover" id="${this.fastqInputs[i].uuid}">${this.fastqInputs[i].alias} ${this.fastq1uuid && this.fastq1uuid == this.fastqInputs[i].uuid ? `<b style="float:right;">1</b>` : ``}</td>
                         </tr>
                     `;
                 }
@@ -59,7 +60,7 @@ export class ReportView extends viewMgr.View
                 {
                     res += `
                         <tr>
-                            <td>${this.fastaInputs[i].alias}</td>
+                            <td class="activeHover">${this.fastaInputs[i].alias}</td>
                         </tr>
                     `;
                 }
@@ -77,7 +78,31 @@ export class ReportView extends viewMgr.View
     }
     public divClickEvents(event : JQueryEventObject) : void
     {
-
+        if(event.target.id == this.fastq1uuid)
+        {
+            this.fastq1uuid = undefined;
+            viewMgr.render();
+            return;
+        }
+        for(let i = 0; i != this.fastqInputs.length; ++i)
+        {
+            if(event.target.id == this.fastqInputs[i].uuid)
+            {
+                if(!this.fastq1uuid)
+                {
+                    this.fastq1uuid = event.target.id;
+                    viewMgr.render();
+                    return;
+                }
+                if(!this.fastq2uuid)
+                {
+                    this.fastq2uuid = event.target.id;
+                    viewMgr.render();
+                    return;
+                }
+                
+            }
+        }
     }
 
 }
