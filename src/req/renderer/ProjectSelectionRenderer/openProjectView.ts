@@ -51,7 +51,21 @@ export class OpenProjectView extends viewMgr.View
                     res += `
                     <h3>Currently Open Project</h3>
                     <h4 class="activeHover" style="display:flex;margin-right:50px;" id="currentlyOpen">${this.currentlyOpenProject.alias}</h4>
-                    <br />
+                    `;
+                    if(this.currentlyOpenProject.isExternal)
+                    {
+                        res += `
+                            <h5>${this.currentlyOpenProject.externalPath}</h5>
+                        `;
+                    }
+                    else
+                    {
+                        res += `
+                            <h5>Not exported</h5>
+                        `;
+                    }
+                    res += `
+                        <br />
                     `;
                 }
                 if(this.projects)
