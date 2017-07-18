@@ -12,6 +12,7 @@ export class ReportView extends viewMgr.View
     public fastaInputs : Array<Fasta>;
     public fastq1uuid : string;
     public fastq2uuid : string;
+    public fastauuid : string;
     public constructor(div : string)
     {
         super('report',div);
@@ -65,11 +66,16 @@ export class ReportView extends viewMgr.View
                 `;
                 for(let i = 0; i != this.fastaInputs.length; ++i)
                 {
-                    res += `
-                        <tr>
-                            <td class="activeHover">${this.fastaInputs[i].alias}</td>
-                        </tr>
-                    `;
+                    if(!this.fastaInputs[i].indexed)
+                        continue;
+                    res += `<tr>`;
+                    if(this.fastaInputs[i].uuid == this.fastauuid)
+                    {
+                        res += `<td class="activeHover selected" id="${this.fastaInputs[i].uuid}">${this.fastaInputs[i].alias} <b style="float:right;">*</b></td>`;
+                    }
+                    else
+                        res += `<td class="activeHover" id="${this.fastaInputs[i].uuid}">${this.fastaInputs[i].alias}</td>`;
+                    res += `</tr>`;
                 }
                 res += `</table>`;
                 return res;
@@ -97,6 +103,12 @@ export class ReportView extends viewMgr.View
             viewMgr.render();
             return;
         }
+        else if(event.target.id == this.fastauuid)
+        {
+            this.fastauuid = undefined;
+            viewMgr.render();
+            return;
+        }
         for(let i = 0; i != this.fastqInputs.length; ++i)
         {
             if(event.target.id == this.fastqInputs[i].uuid)
@@ -114,6 +126,18 @@ export class ReportView extends viewMgr.View
                     return;
                 }
                 
+            }
+        }
+        for(let i = 0; i != this.fastaInputs.length; ++i)
+        {
+            if(event.target.id == this.fastaInputs[i].uuid)
+            {
+                if(!this.fastauuid)
+                {
+                    this.fastauuid = event.target.id;
+                    viewMgr.render();
+                    return;
+                }
             }
         }
     }
