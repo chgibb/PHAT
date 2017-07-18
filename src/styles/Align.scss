@@ -1,12 +1,9 @@
 @import "common/colors";
-div.Block
-{
-    border : 1px solid $border-color;
-    background-color : $bg-color;
-}
-table, th, td
-{
-    border : 1px solid $border-color;
-	background-color : $bg-color;
-    border-collapse : collapse;
-}
+@import "common/table";
+@import "common/td";
+@import "common/th";
+@import "common/tableCell";
+@import "common/activeHover";
+@import "common/selected";
+@import "common/outerCenteredDiv";
+@import "common/innerCenteredDiv";
