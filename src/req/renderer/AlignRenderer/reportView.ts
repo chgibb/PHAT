@@ -38,6 +38,8 @@ export class ReportView extends viewMgr.View
                 `;
                 for(let i = 0; i != this.fastqInputs.length; ++i)
                 {
+                    if(!this.fastqInputs[i].checked)
+                        continue;
                     res += `<tr>`;
                     if(this.fastqInputs[i].uuid == this.fastq1uuid)
                     {
@@ -66,7 +68,7 @@ export class ReportView extends viewMgr.View
                 `;
                 for(let i = 0; i != this.fastaInputs.length; ++i)
                 {
-                    if(!this.fastaInputs[i].indexed)
+                    if(!this.fastaInputs[i].indexed || !this.fastaInputs[i].checked)
                         continue;
                     res += `<tr>`;
                     if(this.fastaInputs[i].uuid == this.fastauuid)
