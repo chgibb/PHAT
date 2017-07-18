@@ -166,33 +166,6 @@ app.on
 	}
 );
 
-
-app.on
-(
-	'will-quit',function() 
-	{
-			//dataMgr.setKey("application","operations",{});
-			//console.log("cleared operations");
-			//dataMgr.saveData();
-			//console.log("saved data");
-			//process.exit(0);
-    		//app.quit();
-  		}
-);
-
-app.on
-(
-	'activate',function()
-	{	
-		if(winMgr.getWindowsByName("toolBar").length == 0) 
-		{
-			winMgr.windowCreators["toolBar"].Create();
-  		}
-	}
-)
-
-
-
 ipc.on
 (
 	"openWindow",function(event : Electron.IpcMainEvent,arg : {refName : string})
