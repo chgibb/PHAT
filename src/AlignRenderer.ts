@@ -53,6 +53,15 @@ $
                 replyChannel : "align"
             }
         );
+        ipc.send(
+            "keySub",
+            <KeySubEvent>{
+                action : "keySub",
+                channel : "application",
+                key : "operations",
+                replyChannel : "align"
+            }
+        );
 
         ipc.on
         (
