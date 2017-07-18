@@ -10,9 +10,9 @@ export class ReportView extends viewMgr.View
 {
     public fastqInputs : Array<Fastq>;
     public fastaInputs : Array<Fasta>;
-    public fastq1uuid : string;
-    public fastq2uuid : string;
-    public fastauuid : string;
+    public selectedFastq1 : Fastq;
+    public selectedFastq2 : Fastq;
+    public selectedFasta : Fasta;
     public constructor(div : string)
     {
         super('report',div);
@@ -41,11 +41,11 @@ export class ReportView extends viewMgr.View
                     if(!this.fastqInputs[i].checked)
                         continue;
                     res += `<tr>`;
-                    if(this.fastqInputs[i].uuid == this.fastq1uuid)
+                    if(this.selectedFastq1 && this.fastqInputs[i].uuid == this.selectedFastq1.uuid)
                     {
                         res += `<td class="activeHover selected" id="${this.fastqInputs[i].uuid}">${this.fastqInputs[i].alias} <b style="float:right;">1</b></td>`;
                     }
-                    else if(this.fastqInputs[i].uuid == this.fastq2uuid)
+                    else if(this.selectedFastq2 && this.fastqInputs[i].uuid == this.selectedFastq2.uuid)
                     {
                         res += `<td class="activeHover selected" id="${this.fastqInputs[i].uuid}">${this.fastqInputs[i].alias} <b style="float:right;">2</b></td>`;
                     }
@@ -71,7 +71,7 @@ export class ReportView extends viewMgr.View
                     if(!this.fastaInputs[i].indexed || !this.fastaInputs[i].checked)
                         continue;
                     res += `<tr>`;
-                    if(this.fastaInputs[i].uuid == this.fastauuid)
+                    if(this.selectedFasta && this.fastaInputs[i].uuid == this.selectedFasta.uuid)
                     {
                         res += `<td class="activeHover selected" id="${this.fastaInputs[i].uuid}">${this.fastaInputs[i].alias} <b style="float:right;">*</b></td>`;
                     }
@@ -83,6 +83,12 @@ export class ReportView extends viewMgr.View
                 return res;
             })()}
             </div>
+            <div>
+                ${(()=>{
+                    let res = "";
+                    return res;
+                })()}
+            </div>
             </div>
         </div>
         `;
@@ -93,21 +99,21 @@ export class ReportView extends viewMgr.View
     }
     public divClickEvents(event : JQueryEventObject) : void
     {
-        if(event.target.id == this.fastq1uuid)
+        if(this.selectedFastq1 && event.target.id == this.selectedFastq1.uuid)
         {
-            this.fastq1uuid = undefined;
+            this.selectedFastq1 = undefined;
             viewMgr.render();
             return;
         }
-        else if(event.target.id == this.fastq2uuid)
+        else if(this.selectedFastq2 && event.target.id == this.selectedFastq2.uuid)
         {
-            this.fastq2uuid = undefined;
+            this.selectedFastq2 = undefined;
             viewMgr.render();
             return;
         }
-        else if(event.target.id == this.fastauuid)
+        else if(this.selectedFasta && event.target.id == this.selectedFasta.uuid)
         {
-            this.fastauuid = undefined;
+            this.selectedFasta = undefined;
             viewMgr.render();
             return;
         }
@@ -115,15 +121,15 @@ export class ReportView extends viewMgr.View
         {
             if(event.target.id == this.fastqInputs[i].uuid)
             {
-                if(!this.fastq1uuid)
+                if(!this.selectedFastq1)
                 {
-                    this.fastq1uuid = event.target.id;
+                    this.selectedFastq1 = this.fastqInputs[i];
                     viewMgr.render();
                     return;
                 }
-                if(!this.fastq2uuid)
+                if(!this.selectedFastq2)
                 {
-                    this.fastq2uuid = event.target.id;
+                    this.selectedFastq2 = this.fastqInputs[i];
                     viewMgr.render();
                     return;
                 }
@@ -134,9 +140,9 @@ export class ReportView extends viewMgr.View
         {
             if(event.target.id == this.fastaInputs[i].uuid)
             {
-                if(!this.fastauuid)
+                if(!this.selectedFasta)
                 {
-                    this.fastauuid = event.target.id;
+                    this.selectedFasta = this.fastaInputs[i];
                     viewMgr.render();
                     return;
                 }
