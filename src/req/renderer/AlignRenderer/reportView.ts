@@ -6,6 +6,8 @@ import * as viewMgr from "./../viewMgr";
 import Fastq from "./../../fastq";
 import {Fasta} from "./../../fasta";
 import {AtomicOperationIPC} from "./../../atomicOperationsIPC";
+import {AtomicOperation} from "./../../operations/atomicOperations";
+import {RunAlignment} from "./../../operations/RunAlignment";
 import {getReadable} from "./../../getAppPath";
 export class ReportView extends viewMgr.View
 {
@@ -14,6 +16,7 @@ export class ReportView extends viewMgr.View
     public selectedFastq1 : Fastq;
     public selectedFastq2 : Fastq;
     public selectedFasta : Fasta;
+    public operations : Array<AtomicOperation>;
     public constructor(div : string)
     {
         super('report',div);
@@ -108,6 +111,34 @@ export class ReportView extends viewMgr.View
                         res += `
                             <img id="alignButton" src="${getReadable("img/AlignButton.png")}" class="activeHover">
                         `;
+                    }
+                    res += `
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                    `;
+                    if(this.operations)
+                    {
+                        for(let i = 0; i != this.operations.length; ++i)
+                        {
+                            if(this.operations[i].name == "runAlignment" && this.operations[i].running)
+                            {
+                                let op : RunAlignment = <RunAlignment>this.operations[i];
+                                if(op.fastq1 && !op.fastq2)
+                                {
+                                    res += `
+                                        <h4>Aligning ${op.fastq1.alias}(unpaired), against ${op.fasta.alias}. Step: ${op.step}., ${op.progressMessage}</h4>
+                                    `;
+                                }
+                                else if(op.fastq1 && op.fastq2)
+                                {
+                                    res += `
+                                        <h4>Aligning ${op.fastq1.alias}(forward), ${op.fastq2.alias}(reverse), against ${op.fasta.alias}. Step: ${op.step}., ${op.progressMessage}</h4>
+                                    `;
+                                }
+                            }
+                        }
                     }
                     return res;
                 })()}
