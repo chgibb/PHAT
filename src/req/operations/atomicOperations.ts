@@ -246,6 +246,11 @@ export function cleanDestinationArtifacts(op : AtomicOperation) : void
         catch(err){}
     }
 }
+export let onComplete : (op : AtomicOperation) => void = undefined;
+export function setOnComplete(func : (op : AtomicOperation) => void) : void
+{
+    onComplete = func;
+}
 export function addOperation(opName : string,data : any) : void
 {
     for(let i = 0; i != registeredOperations.length; ++i)
@@ -275,6 +280,8 @@ export function addOperation(opName : string,data : any) : void
                             recordLogRecord(closeLog(op.logKey,"success"));
                         }
                     }
+                    if(onComplete)
+                        onComplete(op);
                 }
                 updates.emit(op.name,op);
             }

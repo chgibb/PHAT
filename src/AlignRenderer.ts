@@ -53,8 +53,15 @@ $
                 replyChannel : "align"
             }
         );
-
-        
+        ipc.send(
+            "keySub",
+            <KeySubEvent>{
+                action : "keySub",
+                channel : "application",
+                key : "operations",
+                replyChannel : "align"
+            }
+        );
 
         ipc.on
         (
@@ -67,7 +74,6 @@ $
                     {
                         if(arg.val !== undefined)
                         {
-                            //views[view.getIndexOfViewByName(views,"report")].data.fastqInputs = arg.val;
                             (<reportView.ReportView>viewMgr.getViewByName("report")).fastqInputs = arg.val;
                         }
                     }
@@ -75,9 +81,12 @@ $
                     {
                         if(arg.val !== undefined)
                         {
-                            //views[view.getIndexOfViewByName(views,"report")].data.fastaInputs = arg.val;
                             (<reportView.ReportView>viewMgr.getViewByName("report")).fastaInputs = arg.val;
                         }
+                    }
+                    if(arg.key == "operations")
+                    {
+                        (<reportView.ReportView>viewMgr.getViewByName("report")).operations = arg.val;
                     }
                 }
                 viewMgr.render();
