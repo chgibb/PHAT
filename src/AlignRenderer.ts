@@ -54,8 +54,6 @@ $
             }
         );
 
-        
-
         ipc.on
         (
             'align',function(event,arg)

@@ -22,7 +22,54 @@ export class ReportView extends viewMgr.View
     public dataChanged() : void{}
     public renderView() : string | undefined
     {
-        return ``;
+        return `
+        <div class="outerCenteredDiv">
+            <div class="innerCenteredDiv">
+            <div id="reads" style="display:inline-block;width:45%;float:left;">
+            ${(()=>{
+                let res = "";
+                res += `
+                    <table style="width:100%">
+                        <tr>
+                            <th>Reads</th>
+                        </tr>
+                `;
+                for(let i = 0; i != this.fastqInputs.length; ++i)
+                {
+                    res += `
+                        <tr>
+                            <td>${this.fastqInputs[i].alias}</td>
+                        </tr>
+                    `;
+                }
+                res += `</table>`;
+                return res;
+            })()}
+            </div>
+            <div id="refSeqs" style="display:inline-block;width:45%;">
+            ${(()=>{
+                let res = "";
+                res += `
+                    <table style="width:100%">
+                        <tr>
+                            <th>Ref Seqs</th>
+                        </tr>
+                `;
+                for(let i = 0; i != this.fastaInputs.length; ++i)
+                {
+                    res += `
+                        <tr>
+                            <td>${this.fastaInputs[i].alias}</td>
+                        </tr>
+                    `;
+                }
+                res += `</table>`;
+                return res;
+            })()}
+            </div>
+            </div>
+        </div>
+        `;
     }
     public postRender() : void
     {
