@@ -16,16 +16,6 @@ $
         reportView.addView(viewMgr.views,"container");
 
         viewMgr.changeView("report");
-        
-        ipc.send(
-            "getKey",
-            <GetKeyEvent>{
-                action : "getKey",
-                channel : "align",
-                key : "aligns",
-                replyChannel : "align"
-            }
-        );
         ipc.send(
             "getKey",
             <GetKeyEvent>{
@@ -63,15 +53,7 @@ $
                 replyChannel : "align"
             }
         );
-        ipc.send(
-            "keySub",
-            <KeySubEvent>{
-                action : "keySub",
-                channel : "align",
-                key : "aligns",
-                replyChannel : "align"
-            }
-        );
+
         
 
         ipc.on
@@ -97,15 +79,7 @@ $
                             (<reportView.ReportView>viewMgr.getViewByName("report")).fastaInputs = arg.val;
                         }
                     }
-                    if(arg.key == "aligns")
-                    {
-                        if(arg.val !== undefined)
-                        {
-                            
-                        }
-                    }
                 }
-                
                 viewMgr.render();
             }
         );
