@@ -31,6 +31,7 @@ import {OpenLogViewer} from "./../operations/OpenLogViewer";
 
 import {InputFastqFile} from "./../operations/inputFastqFile";
 import {InputFastaFile} from "./../operations/inputFastaFile";
+import {ImportFileIntoProject} from "./../operations/ImportFileIntoProject";
 
 import {CopyCircularFigure} from "./../operations/CopyCircularFigure";
 import {DeleteCircularFigure} from "./../operations/DeleteCircularFigure";
@@ -39,7 +40,8 @@ import {ProjectManifest} from "./../projectManifest";
 
 import {NewProject} from "./../operations/NewProject";
 import {OpenProject} from "./../operations/OpenProject";
-import {SaveCurrentProject} from "./../operations//SaveCurrentProject";
+import {SaveCurrentProject} from "./../operations/SaveCurrentProject";
+import {LoadCurrentlyOpenProject} from "./../operations/LoadCurrentlyOpenProject";
 
 import * as winMgr from "./winMgr";
 
@@ -48,6 +50,8 @@ import Fastq from "./../fastq";
 import {Fasta} from "./../fasta";
 import {alignData} from "./../alignData";
 import {CircularFigure} from "./../renderer/circularFigure";
+
+import {finishLoadingProject} from "./finishLoadingProject";
 
 import {GetKeyEvent,SaveKeyEvent,KeySubEvent} from "./../ipcEvents";
 
@@ -67,30 +71,7 @@ require('./circularGenomeBuilder');
 require('./OperationViewer');
 require('./logViewer');
 
-//final steps to load project after OpenProject operation has unpacked the project tarball
-function finishLoadingProject(proj : ProjectManifest) : void
-{
-	atomicOp.clearOperationsQueue();
 
-	dataMgr.setKey("application","finishedSavingProject",false);
-
-	dataMgr.clearData();
-	dataMgr.loadData(getReadableAndWritable("rt/rt.json"));
-	
-	//If we're loading an interal project, set the project object in the runtime manifest accordingly
-	//If we're loading externally, openProjectProcess will detect and patch it in appropriately
-	//openProjectProcess patches it with the appropriate tar ball path on each load in case the project file has been moved since it was last used.
-	//This ensures that when saveProjectProcess looks for a tar ball path to save to, that it is up to date.
-	if(proj)
-		dataMgr.setKey("application","project",proj);
-
-	dataMgr.setKey("application","jobErrorLog",getReadableAndWritable("jobErrorLog.txt"));
-	dataMgr.setKey("application","jobVerboseLog",getReadableAndWritable("jobVerboseLog.txt"));
-
-	winMgr.windowCreators["toolBar"].Create();
-	winMgr.closeAllExcept("toolBar");
-
-}
 
 app.on
 (
@@ -121,13 +102,27 @@ app.on
 		atomicOp.register("newProject",NewProject);
 		atomicOp.register("openProject",OpenProject);
 		atomicOp.register("saveCurrentProject",SaveCurrentProject);
+		atomicOp.register("loadCurrentlyOpenProject",LoadCurrentlyOpenProject);
 
 		atomicOp.register("openPileupViewer",OpenPileupViewer);
 		atomicOp.register("openLogViewer",OpenLogViewer)
 		atomicOp.register("inputFastqFile",InputFastqFile);
 		atomicOp.register("inputFastaFile",InputFastaFile);
+		atomicOp.register("importFileIntoProject",ImportFileIntoProject);
 		atomicOp.register("copyCircularFigure",CopyCircularFigure);
 		atomicOp.register("deleteCircularFigure",DeleteCircularFigure);
+
+		//on completion of any operation, wait and then broadcast the queue to listening windows
+		atomicOp.setOnComplete(
+			function(op : atomicOp.AtomicOperation){
+				setTimeout(function(){
+					setImmediate(function(){
+						dataMgr.setKey("application","operations",atomicOp.operationsQueue);
+						winMgr.publishChangeForKey("application","operations");
+					});
+				},500);
+			}
+		);
 
 		setInterval(function(){atomicOp.runOperations(1);},100);
 		//After an update has been installed, update the updater with new binaries.
@@ -170,33 +165,6 @@ app.on
 		fs.unlink("phat.update",function(err : NodeJS.ErrnoException){});
 	}
 );
-
-
-app.on
-(
-	'will-quit',function() 
-	{
-			//dataMgr.setKey("application","operations",{});
-			//console.log("cleared operations");
-			//dataMgr.saveData();
-			//console.log("saved data");
-			//process.exit(0);
-    		//app.quit();
-  		}
-);
-
-app.on
-(
-	'activate',function()
-	{	
-		if(winMgr.getWindowsByName("toolBar").length == 0) 
-		{
-			winMgr.windowCreators["toolBar"].Create();
-  		}
-	}
-)
-
-
 
 ipc.on
 (
@@ -253,6 +221,7 @@ ipc.on
 ipc.on(
 	"runOperation",function(event,arg : AtomicOperationIPC)
 	{
+		console.log(arg);
 		dataMgr.setKey("application","operations",atomicOp.operationsQueue);
 		winMgr.publishChangeForKey("application","operations");
 		if(arg.opName =="indexFasta" || arg.opName == "generateFastQCReport")
@@ -401,6 +370,10 @@ ipc.on(
 				externalProjectPath : arg.externalProjectPath
 			});
 		}
+		else if(arg.opName == "loadCurrentlyOpenProject")
+		{
+			atomicOp.addOperation("loadCurrentlyOpenProject",{});
+		}
 		else if(arg.opName == "openPileupViewer")
 		{
 			atomicOp.addOperation("openPileupViewer",arg.pileupViewerParams);
@@ -438,6 +411,41 @@ ipc.on(
 				}
 			}
 			atomicOp.addOperation("inputFastaFile",arg.filePath);
+		}
+		else if(arg.opName == "importFileIntoProject")
+		{
+			let fastqInputs : Array<Fastq> = dataMgr.getKey("input","fastqInputs");
+			if(fastqInputs)
+			{
+				for(let i = 0; i != fastqInputs.length; ++i)
+				{
+					if(fastqInputs[i].uuid == arg.uuid)
+					{
+						if(fastqInputs[i].imported)
+							return;
+						let tmp = {};
+						Object.assign(tmp,fastqInputs[i]);
+						atomicOp.addOperation(arg.opName,tmp);
+						return;
+					}
+				}
+			}
+			let fastaInputs : Array<Fasta> = dataMgr.getKey("input","fastaInputs");
+			if(fastaInputs)
+			{
+				for(let i = 0; i != fastaInputs.length; ++i)
+				{
+					if(fastaInputs[i].uuid == arg.uuid)
+					{
+						if(fastaInputs[i].imported)
+							return;
+						let tmp = {};
+						Object.assign(tmp,fastaInputs[i]);
+						atomicOp.addOperation(arg.opName,tmp);
+						return;
+					}
+				}
+			}
 		}
 		else if(arg.opName == "copyCircularFigure")
 		{
@@ -619,6 +627,45 @@ atomicOp.updates.on(
 );
 
 atomicOp.updates.on(
+	"importFileIntoProject",function(op : ImportFileIntoProject)
+	{
+		dataMgr.setKey("application","operations",atomicOp.operationsQueue);
+		winMgr.publishChangeForKey("application","operations");
+		if(op.flags.success)
+		{
+			let fastqInputs : Array<Fastq> = dataMgr.getKey("input","fastqInputs");
+			if(fastqInputs)
+			{
+				for(let i = 0; i != fastqInputs.length; ++i)
+				{
+					if(fastqInputs[i].uuid == op.file.uuid)
+					{
+						fastqInputs[i] = <Fastq>op.file;
+						dataMgr.setKey("input","fastqInputs",fastqInputs);
+						winMgr.publishChangeForKey("input","fastqInputs");
+						return;
+					}
+				}
+			}
+			let fastaInputs : Array<Fasta> = dataMgr.getKey("input","fastaInputs");
+			if(fastaInputs)
+			{
+				for(let i = 0; i != fastaInputs.length; ++i)
+				{
+					if(fastaInputs[i].uuid == op.file.uuid)
+					{
+						fastaInputs[i] = <Fasta>op.file;
+						dataMgr.setKey("input","fastaInputs",fastaInputs);
+						winMgr.publishChangeForKey("input","fastaInputs");
+						return;
+					}
+				}
+			}
+		}
+	}
+);
+
+atomicOp.updates.on(
 	"copyCircularFigure",function(op : CopyCircularFigure)
 	{
 		dataMgr.setKey("application","operations",atomicOp.operationsQueue);
@@ -713,5 +760,13 @@ atomicOp.updates.on(
 			app.quit();
 		}
 
+	}
+);
+
+atomicOp.updates.on(
+	"loadCurrentlyOpenProject",function(op : LoadCurrentlyOpenProject)
+	{
+		dataMgr.setKey("application","operations",atomicOp.operationsQueue);
+		winMgr.publishChangeForKey("application","operations");
 	}
 );
