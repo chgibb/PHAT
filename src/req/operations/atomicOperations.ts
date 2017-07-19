@@ -19,8 +19,22 @@ export abstract class AtomicOperation
 	public destinationArtifactsDirectories : Array<string>;
 
     public logKey : string;
-    public closeLogOnFailure = true;
-    public closeLogOnSuccess = true;
+    public closeLogOnFailure : boolean;
+    public closeLogOnSuccess : boolean;
+
+    public name : string;
+    
+    public flags : CompletionFlags;
+
+    public update : () => void;
+    
+    public spawnUpdate : SpawnRequestParams;
+    public progressMessage : string;
+    public step : number;
+    public totalSteps : number;
+    public extraData : any;
+
+    public running : boolean;
 
     public constructor()
     {
@@ -29,7 +43,12 @@ export abstract class AtomicOperation
         this.generatedArtifactsDirectories = new Array<string>();
         this.destinationArtifactsDirectories = new Array<string>();
 
+        this.closeLogOnFailure = true;
+        this.closeLogOnSuccess = true;
+
         this.flags = new CompletionFlags();
+
+        this.running = false;
     }
     public getGeneratedArtifacts() : Array<string>
     {
@@ -64,9 +83,7 @@ export abstract class AtomicOperation
         this.destinationArtifactsDirectories = artifacts;
     }
 
-    public name : string;
-
-    public flags : CompletionFlags;
+    
 
     public setFailure(flags : CompletionFlags) : void
     {
@@ -81,18 +98,12 @@ export abstract class AtomicOperation
         flags.failure = false;
     }
 
-    public running : boolean;
+    
 
     public abstract run() : void;
     public abstract setData(data : any) : void;
 
-    public update : () => void;
-
-    public spawnUpdate : SpawnRequestParams;
-    public progressMessage : string;
-    public step : number;
-    public totalSteps : number;
-    public extraData : any;
+    
 
     public abortOperationWithMessage(msg : string) : void
     {
@@ -235,6 +246,11 @@ export function cleanDestinationArtifacts(op : AtomicOperation) : void
         catch(err){}
     }
 }
+export let onComplete : (op : AtomicOperation) => void = undefined;
+export function setOnComplete(func : (op : AtomicOperation) => void) : void
+{
+    onComplete = func;
+}
 export function addOperation(opName : string,data : any) : void
 {
     for(let i = 0; i != registeredOperations.length; ++i)
@@ -264,6 +280,8 @@ export function addOperation(opName : string,data : any) : void
                             recordLogRecord(closeLog(op.logKey,"success"));
                         }
                     }
+                    if(onComplete)
+                        onComplete(op);
                 }
                 updates.emit(op.name,op);
             }
@@ -277,35 +295,35 @@ export function addOperation(opName : string,data : any) : void
 export function runOperations(maxRunning : number) : void
 {
     
-    //console.log(`Called ${operationsQueue.length}`);
+    //console.log(operationsQueue);
     let currentRunning : number = 0;
     for(let i = 0; i != operationsQueue.length; ++i)
     {
-        //console.log(`${operationsQueue[i].name} ${operationsQueue[i].running}`);
-
-        if(operationsQueue[i].running)
-            currentRunning++;
-        if(currentRunning >= maxRunning)
-            break;
-        if(!operationsQueue[i].running)
+        if(operationsQueue[i] !== undefined)
         {
-            operationsQueue[i].run();
-            operationsQueue[i].running = true;
-            currentRunning++;
+            if(operationsQueue[i].running)
+                currentRunning++;
+            if(currentRunning >= maxRunning)
+                break;
+            if(!operationsQueue[i].running)
+            {
+                operationsQueue[i].running = true;
+                currentRunning++;
+                operationsQueue[i].run();
+            }
         }
-        
     }
-
     for(let i = operationsQueue.length - 1; i >= 0; --i)
     {
         if(operationsQueue[i].flags.done)
         {
             if(operationsQueue[i].flags.success || operationsQueue[i].flags.failure)
             {
-                //console.log(`spliced ${operationsQueue[i].fastq.path}`);
                 operationsQueue.splice(i,1);
             }
         }
+        if(operationsQueue[i] === undefined)
+            operationsQueue.splice(i,1);
     }
 }
 

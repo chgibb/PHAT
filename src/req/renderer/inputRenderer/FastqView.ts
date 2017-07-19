@@ -34,7 +34,7 @@ export class View extends viewMgr.View
                             res += `
                                 <tr class="activeHover ${this.fastqInputs[i].uuid}Class" id="${this.fastqInputs[i].uuid}Row">
                                     <td class="${this.fastqInputs[i].uuid}Class">${this.fastqInputs[i].alias}</td>
-                                    <td class="${this.fastqInputs[i].uuid}Class">${this.fastqInputs[i].path}</td>
+                                    <td class="${this.fastqInputs[i].uuid}Class">${this.fastqInputs[i].imported ? "In Project" : this.fastqInputs[i].path}</td>
                                     <td class="${this.fastqInputs[i].uuid}Class">${this.fastqInputs[i].sizeString}</td>
                                 </tr>
                             `;

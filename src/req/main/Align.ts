@@ -10,7 +10,7 @@ winMgr.windowCreators["align"] =
 			winMgr.createWithDefault(
 				"Align",
 				"align",
-				1000,800,
+				843,676,
 				"file://"+getReadable("Align.html"),
 				false,false,
 				500,300
