@@ -9,4 +9,5 @@ const type = args[2];
 (async function(){
     await generateDownloadTemplate(type,tag_name);
     await cutRelease("chgibb","PHAT",args[0],args[1],type);
+
 })();
