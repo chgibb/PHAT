@@ -1,5 +1,6 @@
-#### For 0.0.50-beta.4
+[Home](https://chgibb.github.io/PHAT/)
 
+#### For 0.0.50-beta.4
 [Contents](https://chgibb.github.io/PHAT/docs/releases/0.0.50-beta.4/home)
 
 PHAT is available for both Ubuntu Linux (64-bit) and Windows (64-bit) in installed and portable (not installed) editions.
