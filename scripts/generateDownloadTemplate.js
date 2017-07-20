@@ -2,7 +2,7 @@ const fs = require("fs");
 
 let args = process.argv.slice(2);
 
-async function generateDownloadTemplate(type,tag_name)
+module.exports = async function generateDownloadTemplate(type,tag_name)
 {
     return new Promise((resolve,reject) => {
         let releaseTemplate = fs.readFileSync("releaseTemplate.md").toString();
@@ -18,6 +18,3 @@ async function generateDownloadTemplate(type,tag_name)
         fs.appendFileSync(`docs/docs/stableChangeLog.md`)
     });
 }
-(async function(){
-    await generateDownloadTemplate(args[0],args[1]);
-})();
