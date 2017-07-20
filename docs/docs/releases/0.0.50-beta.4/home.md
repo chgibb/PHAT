@@ -9,6 +9,6 @@ Team Member: Mitchell Pynn
 Team Member: Shane Liu
 Team Member: Jeremy Braun
 
-# Documentation for $TAGNAME$
+# Documentation for 0.0.50-beta.4
 ## Contents
-1. [How to Get PHAT](https://chgibb.github.io/PHAT/docs/latest/howToGetPHAT)
+1. [How to Get PHAT](https://chgibb.github.io/PHAT/docs/0.0.50-beta.4/howToGetPHAT)
