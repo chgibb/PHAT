@@ -1,5 +1,6 @@
-#### For $TAGNAME$
+[Home](https://chgibb.github.io/PHAT/)
 
+#### For $TAGNAME$
 [Contents](https://chgibb.github.io/PHAT/docs/latest/home)
 
 PHAT is available for both Ubuntu Linux (64-bit) and Windows (64-bit) in installed and portable (not installed) editions.
