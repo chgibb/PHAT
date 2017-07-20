@@ -11,4 +11,4 @@ Team Member: Jeremy Braun
 
 # Documentation for 0.0.50-beta.4
 ## Contents
-1. [How to Get PHAT](https://chgibb.github.io/PHAT/docs/0.0.50-beta.4/howToGetPHAT)
+1. [How to Get PHAT](https://chgibb.github.io/PHAT/docs/releases/0.0.50-beta.4/howToGetPHAT)
