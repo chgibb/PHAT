@@ -14,5 +14,8 @@ module.exports = async function generateReleaseDocsFromLatest(tag_name)
             fs.writeFileSync(`docs/docs/releases/${tag_name}/${fileStats.name}`,file);
             next();
         });
+        walker.on("end",function(){
+            resolve();
+        });
     });
 }

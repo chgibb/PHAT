@@ -13,8 +13,9 @@ module.exports = async function generateDownloadTemplate(type,tag_name)
         let changeLog = fs.readFileSync(`docs/docs/${type}ChangeLog.md`).toString();
         releaseTemplate = releaseTemplate.replace(/\$CHANGELOG\$/g,changeLog);
         console.log(releaseTemplate);
-        fs.mkdirSync(`docs/releases/${type}/${tag_name}`); 
-        fs.writeFileSync(`docs/releases/${type}/${tag_name}/index.md`,releaseTemplate);
+        fs.mkdirSync(`docs/releases/${tag_name}`); 
+        fs.writeFileSync(`docs/releases/${tag_name}/index.md`,releaseTemplate);
         fs.appendFileSync(`docs/docs/stableChangeLog.md`)
+        resolve();
     });
 }
