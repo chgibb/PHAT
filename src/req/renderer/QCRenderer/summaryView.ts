@@ -43,14 +43,14 @@ export class SummaryView extends viewMgr.View
 							res += `<tr>`;
 							if(this.fastqInputs[i].QCData.QCReport == "")
 							{
-								res += `<td style='text-align:center;'><b id='${this.fastqInputs[i].uuid}'>click to analyze</b></td>`;
+								res += `<td style='text-align:center;'><b class="activeHover" id='${this.fastqInputs[i].uuid}'>click to analyze</b></td>`;
 							}
 							else
 							{
 								res += `
 									<td style='text-align:center;'>
 										<p>
-											<img id='${this.fastqInputs[i].uuid}' src='img/done_Analysis.png' style='text-align:center;'>
+											<img class="activeHover" id='${this.fastqInputs[i].uuid}' src='img/done_Analysis.png' style='text-align:center;'>
 											<br/>
 											View Report
 											</p>

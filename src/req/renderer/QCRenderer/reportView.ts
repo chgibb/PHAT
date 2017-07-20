@@ -18,7 +18,7 @@ export class ReportView extends viewMgr.View
         if(document.getElementById('reportIsOpen') || !this.report)
             return undefined;
         return `
-            <div id='gobackbutton' style='padding: 0px 0px 5px 20px'>
+            <div class="activeHover" id='gobackbutton' style='padding: 0px 0px 5px 20px'>
                 <br />
                 <img id='goBack' src='img/GoBack.png' >
             </div>
