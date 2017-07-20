@@ -1,4 +1,4 @@
-PHAT Stable v0.0.44
+# PHAT Stable v0.0.44
 
 ### Downloads
 * [Windows Installer](https://github.com/chgibb/PHAT/releases/download/0.0.44/phat-win32-x64-setup.exe)  
@@ -9,3 +9,5 @@ PHAT Stable v0.0.44
 * [Red Hat Package Manager](https://github.com/chgibb/PHAT/releases/download/0.0.44/phat-0.0.44.x86_64.rpm)
 
 ### Changelog
+* bullet 1
+* bullet 2
