@@ -8,5 +8,3 @@
 * [Red Hat Package Manager](https://github.com/chgibb/PHAT/releases/download/0.0.44/phat-0.0.44.x86_64.rpm)
 
 ### Changelog
-* bullet 1
-* bullet 2
