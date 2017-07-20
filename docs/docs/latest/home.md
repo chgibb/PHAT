@@ -10,4 +10,4 @@ Team Member: Shane Liu
 Team Member: Jeremy Braun
 
 # Contents
-1. [How to Get PHAT](https://chgibb.github.io/docs/latest/howToGetPHAT)
+1. [How to Get PHAT](https://chgibb.github.io/PHAT/docs/latest/howToGetPHAT)
