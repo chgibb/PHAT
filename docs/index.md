@@ -6,7 +6,7 @@ title: Home
 
 ### Latest Beta
 
-## [Release History](https://chgibb.github.io/PHAT/allReleases)
+#### [Release History](https://chgibb.github.io/PHAT/allReleases)
 
 The Pathogen Host Analysis Tool (PHAT) is an application for processing and analyzing next-generation sequencing (NGS) data as it relates to relationships between pathogen and host organisms. PHAT provides quality control (QC) reporting on sequence files, alignment of sequence files against reference files, alignment viewing and Excel and comma separated values (CSV) output.
 
