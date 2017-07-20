@@ -1,0 +1,1 @@
+* Fixes element hovering in QC window
