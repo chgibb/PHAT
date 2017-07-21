@@ -20,13 +20,17 @@ export class OpenLogViewer extends atomic.AtomicOperation
         let viewer = viewers[viewers.length - 1];
 
         let self = this;
-        setTimeout(
-            function(){
+        new Promise<void>((resolve,reject) => {
+            viewer.webContents.once("did-finish-load",function(){
                 viewer.webContents.send("logViewer",{logRecord : self.logRecord});
-            },500
-        );
-
-        this.setSuccess(this.flags);
-        this.update();
+                resolve();
+            });
+        }).then(() => {
+            self.setSuccess(self.flags);
+            self.update();
+        }).catch((err) => {
+            self.abortOperationWithMessage(err);
+            self.update();
+        });
     }
 }
