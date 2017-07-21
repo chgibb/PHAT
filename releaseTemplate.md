@@ -1,4 +1,4 @@
-# PHAT Stable $TAGNAME$
+# PHAT $TAGNAME$
 [Documentation](https://chgibb.github.io/PHAT/docs/releases/$TAGNAME$/home)
 * [Windows Installer](https://github.com/chgibb/PHAT/releases/download/$TAGNAME$/phat-win32-x64-setup.exe)  
 * [Ubuntu Linux Debian Package](https://github.com/chgibb/PHAT/releases/download/$TAGNAME$/phat_$DEBTAGNAME$_amd64.deb)  
