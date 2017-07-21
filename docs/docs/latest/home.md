@@ -14,3 +14,8 @@ Team Member: Jeremy Braun
 # Documentation for $TAGNAME$
 ## Contents
 1. [How to Get PHAT](https://chgibb.github.io/PHAT/docs/latest/howToGetPHAT)
+
+### Application Architecture
+1. [Overview](https://chgibb.github.io/PHAT/docs/latest/archOverview)
+
+2. [Repository Structure](https://chgibb.github.io/PHAT/docs/latest/repoStructure)
