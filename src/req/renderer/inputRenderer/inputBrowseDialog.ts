@@ -10,10 +10,12 @@ let fastqExtensions = [
     "fastq",
     "fq"
 ];
+
 let fastaExtensions = [
     "fasta",
-    "fa"
-]
+    "fa",
+    "fna"
+];
 
 export function inputBrowseDialog() : void
 {
