@@ -15,6 +15,7 @@ let fastaExtensions = [
     "fasta",
     "fas",
     "fa",
+    "seq",
     "fna"
 ];
 
