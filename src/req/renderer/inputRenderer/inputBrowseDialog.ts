@@ -13,6 +13,7 @@ let fastqExtensions = [
 
 let fastaExtensions = [
     "fasta",
+    "fas",
     "fa",
     "fna"
 ];
