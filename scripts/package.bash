@@ -36,7 +36,7 @@ fi
 if [[ "$OSTYPE" == "cygwin" ]]; then
 
     #create electron package
-    ./node_modules/.bin/electron-packager ./dist/ --platform win32 --arch x64 --overwrite --ignore=node_modules --ignore=.jsx --ignore=build.sh --ignore=src --ignore=vcs  --ignore=.sh --ignore=notes --ignore=manuscript --ignore=presentation --version-string.LegalCopyright=MIT --version-string.FileDescription=PHAT --version-string.ProductName=PHAT
+    ./node_modules/.bin/electron-packager ./dist/ --platform win32 --arch x64 --overwrite --icon icons/phat.ico --ignore=node_modules --ignore=.jsx --ignore=build.sh --ignore=src --ignore=vcs  --ignore=.sh --ignore=notes --ignore=manuscript --ignore=presentation --version-string.LegalCopyright=MIT --version-string.FileDescription=PHAT --version-string.ProductName=PHAT
     
     #copy in all 3rd party windows dependencies
     for f in forDist/win32/*.tar.gz
