@@ -64,6 +64,7 @@ export class View extends viewMgr.View
         if(!event.target.id)
             return;
         let masterView = <masterView.View>viewMgr.getViewByName("masterView");
+        let rightPanel = <rightPanel.View>viewMgr.getViewByName("rightPanel",masterView.views);
         for(let i = 0; i != masterView.alignData.length; ++i)
         {
             if(event.target.id == masterView.alignData[i].uuid+"ViewSNPs")
@@ -134,6 +135,12 @@ export class View extends viewMgr.View
                     }
                 }
             }
+        }
+        if(event.target.id == "goBackToAlignments")
+        {
+            masterView.displayInfo = "AlignmentInfo";
+            viewMgr.render();
+            return;
         }
     }
 }

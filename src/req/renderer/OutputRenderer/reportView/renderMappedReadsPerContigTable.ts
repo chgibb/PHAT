@@ -1,7 +1,7 @@
 import * as viewMgr from "./../../viewMgr";
 import * as masterView from "./../masterView";
 import * as rightPanel from "./../rightPanel";
-
+import {getReadable} from "./../../../getAppPath";
 export function renderMappedReadsPerContigTable() : string
 {
     let masterView = <masterView.View>viewMgr.getViewByName("masterView");
@@ -9,6 +9,7 @@ export function renderMappedReadsPerContigTable() : string
     if(masterView.displayInfo != "MappedReadsPerContigInfo")
         return "";
     return `
+        <img class="activeHover" id="goBackToAlignments" src="${getReadable("img/GoBack.png")}">
         <table style="width:100%">
             ${(()=>{
                 let res = "";
