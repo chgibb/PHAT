@@ -104,31 +104,11 @@ export class SummaryView extends viewMgr.View
 				}
 				else
 				{
-                	//(<ReportView>viewMgr.getViewByName("report")).report = this.fastqInputs[i].QCData.QCReport;
-					//viewMgr.changeView('report');
-				}
-			}
-		}
-		/*
-		if(!event || !event.target || !event.target.id)
-        	return;
-
-		for(let i = 0; i != this.model.QCData.length; ++i)
-		{
-			if(this.model.QCData[i].validID == event.target.id)
-			{
-				if(this.model.QCData[i].QCReport == "")
-				{
-					this.model.generateQCReport(this.model.QCData[i].name);
-					return;
-				}
-				else
-				{
-                	(<ReportView>viewMgr.getViewByName("report")).report = this.model.QCData[i].QCReport;
+                	(<ReportView>viewMgr.getViewByName("report")).fastqToReport = this.fastqInputs[i];
 					viewMgr.changeView('report');
 				}
 			}
-		}*/
+		}
 	}
 	dataChanged(){}
 }

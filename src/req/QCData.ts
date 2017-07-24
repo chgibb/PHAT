@@ -1,4 +1,5 @@
 import Fastq from "./fastq";
+import {getReadableAndWritable} from "./getAppPath";
 export class QCData
 {
     public summary : Array<QCSummary>;
@@ -10,6 +11,12 @@ export class QCData
         this.summary = new Array<QCSummary>();
     }
 }
+
+export function getQCReportHTML(fastq : Fastq) : string
+{
+    return getReadableAndWritable(`rt/QCReports/${fastq.uuid}/fastqc_report.html`);
+}
+
 export class QCSummary
 {
     public name : string;
