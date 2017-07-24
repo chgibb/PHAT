@@ -1,12 +1,12 @@
 import Fastq from "./fastq";
 export class QCData
 {
-    public QCReport : string;
     public summary : Array<QCSummary>;
     public validID : string;
+    public reportRun : boolean;
     public constructor()
     {
-        this.QCReport = "";
+        this.reportRun = false;
         this.summary = new Array<QCSummary>();
     }
 }

@@ -39,7 +39,6 @@ export class GenerateQCReport extends atomic.AtomicOperation
 
 		this.srcDir = remainder+trimmed;
 		this.destDir = getReadableAndWritable('rt/QCReports/'+data.uuid);
-		this.fastq.QCData.QCReport = 'rt/QCReports/'+data.uuid;
 
 		this.destinationArtifactsDirectories.push(this.destDir);
 	}
@@ -120,11 +119,12 @@ export class GenerateQCReport extends atomic.AtomicOperation
 							}
 							try
 							{
-								self.fastq.QCData.summary = getQCReportSummaries(`${self.fastq.QCData.QCReport}/fastqc_data.txt`);
+								self.fastq.QCData.summary = getQCReportSummaries(`${self.destDir}/fastqc_data.txt`);
+								self.fastq.QCData.reportRun = true;
 							}
 							catch(err)
 							{
-								self.abortOperationWithMessage(`Failed to get summaries for ${self.fastq.QCData.QCReport}/fastqc_data.txt
+								self.abortOperationWithMessage(`Failed to get summaries for ${self.destDir}/fastqc_data.txt
 									${err}`);
 								return;
 							}

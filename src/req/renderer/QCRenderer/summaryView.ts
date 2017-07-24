@@ -41,7 +41,7 @@ export class SummaryView extends viewMgr.View
 						if(this.fastqInputs[i].checked)
 						{
 							res += `<tr>`;
-							if(this.fastqInputs[i].QCData.QCReport == "")
+							if(!this.fastqInputs[i].QCData.reportRun)
 							{
 								res += `<td  class="activeHover" style='text-align:center;'><b id='${this.fastqInputs[i].uuid}'>click to analyze</b></td>`;
 							}
@@ -91,7 +91,7 @@ export class SummaryView extends viewMgr.View
 		{
 			if(this.fastqInputs[i].uuid == event.target.id)
 			{
-				if(this.fastqInputs[i].QCData.QCReport == "")
+				if(!this.fastqInputs[i].QCData.reportRun)
 				{
 					ipc.send(
 						"runOperation",<AtomicOperationIPC>{
@@ -104,8 +104,8 @@ export class SummaryView extends viewMgr.View
 				}
 				else
 				{
-                	(<ReportView>viewMgr.getViewByName("report")).report = this.fastqInputs[i].QCData.QCReport;
-					viewMgr.changeView('report');
+                	//(<ReportView>viewMgr.getViewByName("report")).report = this.fastqInputs[i].QCData.QCReport;
+					//viewMgr.changeView('report');
 				}
 			}
 		}
