@@ -39,6 +39,7 @@ export class GenerateQCReport extends atomic.AtomicOperation
 
 		this.srcDir = remainder+trimmed;
 		this.destDir = getReadableAndWritable('rt/QCReports/'+data.uuid);
+		this.fastq.QCData.QCReport = 'rt/QCReports/'+data.uuid;
 
 		this.destinationArtifactsDirectories.push(this.destDir);
 	}
@@ -117,7 +118,6 @@ export class GenerateQCReport extends atomic.AtomicOperation
 								self.abortOperationWithMessage(err);
 								return;
 							}
-							self.fastq.QCData.QCReport = self.destDir;
 							try
 							{
 								self.fastq.QCData.summary = getQCReportSummaries(`${self.fastq.QCData.QCReport}/fastqc_data.txt`);
