@@ -2,7 +2,7 @@ import * as viewMgr from "./../../viewMgr";
 import * as masterView from "./../masterView";
 import * as rightPanel from "./../rightPanel";
 import {VCF2JSONRow} from "./../../../varScanMPileup2SNPVCF2JSON";
-
+import {getReadable} from "./../../../getAppPath";
 export function renderSNPPositionsTable(rows : Array<VCF2JSONRow>) : string
 {
     let masterView = <masterView.View>viewMgr.getViewByName("masterView");
@@ -10,6 +10,7 @@ export function renderSNPPositionsTable(rows : Array<VCF2JSONRow>) : string
     if(masterView.displayInfo != "SNPPositions")
         return "";
     return `
+        <img class="activeHover" id="goBackToAlignments" src="${getReadable("img/GoBack.png")}">
         <table style="width:100%">
         ${(()=>{
             let res = "";
