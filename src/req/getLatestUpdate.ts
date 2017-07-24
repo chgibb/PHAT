@@ -1,7 +1,7 @@
 let GitHubAPI = require("github-api");
 const pjson = require("./package.json");
 
-import {versionIsGreaterThan,isBeta} from "./versionIsGreaterThan";
+import {versionIsGreaterThan,isBeta,sepBaseAndBeta} from "./versionIsGreaterThan";
 import {getAppSettings,writeAppSettings} from "./appSettings";
 
 let isRightOS : RegExp;
@@ -43,8 +43,12 @@ export function getLatestUpdate(userName : string,repo : string,token : string) 
             
                 if(!greaterThan && updateChannel == "beta")
                 {
-                    //try to check again as though current version was a beta
-                    if(!isBeta(pjson.version) && arg.data[i].tag_name != pjson.version)
+                    
+                    if(
+                        !isBeta(pjson.version) && 
+                        arg.data[i].tag_name != pjson.version && 
+                        sepBaseAndBeta(pjson.version).base != sepBaseAndBeta(arg.data[i].tag_name).base
+                    )
                     {
                         greaterThan = versionIsGreaterThan(arg.data[i].tag_name,`${pjson.version}-beta.0`);
                     }
