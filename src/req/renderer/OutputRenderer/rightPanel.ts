@@ -149,11 +149,6 @@ export class View extends viewMgr.View
                 </div>
 
                 <div style="display:inline-block;">
-                    <input style="display:inline-block;" id="RefSeqInfo" type="radio" name="selectedInfo" />
-                        <p style="display:inline-block;">Ref Seq Info</p>
-                </div>
-
-                <div style="display:inline-block;">
                     <input style="display:inline-block;" id="AlignmentInfo" type="radio" name="selectedInfo" />
                         <p style="display:inline-block;">Alignment Info</p>
                 </div>
