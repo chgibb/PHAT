@@ -1,5 +1,7 @@
 /**
- * Bootstrap module for the main process. Requires helper modules and sets up event handlers.
+ * The heart of PHAT. Any module should be able to require this module and have a fully functioning PHAT main process. This module should 
+ * export nothing. It must be fully self contained.
+ * This behaviour is expected from integration tests. Tests will require this module and then hook into events and inspect behaviour.
  * @module req/main/main
  */
 import * as fs from "fs";
