@@ -117,14 +117,14 @@ export class GenerateQCReport extends atomic.AtomicOperation
 								self.abortOperationWithMessage(err);
 								return;
 							}
-							self.fastq.QCData.QCReport = self.destDir;
 							try
 							{
-								self.fastq.QCData.summary = getQCReportSummaries(`${self.fastq.QCData.QCReport}/fastqc_data.txt`);
+								self.fastq.QCData.summary = getQCReportSummaries(`${self.destDir}/fastqc_data.txt`);
+								self.fastq.QCData.reportRun = true;
 							}
 							catch(err)
 							{
-								self.abortOperationWithMessage(`Failed to get summaries for ${self.fastq.QCData.QCReport}/fastqc_data.txt
+								self.abortOperationWithMessage(`Failed to get summaries for ${self.destDir}/fastqc_data.txt
 									${err}`);
 								return;
 							}

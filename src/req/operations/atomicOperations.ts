@@ -131,7 +131,8 @@ export class ForkLogger extends AtomicOperation
 export function handleForkFailures(logger? : ForkLogger,progressMessage? : string)
 {
     let signalFailure = function(err : string){
-        let flags : CompletionFlags;
+        console.log(err);
+        let flags : CompletionFlags = new CompletionFlags();
         flags.done = true;
         flags.failure = true;
         flags.success = false;

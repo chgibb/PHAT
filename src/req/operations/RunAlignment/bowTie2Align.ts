@@ -46,7 +46,7 @@ export function bowTie2Align(alignData : alignData,logger : atomic.AtomicOperati
             args.push(getReadable("bowtie2"));
         args.push("-x");
         args.push("\""+getReadableAndWritable(`rt/indexes/${alignData.fasta.uuid}`)+"\"");
-        if(alignData.fastqs[1] !== undefined)
+        if(alignData.fastqs[1])
         {
             args.push("-1");
             args.push(getPath(alignData.fastqs[0]));
@@ -68,7 +68,7 @@ export function bowTie2Align(alignData : alignData,logger : atomic.AtomicOperati
             invokeString += " ";
         }
         alignData.invokeString = invokeString;
-        if(alignData.fastqs[1] !== undefined)
+        if(alignData.fastqs[1])
             alignData.alias = `${alignData.fastqs[0].alias}, ${alignData.fastqs[1].alias}; ${alignData.fasta.alias}`;
         else
             alignData.alias = `${alignData.fastqs[0].alias}; ${alignData.fasta.alias}`;
