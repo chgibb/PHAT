@@ -20,6 +20,7 @@ export function openProject(
     return new Promise((resolve,reject) => {
         dataMgr.clearData();
         rimraf.sync(getReadableAndWritable("rt"));
+        rebuildRTDirectory();
 
         let projectTarBall : string;
 
@@ -52,7 +53,9 @@ export function openProject(
                         unPackedFiles++;
                         cb(totalFiles,unPackedFiles);
                         return false;
-                    }
+                    },
+                    readable : true,
+                    writable : true
                 });
                 extract.on("finish",() => {
                     if(externalProjectPath)

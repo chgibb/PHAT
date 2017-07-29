@@ -41,7 +41,7 @@ export class SummaryView extends viewMgr.View
 						if(this.fastqInputs[i].checked)
 						{
 							res += `<tr>`;
-							if(this.fastqInputs[i].QCData.QCReport == "")
+							if(!this.fastqInputs[i].QCData.reportRun)
 							{
 								res += `<td  class="activeHover" style='text-align:center;'><b id='${this.fastqInputs[i].uuid}'>click to analyze</b></td>`;
 							}
@@ -91,7 +91,7 @@ export class SummaryView extends viewMgr.View
 		{
 			if(this.fastqInputs[i].uuid == event.target.id)
 			{
-				if(this.fastqInputs[i].QCData.QCReport == "")
+				if(!this.fastqInputs[i].QCData.reportRun)
 				{
 					ipc.send(
 						"runOperation",<AtomicOperationIPC>{
@@ -104,31 +104,11 @@ export class SummaryView extends viewMgr.View
 				}
 				else
 				{
-                	(<ReportView>viewMgr.getViewByName("report")).report = this.fastqInputs[i].QCData.QCReport;
+                	(<ReportView>viewMgr.getViewByName("report")).fastqToReport = this.fastqInputs[i];
 					viewMgr.changeView('report');
 				}
 			}
 		}
-		/*
-		if(!event || !event.target || !event.target.id)
-        	return;
-
-		for(let i = 0; i != this.model.QCData.length; ++i)
-		{
-			if(this.model.QCData[i].validID == event.target.id)
-			{
-				if(this.model.QCData[i].QCReport == "")
-				{
-					this.model.generateQCReport(this.model.QCData[i].name);
-					return;
-				}
-				else
-				{
-                	(<ReportView>viewMgr.getViewByName("report")).report = this.model.QCData[i].QCReport;
-					viewMgr.changeView('report');
-				}
-			}
-		}*/
 	}
 	dataChanged(){}
 }

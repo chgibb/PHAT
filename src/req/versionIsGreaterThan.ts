@@ -21,7 +21,7 @@ export function isBeta(version : string) : boolean
     return false;
 }
 
-function sepBaseAndBeta(version : string) : Version
+export function sepBaseAndBeta(version : string) : Version
 {
     if(isBeta(version))
     {
