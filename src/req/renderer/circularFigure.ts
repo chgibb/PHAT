@@ -150,6 +150,17 @@ export class CircularFigure
         cacheBaseFigure(this);
     }
 }
+
+//minimum amount of props/methods expected by figures at runtime
+export abstract class FigureCanvas
+{
+    public genome : CircularFigure;
+    public scope : FigureCanvas;
+    public abstract markerOnClick($event : any,$marker : any,uuid : string) : void;
+    public abstract figureNameOnClick() : void;
+    public abstract updateScope(scope? : FigureCanvas) : void
+}
+
 export function renderContig(contig : Contig,start : number = -1,end : number = -1) : string
 {
     if(start == -1)

@@ -20,7 +20,7 @@ import {setSelectedContigByUUID} from "./writeContigEditorModal";
 require("angular");
 require("angularplasmid");
 let app : any = angular.module('myApp',['angularplasmid']);
-export class GenomeView extends viewMgr.View
+export class GenomeView extends viewMgr.View implements cf.FigureCanvas
 {
     public genome : cf.CircularFigure;
     public firstRender : boolean;
@@ -33,7 +33,7 @@ export class GenomeView extends viewMgr.View
     }
     public onMount() : void{}
     public onUnMount() : void{}
-    public udpateScope(scope? : any) : void
+    public updateScope(scope? : cf.FigureCanvas) : void
     {
         if(scope)
             this.scope = scope;
