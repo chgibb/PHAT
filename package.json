@@ -4,7 +4,6 @@
   "description": "Pathogen Host Analysis Tool",
   "main": "main.js",
   "scripts": {
-    "start": "electron main.js",
     "test": "bash scripts/runtests.bash"
   },
   "author": {
