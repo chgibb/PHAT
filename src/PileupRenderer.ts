@@ -10,7 +10,7 @@ const pileup = require("./../forDist/pileup");
 
 ipc.on(
     'pileup',
-    function(event,arg){
+    function(event : Electron.IpcMessageEvent,arg : any){
         showPileup(
             arg.align,
             arg.contig,
