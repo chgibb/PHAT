@@ -74,7 +74,7 @@ $
         );
         ipc.on
         (
-            'circularGenomeBuilder',function(event,arg)
+            'circularGenomeBuilder',function(event : Electron.IpcMessageEvent,arg : any)
             {
                 if(arg.action == "getKey" || arg.action == "keyChange")
                 {
