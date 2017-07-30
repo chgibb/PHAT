@@ -170,14 +170,14 @@ app.on
 
 ipc.on
 (
-	"openWindow",function(event : Electron.IpcMainEvent,arg : {refName : string})
+	"openWindow",function(event : Electron.IpcMessageEvent,arg : {refName : string})
 	{
 		winMgr.windowCreators[arg.refName].Create();
 	}
 );
 ipc.on
 (
-	"getKey",function(event: Electron.IpcMainEvent,arg : GetKeyEvent)
+	"getKey",function(event : Electron.IpcMessageEvent,arg : GetKeyEvent)
 	{
 		winMgr.pushKeyTo(
 			arg.channel,
@@ -190,7 +190,7 @@ ipc.on
 
 ipc.on
 (
-	"saveKey",function(event : Electron.IpcMainEvent,arg : SaveKeyEvent)
+	"saveKey",function(event : Electron.IpcMessageEvent,arg : SaveKeyEvent)
 	{
 		dataMgr.setKey(
 			arg.channel,
@@ -205,7 +205,7 @@ ipc.on
 
 ipc.on
 (
-	"keySub",function(event,arg)
+	"keySub",function(event : Electron.IpcMessageEvent,arg : KeySubEvent)
 	{
 		if(arg.action == "keySub")
 		{
@@ -221,7 +221,7 @@ ipc.on
 );
 
 ipc.on(
-	"runOperation",function(event,arg : AtomicOperationIPC)
+	"runOperation",function(event : Electron.IpcMessageEvent,arg : AtomicOperationIPC)
 	{
 		console.log(arg);
 		dataMgr.setKey("application","operations",atomicOp.operationsQueue);
