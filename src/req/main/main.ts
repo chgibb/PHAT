@@ -8,6 +8,7 @@ import * as fs from "fs";
 import * as electron from "electron";
 const ipc = electron.ipcMain;
 const app = electron.app;
+
 if(require('electron-squirrel-startup')) app.quit();
 
 import {getReadable,getWritable,getReadableAndWritable} from "./../getAppPath";
@@ -73,14 +74,6 @@ require('./circularGenomeBuilder');
 require('./OperationViewer');
 require('./logViewer');
 
-
-
-app.on
-(
-	'activate',function()
-	{	
-	}
-); 
 
 app.on
 (
@@ -357,7 +350,7 @@ ipc.on(
 			}
 			else
 			{
-				electron.shell.openExternal("https://github.com/chgibb/PHAT/releases");
+				//Electron.shell.openExternal("https://github.com/chgibb/PHAT/releases");
 			}
 		}
 		else if(arg.opName == "newProject")
