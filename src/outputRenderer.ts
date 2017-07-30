@@ -20,7 +20,7 @@ $
         viewMgr.render();
         ipc.on
         (
-            "output",function(event,arg)
+            "output",function(event : Electron.IpcMessageEvent,arg : any)
             {
                 if(arg.action === "getKey" || arg.action === "keyChange")
                 {
