@@ -55,7 +55,7 @@ $
         );
         ipc.on
         (
-            "operationViewer",function(event,arg)
+            "operationViewer",function(event : Electron.IpcMessageEvent,arg : any)
             {
                 if(arg.action == "getKey")
                 {
