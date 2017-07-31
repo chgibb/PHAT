@@ -53,7 +53,6 @@
     "dialogs": "^1.1.19",
     "electron": "1.6.11",
     "electron-builder": "^19.8.0",
-    "electron-installer-debian": "^0.5.2",
     "electron-ipc-stream": "^0.2.0",
     "electron-packager": "8.7.2",
     "electron-squirrel-startup": "^1.0.0",
@@ -83,5 +82,8 @@
     "walk": "^2.3.9"
   },
   "dependencies": {},
+  "optionalDependencies": {
+    "electron-installer-debian": "^0.5.2"
+  },
   "v8Flags": "--nolazy --serialize_eager"
 }
