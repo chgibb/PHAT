@@ -10,6 +10,7 @@ export async function closeToolBar() : Promise<void>
                 if(!toolBar || toolBar.length > 1 || toolBar.length == 0)
                 {
                     console.log("Failed to open tool bar!");
+                    console.log(toolbar);
                     process.exit(1);
                 }
                 toolBar[0].close();
