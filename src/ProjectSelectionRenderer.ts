@@ -36,33 +36,12 @@ $
             <br />
             <p>${citationText}</p>
         `;
-        /*
-            This method is only for internal testing in order to limit access to the application
-            to collaborators. This needs to be removed for the public release. token should be
-            a GitHub oAuth token.
-        */
-        dialogs.prompt("Enter Access Token","",function(token : string){
-            checkServerPermission(token).then(() => {
-                ipc.send(
-                    "saveKey",
-                    <SaveKeyEvent>{
-                        action : "saveKey",
-                        channel : "application",
-                        key : "auth",
-                        val : {token : token}
-                    }
-                );
-                ipc.send(
-                    "runOperation",
-                    <AtomicOperationIPC>{
-                        opName : "checkForUpdate"
-                    }
-                );           
-            }).catch((err : string) => {
-                let remote = electron.remote;
-                remote.app.quit();
-            });
-        });
+        ipc.send(
+            "runOperation",
+            <AtomicOperationIPC>{
+                opName : "checkForUpdate"
+            }
+        );
         ipc.send(
             "keySub",
             <KeySubEvent>{
