@@ -9,7 +9,9 @@ export async function openProjectsView() : Promise<void>
             projSelection[0].webContents.executeJavaScript(`
                 document.getElementById("openProject").click();
             `);
-            resolve();
+            setTimeout(function(){
+                resolve();
+            },3000);
         },500);
     });
 }

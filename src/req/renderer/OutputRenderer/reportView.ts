@@ -16,6 +16,29 @@ import {renderAlignmentReportTable} from "./reportView/renderAlignmentReportTabl
 import {renderSNPPositionsTable} from "./reportView/renderSNPPositionsTable";
 import {renderMappedReadsPerContigTable} from "./reportView/renderMappedReadsPerContigTable";
 
+export class QCReportTableSortOptions
+{
+    public aliasAscending : boolean;
+    public aliasDescending : boolean;
+    public fullPathAscending : boolean;
+    public fullPathDescending : boolean;
+    public sizeInBytesAscending : boolean;
+    public sizeInBytesDescending : boolean;
+    public formattedSizeAscending : boolean;
+    public formattedSizeDescending : boolean;
+    public numberOfSequencesAscending : boolean;
+    public numberofSequencesDescending : boolean;
+    public perBaseSequenceQualityAscending : boolean;
+    public perBaseSequenceQualityDescending : boolean;
+    public perSequenceQualityScoreAscending : boolean;
+    public perSequenceQualityScoreDescending : boolean;
+    public perSequenceGCContentAscending : boolean;
+    public perSequenceGCContentDescending : boolean;
+    public sequenceDuplicationLevelsAscending : boolean;
+    public sequenceDuplicationLevelsDescending : boolean;
+    public overRepresentedSequencesAscending : boolean;
+}
+
 export function addView(arr : Array<viewMgr.View>,div : string)
 {
     arr.push(new View(div));
@@ -64,6 +87,7 @@ export class View extends viewMgr.View
         if(!event.target.id)
             return;
         let masterView = <masterView.View>viewMgr.getViewByName("masterView");
+        let rightPanel = <rightPanel.View>viewMgr.getViewByName("rightPanel",masterView.views);
         for(let i = 0; i != masterView.alignData.length; ++i)
         {
             if(event.target.id == masterView.alignData[i].uuid+"ViewSNPs")
@@ -134,6 +158,12 @@ export class View extends viewMgr.View
                     }
                 }
             }
+        }
+        if(event.target.id == "goBackToAlignments")
+        {
+            masterView.displayInfo = "AlignmentInfo";
+            viewMgr.render();
+            return;
         }
     }
 }

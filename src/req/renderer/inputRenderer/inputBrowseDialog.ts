@@ -10,10 +10,15 @@ let fastqExtensions = [
     "fastq",
     "fq"
 ];
+
 let fastaExtensions = [
     "fasta",
-    "fa"
-]
+    "fas",
+    "fa",
+    "seq",
+    "fsa",
+    "fna"
+];
 
 export function inputBrowseDialog() : void
 {
@@ -71,6 +76,5 @@ export function inputBrowseDialog() : void
                 }
             }
         }
-
     );
 }

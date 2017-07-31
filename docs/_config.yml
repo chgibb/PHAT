@@ -1,7 +1,0 @@
-markdown: kramdown
-theme: jekyll-theme-slate
-name: PHAT
-
-kramdown:
-  input: GFM
-  hard_wrap: false

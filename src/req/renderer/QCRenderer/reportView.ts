@@ -2,20 +2,22 @@
 import * as fs from "fs";
 
 import * as viewMgr from "./../viewMgr";
+import Fastq from "./../../fastq";
+import {getQCReportHTML} from "./../../QCData";
 
 export class ReportView extends viewMgr.View
 {
-    public report : string;
+    public fastqToReport : Fastq;
     public constructor(div : string)
     {
         super('report',div);
-        this.report = "";
+        this.fastqToReport = undefined;
     }
     onMount(){}
     onUnMount(){}
     renderView()
     {
-        if(document.getElementById('reportIsOpen') || !this.report)
+        if(document.getElementById('reportIsOpen') || !this.fastqToReport)
             return undefined;
         return `
             <div class="activeHover" id='gobackbutton' style='padding: 0px 0px 5px 20px'>
@@ -24,7 +26,7 @@ export class ReportView extends viewMgr.View
             </div>
             <div id='reportIsOpen'></div>
             ${(()=>{
-                return fs.readFileSync(`${this.report}/fastqc_report.html`).toString();
+                return fs.readFileSync(getQCReportHTML(this.fastqToReport)).toString();
             })()}
         `;
     }
@@ -35,7 +37,7 @@ export class ReportView extends viewMgr.View
             return;
         if(event.target.id == "goBack")
         {
-            this.report = "";
+            this.fastqToReport = undefined;
             viewMgr.changeView('summary');
             return;
         }
