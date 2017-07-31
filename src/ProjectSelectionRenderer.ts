@@ -18,7 +18,6 @@ import formatByteString from "./req/renderer/formatByteString";
 
 import * as viewMgr from "./req/renderer/viewMgr";
 
-import * as projectsView from "./req/renderer/ProjectSelectionRenderer/projectsView";
 import * as splashView from "./req/renderer/ProjectSelectionRenderer/splashView";
 import * as openProjectView from "./req/renderer/ProjectSelectionRenderer/openProjectView";
 import * as helpView from "./req/renderer/ProjectSelectionRenderer/helpView";
@@ -28,15 +27,6 @@ import {citationText} from "./req/renderer/citationText";
 import * as $ from "jquery";
 (<any>window).$ = $;
 require("./req/renderer/commonBehaviour");
-
-function refreshProjects() : void
-{
-    jsonFile.readFile(getProjectManifests(),function(err : string,obj : Array<ProjectManifest>){
-        let projectsView = <projectsView.ProjectsView>viewMgr.getViewByName("projectsView");
-        projectsView.projects = obj;
-        viewMgr.render();
-    });
-}
 
 $
 (
@@ -73,7 +63,6 @@ $
                 remote.app.quit();
             });
         });
-        refreshProjects();
         ipc.send(
             "keySub",
             <KeySubEvent>{
@@ -83,7 +72,6 @@ $
                 replyChannel : "projectSelection"
             }
         );
-        projectsView.addView(viewMgr.views,"view");
         splashView.addView(viewMgr.views,"view")
         openProjectView.addView(viewMgr.views,"view");
         helpView.addView(viewMgr.views,"view");
@@ -133,8 +121,6 @@ $
                                 `;
                                 return;
                             }
-                            if(ops[i].name == "newProject")
-                                refreshProjects();
                         }
                         
                     }
