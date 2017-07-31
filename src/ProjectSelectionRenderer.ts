@@ -53,7 +53,7 @@ $
         viewMgr.changeView("splashView");
         ipc.on
         (
-            "projectSelection",function(event,arg)
+            "projectSelection",function(event : Electron.IpcMessageEvent,arg : any)
             {
                 if(arg.action == "getKey" || arg.action == "keyChange")
                 {

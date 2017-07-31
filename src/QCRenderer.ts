@@ -56,7 +56,7 @@ $
         let trimOutFastQCPercentage = new RegExp("[0-9][0-9][%]|[0-9][%]","g");
         ipc.on
         (
-            'QC',function(event,arg)
+            'QC',function(event : Electron.IpcMessageEvent,arg : any)
             {
                 if(arg.action == "getKey" || arg.action == "keyChange")
                 {
