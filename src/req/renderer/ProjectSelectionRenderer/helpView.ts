@@ -4,6 +4,7 @@ const remote = electron.remote;
 
 import * as viewMgr from "./../viewMgr";
 import {getAppSettings,writeAppSettings} from "./../../appSettings";
+import {getReadable} from "./../../getAppPath";
 
 const pjson = require("./package.json");
 
@@ -18,21 +19,14 @@ export class HelpView extends viewMgr.View
     public renderView() : string
     {
         return `
-            <button class="activeHover" id="goBack">Go Back</button>
+            <img src="${getReadable("img/GoBack.png")}" class="activeHover" id="goBack" />
             <div class="innerCenteredDiv">
                 <br />
                 <br />
-                <button class="activeHover" id="helpAndTutorials">Help and Tutorials</button>
+                <img src="${getReadable("img/howToUsePHAT.png")}" class="activeHover" id="howToUsePHAT" />
                 <br />
                 <br />
-                <button class="activeHover" id="howToUse">How To Use PHAT</button>
-                <br />
-                <br />
-                <button class="activeHover" id="sendUsFeedBack">Send Us Feedback</button>
-                <br />
-                <br />
-                <button class="activeHover" id="makeBetter">Help Us Make PHAT Better For Everyone</button>
-                <br />
+                <img src="${getReadable("img/feedback.png")}" class="activeHover" id="feedback" />
                 <br />
                 <br />
                 <h5>PHAT will check for an update everytime it restarts from the following channel</h5>
@@ -58,24 +52,14 @@ export class HelpView extends viewMgr.View
             viewMgr.changeView("splashView");
             return;
         }
-        if(event.target.id == "helpAndTutorials")
+        if(event.target.id == "howToUsePHAT")
         {
-            remote.shell.openExternal(`${pjson.repository.url}/wiki`);
+            remote.shell.openExternal(`https://chgibb.github.io/PHATDocs/docs/releases/${pjson.version}/home`);
             return;
         }
-        if(event.target.id == "howToUse")
-        {
-            remote.shell.openExternal(`${pjson.repository.url}/wiki/How-to-use-P.H.A.T`);
-            return;
-        }
-        if(event.target.id == "sendUsFeedBack")
+        if(event.target.id == "feedback")
         {
             remote.shell.openExternal(`${pjson.repository.url}/issues`);
-            return;
-        }
-        if(event.target.id == "makeBetter")
-        {
-            remote.shell.openExternal(`${pjson.repository.url}/pulls`);
             return;
         }
         if(event.target.id == "stableChannel")

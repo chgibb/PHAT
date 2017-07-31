@@ -9,6 +9,7 @@ import {getCurrentlyOpenProject} from "./../../getCurrentlyOpenProject";
 import {exportProjectBrowseDialog} from "./exportProjectBrowseDialog";
 import {importProjectBrowseDialog} from "./importProjectBrowseDialog";
 import {AtomicOperationIPC} from "./../../atomicOperationsIPC";
+import {getReadable} from "./../../getAppPath";
 
 import * as viewMgr from "./../viewMgr";
 
@@ -41,8 +42,8 @@ export class OpenProjectView extends viewMgr.View
 
             ${(()=>{
                 let res = `
-                    <button class="activeHover" id="goBack">Go Back</button>
-                    <button class="activeHover" id="openFromFile">Open From File</button>
+                    <img src="${getReadable("img/GoBack.png")}" class="activeHover" id="goBack" />
+                    <img src="${getReadable("img/openFromFile.png")}" class="activeHover" id="openFromFile" />
                     <br />
                     <br />
                 `;
@@ -75,7 +76,7 @@ export class OpenProjectView extends viewMgr.View
                         res += `
                             <div class="projectCell">
                                 <h4 class="activeHover" style="display:flex;margin-right:50px;" id="${this.projects[i].uuid}Open">${this.projects[i].alias}</h4>
-                                <button class="activeHover" style="display:inline-block;" id="${this.projects[i].uuid}Export">Export</button>
+                                <img src="${getReadable("img/export.png")}" class="activeHover" style="display:inline-block;" id="${this.projects[i].uuid}Export" />
                             </div>
                             <br />
                         `;
