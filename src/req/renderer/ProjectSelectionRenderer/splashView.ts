@@ -8,6 +8,7 @@ const jsonFile = require("jsonfile");
 
 import {AtomicOperationIPC} from "./../../atomicOperationsIPC";
 import {AtomicOperation} from "./../../operations/atomicOperations";
+import {getReadable} from "./../../getAppPath";
 import {ProjectManifest,getProjectManifests} from "./../../projectManifest";
 import * as viewMgr from "./../viewMgr";
 
@@ -29,13 +30,13 @@ export class SplashView extends viewMgr.View
                 <h2 style="margin-bottom:0px;margin-top:0px;"><b>Tool</b></h2>
                 <br />
                 <br />
-                <button class="activeHover" id="openProject">Open Project</button>
+                <img src="${getReadable("img/openProject.png")}" class="activeHover" id="openProject" />
                 <br />
                 <br />
-                <button class="activeHover" id="createNewProject">Create New Project</button>
+                <img src="${getReadable("img/newProject.png")}" class="activeHover" id="createNewProject" />
                 <br />
                 <br />
-                <button class="activeHover" id="help">Help</button>
+                <img src="${getReadable("img/help.png")}" class="activeHover" id="help" />
             </div>
         `;
     }
