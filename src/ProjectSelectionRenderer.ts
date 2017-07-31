@@ -10,10 +10,6 @@ import {ProjectManifest,getProjectManifests} from "./req/projectManifest";
 import {AtomicOperation} from "./req/operations/atomicOperations"
 import {AtomicOperationIPC} from "./req/atomicOperationsIPC";
 import {KeySubEvent,SaveKeyEvent} from "./req/ipcEvents";
-
-
-
-import {checkServerPermission} from "./req/checkServerPermission";
 import formatByteString from "./req/renderer/formatByteString";
 
 import * as viewMgr from "./req/renderer/viewMgr";
