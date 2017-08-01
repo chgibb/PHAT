@@ -65,7 +65,7 @@ $
 
         ipc.on
         (
-            'align',function(event,arg)
+            'align',function(event : Electron.IpcMessageEvent,arg : any)
             {
                 console.log(arg);
                 if(arg.action == "getKey" || arg.action == "keyChange")

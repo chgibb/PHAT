@@ -17,7 +17,9 @@ export async function createNewProject() : Promise<void>
                     }
                 );
             `);
-            resolve();
+            setTimeout(function(){
+                resolve();
+            },5000);
         },500);
     });
 }

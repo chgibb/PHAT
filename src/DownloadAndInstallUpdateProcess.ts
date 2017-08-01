@@ -74,83 +74,13 @@ process.on
                         installer.unref();
                     }
                     process.exit(0);
-                   
 
-                    /*let totalFiles = 0;
-                    let countedFiles = 0;
-                    let unPackedFiles = 0;
-
-                    let countFiles = tarStream.extract();
-                    countFiles.on(
-                        "entry",(header : any,stream : any,next : () => void) => {
-                            if(header)
-                            {
-                                totalFiles++;
-                            }
-                            stream.on("end",() => {
-                                next();
-                            });
-                            stream.resume();
-                        }
-                    );
-                    countFiles.on("finish",() => {
-                        process.send(
-                            <AtomicOperationForkEvent>{
-                                update : true,
-                                data : {totalFiles:totalFiles},
-                                flags : flags
-                            }
-                        );
-                        ///if(process.platform == "linux")
-                       // {
-                      //      fs.renameSync("phat","oldphat");
-                      //  }
-                        let extract = tarfs.extract("./../phat-linux-x64",{
-                            ignore : (name : string) => {
-                                if(name == "newphat")
-                                {
-                                    fs.renameSync("phat","newphat");
-                                    fs.unlinkSync("newphat");
-                                }
-                                if(name == "newlibnode.so")
-                                {
-                                    fs.renameSync("libnode.so","newlibnode.so");
-                                    fs.unlinkSync("newlibnode.so");
-                                }
-                                unPackedFiles++;
-                                process.send(
-                                    <AtomicOperationForkEvent>{
-                                        update : true,
-                                        data : {unPackedFiles:unPackedFiles},
-                                        flags : flags
-                                    }
-                                );
-                                
-                                return false;
-                            }
-                        });
-                        extract.on("finish",() => {
-                            flags.done = true;
-                            flags.success = true;
-                            flags.failure = false;
-                            process.send(
-                                <AtomicOperationForkEvent>{
-                                    update : true,
-                                    flags : flags,
-                                }
-                            );
-                            fs.unlinkSync("oldphat");
-                            process.exit(0);
-                        });
-                        let unPackStream = fs.createReadStream("phat.update").pipe(gunzip()).pipe(extract);
-                    });
-                    fs.createReadStream("phat.update").pipe(gunzip()).pipe(countFiles);*/
                 });
             });
         }
     }
 );
-process.on("uncaughtException",function(err : string){
+(process as NodeJS.EventEmitter).on("uncaughtException",function(err : string){
     console.log("ERROR "+err);
     flags.done = true;
     flags.failure = true;
