@@ -6,6 +6,8 @@ import * as masterView from "./masterView";
 import * as genomeView from "./genomeView";
 import {alignData} from "./../../alignData";
 import {AtomicOperationIPC} from "./../../atomicOperationsIPC";
+import {getReadable} from "./../../getAppPath";
+
 require("@claviska/jquery-minicolors");
 let selectedAlign : alignData;
 export function setSelectedAlign(align : alignData) : void
@@ -85,8 +87,8 @@ export function writeAvailableTracksModal() : void
             body += `
                 <div>
                     <p style="display:inline-block;">${genomeView.genome.contigs[i].name}</p>
-                    <input style="display:inline-block;" type="button" id="${genomeView.genome.contigs[i].uuid}GenCoverage" value="Generate Coverage Track" />
-                    <input style="display:inline-block;" type="button" id="${genomeView.genome.contigs[i].uuid}GenSNPs" value="Generate SNP Track" />
+                    <img src="${getReadable("img/generateCoverageTrack.png")}" style="display:inline-block;" class="activeHover" id="${genomeView.genome.contigs[i].uuid}GenCoverage" />
+                    <img src="${getReadable("img/generateSNPTrack.png")}" style="display:inline-block;" class="activeHover" id="${genomeView.genome.contigs[i].uuid}GenSNPs" />
                 </div>
             `;
         }

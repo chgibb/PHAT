@@ -31,7 +31,7 @@ do
 	printf "\n"
 	destination=$(echo $f | awk '{gsub("src/","guiTests/"); gsub("guiTests/guiTests/","guiTests/");print}')
 	printf $destination
-	./node_modules/.bin/browserify $f --node --debug -o $destination --ignore-missing
+	./node_modules/.bin/browserify $f --node --debug -o $destination --ignore-missing --exclude electron
 done
 
 for f in $(find src -name '*.ts'); 

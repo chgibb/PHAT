@@ -10,15 +10,10 @@ import {ProjectManifest,getProjectManifests} from "./req/projectManifest";
 import {AtomicOperation} from "./req/operations/atomicOperations"
 import {AtomicOperationIPC} from "./req/atomicOperationsIPC";
 import {KeySubEvent,SaveKeyEvent} from "./req/ipcEvents";
-
-
-
-import {checkServerPermission} from "./req/checkServerPermission";
 import formatByteString from "./req/renderer/formatByteString";
 
 import * as viewMgr from "./req/renderer/viewMgr";
 
-import * as projectsView from "./req/renderer/ProjectSelectionRenderer/projectsView";
 import * as splashView from "./req/renderer/ProjectSelectionRenderer/splashView";
 import * as openProjectView from "./req/renderer/ProjectSelectionRenderer/openProjectView";
 import * as helpView from "./req/renderer/ProjectSelectionRenderer/helpView";
@@ -29,15 +24,6 @@ import * as $ from "jquery";
 (<any>window).$ = $;
 require("./req/renderer/commonBehaviour");
 
-function refreshProjects() : void
-{
-    jsonFile.readFile(getProjectManifests(),function(err : string,obj : Array<ProjectManifest>){
-        let projectsView = <projectsView.ProjectsView>viewMgr.getViewByName("projectsView");
-        projectsView.projects = obj;
-        viewMgr.render();
-    });
-}
-
 $
 (
     function()
@@ -46,34 +32,12 @@ $
             <br />
             <p>${citationText}</p>
         `;
-        /*
-            This method is only for internal testing in order to limit access to the application
-            to collaborators. This needs to be removed for the public release. token should be
-            a GitHub oAuth token.
-        */
-        dialogs.prompt("Enter Access Token","",function(token : string){
-            checkServerPermission(token).then(() => {
-                ipc.send(
-                    "saveKey",
-                    <SaveKeyEvent>{
-                        action : "saveKey",
-                        channel : "application",
-                        key : "auth",
-                        val : {token : token}
-                    }
-                );
-                ipc.send(
-                    "runOperation",
-                    <AtomicOperationIPC>{
-                        opName : "checkForUpdate"
-                    }
-                );           
-            }).catch((err : string) => {
-                let remote = electron.remote;
-                remote.app.quit();
-            });
-        });
-        refreshProjects();
+        ipc.send(
+            "runOperation",
+            <AtomicOperationIPC>{
+                opName : "checkForUpdate"
+            }
+        );
         ipc.send(
             "keySub",
             <KeySubEvent>{
@@ -83,14 +47,13 @@ $
                 replyChannel : "projectSelection"
             }
         );
-        projectsView.addView(viewMgr.views,"view");
         splashView.addView(viewMgr.views,"view")
         openProjectView.addView(viewMgr.views,"view");
         helpView.addView(viewMgr.views,"view");
         viewMgr.changeView("splashView");
         ipc.on
         (
-            "projectSelection",function(event,arg)
+            "projectSelection",function(event : Electron.IpcMessageEvent,arg : any)
             {
                 if(arg.action == "getKey" || arg.action == "keyChange")
                 {
@@ -133,8 +96,6 @@ $
                                 `;
                                 return;
                             }
-                            if(ops[i].name == "newProject")
-                                refreshProjects();
                         }
                         
                     }

@@ -249,7 +249,7 @@ export class View extends viewMgr.View
                 else
                     genomeView.genome.circularFigureBPTrackOptions.showLabels = 0;
             }
-            genomeView.udpateScope();
+            genomeView.updateScope();
             self.dataChanged();
             viewMgr.render();
         }

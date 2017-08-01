@@ -46,7 +46,7 @@ export class View extends viewMgr.View
                 </div>
                 <div id="fastaView" style="height:45%;width:100%;">
                 </div>
-                <button id="importSelected">Imported Selected Files Into Project</button>
+                <img src="${getReadable("img/import.png")}" class="activeHover" id="importSelected" />
             `;
         }
         else

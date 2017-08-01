@@ -42,7 +42,7 @@ $
 
         ipc.on
         (
-            "toolBar",function(event,arg)
+            "toolBar",function(event : Electron.IpcMessageEvent,arg : any)
             {
                 if(arg.action == "getKey" || arg.action == "keyChange")
                 {

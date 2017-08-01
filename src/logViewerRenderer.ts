@@ -9,7 +9,7 @@ require("./req/renderer/commonBehaviour");
 
 ipc.on(
     "logViewer",
-    function(event,arg){
+    function(event : Electron.IpcMessageEvent,arg : any){
         let logRecord : LogRecord = arg.logRecord;
         if(logRecord.status == "failure")
         {
