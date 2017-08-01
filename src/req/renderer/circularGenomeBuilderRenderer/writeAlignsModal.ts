@@ -2,6 +2,7 @@ import * as viewMgr from "./../viewMgr";
 import * as masterView from "./masterView";
 import * as genomeView from "./genomeView";
 import {writeAvailableTracksModal,setSelectedAlign} from "./writeAvailableTracksModal";
+import {getReadable} from "./../../getAppPath";
 export function writeAlignsModal() : void
 {
     let masterView = <masterView.View>viewMgr.getViewByName("masterView");
@@ -43,7 +44,7 @@ export function writeAlignsModal() : void
             {
                 body += `
                     <tr>
-                        <td><button id="${aligns[i].uuid}View">View Available Tracks</button><br />
+                        <td><img src="${getReadable("img/viewAvailableTracks.png")}" id="${aligns[i].uuid}View" class="activeHover" /><br />
                         </td>
                         <td>${aligns[i].alias}</td>
                         <td>${aligns[i].summary.reads}</td>

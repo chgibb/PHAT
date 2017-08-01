@@ -4,7 +4,6 @@
   "description": "Pathogen Host Analysis Tool",
   "main": "main.js",
   "scripts": {
-    "start": "electron main.js",
     "test": "bash scripts/runtests.bash"
   },
   "author": {
@@ -41,11 +40,10 @@
   "homepage": "",
   "devDependencies": {
     "@claviska/jquery-minicolors": "^2.2.6",
-    "@types/electron": "1.4.33",
     "@types/fs-extra": "0.0.37",
     "@types/jquery": "^2.0.40",
     "@types/mkdirp": "^0.3.29",
-    "@types/node": "^7.0.5",
+    "@types/node": "8.0.17",
     "@types/rimraf": "0.0.28",
     "angular": "^1.6.1",
     "angularplasmid": "^1.0.5",
@@ -53,11 +51,10 @@
     "browserify": "^13.1.0",
     "bundle-collapser": "^1.2.1",
     "dialogs": "^1.1.19",
+    "electron": "1.6.11",
     "electron-builder": "^19.8.0",
-    "electron-installer-debian": "^0.5.2",
     "electron-ipc-stream": "^0.2.0",
-    "electron-packager": "^8.0.0",
-    "electron-prebuilt": "^1.1.2",
+    "electron-packager": "8.7.2",
     "electron-squirrel-startup": "^1.0.0",
     "electron-winstaller": "^2.5.2",
     "fs-backwards-stream": "0.0.0",
@@ -85,5 +82,8 @@
     "walk": "^2.3.9"
   },
   "dependencies": {},
+  "optionalDependencies": {
+    "electron-installer-debian": "^0.5.2"
+  },
   "v8Flags": "--nolazy --serialize_eager"
 }

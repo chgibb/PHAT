@@ -1,9 +1,17 @@
+import * as electron from "electron";
+const ipc = electron.ipcMain;
+
 import * as winMgr from "./../../../req/main/winMgr"
 
 export async function openFirstProject() : Promise<void>
 {
     return new Promise<void>((resolve,reject) => {
-        setTimeout(function(){
+            setImmediate(function(){
+                setTimeout(function(){
+                    resolve();
+                },10000);
+            });
+
             console.log("opening first project");
             let projSelection = winMgr.getWindowsByName("projectSelection");
             projSelection[0].webContents.executeJavaScript(`
@@ -18,9 +26,5 @@ export async function openFirstProject() : Promise<void>
                     }
                 }
             `);
-            setTimeout(function(){
-                resolve();
-            },5000);
-        },5000);
     });
 }
