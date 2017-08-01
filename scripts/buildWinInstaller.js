@@ -14,9 +14,9 @@ resultPromise = electronInstaller.createWindowsInstaller({
     authors: 'Zehbe Lab',
     description: "Pathogen Host Analysis Tool",
     exe: 'phat.exe',
-    noMsi: true
-   // iconUrl: './icons/phat.ico',
-    //setupIcon: './icons/phat.ico'
+    noMsi: true,
+    iconUrl : 'https://raw.githubusercontent.com/chgibb/PHAT/master/icons/phat.ico',
+    setupIcon : 'icons/phat.ico'
   });
 
 resultPromise.then(
