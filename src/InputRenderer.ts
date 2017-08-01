@@ -81,7 +81,7 @@ $
         //on message from main process
         ipc.on
 		(	
-		    'input',function(event,arg)
+		    'input',function(event : Electron.IpcMessageEvent,arg : any)
 			{
                 //reply from call to getState
 			    if(arg.action == "getKey" || arg.action == "keyChange")

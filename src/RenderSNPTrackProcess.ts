@@ -69,7 +69,7 @@ process.on
         }
     }  
 );
-process.on("uncaughtException",function(err : string){
+(process as NodeJS.EventEmitter).on("uncaughtException",function(err : string){
     console.log(err);
     flags.done = true;
     flags.failure = true;
