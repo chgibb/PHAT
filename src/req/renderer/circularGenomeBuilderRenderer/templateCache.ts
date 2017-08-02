@@ -37,7 +37,7 @@ let baseFigureTemplateString = "";
 let coverageTrackCache = new Array<CachedCoverageTrackTemplate>();;
 let SNPTrackCache = new Array<CachedSNPTrackTemplate>();
 
-let cachesWereReset : boolean = false;
+export let cachesWereReset : boolean = false;
 
 
 export function resetCaches() : void
