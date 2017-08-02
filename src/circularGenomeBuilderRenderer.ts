@@ -6,6 +6,8 @@ import * as genomeView from "./req/renderer/circularGenomeBuilderRenderer/genome
 import {CircularFigure,} from "./req/renderer/circularFigure";
 import {GetKeyEvent,KeySubEvent} from "./req/ipcEvents";
 
+import {CompileTemplates} from "./req/operations/CompileTemplates";
+
 require("./req/renderer/commonBehaviour");
 
 import * as $ from "jquery";
@@ -72,10 +74,20 @@ $
                 action : "keySub"
             }
         );
+        ipc.send(
+            "keySub",
+            <KeySubEvent>{
+                channel : "application",
+                key : "operations",
+                replyChannel : "circularGenomeBuilder",
+                action : "keySub"
+            }
+        );
         ipc.on
         (
             'circularGenomeBuilder',function(event : Electron.IpcMessageEvent,arg : any)
             {
+                console.log(arg);
                 if(arg.action == "getKey" || arg.action == "keyChange")
                 {
                     if(arg.key == "fastaInputs")
@@ -127,6 +139,20 @@ $
                                 }
                             }
                             
+                        }
+                    }
+                    if(arg.key == "operations")
+                    {
+                        if(arg.val !== undefined)
+                        {
+                            let ops : Array<CompileTemplates> = arg.val;
+                            for(let i = 0; i != ops.length; ++i)
+                            {
+                                if(ops[i].name == "compileTemplates" && ops[i].flags.done && ops[i].flags.success)
+                                {
+                                    document.getElementById("genomeView").innerHTML = ops[i].templates;
+                                }
+                            }
                         }
                     }
                 }

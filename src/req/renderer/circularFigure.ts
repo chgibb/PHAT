@@ -493,6 +493,7 @@ export function assembleCompilableTemplates(figure : CircularFigure,templates : 
         totalBP += figure.contigs[i].bp;
     }
     return `
+        <div>
         ${plasmid.add(
         {
             sequenceLength : totalBP.toString(),
@@ -501,6 +502,7 @@ export function assembleCompilableTemplates(figure : CircularFigure,templates : 
         })}
             ${templates}
         ${plasmid.end()}
+        </div>
     `;
 }
 
