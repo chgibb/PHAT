@@ -13,7 +13,7 @@ import * as trackMarker from "./circularGenome/trackMarker";
 import * as markerLabel from "./circularGenome/markerLabel";
 import * as trackScale from "./circularGenome/trackScale";
 
-import * as plasmid from "./../circularGenome/plasmid";
+import * as plasmid from "./circularGenome/plasmid";
 
 import {alignData,getSNPsJSON} from "./../alignData";
 import {VCF2JSONRow} from "./../varScanMPileup2SNPVCF2JSON";
