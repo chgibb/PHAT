@@ -13,6 +13,8 @@ import * as trackMarker from "./circularGenome/trackMarker";
 import * as markerLabel from "./circularGenome/markerLabel";
 import * as trackScale from "./circularGenome/trackScale";
 
+import * as plasmid from "./../circularGenome/plasmid";
+
 import {alignData,getSNPsJSON} from "./../alignData";
 import {VCF2JSONRow} from "./../varScanMPileup2SNPVCF2JSON";
 export class Contig extends fastaContigLoader.Contig
@@ -481,4 +483,48 @@ export function cacheSNPTrack(
 export function getCachedSNPTrackPath(trackRecord : RenderedSNPTrackRecord) : string
 {
     return getReadableAndWritable(`rt/circularFigures/${trackRecord.uuidFigure}/snp/${trackRecord.uuidAlign}/${trackRecord.uuidContig}/${trackRecord.uuid}`);
+}
+
+export function assembleCompilableTemplates(figure : CircularFigure,templates : string) : string
+{
+    let totalBP = 0;
+    for(let i = 0; i != figure.contigs.length; ++i)
+    {
+        totalBP += figure.contigs[i].bp;
+    }
+    return `
+        ${plasmid.add(
+        {
+            sequenceLength : totalBP.toString(),
+            plasmidHeight : "{{genome.height}}",
+            plasmidWidth : "{{genome.width}}"
+        })}
+            ${templates}
+        ${plasmid.end()}
+    `;
+}
+
+export function assembleCompilableBaseFigureTemplates(figure : CircularFigure) : string
+{
+    return assembleCompilableTemplates(figure,getBaseFigureFromCache(figure));
+}
+
+export function assembleCompilableCoverageTrack(figure : CircularFigure,trackRecord : RenderedCoverageTrackRecord) : string
+{
+    return assembleCompilableTemplates(
+        figure,
+        fs.readFileSync(
+            getCachedCoverageTrackPath(trackRecord)
+        ).toString()
+    );
+}
+
+export function assembleCompilableSNPTrack(figure : CircularFigure,trackRecord : RenderedSNPTrackRecord) : string
+{
+    return assembleCompilableTemplates(
+        figure,
+        fs.readFileSync(
+            getCachedSNPTrackPath(trackRecord)
+        ).toString()
+    );
 }
