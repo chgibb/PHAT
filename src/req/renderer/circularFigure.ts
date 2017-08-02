@@ -71,8 +71,7 @@ export class RenderedTrackRecord
         uuidAlign : string,
         uuidContig : string,
         uuidFigure : string,
-        colour : string,
-        path : string)
+        colour : string)
         {
             this.uuid = uuidv4();
             this.uuidAlign = uuidAlign;
@@ -88,11 +87,9 @@ export class RenderedCoverageTrackRecord extends RenderedTrackRecord
         uuidAlign : string,
         uuidContig : string,
         uuidFigure : string,
-        colour : string,
-        path : string
-    )
+        colour : string)
     {
-        super(uuidAlign,uuidContig,uuidFigure,colour,path);
+        super(uuidAlign,uuidContig,uuidFigure,colour);
     }
 }
 export class RenderedSNPTrackRecord extends RenderedTrackRecord
@@ -101,11 +98,9 @@ export class RenderedSNPTrackRecord extends RenderedTrackRecord
         uuidAlign : string,
         uuidContig : string,
         uuidFigure : string,
-        colour : string,
-        path : string
-    )
+        colour : string)
     {
-        super(uuidAlign,uuidContig,uuidFigure,colour,path);
+        super(uuidAlign,uuidContig,uuidFigure,colour);
     }
 }
 export class CircularFigure
@@ -360,7 +355,7 @@ export async function cacheCoverageTrack(
         catch(err){}
     
         let coverageTracks = await renderCoverageTrack(figure,contiguuid,align,colour);
-        let trackRecord = new RenderedCoverageTrackRecord(align.uuid,contiguuid,figure.uuid,colour,"");
+        let trackRecord = new RenderedCoverageTrackRecord(align.uuid,contiguuid,figure.uuid,colour);
         fs.writeFileSync(getCachedCoverageTrackPath(trackRecord),coverageTracks);
         figure.renderedCoverageTracks.push(trackRecord);
         resolve(coverageTracks);
@@ -475,7 +470,7 @@ export function cacheSNPTrack(
         function(status,SNPTracks){
             if(status == true)
             {
-                let trackRecord = new RenderedSNPTrackRecord(align.uuid,contiguuid,figure.uuid,colour,"");
+                let trackRecord = new RenderedSNPTrackRecord(align.uuid,contiguuid,figure.uuid,colour);
                 fs.writeFileSync(getCachedSNPTrackPath(trackRecord),SNPTracks);
                 figure.renderedSNPTracks.push(trackRecord);
             }
