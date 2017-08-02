@@ -37,6 +37,9 @@ let baseFigureTemplateString = "";
 let coverageTrackCache = new Array<CachedCoverageTrackTemplate>();;
 let SNPTrackCache = new Array<CachedSNPTrackTemplate>();
 
+let cachesWereReset : boolean = false;
+
+
 export function resetCaches() : void
 {
     coverageTrackCache = new Array<CachedCoverageTrackTemplate>();
@@ -45,9 +48,11 @@ export function resetCaches() : void
 
 export function refreshCache(newFigure : cf.CircularFigure) : void
 {
+    cachesWereReset = false;
     if(!figure || newFigure.uuid != figure.uuid)
     {
         resetCaches();
+        cachesWereReset = true;
         figure = newFigure;
     }
 
