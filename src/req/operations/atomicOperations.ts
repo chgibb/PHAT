@@ -36,6 +36,8 @@ export abstract class AtomicOperation
 
     public running : boolean;
 
+    public ignoreScheduler : boolean;
+
     public constructor()
     {
         this.generatedArtifacts = new Array<string>();
@@ -49,6 +51,8 @@ export abstract class AtomicOperation
         this.flags = new CompletionFlags();
 
         this.running = false;
+
+        this.ignoreScheduler = false;
     }
     public getGeneratedArtifacts() : Array<string>
     {
@@ -295,7 +299,11 @@ export function addOperation(opName : string,data : any) : void
 
 export function runOperations(maxRunning : number) : void
 {
-    
+    for(let i = 0; i != operationsQueue.length; ++i)
+    {
+        if(operationsQueue[i].ignoreScheduler)
+            operationsQueue[i].run();
+    }
     //console.log(operationsQueue);
     let currentRunning : number = 0;
     for(let i = 0; i != operationsQueue.length; ++i)
