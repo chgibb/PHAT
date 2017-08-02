@@ -263,113 +263,108 @@ interface PositionsWithDepths
     depth : number;
     positions : Array<number>;
 }
-export function renderCoverageTrack(
+export async function renderCoverageTrack(
     figure : CircularFigure,
     contiguuid : string,
     align : alignData,
-    cb : (status : boolean,coverageTracks : string) => void
-    ,colour : string = "rgb(64,64,64)"
-) : void
+    colour : string = "rgb(64,64,64)"
+) : Promise<string>
 {
-    let coverageTracks : string = "";
-    //Stream the distilled samtools depth data from the specified alignment for the specified contig
-    let rl : readline.ReadLine = readline.createInterface(<readline.ReadLineOptions>{
-        input : fs.createReadStream(getReadableAndWritable(`rt/AlignmentArtifacts/${align.uuid}/contigCoverage/${contiguuid}`))
-    });
-    let baseBP = getBaseBP(figure,contiguuid);
-    if(baseBP == -1)
-        throw new Error("Could not get base position of "+figure.name+" for reference");
-
-    /*
-        Anular Plasmid tracks are declared in terms of y position. We want to group all positions with the same depth
-        together so we can create one track for each depth and then render every position with the same depth onto
-        the same track.
-    */
-    let depths : Array<PositionsWithDepths> = new Array<PositionsWithDepths>();
-    rl.on("line",function(line : string){
-        let tokens = line.split(/\s/g);
-        let depth = parseInt(tokens[1]);
-        let found = false;
-        for(let i = 0; i != depths.length; ++i)
-        {
-            if(depths[i].depth == depth)
-            {
-                depths[i].positions.push(parseInt(tokens[0]));
-                found = true;
-                break;
-            }
-        }
-        if(!found)
-        {
-            depths.push(<PositionsWithDepths>{
-                depth : depth,
-                positions : <Array<number>>[parseInt(tokens[0])]
-            });
-        }
-    });
-    rl.on("close",function(){
-        //sort depths
-        depths.sort(function(a : PositionsWithDepths,b : PositionsWithDepths){return a.depth - b.depth;});
+    return new Promise<string>((resolve,reject) => {
+        let coverageTracks : string = "";
+        //Stream the distilled samtools depth data from the specified alignment for the specified contig
+        let rl : readline.ReadLine = readline.createInterface(<readline.ReadLineOptions>{
+            input : fs.createReadStream(getReadableAndWritable(`rt/AlignmentArtifacts/${align.uuid}/contigCoverage/${contiguuid}`))
+        });
+        let baseBP = getBaseBP(figure,contiguuid);
+        if(baseBP == -1)
+            throw new Error("Could not get base position of "+figure.name+" for reference");
 
         /*
-            Instead of rendering one marker for every single position, we stretch a single marker to cover sequential positions which are all at the same
-            depth.
+            Anular Plasmid tracks are declared in terms of y position. We want to group all positions with the same depth
+            together so we can create one track for each depth and then render every position with the same depth onto
+            the same track.
         */
-        for(let i = 0; i != depths.length; ++i)
-        {
-            //sort positions within each depth position we're looking at
-            depths[i].positions.sort(function(a : number,b : number){return a - b});
-            let res = "";
-            //render the start of the current track
-            res += `<plasmidtrack trackstyle="fill-opacity:0.0;fill:${colour}" width="10" radius="{{genome.radius+${100+depths[i].depth}}}" >`;
-            //try to find a group of sequential positions
-            for(let k = 0; k != depths[i].positions.length; ++k)
+        let depths : Array<PositionsWithDepths> = new Array<PositionsWithDepths>();
+        rl.on("line",function(line : string){
+            let tokens = line.split(/\s/g);
+            let depth = parseInt(tokens[1]);
+            let found = false;
+            for(let i = 0; i != depths.length; ++i)
             {
-                let offset = 1;
-                let initial = k; 
-                while(depths[i].positions[k + offset] == depths[i].positions[initial] + offset)
+                if(depths[i].depth == depth)
                 {
-                    if(k + offset == depths[i].positions.length)
-                        break;
-                    offset++;
+                    depths[i].positions.push(parseInt(tokens[0]));
+                    found = true;
+                    break;
                 }
-                //in case we didn't find any sequential positions, this will render singles fine
-                k = k + (offset - 1);
-                res += `<trackmarker start="${baseBP+depths[i].positions[initial]}" end="${baseBP+depths[i].positions[initial]+offset}" markerstyle="fill:${colour};stroke-width:1px;" wadjust="-8"></trackmarker>`;
             }
+            if(!found)
+            {
+                depths.push(<PositionsWithDepths>{
+                    depth : depth,
+                    positions : <Array<number>>[parseInt(tokens[0])]
+                });
+            }
+        });
+        rl.on("close",function(){
+            //sort depths
+            depths.sort(function(a : PositionsWithDepths,b : PositionsWithDepths){return a.depth - b.depth;});
+
+            /*
+                Instead of rendering one marker for every single position, we stretch a single marker to cover sequential positions which are all at the same
+                depth.
+            */
+            for(let i = 0; i != depths.length; ++i)
+            {
+                //sort positions within each depth position we're looking at
+                depths[i].positions.sort(function(a : number,b : number){return a - b});
+                let res = "";
+                //render the start of the current track
+                res += `<plasmidtrack trackstyle="fill-opacity:0.0;fill:${colour}" width="10" radius="{{genome.radius+${100+depths[i].depth}}}" >`;
+                //try to find a group of sequential positions
+                for(let k = 0; k != depths[i].positions.length; ++k)
+                {
+                    let offset = 1;
+                    let initial = k; 
+                    while(depths[i].positions[k + offset] == depths[i].positions[initial] + offset)
+                    {
+                        if(k + offset == depths[i].positions.length)
+                            break;
+                        offset++;
+                    }
+                    //in case we didn't find any sequential positions, this will render singles fine
+                    k = k + (offset - 1);
+                    res += `<trackmarker start="${baseBP+depths[i].positions[initial]}" end="${baseBP+depths[i].positions[initial]+offset}" markerstyle="fill:${colour};stroke-width:1px;" wadjust="-8"></trackmarker>`;
+                }
             
-            res += `</plasmidtrack>`;
-            coverageTracks += res;
-        }
-        cb(true,coverageTracks);
+                res += `</plasmidtrack>`;
+                coverageTracks += res;
+            }
+            resolve(coverageTracks);
+        });
     });
 }
-export function cacheCoverageTrack(
+export async function cacheCoverageTrack(
     figure : CircularFigure,
     contiguuid : string,
     align : alignData,
-    cb : (status : boolean,coverageTracks : string) => void,
     colour : string = "rgb(64,64,64)"
-) : void
+) : Promise<string>
 {
-    try
-    {
-        mkdirp.sync(getReadableAndWritable(`rt/circularFigures/${figure.uuid}/coverage/${align.uuid}/${contiguuid}`));
-    }
-    catch(err){}
-    renderCoverageTrack(
-        figure,
-        contiguuid,
-        align,
-        function(status,coverageTracks){
-            if(status == true)
-            {
-                let trackRecord = new RenderedCoverageTrackRecord(align.uuid,contiguuid,figure.uuid,colour,"");
-                fs.writeFileSync(getCachedCoverageTrackPath(trackRecord),coverageTracks);
-                figure.renderedCoverageTracks.push(trackRecord);
-            }
-            cb(status,coverageTracks);
-    },colour);
+    return new Promise<string>(async (resolve,reject) => {
+        try
+        {
+            mkdirp.sync(getReadableAndWritable(`rt/circularFigures/${figure.uuid}/coverage/${align.uuid}/${contiguuid}`));
+        }
+        catch(err){}
+    
+        let coverageTracks = await renderCoverageTrack(figure,contiguuid,align,colour);
+        let trackRecord = new RenderedCoverageTrackRecord(align.uuid,contiguuid,figure.uuid,colour,"");
+        fs.writeFileSync(getCachedCoverageTrackPath(trackRecord),coverageTracks);
+        figure.renderedCoverageTracks.push(trackRecord);
+        resolve(coverageTracks);
+    });
 }
 
 export function getCachedCoverageTrackPath(trackRecord : RenderedCoverageTrackRecord) : string
