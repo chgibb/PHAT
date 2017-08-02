@@ -40,7 +40,7 @@ export interface AtomicOperationIPC
         stop : number
     }
     
-    templates? : string;
+    compileBase? : boolean;
     figure? : CircularFigure;
 }
 

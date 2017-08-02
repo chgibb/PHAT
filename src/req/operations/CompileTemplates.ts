@@ -6,22 +6,24 @@ import * as cf from "./../renderer/circularFigure";
 import {getReadable} from "./../getAppPath";
 export class CompileTemplates extends atomic.AtomicOperation
 {
-    public templates : string;
     public figure : cf.CircularFigure;
+    public uuid : string;
+    public compileBase : boolean;
     public compileTemplatesProcess : cp.ChildProcess;
     public constructor()
     {
         super();
     }
     public setData(data : {
-        templates : string,
-        figure : cf.CircularFigure
+        figure : cf.CircularFigure,
+        uuid : string,
+        compileBase : boolean
     }) : void
     {
-        this.templates = data.templates;
         this.figure = data.figure;
-        console.log("templates recieved in operation");
-        console.log(this.templates);
+        this.uuid = data.uuid;
+        this.compileBase = data.compileBase;
+        
     }
     public run() : void
     {
@@ -39,7 +41,6 @@ export class CompileTemplates extends atomic.AtomicOperation
                     }
                     if(ev.flags.success)
                     {
-                        self.templates = ev.data.templates;
                         self.figure = ev.data.figure;
                     }
                     self.update();
@@ -53,8 +54,9 @@ export class CompileTemplates extends atomic.AtomicOperation
                     <AtomicOperationForkEvent>{
                         setData : true,
                         data : {
-                            templates : self.templates,
-                            figure : self.figure
+                            figure : self.figure,
+                            uuid : self.uuid,
+                            compileBase : self.compileBase
                         },
                         name : self.name,
                         description : "Compile Templates For Figure"

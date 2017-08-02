@@ -237,9 +237,20 @@ export function cacheBaseFigure(figure : CircularFigure) : void
     catch(err){}
     fs.writeFileSync(getReadableAndWritable(`rt/circularFigures/${figure.uuid}/baseFigure`),renderBaseFigure(figure));
 }
+
+export function cacheBaseFigureSVG(figure : CircularFigure,svg : string) : void
+{
+    fs.writeFileSync(getReadableAndWritable(`rt/circularFigures/${figure.uuid}/baseFigure.svg`),svg);
+}
+
 export function getBaseFigureFromCache(figure : CircularFigure) : string
 {
     return (<any>fs.readFileSync(getReadableAndWritable(`rt/circularFigures/${figure.uuid}/baseFigure`)));
+}
+
+export function getBaseFigureSVGFromCache(figure : CircularFigure) : string
+{
+    return (<any>fs.readFileSync(getReadableAndWritable(`rt/circularFigures/${figure.uuid}/baseFigure.svg`)));
 }
 
 //Walk the figures contigs clockwise and return the offset of the beginning of contig specified
@@ -369,6 +380,22 @@ export function getCachedCoverageTrackPath(trackRecord : RenderedCoverageTrackRe
     return getReadableAndWritable(`rt/circularFigures/${trackRecord.uuidFigure}/coverage/${trackRecord.uuidAlign}/${trackRecord.uuidContig}/${trackRecord.uuid}`);
 }
 
+export function getCachedCoverageTrackSVGPath(trackRecord : RenderedCoverageTrackRecord) : string
+{
+    return getReadableAndWritable(`rt/circularFigures/${trackRecord.uuidFigure}/coverage/${trackRecord.uuidAlign}/${trackRecord.uuidContig}/${trackRecord.uuid}.svg`);
+}
+
+export function cachCoverageTrackSVG(trackRecord : RenderedCoverageTrackRecord,svg : string) : void
+{
+    fs.writeFileSync(getCachedCoverageTrackSVGPath(trackRecord),svg);
+}
+
+export function getCoverageTrackSVGFromCache(trackRecord : RenderedCoverageTrackRecord) : string
+{
+    return fs.readFileSync(getCachedCoverageTrackSVGPath(trackRecord)).toString();
+}
+
+
 interface SNPPosition
 {
     position : number;
@@ -483,6 +510,21 @@ export function cacheSNPTrack(
 export function getCachedSNPTrackPath(trackRecord : RenderedSNPTrackRecord) : string
 {
     return getReadableAndWritable(`rt/circularFigures/${trackRecord.uuidFigure}/snp/${trackRecord.uuidAlign}/${trackRecord.uuidContig}/${trackRecord.uuid}`);
+}
+
+export function getCachedSNPTrackSVGPath(trackRecord : RenderedSNPTrackRecord) : string
+{
+    return getReadableAndWritable(`rt/circularFigures/${trackRecord.uuidFigure}/snp/${trackRecord.uuidAlign}/${trackRecord.uuidContig}/${trackRecord.uuid}.svg`);
+}
+
+export function cacheSNPTrackSVG(trackRecord : RenderedSNPTrackRecord,svg : string) : void
+{
+    fs.writeFileSync(getCachedSNPTrackSVGPath(trackRecord),svg);
+}
+
+export function getSNPTrackSVGFromCache(trackRecord : RenderedSNPTrackRecord) : string
+{
+    return fs.readFileSync(getCachedSNPTrackSVGPath(trackRecord)).toString();
 }
 
 export function assembleCompilableTemplates(figure : CircularFigure,templates : string) : string

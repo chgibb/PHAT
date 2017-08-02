@@ -482,8 +482,9 @@ ipc.on(
 		else if(arg.opName == "compileTemplates")
 		{
 			atomicOp.addOperation("compileTemplates",{
-				templates : arg.templates,
-				figure : arg.figure
+				figure : arg.figure,
+				uuid : arg.uuid,
+				compileBase : arg.compileBase
 			});
 		}
 		dataMgr.setKey("application","operations",atomicOp.operationsQueue);

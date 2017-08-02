@@ -150,7 +150,7 @@ $
                             {
                                 if(ops[i].name == "compileTemplates" && ops[i].flags.done && ops[i].flags.success)
                                 {
-                                    document.getElementById("genomeView").innerHTML = ops[i].templates;
+                                    //document.getElementById("genomeView").innerHTML += ops[i].templates;
                                 }
                             }
                         }
