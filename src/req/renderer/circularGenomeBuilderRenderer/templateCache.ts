@@ -17,7 +17,7 @@ class CachedCoverageTrackTemplate
     public constructor(trackRecord : cf.RenderedCoverageTrackRecord)
     {
         this.trackRecord = trackRecord;
-        this.templateString = (<any>fs.readFileSync(cf.getCachedCoverageTrackPath(trackRecord)).toString());
+        this.templateString = cf.assembleCompilableCoverageTrack(figure,trackRecord);
     }
 }
 
@@ -28,7 +28,7 @@ class CachedSNPTrackTemplate
     public constructor(trackRecord : cf.RenderedSNPTrackRecord)
     {
         this.trackRecord = trackRecord;
-        this.templateString = (<any>fs.readFileSync(cf.getCachedSNPTrackPath(trackRecord)).toString());
+        this.templateString = cf.assembleCompilableSNPTrack(figure,trackRecord);
     }
 }
 
