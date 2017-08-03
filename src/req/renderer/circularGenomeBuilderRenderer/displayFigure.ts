@@ -56,7 +56,40 @@ export async function displayFigure(self : GenomeView) : Promise<void>
                     setImmediate(function(){
                         setImmediate(function(){
                             tc.refreshCache(self.genome);
-                            $div = $(
+                            let templates = cf.assembleCompilableTemplates(
+                                self.genome,
+                                `
+                                    ${cf.getBaseFigureFromCache(self.genome)}
+                                    ${(()=>{
+                                        let res = "";
+                                        for(let i = 0; i != self.genome.renderedCoverageTracks.length; ++i)
+                                        {
+                                            if(self.genome.renderedCoverageTracks[i].checked)
+                                            {
+                                                res += tc.getCachedCoverageTrack(self.genome.renderedCoverageTracks[i]);
+                                            }
+                                        }
+                                        return res;
+                                    })()}
+                                    ${(()=>{
+                                        let res = "";
+                                        for(let i = 0; i != self.genome.renderedSNPTracks.length; ++i)
+                                        {
+                                            if(self.genome.renderedSNPTracks[i].checked)
+                                            {
+                                                res += tc.getCachedSNPTrack(self.genome.renderedSNPTracks[i]);
+                                            }
+                                        }
+                                        return res;
+                                    })()}
+                                `
+                                );
+                            $div = $(`
+                                <div id="${self.div}">
+                                    ${templates}
+                                </div>
+                            `);
+                            /*$div = $(
                             `
                                 <div id="${self.div}" style="z-index=-1;">
                                     ${plasmid.add(
@@ -90,7 +123,7 @@ export async function displayFigure(self : GenomeView) : Promise<void>
                                     })()}
                                     ${plasmid.end()}
                                 </div>
-                            `);
+                            `);*/
                             $(document.body).append($div);
                             console.log("appended div");
 
