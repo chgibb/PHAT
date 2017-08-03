@@ -146,10 +146,13 @@ $
                             let masterView = <masterView.View>viewMgr.getViewByName("masterView");
                             let genomeView = <genomeView.GenomeView>viewMgr.getViewByName("genomeView",masterView.views);
                             let ops : Array<CompileTemplates> = arg.val;
+                            let totalTracks = 0;
                             for(let i = 0; i != ops.length; ++i)
                             {
                                 if(genomeView.genome)
                                 {
+                                    if(ops[i].name == "compileTemplates")
+                                        totalTracks++;
                                     if(ops[i].name == "compileTemplates" && ops[i].flags.done && ops[i].flags.success)
                                     {
                                         console.log("compiled "+ops[i].uuid);
@@ -161,6 +164,14 @@ $
                                         }
                                     }
                                 }
+                            }
+                            if(totalTracks > 0)
+                                document.getElementById("navBarLoadingText").innerHTML = `Recalculating ${totalTracks} tracks`;
+                            if(totalTracks == 1)
+                            {
+                                setTimeout(function(){
+                                    document.getElementById("navBarLoadingText").innerHTML = ``;
+                                },1000);
                             }
                         }
                     }
