@@ -2,7 +2,6 @@ import {AtomicOperationForkEvent,CompletionFlags} from "./req/atomicOperationsIP
 import * as getUpdate from "./req/getLatestUpdate";
 
 let flags : CompletionFlags = new CompletionFlags();
-let token : string = "";
 
 process.on
 (
@@ -10,13 +9,12 @@ process.on
     {
         if(ev.setData == true)
         {
-            token = ev.data.token;
             process.send(<AtomicOperationForkEvent>{finishedSettingData : true});
             return;
         }
         if(ev.run == true)
         {
-            getUpdate.getLatestUpdate("chgibb","PHAT",token).then((res : any) => {
+            getUpdate.getLatestUpdate("chgibb","PHAT").then((res : any) => {
                 flags.done = true;
                 flags.success = true;
                 process.send(
