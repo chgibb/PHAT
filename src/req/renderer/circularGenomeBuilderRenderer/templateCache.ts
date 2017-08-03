@@ -127,3 +127,23 @@ export function getCachedSNPTrack(trackRecord : cf.RenderedSNPTrackRecord) : str
     }
     throw new Error(`Could not fetch ${trackRecord.uuid} from cache`);
 }
+
+export function removeTrack(uuid : string) : void
+{
+    for(let i = 0; i != coverageTrackCache.length; ++i)
+    {
+        if(coverageTrackCache[i].trackRecord.uuid == uuid)
+        {
+            coverageTrackCache.splice(i,1);
+            return;
+        }
+    }
+    for(let i = 0; i != SNPTrackCache.length; ++i)
+    {
+        if(SNPTrackCache[i].trackRecord.uuid == uuid)
+        {
+            SNPTrackCache.splice(i,1);
+            return;
+        }
+    }
+}
