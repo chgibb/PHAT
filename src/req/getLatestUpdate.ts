@@ -26,10 +26,10 @@ export interface Status
 //returns 0 on success, includes release object and tag name
 //returns 1 if a release is available but there is no update artifact for this platform
 //returns 2 if there is no release available whose version is greater than the version in package.json
-export function getLatestUpdate(userName : string,repo : string,token : string) : Promise<{}>
+export function getLatestUpdate(userName : string,repo : string) : Promise<{}>
 {
     return new Promise((resolve,reject) => {
-        let ghapi = new GitHubAPI({token : token});
+        let ghapi = new GitHubAPI();
         ghapi.getRepo(userName,repo).listReleases(
             (error : string,result : any,request : any) => {
                 if(error)
