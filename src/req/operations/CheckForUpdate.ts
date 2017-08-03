@@ -5,7 +5,6 @@ import {AtomicOperationForkEvent,AtomicOperationIPC} from "./../atomicOperations
 import {getReadable} from "./../getAppPath";
 export class CheckForUpdate extends atomic.AtomicOperation
 {
-    public token : string;
     public availableUpdate : boolean;
     public updateTagName : string;
 
@@ -16,7 +15,7 @@ export class CheckForUpdate extends atomic.AtomicOperation
     }
     public setData(data : AtomicOperationIPC) : void
     {
-        this.token = data.token;
+        
     }
     public run() : void
     {
@@ -51,7 +50,6 @@ export class CheckForUpdate extends atomic.AtomicOperation
                     <AtomicOperationForkEvent>{
                         setData : true,
                         data : <AtomicOperationIPC>{
-                            token : self.token
                         }
                     }
                 );

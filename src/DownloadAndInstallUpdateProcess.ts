@@ -9,7 +9,6 @@ import {getReadable} from "./req/getAppPath";
 let flags : CompletionFlags = new CompletionFlags();
 
 let asset : any;
-let token : string;
 process.on
 (
     "message",function(ev : AtomicOperationForkEvent)
@@ -17,13 +16,12 @@ process.on
         if(ev.setData == true)
         {
             asset = ev.data.asset;
-            token = ev.data.token;
             process.send(<AtomicOperationForkEvent>{finishedSettingData : true});
             return;
         }
         if(ev.run == true)
         {
-            let ghr = new GitHubReleases({user : "chgibb",repo : "PHAT",token : token});
+            let ghr = new GitHubReleases({user : "chgibb",repo : "PHAT"});
             ghr.downloadAsset(asset,(error : string,istream : fs.ReadStream) => {
                 if(error)
                     throw new Error(error);
