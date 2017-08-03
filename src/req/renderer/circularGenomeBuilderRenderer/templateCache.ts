@@ -1,98 +1,56 @@
 import * as fs from "fs";
 
-import * as electron from "electron";
-const ipc = electron.ipcRenderer;
-
-import {AtomicOperationIPC} from "./../../atomicOperationsIPC";
 import * as cf from "./../circularFigure";
 
 /*
     This module acts as a wrapper over circularFigure's track record functionality.
-    It provides an in memory cache of track SVGs, instead of using circularFigure's disk based
+    It provides an in memory cache of track templates, instead of using circularFigure's disk based
     access.
 */
 
 let figure : cf.CircularFigure;
 
-class CachedCoverageTrackSVG
+class CachedCoverageTrackTemplate
 {
     public trackRecord : cf.RenderedCoverageTrackRecord;
-    public SVGString : string;
+    public templateString : string;
     public constructor(trackRecord : cf.RenderedCoverageTrackRecord)
     {
         this.trackRecord = trackRecord;
-        this.SVGString = cf.getCoverageTrackSVGFromCache(trackRecord);
+        this.templateString = (<any>fs.readFileSync(cf.getCachedCoverageTrackPath(trackRecord)).toString());
     }
 }
 
-class CachedSNPTrackSVG
+class CachedSNPTrackTemplate
 {
     public trackRecord : cf.RenderedSNPTrackRecord;
-    public SVGString : string;
+    public templateString : string;
     public constructor(trackRecord : cf.RenderedSNPTrackRecord)
     {
         this.trackRecord = trackRecord;
-        this.SVGString = cf.getSNPTrackSVGFromCache(trackRecord);
+        this.templateString = (<any>fs.readFileSync(cf.getCachedSNPTrackPath(trackRecord)).toString());
     }
 }
 
-let baseFigureSVGString = "";
+let baseFigureTemplateString = "";
 
-let coverageTrackCache = new Array<CachedCoverageTrackSVG>();;
-let SNPTrackCache = new Array<CachedSNPTrackSVG>();
-export let baseFigureCache : string;
-
-export let cachesWereReset : boolean = false;
-export let startedNewSVG : boolean = false;
-export let pendingSVGs = 0;
+let coverageTrackCache = new Array<CachedCoverageTrackTemplate>();;
+let SNPTrackCache = new Array<CachedSNPTrackTemplate>();
 
 export function resetCaches() : void
 {
-    coverageTrackCache = new Array<CachedCoverageTrackSVG>();
-    SNPTrackCache = new Array<CachedSNPTrackSVG>();
-    resetBaseFigureCache();
-}
-
-export function resetBaseFigureCache() : void
-{
-    baseFigureCache = undefined;
+    coverageTrackCache = new Array<CachedCoverageTrackTemplate>();
+    SNPTrackCache = new Array<CachedSNPTrackTemplate>();
 }
 
 export function refreshCache(newFigure : cf.CircularFigure) : void
 {
-    cachesWereReset = false;
-    startedNewSVG = false;
-    pendingSVGs = 0;
     if(!figure || newFigure.uuid != figure.uuid)
     {
         resetCaches();
-        cachesWereReset = true;
         figure = newFigure;
-        baseFigureCache = undefined;
     }
 
-    if(!baseFigureCache)
-    {
-        try
-        {
-            baseFigureCache = cf.getBaseFigureSVGFromCache(newFigure);
-            cachesWereReset = true;
-            startedNewSVG = true;
-        }
-        catch(err)
-        {
-            ipc.send(
-                "runOperation",
-                <AtomicOperationIPC>{
-                    opName : "compileTemplates",
-                    figure : newFigure,
-                    compileBase : true
-                }
-            );
-            startedNewSVG = true;
-            pendingSVGs++;
-        }
-    }
     //load tracks which had not been loaded previously
     let found = false;
     for(let i = 0; i != newFigure.renderedCoverageTracks.length; ++i)
@@ -107,26 +65,7 @@ export function refreshCache(newFigure : cf.CircularFigure) : void
             }
         }
         if(!found)
-        {
-            try
-            {
-                coverageTrackCache.push(new CachedCoverageTrackSVG(newFigure.renderedCoverageTracks[i]));
-            }
-            catch(err)
-            {
-                ipc.send(
-                    "runOperation",
-                    <AtomicOperationIPC>{
-                        opName : "compileTemplates",
-                        figure : newFigure,
-                        uuid : newFigure.renderedCoverageTracks[i].uuid,
-                        compileBase : false
-                    }
-                );
-                startedNewSVG = true;
-                pendingSVGs++;
-            }
-        }
+            coverageTrackCache.push(new CachedCoverageTrackTemplate(newFigure.renderedCoverageTracks[i]));
     }
 
     for(let i = 0; i != newFigure.renderedSNPTracks.length; ++i)
@@ -141,26 +80,7 @@ export function refreshCache(newFigure : cf.CircularFigure) : void
             }
         }
         if(!found)
-        {
-            try
-            {
-                SNPTrackCache.push(new CachedSNPTrackSVG(newFigure.renderedSNPTracks[i]));
-            }
-            catch(err)
-            {
-                ipc.send(
-                    "runOperation",
-                    <AtomicOperationIPC>{
-                        opName : "compileTemplates",
-                        figure : newFigure,
-                        uuid : newFigure.renderedSNPTracks[i].uuid,
-                        compileBase : false
-                    }
-                );
-                startedNewSVG = true;
-                pendingSVGs++;
-            }
-        }
+            SNPTrackCache.push(new CachedSNPTrackTemplate(newFigure.renderedSNPTracks[i]));
     }
 }
 
@@ -170,7 +90,7 @@ export function getCachedCoverageTrack(trackRecord : cf.RenderedCoverageTrackRec
     for(let i = 0; i != coverageTrackCache.length; ++i)
     {
         if(coverageTrackCache[i].trackRecord.uuid == trackRecord.uuid)
-            return coverageTrackCache[i].SVGString;
+            return coverageTrackCache[i].templateString;
     }
     throw new Error(`Could not fetch ${trackRecord.uuid} from cache`);
 }
@@ -180,7 +100,7 @@ export function getCachedSNPTrack(trackRecord : cf.RenderedSNPTrackRecord) : str
     for(let i = 0; i != SNPTrackCache.length; ++i)
     {
         if(SNPTrackCache[i].trackRecord.uuid == trackRecord.uuid)
-            return SNPTrackCache[i].SVGString;
+            return SNPTrackCache[i].templateString;
     }
     throw new Error(`Could not fetch ${trackRecord.uuid} from cache`);
 }
