@@ -481,20 +481,6 @@ ipc.on(
 		}
 		else if(arg.opName == "compileTemplates")
 		{
-			for(let i = 0; i != atomicOp.operationsQueue.length; ++i)
-			{
-				if(atomicOp.operationsQueue[i].name == "compileTemplates")
-				{
-					if((<CompileTemplates>atomicOp.operationsQueue[i]).uuid && arg.uuid && (<CompileTemplates>atomicOp.operationsQueue[i]).uuid == arg.uuid)
-					{
-						return;
-					}
-					if((<CompileTemplates>atomicOp.operationsQueue[i]).figure.uuid == arg.figure.uuid)
-					{
-						return;
-					}
-				}
-			}
 			atomicOp.addOperation("compileTemplates",{
 				figure : arg.figure,
 				uuid : arg.uuid,
