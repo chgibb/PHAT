@@ -489,6 +489,10 @@ ipc.on(
 					{
 						return;
 					}
+					if((<CompileTemplates>atomicOp.operationsQueue[i]).figure.uuid == arg.figure.uuid)
+					{
+						return;
+					}
 				}
 			}
 			atomicOp.addOperation("compileTemplates",{

@@ -6,6 +6,7 @@ import * as genomeView from "./req/renderer/circularGenomeBuilderRenderer/genome
 import {CircularFigure,} from "./req/renderer/circularFigure";
 import {GetKeyEvent,KeySubEvent} from "./req/ipcEvents";
 
+import * as svgCache from "./req/renderer/circularGenomeBuilderRenderer/SVGCache";
 import {CompileTemplates} from "./req/operations/CompileTemplates";
 
 require("./req/renderer/commonBehaviour");
@@ -145,12 +146,26 @@ $
                     {
                         if(arg.val !== undefined)
                         {
+                            let masterView = <masterView.View>viewMgr.getViewByName("masterView");
+                            let genomeView = <genomeView.GenomeView>viewMgr.getViewByName("genomeView",masterView.views);
                             let ops : Array<CompileTemplates> = arg.val;
                             for(let i = 0; i != ops.length; ++i)
                             {
-                                if(ops[i].name == "compileTemplates" && ops[i].flags.done && ops[i].flags.success)
+                                if(genomeView.genome)
                                 {
-                                    //document.getElementById("genomeView").innerHTML += ops[i].templates;
+                                    if(ops[i].name == "compileTemplates" && ops[i].flags.done && ops[i].flags.success)
+                                    {
+                                        if(ops[i].compileBase)
+                                        {
+                                            if(ops[i].figure.uuid == genomeView.genome.uuid)
+                                            {
+                                                svgCache.baseFigureSVGCache.makeDirty();
+                                                svgCache.baseFigureSVGCache.buildingSVG = false;
+                                            }
+
+                                        }
+                                    }
+                                    viewMgr.render();
                                 }
                             }
                         }

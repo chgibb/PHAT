@@ -14,6 +14,7 @@ import {Fasta} from "./../../fasta";
 import {alignData} from "./../../alignData";
 
 import * as GenomeView from "./genomeView";
+import * as svgCache from "./SVGCache";
 
 import {writeAlignsModal} from "./writeAlignsModal";
 import {writeAvailableTracksModal} from "./writeAvailableTracksModal";
@@ -333,6 +334,7 @@ export class View extends viewMgr.View
                 val : this.circularFigures
             }
         );
+        svgCache.baseFigureSVGCache.makeDirty();
     }
     public divClickEvents(event : JQueryEventObject) : void
     {

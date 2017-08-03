@@ -1,5 +1,9 @@
 import * as fs from "fs";
 
+import * as electron from "electron";
+const ipc = electron.ipcRenderer;
+
+import {AtomicOperationIPC} from "./../../atomicOperationsIPC";
 import * as cf from "./../circularFigure";
 
 /*
@@ -36,26 +40,59 @@ let baseFigureSVGString = "";
 
 let coverageTrackCache = new Array<CachedCoverageTrackSVG>();;
 let SNPTrackCache = new Array<CachedSNPTrackSVG>();
+export let baseFigureCache : string;
 
 export let cachesWereReset : boolean = false;
-
+export let startedNewSVG : boolean = false;
+export let pendingSVGs = 0;
 
 export function resetCaches() : void
 {
     coverageTrackCache = new Array<CachedCoverageTrackSVG>();
     SNPTrackCache = new Array<CachedSNPTrackSVG>();
+    resetBaseFigureCache();
+}
+
+export function resetBaseFigureCache() : void
+{
+    baseFigureCache = undefined;
 }
 
 export function refreshCache(newFigure : cf.CircularFigure) : void
 {
     cachesWereReset = false;
+    startedNewSVG = false;
+    pendingSVGs = 0;
     if(!figure || newFigure.uuid != figure.uuid)
     {
         resetCaches();
         cachesWereReset = true;
         figure = newFigure;
+        baseFigureCache = undefined;
     }
 
+    if(!baseFigureCache)
+    {
+        try
+        {
+            baseFigureCache = cf.getBaseFigureSVGFromCache(newFigure);
+            cachesWereReset = true;
+            startedNewSVG = true;
+        }
+        catch(err)
+        {
+            ipc.send(
+                "runOperation",
+                <AtomicOperationIPC>{
+                    opName : "compileTemplates",
+                    figure : newFigure,
+                    compileBase : true
+                }
+            );
+            startedNewSVG = true;
+            pendingSVGs++;
+        }
+    }
     //load tracks which had not been loaded previously
     let found = false;
     for(let i = 0; i != newFigure.renderedCoverageTracks.length; ++i)
@@ -70,7 +107,26 @@ export function refreshCache(newFigure : cf.CircularFigure) : void
             }
         }
         if(!found)
-            coverageTrackCache.push(new CachedCoverageTrackSVG(newFigure.renderedCoverageTracks[i]));
+        {
+            try
+            {
+                coverageTrackCache.push(new CachedCoverageTrackSVG(newFigure.renderedCoverageTracks[i]));
+            }
+            catch(err)
+            {
+                ipc.send(
+                    "runOperation",
+                    <AtomicOperationIPC>{
+                        opName : "compileTemplates",
+                        figure : newFigure,
+                        uuid : newFigure.renderedCoverageTracks[i].uuid,
+                        compileBase : false
+                    }
+                );
+                startedNewSVG = true;
+                pendingSVGs++;
+            }
+        }
     }
 
     for(let i = 0; i != newFigure.renderedSNPTracks.length; ++i)
@@ -85,7 +141,26 @@ export function refreshCache(newFigure : cf.CircularFigure) : void
             }
         }
         if(!found)
-            SNPTrackCache.push(new CachedSNPTrackSVG(newFigure.renderedSNPTracks[i]));
+        {
+            try
+            {
+                SNPTrackCache.push(new CachedSNPTrackSVG(newFigure.renderedSNPTracks[i]));
+            }
+            catch(err)
+            {
+                ipc.send(
+                    "runOperation",
+                    <AtomicOperationIPC>{
+                        opName : "compileTemplates",
+                        figure : newFigure,
+                        uuid : newFigure.renderedSNPTracks[i].uuid,
+                        compileBase : false
+                    }
+                );
+                startedNewSVG = true;
+                pendingSVGs++;
+            }
+        }
     }
 }
 

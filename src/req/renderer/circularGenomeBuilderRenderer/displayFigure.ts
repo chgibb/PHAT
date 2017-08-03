@@ -5,7 +5,8 @@ const ipc = electron.ipcRenderer;
 
 import {AtomicOperationIPC} from "./../../atomicOperationsIPC";
 import * as cf from "./../circularFigure";
-import * as tc from "./templateCache";
+import * as svgCache from "./SVGCache";
+//import * as tc from "./templateCache";
 import * as plasmid from "./../circularGenome/plasmid";
 import * as viewMgr from "./../viewMgr";
 import * as masterView from "./masterView";
@@ -16,53 +17,36 @@ import {getReadable} from "./../../getAppPath";
 export async function displayFigure(self : GenomeView) : Promise<void>
 {
     return new Promise<void>((resolve,reject) => {
-        tc.refreshCache(self.genome);
-        if(tc.cachesWereReset)
+        svgCache.refreshCache(self.genome);
+        if(svgCache.cachesWereReset)
         {
-           /* let templates = cf.assembleCompilableBaseFigureTemplates(self.genome);
-            ipc.send(
-                "runOperation",
-                <AtomicOperationIPC>{
-                    opName : "compileTemplates",
-                    templates : templates,
-                    figure : self.genome
-                }
-            );
-            for(let i = 0; i != self.genome.renderedCoverageTracks.length; ++i)
+            document.getElementById(self.div).innerHTML = "";
+        }
+        if(svgCache.baseFigureSVGCache.isDirty)
+        {
+            console.log("base figure is dirty");
+            if(!svgCache.baseFigureSVGCache.clean() && !svgCache.baseFigureSVGCache.buildingSVG)
             {
                 ipc.send(
                     "runOperation",
                     <AtomicOperationIPC>{
                         opName : "compileTemplates",
-                        templates : cf.assembleCompilableCoverageTrack(self.genome,self.genome.renderedCoverageTracks[i]),
-                        figure : self.genome
+                        figure : self.genome,
+                        compileBase : true
                     }
                 );
-            }*/
-            ipc.send(
-                "runOperation",
-                <AtomicOperationIPC>{
-                    opName : "compileTemplates",
-                    figure : self.genome,
-                    compileBase : true
-                }
-            );
-           /* let $div : any;
-            $div = $(`${cf.assembleCompilableCoverageTrack(self.genome,self.genome.renderedCoverageTracks[0])}`);
-            $(document.body).append($div);
-            console.log("appended div");
-
-            document.getElementById("loadingText").innerText = "Compiling templates...";
-            console.log("set loading 2");
-
-            angular.element(document).injector().invoke(function($compile : any){
-                //This should probably be done with an actual angular scope instead 
-                //of mutating the existing scope
-                let scope = angular.element($div).scope();
-                self.updateScope(scope);
-                $compile($div)(scope);
-                console.log("finished compiling");
-            });*/
+                console.log("triggered basefigure recompilation");
+                svgCache.baseFigureSVGCache.buildingSVG = true;
+                return resolve();
+            }
         }
+        if(!document.getElementById("baseFigure") && !svgCache.baseFigureSVGCache.isDirty)
+        {
+            console.log("base figure div not found");
+            console.log("injected base figure");
+            document.getElementById(self.div).innerHTML += `<div id="baseFigure"></div>`;
+            document.getElementById("baseFigure").innerHTML = svgCache.baseFigureSVGCache.svg;
+        }
+        return resolve();
     });
 }
