@@ -231,14 +231,18 @@ export class View extends viewMgr.View
         }
 
         document.getElementById("updateNavBarButton").onclick = function(this : HTMLElement,ev : MouseEvent){
+            let radiusHasChanged = false;
             if(!genomeView.genome)
                     return;
             let radius = parseInt((<HTMLInputElement>document.getElementById("figureRadiusInput")).value);
             if(radius)
+            {
                 genomeView.genome.radius = radius;
+                radiusHasChanged = true;
+            }
 
             let trackInterval = parseInt((<HTMLInputElement>document.getElementById("figureBPIntervalInput")).value);
-            if(radius)
+            if(trackInterval)
                 genomeView.genome.circularFigureBPTrackOptions.interval = trackInterval;
 
             let showInterval = ((<HTMLInputElement>document.getElementById("showBPIntervalCheckBox")).checked);
@@ -248,6 +252,24 @@ export class View extends viewMgr.View
                     genomeView.genome.circularFigureBPTrackOptions.showLabels = 1;
                 else
                     genomeView.genome.circularFigureBPTrackOptions.showLabels = 0;
+            }
+            if(radiusHasChanged)
+            {
+                for(let i = 0; i != genomeView.genome.renderedCoverageTracks.length; ++i)
+                {
+                    if(genomeView.genome.renderedCoverageTracks[i].checked)
+                    {
+                        ipc.send(
+                            "runOperation",
+                            <AtomicOperationIPC>{
+                                opName : "compileTemplates",
+                                figure : genomeView.genome,
+                                compileBase : false,
+                                uuid : genomeView.genome.renderedCoverageTracks[i].uuid
+                            }
+                        );
+                    }
+                }
             }
             genomeView.updateScope();
             self.dataChanged();
