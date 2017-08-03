@@ -6,7 +6,7 @@ import * as genomeView from "./req/renderer/circularGenomeBuilderRenderer/genome
 import {CircularFigure,} from "./req/renderer/circularFigure";
 import {GetKeyEvent,KeySubEvent} from "./req/ipcEvents";
 import {CompileTemplates} from "./req/operations/CompileTemplates";
-
+import * as tc from "./req/renderer/circularGenomeBuilderRenderer/templateCache";
 require("./req/renderer/commonBehaviour");
 
 import * as $ from "jquery";
@@ -155,6 +155,10 @@ $
                                         console.log("compiled "+ops[i].uuid);
                                         genomeView.firstRender = true;
                                         viewMgr.render();
+                                        if(ops[i].uuid)
+                                        {
+                                            tc.removeTrack(ops[i].uuid);
+                                        }
                                     }
                                 }
                             }
