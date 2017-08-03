@@ -60,70 +60,32 @@ export async function displayFigure(self : GenomeView) : Promise<void>
                                 self.genome,
                                 `
                                     ${cf.getBaseFigureFromCache(self.genome)}
-                                    ${(()=>{
-                                        let res = "";
-                                        for(let i = 0; i != self.genome.renderedCoverageTracks.length; ++i)
-                                        {
-                                            if(self.genome.renderedCoverageTracks[i].checked)
-                                            {
-                                                res += tc.getCachedCoverageTrack(self.genome.renderedCoverageTracks[i]);
-                                            }
-                                        }
-                                        return res;
-                                    })()}
-                                    ${(()=>{
-                                        let res = "";
-                                        for(let i = 0; i != self.genome.renderedSNPTracks.length; ++i)
-                                        {
-                                            if(self.genome.renderedSNPTracks[i].checked)
-                                            {
-                                                res += tc.getCachedSNPTrack(self.genome.renderedSNPTracks[i]);
-                                            }
-                                        }
-                                        return res;
-                                    })()}
                                 `
                                 );
                             $div = $(`
                                 <div id="${self.div}">
+                                    
+                                        ${(()=>{
+                                            let res = "";
+                                            for(let i = 0; i != self.genome.renderedCoverageTracks.length; ++i)
+                                            {
+                                                if(self.genome.renderedCoverageTracks[i].checked)
+                                                {
+                                                    try
+                                                    {
+                                                        res += `<div style="position:absolute;z-index:-99;">`;
+                                                        res += tc.getCachedCoverageTrack(self.genome.renderedCoverageTracks[i]);
+                                                        res += `</div>`;
+                                                    }
+                                                    catch(err){}
+                                                }
+                                            }
+                                            return res;
+                                        })()}
+                                    
                                     ${templates}
                                 </div>
                             `);
-                            /*$div = $(
-                            `
-                                <div id="${self.div}" style="z-index=-1;">
-                                    ${plasmid.add(
-                                    {
-                                        sequenceLength : totalBP.toString(),
-                                        plasmidHeight : "{{genome.height}}",
-                                        plasmidWidth : "{{genome.width}}"
-                                    })}
-                                    ${cf.getBaseFigureFromCache(self.genome)}
-                                    ${(()=>{
-                                        let res = "";
-                                        for(let i = 0; i != self.genome.renderedCoverageTracks.length; ++i)
-                                        {
-                                            if(self.genome.renderedCoverageTracks[i].checked)
-                                            {
-                                                res += tc.getCachedCoverageTrack(self.genome.renderedCoverageTracks[i]);
-                                            }
-                                        }
-                                        return res;
-                                    })()}
-                                    ${(()=>{
-                                        let res = "";
-                                        for(let i = 0; i != self.genome.renderedSNPTracks.length; ++i)
-                                        {
-                                            if(self.genome.renderedSNPTracks[i].checked)
-                                            {
-                                                res += tc.getCachedSNPTrack(self.genome.renderedSNPTracks[i]);
-                                            }
-                                        }
-                                        return res;
-                                    })()}
-                                    ${plasmid.end()}
-                                </div>
-                            `);*/
                             $(document.body).append($div);
                             console.log("appended div");
 

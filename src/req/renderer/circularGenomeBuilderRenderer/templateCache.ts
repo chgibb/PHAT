@@ -1,46 +1,51 @@
 import * as fs from "fs";
 
+import * as electron from "electron";
+const ipc = electron.ipcRenderer;
+
+import {AtomicOperationIPC} from "./../../atomicOperationsIPC";
+
 import * as cf from "./../circularFigure";
 
 /*
     This module acts as a wrapper over circularFigure's track record functionality.
-    It provides an in memory cache of track templates, instead of using circularFigure's disk based
+    It provides an in memory cache of track SVGs, instead of using circularFigure's disk based
     access.
 */
 
 let figure : cf.CircularFigure;
 
-class CachedCoverageTrackTemplate
+class CachedCoverageTrackSVG
 {
     public trackRecord : cf.RenderedCoverageTrackRecord;
-    public templateString : string;
+    public svg : string;
     public constructor(trackRecord : cf.RenderedCoverageTrackRecord)
     {
         this.trackRecord = trackRecord;
-        this.templateString = (<any>fs.readFileSync(cf.getCachedCoverageTrackPath(trackRecord)).toString());
+        this.svg = cf.getCoverageTrackSVGFromCache(trackRecord);
     }
 }
 
-class CachedSNPTrackTemplate
+class CachedSNPTrackSVG
 {
     public trackRecord : cf.RenderedSNPTrackRecord;
-    public templateString : string;
+    public svg : string;
     public constructor(trackRecord : cf.RenderedSNPTrackRecord)
     {
         this.trackRecord = trackRecord;
-        this.templateString = (<any>fs.readFileSync(cf.getCachedSNPTrackPath(trackRecord)).toString());
+        this.svg = cf.getSNPTrackSVGFromCache(trackRecord);
     }
 }
 
 let baseFigureTemplateString = "";
 
-let coverageTrackCache = new Array<CachedCoverageTrackTemplate>();;
-let SNPTrackCache = new Array<CachedSNPTrackTemplate>();
+let coverageTrackCache = new Array<CachedCoverageTrackSVG>();;
+let SNPTrackCache = new Array<CachedSNPTrackSVG>();
 
 export function resetCaches() : void
 {
-    coverageTrackCache = new Array<CachedCoverageTrackTemplate>();
-    SNPTrackCache = new Array<CachedSNPTrackTemplate>();
+    coverageTrackCache = new Array<CachedCoverageTrackSVG>();
+    SNPTrackCache = new Array<CachedSNPTrackSVG>();
 }
 
 export function refreshCache(newFigure : cf.CircularFigure) : void
@@ -65,10 +70,28 @@ export function refreshCache(newFigure : cf.CircularFigure) : void
             }
         }
         if(!found)
-            coverageTrackCache.push(new CachedCoverageTrackTemplate(newFigure.renderedCoverageTracks[i]));
+        {
+            try
+            {
+                coverageTrackCache.push(new CachedCoverageTrackSVG(newFigure.renderedCoverageTracks[i]));
+        
+            }
+            catch(err)
+            {
+                ipc.send(
+                    "runOperation",
+                    <AtomicOperationIPC>{
+                        opName : "compileTemplates",
+                        figure : newFigure,
+                        uuid : newFigure.renderedCoverageTracks[i].uuid,
+                        compileBase : false
+                    }
+                );
+            }
+        }
     }
 
-    for(let i = 0; i != newFigure.renderedSNPTracks.length; ++i)
+    /*for(let i = 0; i != newFigure.renderedSNPTracks.length; ++i)
     {
         found = false;
         for(let k = 0; k != SNPTrackCache.length; ++k)
@@ -80,8 +103,8 @@ export function refreshCache(newFigure : cf.CircularFigure) : void
             }
         }
         if(!found)
-            SNPTrackCache.push(new CachedSNPTrackTemplate(newFigure.renderedSNPTracks[i]));
-    }
+            SNPTrackCache.push(new CachedSNPTrackSVG(newFigure.renderedSNPTracks[i]));
+    }*/
 }
 
 //retrieve loaded tracks
@@ -90,7 +113,7 @@ export function getCachedCoverageTrack(trackRecord : cf.RenderedCoverageTrackRec
     for(let i = 0; i != coverageTrackCache.length; ++i)
     {
         if(coverageTrackCache[i].trackRecord.uuid == trackRecord.uuid)
-            return coverageTrackCache[i].templateString;
+            return coverageTrackCache[i].svg;
     }
     throw new Error(`Could not fetch ${trackRecord.uuid} from cache`);
 }
@@ -100,7 +123,7 @@ export function getCachedSNPTrack(trackRecord : cf.RenderedSNPTrackRecord) : str
     for(let i = 0; i != SNPTrackCache.length; ++i)
     {
         if(SNPTrackCache[i].trackRecord.uuid == trackRecord.uuid)
-            return SNPTrackCache[i].templateString;
+            return SNPTrackCache[i].svg;
     }
     throw new Error(`Could not fetch ${trackRecord.uuid} from cache`);
 }

@@ -153,6 +153,8 @@ $
                                     if(ops[i].name == "compileTemplates" && ops[i].flags.done && ops[i].flags.success)
                                     {
                                         console.log("compiled "+ops[i].uuid);
+                                        genomeView.firstRender = true;
+                                        viewMgr.render();
                                     }
                                 }
                             }

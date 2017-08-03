@@ -237,8 +237,9 @@ export class View extends viewMgr.View
             let radius = parseInt((<HTMLInputElement>document.getElementById("figureRadiusInput")).value);
             if(radius)
             {
+                if(radius != genomeView.genome.radius)
+                    radiusHasChanged = true;
                 genomeView.genome.radius = radius;
-                radiusHasChanged = true;
             }
 
             let trackInterval = parseInt((<HTMLInputElement>document.getElementById("figureBPIntervalInput")).value);
