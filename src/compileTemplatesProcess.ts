@@ -48,10 +48,10 @@ function compileAndSend()
         {
             if(uuid == figure.renderedSNPTracks[i].uuid)
             {
-                cf.cachCoverageTrackSVG(
+                cf.cacheSNPTrackSVG(
                     figure.renderedSNPTracks[i],
                     ngEnvironment.$compile(
-                        cf.assembleCompilableCoverageTrack(figure,figure.renderedSNPTracks[i])
+                        cf.assembleCompilableSNPTrack(figure,figure.renderedSNPTracks[i])
                     )({genome : figure})
                 );
                 break;
