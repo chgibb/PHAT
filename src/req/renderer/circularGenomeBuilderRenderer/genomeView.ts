@@ -34,7 +34,7 @@ export class GenomeView extends viewMgr.View implements cf.FigureCanvas
     public onMount() : void{}
     public onUnMount() : void{}
     public updateScope(scope? : cf.FigureCanvas) : void
-    {/*
+    {
         if(scope)
             this.scope = scope;
         this.scope.genome = this.genome;
@@ -46,7 +46,7 @@ export class GenomeView extends viewMgr.View implements cf.FigureCanvas
         this.scope.exportSVG = this.exportSVG;
         this.scope.postRender = this.postRender;
         this.scope.firstRender = this.firstRender;
-        this.scope.div = this.div;*/
+        this.scope.div = this.div;
     }
     public async serializeFigure() : Promise<string>
     {
@@ -179,25 +179,25 @@ export class GenomeView extends viewMgr.View implements cf.FigureCanvas
             
             //Only render markup when we explicitly need to
             //All figure updates are handled through angular bindings
-            //if(this.firstRender)
-            //{
-                //masterView.loadingModal = true;
-                //writeLoadingModal();
-                //masterView.showModal();
+            if(this.firstRender)
+            {
+                masterView.loadingModal = true;
+                writeLoadingModal();
+                masterView.showModal();
                 
                 let self = this;
                 setTimeout(function(){
                     displayFigure(self).then(() => {
-                        //masterView.loadingModal = false;
-                        //masterView.dismissModal();
+                        masterView.loadingModal = false;
+                        masterView.dismissModal();
                         setTimeout(function(){
                             window.dispatchEvent(new Event("resize"));
                         },10);
                     });
                 },10);
             
-                //this.firstRender = false;
-            //}
+                this.firstRender = false;
+            }
         }
         else
             return " ";
