@@ -117,9 +117,23 @@ export async function displayFigure(self : GenomeView) : Promise<void>
                                     //This should probably be done with an actual angular scope instead 
                                     //of mutating the existing scope
                                     let scope = angular.element($div).scope();
-                                    self.updateScope(scope);
-                                    $compile($div)(scope);
-                                    console.log("finished compiling");
+
+                                    //occasionally, when resizing extremely large figures scope() may return undefined
+                                    //may be related to https://github.com/angular/angular.js/issues/9515
+                                    if(scope)
+                                    {
+                                        self.updateScope(scope);
+                                        $compile($div)(scope);
+                                        console.log("finished compiling");
+                                    }
+                                    else
+                                    {
+                                        console.log("Scope was undefined. Deferring rerender");
+                                        setTimeout(function(){
+                                            self.firstRender = true;
+                                            viewMgr.render();
+                                        },1000);
+                                    }
                                     resolve();
                                 });
                             });
