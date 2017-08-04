@@ -13,7 +13,7 @@ import * as masterView from "./masterView";
 import {alignData} from "./../../alignData";
 import * as cf from "./../circularFigure";
 import {displayFigure} from "./displayFigure";
-
+import {centreFigure} from "./centreFigure";
 import {writeLoadingModal} from "./writeLoadingModal";
 import {setSelectedContigByUUID} from "./writeContigEditorModal";
 
@@ -207,30 +207,14 @@ export class GenomeView extends viewMgr.View implements cf.FigureCanvas
     {
         if(this.genome !== undefined)
         {
-            //get a reference to the div wrapping the rendered svg graphic of our figure
-            let div = document.getElementById(this.div);
-            if(div)
-            {
-                //expand the div to the new window size
-                div.style.zIndex = "-1";
-                div.style.position = "absolute";
-                div.style.height = `${$(window).height()}px`;
-                div.style.width = `${$(window).width()}px`;
-
-                let x = 0;
-                let y = 0;
-                //center the div in the window
-                x = ($(window).width()/2)-(this.genome.width/2);
-                y = ($(window).height()/2)-(this.genome.height/2);
-                div.style.left = `${x}px`;
-                div.style.top = `${y}px`;
-            }
+            centreFigure(document.getElementById(this.div),this.genome);
         }
 
         /*
             Occasionally, on large figures, especially when growing them by a significant radius, if angular element.scope() happens to return
             undefined as in https://github.com/angular/angular.js/issues/9515, our solution is to abort and defer compilation by a second (see displayFigure.ts).
-            This deferement can sometimes, in conjuction with newly compiled SVG tracks coming in, cause angular to duplicate the figure into new divs with all bindings broken. The
+            This deferement can sometimes, in conjuction with newly compiled SVG tracks coming in, cause angular to duplicate the figure into 
+            new divs with all bindings broken. The
             cloned divs will have the same id as the real div, but their figures will be completely non functional. 
             Here, we walk all divs that have been passed through angular and look for the id of the editor div. If there is more than one, then this bug has occured and we will
             blow away all of the divs and trigger a rerender.

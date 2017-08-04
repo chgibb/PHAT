@@ -6,6 +6,7 @@ import * as plasmid from "./../circularGenome/plasmid";
 import * as viewMgr from "./../viewMgr";
 import * as masterView from "./masterView";
 import {GenomeView} from "./genomeView";
+import {centreFigure} from "./centreFigure";
 export async function displayFigure(self : GenomeView) : Promise<void>
 {
     //This is an unholy mess adapted from the example given inline in the
@@ -100,6 +101,7 @@ export async function displayFigure(self : GenomeView) : Promise<void>
                                 </div>
                             `);
                             $(document.body).append($div);
+                            centreFigure(document.getElementById(self.div),self.genome);
                             console.log("appended div");
 
                             document.getElementById("loadingText").innerText = "Compiling templates...";
