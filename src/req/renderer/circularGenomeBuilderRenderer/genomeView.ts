@@ -58,7 +58,7 @@ export class GenomeView extends viewMgr.View implements cf.FigureCanvas
                         setImmediate(function(){
                             resolve(
                                 new XMLSerializer().serializeToString(
-                                    document.getElementById(self.div).children[0]
+                                    document.getElementById(self.div)
                                 )
                             );
                         });
