@@ -183,38 +183,32 @@ export function removeTrack(uuid : string) : void
     }
 }
 
-export function triggerReCompileForAllTracks() : void
+export function triggerReCompileForAllTracks(newFigure : cf.CircularFigure) : void
 {
     if(!figure)
         return;
     for(let i = 0; i != coverageTrackCache.length; ++i)
     {
-        if(coverageTrackCache[i].trackRecord.checked)
-        {
-            ipc.send(
-                "runOperation",
-                <AtomicOperationIPC>{
-                    opName : "compileTemplates",
-                    figure : figure,
-                    compileBase : false,
-                    uuid : coverageTrackCache[i].trackRecord.uuid
-                }
-            );
-        }
+        ipc.send(
+            "runOperation",
+            <AtomicOperationIPC>{
+                opName : "compileTemplates",
+                figure : newFigure,
+                compileBase : false,
+                uuid : coverageTrackCache[i].trackRecord.uuid
+            }
+        );
     }
     for(let i = 0; i != SNPTrackCache.length; ++i)
     {
-        if(SNPTrackCache[i].trackRecord.checked)
-        {
-            ipc.send(
-                "runOperation",
-                <AtomicOperationIPC>{
-                    opName : "compileTemplates",
-                    figure : figure,
-                    compileBase : false,
-                    uuid : SNPTrackCache[i].trackRecord.uuid
-                }
-            );
-        }
+        ipc.send(
+            "runOperation",
+            <AtomicOperationIPC>{
+                opName : "compileTemplates",
+                figure : newFigure,
+                compileBase : false,
+                uuid : SNPTrackCache[i].trackRecord.uuid
+            }
+        );
     }
 }

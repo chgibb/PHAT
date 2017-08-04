@@ -257,7 +257,7 @@ export class View extends viewMgr.View
             }
             if(radiusHasChanged)
             {
-                tc.triggerReCompileForAllTracks();
+                tc.triggerReCompileForAllTracks(genomeView.genome);
             }
             genomeView.updateScope();
             self.dataChanged();
