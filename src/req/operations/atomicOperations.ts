@@ -403,13 +403,13 @@ export function closeLog(uuid : string,status : string) : LogRecord | undefined
             return logRecord;
         }
     }
-    return undefined;
+    throw new Error(`Failed to close log ${uuid} with status ${status} which does not exist`);
 }
 
 export function recordLogRecord(record : LogRecord) : void
 {
     if(record === undefined)
-        return;
+        throw new Error(`Cannot close log with record which does not exist`);
     mkdirp.sync(getReadableAndWritable(`logs`));
     fs.appendFileSync(logRecordFile,JSON.stringify(record)+"\n");
 }
@@ -424,6 +424,7 @@ export function logString(uuid : string,data : string) : void
             return;
         }
     }
+    throw new Error(`Cannot write string to log ${uuid} which does not exist`);
 }
 
 export async function getLogRecords(last : number) : Promise<Array<LogRecord>>
