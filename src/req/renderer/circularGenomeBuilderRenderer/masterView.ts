@@ -14,6 +14,7 @@ import {Fasta} from "./../../fasta";
 import {alignData} from "./../../alignData";
 
 import * as GenomeView from "./genomeView";
+import * as tc from "./templateCache";
 
 import {writeAlignsModal} from "./writeAlignsModal";
 import {writeAvailableTracksModal} from "./writeAvailableTracksModal";
@@ -256,21 +257,7 @@ export class View extends viewMgr.View
             }
             if(radiusHasChanged)
             {
-                for(let i = 0; i != genomeView.genome.renderedCoverageTracks.length; ++i)
-                {
-                    if(genomeView.genome.renderedCoverageTracks[i].checked)
-                    {
-                        ipc.send(
-                            "runOperation",
-                            <AtomicOperationIPC>{
-                                opName : "compileTemplates",
-                                figure : genomeView.genome,
-                                compileBase : false,
-                                uuid : genomeView.genome.renderedCoverageTracks[i].uuid
-                            }
-                        );
-                    }
-                }
+                tc.triggerReCompileForAllTracks();
             }
             genomeView.updateScope();
             self.dataChanged();

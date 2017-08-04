@@ -80,6 +80,19 @@ export async function displayFigure(self : GenomeView) : Promise<void>
                                                     catch(err){}
                                                 }
                                             }
+                                            for(let i = 0; i != self.genome.renderedSNPTracks.length; ++i)
+                                            {
+                                                if(self.genome.renderedSNPTracks[i].checked)
+                                                {
+                                                    try
+                                                    {
+                                                        res += `<div style="position:absolute;z-index:-99;">`;
+                                                        res += tc.getCachedSNPTrack(self.genome.renderedSNPTracks[i]);
+                                                        res += `</div>`;
+                                                    }
+                                                    catch(err){}
+                                                }
+                                            }
                                             return res;
                                         })()}
                                     

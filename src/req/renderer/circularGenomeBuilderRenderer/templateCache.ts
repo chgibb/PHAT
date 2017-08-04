@@ -91,6 +91,39 @@ export function refreshCache(newFigure : cf.CircularFigure) : void
         }
     }
 
+    found = false;
+    for(let i = 0; i != newFigure.renderedSNPTracks.length; ++i)
+    {
+        found = false;
+        for(let k = 0; k != SNPTrackCache.length; ++k)
+        {
+            if(newFigure.renderedSNPTracks[i].uuid == SNPTrackCache[k].trackRecord.uuid)
+            {
+                found = true;
+                break;
+            }
+        }
+        if(!found)
+        {
+            try
+            {
+                SNPTrackCache.push(new CachedSNPTrackSVG(newFigure.renderedSNPTracks[i]));
+            }
+            catch(err)
+            {
+                ipc.send(
+                    "runOperation",
+                    <AtomicOperationIPC>{
+                        opName : "compileTemplates",
+                        figure : newFigure,
+                        uuid : newFigure.renderedSNPTracks[i].uuid,
+                        compileBase : false
+                    }
+                );
+            }
+        }
+    }
+
     /*for(let i = 0; i != newFigure.renderedSNPTracks.length; ++i)
     {
         found = false;
@@ -135,6 +168,7 @@ export function removeTrack(uuid : string) : void
         if(coverageTrackCache[i].trackRecord.uuid == uuid)
         {
             coverageTrackCache.splice(i,1);
+            console.log("removed "+uuid);
             return;
         }
     }
@@ -143,7 +177,44 @@ export function removeTrack(uuid : string) : void
         if(SNPTrackCache[i].trackRecord.uuid == uuid)
         {
             SNPTrackCache.splice(i,1);
+            console.log("removed "+uuid);
             return;
+        }
+    }
+}
+
+export function triggerReCompileForAllTracks() : void
+{
+    if(!figure)
+        return;
+    for(let i = 0; i != coverageTrackCache.length; ++i)
+    {
+        if(coverageTrackCache[i].trackRecord.checked)
+        {
+            ipc.send(
+                "runOperation",
+                <AtomicOperationIPC>{
+                    opName : "compileTemplates",
+                    figure : figure,
+                    compileBase : false,
+                    uuid : coverageTrackCache[i].trackRecord.uuid
+                }
+            );
+        }
+    }
+    for(let i = 0; i != SNPTrackCache.length; ++i)
+    {
+        if(SNPTrackCache[i].trackRecord.checked)
+        {
+            ipc.send(
+                "runOperation",
+                <AtomicOperationIPC>{
+                    opName : "compileTemplates",
+                    figure : figure,
+                    compileBase : false,
+                    uuid : SNPTrackCache[i].trackRecord.uuid
+                }
+            );
         }
     }
 }
