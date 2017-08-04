@@ -226,6 +226,32 @@ export class GenomeView extends viewMgr.View implements cf.FigureCanvas
                 div.style.top = `${y}px`;
             }
         }
+
+        /*
+            Occasionally, on large figures, especially when growing them by a significant radius, if angular element.scope() happens to return
+            undefined as in https://github.com/angular/angular.js/issues/9515, our solution is to abort and defer compilation by a second (see displayFigure.ts).
+            This deferement can sometimes, in conjuction with newly compiled SVG tracks coming in, cause angular to duplicate the figure into new divs with all bindings broken. The
+            cloned divs will have the same id as the real div, but their figures will be completely non functional. 
+            Here, we walk all divs that have been passed through angular and look for the id of the editor div. If there is more than one, then this bug has occured and we will
+            blow away all of the divs and trigger a rerender.
+        */
+        let svgWrappers = document.getElementsByClassName("ng-scope");
+        let found  = new Array<Element>();
+        for(let i = 0; i != svgWrappers.length; ++i)
+        {
+            if(svgWrappers[i].id == this.div)
+                found.push(svgWrappers[i]);
+        }
+        if(found.length > 1)
+        {
+            console.log(`Figure multiplied to ${found.length}`);
+            for(let i = 0; i != found.length; ++i)
+            {
+                found[i].parentNode.removeChild(found[i]);
+            }
+            this.firstRender = true;
+            viewMgr.render();
+        }
     }
     public dataChanged() : void{}
     public divClickEvents(event : JQueryEventObject) : void{}
