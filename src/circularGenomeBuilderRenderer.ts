@@ -149,7 +149,7 @@ $
                             let totalTracks = 0;
                             for(let i = 0; i != ops.length; ++i)
                             {
-                                if(genomeView.genome)
+                                if(genomeView.genome && ops[i].figure.uuid == genomeView.genome.uuid)
                                 {
                                     if(ops[i].name == "compileTemplates")
                                         totalTracks++;
