@@ -13,6 +13,8 @@ export class CompileTemplates extends atomic.AtomicOperation
     public constructor()
     {
         super();
+        this.closeLogOnFailure = false;
+        this.closeLogOnSuccess = false;
     }
     public setData(data : {
         figure : cf.CircularFigure,
