@@ -527,7 +527,7 @@ export function getSNPTrackSVGFromCache(trackRecord : RenderedSNPTrackRecord) : 
     return fs.readFileSync(getCachedSNPTrackSVGPath(trackRecord)).toString();
 }
 
-export function assembleCompilableTemplates(figure : CircularFigure,templates : string) : string
+export function assembleCompilableTemplates(figure : CircularFigure,templates : string,id = "") : string
 {
     let totalBP = 0;
     for(let i = 0; i != figure.contigs.length; ++i)
@@ -535,7 +535,7 @@ export function assembleCompilableTemplates(figure : CircularFigure,templates : 
         totalBP += figure.contigs[i].bp;
     }
     return `
-        <div>
+        <div id="${id}">
         ${plasmid.add(
         {
             sequenceLength : totalBP.toString(),
