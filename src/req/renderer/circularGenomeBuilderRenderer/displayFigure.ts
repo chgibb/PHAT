@@ -6,6 +6,7 @@ import * as plasmid from "./../circularGenome/plasmid";
 import * as viewMgr from "./../viewMgr";
 import * as masterView from "./masterView";
 import {GenomeView} from "./genomeView";
+import {centreFigure} from "./centreFigure";
 export async function displayFigure(self : GenomeView) : Promise<void>
 {
     //This is an unholy mess adapted from the example given inline in the
@@ -56,42 +57,51 @@ export async function displayFigure(self : GenomeView) : Promise<void>
                     setImmediate(function(){
                         setImmediate(function(){
                             tc.refreshCache(self.genome);
-                            $div = $(
-                            `
-                                <div id="${self.div}" style="z-index=-1;">
-                                    ${plasmid.add(
-                                    {
-                                        sequenceLength : totalBP.toString(),
-                                        plasmidHeight : "{{genome.height}}",
-                                        plasmidWidth : "{{genome.width}}"
-                                    })}
+                            let templates = cf.assembleCompilableTemplates(
+                                self.genome,
+                                `
                                     ${cf.getBaseFigureFromCache(self.genome)}
-                                    ${(()=>{
-                                        let res = "";
-                                        for(let i = 0; i != self.genome.renderedCoverageTracks.length; ++i)
-                                        {
-                                            if(self.genome.renderedCoverageTracks[i].checked)
+                                `
+                                );
+                            $div = $(`
+                                <div id="${self.div}">
+                                    
+                                        ${(()=>{
+                                            let res = "";
+                                            for(let i = 0; i != self.genome.renderedCoverageTracks.length; ++i)
                                             {
-                                                res += tc.getCachedCoverageTrack(self.genome.renderedCoverageTracks[i]);
+                                                if(self.genome.renderedCoverageTracks[i].checked)
+                                                {
+                                                    try
+                                                    {
+                                                        res += `<div style="position:absolute;z-index:-99;">`;
+                                                        res += tc.getCachedCoverageTrack(self.genome.renderedCoverageTracks[i]);
+                                                        res += `</div>`;
+                                                    }
+                                                    catch(err){}
+                                                }
                                             }
-                                        }
-                                        return res;
-                                    })()}
-                                    ${(()=>{
-                                        let res = "";
-                                        for(let i = 0; i != self.genome.renderedSNPTracks.length; ++i)
-                                        {
-                                            if(self.genome.renderedSNPTracks[i].checked)
+                                            for(let i = 0; i != self.genome.renderedSNPTracks.length; ++i)
                                             {
-                                                res += tc.getCachedSNPTrack(self.genome.renderedSNPTracks[i]);
+                                                if(self.genome.renderedSNPTracks[i].checked)
+                                                {
+                                                    try
+                                                    {
+                                                        res += `<div style="position:absolute;z-index:-99;">`;
+                                                        res += tc.getCachedSNPTrack(self.genome.renderedSNPTracks[i]);
+                                                        res += `</div>`;
+                                                    }
+                                                    catch(err){}
+                                                }
                                             }
-                                        }
-                                        return res;
-                                    })()}
-                                    ${plasmid.end()}
+                                            return res;
+                                        })()}
+                                    
+                                    ${templates}
                                 </div>
                             `);
                             $(document.body).append($div);
+                            centreFigure(document.getElementById(self.div),self.genome);
                             console.log("appended div");
 
                             document.getElementById("loadingText").innerText = "Compiling templates...";
@@ -109,9 +119,23 @@ export async function displayFigure(self : GenomeView) : Promise<void>
                                     //This should probably be done with an actual angular scope instead 
                                     //of mutating the existing scope
                                     let scope = angular.element($div).scope();
-                                    self.updateScope(scope);
-                                    $compile($div)(scope);
-                                    console.log("finished compiling");
+
+                                    //occasionally, when resizing extremely large figures scope() may return undefined
+                                    //may be related to https://github.com/angular/angular.js/issues/9515
+                                    if(scope)
+                                    {
+                                        self.updateScope(scope);
+                                        $compile($div)(scope);
+                                        console.log("finished compiling");
+                                    }
+                                    else
+                                    {
+                                        console.log("Scope was undefined. Deferring rerender");
+                                        setTimeout(function(){
+                                            self.firstRender = true;
+                                            viewMgr.render();
+                                        },1000);
+                                    }
                                     resolve();
                                 });
                             });

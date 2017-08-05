@@ -5,7 +5,8 @@ import * as masterView from "./req/renderer/circularGenomeBuilderRenderer/master
 import * as genomeView from "./req/renderer/circularGenomeBuilderRenderer/genomeView";
 import {CircularFigure,} from "./req/renderer/circularFigure";
 import {GetKeyEvent,KeySubEvent} from "./req/ipcEvents";
-
+import {CompileTemplates} from "./req/operations/CompileTemplates";
+import * as tc from "./req/renderer/circularGenomeBuilderRenderer/templateCache";
 require("./req/renderer/commonBehaviour");
 
 import * as $ from "jquery";
@@ -72,6 +73,15 @@ $
                 action : "keySub"
             }
         );
+        ipc.send(
+            "keySub",
+            <KeySubEvent>{
+                channel : "application",
+                key : "operations",
+                replyChannel : "circularGenomeBuilder",
+                action : "keySub"
+            }
+        );
         ipc.on
         (
             'circularGenomeBuilder',function(event : Electron.IpcMessageEvent,arg : any)
@@ -127,6 +137,41 @@ $
                                 }
                             }
                             
+                        }
+                    }
+                    if(arg.key == "operations")
+                    {
+                        if(arg.val !== undefined)
+                        {
+                            let masterView = <masterView.View>viewMgr.getViewByName("masterView");
+                            let genomeView = <genomeView.GenomeView>viewMgr.getViewByName("genomeView",masterView.views);
+                            let ops : Array<CompileTemplates> = arg.val;
+                            let totalTracks = 0;
+                            for(let i = 0; i != ops.length; ++i)
+                            {
+                                if(genomeView.genome && ops[i].figure.uuid == genomeView.genome.uuid)
+                                {
+                                    if(ops[i].name == "compileTemplates")
+                                        totalTracks++;
+                                    if(ops[i].name == "compileTemplates" && ops[i].flags.done && ops[i].flags.success)
+                                    {
+                                        console.log("compiled "+ops[i].uuid);
+                                        if(ops[i].uuid)
+                                        {
+                                            tc.removeTrack(ops[i].uuid);
+                                            genomeView.firstRender = true;
+                                        }
+                                    }
+                                }
+                            }
+                            if(totalTracks > 0)
+                                document.getElementById("navBarLoadingText").innerHTML = `Recalculating ${totalTracks} tracks`;
+                            if(totalTracks == 1)
+                            {
+                                setTimeout(function(){
+                                    document.getElementById("navBarLoadingText").innerHTML = ``;
+                                },1000);
+                            }
                         }
                     }
                 }

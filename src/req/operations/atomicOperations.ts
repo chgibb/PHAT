@@ -36,6 +36,8 @@ export abstract class AtomicOperation
 
     public running : boolean;
 
+    public ignoreScheduler : boolean;
+
     public constructor()
     {
         this.generatedArtifacts = new Array<string>();
@@ -49,6 +51,8 @@ export abstract class AtomicOperation
         this.flags = new CompletionFlags();
 
         this.running = false;
+
+        this.ignoreScheduler = false;
     }
     public getGeneratedArtifacts() : Array<string>
     {
@@ -295,7 +299,11 @@ export function addOperation(opName : string,data : any) : void
 
 export function runOperations(maxRunning : number) : void
 {
-    
+    for(let i = 0; i != operationsQueue.length; ++i)
+    {
+        if(operationsQueue[i].ignoreScheduler)
+            operationsQueue[i].run();
+    }
     //console.log(operationsQueue);
     let currentRunning : number = 0;
     for(let i = 0; i != operationsQueue.length; ++i)
@@ -395,13 +403,13 @@ export function closeLog(uuid : string,status : string) : LogRecord | undefined
             return logRecord;
         }
     }
-    return undefined;
+    throw new Error(`Failed to close log ${uuid} with status ${status} which does not exist`);
 }
 
 export function recordLogRecord(record : LogRecord) : void
 {
     if(record === undefined)
-        return;
+        throw new Error(`Cannot close log with record which does not exist`);
     mkdirp.sync(getReadableAndWritable(`logs`));
     fs.appendFileSync(logRecordFile,JSON.stringify(record)+"\n");
 }
@@ -416,6 +424,7 @@ export function logString(uuid : string,data : string) : void
             return;
         }
     }
+    throw new Error(`Cannot write string to log ${uuid} which does not exist`);
 }
 
 export async function getLogRecords(last : number) : Promise<Array<LogRecord>>
