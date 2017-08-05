@@ -149,17 +149,19 @@ $
                             let totalTracks = 0;
                             for(let i = 0; i != ops.length; ++i)
                             {
-                                if(genomeView.genome && ops[i].figure.uuid == genomeView.genome.uuid)
+                                if(ops[i].name == "compileTemplates")
                                 {
-                                    if(ops[i].name == "compileTemplates")
-                                        totalTracks++;
-                                    if(ops[i].name == "compileTemplates" && ops[i].flags.done && ops[i].flags.success)
+                                    if(genomeView.genome && ops[i].figure.uuid == genomeView.genome.uuid)
                                     {
-                                        console.log("compiled "+ops[i].uuid);
-                                        if(ops[i].uuid)
+                                        totalTracks++;
+                                        if(ops[i].flags.done && ops[i].flags.success)
                                         {
-                                            tc.removeTrack(ops[i].uuid);
-                                            genomeView.firstRender = true;
+                                            console.log("compiled "+ops[i].uuid);
+                                            if(ops[i].uuid)
+                                            {
+                                                tc.removeTrack(ops[i].uuid);
+                                                genomeView.firstRender = true;
+                                            }
                                         }
                                     }
                                 }

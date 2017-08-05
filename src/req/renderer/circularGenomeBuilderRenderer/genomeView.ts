@@ -17,6 +17,8 @@ import {centreFigure} from "./centreFigure";
 import {writeLoadingModal} from "./writeLoadingModal";
 import {setSelectedContigByUUID} from "./writeContigEditorModal";
 
+import {writeSVG,serializeFigure} from "./exportToSVG";
+
 require("angular");
 require("angularplasmid");
 let app : any = angular.module('myApp',['angularplasmid']);
@@ -48,45 +50,7 @@ export class GenomeView extends viewMgr.View implements cf.FigureCanvas
         this.scope.firstRender = this.firstRender;
         this.scope.div = this.div;
     }
-    public async serializeFigure() : Promise<string>
-    {
-        let self = this;
-        return new Promise<string>((resolve,reject) => {
-            (async function() : Promise<string>{
-                return new Promise<string>((resolve,reject) => {
-                    setImmediate(function(){
-                        setImmediate(function(){
-                            resolve(
-                                new XMLSerializer().serializeToString(
-                                    document.getElementById(self.div)
-                                )
-                            );
-                        });
-                    });
-                });
-            })().then((svg : string) => {
-                resolve(svg);
-            });
-        });
-    }
-    public async writeSVG(fileName : string,svg : string) : Promise<void>
-    {
-        let self = this;
-        return new Promise<void>((resolve,reject) => {
-            (async function() : Promise<void>{
-                return new Promise<void>((resolve,reject) => {
-                    setImmediate(function(){
-                        setImmediate(function(){
-                            fs.writeFileSync(fileName,svg);
-                            resolve();
-                        });
-                    });
-                });
-            })().then(() => {
-                resolve();
-            });
-        });
-    }
+    
     public exportSVG()
     {
         let self = this;
@@ -116,9 +80,9 @@ export class GenomeView extends viewMgr.View implements cf.FigureCanvas
                     masterView.showModal();
                     document.getElementById("loadingText").innerText = "Serializing figure...";
                     setTimeout(function(){
-                        self.serializeFigure().then((svg : string) =>{
+                        serializeFigure(self).then((svg : string) =>{
                             document.getElementById("loadingText").innerText = "Writing serialized figure...";
-                            self.writeSVG(fileName,svg).then(() => {
+                            writeSVG(self,fileName,svg).then(() => {
                                 masterView.dismissModal();
                             });
                         });
