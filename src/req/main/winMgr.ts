@@ -180,7 +180,11 @@ export function createWithDefault(
 				alwaysOnTop : alwaysOnTop,
 				fullscreen : false,
 				title : title,
-				icon : './../icon.png'
+				icon : './../icon.png',
+				webPreferences : {
+					nodeIntegrationInWorker : true
+				}
+				
 			};
 			
 			dataMgr.setKey(refName,"windowOptions",windowOptions);
