@@ -301,8 +301,11 @@ export function runOperations(maxRunning : number) : void
 {
     for(let i = 0; i != operationsQueue.length; ++i)
     {
-        if(operationsQueue[i].ignoreScheduler)
+        if(operationsQueue[i].ignoreScheduler && !operationsQueue[i].running)
+        {
+            operationsQueue[i].running = true;
             operationsQueue[i].run();
+        }
     }
     //console.log(operationsQueue);
     let currentRunning : number = 0;
