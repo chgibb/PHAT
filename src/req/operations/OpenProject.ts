@@ -14,7 +14,6 @@ export class OpenProject extends atomic.AtomicOperation
     constructor()
     {
         super();
-        this.ignoreScheduler = true;
     }
     public setData(data : {
         proj : ProjectManifest,
