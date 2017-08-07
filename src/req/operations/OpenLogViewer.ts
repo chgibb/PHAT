@@ -6,6 +6,7 @@ export class OpenLogViewer extends atomic.AtomicOperation
     constructor()
     {
         super();
+        this.ignoreScheduler = true;
     }
     public setData(data : any) : void
     {
