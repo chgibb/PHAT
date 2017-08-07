@@ -63,6 +63,8 @@ export async function displayFigure(self : GenomeView) : Promise<void>
                                     ${cf.getBaseFigureFromCache(self.genome)}
                                 `
                                 );
+                            //instead of forcing angular to walk through all the svgs as well as the actual angular templates
+                            //in the base figure we actually want compiled, separate them into separate divs
                             $div = $(`
                                 <div id="${self.div}">
                                     
@@ -96,8 +98,9 @@ export async function displayFigure(self : GenomeView) : Promise<void>
                                             }
                                             return res;
                                         })()}
-                                    
-                                    ${templates}
+                                        <div id="toCompile">
+                                            ${templates}
+                                        </div>
                                 </div>
                             `);
                             $(document.body).append($div);
@@ -115,17 +118,18 @@ export async function displayFigure(self : GenomeView) : Promise<void>
                     return new Promise<void>((resolve,reject) => {
                         setImmediate(function(){
                             setImmediate(function(){
-                                angular.element(document).injector().invoke(function($compile : any){
+                                let divToCompile : HTMLElement = document.getElementById("toCompile");
+                                angular.element(divToCompile).injector().invoke(function($compile : any){
                                     //This should probably be done with an actual angular scope instead 
                                     //of mutating the existing scope
-                                    let scope = angular.element($div).scope();
+                                    let scope = angular.element(divToCompile).scope();
 
                                     //occasionally, when resizing extremely large figures scope() may return undefined
                                     //may be related to https://github.com/angular/angular.js/issues/9515
                                     if(scope)
                                     {
                                         self.updateScope(scope);
-                                        $compile($div)(scope);
+                                        $compile(divToCompile)(scope);
                                         console.log("finished compiling");
                                     }
                                     else
