@@ -7,6 +7,7 @@ export class InputFastqFile extends atomic.AtomicOperation
     public constructor()
     {
         super();
+        this.ignoreScheduler = true;
     }
     public setData(data : string) : void
     {
