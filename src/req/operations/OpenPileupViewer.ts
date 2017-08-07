@@ -10,6 +10,7 @@ export class OpenPileupViewer extends atomic.AtomicOperation
     constructor()
     {
         super();
+        this.ignoreScheduler = true;
     }
     public setData(data : {
         align : alignData,
