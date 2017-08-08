@@ -7,6 +7,7 @@ export class InputFastqFile extends atomic.AtomicOperation
     public constructor()
     {
         super();
+        this.ignoreScheduler = true;
     }
     public setData(data : string) : void
     {
@@ -14,7 +15,7 @@ export class InputFastqFile extends atomic.AtomicOperation
     }
     public run() : void
     {
-        this.logKey = atomic.openLog(this.name,"Input Fastq File");
+        this.logRecord = atomic.openLog(this.name,"Input Fastq File");
         try
         {
             this.fastq = new Fastq(this.filePath);

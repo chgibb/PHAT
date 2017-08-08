@@ -63,6 +63,7 @@ export class RunAlignment extends atomic.AtomicOperation
                     }
                     if(ev.flags.done)
                     {
+                        self.logRecord = ev.logRecord;
                         atomic.recordLogRecord(ev.logRecord);
                     }
                     self.step = ev.step;

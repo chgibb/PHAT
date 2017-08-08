@@ -8,6 +8,7 @@ import * as fs from "fs";
 import * as electron from "electron";
 const ipc = electron.ipcMain;
 const app = electron.app;
+app.commandLine.appendSwitch("js-flags","--expose_gc=true --nolazy --serialize_eager");
 
 if(require('electron-squirrel-startup')) app.quit();
 
