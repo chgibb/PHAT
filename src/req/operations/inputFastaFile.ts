@@ -15,7 +15,7 @@ export class InputFastaFile extends atomic.AtomicOperation
     }
     public run() : void
     {
-        this.logKey = atomic.openLog(this.name,"Input Fasta File");
+        this.logRecord = atomic.openLog(this.name,"Input Fasta File");
         try
         {
             this.fasta = new Fasta(this.filePath);

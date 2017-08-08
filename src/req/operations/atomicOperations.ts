@@ -18,7 +18,7 @@ export abstract class AtomicOperation
     public generatedArtifactsDirectories : Array<string>;
 	public destinationArtifactsDirectories : Array<string>;
 
-    public logKey : string;
+    public logRecord : LogRecord;
     public closeLogOnFailure : boolean;
     public closeLogOnSuccess : boolean;
 
@@ -37,6 +37,7 @@ export abstract class AtomicOperation
     public running : boolean;
 
     public ignoreScheduler : boolean;
+
 
     public constructor()
     {
@@ -118,7 +119,7 @@ export abstract class AtomicOperation
 
     public logObject(obj : any) : void
     {
-        logString(this.logKey,JSON.stringify(obj));
+        logString(this.logRecord,JSON.stringify(obj));
     }
 }
 
@@ -150,7 +151,8 @@ export function handleForkFailures(logger? : ForkLogger,progressMessage? : strin
         if(logger !== undefined)
         {
             logger.logObject(failureObj);
-            failureObj.logRecord = closeLog(logger.logKey,"failure");
+            closeLog(logger.logRecord,"failure");
+            failureObj.logRecord = logger.logRecord;
         }
 
         process.send(failureObj);
@@ -275,14 +277,16 @@ export function addOperation(opName : string,data : any) : void
                         cleanDestinationArtifacts(op);
                         if(op.closeLogOnFailure)
                         {
-                            recordLogRecord(closeLog(op.logKey,"failure"));
+                            closeLog(op.logRecord,"failure");
+                            recordLogRecord(op.logRecord);
                         }
                     }
                     else if(op.flags.success)
                     {
                         if(op.closeLogOnSuccess)
                         {
-                            recordLogRecord(closeLog(op.logKey,"success"));
+                            closeLog(op.logRecord,"success");
+                            recordLogRecord(op.logRecord);
                         }
                     }
                     if(onComplete)
@@ -351,62 +355,44 @@ export class LogRecord
     uuid : string = "";
 }
 
-interface OpenLogStream
+export function getLogDirectory(logRecord : LogRecord) : string
 {
-    stream : fs.WriteStream;
-    startEpoch : number;
-    name : string;
-    description : string;
-    uuid : string;
+    return getReadableAndWritable(`logs/${logRecord.uuid}`);
 }
-let openLogStreams : Array<OpenLogStream> = new Array<OpenLogStream>();
 
-export function openLog(name : string,description : string) : string
+export function getLogFile(logRecord : LogRecord) : string
+{
+    return getReadableAndWritable(`logs/${logRecord.uuid}/log`);
+}
+
+export function openLog(name : string,description : string) : LogRecord
 {
     let uuid = uuidv4();
-    mkdirp.sync(getReadableAndWritable(`logs/${uuid}`));
-    openLogStreams.push(
-        <OpenLogStream>{
-            stream : fs.createWriteStream(getReadableAndWritable(`logs/${uuid}/log`)),
-            startEpoch : Date.now(),
-            name : name,
-            description : description,
-            uuid : uuid
-        }
-    );
-    return uuid;
+    
+
+    let res : LogRecord = new LogRecord();
+    res.name = name;
+    res.description = description;
+    res.startEpoch = Date.now();
+    res.uuid = uuid;
+
+    mkdirp.sync(getLogDirectory(res));
+    fs.appendFileSync(getLogFile(res),"");
+    return res;
 }
 
-export function closeLog(uuid : string,status : string) : LogRecord | undefined
+export function closeLog(logRecord : LogRecord,status : string) : void
 {
-    for(let i = 0; i != openLogStreams.length; ++i)
-    {
-        if(openLogStreams[i].uuid == uuid)
-        {
-            openLogStreams[i].stream.close();
-            let logRecord : LogRecord = new LogRecord();
+    if(!logRecord || !logRecord.uuid)
+        throw new Error(`Failed to close log with status ${status} which does not exist`);
+    logRecord.endEpoch = Date.now();
+    logRecord.status = status;
 
-            logRecord.endEpoch = Date.now();
+    let start = new Date(logRecord.startEpoch);
+    let end = new Date(logRecord.endEpoch);
 
-            logRecord.name = openLogStreams[i].name;
+    logRecord.runTime = Math.abs((<any>end) - (<any>start));
 
-            logRecord.description = openLogStreams[i].description;
-
-            logRecord.status = status;
-
-            logRecord.startEpoch = openLogStreams[i].startEpoch;
-
-            logRecord.uuid = openLogStreams[i].uuid;
-
-            let start = new Date(logRecord.startEpoch);
-            let end = new Date(logRecord.endEpoch);
-
-            logRecord.runTime = Math.abs((<any>end) - (<any>start));
-
-            return logRecord;
-        }
-    }
-    throw new Error(`Failed to close log ${uuid} with status ${status} which does not exist`);
 }
 
 export function recordLogRecord(record : LogRecord) : void
@@ -417,17 +403,13 @@ export function recordLogRecord(record : LogRecord) : void
     fs.appendFileSync(logRecordFile,JSON.stringify(record)+"\n");
 }
 
-export function logString(uuid : string,data : string) : void
+export function logString(logRecord : LogRecord,data : string) : void
 {
-    for(let i = 0; i != openLogStreams.length; ++i)
-    {
-        if(openLogStreams[i].uuid == uuid)
-        {
-            openLogStreams[i].stream.write("\n"+data);
-            return;
-        }
-    }
-    throw new Error(`Cannot write string to log ${uuid} which does not exist`);
+    if(!logRecord || !logRecord.uuid)
+        throw new Error(`Cannot write string to log which does not exist`);
+
+    fs.appendFileSync(getLogFile(logRecord),`${"\n"}${data}`);
+
 }
 
 export async function getLogRecords(last : number) : Promise<Array<LogRecord>>
