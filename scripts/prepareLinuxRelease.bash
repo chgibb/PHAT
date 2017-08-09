@@ -26,6 +26,11 @@ node scripts/buildDebianInstaller
 
 mv deb/*.deb .
 
+for f in $(find . -name '*.deb'); 
+do
+    cp $f phat-linux-x64-update.deb
+done
+
 echo rpm > phat-linux-x64/resources/app/platEdition.txt
 
 ./node_modules/.bin/electron-builder --prepackaged=phat-linux-x64 -l rpm
