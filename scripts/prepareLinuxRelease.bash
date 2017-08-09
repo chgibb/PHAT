@@ -28,6 +28,10 @@ mv deb/*.deb .
 
 for f in $(find . -name '*.deb'); 
 do
+    noTilde=$(echo $f | awk '{gsub("~",".");print;}')
+    echo $f
+    echo $noTilde
+    mv $f $noTilde
     cp $f phat-linux-x64-update.deb
 done
 
