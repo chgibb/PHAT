@@ -20,10 +20,13 @@ cd ../
 mv phat-linux-x64/*.tar.gz .
 
 echo installed > phat-linux-x64/resources/app/edition.txt
+echo deb > phat-linux-x64/resources/app/platEdition.txt
 
 node scripts/buildDebianInstaller
 
 mv deb/*.deb .
+
+echo rpm > phat-linux-x64/resources/app/platEdition.txt
 
 ./node_modules/.bin/electron-builder --prepackaged=phat-linux-x64 -l rpm
 mv dist/*.rpm .
