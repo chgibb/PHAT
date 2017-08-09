@@ -19,7 +19,7 @@ export class CopyCircularFigure extends atomic.AtomicOperation
     }
     public run() : void
     {
-        this.logKey = atomic.openLog(this.name,"Copy Circular Figure");
+        this.logRecord = atomic.openLog(this.name,"Copy Circular Figure");
         try
         {
             Object.assign(this.newFigure,this.origFigure);

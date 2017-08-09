@@ -21,10 +21,10 @@ function compileAndSend()
         setTimeout(function(){
             compileAndSend();
         },200);
-        atomic.logString(logger.logKey,"Environment not ready");
+        atomic.logString(logger.logRecord,"Environment not ready");
         return;
     }
-    atomic.logString(logger.logKey,"Environment ready");
+    atomic.logString(logger.logRecord,"Environment ready");
     logger.logObject(figure);
     let ngEnvironment = new ngcompile([{name : "app", path : "angularplasmid"}]);
         
@@ -72,12 +72,11 @@ function compileAndSend()
     flags.done = true;
     flags.success = true;
     flags.failure = false;
-    let logRecord : atomic.LogRecord;
-    logRecord = atomic.closeLog(logger.logKey,"success");
+    atomic.closeLog(logger.logRecord,"success");
     process.send(<AtomicOperationForkEvent>{
         update : true,
         flags : flags,
-        logRecord : logRecord,
+        logRecord : logger.logRecord,
         data : {
             figure : figure
         }
@@ -89,10 +88,13 @@ process.on(
     "message",function(ev : AtomicOperationForkEvent){
         if(ev.setData == true)
         {
-            logger.logKey = atomic.openLog(ev.name,ev.description);
+            logger.logRecord = atomic.openLog(ev.name,ev.description);
             figure = ev.data.figure;
             uuid = ev.data.uuid;
             compileBase = ev.data.compileBase;
+            logger.logObject(ev);
+            logger.logObject(ev);
+            logger.logObject(ev);
             compileAndSend();
         }
     }  

@@ -177,6 +177,7 @@ async function runTests() : Promise<void>
 				console.log("Failed to recompile coverage track for L6R1 with new radius");
 				return reject();
 			}
+			console.log("Successfully recompiled coverage track with new radius");
 		}
 		catch(err)
 		{
