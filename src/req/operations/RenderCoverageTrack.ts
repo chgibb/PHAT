@@ -32,7 +32,7 @@ export class RenderCoverageTrackForContig extends atomic.AtomicOperation
     }
     public run() : void
     {
-        this.logKey = atomic.openLog(this.name,"Render Coverage Track");
+        this.logRecord = atomic.openLog(this.name,"Render Coverage Track");
         let self = this;
         this.renderCoverageTrackProcess = cp.fork(getReadable("RenderCoverageTrack.js"));
         self.renderCoverageTrackProcess.on(

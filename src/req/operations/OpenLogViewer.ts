@@ -2,18 +2,18 @@ import * as atomic from "./atomicOperations";
 import * as winMgr from "./../main/winMgr";
 export class OpenLogViewer extends atomic.AtomicOperation
 {
-    public logRecord : atomic.LogRecord;
+    public logRecordToOpen : atomic.LogRecord;
     constructor()
     {
         super();
     }
     public setData(data : any) : void
     {
-        this.logRecord = data;
+        this.logRecordToOpen = data;
     }
     public run() : void
     {
-        this.logKey = atomic.openLog(this.name,"Open Log Viewer");
+        this.logRecord = atomic.openLog(this.name,"Open Log Viewer");
         winMgr.windowCreators["logViewer"].Create();
 
         let viewers = winMgr.getWindowsByName("logViewer");
@@ -22,7 +22,7 @@ export class OpenLogViewer extends atomic.AtomicOperation
         let self = this;
         new Promise<void>((resolve,reject) => {
             viewer.webContents.once("did-finish-load",function(){
-                viewer.webContents.send("logViewer",{logRecord : self.logRecord});
+                viewer.webContents.send("logViewer",{logRecord : self.logRecordToOpen});
                 resolve();
             });
         }).then(() => {

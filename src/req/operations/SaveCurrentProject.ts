@@ -19,7 +19,7 @@ export class SaveCurrentProject extends atomic.AtomicOperation
     }
     public run() : void
     {
-        this.logKey = atomic.openLog(this.name,"Save Current Project");
+        this.logRecord = atomic.openLog(this.name,"Save Current Project");
         let self = this;
         this.saveCurrentProjectProcess = cp.fork(getReadable("SaveCurrentProject.js"));
 

@@ -10,6 +10,7 @@ export class OpenPileupViewer extends atomic.AtomicOperation
     constructor()
     {
         super();
+        this.ignoreScheduler = true;
     }
     public setData(data : {
         align : alignData,
@@ -25,7 +26,7 @@ export class OpenPileupViewer extends atomic.AtomicOperation
     }
     public run() : void
     {
-        this.logKey = atomic.openLog("openPileupViewer","Open Pileup Viewer");
+        this.logRecord = atomic.openLog("openPileupViewer","Open Pileup Viewer");
         winMgr.windowCreators["pileup"].Create();
 
         let viewers = winMgr.getWindowsByName("pileup");

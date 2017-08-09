@@ -85,6 +85,5 @@
   "dependencies": {},
   "optionalDependencies": {
     "electron-installer-debian": "^0.5.2"
-  },
-  "v8Flags": "--nolazy --serialize_eager"
+  }
 }
