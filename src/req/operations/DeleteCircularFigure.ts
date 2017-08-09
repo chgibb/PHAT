@@ -16,7 +16,7 @@ export class DeleteCircularFigure extends atomic.AtomicOperation
     }
     public run() : void
     {
-        this.logKey = atomic.openLog(this.name,"Delete Circular Figure");
+        this.logRecord = atomic.openLog(this.name,"Delete Circular Figure");
         try
         {
             let self = this;

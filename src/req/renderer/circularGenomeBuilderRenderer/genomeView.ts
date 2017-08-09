@@ -17,7 +17,7 @@ import {centreFigure} from "./centreFigure";
 import {writeLoadingModal} from "./writeLoadingModal";
 import {setSelectedContigByUUID} from "./writeContigEditorModal";
 
-import {writeSVG,serializeFigure} from "./exportToSVG";
+import {writeSVG,serializeFigure,renderSVG} from "./exportToSVG";
 
 require("angular");
 require("angularplasmid");
@@ -52,7 +52,7 @@ export class GenomeView extends viewMgr.View implements cf.FigureCanvas
     }
     
     public exportSVG()
-    {
+    {   
         let self = this;
         dialog.showSaveDialog(
             <Electron.SaveDialogOptions>{
@@ -78,12 +78,17 @@ export class GenomeView extends viewMgr.View implements cf.FigureCanvas
                     masterView.loadingModal = true;
                     writeLoadingModal();
                     masterView.showModal();
-                    document.getElementById("loadingText").innerText = "Serializing figure...";
+                    document.getElementById("loadingText").innerText = "Assembling SVG...";
                     setTimeout(function(){
-                        serializeFigure(self).then((svg : string) =>{
-                            document.getElementById("loadingText").innerText = "Writing serialized figure...";
-                            writeSVG(self,fileName,svg).then(() => {
-                                masterView.dismissModal();
+                        renderSVG(self).then(() => {
+                            document.getElementById("loadingText").innerText = "Serializing...";
+                            centreFigure(document.getElementById(self.div),self.genome);
+                            serializeFigure(self).then((svg : string) => {
+                                writeSVG(self,fileName,svg).then(() => {
+                                    masterView.dismissModal();
+                                    self.firstRender = true;
+                                    viewMgr.render();
+                                });
                             });
                         });
                     },10);
