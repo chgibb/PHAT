@@ -27,6 +27,7 @@ do
 	destination=$(echo $f | awk '{gsub("src/","dist/");print}')
 	./node_modules/.bin/browserify $f --node --debug -o $destination --ignore-missing --exclude electron
 	if [ $? != 0 ]; then
+	cleanTSArtifacts
 		exit 1
 	fi
 done
