@@ -25,7 +25,7 @@ do
 	printf $f
 	printf "\n"
 	destination=$(echo $f | awk '{gsub("src/","dist/");print}')
-	./node_modules/.bin/browserify $f --node --debug -o $destination  --exclude electron --exclude ./package.json
+	./node_modules/.bin/browserify $f --node --debug -o $destination  --exclude electron --ignore-missing 
 	if [ $? != 0 ]; then
 	cleanTSArtifacts
 		exit 1
