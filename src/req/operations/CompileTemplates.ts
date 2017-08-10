@@ -39,6 +39,7 @@ export class CompileTemplates extends atomic.AtomicOperation
                     self.flags = ev.flags;
                     if(ev.flags.done)
                     {
+                        self.logRecord = ev.logRecord;
                         atomic.recordLogRecord(ev.logRecord);
                     }
                     if(ev.flags.success)
