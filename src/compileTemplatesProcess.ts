@@ -14,6 +14,13 @@ let logger : atomic.ForkLogger = new atomic.ForkLogger();
 
 atomic.handleForkFailures(logger);
 
+try
+{
+    require("angular/angular");
+    require("angularplasmid");
+}
+catch(err){}
+
 function compileAndSend()
 {
     if(!ngcompile.prototype.envReady)
