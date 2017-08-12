@@ -27,7 +27,7 @@ function compileAndSend()
     atomic.logString(logger.logRecord,"Environment ready");
     logger.logObject(figure);
 
-    let ngEnvironment = new ngcompile([{name : "app", path : "angularplasmid"}]);
+    let ngEnvironment = new ngcompile([{name : "app", path : "@chgibb/angularplasmid"}]);
         
     if(!compileBase)
     {
