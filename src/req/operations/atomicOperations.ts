@@ -159,12 +159,12 @@ export function handleForkFailures(logger? : ForkLogger,progressMessage? : strin
         process.exit(1);
 
     };
-    (process as NodeJS.EventEmitter).on("uncaughtException",function(err : string){
-        signalFailure(err);
+    (process as NodeJS.EventEmitter).on("uncaughtException",function(err : Error){
+        signalFailure(`${err.toString()} ${err.stack}`);
     });
 
-    process.on("unhandledRejection",function(err : string){
-        signalFailure(err);
+    process.on("unhandledRejection",function(err : Error){
+        signalFailure(`${err.toString()} ${err.stack}`);
     });
 }
 

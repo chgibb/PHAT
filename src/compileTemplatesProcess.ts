@@ -26,7 +26,8 @@ function compileAndSend()
     }
     atomic.logString(logger.logRecord,"Environment ready");
     logger.logObject(figure);
-    let ngEnvironment = new ngcompile([{name : "app", path : "angularplasmid"}]);
+
+    let ngEnvironment = new ngcompile([{name : "app", path : "@chgibb/angularplasmid"}]);
         
     if(!compileBase)
     {
@@ -92,8 +93,6 @@ process.on(
             figure = ev.data.figure;
             uuid = ev.data.uuid;
             compileBase = ev.data.compileBase;
-            logger.logObject(ev);
-            logger.logObject(ev);
             logger.logObject(ev);
             compileAndSend();
         }
