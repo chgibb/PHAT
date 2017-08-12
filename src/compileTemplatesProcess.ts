@@ -94,8 +94,6 @@ process.on(
             uuid = ev.data.uuid;
             compileBase = ev.data.compileBase;
             logger.logObject(ev);
-            logger.logObject(ev);
-            logger.logObject(ev);
             compileAndSend();
         }
     }  
