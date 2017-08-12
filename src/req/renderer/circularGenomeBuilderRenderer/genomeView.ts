@@ -20,7 +20,7 @@ import {setSelectedContigByUUID} from "./writeContigEditorModal";
 import {writeSVG,serializeFigure,renderSVG} from "./exportToSVG";
 
 require("angular");
-require("angularplasmid");
+require("@chgibb/angularplasmid");
 let app : any = angular.module('myApp',['angularplasmid']);
 export class GenomeView extends viewMgr.View implements cf.FigureCanvas
 {
