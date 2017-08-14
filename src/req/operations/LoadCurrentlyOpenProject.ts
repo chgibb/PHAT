@@ -12,7 +12,7 @@ export class LoadCurrentlyOpenProject extends atomic.AtomicOperation
 
     public run() : void
     {
-        this.logKey = atomic.openLog(this.name,"Load Currently Open Project");
+        this.logRecord = atomic.openLog(this.name,"Load Currently Open Project");
         try
         {
             finishLoadingProject(getCurrentlyOpenProject());

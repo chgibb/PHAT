@@ -13,12 +13,14 @@ import * as masterView from "./masterView";
 import {alignData} from "./../../alignData";
 import * as cf from "./../circularFigure";
 import {displayFigure} from "./displayFigure";
-
+import {centreFigure} from "./centreFigure";
 import {writeLoadingModal} from "./writeLoadingModal";
 import {setSelectedContigByUUID} from "./writeContigEditorModal";
 
+import {writeSVG,serializeFigure,renderSVG} from "./exportToSVG";
+
 require("angular");
-require("angularplasmid");
+require("@chgibb/angularplasmid");
 let app : any = angular.module('myApp',['angularplasmid']);
 export class GenomeView extends viewMgr.View implements cf.FigureCanvas
 {
@@ -48,47 +50,9 @@ export class GenomeView extends viewMgr.View implements cf.FigureCanvas
         this.scope.firstRender = this.firstRender;
         this.scope.div = this.div;
     }
-    public async serializeFigure() : Promise<string>
-    {
-        let self = this;
-        return new Promise<string>((resolve,reject) => {
-            (async function() : Promise<string>{
-                return new Promise<string>((resolve,reject) => {
-                    setImmediate(function(){
-                        setImmediate(function(){
-                            resolve(
-                                new XMLSerializer().serializeToString(
-                                    document.getElementById(self.div).children[0]
-                                )
-                            );
-                        });
-                    });
-                });
-            })().then((svg : string) => {
-                resolve(svg);
-            });
-        });
-    }
-    public async writeSVG(fileName : string,svg : string) : Promise<void>
-    {
-        let self = this;
-        return new Promise<void>((resolve,reject) => {
-            (async function() : Promise<void>{
-                return new Promise<void>((resolve,reject) => {
-                    setImmediate(function(){
-                        setImmediate(function(){
-                            fs.writeFileSync(fileName,svg);
-                            resolve();
-                        });
-                    });
-                });
-            })().then(() => {
-                resolve();
-            });
-        });
-    }
+    
     public exportSVG()
-    {
+    {   
         let self = this;
         dialog.showSaveDialog(
             <Electron.SaveDialogOptions>{
@@ -114,12 +78,17 @@ export class GenomeView extends viewMgr.View implements cf.FigureCanvas
                     masterView.loadingModal = true;
                     writeLoadingModal();
                     masterView.showModal();
-                    document.getElementById("loadingText").innerText = "Serializing figure...";
+                    document.getElementById("loadingText").innerText = "Assembling SVG...";
                     setTimeout(function(){
-                        self.serializeFigure().then((svg : string) =>{
-                            document.getElementById("loadingText").innerText = "Writing serialized figure...";
-                            self.writeSVG(fileName,svg).then(() => {
-                                masterView.dismissModal();
+                        renderSVG(self).then(() => {
+                            document.getElementById("loadingText").innerText = "Serializing...";
+                            centreFigure(document.getElementById(self.div),self.genome);
+                            serializeFigure(self).then((svg : string) => {
+                                writeSVG(self,fileName,svg).then(() => {
+                                    masterView.dismissModal();
+                                    self.firstRender = true;
+                                    viewMgr.render();
+                                });
                             });
                         });
                     },10);
@@ -207,24 +176,34 @@ export class GenomeView extends viewMgr.View implements cf.FigureCanvas
     {
         if(this.genome !== undefined)
         {
-            //get a reference to the div wrapping the rendered svg graphic of our figure
-            let div = document.getElementById(this.div);
-            if(div)
-            {
-                //expand the div to the new window size
-                div.style.zIndex = "-1";
-                div.style.position = "absolute";
-                div.style.height = `${$(window).height()}px`;
-                div.style.width = `${$(window).width()}px`;
+            centreFigure(document.getElementById(this.div),this.genome);
+        }
 
-                let x = 0;
-                let y = 0;
-                //center the div in the window
-                x = ($(window).width()/2)-(this.genome.width/2);
-                y = ($(window).height()/2)-(this.genome.height/2);
-                div.style.left = `${x}px`;
-                div.style.top = `${y}px`;
+        /*
+            Occasionally, on large figures, especially when growing them by a significant radius, if angular element.scope() happens to return
+            undefined as in https://github.com/angular/angular.js/issues/9515, our solution is to abort and defer compilation by a second (see displayFigure.ts).
+            This deferement can sometimes, in conjuction with newly compiled SVG tracks coming in, cause angular to duplicate the figure into 
+            new divs with all bindings broken. The
+            cloned divs will have the same id as the real div, but their figures will be completely non functional. 
+            Here, we walk all divs that have been passed through angular and look for the id of the editor div. If there is more than one, then this bug has occured and we will
+            blow away all of the divs and trigger a rerender.
+        */
+        let svgWrappers = document.getElementsByClassName("ng-scope");
+        let found  = new Array<Element>();
+        for(let i = 0; i != svgWrappers.length; ++i)
+        {
+            if(svgWrappers[i].id == this.div)
+                found.push(svgWrappers[i]);
+        }
+        if(found.length > 1)
+        {
+            console.log(`Figure multiplied to ${found.length}`);
+            for(let i = 0; i != found.length; ++i)
+            {
+                found[i].parentNode.removeChild(found[i]);
             }
+            this.firstRender = true;
+            viewMgr.render();
         }
     }
     public dataChanged() : void{}

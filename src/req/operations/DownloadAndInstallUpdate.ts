@@ -6,7 +6,6 @@ import {getReadable} from "./../getAppPath";
 export class DownloadAndInstallUpdate extends atomic.AtomicOperation
 {
     public asset : any;
-    public token : string;
     public downloadAndInstallUpdateProcess : cp.ChildProcess;
     constructor()
     {
@@ -15,11 +14,10 @@ export class DownloadAndInstallUpdate extends atomic.AtomicOperation
     public setData(data : any) : void
     {
         this.asset = data.asset;
-        this.token = data.token;
     }
     public run() : void
     {
-        this.logKey = atomic.openLog(this.name,"Download and Install Update");
+        this.logRecord = atomic.openLog(this.name,"Download and Install Update");
         let self = this;
         this.downloadAndInstallUpdateProcess = cp.fork(getReadable("DownloadAndInstallUpdate.js"));
         this.downloadAndInstallUpdateProcess.on(
@@ -47,8 +45,7 @@ export class DownloadAndInstallUpdate extends atomic.AtomicOperation
                     <AtomicOperationForkEvent>{
                         setData : true,
                         data : <AtomicOperationIPC>{
-                            asset : self.asset,
-                            token : self.token
+                            asset : self.asset
                         }
                     }
                 );

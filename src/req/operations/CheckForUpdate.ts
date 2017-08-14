@@ -5,7 +5,6 @@ import {AtomicOperationForkEvent,AtomicOperationIPC} from "./../atomicOperations
 import {getReadable} from "./../getAppPath";
 export class CheckForUpdate extends atomic.AtomicOperation
 {
-    public token : string;
     public availableUpdate : boolean;
     public updateTagName : string;
 
@@ -16,13 +15,13 @@ export class CheckForUpdate extends atomic.AtomicOperation
     }
     public setData(data : AtomicOperationIPC) : void
     {
-        this.token = data.token;
+        
     }
     public run() : void
     {
         this.closeLogOnFailure = true;
         this.closeLogOnSuccess = true;
-        this.logKey = atomic.openLog(this.name,"Check for Update");
+        this.logRecord = atomic.openLog(this.name,"Check for Update");
         let self = this;
         this.checkForUpdateProcess = cp.fork(getReadable("CheckForUpdate.js"));
         this.checkForUpdateProcess.on(
@@ -51,7 +50,6 @@ export class CheckForUpdate extends atomic.AtomicOperation
                     <AtomicOperationForkEvent>{
                         setData : true,
                         data : <AtomicOperationIPC>{
-                            token : self.token
                         }
                     }
                 );

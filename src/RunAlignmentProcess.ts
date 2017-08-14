@@ -36,9 +36,15 @@ function update() : void
     if(flags.done)
     {
         if(flags.success)
-            update.logRecord = atomic.closeLog(logger.logKey,"success");
+        {
+            atomic.closeLog(logger.logRecord,"success");
+            update.logRecord = logger.logRecord;
+        }
         else if(flags.failure)
-            update.logRecord = atomic.closeLog(logger.logKey,"failure");
+        {   
+            atomic.closeLog(logger.logRecord,"failure");
+            update.logRecord = logger.logRecord;
+        }
     }
     logger.logObject(update);
     process.send(update);
@@ -49,7 +55,8 @@ process.on(
     "message",function(ev : AtomicOperationForkEvent){
         if(ev.setData == true)
         {
-            logger.logKey = atomic.openLog(ev.name,ev.description);
+            logger.logRecord = atomic.openLog(ev.name,ev.description);
+
             align = ev.data.alignData;
             process.send(<AtomicOperationForkEvent>{
                 finishedSettingData : true

@@ -7,6 +7,7 @@ import * as L6R1R1 from "./req/tests/L6R1R1";
 import * as L6R1R2 from "./req/tests/L6R1R2";
 import * as hpv16Ref from "./req/tests/hpv16Ref";
 import * as hpv18Ref from "./req/tests/hpv18Ref";
+import * as hpv16Figure from "./req/tests/hpv16Figure";
 
 import {testVersionParser} from "./req/tests/testVersionParser";
 import {testFastQCReportGeneration} from "./req/tests/testFastQCReportGeneration";
@@ -16,8 +17,10 @@ import {testL6R1HPV16Alignment} from "./req/tests/testL6R1HPV16Alignment";
 import {testL6R1HPV18Alignment} from "./req/tests/testL6R1HPV18Alignment"
 import {testL6R1HPV16CoverageTrackRenderer} from "./req/tests/testL6R1HPV16CoverageTrackRender";
 import {testL6R1HPV16SNPTrackRenderer} from "./req/tests/testL6R1HPV16SNPTrackRender";
+import {testL6R1HPV16CoverageTrackCompilation} from "./req/tests/testL6R1HPV16CoverageTrackCompilation";
 import {testL6R1HPV18CoverageTrackRenderer} from "./req/tests/testL6R1HPV18CoverageTrackRender";
 import {testL6R1HPV18SNPTrackRenderer} from "./req/tests/testL6R1HPV18SNPTrackRender";
+
 
 const pjson = require("./resources/app/package.json");
 import {isBeta,versionIsGreaterThan} from "./req/versionIsGreaterThan";
@@ -145,6 +148,40 @@ async function runTests() : Promise<void>
 		catch(err)
 		{
 			console.log("SNP track rendering threw exception");
+			return reject();
+		}
+
+		let firstSVG = "";
+		let secondSVG = "";
+		console.log("Compiling coverage track for L6R1 alignment against HPV16");
+		try
+		{
+			firstSVG = await testL6R1HPV16CoverageTrackCompilation();
+		}
+		catch(err)
+		{
+			console.log("Coverage track compilation threw exception");
+			return reject();
+		}
+
+
+		console.log("Compiling coverage track for L6R1 alignment against HPV16");
+		try
+		{
+			let tmp = hpv16Figure.get();
+			tmp.radius = 600;
+			hpv16Figure.set(tmp);
+			secondSVG = await testL6R1HPV16CoverageTrackCompilation();
+			if(firstSVG == secondSVG)
+			{
+				console.log("Failed to recompile coverage track for L6R1 with new radius");
+				return reject();
+			}
+			console.log("Successfully recompiled coverage track with new radius");
+		}
+		catch(err)
+		{
+			console.log("Coverage track compilation threw exception");
 			return reject();
 		}
 
