@@ -17,6 +17,7 @@ export class View extends viewMgr.View
     public firstRender : boolean;
     public fastqInputs : Array<Fastq>;
     public fastaInputs : Array<Fasta>;
+    public currentView : string;
     public constructor(div : string)
     {
         super("masterView",div);
@@ -24,11 +25,12 @@ export class View extends viewMgr.View
         this.firstRender = true;
         this.fastqInputs = new Array<Fastq>();
         this.fastaInputs = new Array<Fasta>();
+        this.currentView = "fastqView";
     }
     public onMount() : void
     {
-        fastqView.addView(this.views,"fastqView");
-        fastaView.addView(this.views,"fastaView");
+        fastqView.addView(this.views,"tableView");
+        fastaView.addView(this.views,"tableView");
         for(let i = 0 ; i != this.views.length; ++i)
         {
             this.views[i].mount();
@@ -42,17 +44,15 @@ export class View extends viewMgr.View
             this.firstRender = false;
             return `
                 <img class="topButton activeHover" id="browseInputFiles" src="${getReadable("img/browseButton.png")}">
-                <div id="fastqView" style="height:45%;width:100%;overflow-y:hidden;">
-                </div>
-                <div id="fastaView" style="height:45%;width:100%;">
+                <div id="tableView" style=""width:100%;">
                 </div>
                 <img src="${getReadable("img/import.png")}" class="activeHover" id="importSelected" />
             `;
         }
         else
         {
-            for(let i = 0; i != this.views.length; ++i)
-                this.views[i].render();
+            let idx = viewMgr.getIndexOfViewByName(this.currentView,this.views);
+            this.views[idx].render();
             return undefined;
         }
     }

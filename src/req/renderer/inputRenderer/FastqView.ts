@@ -20,7 +20,7 @@ export class View extends viewMgr.View
             <br />
             <br />
             <br />
-            <div id="fastqTableDiv" style="overflow-y:scroll;">
+            <div id="fastqTableDiv" style="overflow-y:scroll;width:100%;">
                 <table style="width:100%;">
                     <tr>
                         <th>Sample Name</th>
