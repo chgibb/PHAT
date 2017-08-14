@@ -101,7 +101,11 @@ export class View extends viewMgr.View
         {
             if(genomeView.genome.uuid == this.circularFigures[i].uuid)
             {
-                document.getElementById(`${this.circularFigures[i].uuid}Open`).classList.add("selectedFigureInDropDown");
+                try
+                {
+                    document.getElementById(`${this.circularFigures[i].uuid}Open`).classList.add("selectedFigureInDropDown");
+                }
+                catch(err){}
             }
         }
     }
@@ -291,7 +295,7 @@ export class View extends viewMgr.View
                 `;
                 for(let j = 0; j != this.circularFigures.length; ++j)
                 {
-                    if(this.circularFigures[j].uuidFasta == this.fastaInputs[i].uuid)
+                    if(this.fastaInputs[i].checked && this.circularFigures[j].uuidFasta == this.fastaInputs[i].uuid)
                     {
                         res += `
                             <li><a id="${this.circularFigures[j].uuid}Open"href="#">${this.circularFigures[j].name}</a></li>
