@@ -1,9 +1,9 @@
 import * as atomic from "./atomicOperations";
 import * as winMgr from "./../main/winMgr";
-import {alignData} from "./../alignData";
+import {AlignData} from "./../alignData";
 export class OpenPileupViewer extends atomic.AtomicOperation
 {
-    public align : alignData;
+    public align : AlignData;
     public contig : string;
     public start : number;
     public stop : number;
@@ -13,7 +13,7 @@ export class OpenPileupViewer extends atomic.AtomicOperation
         this.ignoreScheduler = true;
     }
     public setData(data : {
-        align : alignData,
+        align : AlignData,
         contig : string,
         start : number,
         stop : number

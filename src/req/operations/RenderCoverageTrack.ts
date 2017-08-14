@@ -4,11 +4,11 @@ import * as atomic from "./atomicOperations";
 import {AtomicOperationForkEvent} from "./../atomicOperationsIPC";
 import {getReadable} from "./../getAppPath";
 
-import {alignData} from "./../alignData"
+import {AlignData} from "./../alignData"
 import * as cf from "./../renderer/circularFigure";
 export class RenderCoverageTrackForContig extends atomic.AtomicOperation
 {
-    public alignData : alignData;
+    public alignData : AlignData;
     public contiguuid : string;
     public circularFigure : cf.CircularFigure;
     public colour : string;
@@ -21,7 +21,7 @@ export class RenderCoverageTrackForContig extends atomic.AtomicOperation
     public setData(data : {
         circularFigure : cf.CircularFigure,
         contiguuid : string,
-        alignData : alignData,
+        alignData : AlignData,
         colour : string
     }) : void
     {

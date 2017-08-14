@@ -4,13 +4,13 @@ const ipc = electron.ipcRenderer;
 import * as viewMgr from "./../viewMgr";
 import * as masterView from "./masterView";
 import * as genomeView from "./genomeView";
-import {alignData} from "./../../alignData";
+import {AlignData} from "./../../alignData";
 import {AtomicOperationIPC} from "./../../atomicOperationsIPC";
 import {getReadable} from "./../../getAppPath";
 
 require("@claviska/jquery-minicolors");
-let selectedAlign : alignData;
-export function setSelectedAlign(align : alignData) : void
+let selectedAlign : AlignData;
+export function setSelectedAlign(align : AlignData) : void
 {
     selectedAlign = align;
 }
