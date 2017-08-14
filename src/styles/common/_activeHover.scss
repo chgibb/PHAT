@@ -1,6 +1,6 @@
 .activeHover:hover{
 	font-weight: bold;
 	cursor: pointer;
-	box-shadow: 0 0.5em 0.5em -0.4em var(--hover);
+	box-shadow: 0 0 10px #000;
   	transform: translateY(-0.25em);
 }
