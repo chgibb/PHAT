@@ -10,7 +10,7 @@ let colour : string;
 let flags : CompletionFlags = new CompletionFlags();
 process.on
 (
-    "message",function(ev : AtomicOperationForkEvent)
+    "message",async function(ev : AtomicOperationForkEvent)
     {
         if(ev.setData == true)
         {
@@ -24,32 +24,23 @@ process.on
 
         if(ev.run == true)
         {
-            cf.cacheCoverageTrack(
-                circularFigure,
-                contiguuid,
-                align,
-                function(status,coverageTracks){
-                    if(status == true)
-                    {
-                        flags.done = true;
-                        flags.success = true;
-                        process.send(
-                            <AtomicOperationForkEvent>{
-                                update : true,
-                                flags : flags,
-                                data : {
-                                    alignData : align,
-                                    contiguuid : contiguuid,
-                                    circularFigure : circularFigure,
-                                    colour : colour
-                                }
-                            }
-                        );
-                        process.exit(0);
+            cf.cacheCoverageTrack(circularFigure,contiguuid,align,colour).then((coverageTracks : string) => {
+                flags.done = true;
+                flags.success = true;
+                process.send(
+                    <AtomicOperationForkEvent>{
+                        update : true,
+                        flags : flags,
+                        data : {
+                            alignData : align,
+                            contiguuid : contiguuid,
+                            circularFigure : circularFigure,
+                            colour : colour
+                        }
                     }
-                },
-                colour
-            );
+                );
+                process.exit(0);
+            });
         }
     }  
 );

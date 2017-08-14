@@ -25,8 +25,14 @@ do
 	printf $f
 	printf "\n"
 	destination=$(echo $f | awk '{gsub("src/","dist/");print}')
-	./node_modules/.bin/browserify $f --node --debug -o $destination --ignore-missing --exclude electron
+	if [[ "$f" != "src/compileTemplatesProcess.js" ]]; then
+		./node_modules/.bin/browserify $f --node --debug -o $destination  --exclude electron --ignore-missing 
+	fi
+	if [[ "$f" == "src/compileTemplatesProcess.js" ]]; then
+		./node_modules/.bin/browserify $f --node --debug -o $destination --exclude electron --ignore-missing  --require @chgibb/angularplasmid
+	fi
 	if [ $? != 0 ]; then
+	cleanTSArtifacts
 		exit 1
 	fi
 done

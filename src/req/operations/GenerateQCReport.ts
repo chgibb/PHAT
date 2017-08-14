@@ -18,7 +18,6 @@ export class GenerateQCReport extends atomic.AtomicOperation
 	public fastq : Fastq;
 	public destDir : string;
 	public srcDir : string;
-	public logKey : string;
 	constructor()
 	{
 		super();
@@ -44,7 +43,7 @@ export class GenerateQCReport extends atomic.AtomicOperation
 	}
 	public run() : void
 	{
-		this.logKey = atomic.openLog(this.name,"FastQC Report Generation");
+		this.logRecord = atomic.openLog(this.name,"FastQC Report Generation");
 		//Set path to fastqc entry file
 		if(process.platform == "linux")
             this.fastQCPath = getReadable('FastQC/fastqc');

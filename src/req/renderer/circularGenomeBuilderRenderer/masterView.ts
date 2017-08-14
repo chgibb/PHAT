@@ -14,6 +14,7 @@ import {Fasta} from "./../../fasta";
 import {alignData} from "./../../alignData";
 
 import * as GenomeView from "./genomeView";
+import * as tc from "./templateCache";
 
 import {writeAlignsModal} from "./writeAlignsModal";
 import {writeAvailableTracksModal} from "./writeAvailableTracksModal";
@@ -231,14 +232,19 @@ export class View extends viewMgr.View
         }
 
         document.getElementById("updateNavBarButton").onclick = function(this : HTMLElement,ev : MouseEvent){
+            let radiusHasChanged = false;
             if(!genomeView.genome)
                     return;
             let radius = parseInt((<HTMLInputElement>document.getElementById("figureRadiusInput")).value);
             if(radius)
+            {
+                if(radius != genomeView.genome.radius)
+                    radiusHasChanged = true;
                 genomeView.genome.radius = radius;
+            }
 
             let trackInterval = parseInt((<HTMLInputElement>document.getElementById("figureBPIntervalInput")).value);
-            if(radius)
+            if(trackInterval)
                 genomeView.genome.circularFigureBPTrackOptions.interval = trackInterval;
 
             let showInterval = ((<HTMLInputElement>document.getElementById("showBPIntervalCheckBox")).checked);
@@ -248,6 +254,10 @@ export class View extends viewMgr.View
                     genomeView.genome.circularFigureBPTrackOptions.showLabels = 1;
                 else
                     genomeView.genome.circularFigureBPTrackOptions.showLabels = 0;
+            }
+            if(radiusHasChanged)
+            {
+                tc.triggerReCompileForAllTracks(genomeView.genome);
             }
             genomeView.updateScope();
             self.dataChanged();

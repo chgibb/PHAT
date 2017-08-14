@@ -8,6 +8,7 @@ import * as fs from "fs";
 import * as electron from "electron";
 const ipc = electron.ipcMain;
 const app = electron.app;
+app.commandLine.appendSwitch("js-flags","--expose_gc=true --nolazy --serialize_eager");
 
 if(require('electron-squirrel-startup')) app.quit();
 
@@ -38,6 +39,8 @@ import {ImportFileIntoProject} from "./../operations/ImportFileIntoProject";
 
 import {CopyCircularFigure} from "./../operations/CopyCircularFigure";
 import {DeleteCircularFigure} from "./../operations/DeleteCircularFigure";
+
+import {CompileTemplates} from "./../operations/CompileTemplates";
 
 import {ProjectManifest} from "./../projectManifest";
 
@@ -106,6 +109,7 @@ app.on
 		atomicOp.register("importFileIntoProject",ImportFileIntoProject);
 		atomicOp.register("copyCircularFigure",CopyCircularFigure);
 		atomicOp.register("deleteCircularFigure",DeleteCircularFigure);
+		atomicOp.register("compileTemplates",CompileTemplates);
 
 		//on completion of any operation, wait and then broadcast the queue to listening windows
 		atomicOp.setOnComplete(
@@ -476,6 +480,14 @@ ipc.on(
 				atomicOp.addOperation("deleteCircularFigure",circularFigure);
 			}
 		}
+		else if(arg.opName == "compileTemplates")
+		{
+			atomicOp.addOperation("compileTemplates",{
+				figure : arg.figure,
+				uuid : arg.uuid,
+				compileBase : arg.compileBase
+			});
+		}
 		dataMgr.setKey("application","operations",atomicOp.operationsQueue);
 		winMgr.publishChangeForKey("application","operations");
 	}
@@ -760,6 +772,14 @@ atomicOp.updates.on(
 
 atomicOp.updates.on(
 	"loadCurrentlyOpenProject",function(op : LoadCurrentlyOpenProject)
+	{
+		dataMgr.setKey("application","operations",atomicOp.operationsQueue);
+		winMgr.publishChangeForKey("application","operations");
+	}
+);
+
+atomicOp.updates.on(
+	"compileTemplates",function(op : CompileTemplates)
 	{
 		dataMgr.setKey("application","operations",atomicOp.operationsQueue);
 		winMgr.publishChangeForKey("application","operations");
