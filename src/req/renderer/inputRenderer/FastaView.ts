@@ -39,6 +39,7 @@ export class View extends viewMgr.View
                         return res;
                     })()}
                 </table>
+                <img src="${getReadable("img/import.png")}" class="activeHover" id="importSelectedFastas" />
             </div>
         `;
     }
