@@ -9,6 +9,9 @@ import * as viewMgr from "./../viewMgr";
 import * as fastqView from "./FastqView";
 import * as fastaView from "./FastaView";
 import {inputBrowseDialog} from "./inputBrowseDialog";
+import {inputFastqDialog} from "./inputFastqDialog";
+import {inputFastaDialog} from "./inputFastaDialog";
+
 import Fastq from "./../../fastq";
 import {Fasta} from "./../../fasta";
 export class View extends viewMgr.View
@@ -63,9 +66,14 @@ export class View extends viewMgr.View
     public divClickEvents(event : JQueryEventObject) : void
     {
         let shouldUpdate = false;
-        if(event.target.id == "browseInputFiles")
+        if(event.target.id == "browseFastqFiles")
         {
-            inputBrowseDialog();
+            inputFastqDialog();
+            return;
+        }
+        if(event.target.id == "browseFastaFiles")
+        {
+            inputFastaDialog();
             return;
         }
         if(event.target.id == "refSeqViewButton")
