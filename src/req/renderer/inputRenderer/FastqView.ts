@@ -15,7 +15,7 @@ export class View extends viewMgr.View
     {
         return `
             <img class="topButton activeHover" id="browseFastqFiles" src="${getReadable("img/browseButton.png")}"><br />
-            <div id="fastqTableDiv" style="overflow-y:scroll;width:100%;">
+            <div id="fastqTableDiv" style="width:100%;">
                 <table style="width:100%;">
                     <tr>
                         <th>Sample Name</th>
