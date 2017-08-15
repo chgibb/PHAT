@@ -14,12 +14,6 @@ export class View extends viewMgr.View
     public renderView() : string
     {
         return `
-            <div style="float:left;">
-                <h5 style="margin-bottom:0px;">Reference Sequence Files</h5>
-            </div>
-            <br />
-            <br />
-            <br />
             <div id="fastaTableDiv" style="overflow-y:scroll;">
                 <table style="width:100%;">
                     <tr>
