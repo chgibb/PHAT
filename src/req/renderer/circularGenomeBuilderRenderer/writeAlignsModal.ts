@@ -44,7 +44,7 @@ export function writeAlignsModal() : void
             {
                 body += `
                     <tr>
-                        <td><img src="${getReadable("img/viewAvailableTracks.png")}" id="${aligns[i].uuid}View" class="activeHover" /><br />
+                        <td><img src="${getReadable("img/viewAvailableTracks.png")}" id="${aligns[i].uuid}View" class="activeHover activeHoverButton" /><br />
                         </td>
                         <td>${aligns[i].alias}</td>
                         <td>${aligns[i].summary.reads}</td>

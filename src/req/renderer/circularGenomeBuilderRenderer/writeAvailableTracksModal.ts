@@ -87,8 +87,8 @@ export function writeAvailableTracksModal() : void
             body += `
                 <div>
                     <p style="display:inline-block;">${genomeView.genome.contigs[i].name}</p>
-                    <img src="${getReadable("img/generateCoverageTrack.png")}" style="display:inline-block;" class="activeHover" id="${genomeView.genome.contigs[i].uuid}GenCoverage" />
-                    <img src="${getReadable("img/generateSNPTrack.png")}" style="display:inline-block;" class="activeHover" id="${genomeView.genome.contigs[i].uuid}GenSNPs" />
+                    <img src="${getReadable("img/generateCoverageTrack.png")}" style="display:inline-block;" class="activeHover activeHoverButton" id="${genomeView.genome.contigs[i].uuid}GenCoverage" />
+                    <img src="${getReadable("img/generateSNPTrack.png")}" style="display:inline-block;" class="activeHover activeHoverButton" id="${genomeView.genome.contigs[i].uuid}GenSNPs" />
                 </div>
             `;
         }
