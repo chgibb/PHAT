@@ -49,7 +49,6 @@ export class View extends viewMgr.View
     }
     public postRender() : void
     {
-        $("#fastaTableDiv").css("height",$(`#${this.div}`).height()/2+"px");
         for(let i = 0; i != this.fastaInputs.length; ++i)
         {
             let row = document.getElementById(`${this.fastaInputs[i].uuid}Row`);
