@@ -17,7 +17,7 @@ export class View extends viewMgr.View
     public firstRender : boolean;
     public fastqInputs : Array<Fastq>;
     public fastaInputs : Array<Fasta>;
-    public currentView : "fastqView" | "refSeqView";
+    public currentView : "fastqView" | "fastaView";
     public constructor(div : string)
     {
         super("masterView",div);
@@ -44,7 +44,7 @@ export class View extends viewMgr.View
             this.firstRender = false;
             return `
                 <img class="activeHover" id="fastqViewButton" src="${this.currentView == "fastqView" ? getReadable("img/fastqButtonActive.png") : getReadable("img/fastqButton.png")}">
-                <img class="activeHover" id="refSeqViewButton" src="${this.currentView == "refSeqView" ? getReadable("img/refSeqButtonActive.png") : getReadable("img/refSeqButton.png")}">
+                <img class="activeHover" id="refSeqViewButton" src="${this.currentView == "fastaView" ? getReadable("img/refSeqButtonActive.png") : getReadable("img/refSeqButton.png")}">
                 <div id="tableView" style=""width:100%;">
                 </div>
             `;
@@ -70,8 +70,9 @@ export class View extends viewMgr.View
         }
         if(event.target.id == "refSeqViewButton")
         {
-            this.currentView = "refSeqView";
+            this.currentView = "fastaView";
             this.firstRender = true;
+            viewMgr.render();
             viewMgr.render();
             return;
         }
@@ -79,6 +80,7 @@ export class View extends viewMgr.View
         {
             this.currentView = "fastqView";
             this.firstRender = true;
+            viewMgr.render();
             viewMgr.render();
             return;
         }
