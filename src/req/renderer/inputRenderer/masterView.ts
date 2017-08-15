@@ -47,7 +47,6 @@ export class View extends viewMgr.View
                 <img class="activeHover" id="refSeqViewButton" src="${this.currentView == "refSeqView" ? getReadable("img/refSeqButtonActive.png") : getReadable("img/refSeqButton.png")}">
                 <div id="tableView" style=""width:100%;">
                 </div>
-                <img src="${getReadable("img/import.png")}" class="activeHover" id="importSelected" />
             `;
         }
         else
