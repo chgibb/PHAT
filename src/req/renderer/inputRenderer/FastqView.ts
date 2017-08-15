@@ -14,11 +14,8 @@ export class View extends viewMgr.View
     public renderView() : string
     {
         return `
-            <div style="float:left;">
-            </div>
-            <br />
-            <br />
-            <br />
+
+            <img class="topButton activeHover" id="browseFastqFiles" src="${getReadable("img/browseButton.png")}"><br />
             <div id="fastqTableDiv" style="overflow-y:scroll;width:100%;">
                 <table style="width:100%;">
                     <tr>
