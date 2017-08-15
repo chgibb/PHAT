@@ -14,6 +14,7 @@ export class View extends viewMgr.View
     public renderView() : string
     {
         return `
+        <img class="topButton activeHover" id="browseFastaFiles" src="${getReadable("img/browseButton.png")}"><br />
             <div id="fastaTableDiv" style="overflow-y:scroll;">
                 <table style="width:100%;">
                     <tr>
