@@ -8,7 +8,6 @@ import {getReadable} from "./../../getAppPath";
 import * as viewMgr from "./../viewMgr";
 import * as fastqView from "./FastqView";
 import * as fastaView from "./FastaView";
-import {inputBrowseDialog} from "./inputBrowseDialog";
 import {inputFastqDialog} from "./inputFastqDialog";
 import {inputFastaDialog} from "./inputFastaDialog";
 
@@ -92,7 +91,7 @@ export class View extends viewMgr.View
             viewMgr.render();
             return;
         }
-        if(event.target.id == "importSelected")
+        if(event.target.id == "importSelectedFastqs")
         {
             for(let i = 0; i != this.fastqInputs.length; ++i)
             {
@@ -107,6 +106,9 @@ export class View extends viewMgr.View
                     );
                 }
             }
+        }
+        if(event.target.id == "importSelectedFastas")
+        {
             for(let i = 0; i != this.fastaInputs.length; ++i)
             {
                 if(this.fastaInputs[i].checked)
@@ -121,7 +123,7 @@ export class View extends viewMgr.View
                 }
             }
         }
-        
+
         for(let i = 0; i != this.fastqInputs.length; ++i)
         {
             let classList = event.target.classList;
