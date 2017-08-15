@@ -17,7 +17,7 @@ export class View extends viewMgr.View
     public firstRender : boolean;
     public fastqInputs : Array<Fastq>;
     public fastaInputs : Array<Fasta>;
-    public currentView : string;
+    public currentView : "fastqView" | "refSeqView";
     public constructor(div : string)
     {
         super("masterView",div);
@@ -66,6 +66,20 @@ export class View extends viewMgr.View
         if(event.target.id == "browseInputFiles")
         {
             inputBrowseDialog();
+            return;
+        }
+        if(event.target.id == "refSeqViewButton")
+        {
+            this.currentView = "refSeqView";
+            this.firstRender = true;
+            viewMgr.render();
+            return;
+        }
+        if(event.target.id == "fastqViewButton")
+        {
+            this.currentView = "fastqView";
+            this.firstRender = true;
+            viewMgr.render();
             return;
         }
         if(event.target.id == "importSelected")
