@@ -26,10 +26,10 @@ do
 	printf "\n"
 	destination=$(echo $f | awk '{gsub("src/","dist/");print}')
 	if [[ "$f" != "src/compileTemplatesProcess.js" ]]; then
-		./node_modules/.bin/browserify $f --node --debug -o $destination  --exclude electron --ignore-missing 
+		./node_modules/.bin/browserify $f --node --debug -o $destination  --exclude electron --ignore-missing --noparse=jquery
 	fi
 	if [[ "$f" == "src/compileTemplatesProcess.js" ]]; then
-		./node_modules/.bin/browserify $f --node --debug -o $destination --exclude electron --ignore-missing  --require @chgibb/angularplasmid
+		./node_modules/.bin/browserify $f --node --debug -o $destination --exclude electron --ignore-missing  --require @chgibb/angularplasmid --noparse=jquery
 	fi
 	if [ $? != 0 ]; then
 	cleanTSArtifacts

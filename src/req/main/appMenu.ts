@@ -66,7 +66,7 @@ export function appMenu() : Array<Electron.MenuItemConstructorOptions>
 						    if (response == 1)
 							    electron.shell.openExternal(`${pjson.repository.url}/blob/master/TERMS`);
 						    else if (response == 2)
-							    electron.shell.openExternal(`${pjson.repository.url}/blob/master/LICENSE`);
+							    electron.shell.openExternal(`https://chgibb.github.io/PHATDocs/docs/releases/${pjson.version}/thirdParty`);
 					    });
 				    }
 			    },
@@ -85,20 +85,13 @@ export function appMenu() : Array<Electron.MenuItemConstructorOptions>
 				    }
 			    },
 			    {
-				    label: 'Get Support',
-				    click() 
-				    { 
-					    electron.shell.openExternal(`${pjson.repository.url}/issues`);
-				    }
-			    },
-			    {
 				    type: 'separator'
 			    },	
 			    {
 				    label: 'Learn More',
 				    click() 
 				    { 
-					    electron.shell.openExternal(`${pjson.repository.url}`);
+					    electron.shell.openExternal(`https://chgibb.github.io/PHATDocs/docs/releases/${pjson.version}/home`);
 				    }
 			    },
 			    {
