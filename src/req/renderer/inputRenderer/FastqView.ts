@@ -15,7 +15,6 @@ export class View extends viewMgr.View
     {
         return `
             <div style="float:left;">
-                <h5 style="margin-bottom:0px;">Read Files</h5>
             </div>
             <br />
             <br />
