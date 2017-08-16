@@ -9,7 +9,8 @@
  * @param {string} padChar - Character to use to pad string
  * @returns {string} - Padded string
  */
-module.exports.insertLeadingPadToSize = function(str,digits,padChar)
+//module.exports.insertLeadingPadToSize = function(str,digits,padChar)
+export function insertLeadingPadToSize(str : string,digits : number,padChar : string) : string
 {
     if(str.length == digits)
         return str;
