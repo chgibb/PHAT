@@ -11,7 +11,7 @@ import {AtomicOperationIPC} from "./../../atomicOperationsIPC";
 import * as viewMgr from "./../viewMgr";
 import {CircularFigure,} from "./../circularFigure";
 import {Fasta} from "./../../fasta";
-import {alignData} from "./../../alignData";
+import {AlignData} from "./../../alignData";
 
 import * as GenomeView from "./genomeView";
 import * as tc from "./templateCache";
@@ -36,7 +36,7 @@ export class View extends viewMgr.View
 {
     public views : Array<viewMgr.View>;
     public circularFigures : Array<CircularFigure>;
-    public alignData : Array<alignData>;
+    public alignData : Array<AlignData>;
     public fastaInputs : Array<Fasta>;
     public alignsModalOpen : boolean;
     public availableTracksModalOpen : boolean;
@@ -55,9 +55,9 @@ export class View extends viewMgr.View
         this.contigCreatorModalOpen = false;
         this.loadingModal = false;
     }
-    public getAlignsForOpenGenome() : Array<alignData> | undefined
+    public getAlignsForOpenGenome() : Array<AlignData> | undefined
     {
-        let res : Array<alignData> = new Array<alignData>();
+        let res : Array<AlignData> = new Array<AlignData>();
         let genomeView = <GenomeView.GenomeView>viewMgr.getViewByName("genomeView",this.views);
         if(!this.alignData || !genomeView.genome)
             return undefined;

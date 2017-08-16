@@ -15,7 +15,7 @@ import * as trackScale from "./circularGenome/trackScale";
 
 import * as plasmid from "./circularGenome/plasmid";
 
-import {alignData,getSNPsJSON} from "./../alignData";
+import {AlignData,getSNPsJSON} from "./../alignData";
 import {VCF2JSONRow} from "./../varScanMPileup2SNPVCF2JSON";
 export class Contig extends fastaContigLoader.Contig
 {
@@ -274,7 +274,7 @@ interface PositionsWithDepths
 export async function renderCoverageTrack(
     figure : CircularFigure,
     contiguuid : string,
-    align : alignData,
+    align : AlignData,
     colour : string = "rgb(64,64,64)"
 ) : Promise<string>
 {
@@ -356,7 +356,7 @@ export async function renderCoverageTrack(
 export async function cacheCoverageTrack(
     figure : CircularFigure,
     contiguuid : string,
-    align : alignData,
+    align : AlignData,
     colour : string = "rgb(64,64,64)"
 ) : Promise<string>
 {
@@ -409,7 +409,7 @@ interface SNPPosition
 export function renderSNPTrack(
     figure : CircularFigure,
     contiguuid : string,
-    align : alignData,
+    align : AlignData,
     cb : (status : boolean,SNPTracks : string) => void
     ,colour : string = "rgb(64,64,64)"
 ) : void
@@ -482,7 +482,7 @@ export function renderSNPTrack(
 export function cacheSNPTrack(
     figure : CircularFigure,
     contiguuid : string,
-    align : alignData,
+    align : AlignData,
     cb : (status : boolean,SNPTracks : string) => void,
     colour : string = "rgb(64,64,64)"
 ) : void

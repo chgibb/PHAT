@@ -20,9 +20,9 @@ export class ReportView extends viewMgr.View
         if(document.getElementById('reportIsOpen') || !this.fastqToReport)
             return undefined;
         return `
-            <div class="activeHover" id='gobackbutton' style='padding: 0px 0px 5px 20px'>
+            <div id='gobackbutton' style='padding: 0px 0px 5px 20px'>
                 <br />
-                <img id='goBack' src='img/GoBack.png' >
+                <img class="activeHover activeHoverButton" id='goBack' src='img/GoBack.png' >
             </div>
             <div id='reportIsOpen'></div>
             ${(()=>{

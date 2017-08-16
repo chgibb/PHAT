@@ -2,12 +2,12 @@ import * as fs from "fs";
 
 import * as atomic from "./../atomicOperations";
 import {getReadable} from "./../../getAppPath";
-import {alignData,getSortedBam,getMPileup} from "./../../alignData";
+import {AlignData,getSortedBam,getMPileup} from "./../../alignData";
 import {SpawnRequestParams} from "./../../JobIPC";
 import {Job,JobCallBackObject} from "./../../main/Job";
 import {getPath} from "./../../file";
 
-export function samToolsMPileup(alignData : alignData,logger : atomic.AtomicOperation) : Promise<{}>
+export function samToolsMPileup(alignData : AlignData,logger : atomic.AtomicOperation) : Promise<{}>
 {
     return new Promise((resolve,reject) => {
         let samToolsExe = getReadable('samtools');
