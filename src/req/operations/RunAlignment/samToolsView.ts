@@ -1,11 +1,11 @@
 import * as atomic from "./../atomicOperations";
 import {getReadable} from "./../../getAppPath";
-import {alignData,getSam,getUnSortedBam} from "./../../alignData";
+import {AlignData,getSam,getUnSortedBam} from "./../../alignData";
 import {SpawnRequestParams} from "./../../JobIPC";
 import {Job,JobCallBackObject} from "./../../main/Job";
 import {parseBowTie2AlignmentReport} from "./../../bowTie2AlignmentReportParser";
 
-export function samToolsView(alignData : alignData,logger : atomic.AtomicOperation) : Promise<{}>
+export function samToolsView(alignData : AlignData,logger : atomic.AtomicOperation) : Promise<{}>
 {
     return new Promise((resolve,reject) => {
         let samToolsExe = getReadable('samtools');

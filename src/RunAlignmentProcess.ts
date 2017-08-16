@@ -1,6 +1,6 @@
 import {AtomicOperationForkEvent,CompletionFlags} from "./req/atomicOperationsIPC";
 import * as atomic from "./req/operations/atomicOperations";
-import {alignData,getArtifactDir} from "./req/alignData";
+import {AlignData,getArtifactDir} from "./req/alignData";
 import {getFolderSize} from "./req/getFolderSize";
 import formatByteString from "./req/renderer/formatByteString";
 
@@ -15,7 +15,7 @@ import {samToolsIdxStats} from "./req/operations/RunAlignment/samToolsIdxStats";
 import {varScanMPileup2SNP} from "./req/operations/RunAlignment/varScanMPileup2SNP"
 
 let flags : CompletionFlags = new CompletionFlags();
-let align : alignData;
+let align : AlignData;
 let step = 1;
 let progressMessage = "Aligning";
 

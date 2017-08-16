@@ -30,13 +30,13 @@ export class SplashView extends viewMgr.View
                 <h2 style="margin-bottom:0px;margin-top:0px;"><b>Tool</b></h2>
                 <br />
                 <br />
-                <img src="${getReadable("img/openProject.png")}" class="activeHover" id="openProject" />
+                <img src="${getReadable("img/openProject.png")}" class="activeHover activeHoverButton" id="openProject" />
                 <br />
                 <br />
-                <img src="${getReadable("img/newProject.png")}" class="activeHover" id="createNewProject" />
+                <img src="${getReadable("img/newProject.png")}" class="activeHover activeHoverButton" id="createNewProject" />
                 <br />
                 <br />
-                <img src="${getReadable("img/help.png")}" class="activeHover" id="help" />
+                <img src="${getReadable("img/help.png")}" class="activeHover activeHoverButton" id="help" />
             </div>
         `;
     }

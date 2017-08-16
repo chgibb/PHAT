@@ -14,13 +14,8 @@ export class View extends viewMgr.View
     public renderView() : string
     {
         return `
-            <div style="float:left;">
-                <h5 style="margin-bottom:0px;">Read Files</h5>
-            </div>
-            <br />
-            <br />
-            <br />
-            <div id="fastqTableDiv" style="overflow-y:scroll;">
+            <img class="topButton activeHover activeHoverButton" id="browseFastqFiles" src="${getReadable("img/browseButton.png")}"><br />
+            <div id="fastqTableDiv" style="width:100%;">
                 <table style="width:100%;">
                     <tr>
                         <th>Sample Name</th>
@@ -42,12 +37,12 @@ export class View extends viewMgr.View
                         return res;
                     })()}
                 </table>
+                ${this.fastqInputs.length > 0 ? `<img src="${getReadable("img/import.png")}" class="activeHover activeHoverButton" id="importSelectedFastqs" />` : ""}
             </div>
         `;
     }
     public postRender() : void
     {
-        $("#fastqTableDiv").css("height",$(`#${this.div}`).height()/2+"px");
         for(let i = 0; i != this.fastqInputs.length; ++i)
         {
             let row = document.getElementById(`${this.fastqInputs[i].uuid}Row`);

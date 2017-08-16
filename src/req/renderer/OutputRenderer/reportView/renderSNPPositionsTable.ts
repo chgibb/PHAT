@@ -10,7 +10,7 @@ export function renderSNPPositionsTable(rows : Array<VCF2JSONRow>) : string
     if(masterView.displayInfo != "SNPPositions")
         return "";
     return `
-        <img class="activeHover" id="goBackToAlignments" src="${getReadable("img/GoBack.png")}">
+        <img class="activeHover activeHoverButton" id="goBackToAlignments" src="${getReadable("img/GoBack.png")}">
         <table style="width:100%">
         ${(()=>{
             let res = "";

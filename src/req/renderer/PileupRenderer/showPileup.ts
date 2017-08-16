@@ -2,12 +2,12 @@ import * as path from "path";
 
 import {getReadableAndWritable} from "./../../getAppPath";
 import {get2BitPath} from "./../../fasta";
-import {alignData} from "./../../alignData";
+import {AlignData} from "./../../alignData";
 
 let viewer : any;
 
 export function showPileup(
-    align : alignData,
+    align : AlignData,
     contig : string,
     start : number,
     stop : number,
