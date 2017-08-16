@@ -37,7 +37,7 @@ export class View extends viewMgr.View
                         return res;
                     })()}
                 </table>
-                <img src="${getReadable("img/import.png")}" class="activeHover activeHoverButton" id="importSelectedFastqs" />
+                ${this.fastqInputs.length > 0 ? `<img src="${getReadable("img/import.png")}" class="activeHover activeHoverButton" id="importSelectedFastqs" />` : ""}
             </div>
         `;
     }
