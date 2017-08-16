@@ -56,15 +56,15 @@ export function formatDateStamp(str : string) : string
 /**
  * @returns {string} - Date stamp of size 17 of the format YYYYMMDDHHMMSSmSmSmS
  */
-module.exports.generateFixedSizeDateStamp = function()
+export function generateFixedSizeDateStamp() : string
 {
     let date = new Date();
     return date.getFullYear().toString() + 
     //date.getMonth() starts January at month 0 for some reaon.
-    module.exports.insertLeadingPadToSize((parseInt(date.getMonth().toString())+1).toString(),2,"0") + 
-    module.exports.insertLeadingPadToSize(date.getDate().toString(),2,"0") + 
-    module.exports.insertLeadingPadToSize(date.getHours().toString(),2,"0") + 
-    module.exports.insertLeadingPadToSize(date.getMinutes().toString(),2,"0") + 
-    module.exports.insertLeadingPadToSize(date.getSeconds().toString(),2,"0") + 
-    module.exports.insertLeadingPadToSize(date.getMilliseconds().toString(),3,"0");
+    insertLeadingPadToSize((parseInt(date.getMonth().toString())+1).toString(),2,"0") + 
+    insertLeadingPadToSize(date.getDate().toString(),2,"0") + 
+    insertLeadingPadToSize(date.getHours().toString(),2,"0") + 
+    insertLeadingPadToSize(date.getMinutes().toString(),2,"0") + 
+    insertLeadingPadToSize(date.getSeconds().toString(),2,"0") + 
+    insertLeadingPadToSize(date.getMilliseconds().toString(),3,"0");
 }
