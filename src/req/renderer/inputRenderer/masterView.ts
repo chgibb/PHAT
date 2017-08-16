@@ -8,7 +8,9 @@ import {getReadable} from "./../../getAppPath";
 import * as viewMgr from "./../viewMgr";
 import * as fastqView from "./FastqView";
 import * as fastaView from "./FastaView";
-import {inputBrowseDialog} from "./inputBrowseDialog";
+import {inputFastqDialog} from "./inputFastqDialog";
+import {inputFastaDialog} from "./inputFastaDialog";
+
 import Fastq from "./../../fastq";
 import {Fasta} from "./../../fasta";
 export class View extends viewMgr.View
@@ -17,6 +19,7 @@ export class View extends viewMgr.View
     public firstRender : boolean;
     public fastqInputs : Array<Fastq>;
     public fastaInputs : Array<Fasta>;
+    public currentView : "fastqView" | "fastaView";
     public constructor(div : string)
     {
         super("masterView",div);
@@ -24,11 +27,12 @@ export class View extends viewMgr.View
         this.firstRender = true;
         this.fastqInputs = new Array<Fastq>();
         this.fastaInputs = new Array<Fasta>();
+        this.currentView = "fastqView";
     }
     public onMount() : void
     {
-        fastqView.addView(this.views,"fastqView");
-        fastaView.addView(this.views,"fastaView");
+        fastqView.addView(this.views,"tableView");
+        fastaView.addView(this.views,"tableView");
         for(let i = 0 ; i != this.views.length; ++i)
         {
             this.views[i].mount();
@@ -41,18 +45,16 @@ export class View extends viewMgr.View
         {
             this.firstRender = false;
             return `
-                <img class="topButton activeHover" id="browseInputFiles" src="${getReadable("img/browseButton.png")}">
-                <div id="fastqView" style="height:45%;width:100%;overflow-y:hidden;">
+                <img class="activeHover activeHoverButton" id="fastqViewButton" src="${this.currentView == "fastqView" ? getReadable("img/fastqButtonActive.png") : getReadable("img/fastqButton.png")}">
+                <img class="activeHover activeHoverButton" id="refSeqViewButton" src="${this.currentView == "fastaView" ? getReadable("img/refSeqButtonActive.png") : getReadable("img/refSeqButton.png")}">
+                <div id="tableView" style=""width:100%;">
                 </div>
-                <div id="fastaView" style="height:45%;width:100%;">
-                </div>
-                <img src="${getReadable("img/import.png")}" class="activeHover" id="importSelected" />
             `;
         }
         else
         {
-            for(let i = 0; i != this.views.length; ++i)
-                this.views[i].render();
+            let idx = viewMgr.getIndexOfViewByName(this.currentView,this.views);
+            this.views[idx].render();
             return undefined;
         }
     }
@@ -63,12 +65,33 @@ export class View extends viewMgr.View
     public divClickEvents(event : JQueryEventObject) : void
     {
         let shouldUpdate = false;
-        if(event.target.id == "browseInputFiles")
+        if(event.target.id == "browseFastqFiles")
         {
-            inputBrowseDialog();
+            inputFastqDialog();
             return;
         }
-        if(event.target.id == "importSelected")
+        if(event.target.id == "browseFastaFiles")
+        {
+            inputFastaDialog();
+            return;
+        }
+        if(event.target.id == "refSeqViewButton")
+        {
+            this.currentView = "fastaView";
+            this.firstRender = true;
+            viewMgr.render();
+            viewMgr.render();
+            return;
+        }
+        if(event.target.id == "fastqViewButton")
+        {
+            this.currentView = "fastqView";
+            this.firstRender = true;
+            viewMgr.render();
+            viewMgr.render();
+            return;
+        }
+        if(event.target.id == "importSelectedFastqs")
         {
             for(let i = 0; i != this.fastqInputs.length; ++i)
             {
@@ -83,6 +106,9 @@ export class View extends viewMgr.View
                     );
                 }
             }
+        }
+        if(event.target.id == "importSelectedFastas")
+        {
             for(let i = 0; i != this.fastaInputs.length; ++i)
             {
                 if(this.fastaInputs[i].checked)
@@ -97,7 +123,7 @@ export class View extends viewMgr.View
                 }
             }
         }
-        
+
         for(let i = 0; i != this.fastqInputs.length; ++i)
         {
             let classList = event.target.classList;

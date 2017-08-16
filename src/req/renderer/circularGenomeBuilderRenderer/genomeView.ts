@@ -10,7 +10,7 @@ const dialogs = Dialogs();
 
 import * as viewMgr from "./../viewMgr";
 import * as masterView from "./masterView";
-import {alignData} from "./../../alignData";
+import {AlignData} from "./../../alignData";
 import * as cf from "./../circularFigure";
 import {displayFigure} from "./displayFigure";
 import {centreFigure} from "./centreFigure";
@@ -26,7 +26,7 @@ export class GenomeView extends viewMgr.View implements cf.FigureCanvas
 {
     public genome : cf.CircularFigure;
     public firstRender : boolean;
-    public alignData : Array<alignData>;
+    public alignData : Array<AlignData>;
     public scope : any;
     public constructor(name : string,div : string)
     {

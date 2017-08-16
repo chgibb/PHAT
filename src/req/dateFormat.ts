@@ -9,7 +9,7 @@
  * @param {string} padChar - Character to use to pad string
  * @returns {string} - Padded string
  */
-module.exports.insertLeadingPadToSize = function(str,digits,padChar)
+export function insertLeadingPadToSize(str : string,digits : number,padChar : string) : string
 {
     if(str.length == digits)
         return str;
@@ -17,9 +17,9 @@ module.exports.insertLeadingPadToSize = function(str,digits,padChar)
             return "";
     if(str.length > digits)
         return "";
-    var res = "";
-    var zeroesToAdd = digits - str.length;
-    for(var i = 0; i != zeroesToAdd; ++i)
+    let res = "";
+    let zeroesToAdd = digits - str.length;
+    for(let i = 0; i != zeroesToAdd; ++i)
         res += padChar;
     res += str;
     return res;
@@ -29,13 +29,13 @@ module.exports.insertLeadingPadToSize = function(str,digits,padChar)
  * @param {string} str - Takes in a string of the format YYYYMMDDHHMMSSmSmSmS were mS is one digit, representing milliseconds
  * @returns {string} - String of the form YYYY-MM-DD HH:MM:SS:mSmSmS
  */
-module.exports.formatDateStamp = function(str)
+export function formatDateStamp(str : string) : string
 {
     //assuming a string of the format YYYYMMDDHHMMSSmSmSmS
     //split it into YYYY-MM-DD HH:MM:SS:mSmSmS
 
-    var res = "";
-    for(var i = 0; i != str.length; i++)
+    let res = "";
+    for(let i = 0; i != str.length; i++)
     {
         res += str[i];
         if(i == 3)
@@ -56,15 +56,15 @@ module.exports.formatDateStamp = function(str)
 /**
  * @returns {string} - Date stamp of size 17 of the format YYYYMMDDHHMMSSmSmSmS
  */
-module.exports.generateFixedSizeDateStamp = function()
+export function generateFixedSizeDateStamp() : string
 {
-    var date = new Date();
+    let date = new Date();
     return date.getFullYear().toString() + 
     //date.getMonth() starts January at month 0 for some reaon.
-    module.exports.insertLeadingPadToSize((parseInt(date.getMonth().toString())+1).toString(),2,"0") + 
-    module.exports.insertLeadingPadToSize(date.getDate().toString(),2,"0") + 
-    module.exports.insertLeadingPadToSize(date.getHours().toString(),2,"0") + 
-    module.exports.insertLeadingPadToSize(date.getMinutes().toString(),2,"0") + 
-    module.exports.insertLeadingPadToSize(date.getSeconds().toString(),2,"0") + 
-    module.exports.insertLeadingPadToSize(date.getMilliseconds().toString(),3,"0");
+    insertLeadingPadToSize((parseInt(date.getMonth().toString())+1).toString(),2,"0") + 
+    insertLeadingPadToSize(date.getDate().toString(),2,"0") + 
+    insertLeadingPadToSize(date.getHours().toString(),2,"0") + 
+    insertLeadingPadToSize(date.getMinutes().toString(),2,"0") + 
+    insertLeadingPadToSize(date.getSeconds().toString(),2,"0") + 
+    insertLeadingPadToSize(date.getMilliseconds().toString(),3,"0");
 }

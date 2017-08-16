@@ -54,7 +54,7 @@ import * as winMgr from "./winMgr";
 import {File,getPath} from "./../file";
 import Fastq from "./../fastq";
 import {Fasta} from "./../fasta";
-import {alignData} from "./../alignData";
+import {AlignData} from "./../alignData";
 import {CircularFigure} from "./../renderer/circularFigure";
 
 import {finishLoadingProject} from "./finishLoadingProject";
@@ -249,12 +249,12 @@ ipc.on(
 			atomicOp.addOperation(arg.opName,{});
 		else if(arg.opName == "renderCoverageTrackForContig")
 		{
-			let aligns : Array<alignData> = dataMgr.getKey("align","aligns");
+			let aligns : Array<AlignData> = dataMgr.getKey("align","aligns");
 			let circularFigures : Array<CircularFigure> = dataMgr.getKey("circularGenomeBuilder","circularFigures",);
 
 			if(aligns && circularFigures)
 			{
-				let alignData : alignData = <any>{};
+				let alignData : AlignData = <any>{};
 				let circularFigure : CircularFigure = <any>{};
 				for(let i = 0; i != aligns.length; ++i)
 				{
@@ -286,12 +286,12 @@ ipc.on(
 
 		else if(arg.opName == "renderSNPTrackForContig")
 		{
-			let aligns : Array<alignData> = dataMgr.getKey("align","aligns");
+			let aligns : Array<AlignData> = dataMgr.getKey("align","aligns");
 			let circularFigures : Array<CircularFigure> = dataMgr.getKey("circularGenomeBuilder","circularFigures",);
 
 			if(aligns && circularFigures)
 			{
-				let alignData : alignData = <any>{};
+				let alignData : AlignData = <any>{};
 				let circularFigure : CircularFigure = <any>{};
 				for(let i = 0; i != aligns.length; ++i)
 				{
@@ -545,9 +545,9 @@ atomicOp.updates.on(
 		winMgr.publishChangeForKey("application","operations");
 		if(op.flags.success)
 		{
-			let aligns : Array<alignData> = dataMgr.getKey("align","aligns");
+			let aligns : Array<AlignData> = dataMgr.getKey("align","aligns");
 			if(aligns == undefined)
-				aligns = new Array<alignData>();
+				aligns = new Array<AlignData>();
 
 			aligns.push(op.alignData);
 			dataMgr.setKey("align","aligns",aligns);

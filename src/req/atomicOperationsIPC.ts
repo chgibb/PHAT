@@ -1,7 +1,7 @@
 import {ProjectManifest} from "./projectManifest"
 import {Fasta} from "./fasta";
 import Fastq from "./fastq";
-import {alignData} from "./alignData";
+import {AlignData} from "./alignData";
 import {CircularFigure} from "./renderer/circularFigure";
 import {CompletionFlags,LogRecord} from "./operations/atomicOperations";
 export {CompletionFlags} from "./operations/atomicOperations";
@@ -34,7 +34,7 @@ export interface AtomicOperationIPC
     filePath? : string;
 
     pileupViewerParams? : {
-        align : alignData,
+        align : AlignData,
         contig : string,
         start : number,
         stop : number
