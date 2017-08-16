@@ -55,7 +55,10 @@ $
                             {
                                 document.body.innerHTML = `<h1>Saving Project</h1>`;
                             }
-                            if(ops[i].flags.done && ops[i].name != "checkForUpdate")
+                            if(ops[i].flags.done && (ops[i].name == "indexFasta" ||
+                                ops[i].name == "runAlignment" || ops[i].name == "saveCurrentProject" ||
+                                ops[i].name == "renderCoverageTrackForContig" || ops[i].name == "renderSNPTrackForContig"
+                            ))
                             {
                                 let notification : Notification = new Notification(ops[i].flags.success ? "Success" : "Failure",<NotificationOptions>{
                                     body : `
