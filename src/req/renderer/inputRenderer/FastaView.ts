@@ -39,7 +39,7 @@ export class View extends viewMgr.View
                         return res;
                     })()}
                 </table>
-                <img src="${getReadable("img/import.png")}" class="activeHover activeHoverButton" id="importSelectedFastas" />
+                ${this.fastaInputs.length > 0 ? `<img src="${getReadable("img/import.png")}" class="activeHover activeHoverButton" id="importSelectedFastas" />` : ""}
             </div>
         `;
     }
