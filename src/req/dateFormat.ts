@@ -9,7 +9,6 @@
  * @param {string} padChar - Character to use to pad string
  * @returns {string} - Padded string
  */
-//module.exports.insertLeadingPadToSize = function(str,digits,padChar)
 export function insertLeadingPadToSize(str : string,digits : number,padChar : string) : string
 {
     if(str.length == digits)
@@ -30,7 +29,7 @@ export function insertLeadingPadToSize(str : string,digits : number,padChar : st
  * @param {string} str - Takes in a string of the format YYYYMMDDHHMMSSmSmSmS were mS is one digit, representing milliseconds
  * @returns {string} - String of the form YYYY-MM-DD HH:MM:SS:mSmSmS
  */
-module.exports.formatDateStamp = function(str)
+export function formatDateStamp(str : string) : string
 {
     //assuming a string of the format YYYYMMDDHHMMSSmSmSmS
     //split it into YYYY-MM-DD HH:MM:SS:mSmSmS
