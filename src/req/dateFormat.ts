@@ -18,9 +18,9 @@ export function insertLeadingPadToSize(str : string,digits : number,padChar : st
             return "";
     if(str.length > digits)
         return "";
-    var res = "";
-    var zeroesToAdd = digits - str.length;
-    for(var i = 0; i != zeroesToAdd; ++i)
+    let res = "";
+    let zeroesToAdd = digits - str.length;
+    for(let i = 0; i != zeroesToAdd; ++i)
         res += padChar;
     res += str;
     return res;
@@ -35,8 +35,8 @@ module.exports.formatDateStamp = function(str)
     //assuming a string of the format YYYYMMDDHHMMSSmSmSmS
     //split it into YYYY-MM-DD HH:MM:SS:mSmSmS
 
-    var res = "";
-    for(var i = 0; i != str.length; i++)
+    let res = "";
+    for(let i = 0; i != str.length; i++)
     {
         res += str[i];
         if(i == 3)
@@ -59,7 +59,7 @@ module.exports.formatDateStamp = function(str)
  */
 module.exports.generateFixedSizeDateStamp = function()
 {
-    var date = new Date();
+    let date = new Date();
     return date.getFullYear().toString() + 
     //date.getMonth() starts January at month 0 for some reaon.
     module.exports.insertLeadingPadToSize((parseInt(date.getMonth().toString())+1).toString(),2,"0") + 
