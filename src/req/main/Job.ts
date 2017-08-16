@@ -3,7 +3,6 @@
  *	Automatically pipes a process' stdout and stderr to a renderer window defined by callBackObj,
  *	to channel callBackChannel. Also notifies renderer window upon process completion with process'
  *	return code. Optionally unbuffers process' output streams before forwarding to window.
- * @see module:req/main/JobMgr
  * @module req/main/Job
  */
 import * as spawn from "child_process";
