@@ -16,6 +16,7 @@ resultPromise = electronInstaller.createWindowsInstaller({
     exe: 'phat.exe',
     noMsi: true,
     iconUrl : 'https://raw.githubusercontent.com/chgibb/PHAT/master/icons/phat.ico',
+    loadingGif : 'img/PHATInstallerGIF.gif',
     setupIcon : 'icons/phat.ico'
   });
 
