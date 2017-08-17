@@ -20,11 +20,10 @@ resultPromise = electronInstaller.createWindowsInstaller({
     setupIcon : 'icons/phat.ico'
   });
 
-resultPromise.then(
-  () => {
-    fs.renameSync("Setup.exe","phat-win32-x64-setup.exe");
-    clearInterval(updateBuildTime);
-    }, (e) => {
-      console.log(`No dice: ${e.message}`);
-      clearInterval(updateBuildTime);
-    });
+resultPromise.then(() => {
+  fs.renameSync("Setup.exe","phat-win32-x64-setup.exe");
+  clearInterval(updateBuildTime);
+}, (e) => {
+  console.log(`No dice: ${e.message}`);
+  clearInterval(updateBuildTime);
+});
