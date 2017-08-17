@@ -19,14 +19,14 @@ export class HelpView extends viewMgr.View
     public renderView() : string
     {
         return `
-            <img src="${getReadable("img/GoBack.png")}" class="activeHover" id="goBack" />
+            <img src="${getReadable("img/GoBack.png")}" class="activeHover activeHoverButton" id="goBack" />
             <div class="innerCenteredDiv">
                 <br />
                 <br />
-                <img src="${getReadable("img/howToUsePHAT.png")}" class="activeHover" id="howToUsePHAT" />
+                <img src="${getReadable("img/howToUsePHAT.png")}" class="activeHover activeHoverButton" id="howToUsePHAT" />
                 <br />
                 <br />
-                <img src="${getReadable("img/feedback.png")}" class="activeHover" id="feedback" />
+                <img src="${getReadable("img/feedback.png")}" class="activeHover activeHoverButton" id="feedback" />
                 <br />
                 <br />
                 <h5>PHAT will check for an update everytime it restarts from the following channel</h5>

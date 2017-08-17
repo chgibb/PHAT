@@ -6,11 +6,11 @@ import {getReadable} from "./../getAppPath";
 import {Fasta,getFaiPath} from "./../fasta";
 import Fastq from "./../fastq";
 import {getPath} from "./../file";
-import {alignData,getArtifactDir} from "./../alignData"
+import {AlignData,getArtifactDir} from "./../alignData"
 
 export class RunAlignment extends atomic.AtomicOperation
 {
-    public alignData : alignData;
+    public alignData : AlignData;
     public fasta : Fasta;
     public fastq1 : Fastq;
     public fastq2 : Fastq;
@@ -31,7 +31,7 @@ export class RunAlignment extends atomic.AtomicOperation
             this.fastq1 = data.fastq1;
             this.fastq2 = data.fastq2;
 
-            this.alignData = new alignData();
+            this.alignData = new AlignData();
             this.alignData.fasta = this.fasta;
             this.alignData.fastqs.push(this.fastq1,this.fastq2);
             this.generatedArtifacts.push(`${getPath(this.fasta)}.fai`);

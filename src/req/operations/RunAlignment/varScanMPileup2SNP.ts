@@ -2,13 +2,13 @@ import * as fs from "fs";
 
 import * as atomic from "./../atomicOperations";
 import {getReadable} from "./../../getAppPath";
-import {alignData,getMPileup,getSNPsVCF,getSNPsJSON} from "./../../alignData";
+import {AlignData,getMPileup,getSNPsVCF,getSNPsJSON} from "./../../alignData";
 import {SpawnRequestParams} from "./../../JobIPC";
 import {Job,JobCallBackObject} from "./../../main/Job";
 import {varScanMPileup2SNPReportParser} from "./../../varScanMPileup2SNPReportParser";
 import {varScanMPileup2SNPVCF2JSON} from "./../../varScanMPileup2SNPVCF2JSON";
 
-export function varScanMPileup2SNP(alignData : alignData,logger : atomic.AtomicOperation) : Promise<{}>
+export function varScanMPileup2SNP(alignData : AlignData,logger : atomic.AtomicOperation) : Promise<{}>
 {
     return new Promise((resolve,reject) => {
         let varScanExe = getReadable("varscan.jar");

@@ -1,10 +1,10 @@
 import * as atomic from "./../atomicOperations";
 import {getReadable} from "./../../getAppPath";
-import {alignData,getSortedBam,getSortBamIndex} from "./../../alignData";
+import {AlignData,getSortedBam,getSortBamIndex} from "./../../alignData";
 import {SpawnRequestParams} from "./../../JobIPC";
 import {Job,JobCallBackObject} from "./../../main/Job";
 
-export function samToolsIndex(alignData : alignData,logger : atomic.AtomicOperation) : Promise<{}>
+export function samToolsIndex(alignData : AlignData,logger : atomic.AtomicOperation) : Promise<{}>
 {
     return new Promise((resolve,reject) => {
         let samToolsExe = getReadable('samtools');
