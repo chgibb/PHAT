@@ -285,7 +285,7 @@ export class View extends viewMgr.View
         let res = "";
         for(let i = 0; i != this.fastaInputs.length; ++i)
         {
-            if(this.fastaInputs[i].checked && this.fastaInputs[i].indexed)
+            if(this.fastaInputs[i].checked && this.fastaInputs[i].contigs.length > 0)
             {
                 res += `
                     <li><b>${this.fastaInputs[i].alias}</b></li>
