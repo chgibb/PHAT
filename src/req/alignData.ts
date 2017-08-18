@@ -7,7 +7,7 @@ import {Fasta} from "./fasta";
 import {Bowtie2Report} from "./bowTie2AlignmentReportParser";
 import {varScanMPileup2SNPReport} from "./varScanMPileup2SNPReportParser";
 import {SamToolsIdxStatsReport} from "./samToolsIdxStatsReport";
-export class alignData
+export class AlignData
 {
     public uuid : string;
     public fastqs : Array<Fastq>;
@@ -37,51 +37,51 @@ export class alignData
     }
 }
 
-export function getArtifactDir(alignData : alignData) : string
+export function getArtifactDir(alignData : AlignData) : string
 {
     return getReadableAndWritable(`rt/AlignmentArtifacts/${alignData.uuid}`);
 }
-export function getCoverageDir(alignData : alignData) : string
+export function getCoverageDir(alignData : AlignData) : string
 {
     return getReadableAndWritable(`rt/AlignmentArtifacts/${alignData.uuid}/contigCoverage`)
 }
-export function getSam(alignData : alignData) : string
+export function getSam(alignData : AlignData) : string
 {
     return getReadableAndWritable(`rt/AlignmentArtifacts/${alignData.uuid}/out.sam`);
 }
-export function getUnSortedBam(alignData : alignData) : string
+export function getUnSortedBam(alignData : AlignData) : string
 {
     return getReadableAndWritable(`rt/AlignmentArtifacts/${alignData.uuid}/out.bam`);
 }
-export function getSortedBam(alignData : alignData) : string
+export function getSortedBam(alignData : AlignData) : string
 {
     return getReadableAndWritable(`rt/AlignmentArtifacts/${alignData.uuid}/out.sorted.bam`);
 }
-export function getSortBamIndex(alignData : alignData) : string
+export function getSortBamIndex(alignData : AlignData) : string
 {
     return getReadableAndWritable(`rt/AlignmentArtifacts/${alignData.uuid}/out.sorted.bam.bai`);
 }
-export function getCoverage(alignData : alignData) : string
+export function getCoverage(alignData : AlignData) : string
 {
     return getReadableAndWritable(`rt/AlignmentArtifacts/${alignData.uuid}/depth.coverage`);
 }
-export function getCoverageForContig(alignData : alignData,contigUUID : string) : string
+export function getCoverageForContig(alignData : AlignData,contigUUID : string) : string
 {
     return getReadableAndWritable(`rt/AlignmentArtifacts/${alignData.uuid}/contigCoverage/${contigUUID}`);
 }
-export function getMPileup(alignData : alignData) : string
+export function getMPileup(alignData : AlignData) : string
 {
     return getReadableAndWritable(`rt/AlignmentArtifacts/${alignData.uuid}/pileup.mpileup`);
 }
-export function getSNPsVCF(alignData : alignData) : string
+export function getSNPsVCF(alignData : AlignData) : string
 {
     return getReadableAndWritable(`rt/AlignmentArtifacts/${alignData.uuid}/snps.vcf`);
 }
-export function getSNPsJSON(alignData : alignData) : string
+export function getSNPsJSON(alignData : AlignData) : string
 {
     return getReadableAndWritable(`rt/AlignmentArtifacts/${alignData.uuid}/snps.json`);
 }
-export function getIdxStats(alignData : alignData) : string
+export function getIdxStats(alignData : AlignData) : string
 {
     return getReadableAndWritable(`rt/AlignmentArtifacts/${alignData.uuid}/idxstats`);
 }

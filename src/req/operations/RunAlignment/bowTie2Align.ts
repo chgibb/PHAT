@@ -1,13 +1,13 @@
 import * as fs from "fs";
 
 import * as atomic from "./../atomicOperations";
-import {alignData,getArtifactDir,getCoverageDir,getSam} from "./../../alignData";
+import {AlignData,getArtifactDir,getCoverageDir,getSam} from "./../../alignData";
 import {getReadable,getReadableAndWritable} from "./../../getAppPath";
 import {SpawnRequestParams} from "./../../JobIPC";
 import {Job,JobCallBackObject} from "./../../main/Job";
 import {getPath} from "./../../file";
 
-export function bowTie2Align(alignData : alignData,logger : atomic.AtomicOperation) : Promise<{}>
+export function bowTie2Align(alignData : AlignData,logger : atomic.AtomicOperation) : Promise<{}>
 {
     return new Promise((resolve,reject) => {
         let bowtie2Exe = "";

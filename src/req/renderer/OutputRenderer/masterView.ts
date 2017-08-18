@@ -4,7 +4,7 @@ import * as reportView from "./reportView";
 
 import Fastq from "./../../fastq"
 import {Fasta} from "./../../fasta";
-import {alignData} from "./../../alignData";
+import {AlignData} from "./../../alignData";
 
 export function addView(arr : Array<viewMgr.View>,div : string)
 {
@@ -15,7 +15,7 @@ export class View extends viewMgr.View
     public views : Array<viewMgr.View>;
     public firstRender = true;
     public rightPanelOpen = false;
-    public alignData : Array<alignData>;
+    public alignData : Array<AlignData>;
     public fastqInputs : Array<Fastq>;
     public fastaInputs : Array<Fasta>;
 
@@ -28,7 +28,7 @@ export class View extends viewMgr.View
         this.displayInfo = "QCInfo";
         this.fastqInputs = new Array<Fastq>();
         this.fastaInputs = new Array<Fasta>();
-        this.alignData = new Array<alignData>();
+        this.alignData = new Array<AlignData>();
     }
     public onMount() : void
     {
