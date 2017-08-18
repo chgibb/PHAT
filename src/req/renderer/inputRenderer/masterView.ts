@@ -14,12 +14,14 @@ import {inputFastaDialog} from "./inputFastaDialog";
 
 import Fastq from "./../../fastq";
 import {Fasta} from "./../../fasta";
+import {AlignData} from "./../../alignData";
 export class View extends viewMgr.View
 {
     public views : Array<viewMgr.View>;
     public firstRender : boolean;
     public fastqInputs : Array<Fastq>;
     public fastaInputs : Array<Fasta>;
+    public aligns : Array<AlignData>;
     public currentView : "fastqView" | "fastaView" | "alignView";
     public constructor(div : string)
     {
@@ -226,6 +228,9 @@ export class View extends viewMgr.View
 
         let fastaView = <fastaView.View>viewMgr.getViewByName("fastaView",this.views);
         fastaView.fastaInputs = this.fastaInputs;
+
+        let alignView = <alignView.View>viewMgr.getViewByName("alignView",this.views);
+        alignView.aligns = this.aligns;
 
     }
 }

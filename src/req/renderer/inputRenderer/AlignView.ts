@@ -3,9 +3,11 @@ import {getReadable} from "./../../getAppPath";
 import {AlignData} from "./../../alignData";
 export class View extends viewMgr.View
 {
+    public aligns : Array<AlignData>;
     public constructor(div : string)
     {
         super("alignView",div);
+        this.aligns = new Array<AlignData>();
     }
     public onMount() : void{}
     public onUnMount() : void{}
