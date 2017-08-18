@@ -14,13 +14,8 @@ export class View extends viewMgr.View
     public renderView() : string
     {
         return `
-            <div style="float:left;">
-                <h5 style="margin-bottom:0px;">Reference Sequence Files</h5>
-            </div>
-            <br />
-            <br />
-            <br />
-            <div id="fastaTableDiv" style="overflow-y:scroll;">
+        <img class="topButton activeHover activeHoverButton" id="browseFastaFiles" src="${getReadable("img/browseButton.png")}"><br />
+            <div id="fastaTableDiv" style="width:100%;">
                 <table style="width:100%;">
                     <tr>
                         <th>Reference Name</th>
@@ -44,12 +39,12 @@ export class View extends viewMgr.View
                         return res;
                     })()}
                 </table>
+                ${this.fastaInputs.length > 0 ? `<img src="${getReadable("img/import.png")}" class="activeHover activeHoverButton" id="importSelectedFastas" />` : ""}
             </div>
         `;
     }
     public postRender() : void
     {
-        $("#fastaTableDiv").css("height",$(`#${this.div}`).height()/2+"px");
         for(let i = 0; i != this.fastaInputs.length; ++i)
         {
             let row = document.getElementById(`${this.fastaInputs[i].uuid}Row`);

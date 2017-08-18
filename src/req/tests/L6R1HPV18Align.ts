@@ -1,13 +1,13 @@
-import {alignData} from "./../alignData";
+import {AlignData} from "./../alignData";
 
-let L6R1HPV18Align : alignData;
+let L6R1HPV18Align : AlignData;
 
-export function get() : alignData
+export function get() : AlignData
 {
     return L6R1HPV18Align;
 }
 
-export function set(align : alignData) : void
+export function set(align : AlignData) : void
 {
     L6R1HPV18Align = align;
 }

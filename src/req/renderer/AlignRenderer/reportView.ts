@@ -109,7 +109,7 @@ export class ReportView extends viewMgr.View
                     if(validSelection)
                     {
                         res += `
-                            <img id="alignButton" src="${getReadable("img/AlignButton.png")}" class="activeHover">
+                            <img id="alignButton" src="${getReadable("img/AlignButton.png")}" class="activeHover activeHoverButton">
                         `;
                     }
                     res += `

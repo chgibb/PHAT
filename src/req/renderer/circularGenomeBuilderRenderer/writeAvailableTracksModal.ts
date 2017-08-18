@@ -4,13 +4,13 @@ const ipc = electron.ipcRenderer;
 import * as viewMgr from "./../viewMgr";
 import * as masterView from "./masterView";
 import * as genomeView from "./genomeView";
-import {alignData} from "./../../alignData";
+import {AlignData} from "./../../alignData";
 import {AtomicOperationIPC} from "./../../atomicOperationsIPC";
 import {getReadable} from "./../../getAppPath";
 
 require("@claviska/jquery-minicolors");
-let selectedAlign : alignData;
-export function setSelectedAlign(align : alignData) : void
+let selectedAlign : AlignData;
+export function setSelectedAlign(align : AlignData) : void
 {
     selectedAlign = align;
 }
@@ -87,8 +87,8 @@ export function writeAvailableTracksModal() : void
             body += `
                 <div>
                     <p style="display:inline-block;">${genomeView.genome.contigs[i].name}</p>
-                    <img src="${getReadable("img/generateCoverageTrack.png")}" style="display:inline-block;" class="activeHover" id="${genomeView.genome.contigs[i].uuid}GenCoverage" />
-                    <img src="${getReadable("img/generateSNPTrack.png")}" style="display:inline-block;" class="activeHover" id="${genomeView.genome.contigs[i].uuid}GenSNPs" />
+                    <img src="${getReadable("img/generateCoverageTrack.png")}" style="display:inline-block;" class="activeHover activeHoverButton" id="${genomeView.genome.contigs[i].uuid}GenCoverage" />
+                    <img src="${getReadable("img/generateSNPTrack.png")}" style="display:inline-block;" class="activeHover activeHoverButton" id="${genomeView.genome.contigs[i].uuid}GenSNPs" />
                 </div>
             `;
         }
