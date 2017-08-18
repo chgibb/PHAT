@@ -94,6 +94,14 @@ export class View extends viewMgr.View
             viewMgr.render();
             return;
         }
+        if(event.target.id == "alignViewButton")
+        {
+            this.currentView = "alignView";
+            this.firstRender = true;
+            viewMgr.render();
+            viewMgr.render();
+            return;
+        }
         if(event.target.id == "importSelectedFastqs")
         {
             for(let i = 0; i != this.fastqInputs.length; ++i)
