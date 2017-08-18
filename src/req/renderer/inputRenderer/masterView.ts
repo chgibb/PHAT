@@ -8,6 +8,7 @@ import {getReadable} from "./../../getAppPath";
 import * as viewMgr from "./../viewMgr";
 import * as fastqView from "./FastqView";
 import * as fastaView from "./FastaView";
+import * as alignView from "./AlignView";
 import {inputFastqDialog} from "./inputFastqDialog";
 import {inputFastaDialog} from "./inputFastaDialog";
 
@@ -19,7 +20,7 @@ export class View extends viewMgr.View
     public firstRender : boolean;
     public fastqInputs : Array<Fastq>;
     public fastaInputs : Array<Fasta>;
-    public currentView : "fastqView" | "fastaView";
+    public currentView : "fastqView" | "fastaView" | "alignView";
     public constructor(div : string)
     {
         super("masterView",div);
@@ -33,6 +34,7 @@ export class View extends viewMgr.View
     {
         fastqView.addView(this.views,"tableView");
         fastaView.addView(this.views,"tableView");
+        alignView.addView(this.views,"tableView");
         for(let i = 0 ; i != this.views.length; ++i)
         {
             this.views[i].mount();
@@ -47,6 +49,7 @@ export class View extends viewMgr.View
             return `
                 <img class="activeHover activeHoverButton" id="fastqViewButton" src="${this.currentView == "fastqView" ? getReadable("img/fastqButtonActive.png") : getReadable("img/fastqButton.png")}">
                 <img class="activeHover activeHoverButton" id="refSeqViewButton" src="${this.currentView == "fastaView" ? getReadable("img/refSeqButtonActive.png") : getReadable("img/refSeqButton.png")}">
+                <img class="activeHover activeHoverButton" id="alignViewButton" src="${this.currentView == "alignView" ? getReadable("img/alignButtonActive.png") : getReadable("img/alignButton.png")}">
                 <div id="tableView" style=""width:100%;">
                 </div>
             `;
