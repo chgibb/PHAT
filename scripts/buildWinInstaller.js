@@ -16,14 +16,14 @@ resultPromise = electronInstaller.createWindowsInstaller({
     exe: 'phat.exe',
     noMsi: true,
     iconUrl : 'https://raw.githubusercontent.com/chgibb/PHAT/master/icons/phat.ico',
+    loadingGif : 'img/PHATInstallerGIF.gif',
     setupIcon : 'icons/phat.ico'
   });
 
-resultPromise.then(
-  () => {
-    fs.renameSync("Setup.exe","phat-win32-x64-setup.exe");
-    clearInterval(updateBuildTime);
-    }, (e) => {
-      console.log(`No dice: ${e.message}`);
-      clearInterval(updateBuildTime);
-    });
+resultPromise.then(() => {
+  fs.renameSync("Setup.exe","phat-win32-x64-setup.exe");
+  clearInterval(updateBuildTime);
+}, (e) => {
+  console.log(`No dice: ${e.message}`);
+  clearInterval(updateBuildTime);
+});
