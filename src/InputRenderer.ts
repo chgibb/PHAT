@@ -56,6 +56,15 @@ $
                 action : "getKey"
             }
         );
+        ipc.send(
+            "getKey",
+            <GetKeyEvent>{
+                channel : "align",
+                key : "aligns",
+                replyChannel : "input",
+                action : "getKey"
+            }
+        );
 
         //subscribe to changes in data
         ipc.send(
@@ -74,6 +83,15 @@ $
                 channel : "input",
                 key : "fastaInputs",
                 replyChannel : "input"
+            }
+        );
+        ipc.send(
+            "keySub",
+            <KeySubEvent>{
+                channel : "align",
+                key : "aligns",
+                replyChannel : "input",
+                action : "keySub"
             }
         );
         viewMgr.render();
@@ -99,6 +117,13 @@ $
                         if(arg.val !== undefined)
                         {
                             masterView.fastaInputs = arg.val;
+                        }
+                    }
+                    if(arg.key == 'align')
+                    {
+                        if(arg.val !== undefined)
+                        {
+                            masterView.aligns = arg.val;
                         }
                     }
                     masterView.dataChanged();
