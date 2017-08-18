@@ -83,3 +83,17 @@ export class FastaContigLoader extends EventEmitter
         )
     }
 }
+
+//Promise wrapper for existing EventEmitter based implementation
+export function getContigsFromFastaFile(path : string) : Promise<Array<Contig>>
+{
+    return new Promise<Array<Contig>>((resolve,reject) => {
+        const contigLoader = new FastaContigLoader();
+        contigLoader.on(
+            "doneLoadingContigs",function(){
+                resolve(contigLoader.contigs);
+            }
+        );
+        contigLoader.beginRefStream(path);
+    });
+}
