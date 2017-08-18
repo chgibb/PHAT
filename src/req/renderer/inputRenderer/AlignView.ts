@@ -16,9 +16,10 @@ export class View extends viewMgr.View
         <div id="alignTableDiv" style="width:100%;">
         <table style="width:100%;">
             <tr>
-                <th>Sample Name</th>
+                <th>File Name</th>
                 <th>Path</th>
                 <th>Size</th>
+                <th>Ref Seq</th>
             </tr>
             ${(()=>{
                 let res = "";
