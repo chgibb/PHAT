@@ -22,7 +22,8 @@ export class AlignData
     public summaryText : string;
     public varScanSNPSummary : varScanMPileup2SNPReport;
     public varScanSNPReport : string;
-    public idxStatsReport : Array<SamToolsIdxStatsReport>; 
+    public idxStatsReport : Array<SamToolsIdxStatsReport>;
+    public isExternalAlignment : boolean; 
     public constructor()
     {
         this.fastqs = new Array();
