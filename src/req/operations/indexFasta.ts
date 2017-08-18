@@ -1,6 +1,6 @@
 import * as atomic from "./atomicOperations";
 import {Fasta,get2BitPath,getFaiPath} from "./../fasta";
-import {FastaContigLoader} from "./../fastaContigLoader";
+import {getContigsFromFastaFile} from "./../fastaContigLoader";
 import {getPath} from "./../file";
 
 import {getReadable,getReadableAndWritable} from "./../getAppPath";
@@ -79,47 +79,38 @@ export class IndexFasta extends atomic.AtomicOperation
         this.destinationArtifacts.concat(this.bowtieIndices);
         
     }
-    //faToTwoBit -> samTools faidx -> bowtie2-build -> ContigLoader
+    //bowTie2Build -> faToTwoBit -> samTools faidx -> ContigLoader
     public run() : void
     {
         this.logRecord = atomic.openLog(this.name,"Index Fasta");
 
         let self = this;
-        
-        faToTwoBit(self).then((result) => {
-
-            self.setSuccess(self.twoBitFlags);
-            self.update();
-
-            samToolsFaidx(self.fasta,self).then((result) => {
-
-                self.setSuccess(self.faiFlags);
-                self.update();
-
-                bowTie2Build(self).then((result) => {
-
+        (async function(){
+            return new Promise<void>(async (resolve,reject) => {
+                try
+                {
+                    await bowTie2Build(self);
                     self.setSuccess(self.bowtieFlags);
                     self.update();
 
-                    let contigLoader = new FastaContigLoader();
-                    contigLoader.on(
-                        "doneLoadingContigs",function(){
-                            self.fasta.contigs = contigLoader.contigs;
-                            self.setSuccess(self.flags);
-                            self.fasta.indexed = true;
-                            self.update();
-                        }
-                    );
-                    contigLoader.beginRefStream(getPath(self.fasta));
+                    await faToTwoBit(self);
+                    self.setSuccess(self.twoBitFlags);
+                    self.update();
 
-                }).catch((err) => {
+                    await samToolsFaidx(self.fasta,self);
+                    self.setSuccess(self.faiFlags);
+                    self.update();
+
+                    self.fasta.contigs = await getContigsFromFastaFile(getPath(self.fasta));
+                    self.setSuccess(self.flags);
+                    self.fasta.indexed = true;
+                    self.update();
+                }
+                catch(err)
+                {
                     self.abortOperationWithMessage(err);
-                });
-            }).catch((err) => {
-                self.abortOperationWithMessage(err);
+                }
             });
-        }).catch((err) => {
-            self.abortOperationWithMessage(err);
-        });
+        })();
     }
 }
