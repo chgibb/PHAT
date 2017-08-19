@@ -43,6 +43,7 @@ export class IndexFastaForVisualization extends atomic.AtomicOperation
                     self.update();
 
                     self.fasta.contigs = await getContigsFromFastaFile(getPath(self.fasta));
+                    self.fasta.twoBitGenerated = true;
                     self.setSuccess(self.flags);
                     self.update();
                 }
