@@ -10,6 +10,7 @@ import * as masterView from "./masterView";
 import * as rightPanel from "./rightPanel";
 
 import {VCF2JSONRow} from "./../../varScanMPileup2SNPVCF2JSON";
+import {Fasta} from "./../../fasta";
 
 import {renderQCReportTable} from "./reportView/renderQCReportTable";
 import {renderAlignmentReportTable} from "./reportView/renderAlignmentReportTable";
@@ -104,7 +105,19 @@ export class View extends viewMgr.View
                     alert(`Can't view an alignment with 0% alignment rate`);
                     return;
                 }
-                if(!masterView.alignData[i].fasta.contigs || masterView.alignData[i].fasta.contigs.length == 0)
+                let fasta : Fasta;
+                //the fasta property of AlignData is not updated when the original fasta object is modified
+                //find the original and see if it has been prepared for visualization, otherwise the pileup viewer
+                //will not be able to visualize the alignment
+                for(let i = 0; i != masterView.fastaInputs.length; ++i)
+                {
+                    if(masterView.fastaInputs[i].uuid == masterView.alignData[i].fasta.uuid)
+                    {
+                        fasta = masterView.fastaInputs[i];
+                        break;
+                    }
+                }
+                if(!fasta.contigs || fasta.contigs.length == 0)
                 {
                     alert(`The reference for this alignment is not ready for visualization`);
                     return;
@@ -115,7 +128,7 @@ export class View extends viewMgr.View
                         opName : "openPileupViewer",
                         pileupViewerParams : {
                             align : masterView.alignData[i],
-                            contig : masterView.alignData[i].fasta.contigs[0].name.split(' ')[0],
+                            contig : fasta.contigs[0].name.split(' ')[0],
                             start : 0,
                             stop : 100
                         }
@@ -140,7 +153,16 @@ export class View extends viewMgr.View
                 {
                     if(event.target.id == `viewSNP${k}`)
                     {
-                        if(!masterView.alignData[i].fasta.contigs || masterView.alignData[i].fasta.contigs.length == 0)
+                        let fasta : Fasta;
+                        for(let i = 0; i != masterView.fastaInputs.length; ++i)
+                        {
+                            if(masterView.fastaInputs[i].uuid == masterView.alignData[i].fasta.uuid)
+                            {
+                                fasta = masterView.fastaInputs[i];
+                                break;
+                            }
+                        }
+                        if(!fasta.contigs || fasta.contigs.length == 0)
                         {
                             alert(`The reference for this alignment is not ready for visualization`);
                             return;
