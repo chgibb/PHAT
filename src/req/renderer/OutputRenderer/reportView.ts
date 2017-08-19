@@ -104,6 +104,11 @@ export class View extends viewMgr.View
                     alert(`Can't view an alignment with 0% alignment rate`);
                     return;
                 }
+                if(!masterView.alignData[i].fasta.contigs || masterView.alignData[i].fasta.contigs.length == 0)
+                {
+                    alert(`The reference for this alignment is not ready for visualization`);
+                    return;
+                }
                 ipc.send(
                     "runOperation",
                     <AtomicOperationIPC>{
@@ -135,6 +140,11 @@ export class View extends viewMgr.View
                 {
                     if(event.target.id == `viewSNP${k}`)
                     {
+                        if(!masterView.alignData[i].fasta.contigs || masterView.alignData[i].fasta.contigs.length == 0)
+                        {
+                            alert(`The reference for this alignment is not ready for visualization`);
+                            return;
+                        }
                         //trim off leading text
                         let snpPos = parseInt(event.target.id.replace(/(viewSNP)/,""));
                         //set beginning position in viewer offset by 20
