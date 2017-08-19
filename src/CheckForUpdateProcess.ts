@@ -3,6 +3,10 @@ import * as getUpdate from "./req/getLatestUpdate";
 
 let flags : CompletionFlags = new CompletionFlags();
 
+setTimeout(function(){
+    throw new Error("Took too long to determine network connectivity");
+},5000);
+
 process.on
 (
     "message",function(ev : AtomicOperationForkEvent)
@@ -42,7 +46,7 @@ process.on
         }
     }
 );
-(process as NodeJS.EventEmitter).on("uncaughtException",function(err : string){
+(process as NodeJS.EventEmitter).on("uncaughtException",function(err : Error){
     console.log(err);
     flags.done = true;
     flags.failure = true;
@@ -51,12 +55,12 @@ process.on
         <AtomicOperationForkEvent>{
             update : true,
             flags : flags,
-            data : err
+            data : err.message
         }
     );
     process.exit(1);
 });
-process.on("unhandledRejection",function(err : string){
+process.on("unhandledRejection",function(err : Error){
     console.log(err);
     flags.done = true;
     flags.failure = true;
@@ -65,7 +69,7 @@ process.on("unhandledRejection",function(err : string){
         <AtomicOperationForkEvent>{
             update : true,
             flags : flags,
-            data : err
+            data : err.message
         }
     );
     process.exit(1);
