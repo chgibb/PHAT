@@ -10,7 +10,7 @@ import {Job} from "./../main/Job";
 import {bowTie2Build} from "./indexFasta/bowTie2Build";
 import {faToTwoBit} from "./indexFasta/faToTwoBit";
 import {samToolsFaidx} from "./indexFasta/samToolsFaidx";
-export class IndexFasta extends atomic.AtomicOperation
+export class IndexFastaForAlignment extends atomic.AtomicOperation
 {
     public fasta : Fasta;
 

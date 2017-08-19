@@ -68,7 +68,7 @@ async function runTests() : Promise<void>
 		catch(err){}
 
 		console.log("Starting to index hpv16");
-		atomic.addOperation("indexFasta",hpv16Ref.get());
+		atomic.addOperation("indexFastaForAlignment",hpv16Ref.get());
 		try
 		{
 			await testHPV16Index();
@@ -80,7 +80,7 @@ async function runTests() : Promise<void>
 		}
 
 		console.log("Starting to index hpv18");
-		atomic.addOperation("indexFasta",hpv18Ref.get());
+		atomic.addOperation("indexFastaForAlignment",hpv18Ref.get());
 		try
 		{
 			await testHPV18Index();

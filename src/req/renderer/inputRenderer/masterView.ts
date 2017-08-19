@@ -169,7 +169,7 @@ export class View extends viewMgr.View
                      ipc.send(
                         "runOperation",
                         <AtomicOperationIPC>{
-                            opName : "indexFasta",
+                            opName : "indexFastaForAlignment",
                             channel : "input",
                             key : "fastaInputs",
                             uuid : this.fastaInputs[i].uuid
@@ -195,6 +195,7 @@ export class View extends viewMgr.View
                         shouldUpdate = true;
                         break;
                     }
+                    
                 }
             }
         }
