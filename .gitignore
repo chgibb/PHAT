@@ -21,3 +21,5 @@ forDist/win32/*.exe
 forDist/bootstrap.min.css
 src/installUpdateProcess/*.dll
 \.idea/
+src/**/*.js
+src/*.js
