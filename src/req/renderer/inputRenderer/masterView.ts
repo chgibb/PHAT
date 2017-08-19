@@ -177,6 +177,19 @@ export class View extends viewMgr.View
                     );
                     break;
                 }
+                if(event.target.id == `${this.fastaInputs[i].uuid}IndexForVisualization`)
+                {
+                     ipc.send(
+                        "runOperation",
+                        <AtomicOperationIPC>{
+                            opName : "indexFastaForVisualization",
+                            channel : "input",
+                            key : "fastaInputs",
+                            uuid : this.fastaInputs[i].uuid
+                        }
+                    );
+                    break;
+                }
                 let classList = event.target.classList;
                 if(event.target.classList.contains(`${this.fastaInputs[i].uuid}Class`))
                 {
