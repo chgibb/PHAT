@@ -25,6 +25,7 @@ import * as atomicOp from "./../operations/atomicOperations";
 import {AtomicOperationIPC} from "./../atomicOperationsIPC";
 import {GenerateQCReport} from "./../operations/GenerateQCReport";
 import {IndexFastaForAlignment} from "./../operations/indexFastaForAlignment";
+import {IndexFastaForVisualization} from "./../operations/indexFastaForVisualization";
 import {RunAlignment} from "./../operations/RunAlignment";
 import {RenderCoverageTrackForContig} from "./../operations/RenderCoverageTrack";
 import {RenderSNPTrackForContig} from "./../operations/RenderSNPTrack";
@@ -90,6 +91,7 @@ app.on
 		
 		atomicOp.register("generateFastQCReport",GenerateQCReport);
 		atomicOp.register("indexFastaForAlignment",IndexFastaForAlignment);
+		atomicOp.register("indexFastaForVisualization",IndexFastaForVisualization);
 		atomicOp.register("runAlignment",RunAlignment);
 		atomicOp.register("renderCoverageTrackForContig",RenderCoverageTrackForContig);
 		atomicOp.register("renderSNPTrackForContig",RenderSNPTrackForContig);
@@ -223,7 +225,7 @@ ipc.on(
 		console.log(arg);
 		dataMgr.setKey("application","operations",atomicOp.operationsQueue);
 		winMgr.publishChangeForKey("application","operations");
-		if(arg.opName =="indexFastaForAlignment" || arg.opName == "generateFastQCReport")
+		if(arg.opName =="indexFastaForAlignment" || arg.opName == "indexFastaForVisualization" || arg.opName == "generateFastQCReport")
 		{
 			let list : Array<File> = dataMgr.getKey(arg.channel,arg.key);
 			for(let i : number = 0; i != list.length; ++i)
@@ -493,19 +495,42 @@ ipc.on(
 	}
 );
 atomicOp.updates.on(
-	"indexFastaForAlignment",function(op : atomicOp.AtomicOperation)
+	"indexFastaForAlignment",function(op : IndexFastaForAlignment)
 	{
 		dataMgr.setKey("application","operations",atomicOp.operationsQueue);
 		winMgr.publishChangeForKey("application","operations");
 		if(op.flags.success)
 		{
-			let fasta : File = (<IndexFastaForAlignment>op).fasta;
-			let fastaInputs : Array<File> = dataMgr.getKey("input","fastaInputs");
+			let fasta : Fasta = op.fasta;
+			let fastaInputs : Array<Fasta> = dataMgr.getKey("input","fastaInputs");
 			for(let i = 0; i != fastaInputs.length; ++i)
 			{
 				if(fastaInputs[i].uuid == fasta.uuid)
 				{
-					fastaInputs[i] = fasta;
+					fastaInputs[i].indexed = true;
+					break;
+				}
+			}
+
+			dataMgr.setKey("input","fastaInputs",fastaInputs);
+			winMgr.publishChangeForKey("input","fastaInputs");
+		}
+	}
+);
+atomicOp.updates.on(
+	"indexFastaForVisualization",function(op : IndexFastaForVisualization)
+	{
+		dataMgr.setKey("application","operations",atomicOp.operationsQueue);
+		winMgr.publishChangeForKey("application","operations");
+		if(op.flags.success)
+		{
+			let fasta : Fasta = op.fasta;
+			let fastaInputs : Array<Fasta> = dataMgr.getKey("input","fastaInputs");
+			for(let i = 0; i != fastaInputs.length; ++i)
+			{
+				if(fastaInputs[i].uuid == fasta.uuid)
+				{
+					fastaInputs[i].contigs = fasta.contigs;
 					break;
 				}
 			}
