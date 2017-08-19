@@ -1,5 +1,6 @@
 import * as atomic from "./atomicOperations";
 import {Fasta,getFaiPath} from "./../fasta";
+import {getContigsFromFastaFile} from "./../fastaContigLoader";
 import {getPath} from "./../file";
 
 import {getReadable,getReadableAndWritable} from "./../getAppPath";
@@ -84,8 +85,12 @@ export class IndexFastaForAlignment extends atomic.AtomicOperation
                     self.setSuccess(self.faiFlags);
                     self.update();
 
+                    //contig information is required by the coverage distillation step of aligning
+                    self.fasta.contigs = await getContigsFromFastaFile(getPath(self.fasta));
+
                     self.setSuccess(self.flags);
                     self.fasta.indexed = true;
+                    self.fasta.faiGenerated = true;
                     self.update();
                 }
                 catch(err)
