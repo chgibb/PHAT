@@ -1,10 +1,10 @@
-import {IndexFastaForAlignment} from "./../indexFastaForAlignment";
+import {IndexFastaForVisualization} from "./../indexFastaForVisualization";
 
 import {SpawnRequestParams} from "./../../JobIPC";
 import {Job,JobCallBackObject} from "./../../main/Job";
 import {getPath} from "./../../file";
 
-export function faToTwoBit(op : IndexFastaForAlignment) : Promise<{}>
+export function faToTwoBit(op : IndexFastaForVisualization) : Promise<{}>
 {
     return new Promise((resolve,reject) => {
         let jobCallBack : JobCallBackObject = {

@@ -1,6 +1,5 @@
 import * as atomic from "./atomicOperations";
-import {Fasta,get2BitPath,getFaiPath} from "./../fasta";
-import {getContigsFromFastaFile} from "./../fastaContigLoader";
+import {Fasta,getFaiPath} from "./../fasta";
 import {getPath} from "./../file";
 
 import {getReadable,getReadableAndWritable} from "./../getAppPath";
@@ -8,20 +7,13 @@ import {getReadable,getReadableAndWritable} from "./../getAppPath";
 import {Job} from "./../main/Job";
 
 import {bowTie2Build} from "./indexFasta/bowTie2Build";
-import {faToTwoBit} from "./indexFasta/faToTwoBit";
 import {samToolsFaidx} from "./indexFasta/samToolsFaidx";
 export class IndexFastaForAlignment extends atomic.AtomicOperation
 {
     public fasta : Fasta;
 
-    public faToTwoBitExe : string;
     public samToolsExe : string;
     public bowtie2BuildExe : string;
-
-
-    public twoBitPath : string;
-    public twoBitJob : Job;
-    public twoBitFlags : atomic.CompletionFlags;
 
     public faiPath : string;
     public faiJob : Job;
@@ -35,7 +27,6 @@ export class IndexFastaForAlignment extends atomic.AtomicOperation
     constructor()
     {
         super();
-        this.twoBitFlags = new atomic.CompletionFlags();
         this.faiFlags = new atomic.CompletionFlags();
         this.bowtieFlags = new atomic.CompletionFlags();
 
@@ -44,7 +35,6 @@ export class IndexFastaForAlignment extends atomic.AtomicOperation
         //the size threshold between being 32-bit and being 64-bit
         this.bowtieSizeThreshold = 4294967096;
 
-        this.faToTwoBitExe = getReadable('faToTwoBit');
         this.samToolsExe = getReadable('samtools');
         if(process.platform == "linux")
             this.bowtie2BuildExe = getReadable('bowtie2-build');
@@ -54,9 +44,6 @@ export class IndexFastaForAlignment extends atomic.AtomicOperation
     public setData(data : Fasta) : void
     {
         this.fasta = data;
-
-        this.twoBitPath = get2BitPath(this.fasta);
-        this.destinationArtifacts.push(this.twoBitPath);
 
         this.faiPath = getFaiPath(this.fasta);
         this.destinationArtifacts.push(this.faiPath);
@@ -79,10 +66,10 @@ export class IndexFastaForAlignment extends atomic.AtomicOperation
         this.destinationArtifacts.concat(this.bowtieIndices);
         
     }
-    //bowTie2Build -> faToTwoBit -> samTools faidx -> ContigLoader
+    //bowTie2Build -> samTools faidx
     public run() : void
     {
-        this.logRecord = atomic.openLog(this.name,"Index Fasta");
+        this.logRecord = atomic.openLog(this.name,"Index Fasta for Alignment");
 
         let self = this;
         (async function(){
@@ -93,15 +80,10 @@ export class IndexFastaForAlignment extends atomic.AtomicOperation
                     self.setSuccess(self.bowtieFlags);
                     self.update();
 
-                    await faToTwoBit(self);
-                    self.setSuccess(self.twoBitFlags);
-                    self.update();
-
                     await samToolsFaidx(self.fasta,self);
                     self.setSuccess(self.faiFlags);
                     self.update();
 
-                    self.fasta.contigs = await getContigsFromFastaFile(getPath(self.fasta));
                     self.setSuccess(self.flags);
                     self.fasta.indexed = true;
                     self.update();
