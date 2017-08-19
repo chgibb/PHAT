@@ -508,6 +508,8 @@ atomicOp.updates.on(
 				if(fastaInputs[i].uuid == fasta.uuid)
 				{
 					fastaInputs[i].indexed = true;
+					fastaInputs[i].faiGenerated = true;
+					fastaInputs[i].contigs = fasta.contigs;
 					break;
 				}
 			}
@@ -531,6 +533,7 @@ atomicOp.updates.on(
 				if(fastaInputs[i].uuid == fasta.uuid)
 				{
 					fastaInputs[i].contigs = fasta.contigs;
+					fastaInputs[i].twoBitGenerated = true;
 					break;
 				}
 			}
