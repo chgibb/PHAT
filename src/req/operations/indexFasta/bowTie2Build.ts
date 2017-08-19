@@ -1,7 +1,7 @@
 import * as fs from "fs";
 
 import {getReadable} from "./../../getAppPath";
-import {IndexFastaForAlignment} from "./../indexFasta";
+import {IndexFastaForAlignment} from "./../indexFastaForAlignment";
 import {getPath} from "./../../file";
 
 import {SpawnRequestParams} from "./../../JobIPC";

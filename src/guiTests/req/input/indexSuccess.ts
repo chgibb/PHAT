@@ -1,5 +1,5 @@
 import * as atomicOp from "./../../../req/operations/atomicOperations";
-import {IndexFastaForAlignment} from "./../../../req/operations/indexFasta";
+import {IndexFastaForAlignment} from "./../../../req/operations/indexFastaForAlignment";
 export async function indexSuccess() : Promise<boolean>
 {
     return new Promise<boolean>((resolve,reject) => {

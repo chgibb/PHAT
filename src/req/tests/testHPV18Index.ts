@@ -1,5 +1,5 @@
 import * as atomic from "./../operations/atomicOperations";
-import {IndexFastaForAlignment} from "./../operations/indexFasta";
+import {IndexFastaForAlignment} from "./../operations/indexFastaForAlignment";
 import * as hpv18Ref from "./hpv18Ref";
 export async function testHPV18Index() : Promise<void>
 {

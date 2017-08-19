@@ -24,7 +24,7 @@ import * as dataMgr from "./dataMgr";
 import * as atomicOp from "./../operations/atomicOperations";
 import {AtomicOperationIPC} from "./../atomicOperationsIPC";
 import {GenerateQCReport} from "./../operations/GenerateQCReport";
-import {IndexFastaForAlignment} from "./../operations/indexFasta";
+import {IndexFastaForAlignment} from "./../operations/indexFastaForAlignment";
 import {RunAlignment} from "./../operations/RunAlignment";
 import {RenderCoverageTrackForContig} from "./../operations/RenderCoverageTrack";
 import {RenderSNPTrackForContig} from "./../operations/RenderSNPTrack";

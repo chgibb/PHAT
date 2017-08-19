@@ -1,4 +1,4 @@
-import {IndexFastaForAlignment} from "./../indexFasta";
+import {IndexFastaForAlignment} from "./../indexFastaForAlignment";
 
 import {SpawnRequestParams} from "./../../JobIPC";
 import {Job,JobCallBackObject} from "./../../main/Job";
