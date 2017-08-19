@@ -12,6 +12,8 @@ export class Fasta extends File
     public indexing : boolean;
     public indexes : Array<any>;
     public contigs : Array<Contig>;
+    public twoBitGenerated : boolean;
+    public faiGenerated : boolean;
     public constructor(path : string)
     {
         /**
