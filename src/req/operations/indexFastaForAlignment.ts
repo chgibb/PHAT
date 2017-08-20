@@ -90,7 +90,6 @@ export class IndexFastaForAlignment extends atomic.AtomicOperation
 
                     self.setSuccess(self.flags);
                     self.fasta.indexed = true;
-                    self.fasta.faiGenerated = true;
                     self.update();
                 }
                 catch(err)
