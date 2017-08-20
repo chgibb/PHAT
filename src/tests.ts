@@ -14,6 +14,7 @@ import {testFastQCReportGeneration} from "./req/tests/testFastQCReportGeneration
 import {testHPV16Index} from "./req/tests/testHPV16Index";
 import {testHPV18Index} from "./req/tests/testHPV18Index";
 import {testHPV16IndexForVisualization} from "./req/tests/testHPV16IndexForVisualization";
+import {testHPV18IndexForVisualization} from "./req/tests/testHPV18IndexForVisualization";
 import {testL6R1HPV16Alignment} from "./req/tests/testL6R1HPV16Alignment";
 import {testL6R1HPV18Alignment} from "./req/tests/testL6R1HPV18Alignment"
 import {testL6R1HPV16CoverageTrackRenderer} from "./req/tests/testL6R1HPV16CoverageTrackRender";
@@ -97,6 +98,18 @@ async function runTests() : Promise<void>
 		try
 		{
 			await testHPV16IndexForVisualization();
+		}
+		catch(err)
+		{
+			console.log("test index for visualization threw exception");
+			return reject();
+		}
+
+		console.log("Starting to index hpv18 for visualization");
+		atomic.addOperation("indexFastaForVisualization",hpv18Ref.get());
+		try
+		{
+			await testHPV18IndexForVisualization();
 		}
 		catch(err)
 		{
