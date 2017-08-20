@@ -117,7 +117,7 @@ export class View extends viewMgr.View
                         break;
                     }
                 }
-                if(!fasta.contigs || fasta.contigs.length == 0)
+                if(!fasta.indexedForVisualization)
                 {
                     alert(`The reference for this alignment is not ready for visualization`);
                     return;
@@ -162,7 +162,7 @@ export class View extends viewMgr.View
                                 break;
                             }
                         }
-                        if(!fasta.contigs || fasta.contigs.length == 0)
+                        if(!fasta.indexedForVisualization)
                         {
                             alert(`The reference for this alignment is not ready for visualization`);
                             return;

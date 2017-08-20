@@ -34,7 +34,7 @@ export class View extends viewMgr.View
                                     <td class="${this.fastaInputs[i].uuid}Class">${this.fastaInputs[i].imported ? "In Project" : this.fastaInputs[i].path}</td>
                                     <td class="${this.fastaInputs[i].uuid}Class">${this.fastaInputs[i].sizeString}</td>
                                     <td class="${this.fastaInputs[i].uuid}Class" id="${this.fastaInputs[i].uuid}Index">${this.fastaInputs[i].indexed != false ? `<img src="${getReadable("img/pass.png")}">` : "Not Ready"}</td>
-                                    <td class="${this.fastaInputs[i].uuid}Class" id="${this.fastaInputs[i].uuid}IndexForVisualization">${this.fastaInputs[i].contigs.length > 0 ? `<img src="${getReadable("img/pass.png")}">` : "Not Ready"}</td>
+                                    <td class="${this.fastaInputs[i].uuid}Class" id="${this.fastaInputs[i].uuid}IndexForVisualization">${this.fastaInputs[i].indexedForVisualization ? `<img src="${getReadable("img/pass.png")}">` : "Not Ready"}</td>
                                 </tr>
                             `;
                         }
