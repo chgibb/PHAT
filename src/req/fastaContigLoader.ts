@@ -1,4 +1,5 @@
 import * as fs from "fs";
+import * as readline from "readline";
 import {EventEmitter} from "events";
 const uuidv4 : () => string = require("uuid/v4");
 export class Contig
@@ -19,7 +20,7 @@ export class Contig
 }
 export class FastaContigLoader extends EventEmitter
 {
-    public refStream : fs.ReadStream;
+    public refStream : readline.ReadLine;
     public contigs : Array<Contig>;
     public contigIndex : number;
     public constructor()
@@ -31,56 +32,41 @@ export class FastaContigLoader extends EventEmitter
     }
     public beginRefStream(path : string) : void
     {
-        this.refStream = fs.createReadStream(path,{encoding : "UTF8"});
         let self = this;
-        this.refStream.on
-        (
-            "data",function(data : string)
+        self.refStream = readline.createInterface(<readline.ReadLineOptions>{
+            input : fs.createReadStream(path)
+        });
+        self.refStream.on("line",function(line : string){
+            if(line[0] == ">")
             {
-                for(let i = 0; i != data.length; ++i)
+                self.contigs.push(new Contig());
+                ++self.contigIndex;
+                self.contigs[self.contigIndex].name = line.substring(1);
+                self.contigs[self.contigIndex].alias = self.contigs[self.contigIndex].name;
+                if(self.contigIndex - 1 >= 0)
                 {
-                    if(data[i] == ">")
-                    {
-                        self.contigs.push(new Contig());
-                        ++self.contigIndex;
-                        ++i;
-                        while(data[i] != "\n")
-                        {
-                            self.contigs[self.contigIndex].name += data[i];
-                            self.contigs[self.contigIndex].alias += data[i];
-                            ++i;
-                        }
-                        if(self.contigIndex - 1 >= 0)
-                        {
-                            self.contigs[self.contigIndex-1].loaded = true;
-                            self.emit("loadedContig",self.contigs[self.contigIndex-1]);
-                        }
-                        continue;
-                    }
-                    else if(data[i] == "a" ||
-                    data[i] == "A" ||
-                    data[i] == "t" ||
-                    data[i] == "T" ||
-                    data[i] == "c" ||
-                    data[i] == "C" ||
-                    data[i] == "g" ||
-                    data[i] == "G" ||
-                    data[i] == "u" ||
-                    data[i] == "U")
+                    self.contigs[self.contigIndex - 1].loaded = true;
+                    self.emit("loadedContig",self.contigs[self.contigIndex - 1]);
+                    console.log(self.contigs.length);
+                }
+            }
+            else
+            {
+                for(let i = 0; i != line.length; ++i)
+                {
+                    if(line[i] == "\n")
+                        break;
+                    else
                         self.contigs[self.contigIndex].bp += 1;
                 }
             }
-        )
-        this.refStream.on
-        (
-            "end",function()
-            {
-                self.contigs[self.contigIndex].loaded = true;
-                self.emit("loadedContig",self.contigs[self.contigIndex]);
-                self.emit("doneLoadingContigs");
-                self.refStream = null;
-            }
-        )
+        });
+        self.refStream.on("close",function(){
+            console.log("done loading contigs");
+            self.contigs[self.contigIndex].loaded = true;
+            self.emit("loadedContig",self.contigs[self.contigIndex]);
+            self.emit("doneLoadingContigs");
+        });
     }
 }
 
