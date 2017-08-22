@@ -24,23 +24,25 @@ process.on
 
         if(ev.run == true)
         {
-            /*flags.done = true;
-                        flags.success = true;
-                        process.send(
-                            <AtomicOperationForkEvent>{
-                                update : true,
-                                flags : flags,
-                                data : {
-                                    alignData : align,
-                                    contiguuid : contiguuid,
-                                    circularFigure : circularFigure,
-                                    colour : colour
-                                }
-                            }
-                        );
-                        process.exit(0);*/
+            cf.cacheSNPTrack(circularFigure,contiguuid,align,colour).then((SNPTracks : string) => {
+                flags.done = true;
+                flags.success = true;
+                process.send(
+                    <AtomicOperationForkEvent>{
+                        update : true,
+                        flags : flags,
+                        data : {
+                            alignData : align,
+                            contiguuid : contiguuid,
+                            circularFigure : circularFigure,
+                            colour : colour
+                        }
+                    }
+                );
+                process.exit(0);
+            });
             
-            cf.cacheSNPTrack(
+            /*cf.cacheSNPTrack(
                 circularFigure,
                 contiguuid,
                 align,
@@ -65,7 +67,7 @@ process.on
                     }
                 },
                 colour
-            );
+            );*/
         }
     }  
 );
