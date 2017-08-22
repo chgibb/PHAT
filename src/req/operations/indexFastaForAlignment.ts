@@ -85,8 +85,14 @@ export class IndexFastaForAlignment extends atomic.AtomicOperation
                     self.setSuccess(self.faiFlags);
                     self.update();
 
-                    //contig information is required by the coverage distillation step of aligning
-                    self.fasta.contigs = await getContigsFromFastaFile(getPath(self.fasta));
+                    //don't reparse contigs if we don't have to
+                    //contigs are parsed during viz indexing as well
+                    //if we reparse, we will clobber contig uuids and all references which point to them
+                    if(!self.fasta.contigs || self.fasta.contigs.length == 0)
+                    {
+                        //contig information is required by the coverage distillation step of aligning
+                        self.fasta.contigs = await getContigsFromFastaFile(getPath(self.fasta));
+                    }
 
                     self.setSuccess(self.flags);
                     self.fasta.indexed = true;

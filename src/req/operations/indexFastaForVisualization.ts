@@ -42,7 +42,13 @@ export class IndexFastaForVisualization extends atomic.AtomicOperation
                     self.setSuccess(self.twoBitFlags);
                     self.update();
 
-                    self.fasta.contigs = await getContigsFromFastaFile(getPath(self.fasta));
+                    //don't reparse contigs if we don't have to
+                    //contigs are parsed during viz indexing as well
+                    //if we reparse, we will clobber contig uuids and all references which point to them
+                    if(!self.fasta.contigs || self.fasta.contigs.length == 0)
+                    {
+                        self.fasta.contigs = await getContigsFromFastaFile(getPath(self.fasta));
+                    }
                     self.fasta.indexedForVisualization = true;
                     self.setSuccess(self.flags);
                     self.update();
