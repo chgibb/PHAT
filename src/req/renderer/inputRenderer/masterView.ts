@@ -11,6 +11,7 @@ import * as fastaView from "./FastaView";
 import * as alignView from "./AlignView";
 import {inputFastqDialog} from "./inputFastqDialog";
 import {inputFastaDialog} from "./inputFastaDialog";
+import {inputAlignDialog} from "./inputAlignDialog";
 
 import Fastq from "./../../fastq";
 import {Fasta} from "./../../fasta";
@@ -78,6 +79,11 @@ export class View extends viewMgr.View
         if(event.target.id == "browseFastaFiles")
         {
             inputFastaDialog();
+            return;
+        }
+        if(event.target.id == "browseAlignFiles")
+        {
+            inputAlignDialog();
             return;
         }
         if(event.target.id == "refSeqViewButton")
