@@ -109,11 +109,11 @@ export class View extends viewMgr.View
                 //the fasta property of AlignData is not updated when the original fasta object is modified
                 //find the original and see if it has been prepared for visualization, otherwise the pileup viewer
                 //will not be able to visualize the alignment
-                for(let i = 0; i != masterView.fastaInputs.length; ++i)
+                for(let k = 0; k != masterView.fastaInputs.length; ++k)
                 {
-                    if(masterView.fastaInputs[i].uuid == masterView.alignData[i].fasta.uuid)
+                    if(masterView.fastaInputs[k].uuid == masterView.alignData[i].fasta.uuid)
                     {
-                        fasta = masterView.fastaInputs[i];
+                        fasta = masterView.fastaInputs[k];
                         break;
                     }
                 }
@@ -154,11 +154,11 @@ export class View extends viewMgr.View
                     if(event.target.id == `viewSNP${k}`)
                     {
                         let fasta : Fasta;
-                        for(let i = 0; i != masterView.fastaInputs.length; ++i)
+                        for(let j = 0; j != masterView.fastaInputs.length; ++j)
                         {
-                            if(masterView.fastaInputs[i].uuid == masterView.alignData[i].fasta.uuid)
+                            if(masterView.fastaInputs[j].uuid == masterView.alignData[i].fasta.uuid)
                             {
-                                fasta = masterView.fastaInputs[i];
+                                fasta = masterView.fastaInputs[j];
                                 break;
                             }
                         }
