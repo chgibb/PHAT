@@ -5,6 +5,7 @@ import * as atomic from "./req/operations/atomicOperations";
 import {AlignData,getUnSortedBam} from "./req/alignData";
 
 import {samToolsSort} from "./req/operations/RunAlignment/samToolsSort";
+import {samToolsFlagStat} from "./req/operations/InputBamFile/samToolsFlagStat";
 
 let flags : CompletionFlags = new CompletionFlags();
 let align : AlignData = new AlignData();
@@ -61,6 +62,9 @@ process.on(
                 });
                 progressMessage = "Sorting BAM";
                 await samToolsSort(align,logger);
+
+                progressMessage = "Getting Flag Statistics";
+                await samToolsFlagStat(align,logger);
 
                 flags.done = true
                 flags.success = true;

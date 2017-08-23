@@ -13,10 +13,14 @@ export function samToolsFlagStatReportParser(report : string) : SamToolsFlagStat
     {
         if(/mapped/.test(lines[i]))
         {
-            let percentages = /(\d\d\.\d\d%)/.exec(lines[i]);
+            let percentages = /(\d\d\d\.\d\d%)|(\d\d.\d\d%)/.exec(lines[i]);
             if(percentages)
             {
-                res.overallAlignmentRate = parseFloat(percentages[0].substr(0,percentages[0].length-1));
+                console.log(percentages);
+                let trimmed = percentages[0].substr(0,percentages[0].length - 1);
+                console.log(trimmed);
+                res.overallAlignmentRate = parseFloat(trimmed);
+                //res.overallAlignmentRate = parseFloat(percentages[0].substr(0,percentages[0].length-1));
             }
         }
     }
