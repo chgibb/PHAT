@@ -142,7 +142,7 @@ export class View extends viewMgr.View
             }
             if(event.target.id == masterView.alignData[i].uuid+"AlignmentRate")
             {
-                if(!masterView.alignData[i].summary.overallAlignmentRate)
+                if(masterView.alignData[i].summary && !masterView.alignData[i].summary.overallAlignmentRate)
                 {
                     alert(`Can't view an alignment with 0% alignment rate`);
                     return;
@@ -166,6 +166,11 @@ export class View extends viewMgr.View
                                 fasta = masterView.fastaInputs[j];
                                 break;
                             }
+                        }
+                        if(!fasta)
+                        {
+                            alert(`You must link this alignment to a reference to visualize`);
+                            return;
                         }
                         if(!fasta.indexedForVisualization)
                         {
