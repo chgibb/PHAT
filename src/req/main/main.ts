@@ -36,6 +36,7 @@ import {OpenLogViewer} from "./../operations/OpenLogViewer";
 
 import {InputFastqFile} from "./../operations/inputFastqFile";
 import {InputFastaFile} from "./../operations/inputFastaFile";
+import {InputBamFile} from "./../operations/InputBamFile";
 import {ImportFileIntoProject} from "./../operations/ImportFileIntoProject";
 
 import {CopyCircularFigure} from "./../operations/CopyCircularFigure";
@@ -108,6 +109,7 @@ app.on
 		atomicOp.register("openLogViewer",OpenLogViewer)
 		atomicOp.register("inputFastqFile",InputFastqFile);
 		atomicOp.register("inputFastaFile",InputFastaFile);
+		atomicOp.register("inputBamFile",InputBamFile);
 		atomicOp.register("importFileIntoProject",ImportFileIntoProject);
 		atomicOp.register("copyCircularFigure",CopyCircularFigure);
 		atomicOp.register("deleteCircularFigure",DeleteCircularFigure);
@@ -413,6 +415,10 @@ ipc.on(
 			}
 			atomicOp.addOperation("inputFastaFile",arg.filePath);
 		}
+		else if(arg.opName == "inputBamFile")
+		{
+			atomicOp.addOperation("inputBamFile",arg.filePath);
+		}
 		else if(arg.opName == "importFileIntoProject")
 		{
 			let fastqInputs : Array<Fastq> = dataMgr.getKey("input","fastqInputs");
@@ -656,6 +662,21 @@ atomicOp.updates.on(
 			fastas.push(op.fasta);
 			dataMgr.setKey("input","fastaInputs",fastas);
 			winMgr.publishChangeForKey("input","fastaInputs");
+		}
+	}
+);
+
+atomicOp.updates.on(
+	"inputBamFile",function(op : InputBamFile)
+	{
+		dataMgr.setKey("application","operations",atomicOp.operationsQueue);
+		winMgr.publishChangeForKey("application","operations");
+		if(op.flags.success)
+		{
+			let aligns : Array<AlignData> = dataMgr.getKey("align","aligns");
+			aligns.push(op.alignData);
+			dataMgr.setKey("align","aligns",aligns);
+			winMgr.publishChangeForKey("align","aligns");
 		}
 	}
 );
