@@ -1,6 +1,7 @@
 export interface SamToolsFlagStatReport
 {
     overallAlignmentRate : number;
+    reads : number;
 }
 
 export function samToolsFlagStatReportParser(report : string) : SamToolsFlagStatReport
@@ -11,6 +12,11 @@ export function samToolsFlagStatReportParser(report : string) : SamToolsFlagStat
 
     for(let i = 0; i != lines.length; ++i)
     {
+        if(i == 0)
+        {
+            let tokens : Array<string> = lines[i].split(/\s/);
+            res.reads = parseInt(tokens[0]) + parseInt(tokens[2]);
+        }
         if(/mapped/.test(lines[i]))
         {
             let percentages = /(\d\d\d\.\d\d%)|(\d\d.\d\d%)/.exec(lines[i]);
@@ -20,7 +26,6 @@ export function samToolsFlagStatReportParser(report : string) : SamToolsFlagStat
                 let trimmed = percentages[0].substr(0,percentages[0].length - 1);
                 console.log(trimmed);
                 res.overallAlignmentRate = parseFloat(trimmed);
-                //res.overallAlignmentRate = parseFloat(percentages[0].substr(0,percentages[0].length-1));
             }
         }
     }
