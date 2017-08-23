@@ -8,6 +8,7 @@ import {samToolsSort} from "./req/operations/RunAlignment/samToolsSort";
 
 let flags : CompletionFlags = new CompletionFlags();
 let align : AlignData = new AlignData();
+align.isExternalAlignment = true;
 let bamPath = "";
 let progressMessage = "Sorting BAM";
 
