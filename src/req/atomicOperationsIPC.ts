@@ -64,4 +64,5 @@ export interface AtomicOperationForkEvent
     logRecord? : LogRecord;
     progressMessage? : string;
     step? : number;
+    bamPath? : string;
 }
