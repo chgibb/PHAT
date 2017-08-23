@@ -674,6 +674,8 @@ atomicOp.updates.on(
 		if(op.flags.success)
 		{
 			let aligns : Array<AlignData> = dataMgr.getKey("align","aligns");
+			if(aligns == undefined)
+				aligns = new Array<AlignData>();
 			aligns.push(op.alignData);
 			dataMgr.setKey("align","aligns",aligns);
 			winMgr.publishChangeForKey("align","aligns");
