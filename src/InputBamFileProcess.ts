@@ -6,6 +6,8 @@ import {AlignData,getUnSortedBam} from "./req/alignData";
 
 import {samToolsSort} from "./req/operations/RunAlignment/samToolsSort";
 import {samToolsFlagStat} from "./req/operations/InputBamFile/samToolsFlagStat";
+import {samToolsIndex} from "./req/operations/RunAlignment/samToolsIndex";
+import {samToolsIdxStats} from "./req/operations/RunAlignment/samToolsIdxStats";
 
 let flags : CompletionFlags = new CompletionFlags();
 let align : AlignData = new AlignData();
@@ -65,6 +67,12 @@ process.on(
 
                 progressMessage = "Getting Flag Statistics";
                 await samToolsFlagStat(align,logger);
+
+                progressMessage = "Generating index";
+                await samToolsIndex(align,logger);
+
+                progressMessage = "Getting mapped reads";
+                await samToolsIdxStats(align,logger);
 
                 flags.done = true
                 flags.success = true;
