@@ -3,7 +3,7 @@ import * as cp from "child_process";
 import * as atomic from "./atomicOperations";
 import {AtomicOperationForkEvent} from "./../atomicOperationsIPC";
 import {getReadable} from "./../getAppPath";
-import {AlignData} from "./../alignData";
+import {AlignData,getArtifactDir} from "./../alignData";
 export class InputBamFile extends atomic.AtomicOperation
 {
     public bamPath : string;
@@ -36,12 +36,14 @@ export class InputBamFile extends atomic.AtomicOperation
                 if(ev.update == true)
                 {
                     self.flags = ev.flags;
-                    if(ev.flags.success == true)
-                    {
-                        self.alignData = ev.data.alignData;
-                    }
                     if(ev.flags.done)
                     {
+                        self.alignData = ev.data.alignData;
+                        if(ev.flags.failure == true)
+                        {
+                            //make sure output dir is deleted on failure
+                            self.destinationArtifactsDirectories.push(getArtifactDir(self.alignData));
+                        }
                         self.logRecord = ev.logRecord;
                         atomic.recordLogRecord(ev.logRecord);
                     }
