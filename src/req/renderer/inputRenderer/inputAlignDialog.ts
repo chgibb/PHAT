@@ -23,7 +23,16 @@ export function inputAlignDialog() : void
         function(files : Array<string>){
             if(files)
             {
-                
+                for(let i = 0; i != files.length; ++i)
+                {
+                    ipc.send(
+                        "runOperation",
+                        <AtomicOperationIPC>{
+                            opName : "inputBamFile",
+                            filePath : files[i]
+                        }
+                    );
+                }
             }
         }
     );
