@@ -19,13 +19,26 @@ export class View extends viewMgr.View
         <table style="width:100%;">
             <tr>
                 <th>File Name</th>
-                <th>Path</th>
                 <th>Size</th>
                 <th>Ref Seq</th>
             </tr>
             ${(()=>{
                 let res = "";
-
+                if(!this.aligns)
+                    return "";
+                for(let i = 0; i != this.aligns.length; ++i)
+                {
+                    if(this.aligns[i].isExternalAlignment)
+                    {
+                        res += `
+                            <tr>
+                                <td>${this.aligns[i].alias}</td>
+                                <td>${this.aligns[i].sizeString ? this.aligns[i].sizeString : "Unknown"}</td>
+                                <td ${this.aligns[i].fasta ? "" : `id="${this.aligns[i].uuid}LinkRef" class="activeHover"`}>${this.aligns[i].fasta ? this.aligns[i].fasta.alias : "Not Linked"}</td>
+                            </tr>
+                        `;
+                    }
+                }
                 return res;
             })()}
         </table>
