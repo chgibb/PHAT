@@ -3,6 +3,7 @@ const fse = require("fs-extra");
 import {AtomicOperationForkEvent,CompletionFlags} from "./req/atomicOperationsIPC";
 import * as atomic from "./req/operations/atomicOperations";
 import {AlignData,getUnSortedBam} from "./req/alignData";
+import trimPath from "./req/trimPath";
 
 import {samToolsSort} from "./req/operations/RunAlignment/samToolsSort";
 import {samToolsFlagStat} from "./req/operations/InputBamFile/samToolsFlagStat";
@@ -50,6 +51,7 @@ process.on(
         {
             logger.logRecord = atomic.openLog(ev.name,ev.description);
             bamPath = ev.data.bamPath;
+            align.alias = trimPath(bamPath);
             process.send(<AtomicOperationForkEvent>{
                 finishedSettingData : true
             });
