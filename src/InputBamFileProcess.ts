@@ -1,9 +1,13 @@
+const fse = require("fs-extra");
+
 import {AtomicOperationForkEvent,CompletionFlags} from "./req/atomicOperationsIPC";
 import * as atomic from "./req/operations/atomicOperations";
-import {AlignData,getArtifactDir} from "./req/alignData";
+import {AlignData,getUnSortedBam} from "./req/alignData";
+
+import {samToolsSort} from "./req/operations/RunAlignment/samToolsSort";
 
 let flags : CompletionFlags = new CompletionFlags();
-let align : AlignData;
+let align : AlignData = new AlignData();
 let bamPath = "";
 let progressMessage = "Sorting BAM";
 
@@ -49,7 +53,18 @@ process.on(
         if(ev.run == true)
         {
             (async function(){
-                 
+                progressMessage = "Copying BAM";
+                await new Promise<void>((resolve,reject) => {
+                    fse.copySync(bamPath,getUnSortedBam(align));
+                    resolve();
+                });
+                progressMessage = "Sorting BAM";
+                await samToolsSort(align,logger);
+
+                flags.done = true
+                flags.success = true;
+                update();
+                process.exit(0);
             })();
         }
     }
