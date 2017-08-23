@@ -59,7 +59,7 @@ export function renderAlignmentReportTable() : string
                 {
                     if(!masterView.fastaInputs[k].checked)
                         continue;
-                    if(masterView.alignData[i].fasta.uuid == masterView.fastaInputs[k].uuid)
+                    if(masterView.alignData[i].fasta && masterView.alignData[i].fasta.uuid == masterView.fastaInputs[k].uuid)
                         foundRefSeqs++;
                     if(foundRefSeqs >= 1)
                         break;
@@ -77,13 +77,40 @@ export function renderAlignmentReportTable() : string
                         res += `<td>${masterView.alignData[i].sizeString}</td>`;
 
                     if(rightPanel.alignmentInfoSelection.reads)
-                        res += `<td>${masterView.alignData[i].summary.reads}</td>`;
+                    {
+                        if(!masterView.alignData[i].isExternalAlignment)
+                        {
+                            res += `<td>${masterView.alignData[i].summary.reads}</td>`;
+                        }
+                        else
+                        {
+                            res += `<td>${masterView.alignData[i].flagStatReport.reads}</td>`;
+                        }
+                    }
 
                     if(rightPanel.alignmentInfoSelection.mates)
-                        res += `<td>${masterView.alignData[i].summary.mates}</td>`;
+                    {
+                        if(!masterView.alignData[i].isExternalAlignment)
+                        {
+                            res += `<td>${masterView.alignData[i].summary.mates}</td>`;
+                        }
+                        else
+                        {
+                            res += `<td>Unknown</td>`;
+                        }
+                    }
 
                     if(rightPanel.alignmentInfoSelection.overallAlignmentRate)
-                        res += `<td class="activeHover" id="${masterView.alignData[i].uuid}AlignmentRate">${masterView.alignData[i].summary.overallAlignmentRate}</td>`;
+                    {
+                        if(!masterView.alignData[i].isExternalAlignment)
+                        {
+                            res += `<td class="activeHover" id="${masterView.alignData[i].uuid}AlignmentRate">${masterView.alignData[i].summary.overallAlignmentRate}</td>`;
+                        }
+                        else
+                        {
+                            res += `<td class="activeHover" id="${masterView.alignData[i].uuid}AlignmentRate">${masterView.alignData[i].flagStatReport.overallAlignmentRate}</td>`;
+                        }
+                    }
 
                     if(rightPanel.alignmentInfoSelection.minimumCoverage)
                         res += `<td>${masterView.alignData[i].varScanSNPSummary.minCoverage}</td>`;
