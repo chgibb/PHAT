@@ -119,7 +119,7 @@ $
                             masterView.fastaInputs = arg.val;
                         }
                     }
-                    if(arg.key == 'align')
+                    if(arg.key == 'aligns')
                     {
                         if(arg.val !== undefined)
                         {
