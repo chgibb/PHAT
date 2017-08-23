@@ -66,6 +66,8 @@ export function renderAlignmentReportTable() : string
                 }
                 if((foundFastqs >= 1 && foundRefSeqs >= 1) || masterView.alignData[i].isExternalAlignment)
                 {
+                    //for alignments from imported bams, we source some data points from samtools reports over bowtie2 reports
+
                     res += "<tr>";
                     if(rightPanel.alignmentInfoSelection.alias)
                         res += `<td class="activeHover" id="${masterView.alignData[i].uuid}ViewAlignment">${masterView.alignData[i].alias}</td>`;
@@ -113,22 +115,77 @@ export function renderAlignmentReportTable() : string
                     }
 
                     if(rightPanel.alignmentInfoSelection.minimumCoverage)
-                        res += `<td>${masterView.alignData[i].varScanSNPSummary.minCoverage}</td>`;
+                    {
+                        if(masterView.alignData[i].varScanSNPSummary)
+                        {
+                            res += `<td>${masterView.alignData[i].varScanSNPSummary.minCoverage}</td>`;
+                        }
+                        else
+                        {
+                            res += `<td>Unknown</td>`;
+                        }
+                    }
 
                     if(rightPanel.alignmentInfoSelection.minimumVariableFrequency)
-                        res += `<td>${masterView.alignData[i].varScanSNPSummary.minVarFreq}</td>`;
+                    {
+                        if(masterView.alignData[i].varScanSNPSummary)
+                        {
+                            res += `<td>${masterView.alignData[i].varScanSNPSummary.minVarFreq}</td>`;
+                        }
+                        else
+                        {
+                            res += `<td>Unknown</td>`;
+                        }
+                    }
 
                     if(rightPanel.alignmentInfoSelection.minimumAverageQuality)
-                        res += `<td>${masterView.alignData[i].varScanSNPSummary.minAvgQual}</td>`;
+                    {
+                        if(masterView.alignData[i].varScanSNPSummary)
+                        {
+                            res += `<td>${masterView.alignData[i].varScanSNPSummary.minAvgQual}</td>`;
+                        }
+                        else
+                        {
+                            res += `<td>Unknown</td>`;
+                        }
+                    }
 
-                    if(rightPanel.alignmentInfoSelection.pValueThreshold)
-                        res += `<td>${masterView.alignData[i].varScanSNPSummary.pValueThresh}</td>`;
+                    if(masterView.alignData[i].varScanSNPSummary)
+                    {
+                        if(!masterView.alignData[i].isExternalAlignment)
+                        {
+                            res += `<td>${masterView.alignData[i].varScanSNPSummary.pValueThresh}</td>`;
+                        }
+                        else
+                        {
+                            res += `<td>Unknown</td>`;
+                        }
+                    }
 
                     if(rightPanel.alignmentInfoSelection.SNPsPredicted)
-                        res += `<td class="activeHover" id="${masterView.alignData[i].uuid}ViewSNPs">${masterView.alignData[i].varScanSNPSummary.SNPsReported}</td>`;
+                    {
+                        if(masterView.alignData[i].varScanSNPSummary)
+                        {
+                            res += `<td class="activeHover" id="${masterView.alignData[i].uuid}ViewSNPs">${masterView.alignData[i].varScanSNPSummary.SNPsReported}</td>`;
+                        }
+                        else
+                        {
+                            res += `<td>Unknown</td>`;
+                        }
+                    }
 
                     if(rightPanel.alignmentInfoSelection.indelsPredicted)
-                        res += `<td>${masterView.alignData[i].varScanSNPSummary.indelsReported}</td>`;
+                    {
+                        if(masterView.alignData[i].varScanSNPSummary)
+                        {
+                            res += `<td>${masterView.alignData[i].varScanSNPSummary.indelsReported}</td>`;
+                        }
+                        else
+                        {
+                            res += `<td>Unknown</td>`;
+    
+                        }
+                    }
 
                     if(rightPanel.alignmentInfoSelection.dateRan)
                         res += `<td>${masterView.alignData[i].dateStampString}</td>`;
