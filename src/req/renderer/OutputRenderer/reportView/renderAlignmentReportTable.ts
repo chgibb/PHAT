@@ -64,7 +64,7 @@ export function renderAlignmentReportTable() : string
                     if(foundRefSeqs >= 1)
                         break;
                 }
-                if(foundFastqs >= 1 && foundRefSeqs >= 1)
+                if((foundFastqs >= 1 && foundRefSeqs >= 1) || masterView.alignData[i].isExternalAlignment)
                 {
                     res += "<tr>";
                     if(rightPanel.alignmentInfoSelection.alias)
