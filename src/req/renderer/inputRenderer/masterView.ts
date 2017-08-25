@@ -24,7 +24,7 @@ export class View extends viewMgr.View
     public fastqInputs : Array<Fastq>;
     public fastaInputs : Array<Fasta>;
     public aligns : Array<AlignData>;
-    public currentView : "fastqView" | "fastaView" | "alignView";
+    public currentView : "fastqView" | "fastaView" | "alignView" | "linkRefView";
     public constructor(div : string)
     {
         super("masterView",div);
@@ -215,6 +215,20 @@ export class View extends viewMgr.View
                     
                 }
             }
+            for(let i = 0; i != this.aligns.length; ++i)
+            {
+                if(event.target.id == `${this.aligns[i].uuid}LinkRef`)
+                {
+                    let linkRefView = <linkRefView.View>viewMgr.getViewByName("linkRefView",this.views);
+                    linkRefView.inspectingAlign = this.aligns[i];
+                    linkRefView.onMount();
+                    this.currentView = "linkRefView";
+                    this.firstRender = true;
+                    viewMgr.render();
+                    viewMgr.render();
+                    return;
+                }
+            }
         }
 
         if(shouldUpdate)
@@ -252,8 +266,6 @@ export class View extends viewMgr.View
 
         let linkRefView = <linkRefView.View>viewMgr.getViewByName("linkRefView",this.views);
         linkRefView.fastaInputs = this.fastaInputs;
-        linkRefView.aligns = this.aligns;
-
     }
 }
 export function addView(arr : Array<viewMgr.View>,div : string) : void
