@@ -100,7 +100,7 @@ export class View extends viewMgr.View
             viewMgr.render();
             return;
         }
-        if(event.target.id == "alignViewButton")
+        if(event.target.id == "alignViewButton" || event.target.id == "linkRefViewGoBackAlignView")
         {
             this.currentView = "alignView";
             this.firstRender = true;
