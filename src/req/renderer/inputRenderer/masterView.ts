@@ -250,6 +250,10 @@ export class View extends viewMgr.View
         let alignView = <alignView.View>viewMgr.getViewByName("alignView",this.views);
         alignView.aligns = this.aligns;
 
+        let linkRefView = <linkRefView.View>viewMgr.getViewByName("linkRefView",this.views);
+        linkRefView.fastaInputs = this.fastaInputs;
+        linkRefView.aligns = this.aligns;
+
     }
 }
 export function addView(arr : Array<viewMgr.View>,div : string) : void
