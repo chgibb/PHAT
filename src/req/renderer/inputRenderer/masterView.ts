@@ -40,10 +40,6 @@ export class View extends viewMgr.View
         fastaView.addView(this.views,"tableView");
         alignView.addView(this.views,"tableView");
         linkRefView.addView(this.views,"tableView");
-        for(let i = 0 ; i != this.views.length; ++i)
-        {
-            this.views[i].mount();
-        }
     }
     public onUnMount() : void{}
     public renderView() : string
