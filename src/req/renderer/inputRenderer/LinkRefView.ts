@@ -2,18 +2,12 @@ import * as viewMgr from "./../viewMgr";
 import {getReadable} from "./../../getAppPath";
 import {Fasta} from "./../../fasta";
 import {AlignData} from "./../../alignData";
-interface LinkableRefSeq
-{
-    uuid : string;
-    linkable : boolean;
-    reason : string;
-    longReason : string;
-}
+import {getLinkableRefSeqs} from "./../../getLinkableRefSeqs";
+
 export class View extends viewMgr.View
 {
     public inspectingAlign : AlignData;
     public fastaInputs : Array<Fasta>;
-    public linkableRefSeqs : Array<LinkableRefSeq>;
     public constructor(div : string)
     {
         super("linkRefView",div);
@@ -21,11 +15,7 @@ export class View extends viewMgr.View
     }
     public onMount() : void
     {
-        this.linkableRefSeqs = new Array<LinkableRefSeq>();
-        for(let i = 0; i != this.fastaInputs.length; ++i)
-        {
-
-        }
+        console.log(getLinkableRefSeqs(this.fastaInputs,this.inspectingAlign));
     }
     public onUnMount() : void{}
     public renderView() : string
