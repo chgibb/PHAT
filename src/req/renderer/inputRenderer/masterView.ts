@@ -9,6 +9,7 @@ import * as viewMgr from "./../viewMgr";
 import * as fastqView from "./FastqView";
 import * as fastaView from "./FastaView";
 import * as alignView from "./AlignView";
+import * as linkRefView from "./LinkRefView";
 import {inputFastqDialog} from "./inputFastqDialog";
 import {inputFastaDialog} from "./inputFastaDialog";
 import {inputAlignDialog} from "./inputAlignDialog";
@@ -38,6 +39,7 @@ export class View extends viewMgr.View
         fastqView.addView(this.views,"tableView");
         fastaView.addView(this.views,"tableView");
         alignView.addView(this.views,"tableView");
+        linkRefView.addView(this.views,"tableView");
         for(let i = 0 ; i != this.views.length; ++i)
         {
             this.views[i].mount();
