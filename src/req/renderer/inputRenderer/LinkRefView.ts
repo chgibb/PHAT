@@ -67,6 +67,27 @@ export class View extends viewMgr.View
                         <th>Size</th>
                         <th>Reason</th>
                     </tr>
+                    ${(()=>{
+                        let res = "";
+                        for(let i = 0; i != this.fastaInputs.length; ++i)
+                        {
+                            let fasta = this.fastaInputs[i];
+                            for(let k = 0; k != this.linkableRefSeqs.length; ++k)
+                            {
+                                if(!this.linkableRefSeqs[k].linkable && fasta.uuid == this.linkableRefSeqs[k].uuid)
+                                {
+                                    res += `
+                                        <tr>
+                                            <th>${fasta.alias}</th>
+                                            <th>${fasta.sizeString}</th>
+                                            <th id="${fasta.uuid}LongReason" class="activeHover">${this.linkableRefSeqs[k].reason}</th>
+                                        </tr>
+                                    `;
+                                }
+                            }
+                        }
+                        return res;
+                    })()}
                 </table>
             </div>
         `;
