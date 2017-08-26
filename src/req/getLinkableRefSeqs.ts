@@ -159,15 +159,26 @@ export function getLinkableRefSeqs(fastaInputs : Array<Fasta>,align : AlignData)
         
         if(fasta.contigs && fasta.contigs.length > 0)
         {
-            let status = compareContigsToIdxStatReportExtra(fasta.contigs,align.idxStatsReport);
+            let extraStatus = compareContigsToIdxStatReportExtra(fasta.contigs,align.idxStatsReport);
+            let missingStatus = compareContigsToIdxStatReportMissing(fasta.contigs,align.idxStatsReport);
 
-            if(status.linkable)
+            if(extraStatus.linkable && missingStatus.linkable)
                 curr.linkable = true;
             else
             {
                 curr.linkable = false;
-                curr.reason = "Extra Contigs";
-                curr.longReason = status.longReason;
+                if(!extraStatus.linkable)
+                {
+                    curr.reason = "Extra Contigs";
+                    curr.longReason += extraStatus.longReason;
+                }
+                if(!missingStatus.linkable)
+                {
+                    curr.reason = "Missing Contigs";
+                    curr.longReason += "\n";
+                    curr.longReason += missingStatus.longReason;
+                }
+
             }
             res.push(curr);
         }
