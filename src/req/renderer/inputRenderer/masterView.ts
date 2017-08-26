@@ -208,6 +208,19 @@ export class View extends viewMgr.View
                         }
                     }
                 }
+                if(event.target.id == `${this.fastaInputs[i].uuid}Link`)
+                {
+                    let linkRefView = <linkRefView.View>viewMgr.getViewByName("linkRefView",this.views);
+                    ipc.send(
+                        "runOperation",
+                        <AtomicOperationIPC>{
+                            opName : "linkRefSeqToAlignment",
+                            fasta : this.fastaInputs[i],
+                            align : linkRefView.inspectingAlign
+                        }
+                    );
+                    break;
+                }
                 let classList = event.target.classList;
                 if(event.target.classList.contains(`${this.fastaInputs[i].uuid}Class`))
                 {
