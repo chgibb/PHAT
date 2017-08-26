@@ -105,7 +105,7 @@ export function getLinkableRefSeqs(fastaInputs : Array<Fasta>,align : AlignData)
         curr.uuid = fasta.uuid;
         
         let status = compareContigsToIdxStatReport(fasta.contigs,align.idxStatsReport);
-        //console.log(status);
+
         if(status.linkable)
             curr.linkable = true;
         else
