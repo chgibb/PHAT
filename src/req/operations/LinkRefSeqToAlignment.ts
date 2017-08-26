@@ -62,7 +62,7 @@ export class LinkRefSeqToAlignment extends atomic.AtomicOperation
                     <AtomicOperationForkEvent>{
                         setData : true,
                         data : {
-                            alignData : self.alignData,
+                            align : self.alignData,
                             fasta : self.fasta
                         },
                         name : self.name,
