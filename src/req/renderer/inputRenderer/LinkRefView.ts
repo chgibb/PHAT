@@ -57,6 +57,18 @@ export class View extends viewMgr.View
                     })()}
                 </table>
             </div>
+            <br />
+            <br />
+            <p>Incompatible References</p>
+            <div id="incompatibleRefsTableDiv" style="width:100%">
+                <table style="width:100%">
+                    <tr>
+                        <th>File Name</th>
+                        <th>Size</th>
+                        <th>Reason</th>
+                    </tr>
+                </table>
+            </div>
         `;
     }
     public postRender() : void{}
