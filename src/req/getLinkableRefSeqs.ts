@@ -55,7 +55,6 @@ export function compareContigsToIdxStatReportExtra(contigs : Array<Contig>,idxSt
     let res = new CompareStatus();
 
     let extra = new Array<string>();
-    let missing = new Array<string>();
 
     if(!contigs || contigs.length == 0)
         throw new Error("contigs must be have length > 0");
@@ -103,6 +102,7 @@ export function compareContigsToIdxStatReportExtra(contigs : Array<Contig>,idxSt
 export function compareContigsToIdxStatReportMissing(contigs : Array<Contig>,idxStatsReport : Array<SamToolsIdxStatsReport>) : CompareStatus
 {
     let res = new CompareStatus();
+
 
     return res;
 }
