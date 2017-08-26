@@ -107,17 +107,27 @@ export function getLinkableRefSeqs(fastaInputs : Array<Fasta>,align : AlignData)
         let curr = new LinkableRefSeq();
         curr.uuid = fasta.uuid;
         
-        let status = compareContigsToIdxStatReport(fasta.contigs,align.idxStatsReport);
+        if(fasta.contigs && fasta.contigs.length > 0)
+        {
+            let status = compareContigsToIdxStatReport(fasta.contigs,align.idxStatsReport);
 
-        if(status.linkable)
-            curr.linkable = true;
+            if(status.linkable)
+                curr.linkable = true;
+            else
+            {
+                curr.linkable = false;
+                curr.reason = "Missing Contigs";
+                curr.longReason = status.longReason;
+            }
+            res.push(curr);
+        }
         else
         {
             curr.linkable = false;
-            curr.reason = "Missing Contigs";
-            curr.longReason = status.longReason;
+            curr.reason = "Not Indexed";
+            curr.reason = `Ref is not indexed for visualization or indexing`;
+            res.push(curr);
         }
-        res.push(curr);
     }
 
     return res;
