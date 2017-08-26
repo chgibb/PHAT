@@ -17,6 +17,7 @@ import {inputAlignDialog} from "./inputAlignDialog";
 import Fastq from "./../../fastq";
 import {Fasta} from "./../../fasta";
 import {AlignData} from "./../../alignData";
+import {getLinkableRefSeqs,LinkableRefSeq} from "./../../getLinkableRefSeqs";
 export class View extends viewMgr.View
 {
     public views : Array<viewMgr.View>;
@@ -194,6 +195,18 @@ export class View extends viewMgr.View
                         }
                     );
                     break;
+                }
+                if(event.target.id == `${this.fastaInputs[i].uuid}LongReason`)
+                {
+                    let linkRefView = <linkRefView.View>viewMgr.getViewByName("linkRefView",this.views);
+                    for(let k = 0; k != linkRefView.linkableRefSeqs.length; ++k)
+                    {
+                        if(this.fastaInputs[i].uuid == linkRefView.linkableRefSeqs[k].uuid)
+                        {
+                            alert(`${linkRefView.linkableRefSeqs[k].longReason}`);
+                            break;
+                        }
+                    }
                 }
                 let classList = event.target.classList;
                 if(event.target.classList.contains(`${this.fastaInputs[i].uuid}Class`))
