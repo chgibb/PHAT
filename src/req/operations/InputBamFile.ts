@@ -13,7 +13,7 @@ export class InputBamFile extends atomic.AtomicOperation
     {
         super();
     }
-    public setData(bamPath : string)
+    public setData(bamPath : string) : void
     {
         this.bamPath = bamPath;
     }
