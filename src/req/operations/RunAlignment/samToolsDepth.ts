@@ -2,7 +2,7 @@ import * as fs from "fs";
 import * as readline from "readline";
 
 import * as atomic from "./../atomicOperations";
-import {AlignData,getSortedBam,getCoverage,getCoverageForContig} from "./../../alignData";
+import {AlignData,getSortedBam,getCoverage,getCoverageForContig,getCoverageDir} from "./../../alignData";
 import {getReadable} from "./../../getAppPath";
 import {SpawnRequestParams} from "./../../JobIPC";
 import {Job,JobCallBackObject} from "./../../main/Job";
@@ -11,6 +11,7 @@ export function samToolsDepth(alignData: AlignData,logger : atomic.AtomicOperati
 {
     return new Promise((resolve,reject) => {
         let samToolsExe = getReadable('samtools');
+        fs.mkdirSync(getCoverageDir(alignData));
         let samToolsCoverageFileStream : fs.WriteStream = fs.createWriteStream(getCoverage(alignData));
 
         let jobCallBack : JobCallBackObject = {
