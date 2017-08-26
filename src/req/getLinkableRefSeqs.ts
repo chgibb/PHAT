@@ -41,7 +41,6 @@ export class CompareStatus
     }
 }
 
-
 /**
  * Determine the linkability of a list of contigs with an idxstats result by looking for contigs which exist in contigs
  * but are not present in idxStatsReport
@@ -89,6 +88,22 @@ export function compareContigsToIdxStatReportExtra(contigs : Array<Contig>,idxSt
     if(res.longReason != "")
         return res;
     res.linkable = true;
+    return res;
+}
+
+/**
+ * Determine the linkability of a list of contigs with an idxstats result by looking for contigs which exist in idxStatsReport
+ * but are not present in contigs
+ * 
+ * @export
+ * @param {Array<Contig>} contigs 
+ * @param {Array<SamToolsIdxStatsReport>} idxStatsReport 
+ * @returns {CompareStatus} 
+ */
+export function compareContigsToIdxStatReportMissing(contigs : Array<Contig>,idxStatsReport : Array<SamToolsIdxStatsReport>) : CompareStatus
+{
+    let res = new CompareStatus();
+
     return res;
 }
 
