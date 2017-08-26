@@ -111,6 +111,8 @@ export function compareContigsToIdxStatReportMissing(contigs : Array<Contig>,idx
     for(let i = 0; i != idxStatsReport.length; ++i)
     {
         let found = false;
+        if(idxStatsReport[i].refSeqName == "*" || idxStatsReport[i].refSeqName == "")
+            continue;
         for(let k = 0; k != contigs.length; ++k)
         {
             if(idxStatsReport[i].refSeqName == contigs[k].name.split(/\s/)[0])
