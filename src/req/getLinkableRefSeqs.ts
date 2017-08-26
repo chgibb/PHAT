@@ -57,7 +57,7 @@ export function compareContigsToIdxStatReportExtra(contigs : Array<Contig>,idxSt
     let extra = new Array<string>();
 
     if(!contigs || contigs.length == 0)
-        throw new Error("contigs must be have length > 0");
+        throw new Error("contigs must have length > 0");
 
     for(let i = 0; i != contigs.length; ++i)
     {
@@ -79,7 +79,7 @@ export function compareContigsToIdxStatReportExtra(contigs : Array<Contig>,idxSt
     {
         res.linkable = false;
         res.longReason += `The following contigs are present in the reference, not in the alignment map:${"\n"}`;
-        for(let i = 0; i != extra.length; ++ i)
+        for(let i = 0; i != extra.length; ++i)
         {
             res.longReason += `${extra[i]}${"\n"}`;
         }
@@ -103,7 +103,39 @@ export function compareContigsToIdxStatReportMissing(contigs : Array<Contig>,idx
 {
     let res = new CompareStatus();
 
+    let missing = new Array<string>();
 
+    if(!contigs || contigs.length == 0)
+        throw new Error("contigs must length > 0");
+
+    for(let i = 0; i != idxStatsReport.length; ++i)
+    {
+        let found = false;
+        for(let k = 0; k != contigs.length; ++k)
+        {
+            if(idxStatsReport[i].refSeqName == contigs[k].name.split(/\s/)[0])
+            {
+                found = true;
+                break;
+            }
+        }
+        if(!found)
+        {
+            missing.push(idxStatsReport[i].refSeqName);
+        }
+    }
+    if(missing.length > 0)
+    {
+        res.linkable = false;
+        res.longReason += `The following contigs are present in the alignment map but not in the reference:${"\n"}`;
+        for(let i = 0; i != missing.length; ++i)
+        {
+            res.longReason += `${missing[i]}${"\n"}`;
+        }
+    }
+    if(res.longReason != "")
+        return res;
+    res.linkable = true;
     return res;
 }
 
