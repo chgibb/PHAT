@@ -37,6 +37,7 @@ import {OpenLogViewer} from "./../operations/OpenLogViewer";
 import {InputFastqFile} from "./../operations/inputFastqFile";
 import {InputFastaFile} from "./../operations/inputFastaFile";
 import {InputBamFile} from "./../operations/InputBamFile";
+import {LinkRefSeqToAlignment} from "./../operations/LinkRefSeqToAlignment";
 import {ImportFileIntoProject} from "./../operations/ImportFileIntoProject";
 
 import {CopyCircularFigure} from "./../operations/CopyCircularFigure";
@@ -110,7 +111,9 @@ app.on
 		atomicOp.register("inputFastqFile",InputFastqFile);
 		atomicOp.register("inputFastaFile",InputFastaFile);
 		atomicOp.register("inputBamFile",InputBamFile);
+		atomicOp.register("linkRefSeqToAlignment",LinkRefSeqToAlignment);
 		atomicOp.register("importFileIntoProject",ImportFileIntoProject);
+
 		atomicOp.register("copyCircularFigure",CopyCircularFigure);
 		atomicOp.register("deleteCircularFigure",DeleteCircularFigure);
 		atomicOp.register("compileTemplates",CompileTemplates);
@@ -419,6 +422,10 @@ ipc.on(
 		{
 			atomicOp.addOperation("inputBamFile",arg.filePath);
 		}
+		else if(arg.opName == "linkRefSeqToAlignment")
+		{
+			atomicOp.addOperation("linkRefSeqToAlignment",{align : arg.align,fasta : arg.fasta});
+		}
 		else if(arg.opName == "importFileIntoProject")
 		{
 			let fastqInputs : Array<Fastq> = dataMgr.getKey("input","fastqInputs");
@@ -679,6 +686,31 @@ atomicOp.updates.on(
 			aligns.push(op.alignData);
 			dataMgr.setKey("align","aligns",aligns);
 			winMgr.publishChangeForKey("align","aligns");
+		}
+	}
+);
+
+atomicOp.updates.on(
+	"linkRefSeqToAlignment",function(op : LinkRefSeqToAlignment)
+	{
+		dataMgr.setKey("application","operations",atomicOp.operationsQueue);
+		winMgr.publishChangeForKey("application","operations");
+		if(op.flags.success)
+		{
+			let aligns : Array<AlignData> = dataMgr.getKey("align","aligns");
+			if(aligns == undefined)
+				aligns = new Array<AlignData>();
+			for(let i = 0; i != aligns.length; ++i)
+			{
+				if(aligns[i].uuid == op.alignData.uuid)
+				{
+					aligns[i] = op.alignData;
+					dataMgr.setKey("align","aligns",aligns);
+					winMgr.publishChangeForKey("align","aligns");
+					return;
+
+				}
+			}
 		}
 	}
 );
