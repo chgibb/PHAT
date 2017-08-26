@@ -43,17 +43,19 @@ export class CompareStatus
 
 
 /**
- * Determine the linkability of a list of contigs with an idxstats result
+ * Determine the linkability of a list of contigs with an idxstats result by looking for contigs which exist in contigs
+ * but are not present in idxStatsReport
  * 
  * @export
  * @param {Array<Contig>} contigs 
  * @param {Array<SamToolsIdxStatsReport>} idxStatsReport 
  * @returns {CompareStatus} 
  */
-export function compareContigsToIdxStatReport(contigs : Array<Contig>,idxStatsReport : Array<SamToolsIdxStatsReport>) : CompareStatus
+export function compareContigsToIdxStatReportExtra(contigs : Array<Contig>,idxStatsReport : Array<SamToolsIdxStatsReport>) : CompareStatus
 {
     let res = new CompareStatus();
 
+    let extra = new Array<string>();
     let missing = new Array<string>();
 
     if(!contigs || contigs.length == 0)
@@ -72,19 +74,20 @@ export function compareContigsToIdxStatReport(contigs : Array<Contig>,idxStatsRe
         }
         if(!found)
         {
-            missing.push(contigs[i].name);
+            extra.push(contigs[i].name);
         }
     }
-    if(missing.length > 0)
+    if(extra.length > 0)
     {
         res.linkable = false;
-        res.longReason = `The following contigs are missing:${"\n"}`;
-        for(let i = 0; i != missing.length; ++ i)
+        res.longReason += `The following contigs are present in the reference, not in the alignment map:${"\n"}`;
+        for(let i = 0; i != extra.length; ++ i)
         {
-            res.longReason += `${missing[i]}${"\n"}`;
+            res.longReason += `${extra[i]}${"\n"}`;
         }
-        return res;
     }
+    if(res.longReason != "")
+        return res;
     res.linkable = true;
     return res;
 }
@@ -109,14 +112,14 @@ export function getLinkableRefSeqs(fastaInputs : Array<Fasta>,align : AlignData)
         
         if(fasta.contigs && fasta.contigs.length > 0)
         {
-            let status = compareContigsToIdxStatReport(fasta.contigs,align.idxStatsReport);
+            let status = compareContigsToIdxStatReportExtra(fasta.contigs,align.idxStatsReport);
 
             if(status.linkable)
                 curr.linkable = true;
             else
             {
                 curr.linkable = false;
-                curr.reason = "Missing Contigs";
+                curr.reason = "Extra Contigs";
                 curr.longReason = status.longReason;
             }
             res.push(curr);
