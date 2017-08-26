@@ -56,6 +56,9 @@ export function compareContigsToIdxStatReport(contigs : Array<Contig>,idxStatsRe
 
     let missing = new Array<string>();
 
+    if(!contigs || contigs.length == 0)
+        throw new Error("contigs must be have length > 0");
+
     for(let i = 0; i != contigs.length; ++i)
     {
         let found = false;
