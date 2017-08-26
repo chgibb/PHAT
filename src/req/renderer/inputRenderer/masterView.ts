@@ -32,6 +32,7 @@ export class View extends viewMgr.View
         this.firstRender = true;
         this.fastqInputs = new Array<Fastq>();
         this.fastaInputs = new Array<Fasta>();
+        this.aligns = new Array<AlignData>();
         this.currentView = "fastqView";
     }
     public onMount() : void
