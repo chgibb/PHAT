@@ -111,7 +111,8 @@ export class View extends viewMgr.View
                 //will not be able to visualize the alignment
                 for(let k = 0; k != masterView.fastaInputs.length; ++k)
                 {
-                    if(masterView.fastaInputs[k].uuid == masterView.alignData[i].fasta.uuid)
+                    
+                    if(masterView.alignData[i].fasta && masterView.fastaInputs[k].uuid == masterView.alignData[i].fasta.uuid)
                     {
                         fasta = masterView.fastaInputs[k];
                         break;
