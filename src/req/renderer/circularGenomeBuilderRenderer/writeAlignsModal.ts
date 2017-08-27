@@ -47,9 +47,9 @@ export function writeAlignsModal() : void
                         <td><img src="${getReadable("img/viewAvailableTracks.png")}" id="${aligns[i].uuid}View" class="activeHover activeHoverButton" /><br />
                         </td>
                         <td>${aligns[i].alias}</td>
-                        <td>${aligns[i].summary.reads}</td>
-                        <td>${aligns[i].summary.mates}</td>
-                        <td>${aligns[i].summary.overallAlignmentRate}</td>
+                        <td>${!aligns[i].isExternalAlignment ? aligns[i].summary.reads : aligns[i].flagStatReport.reads}</td>
+                        <td>${!aligns[i].isExternalAlignment ? aligns[i].summary.mates : "Unknown"}</td>
+                        <td>${!aligns[i].isExternalAlignment ? aligns[i].summary.overallAlignmentRate : aligns[i].flagStatReport.overallAlignmentRate}</td>
                         <td>${aligns[i].dateStampString}</td>
                     </tr>
                 `;
