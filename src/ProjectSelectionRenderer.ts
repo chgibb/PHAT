@@ -1,5 +1,6 @@
 import * as electron from "electron";
 const ipc = electron.ipcRenderer;
+const remote = electron.remote;
 
 const jsonFile = require("jsonfile");
 const Dialogs = require("dialogs");
@@ -18,8 +19,6 @@ import * as splashView from "./req/renderer/ProjectSelectionRenderer/splashView"
 import * as openProjectView from "./req/renderer/ProjectSelectionRenderer/openProjectView";
 import * as helpView from "./req/renderer/ProjectSelectionRenderer/helpView";
 
-import {citationText} from "./req/renderer/citationText";
-
 import * as $ from "jquery";
 (<any>window).$ = $;
 require("./req/renderer/commonBehaviour");
@@ -30,7 +29,7 @@ $
     {
         document.body.innerHTML += `
             <br />
-            <p>${citationText}</p>
+            <a id="citeLink" style="color:black;" class="activeHover">Gibb et al., 2017 (bioRxiv pre-print)</a>
         `;
         ipc.send(
             "runOperation",
@@ -102,6 +101,8 @@ $
                 }
             }
         );
-        
+        document.getElementById("citeLink").onclick = function(this : HTMLElement,ev : MouseEvent){
+            remote.shell.openExternal("https://doi.org/10.1101/178327");
+        }
     }
 );
