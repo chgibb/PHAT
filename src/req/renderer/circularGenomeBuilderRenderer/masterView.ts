@@ -63,7 +63,7 @@ export class View extends viewMgr.View
             return undefined;
         for(let i = 0; i != this.alignData.length; ++i)
         {
-            if(this.alignData[i].fasta.uuid == genomeView.genome.uuidFasta)
+            if(this.alignData[i].fasta && this.alignData[i].fasta.uuid == genomeView.genome.uuidFasta)
             {
                 res.push(this.alignData[i]);
             }
