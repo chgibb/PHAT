@@ -3,13 +3,19 @@ import {registerOperations} from "./req/tests/registerOperations";
 
 import {rebuildRTDirectory} from "./req/main/rebuildRTDirectory";
 
+import {getUnSortedBam} from "./req/alignData";
+
 import * as L6R1R1 from "./req/tests/L6R1R1";
 import * as L6R1R2 from "./req/tests/L6R1R2";
 import * as hpv16Ref from "./req/tests/hpv16Ref";
 import * as hpv18Ref from "./req/tests/hpv18Ref";
 import * as hpv16Figure from "./req/tests/hpv16Figure";
+import * as L6R1HPV16Align from "./req/tests/L6R1HPV16Align";
+
+import * as L6R1HPV16AlignImported from "./req/tests/L6R1HPV16AlignImported";
 
 import {testVersionParser} from "./req/tests/testVersionParser";
+
 import {testFastQCReportGeneration} from "./req/tests/testFastQCReportGeneration";
 import {testHPV16Index} from "./req/tests/testHPV16Index";
 import {testHPV18Index} from "./req/tests/testHPV18Index";
@@ -23,6 +29,7 @@ import {testL6R1HPV16CoverageTrackCompilation} from "./req/tests/testL6R1HPV16Co
 import {testL6R1HPV18CoverageTrackRenderer} from "./req/tests/testL6R1HPV18CoverageTrackRender";
 import {testL6R1HPV18SNPTrackRenderer} from "./req/tests/testL6R1HPV18SNPTrackRender";
 
+import {testL6R1HPV16AlignImportedImporting} from "./req/tests/testL6R1HPV16AlignImportedImporting";
 
 const pjson = require("./resources/app/package.json");
 import {isBeta,versionIsGreaterThan} from "./req/versionIsGreaterThan";
@@ -230,6 +237,18 @@ async function runTests() : Promise<void>
 		catch(err)
 		{
 			console.log("coverage track rendering threw exception");
+			return reject();
+		}
+
+		console.log("Importing binary alignment map from L6R1 HPV16 alignment");
+		atomic.addOperation("inputBamFile",getUnSortedBam(L6R1HPV16Align.get()));
+		try
+		{
+			await testL6R1HPV16AlignImportedImporting();
+		}
+		catch(err)
+		{
+			console.log("bam importing threw exception");
 			return reject();
 		}
 		resolve();
