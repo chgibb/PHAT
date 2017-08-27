@@ -14,6 +14,7 @@ import * as L6R1HPV16Align from "./req/tests/L6R1HPV16Align";
 
 import * as L6R1HPV16AlignImported from "./req/tests/L6R1HPV16AlignImported";
 
+
 import {testVersionParser} from "./req/tests/testVersionParser";
 
 import {testFastQCReportGeneration} from "./req/tests/testFastQCReportGeneration";
@@ -30,6 +31,7 @@ import {testL6R1HPV18CoverageTrackRenderer} from "./req/tests/testL6R1HPV18Cover
 import {testL6R1HPV18SNPTrackRenderer} from "./req/tests/testL6R1HPV18SNPTrackRender";
 
 import {testL6R1HPV16AlignImportedImporting} from "./req/tests/testL6R1HPV16AlignImportedImporting";
+import {testL6R1HPV16AlignImportedLinking} from "./req/tests/testL6R1HPV16AlignImportedLinking";
 
 const pjson = require("./resources/app/package.json");
 import {isBeta,versionIsGreaterThan} from "./req/versionIsGreaterThan";
@@ -250,6 +252,20 @@ async function runTests() : Promise<void>
 		{
 			console.log("bam importing threw exception");
 			return reject();
+		}
+
+		console.log("Linking imported L6R1 HPV16 binary alignment map to HPV16");
+		atomic.addOperation("linkRefSeqToAlignment",{
+			align : L6R1HPV16AlignImported.get(),
+			fasta : hpv16Ref.get()
+		});
+		try
+		{
+			await testL6R1HPV16AlignImportedLinking();
+		}
+		catch(err)
+		{
+			console.log("bam linking threw exception");
 		}
 		resolve();
 	});
