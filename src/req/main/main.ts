@@ -8,7 +8,7 @@ import * as fs from "fs";
 import * as electron from "electron";
 const ipc = electron.ipcMain;
 const app = electron.app;
-app.commandLine.appendSwitch("js-flags","--expose_gc=true --nolazy --serialize_eager");
+app.commandLine.appendSwitch("js-flags","--expose_gc --nolazy --serialize_eager");
 
 if(require('electron-squirrel-startup')) app.quit();
 
@@ -24,7 +24,8 @@ import * as dataMgr from "./dataMgr";
 import * as atomicOp from "./../operations/atomicOperations";
 import {AtomicOperationIPC} from "./../atomicOperationsIPC";
 import {GenerateQCReport} from "./../operations/GenerateQCReport";
-import {IndexFasta} from "./../operations/indexFasta";
+import {IndexFastaForAlignment} from "./../operations/indexFastaForAlignment";
+import {IndexFastaForVisualization} from "./../operations/indexFastaForVisualization";
 import {RunAlignment} from "./../operations/RunAlignment";
 import {RenderCoverageTrackForContig} from "./../operations/RenderCoverageTrack";
 import {RenderSNPTrackForContig} from "./../operations/RenderSNPTrack";
@@ -35,6 +36,8 @@ import {OpenLogViewer} from "./../operations/OpenLogViewer";
 
 import {InputFastqFile} from "./../operations/inputFastqFile";
 import {InputFastaFile} from "./../operations/inputFastaFile";
+import {InputBamFile} from "./../operations/InputBamFile";
+import {LinkRefSeqToAlignment} from "./../operations/LinkRefSeqToAlignment";
 import {ImportFileIntoProject} from "./../operations/ImportFileIntoProject";
 
 import {CopyCircularFigure} from "./../operations/CopyCircularFigure";
@@ -89,7 +92,8 @@ app.on
 		winMgr.windowCreators["projectSelection"].Create();
 		
 		atomicOp.register("generateFastQCReport",GenerateQCReport);
-		atomicOp.register("indexFasta",IndexFasta);
+		atomicOp.register("indexFastaForAlignment",IndexFastaForAlignment);
+		atomicOp.register("indexFastaForVisualization",IndexFastaForVisualization);
 		atomicOp.register("runAlignment",RunAlignment);
 		atomicOp.register("renderCoverageTrackForContig",RenderCoverageTrackForContig);
 		atomicOp.register("renderSNPTrackForContig",RenderSNPTrackForContig);
@@ -106,7 +110,10 @@ app.on
 		atomicOp.register("openLogViewer",OpenLogViewer)
 		atomicOp.register("inputFastqFile",InputFastqFile);
 		atomicOp.register("inputFastaFile",InputFastaFile);
+		atomicOp.register("inputBamFile",InputBamFile);
+		atomicOp.register("linkRefSeqToAlignment",LinkRefSeqToAlignment);
 		atomicOp.register("importFileIntoProject",ImportFileIntoProject);
+
 		atomicOp.register("copyCircularFigure",CopyCircularFigure);
 		atomicOp.register("deleteCircularFigure",DeleteCircularFigure);
 		atomicOp.register("compileTemplates",CompileTemplates);
@@ -223,7 +230,7 @@ ipc.on(
 		console.log(arg);
 		dataMgr.setKey("application","operations",atomicOp.operationsQueue);
 		winMgr.publishChangeForKey("application","operations");
-		if(arg.opName =="indexFasta" || arg.opName == "generateFastQCReport")
+		if(arg.opName =="indexFastaForAlignment" || arg.opName == "indexFastaForVisualization" || arg.opName == "generateFastQCReport")
 		{
 			let list : Array<File> = dataMgr.getKey(arg.channel,arg.key);
 			for(let i : number = 0; i != list.length; ++i)
@@ -411,6 +418,14 @@ ipc.on(
 			}
 			atomicOp.addOperation("inputFastaFile",arg.filePath);
 		}
+		else if(arg.opName == "inputBamFile")
+		{
+			atomicOp.addOperation("inputBamFile",arg.filePath);
+		}
+		else if(arg.opName == "linkRefSeqToAlignment")
+		{
+			atomicOp.addOperation("linkRefSeqToAlignment",{align : arg.align,fasta : arg.fasta});
+		}
 		else if(arg.opName == "importFileIntoProject")
 		{
 			let fastqInputs : Array<Fastq> = dataMgr.getKey("input","fastqInputs");
@@ -493,19 +508,44 @@ ipc.on(
 	}
 );
 atomicOp.updates.on(
-	"indexFasta",function(op : atomicOp.AtomicOperation)
+	"indexFastaForAlignment",function(op : IndexFastaForAlignment)
 	{
 		dataMgr.setKey("application","operations",atomicOp.operationsQueue);
 		winMgr.publishChangeForKey("application","operations");
 		if(op.flags.success)
 		{
-			let fasta : File = (<IndexFasta>op).fasta;
-			let fastaInputs : Array<File> = dataMgr.getKey("input","fastaInputs");
+			let fasta : Fasta = op.fasta;
+			let fastaInputs : Array<Fasta> = dataMgr.getKey("input","fastaInputs");
 			for(let i = 0; i != fastaInputs.length; ++i)
 			{
 				if(fastaInputs[i].uuid == fasta.uuid)
 				{
-					fastaInputs[i] = fasta;
+					fastaInputs[i].indexed = true;
+					fastaInputs[i].contigs = fasta.contigs;
+					break;
+				}
+			}
+
+			dataMgr.setKey("input","fastaInputs",fastaInputs);
+			winMgr.publishChangeForKey("input","fastaInputs");
+		}
+	}
+);
+atomicOp.updates.on(
+	"indexFastaForVisualization",function(op : IndexFastaForVisualization)
+	{
+		dataMgr.setKey("application","operations",atomicOp.operationsQueue);
+		winMgr.publishChangeForKey("application","operations");
+		if(op.flags.success)
+		{
+			let fasta : Fasta = op.fasta;
+			let fastaInputs : Array<Fasta> = dataMgr.getKey("input","fastaInputs");
+			for(let i = 0; i != fastaInputs.length; ++i)
+			{
+				if(fastaInputs[i].uuid == fasta.uuid)
+				{
+					fastaInputs[i].contigs = fasta.contigs;
+					fastaInputs[i].indexedForVisualization = true;
 					break;
 				}
 			}
@@ -629,6 +669,48 @@ atomicOp.updates.on(
 			fastas.push(op.fasta);
 			dataMgr.setKey("input","fastaInputs",fastas);
 			winMgr.publishChangeForKey("input","fastaInputs");
+		}
+	}
+);
+
+atomicOp.updates.on(
+	"inputBamFile",function(op : InputBamFile)
+	{
+		dataMgr.setKey("application","operations",atomicOp.operationsQueue);
+		winMgr.publishChangeForKey("application","operations");
+		if(op.flags.success)
+		{
+			let aligns : Array<AlignData> = dataMgr.getKey("align","aligns");
+			if(aligns == undefined)
+				aligns = new Array<AlignData>();
+			aligns.push(op.alignData);
+			dataMgr.setKey("align","aligns",aligns);
+			winMgr.publishChangeForKey("align","aligns");
+		}
+	}
+);
+
+atomicOp.updates.on(
+	"linkRefSeqToAlignment",function(op : LinkRefSeqToAlignment)
+	{
+		dataMgr.setKey("application","operations",atomicOp.operationsQueue);
+		winMgr.publishChangeForKey("application","operations");
+		if(op.flags.success)
+		{
+			let aligns : Array<AlignData> = dataMgr.getKey("align","aligns");
+			if(aligns == undefined)
+				aligns = new Array<AlignData>();
+			for(let i = 0; i != aligns.length; ++i)
+			{
+				if(aligns[i].uuid == op.alignData.uuid)
+				{
+					aligns[i] = op.alignData;
+					dataMgr.setKey("align","aligns",aligns);
+					winMgr.publishChangeForKey("align","aligns");
+					return;
+
+				}
+			}
 		}
 	}
 );

@@ -1,6 +1,6 @@
 import * as atomic from "./atomicOperations";
-import {Fasta,get2BitPath,getFaiPath} from "./../fasta";
-import {FastaContigLoader} from "./../fastaContigLoader";
+import {Fasta,getFaiPath} from "./../fasta";
+import {getContigsFromFastaFile} from "./../fastaContigLoader";
 import {getPath} from "./../file";
 
 import {getReadable,getReadableAndWritable} from "./../getAppPath";
@@ -8,20 +8,13 @@ import {getReadable,getReadableAndWritable} from "./../getAppPath";
 import {Job} from "./../main/Job";
 
 import {bowTie2Build} from "./indexFasta/bowTie2Build";
-import {faToTwoBit} from "./indexFasta/faToTwoBit";
 import {samToolsFaidx} from "./indexFasta/samToolsFaidx";
-export class IndexFasta extends atomic.AtomicOperation
+export class IndexFastaForAlignment extends atomic.AtomicOperation
 {
     public fasta : Fasta;
 
-    public faToTwoBitExe : string;
     public samToolsExe : string;
     public bowtie2BuildExe : string;
-
-
-    public twoBitPath : string;
-    public twoBitJob : Job;
-    public twoBitFlags : atomic.CompletionFlags;
 
     public faiPath : string;
     public faiJob : Job;
@@ -35,7 +28,6 @@ export class IndexFasta extends atomic.AtomicOperation
     constructor()
     {
         super();
-        this.twoBitFlags = new atomic.CompletionFlags();
         this.faiFlags = new atomic.CompletionFlags();
         this.bowtieFlags = new atomic.CompletionFlags();
 
@@ -44,7 +36,6 @@ export class IndexFasta extends atomic.AtomicOperation
         //the size threshold between being 32-bit and being 64-bit
         this.bowtieSizeThreshold = 4294967096;
 
-        this.faToTwoBitExe = getReadable('faToTwoBit');
         this.samToolsExe = getReadable('samtools');
         if(process.platform == "linux")
             this.bowtie2BuildExe = getReadable('bowtie2-build');
@@ -54,9 +45,6 @@ export class IndexFasta extends atomic.AtomicOperation
     public setData(data : Fasta) : void
     {
         this.fasta = data;
-
-        this.twoBitPath = get2BitPath(this.fasta);
-        this.destinationArtifacts.push(this.twoBitPath);
 
         this.faiPath = getFaiPath(this.fasta);
         this.destinationArtifacts.push(this.faiPath);
@@ -79,47 +67,42 @@ export class IndexFasta extends atomic.AtomicOperation
         this.destinationArtifacts.concat(this.bowtieIndices);
         
     }
-    //faToTwoBit -> samTools faidx -> bowtie2-build -> ContigLoader
+    //bowTie2Build -> samTools faidx
     public run() : void
     {
-        this.logRecord = atomic.openLog(this.name,"Index Fasta");
+        this.logRecord = atomic.openLog(this.name,"Index Fasta for Alignment");
 
         let self = this;
-        
-        faToTwoBit(self).then((result) => {
-
-            self.setSuccess(self.twoBitFlags);
-            self.update();
-
-            samToolsFaidx(self.fasta,self).then((result) => {
-
-                self.setSuccess(self.faiFlags);
-                self.update();
-
-                bowTie2Build(self).then((result) => {
-
+        (async function(){
+            return new Promise<void>(async (resolve,reject) => {
+                try
+                {
+                    await bowTie2Build(self);
                     self.setSuccess(self.bowtieFlags);
                     self.update();
 
-                    let contigLoader = new FastaContigLoader();
-                    contigLoader.on(
-                        "doneLoadingContigs",function(){
-                            self.fasta.contigs = contigLoader.contigs;
-                            self.setSuccess(self.flags);
-                            self.fasta.indexed = true;
-                            self.update();
-                        }
-                    );
-                    contigLoader.beginRefStream(getPath(self.fasta));
+                    await samToolsFaidx(self.fasta,self);
+                    self.setSuccess(self.faiFlags);
+                    self.update();
 
-                }).catch((err) => {
+                    //don't reparse contigs if we don't have to
+                    //contigs are parsed during viz indexing as well
+                    //if we reparse, we will clobber contig uuids and all references which point to them
+                    if(!self.fasta.contigs || self.fasta.contigs.length == 0)
+                    {
+                        //contig information is required by the coverage distillation step of aligning
+                        self.fasta.contigs = await getContigsFromFastaFile(getPath(self.fasta));
+                    }
+
+                    self.setSuccess(self.flags);
+                    self.fasta.indexed = true;
+                    self.update();
+                }
+                catch(err)
+                {
                     self.abortOperationWithMessage(err);
-                });
-            }).catch((err) => {
-                self.abortOperationWithMessage(err);
+                }
             });
-        }).catch((err) => {
-            self.abortOperationWithMessage(err);
-        });
+        })();
     }
 }

@@ -9,7 +9,9 @@ export class Fasta extends File
     public sequences : number;
     public validID : string;
     public indexed : boolean;
+    public indexedForVisualization : boolean;
     public indexing : boolean;
+    public indexingForVisualization : boolean;
     public indexes : Array<any>;
     public contigs : Array<Contig>;
     public constructor(path : string)

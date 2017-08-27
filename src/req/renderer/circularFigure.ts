@@ -17,6 +17,13 @@ import * as plasmid from "./circularGenome/plasmid";
 
 import {AlignData,getSNPsJSON} from "./../alignData";
 import {VCF2JSONRow} from "./../varScanMPileup2SNPVCF2JSON";
+/**
+ * Represents a single contig in a circular figure
+ * 
+ * @export
+ * @class Contig
+ * @extends {fastaContigLoader.Contig}
+ */
 export class Contig extends fastaContigLoader.Contig
 {
     public color? : string = "";
@@ -29,6 +36,13 @@ export class Contig extends fastaContigLoader.Contig
     public end? : number;
     public vAdjust? : number;
 }
+/**
+ * Hydrates contig with the appropriate properties for display
+ * 
+ * @export
+ * @param {Contig} contig 
+ * @param {boolean} [allowPositionChange=false] 
+ */
 export function initContigForDisplay(contig : Contig,allowPositionChange = false) : void
 {
     contig.color = getRandColor(1);
@@ -37,16 +51,31 @@ export function initContigForDisplay(contig : Contig,allowPositionChange = false
     contig.allowPositionChange = allowPositionChange;
     contig.vAdjust = 0;
 }
-//adapted from answer by letronje and edited by Peter Mortensen
-//http://stackoverflow.com/questions/1484506/random-color-generator-in-javascript
+
+/**
+ * Returns a random RGB value of the form rgb(r,g,b)
+ * 
+ * @param {number} brightness 
+ * @returns 
+ */
 function getRandColor(brightness : number)
 {
+    //adapted from answer by letronje and edited by Peter Mortensen
+    //http://stackoverflow.com/questions/1484506/random-color-generator-in-javascript
+
     // Six levels of brightness from 0 to 5, 0 being the darkest
     let rgb = [Math.random() * 256, Math.random() * 256, Math.random() * 256];
     let mix = [brightness*51, brightness*51, brightness*51]; //51 => 255/5
     let mixedrgb = [rgb[0] + mix[0], rgb[1] + mix[1], rgb[2] + mix[2]].map(function(x){return Math.round(x/2.0)});
     return "rgb(" + mixedrgb.join(",") + ")";
 }
+
+/**
+ * Specifies options options for a figure's interval track
+ * 
+ * @export
+ * @class CircularFigureBPTrackOptions
+ */
 export class CircularFigureBPTrackOptions
 {
     public interval : number;
@@ -61,6 +90,13 @@ export class CircularFigureBPTrackOptions
         this.direction = "out";
     }
 }
+
+/**
+ * Contains a record to retrieve/manipulate a data track which has been rendered
+ * 
+ * @export
+ * @class RenderedTrackRecord
+ */
 export class RenderedTrackRecord
 {
     public uuid : string;
@@ -83,6 +119,14 @@ export class RenderedTrackRecord
             this.colour = colour;
         }
 }
+
+/**
+ * Contains a record to retrieve/manipulate a coverage track which has been rendered
+ * 
+ * @export
+ * @class RenderedCoverageTrackRecord
+ * @extends {RenderedTrackRecord}
+ */
 export class RenderedCoverageTrackRecord extends RenderedTrackRecord
 {
     public constructor(
@@ -94,6 +138,14 @@ export class RenderedCoverageTrackRecord extends RenderedTrackRecord
         super(uuidAlign,uuidContig,uuidFigure,colour);
     }
 }
+
+/**
+ * Contains a record to retrieve/manipulate a SNP track which has been rendered
+ * 
+ * @export
+ * @class RenderedSNPTrackRecord
+ * @extends {RenderedTrackRecord}
+ */
 export class RenderedSNPTrackRecord extends RenderedTrackRecord
 {
     public constructor(
@@ -105,6 +157,13 @@ export class RenderedSNPTrackRecord extends RenderedTrackRecord
         super(uuidAlign,uuidContig,uuidFigure,colour);
     }
 }
+
+/**
+ * Contains all structures needed to render a circular figure
+ * 
+ * @export
+ * @class CircularFigure
+ */
 export class CircularFigure
 {
     public uuid : string;
@@ -148,7 +207,13 @@ export class CircularFigure
     }
 }
 
-//minimum amount of props/methods expected by figures at runtime
+/**
+ * Minimum amount of props/methods expected by figures at runtime
+ * 
+ * @export
+ * @abstract
+ * @class FigureCanvas
+ */
 export abstract class FigureCanvas
 {
     public genome : CircularFigure;
@@ -158,6 +223,15 @@ export abstract class FigureCanvas
     public abstract updateScope(scope? : FigureCanvas) : void
 }
 
+/**
+ * Returns the templates for contig
+ * 
+ * @export
+ * @param {Contig} contig 
+ * @param {number} [start=-1] 
+ * @param {number} [end=-1] 
+ * @returns {string} 
+ */
 export function renderContig(contig : Contig,start : number = -1,end : number = -1) : string
 {
     if(start == -1)
@@ -186,6 +260,14 @@ export function renderContig(contig : Contig,start : number = -1,end : number = 
     `;
     return res;
 }
+
+/**
+ * Returns the templates for the base figure of figure
+ * 
+ * @export
+ * @param {CircularFigure} figure 
+ * @returns {string} 
+ */
 export function renderBaseFigure(figure : CircularFigure) : string
 {
     return `
@@ -228,6 +310,13 @@ export function renderBaseFigure(figure : CircularFigure) : string
     ${plasmidTrack.end()}
     `;
 }
+
+/**
+ * Overwrites the current disk template cache for the base figure of figure
+ * 
+ * @export
+ * @param {CircularFigure} figure 
+ */
 export function cacheBaseFigure(figure : CircularFigure) : void
 {
     try
@@ -238,25 +327,54 @@ export function cacheBaseFigure(figure : CircularFigure) : void
     fs.writeFileSync(getReadableAndWritable(`rt/circularFigures/${figure.uuid}/baseFigure`),renderBaseFigure(figure));
 }
 
+/**
+ * Overwrites the current disk SVG cache for the base figure of figure
+ * 
+ * @export
+ * @param {CircularFigure} figure 
+ * @param {string} svg 
+ */
 export function cacheBaseFigureSVG(figure : CircularFigure,svg : string) : void
 {
     fs.writeFileSync(getReadableAndWritable(`rt/circularFigures/${figure.uuid}/baseFigure.svg`),svg);
 }
 
+/**
+ * Returns the current disk template cache contents for the base figure of figure
+ * 
+ * @export
+ * @param {CircularFigure} figure 
+ * @returns {string} 
+ */
 export function getBaseFigureFromCache(figure : CircularFigure) : string
 {
     return (<any>fs.readFileSync(getReadableAndWritable(`rt/circularFigures/${figure.uuid}/baseFigure`)));
 }
 
+/**
+ * Returns the current disk SVG cache for the base figure of figure
+ * 
+ * @export
+ * @param {CircularFigure} figure 
+ * @returns {string} 
+ */
 export function getBaseFigureSVGFromCache(figure : CircularFigure) : string
 {
     return (<any>fs.readFileSync(getReadableAndWritable(`rt/circularFigures/${figure.uuid}/baseFigure.svg`)));
 }
 
-//Walk the figures contigs clockwise and return the offset of the beginning of contig specified
-//by contiguuid from the start of the figure
+
+/**
+ * Returns the distance from the begginning of the figure to the begginning of the contig specified by contiguuid
+ * 
+ * @param {CircularFigure} figure 
+ * @param {string} contiguuid 
+ * @returns {number} 
+ */
 function getBaseBP(figure : CircularFigure,contiguuid : string) : number
 {
+    //Walk the figures contigs clockwise and return the offset of the beginning of contig specified
+    //by contiguuid from the start of the figure
     let base = 0;
     for(let i = 0; i != figure.contigs.length; ++i)
     {
@@ -266,11 +384,28 @@ function getBaseBP(figure : CircularFigure,contiguuid : string) : number
     }
     return -1;
 }
+
+/**
+ * Group coverage depths by nucleotide position
+ * 
+ * @interface PositionsWithDepths
+ */
 interface PositionsWithDepths
 {
     depth : number;
     positions : Array<number>;
 }
+
+/**
+ * Returns the templates for a coverage track of align for the contig specified by contiguuid on figure in the specified colour
+ * 
+ * @export
+ * @param {CircularFigure} figure 
+ * @param {string} contiguuid 
+ * @param {AlignData} align 
+ * @param {string} [colour="rgb(64,64,64)"] 
+ * @returns {Promise<string>} 
+ */
 export async function renderCoverageTrack(
     figure : CircularFigure,
     contiguuid : string,
@@ -353,6 +488,18 @@ export async function renderCoverageTrack(
         });
     });
 }
+
+/**
+ * Returns the templates for a coverage track of align for the contig specified by contiguuid on figure in the specified colour. Creates and saves a trackrecord
+ * on figure with the results
+ * 
+ * @export
+ * @param {CircularFigure} figure 
+ * @param {string} contiguuid 
+ * @param {AlignData} align 
+ * @param {string} [colour="rgb(64,64,64)"] 
+ * @returns {Promise<string>} 
+ */
 export async function cacheCoverageTrack(
     figure : CircularFigure,
     contiguuid : string,
@@ -375,27 +522,60 @@ export async function cacheCoverageTrack(
     });
 }
 
+/**
+ * Returns the path to the template cache for the specified coverage track
+ * 
+ * @export
+ * @param {RenderedCoverageTrackRecord} trackRecord 
+ * @returns {string} 
+ */
 export function getCachedCoverageTrackPath(trackRecord : RenderedCoverageTrackRecord) : string
 {
     return getReadableAndWritable(`rt/circularFigures/${trackRecord.uuidFigure}/coverage/${trackRecord.uuidAlign}/${trackRecord.uuidContig}/${trackRecord.uuid}`);
 }
 
+/**
+ * Returns the path to the SVG cache for the specified coverage track
+ * 
+ * @export
+ * @param {RenderedCoverageTrackRecord} trackRecord 
+ * @returns {string} 
+ */
 export function getCachedCoverageTrackSVGPath(trackRecord : RenderedCoverageTrackRecord) : string
 {
     return getReadableAndWritable(`rt/circularFigures/${trackRecord.uuidFigure}/coverage/${trackRecord.uuidAlign}/${trackRecord.uuidContig}/${trackRecord.uuid}.svg`);
 }
 
+/**
+ * Overwrites the disk SVG cache for the specified coverage track
+ * 
+ * @export
+ * @param {RenderedCoverageTrackRecord} trackRecord 
+ * @param {string} svg 
+ */
 export function cachCoverageTrackSVG(trackRecord : RenderedCoverageTrackRecord,svg : string) : void
 {
     fs.writeFileSync(getCachedCoverageTrackSVGPath(trackRecord),svg);
 }
 
+/**
+ * Returns the current SVG of the specified coverage track
+ * 
+ * @export
+ * @param {RenderedCoverageTrackRecord} trackRecord 
+ * @returns {string} 
+ */
 export function getCoverageTrackSVGFromCache(trackRecord : RenderedCoverageTrackRecord) : string
 {
     return fs.readFileSync(getCachedCoverageTrackSVGPath(trackRecord)).toString();
 }
 
 
+/**
+ * Holds information relevant to display for a given SNP
+ * 
+ * @interface SNPPosition
+ */
 interface SNPPosition
 {
     position : number;
@@ -406,66 +586,76 @@ interface SNPPosition
     adjust : number;
 }
 
+/**
+ * Returns the templates for a SNP track of align for the contig specified by contiguuid on figure in the specified colour
+ * 
+ * @export
+ * @param {CircularFigure} figure 
+ * @param {string} contiguuid 
+ * @param {AlignData} align 
+ * @param {string} [colour="rgb(64,64,64)"] 
+ * @returns {Promise<string>} 
+ */
 export function renderSNPTrack(
     figure : CircularFigure,
     contiguuid : string,
     align : AlignData,
-    cb : (status : boolean,SNPTracks : string) => void
-    ,colour : string = "rgb(64,64,64)"
-) : void
+    colour : string = "rgb(64,64,64)"
+) : Promise<string>
 {
-    let SNPTracks : string = "";
+    return new Promise<string>((resolve,reject) => {
+        let SNPTracks : string = "";
 
-    let baseBP = getBaseBP(figure,contiguuid);
-    if(baseBP == -1)
-        throw new Error("Could not get base position of "+figure.name+" for reference");
+        let baseBP = getBaseBP(figure,contiguuid);
+        if(baseBP == -1)
+            throw new Error("Could not get base position of "+figure.name+" for reference");
 
-    let SNPPositions : Array<SNPPosition> = new Array<SNPPosition>();
+        let SNPPositions : Array<SNPPosition> = new Array<SNPPosition>();
 
-    let SNPs : Array<VCF2JSONRow>;
-    SNPs = jsonFile.readFileSync(getSNPsJSON(align));
+        let SNPs : Array<VCF2JSONRow>;
+        SNPs = jsonFile.readFileSync(getSNPsJSON(align));
 
-    let contigName = "";
+        let contigName = "";
 
-    for(let i = 0; i != figure.contigs.length; ++i)
-    {
-        if(figure.contigs[i].uuid == contiguuid)
+        for(let i = 0; i != figure.contigs.length; ++i)
         {
-            contigName = figure.contigs[i].name;
-            break;
-        }
-    }
-
-    for(let i = 0; i != SNPs.length; ++i)
-    {
-        if(SNPs[i].chrom == (contigName.split(/\s/g))[0])
-        {
-            SNPPositions.push(<SNPPosition>{
-                position : baseBP + parseInt(SNPs[i].position),
-                relativePosition : parseInt(SNPs[i].position),
-                from : SNPs[i].ref,
-                to : SNPs[i].var,
-                adjust : 20,
-                colour : colour
-            });
-        }
-    }
-    SNPPositions.sort(function(a : SNPPosition,b : SNPPosition){return a.position - b.position;});
-
-    for(let i = 0; i != SNPPositions.length; ++i)
-    {
-        for(let k = 0; k != SNPPositions.length; ++k)
-        {
-            if(i != k && i < k)
+            if(figure.contigs[i].uuid == contiguuid)
             {
-                if((SNPPositions[k].position - SNPPositions[i].position) <= 85)
+                contigName = figure.contigs[i].name;
+                break;
+            }
+        }
+
+        for(let i = 0; i != SNPs.length; ++i)
+        {
+            if(SNPs[i].chrom == (contigName.split(/\s/g))[0])
+            {
+                SNPPositions.push(<SNPPosition>{
+                    position : baseBP + parseInt(SNPs[i].position),
+                    relativePosition : parseInt(SNPs[i].position),
+                    from : SNPs[i].ref,
+                    to : SNPs[i].var,
+                    adjust : 20,
+                    colour : colour
+                });
+            }
+        }
+        SNPPositions.sort(function(a : SNPPosition,b : SNPPosition){return a.position - b.position;});
+
+        for(let i = 0; i != SNPPositions.length; ++i)
+        {
+            for(let k = 0; k != SNPPositions.length; ++k)
+            {
+                if(i != k && i < k)
                 {
-                    SNPPositions[k].adjust += 85;
+                    if((SNPPositions[k].position - SNPPositions[i].position) <= 85)
+                    {
+                        SNPPositions[k].adjust += 85;
+                    }
                 }
             }
         }
-    }
-    for(let i = 0; i != SNPPositions.length; ++i)
+        for(let i = 0; i != SNPPositions.length; ++i)
         {
             SNPTracks += `
                 <plasmidtrack width="20" trackstyle="fill-opacity:0.0" radius="{{genome.radius}}">
@@ -475,58 +665,100 @@ export function renderSNPTrack(
                 </plasmidtrack> 
                 `;
         }
-        cb(true,SNPTracks);
+        resolve(SNPTracks);
+    });
 
 }
 
+/**
+ * Returns the templates for a SNP track of align for the contig specified by contiguuid on figure in the specified colour. Creates and saves a trackrecord
+ * on figure with the results
+ * 
+ * @export
+ * @param {CircularFigure} figure 
+ * @param {string} contiguuid 
+ * @param {AlignData} align 
+ * @param {string} [colour="rgb(64,64,64)"] 
+ * @returns {Promise<string>} 
+ */
 export function cacheSNPTrack(
     figure : CircularFigure,
     contiguuid : string,
     align : AlignData,
-    cb : (status : boolean,SNPTracks : string) => void,
     colour : string = "rgb(64,64,64)"
-) : void
+) : Promise<string>
 {
-    try
-    {
-        mkdirp.sync(getReadableAndWritable(`rt/circularFigures/${figure.uuid}/snp/${align.uuid}/${contiguuid}`));
-    }
-    catch(err){}
-    renderSNPTrack(
-        figure,
-        contiguuid,
-        align,
-        function(status,SNPTracks){
-            if(status == true)
-            {
-                let trackRecord = new RenderedSNPTrackRecord(align.uuid,contiguuid,figure.uuid,colour);
-                fs.writeFileSync(getCachedSNPTrackPath(trackRecord),SNPTracks);
-                figure.renderedSNPTracks.push(trackRecord);
-            }
-            cb(status,SNPTracks);
-        },colour);
+    return new Promise<string>(async (resolve,reject) => {
+        try
+        {
+            mkdirp.sync(getReadableAndWritable(`rt/circularFigures/${figure.uuid}/snp/${align.uuid}/${contiguuid}`));
+        }
+        catch(err){}
+        let SNPTracks = await renderSNPTrack(figure,contiguuid,align,colour);
+        let trackRecord = new RenderedSNPTrackRecord(align.uuid,contiguuid,figure.uuid,colour);
+        fs.writeFileSync(getCachedSNPTrackPath(trackRecord),SNPTracks);
+        figure.renderedSNPTracks.push(trackRecord);
+        resolve(SNPTracks);
+    });
 }
 
+/**
+ * Returns the path to the template cache for the specified SNP track
+ * 
+ * @export
+ * @param {RenderedSNPTrackRecord} trackRecord 
+ * @returns {string} 
+ */
 export function getCachedSNPTrackPath(trackRecord : RenderedSNPTrackRecord) : string
 {
     return getReadableAndWritable(`rt/circularFigures/${trackRecord.uuidFigure}/snp/${trackRecord.uuidAlign}/${trackRecord.uuidContig}/${trackRecord.uuid}`);
 }
 
+/**
+ * Returns the path to the SVG cache for the specified SNP track
+ * 
+ * @export
+ * @param {RenderedSNPTrackRecord} trackRecord 
+ * @returns {string} 
+ */
 export function getCachedSNPTrackSVGPath(trackRecord : RenderedSNPTrackRecord) : string
 {
     return getReadableAndWritable(`rt/circularFigures/${trackRecord.uuidFigure}/snp/${trackRecord.uuidAlign}/${trackRecord.uuidContig}/${trackRecord.uuid}.svg`);
 }
 
+/**
+ * Overwrites the disk SVG cache for the specified SNP track
+ * 
+ * @export
+ * @param {RenderedSNPTrackRecord} trackRecord 
+ * @param {string} svg 
+ */
 export function cacheSNPTrackSVG(trackRecord : RenderedSNPTrackRecord,svg : string) : void
 {
     fs.writeFileSync(getCachedSNPTrackSVGPath(trackRecord),svg);
 }
 
+/**
+ * Returns the current SVG of the specified SNP track
+ * 
+ * @export
+ * @param {RenderedSNPTrackRecord} trackRecord 
+ * @returns {string} 
+ */
 export function getSNPTrackSVGFromCache(trackRecord : RenderedSNPTrackRecord) : string
 {
     return fs.readFileSync(getCachedSNPTrackSVGPath(trackRecord)).toString();
 }
 
+/**
+ * Wraps templates with the correct markup, based on figure to make them compilable by Angular
+ * 
+ * @export
+ * @param {CircularFigure} figure 
+ * @param {string} templates 
+ * @param {string} [id=""] 
+ * @returns {string} 
+ */
 export function assembleCompilableTemplates(figure : CircularFigure,templates : string,id = "") : string
 {
     let totalBP = 0;
@@ -548,11 +780,26 @@ export function assembleCompilableTemplates(figure : CircularFigure,templates : 
     `;
 }
 
+/**
+ * Returns templates for the base figure of figure able to be compiled by Angular
+ * 
+ * @export
+ * @param {CircularFigure} figure 
+ * @returns {string} 
+ */
 export function assembleCompilableBaseFigureTemplates(figure : CircularFigure) : string
 {
     return assembleCompilableTemplates(figure,getBaseFigureFromCache(figure));
 }
 
+/**
+ * Returns templates for the specified coverage track record of figure able to be compiled by Angular
+ * 
+ * @export
+ * @param {CircularFigure} figure 
+ * @param {RenderedCoverageTrackRecord} trackRecord 
+ * @returns {string} 
+ */
 export function assembleCompilableCoverageTrack(figure : CircularFigure,trackRecord : RenderedCoverageTrackRecord) : string
 {
     return assembleCompilableTemplates(
@@ -563,6 +810,14 @@ export function assembleCompilableCoverageTrack(figure : CircularFigure,trackRec
     );
 }
 
+/**
+ * Returns templates for the specified SNP track record of figure able to be compiled by Angular
+ * 
+ * @export
+ * @param {CircularFigure} figure 
+ * @param {RenderedSNPTrackRecord} trackRecord 
+ * @returns {string} 
+ */
 export function assembleCompilableSNPTrack(figure : CircularFigure,trackRecord : RenderedSNPTrackRecord) : string
 {
     return assembleCompilableTemplates(
