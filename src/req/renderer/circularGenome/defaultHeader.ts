@@ -1,4 +1,4 @@
-module.exports = `
+export let defaultHeader = `
     <style>
             @import url("http://fonts.googleapis.com/css?family=Lato:300,400,700|Donegal+One|Source+Code+Pro:400");
             body {font-family: 'Lato';font-weight:400;}

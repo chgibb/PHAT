@@ -10,6 +10,7 @@ import * as masterView from "./masterView";
 import * as rightPanel from "./rightPanel";
 
 import {VCF2JSONRow} from "./../../varScanMPileup2SNPVCF2JSON";
+import {Fasta} from "./../../fasta";
 
 import {renderQCReportTable} from "./reportView/renderQCReportTable";
 import {renderAlignmentReportTable} from "./reportView/renderAlignmentReportTable";
@@ -99,9 +100,32 @@ export class View extends viewMgr.View
             }
             if(event.target.id == masterView.alignData[i].uuid+"ViewAlignment")
             {
-                if(!masterView.alignData[i].summary.overallAlignmentRate)
+                if(masterView.alignData[i].summary && !masterView.alignData[i].summary.overallAlignmentRate)
                 {
                     alert(`Can't view an alignment with 0% alignment rate`);
+                    return;
+                }
+                let fasta : Fasta;
+                //the fasta property of AlignData is not updated when the original fasta object is modified
+                //find the original and see if it has been prepared for visualization, otherwise the pileup viewer
+                //will not be able to visualize the alignment
+                for(let k = 0; k != masterView.fastaInputs.length; ++k)
+                {
+                    
+                    if(masterView.alignData[i].fasta && masterView.fastaInputs[k].uuid == masterView.alignData[i].fasta.uuid)
+                    {
+                        fasta = masterView.fastaInputs[k];
+                        break;
+                    }
+                }
+                if(!fasta)
+                {
+                    alert(`You must link this alignment to a reference to visualize`);
+                    return;
+                }
+                if(!fasta.indexedForVisualization)
+                {
+                    alert(`The reference for this alignment is not ready for visualization`);
                     return;
                 }
                 ipc.send(
@@ -110,7 +134,7 @@ export class View extends viewMgr.View
                         opName : "openPileupViewer",
                         pileupViewerParams : {
                             align : masterView.alignData[i],
-                            contig : masterView.alignData[i].fasta.contigs[0].name.split(' ')[0],
+                            contig : fasta.contigs[0].name.split(' ')[0],
                             start : 0,
                             stop : 100
                         }
@@ -119,7 +143,7 @@ export class View extends viewMgr.View
             }
             if(event.target.id == masterView.alignData[i].uuid+"AlignmentRate")
             {
-                if(!masterView.alignData[i].summary.overallAlignmentRate)
+                if(masterView.alignData[i].summary && !masterView.alignData[i].summary.overallAlignmentRate)
                 {
                     alert(`Can't view an alignment with 0% alignment rate`);
                     return;
@@ -135,6 +159,25 @@ export class View extends viewMgr.View
                 {
                     if(event.target.id == `viewSNP${k}`)
                     {
+                        let fasta : Fasta;
+                        for(let j = 0; j != masterView.fastaInputs.length; ++j)
+                        {
+                            if(masterView.fastaInputs[j].uuid == masterView.alignData[i].fasta.uuid)
+                            {
+                                fasta = masterView.fastaInputs[j];
+                                break;
+                            }
+                        }
+                        if(!fasta)
+                        {
+                            alert(`You must link this alignment to a reference to visualize`);
+                            return;
+                        }
+                        if(!fasta.indexedForVisualization)
+                        {
+                            alert(`The reference for this alignment is not ready for visualization`);
+                            return;
+                        }
                         //trim off leading text
                         let snpPos = parseInt(event.target.id.replace(/(viewSNP)/,""));
                         //set beginning position in viewer offset by 20

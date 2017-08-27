@@ -7,6 +7,7 @@ import {Fasta} from "./fasta";
 import {Bowtie2Report} from "./bowTie2AlignmentReportParser";
 import {varScanMPileup2SNPReport} from "./varScanMPileup2SNPReportParser";
 import {SamToolsIdxStatsReport} from "./samToolsIdxStatsReport";
+import {SamToolsFlagStatReport} from "./samToolsFlagStatReport";
 export class AlignData
 {
     public uuid : string;
@@ -22,7 +23,9 @@ export class AlignData
     public summaryText : string;
     public varScanSNPSummary : varScanMPileup2SNPReport;
     public varScanSNPReport : string;
-    public idxStatsReport : Array<SamToolsIdxStatsReport>; 
+    public idxStatsReport : Array<SamToolsIdxStatsReport>;
+    public flagStatReport : SamToolsFlagStatReport;
+    public isExternalAlignment : boolean; 
     public constructor()
     {
         this.fastqs = new Array();
@@ -84,4 +87,8 @@ export function getSNPsJSON(alignData : AlignData) : string
 export function getIdxStats(alignData : AlignData) : string
 {
     return getReadableAndWritable(`rt/AlignmentArtifacts/${alignData.uuid}/idxstats`);
+}
+export function getFlagStats(alignData : AlignData) : string
+{
+    return getReadableAndWritable(`rt/AlignmentArtifacts/${alignData.uuid}/flagstats`);
 }
