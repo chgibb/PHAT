@@ -149,10 +149,9 @@ export function renderAlignmentReportTable() : string
                             res += `<td>Unknown</td>`;
                         }
                     }
-
-                    if(masterView.alignData[i].varScanSNPSummary)
+                    if(rightPanel.alignmentInfoSelection.pValueThreshold)
                     {
-                        if(!masterView.alignData[i].isExternalAlignment)
+                        if(masterView.alignData[i].varScanSNPSummary)
                         {
                             res += `<td>${masterView.alignData[i].varScanSNPSummary.pValueThresh}</td>`;
                         }
