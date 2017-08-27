@@ -12,6 +12,8 @@ import {DownloadAndInstallUpdate} from "./../operations/DownloadAndInstallUpdate
 import {NewProject} from "./../operations/NewProject";
 import {OpenProject} from "./../operations/OpenProject";
 import {SaveCurrentProject} from "./../operations//SaveCurrentProject";
+import {InputBamFile} from "./../operations/InputBamFile";
+import {LinkRefSeqToAlignment} from "./../operations/LinkRefSeqToAlignment";
 
 export function registerOperations() : void
 {
@@ -22,6 +24,8 @@ export function registerOperations() : void
     atomic.register("renderCoverageTrackForContig",RenderCoverageTrackForContig);
     atomic.register("renderSNPTrackForContig",RenderSNPTrackForContig);
     atomic.register("compileTemplates",CompileTemplates);
+    atomic.register("inputBamFile",InputBamFile);
+    atomic.register("linkRefSeqToAlignment",LinkRefSeqToAlignment);
 
     atomic.register("checkForUpdate",CheckForUpdate);
     atomic.register("downloadAndInstallUpdate",DownloadAndInstallUpdate);
