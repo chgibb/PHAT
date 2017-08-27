@@ -11,7 +11,11 @@ export function samToolsDepth(alignData: AlignData,logger : atomic.AtomicOperati
 {
     return new Promise((resolve,reject) => {
         let samToolsExe = getReadable('samtools');
-        fs.mkdirSync(getCoverageDir(alignData));
+        try
+        {
+            fs.mkdirSync(getCoverageDir(alignData));
+        }
+        catch(err){}
         let samToolsCoverageFileStream : fs.WriteStream = fs.createWriteStream(getCoverage(alignData));
 
         let jobCallBack : JobCallBackObject = {
