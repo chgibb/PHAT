@@ -73,7 +73,6 @@ export function bowTie2Align(alignData : AlignData,logger : atomic.AtomicOperati
         else
             alignData.alias = `${alignData.fastqs[0].alias}; ${alignData.fasta.alias}`;
         fs.mkdirSync(getArtifactDir(alignData));
-        fs.mkdirSync(getCoverageDir(alignData));
         let bowtieJob = new Job(bowtie2Exe,args,"",true,jobCallBack,{});
         try
         {
