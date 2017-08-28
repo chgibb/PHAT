@@ -38,8 +38,12 @@ export class IndexFastaForVisualization extends atomic.AtomicOperation
             return new Promise<void>(async (resolve,reject) => {
                 try
                 {
+                    self.progressMessage = "Building 2bit archive";
+                    self.update();
                     await faToTwoBit(self);
                     self.setSuccess(self.twoBitFlags);
+                    
+                    self.progressMessage = "Reading contigs";
                     self.update();
 
                     //don't reparse contigs if we don't have to
