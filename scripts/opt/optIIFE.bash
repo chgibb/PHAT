@@ -7,6 +7,7 @@ if [[ "$OSTYPE" == "cygwin" ]]; then
 fi
 if [[ "$APPVEYOR" == "true" ]]; then
     exit 0
+fi
 for f in $target/*.js
 do
     if [[ "$f" != "$target/pileup.js" ]]; then
