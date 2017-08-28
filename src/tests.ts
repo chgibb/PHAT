@@ -11,8 +11,10 @@ import * as hpv16Ref from "./req/tests/hpv16Ref";
 import * as hpv18Ref from "./req/tests/hpv18Ref";
 import * as hpv16Figure from "./req/tests/hpv16Figure";
 import * as L6R1HPV16Align from "./req/tests/L6R1HPV16Align";
+import * as L6R1HPV18Align from "./req/tests/L6R1HPV18Align";
 
 import * as L6R1HPV16AlignImported from "./req/tests/L6R1HPV16AlignImported";
+import * as L6R1HPV18AlignImported from "./req/tests/L6R1HPV18AlignImported";
 
 
 import {testVersionParser} from "./req/tests/testVersionParser";
@@ -32,6 +34,8 @@ import {testL6R1HPV18SNPTrackRenderer} from "./req/tests/testL6R1HPV18SNPTrackRe
 
 import {testL6R1HPV16AlignImportedImporting} from "./req/tests/testL6R1HPV16AlignImportedImporting";
 import {testL6R1HPV16AlignImportedLinking} from "./req/tests/testL6R1HPV16AlignImportedLinking";
+import {testL6R1HPV18AlignImportedImporting} from "./req/tests/testL6R1HPV18AlignImportedImporting";
+import {testL6R1HPV18AlignImportedLinking} from "./req/tests/testL6R1HPV18AlignImportedLinking";
 
 const pjson = require("./resources/app/package.json");
 import {isBeta,versionIsGreaterThan} from "./req/versionIsGreaterThan";
@@ -266,6 +270,18 @@ async function runTests() : Promise<void>
 		catch(err)
 		{
 			console.log("bam linking threw exception");
+		}
+
+		console.log("Importing binary alignment map from L6R1 HPV18 alignment");
+		atomic.addOperation("inputBamFile",getUnSortedBam(L6R1HPV18Align.get()));
+		try
+		{
+			await testL6R1HPV18AlignImportedImporting();
+		}
+		catch(err)
+		{
+			console.log("bam importing threw exception "+err);
+			return reject();
 		}
 		resolve();
 	});
