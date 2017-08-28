@@ -299,6 +299,21 @@ export class View extends viewMgr.View
         let linkRefView = <linkRefView.View>viewMgr.getViewByName("linkRefView",this.views);
         linkRefView.fastaInputs = this.fastaInputs;
         linkRefView.progressMessage = this.progressMessage;
+        if(linkRefView.inspectingAlign && this.currentView == "linkRefView")
+        {
+            for(let i = 0; i != this.aligns.length; ++i)
+            {
+                if(this.aligns[i].uuid == linkRefView.inspectingAlign.uuid)
+                {
+                    if(this.aligns[i].fasta !== undefined)
+                    {
+                        this.currentView = "alignView";
+                        viewMgr.render();
+                        break;
+                    }
+                }
+            }
+        }
     }
 }
 export function addView(arr : Array<viewMgr.View>,div : string) : void
