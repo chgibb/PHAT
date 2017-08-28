@@ -65,6 +65,15 @@ $
                 action : "getKey"
             }
         );
+        ipc.send(
+            "getKey",
+            <GetKeyEvent>{
+                action : "getKey",
+                channel : "application",
+                key : "operations",
+                replyChannel : "input"
+            }
+        );
 
         //subscribe to changes in data
         ipc.send(
@@ -94,6 +103,16 @@ $
                 action : "keySub"
             }
         );
+        ipc.send(
+            "keySub",
+            <KeySubEvent>{
+                action : "keySub",
+                channel : "application",
+                key : "operations",
+                replyChannel : "input"
+            }
+        );
+
         viewMgr.render();
 
         //on message from main process
