@@ -4,6 +4,7 @@ import {AlignData} from "./../../alignData";
 export class View extends viewMgr.View
 {
     public aligns : Array<AlignData>;
+    public progressMessage : string;
     public constructor(div : string)
     {
         super("alignView",div);
@@ -15,7 +16,7 @@ export class View extends viewMgr.View
     {
         return `
         <img class="topButton activeHover activeHoverButton" id="browseAlignFiles" src="${getReadable("img/browseButton.png")}"><br />
-        <p id="loadingText"></p>
+        <p id="loadingText">${this.progressMessage}</p>
         <div id="alignTableDiv" style="width:100%;">
         <table style="width:100%;">
             <tr>

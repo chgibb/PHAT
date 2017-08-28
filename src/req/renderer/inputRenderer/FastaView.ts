@@ -4,6 +4,7 @@ import {Fasta} from "./../../fasta";
 export class View extends viewMgr.View
 {
     public fastaInputs : Array<Fasta>;
+    public progressMessage : string;
     public constructor(div : string)
     {
         super("fastaView",div);
@@ -15,7 +16,7 @@ export class View extends viewMgr.View
     {
         return `
             <img class="topButton activeHover activeHoverButton" id="browseFastaFiles" src="${getReadable("img/browseButton.png")}"><br />
-            <p id="loadingText"></p>
+            <p id="loadingText">${this.progressMessage}</p>
             <div id="fastaTableDiv" style="width:100%;">
                 <table style="width:100%;">
                     <tr>

@@ -26,6 +26,7 @@ export class View extends viewMgr.View
     public fastaInputs : Array<Fasta>;
     public aligns : Array<AlignData>;
     public currentView : "fastqView" | "fastaView" | "alignView" | "linkRefView";
+    public progressMessage : string;
     public constructor(div : string)
     {
         super("masterView",div);
@@ -35,6 +36,7 @@ export class View extends viewMgr.View
         this.fastaInputs = new Array<Fasta>();
         this.aligns = new Array<AlignData>();
         this.currentView = "fastqView";
+        this.progressMessage = "";
     }
     public onMount() : void
     {
@@ -284,15 +286,19 @@ export class View extends viewMgr.View
     {
         let fastqView = <fastqView.View>viewMgr.getViewByName("fastqView",this.views);
         fastqView.fastqInputs = this.fastqInputs;
+        fastqView.progressMessage = this.progressMessage;
 
         let fastaView = <fastaView.View>viewMgr.getViewByName("fastaView",this.views);
         fastaView.fastaInputs = this.fastaInputs;
+        fastaView.progressMessage = this.progressMessage;
 
         let alignView = <alignView.View>viewMgr.getViewByName("alignView",this.views);
         alignView.aligns = this.aligns;
+        alignView.progressMessage = this.progressMessage;
 
         let linkRefView = <linkRefView.View>viewMgr.getViewByName("linkRefView",this.views);
         linkRefView.fastaInputs = this.fastaInputs;
+        linkRefView.progressMessage = this.progressMessage;
     }
 }
 export function addView(arr : Array<viewMgr.View>,div : string) : void
