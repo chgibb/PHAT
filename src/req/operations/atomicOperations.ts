@@ -106,7 +106,7 @@ export abstract class AtomicOperation
 
 
     /**
-     * Indicates whether the current operation is currently executing
+     * Indicates whether the operation is currently executing
      * 
      * @type {boolean}
      * @memberof AtomicOperation
