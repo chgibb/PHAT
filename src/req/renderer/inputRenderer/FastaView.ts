@@ -14,7 +14,8 @@ export class View extends viewMgr.View
     public renderView() : string
     {
         return `
-        <img class="topButton activeHover activeHoverButton" id="browseFastaFiles" src="${getReadable("img/browseButton.png")}"><br />
+            <img class="topButton activeHover activeHoverButton" id="browseFastaFiles" src="${getReadable("img/browseButton.png")}"><br />
+            <p id="loadingText"></p>
             <div id="fastaTableDiv" style="width:100%;">
                 <table style="width:100%;">
                     <tr>

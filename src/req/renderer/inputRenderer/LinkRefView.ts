@@ -24,6 +24,7 @@ export class View extends viewMgr.View
     {
         return `
             <img class="topButton activeHover activeHoverButton" id="linkRefViewGoBackAlignView" src="${getReadable("img/GoBack.png")}"><br />
+            <p id="loadingText"></p>
             <br />
             <br />
             <p>Potentially Compatible References</p>
