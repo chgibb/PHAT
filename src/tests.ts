@@ -270,6 +270,7 @@ async function runTests() : Promise<void>
 		catch(err)
 		{
 			console.log("bam linking threw exception");
+			return reject();
 		}
 
 		console.log("Importing binary alignment map from L6R1 HPV18 alignment");
@@ -283,6 +284,22 @@ async function runTests() : Promise<void>
 			console.log("bam importing threw exception "+err);
 			return reject();
 		}
+
+		console.log("Linking imported L6R1 HPV18 binary alignment map to HPv18");
+		atomic.addOperation("linkRefSeqToAlignment",{
+			align : L6R1HPV18AlignImported.get(),
+			fasta : hpv18Ref.get()
+		});
+		try
+		{
+			await testL6R1HPV18AlignImportedLinking();
+		}
+		catch(err)
+		{
+			console.log("bam linking threw exception");
+			return reject();
+		}
+
 		resolve();
 	});
 
