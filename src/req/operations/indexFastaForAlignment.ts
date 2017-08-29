@@ -77,12 +77,20 @@ export class IndexFastaForAlignment extends atomic.AtomicOperation
             return new Promise<void>(async (resolve,reject) => {
                 try
                 {
+                    self.progressMessage = "Building bowtie2 index";
+                    self.update();
                     await bowTie2Build(self);
                     self.setSuccess(self.bowtieFlags);
                     self.update();
 
+                    self.progressMessage = "Building fai index";
+                    self.update();
+
                     await samToolsFaidx(self.fasta,self);
                     self.setSuccess(self.faiFlags);
+                    self.update();
+
+                    self.progressMessage = "Reading contigs";
                     self.update();
 
                     //don't reparse contigs if we don't have to

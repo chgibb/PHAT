@@ -60,20 +60,25 @@ process.on(
         {
             (async function(){
                 progressMessage = "Copying BAM";
+                update();
                 await new Promise<void>((resolve,reject) => {
                     fse.copySync(bamPath,getUnSortedBam(align));
                     resolve();
                 });
                 progressMessage = "Sorting BAM";
+                update();
                 await samToolsSort(align,logger);
 
                 progressMessage = "Getting Flag Statistics";
+                update();
                 await samToolsFlagStat(align,logger);
 
                 progressMessage = "Generating index";
+                update();
                 await samToolsIndex(align,logger);
 
                 progressMessage = "Getting mapped reads";
+                update();
                 await samToolsIdxStats(align,logger);
 
                 flags.done = true

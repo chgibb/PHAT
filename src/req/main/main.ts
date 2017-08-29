@@ -121,6 +121,11 @@ app.on
 		//on completion of any operation, wait and then broadcast the queue to listening windows
 		atomicOp.setOnComplete(
 			function(op : atomicOp.AtomicOperation){
+				//upon success of any operation except compiling templates to SVGs
+				if(op.flags.success && op.name != "compileTemplates")
+				{
+					dataMgr.saveData();
+				}
 				setTimeout(function(){
 					setImmediate(function(){
 						dataMgr.setKey("application","operations",atomicOp.operationsQueue);

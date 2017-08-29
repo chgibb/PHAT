@@ -38,6 +38,15 @@ $
             "getKey",
             <GetKeyEvent>{
                 action : "getKey",
+                channel : "application",
+                key : "operations",
+                replyChannel : "QC"
+            }
+        );
+        ipc.send(
+            "getKey",
+            <GetKeyEvent>{
+                action : "getKey",
                 channel : "input",
                 key : "fastqInputs",
                 replyChannel : "QC"

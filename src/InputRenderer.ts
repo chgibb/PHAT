@@ -8,6 +8,13 @@ import * as viewMgr from "./req/renderer/viewMgr";
 import * as masterView from "./req/renderer/inputRenderer/masterView";
 import * as fastqView from "./req/renderer/inputRenderer/FastqView";
 import * as fastaView from "./req/renderer/inputRenderer/FastaView";
+
+import {AtomicOperation} from "./req/operations/atomicOperations";
+import {IndexFastaForAlignment} from "./req/operations/indexFastaForAlignment";
+import {IndexFastaForVisualization} from "./req/operations/indexFastaForVisualization";
+import {InputBamFile} from "./req/operations/InputBamFile";
+import {LinkRefSeqToAlignment} from "./req/operations/LinkRefSeqToAlignment";
+
 import * as $ from "jquery";
 (<any>window).$ = $;
 require("./req/renderer/commonBehaviour");
@@ -65,6 +72,15 @@ $
                 action : "getKey"
             }
         );
+        ipc.send(
+            "getKey",
+            <GetKeyEvent>{
+                action : "getKey",
+                channel : "application",
+                key : "operations",
+                replyChannel : "input"
+            }
+        );
 
         //subscribe to changes in data
         ipc.send(
@@ -94,6 +110,16 @@ $
                 action : "keySub"
             }
         );
+        ipc.send(
+            "keySub",
+            <KeySubEvent>{
+                action : "keySub",
+                channel : "application",
+                key : "operations",
+                replyChannel : "input"
+            }
+        );
+
         viewMgr.render();
 
         //on message from main process
@@ -126,6 +152,31 @@ $
                             masterView.aligns = arg.val;
                         }
                     }
+                    let found = false;
+                    if(arg.key == "operations")
+                    {
+                        if(arg.val !== undefined)
+                        {
+                            let ops : Array<AtomicOperation> = arg.val;
+                            console.log(ops);
+                            for(let i = 0; i != ops.length; ++i)
+                            {
+                                if(ops[i].running)
+                                {
+                                    if(ops[i].name == "inputBamFile" || ops[i].name == "linkRefSeqToAlignment" ||
+                                    ops[i].name == "indexFastaForVisualization" || ops[i].name == "indexFastaForAlignment")
+                                    {
+                                        console.log("found input bam file");
+                                        masterView.progressMessage = ops[i].progressMessage;
+                                        found = true;
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    if(!found)
+                        masterView.progressMessage = "";
                     masterView.dataChanged();
                 }
                 viewMgr.render();
