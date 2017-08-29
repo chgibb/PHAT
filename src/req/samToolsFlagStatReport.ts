@@ -19,7 +19,7 @@ export function samToolsFlagStatReportParser(report : string) : SamToolsFlagStat
         }
         if(/mapped/.test(lines[i]))
         {
-            let percentages = /(\d\d\d\.\d\d%)|(\d\d.\d\d%)/.exec(lines[i]);
+            let percentages = /(\d\d\d\.\d\d%)|(\d\d.\d\d%)|(\d.\d\d%)/.exec(lines[i]);
             if(percentages)
             {
                 let trimmed = percentages[0].substr(0,percentages[0].length - 1);
