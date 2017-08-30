@@ -9,6 +9,7 @@ export class View extends viewMgr.View
     public inspectingAlign : AlignData;
     public fastaInputs : Array<Fasta>;
     public linkableRefSeqs : Array<LinkableRefSeq>;
+    public progressMessage : string;
     public constructor(div : string)
     {
         super("linkRefView",div);
@@ -24,6 +25,7 @@ export class View extends viewMgr.View
     {
         return `
             <img class="topButton activeHover activeHoverButton" id="linkRefViewGoBackAlignView" src="${getReadable("img/GoBack.png")}"><br />
+            <p id="loadingText">${this.progressMessage}</p>
             <br />
             <br />
             <p>Potentially Compatible References</p>
