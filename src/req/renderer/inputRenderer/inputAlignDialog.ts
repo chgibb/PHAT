@@ -12,7 +12,7 @@ export function inputAlignDialog() : void
             filters : [
                 {
                     name : "Binary Alignment Maps",
-                    extensions : ["bam"]
+                    extensions : ["bam","sam"]
                 }
             ],
             properties : [

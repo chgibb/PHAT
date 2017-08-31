@@ -2,9 +2,12 @@ const fse = require("fs-extra");
 
 import {AtomicOperationForkEvent,CompletionFlags} from "./req/atomicOperationsIPC";
 import * as atomic from "./req/operations/atomicOperations";
-import {AlignData,getUnSortedBam} from "./req/alignData";
+import {AlignData,getUnSortedBam,getSam,getArtifactDir} from "./req/alignData";
 import trimPath from "./req/trimPath";
+import {getFolderSize} from "./req/getFolderSize";
+import formatByteString from "./req/renderer/formatByteString";
 
+import {samToolsView} from "./req/operations/RunAlignment/samToolsView";
 import {samToolsSort} from "./req/operations/RunAlignment/samToolsSort";
 import {samToolsFlagStat} from "./req/operations/InputBamFile/samToolsFlagStat";
 import {samToolsIndex} from "./req/operations/RunAlignment/samToolsIndex";
@@ -59,12 +62,29 @@ process.on(
         if(ev.run == true)
         {
             (async function(){
-                progressMessage = "Copying BAM";
+                let isSam = false;
+                if(bamPath.split(".").pop() == "sam")
+                    isSam = true;
+
+                progressMessage = "Copying alignment map";
                 update();
                 await new Promise<void>((resolve,reject) => {
-                    fse.copySync(bamPath,getUnSortedBam(align));
+                    if(!isSam)
+                        fse.copySync(bamPath,getUnSortedBam(align));
+                    else
+                        fse.copySync(bamPath,getSam(align));
                     resolve();
                 });
+
+                atomic.logString(logger.logRecord,`isSam: ${isSam}  ${"\n"}`);
+                if(isSam)
+                {
+                    progressMessage = "Converting SAM to BAM";
+                    update();
+                    await samToolsView(align,logger);
+
+                }
+
                 progressMessage = "Sorting BAM";
                 update();
                 await samToolsSort(align,logger);
@@ -81,6 +101,8 @@ process.on(
                 update();
                 await samToolsIdxStats(align,logger);
 
+                align.size = getFolderSize(getArtifactDir(align));
+                align.sizeString = formatByteString(align.size);
                 flags.done = true
                 flags.success = true;
                 update();
