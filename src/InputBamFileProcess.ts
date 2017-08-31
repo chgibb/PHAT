@@ -2,8 +2,10 @@ const fse = require("fs-extra");
 
 import {AtomicOperationForkEvent,CompletionFlags} from "./req/atomicOperationsIPC";
 import * as atomic from "./req/operations/atomicOperations";
-import {AlignData,getUnSortedBam,getSam} from "./req/alignData";
+import {AlignData,getUnSortedBam,getSam,getArtifactDir} from "./req/alignData";
 import trimPath from "./req/trimPath";
+import {getFolderSize} from "./req/getFolderSize";
+import formatByteString from "./req/renderer/formatByteString";
 
 import {samToolsView} from "./req/operations/RunAlignment/samToolsView";
 import {samToolsSort} from "./req/operations/RunAlignment/samToolsSort";
@@ -99,6 +101,8 @@ process.on(
                 update();
                 await samToolsIdxStats(align,logger);
 
+                align.size = getFolderSize(getArtifactDir(align));
+                align.sizeString = formatByteString(align.size);
                 flags.done = true
                 flags.success = true;
                 update();
