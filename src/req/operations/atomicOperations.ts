@@ -104,6 +104,15 @@ export abstract class AtomicOperation
     public totalSteps : number;
     public extraData : any;
 
+    /**
+     * PIDs managed by the operation
+     * 
+     * @private
+     * @type {Array<number>}
+     * @memberof AtomicOperation
+     */
+    private pids : Array<number>;
+
 
     /**
      * Indicates whether the operation is currently executing
@@ -200,7 +209,29 @@ export abstract class AtomicOperation
         flags.failure = false;
     }
 
-    
+
+    /**
+     * Register a new PID with the operation
+     * 
+     * @param {number} pid 
+     * @memberof AtomicOperation
+     */
+    public addPID(pid : number) : void
+    {
+        this.pids.push(pid);
+    }    
+
+
+    /**
+     * Returns all PIDs registered to this operation. All PIDs are not guaranteed to be active
+     * 
+     * @returns {Array<number>} 
+     * @memberof AtomicOperation
+     */
+    public getPIDs() : Array<number>
+    {
+        return this.pids;
+    }
 
     /**
      * Method called by the scheduler when first invoking the operation
