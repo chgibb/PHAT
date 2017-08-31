@@ -24,6 +24,7 @@ export class CheckForUpdate extends atomic.AtomicOperation
         this.logRecord = atomic.openLog(this.name,"Check for Update");
         let self = this;
         this.checkForUpdateProcess = cp.fork(getReadable("CheckForUpdate.js"));
+        this.addPID(this.checkForUpdateProcess.pid);
         this.checkForUpdateProcess.on(
             "message",function(ev : AtomicOperationForkEvent)
             {

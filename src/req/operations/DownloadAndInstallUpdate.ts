@@ -20,6 +20,7 @@ export class DownloadAndInstallUpdate extends atomic.AtomicOperation
         this.logRecord = atomic.openLog(this.name,"Download and Install Update");
         let self = this;
         this.downloadAndInstallUpdateProcess = cp.fork(getReadable("DownloadAndInstallUpdate.js"));
+        this.addPID(this.downloadAndInstallUpdateProcess.pid);
         this.downloadAndInstallUpdateProcess.on(
             "message",function(ev : AtomicOperationForkEvent)
             {

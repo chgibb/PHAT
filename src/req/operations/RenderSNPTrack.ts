@@ -35,6 +35,7 @@ export class RenderSNPTrackForContig extends atomic.AtomicOperation
         this.logRecord = atomic.openLog(this.name,"Render SNP Track");
         let self = this;
         this.renderSNPTrackProcess = cp.fork(getReadable("RenderSNPTrack.js"));
+        this.addPID(this.renderSNPTrackProcess.pid);
         self.renderSNPTrackProcess.on(
             "message",function(ev : AtomicOperationForkEvent)
             {
