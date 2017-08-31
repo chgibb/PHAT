@@ -147,6 +147,8 @@ export abstract class AtomicOperation
         this.running = false;
 
         this.ignoreScheduler = false;
+
+        this.pids = new Array<number>();
     }
     public getGeneratedArtifacts() : Array<string>
     {
@@ -221,6 +223,27 @@ export abstract class AtomicOperation
         this.pids.push(pid);
     }    
 
+    /**
+     * Register a new PID with the operation. Detects if the operation is running in a fork 
+     * and passes the registration through to the managing process
+     * 
+     * @param {number} pid 
+     * @memberof AtomicOperation
+     */
+    public addPIDFromFork(pid : number) : void
+    {
+        //running forked
+        if(process.send)
+        {
+            process.send(
+                <AtomicOperationForkEvent>{
+                    pid : pid
+                }
+            );
+        }
+        else
+            this.addPID(pid);
+    }
 
     /**
      * Returns all PIDs registered to this operation. All PIDs are not guaranteed to be active
