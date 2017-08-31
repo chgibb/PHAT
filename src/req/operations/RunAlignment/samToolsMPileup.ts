@@ -55,6 +55,7 @@ export function samToolsMPileup(alignData : AlignData,logger : atomic.AtomicOper
         try
         {
             samToolsMPileupJob.Run();
+            logger.addPIDFromFork(samToolsMPileupJob.pid);
         }
         catch(err)
         {

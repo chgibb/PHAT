@@ -45,6 +45,7 @@ export function samToolsView(alignData : AlignData,logger : atomic.AtomicOperati
         try
         {
             samToolsViewJob.Run();
+            logger.addPIDFromFork(samToolsViewJob.pid);
         }
         catch(err)
         {
