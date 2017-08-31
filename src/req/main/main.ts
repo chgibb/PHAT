@@ -184,6 +184,33 @@ ipc.on
 		winMgr.windowCreators[arg.refName].Create();
 	}
 );
+
+ipc.on
+(
+	"getAllPIDs",function(event : Electron.IpcMessageEvent,arg : GetKeyEvent)
+	{
+		let res = new Array<number>();
+		res = res.concat(winMgr.getWindowPIDs());
+		for(let i = 0; i != atomicOp.operationsQueue.length; ++i)
+		{
+			if(atomicOp.operationsQueue[i].running == true)
+			{
+				res = res.concat(atomicOp.operationsQueue[i].getPIDs());
+			}
+		}
+		event.sender.send(
+			arg.channel,
+			<GetKeyEvent>{
+				replyChannel : arg.replyChannel,
+				channel : arg.channel,
+				key : "pids",
+				val : res,
+				action : "getKey"
+			}
+		);
+	}
+);
+
 ipc.on
 (
 	"getKey",function(event : Electron.IpcMessageEvent,arg : GetKeyEvent)
