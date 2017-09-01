@@ -59,7 +59,7 @@ import Fastq from "./../fastq";
 import {Fasta} from "./../fasta";
 import {AlignData} from "./../alignData";
 import {CircularFigure} from "./../renderer/circularFigure";
-
+import {PIDInfo} from "./../PIDInfo";
 import {finishLoadingProject} from "./finishLoadingProject";
 
 import {GetKeyEvent,SaveKeyEvent,KeySubEvent} from "./../ipcEvents";
@@ -190,16 +190,37 @@ ipc.on
 (
 	"getAllPIDs",function(event : Electron.IpcMessageEvent,arg : GetKeyEvent)
 	{
-		let res = new Array<number>();
-		res = res.concat(winMgr.getWindowPIDs());
+		let res = new Array<PIDInfo>();
+		let windows = winMgr.getOpenWindows();
+		for(let i = 0; i != windows.length; ++i)
+		{
+			let curr = <PIDInfo>{
+				isPHAT : true,
+				isPHATRenderer : true,
+				pid : windows[i].window.webContents.getOSProcessId(),
+				url : windows[i].window.webContents.getURL()
+			}
+			res.push(curr);
+		}
 		for(let i = 0; i != atomicOp.operationsQueue.length; ++i)
 		{
 			if(atomicOp.operationsQueue[i].running == true)
 			{
-				res = res.concat(atomicOp.operationsQueue[i].getPIDs());
+				let opPIDs = atomicOp.operationsQueue[i].getPIDs();
+				for(let k = 0; k != opPIDs.length; ++k)
+				{
+					let curr = <PIDInfo>{
+						pid : opPIDs[k]
+					}
+					res.push(curr);
+				}
 			}
 		}
-		res.push(process.pid);
+		res.push(<PIDInfo>{
+			pid : process.pid,
+			isPHAT : true,
+			isPHATMain : true
+		});
 		event.sender.send(
 			arg.replyChannel,
 			<GetKeyEvent>{
