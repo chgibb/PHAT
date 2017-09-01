@@ -8,4 +8,7 @@ export interface PIDInfo
     isPHATRenderer : boolean;
     isPHATMain : boolean;
     url : string;
+
+    cpu : number;
+    memory : number;
 }
