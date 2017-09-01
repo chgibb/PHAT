@@ -1,5 +1,5 @@
 import * as viewMgr from "./../viewMgr";
-
+import * as procView from "./procView";
 export class View extends viewMgr.View
 {
     public views : Array<viewMgr.View>
@@ -8,7 +8,10 @@ export class View extends viewMgr.View
         super("masterView",div);
         this.views = new Array<viewMgr.View>();
     }
-    public onMount() : void{}
+    public onMount() : void
+    {
+        procView.addView(this.views,"view");
+    }
     public onUnMount() : void{}
     public renderView() : string
     {
