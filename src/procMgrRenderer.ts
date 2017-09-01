@@ -4,7 +4,8 @@ const ipc = electron.ipcRenderer;
 import * as viewMgr from "./req/renderer/viewMgr";
 import {GetKeyEvent} from "./req/ipcEvents";
 
-import {getPIDInfo,PIDInfo} from "./req/pidInfo";
+import {PIDInfo} from "./req/PIDInfo";
+import {getPIDInfo,getPIDUsage} from "./req/getPIDInfo";
 
 import * as $ from "jquery";
 (<any>window).$ = $;
@@ -30,12 +31,29 @@ $
             {
                 if(arg.key == "pids")
                 {
-                    let info = new Array<PIDInfo>();
-                    for(let i = 0; i != arg.val.length; ++i)
+                    let pids : Array<PIDInfo> = arg.val;
+                    for(let i = 0; i != pids.length; ++i)
                     {
-                        info = info.concat(await getPIDInfo(arg.val[i]));
+                        try
+                        {
+                            let use = await getPIDUsage(pids[i].pid);
+                            pids[i].cpu = use.cpu;
+                            pids[i].memory = use.memory;
+                        }
+                        catch(err){}
+                        if(!pids[i].isPHAT)
+                        {
+                            try
+                            {
+                                let info = await getPIDInfo(pids[i].pid);
+                                pids[i].ppid = info[0].ppid;
+                                pids[i].command = info[0].command;
+                                pids[i].arguments = info[0].arguments;
+                            }
+                            catch(err){}
+                        }
                     }
-                    console.log(info);
+                    console.log(pids);
                 }
             }
         );
