@@ -3,7 +3,7 @@ import {registerOperations} from "./req/tests/registerOperations";
 
 import {rebuildRTDirectory} from "./req/main/rebuildRTDirectory";
 
-import {getUnSortedBam} from "./req/alignData";
+import {getUnSortedBam,getSam} from "./req/alignData";
 
 import * as L6R1R1 from "./req/tests/L6R1R1";
 import * as L6R1R2 from "./req/tests/L6R1R2";
@@ -297,6 +297,60 @@ async function runTests() : Promise<void>
 		catch(err)
 		{
 			console.log("bam linking threw exception");
+			return reject();
+		}
+
+		console.log("Importing sequence alignment map from L6R1 HPV16 alignment");
+		atomic.addOperation("inputBamFile",getSam(L6R1HPV16Align.get()));
+		try
+		{
+			await testL6R1HPV16AlignImportedImporting();
+		}
+		catch(err)
+		{
+			console.log("sam importing threw exception");
+			return reject();
+		}
+
+		console.log("Linking imported L6R1 HPV16 sequence alignment map to HPV16");
+		atomic.addOperation("linkRefSeqToAlignment",{
+			align : L6R1HPV16AlignImported.get(),
+			fasta : hpv16Ref.get()
+		});
+		try
+		{
+			await testL6R1HPV16AlignImportedLinking();
+		}
+		catch(err)
+		{
+			console.log("sam linking threw exception");
+			return reject();
+		}
+
+		console.log("Importing sequence alignment map from L6R1 HPV18 alignment");
+		atomic.addOperation("inputBamFile",getSam(L6R1HPV18Align.get()));
+		try
+		{
+			await testL6R1HPV18AlignImportedImporting();
+		}
+		catch(err)
+		{
+			console.log("sam importing threw exception "+err);
+			return reject();
+		}
+
+		console.log("Linking imported L6R1 HPV18 sequence alignment map to HPv18");
+		atomic.addOperation("linkRefSeqToAlignment",{
+			align : L6R1HPV18AlignImported.get(),
+			fasta : hpv18Ref.get()
+		});
+		try
+		{
+			await testL6R1HPV18AlignImportedLinking();
+		}
+		catch(err)
+		{
+			console.log("sam linking threw exception");
 			return reject();
 		}
 
