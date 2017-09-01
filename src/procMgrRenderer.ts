@@ -7,6 +7,8 @@ import {GetKeyEvent} from "./req/ipcEvents";
 import {PIDInfo} from "./req/PIDInfo";
 import {getPIDInfo,getPIDUsage} from "./req/getPIDInfo";
 
+import * as masterView from "./req/renderer/procMgr/masterView";
+
 import * as $ from "jquery";
 (<any>window).$ = $;
 require("./req/renderer/commonBehaviour");
@@ -25,10 +27,15 @@ $
 (
     function()
     {
+        masterView.addView(viewMgr.views,"view");
+        viewMgr.changeView("masterView");
+        viewMgr.render();
+        viewMgr.render();
         ipc.on
         (
             "procMgr",async function(event : Electron.IpcMessageEvent,arg : any)
             {
+                let masterView = <masterView.View>viewMgr.getViewByName("masterView");
                 if(arg.key == "pids")
                 {
                     let pids : Array<PIDInfo> = arg.val;
@@ -53,7 +60,10 @@ $
                             catch(err){}
                         }
                     }
-                    console.log(pids);
+                    //console.log(pids);
+                    masterView.pids = pids;
+                    masterView.dataChanged();
+                    viewMgr.render();
                 }
             }
         );
