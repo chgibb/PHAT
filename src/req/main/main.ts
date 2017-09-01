@@ -200,7 +200,7 @@ ipc.on
 			}
 		}
 		event.sender.send(
-			arg.channel,
+			arg.replyChannel,
 			<GetKeyEvent>{
 				replyChannel : arg.replyChannel,
 				channel : arg.channel,
