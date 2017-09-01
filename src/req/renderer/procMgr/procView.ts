@@ -14,10 +14,10 @@ export class View extends viewMgr.View
     public onUnMount() : void{}
     public renderView() : string
     {
-        this.pids = this.pids.sort(function(a : PIDInfo,b : PIDInfo) : number{
+        this.pids.sort(function(a : PIDInfo,b : PIDInfo) : number{
             if(!a.memory || !b.memory)
                 return 0;
-            return a.memory - b.memory;
+            return b.memory - a.memory;
         });
         return `
             <div id="procTable" style="width:100%">
