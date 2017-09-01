@@ -4,6 +4,8 @@ const ipc = electron.ipcRenderer;
 import * as viewMgr from "./req/renderer/viewMgr";
 import {GetKeyEvent} from "./req/ipcEvents";
 
+import {getPIDInfo,PIDInfo} from "./req/pidInfo";
+
 import * as $ from "jquery";
 (<any>window).$ = $;
 require("./req/renderer/commonBehaviour");
@@ -24,9 +26,17 @@ $
     {
         ipc.on
         (
-            "procMgr",function(event : Electron.IpcMessageEvent,arg : any)
+            "procMgr",async function(event : Electron.IpcMessageEvent,arg : any)
             {
-                console.log(arg);
+                if(arg.key == "pids")
+                {
+                    let info = new Array<PIDInfo>();
+                    for(let i = 0; i != arg.val.length; ++i)
+                    {
+                        info = info.concat(await getPIDInfo(arg.val[i]));
+                    }
+                    console.log(info);
+                }
             }
         );
     }
