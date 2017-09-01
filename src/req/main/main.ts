@@ -199,6 +199,7 @@ ipc.on
 				res = res.concat(atomicOp.operationsQueue[i].getPIDs());
 			}
 		}
+		res.push(process.pid);
 		event.sender.send(
 			arg.replyChannel,
 			<GetKeyEvent>{
