@@ -79,6 +79,7 @@ require('./Pileup');
 require('./circularGenomeBuilder');
 require('./OperationViewer');
 require('./logViewer');
+require('./procMgr');
 
 
 app.on
