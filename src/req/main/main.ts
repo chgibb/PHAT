@@ -69,17 +69,17 @@ var pjson = require('./package.json');
 
 (<any>global).state = {};
 
-require('./ProjectSelection');
-require('./toolBar');
-require('./Input');
-require('./QC');
-require('./Align');
-require('./Output');
-require('./Pileup');
-require('./circularGenomeBuilder');
-require('./OperationViewer');
-require('./logViewer');
-require('./procMgr');
+import "./ProjectSelection";
+import "./toolBar";
+import "./Input";
+import "./QC";
+import "./Align";
+import "./Output";
+import "./Pileup";
+import "./circularGenomeBuilder";
+import "./OperationViewer";
+import "./logViewer";
+import "./procMgr";
 
 
 app.on

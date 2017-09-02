@@ -9,11 +9,9 @@ import * as viewMgr from "./req/renderer/viewMgr";
 import * as summary from "./req/renderer/QCRenderer/summaryView";
 import * as report from "./req/renderer/QCRenderer/reportView";
 
-require("./req/renderer/commonBehaviour");
-
-import * as $ from "jquery";
+const $ = require("jquery");
 (<any>window).$ = $;
-require("./req/renderer/commonBehaviour");
+import "./req/renderer/commonBehaviour";
 
 $
 (

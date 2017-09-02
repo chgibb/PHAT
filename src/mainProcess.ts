@@ -1,1 +1,1 @@
-require("./req/main/main");
+import "./req/main/main";

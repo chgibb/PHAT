@@ -9,9 +9,9 @@ import {getPIDInfo,getPIDUsage} from "./req/getPIDInfo";
 
 import * as masterView from "./req/renderer/procMgr/masterView";
 
-import * as $ from "jquery";
+const $ = require("jquery");
 (<any>window).$ = $;
-require("./req/renderer/commonBehaviour");
+import "./req/renderer/commonBehaviour";
 
 let pingPIDs : NodeJS.Timer = setInterval(function(){
     ipc.send(
