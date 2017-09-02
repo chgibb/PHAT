@@ -25,6 +25,7 @@ export class Job
      * @param {any} extraData - JSON object to be forwarded to originator on every callback
      */
 	private process : spawn.ChildProcess;
+	public pid : number;
 	public processName : string;
 	public args : Array<string>;
 	public callBackChannel : string;
@@ -137,6 +138,7 @@ export class Job
 	Run()
 	{
 		this.process = spawn.spawn(this.processName,this.args);
+		this.pid = this.process.pid;
 		this.running = true;
 		var obj = this;
 		this.process.stderr.on

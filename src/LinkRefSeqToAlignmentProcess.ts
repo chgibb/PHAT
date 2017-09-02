@@ -1,7 +1,9 @@
 import {AtomicOperationForkEvent,CompletionFlags} from "./req/atomicOperationsIPC";
 import * as atomic from "./req/operations/atomicOperations";
-import {AlignData} from "./req/alignData";
+import {AlignData,getArtifactDir} from "./req/alignData";
 import {Fasta} from "./req/fasta";
+import {getFolderSize} from "./req/getFolderSize";
+import formatByteString from "./req/renderer/formatByteString";
 
 import {getLinkableRefSeqs} from "./req/getLinkableRefSeqs";
 import {samToolsDepth} from "./req/operations/RunAlignment/samToolsDepth";
@@ -90,6 +92,8 @@ process.on(
                 update();
                 await varScanMPileup2SNP(align,logger);
 
+                align.size = getFolderSize(getArtifactDir(align));
+                align.sizeString = formatByteString(align.size);
                 flags.done = true;
                 flags.success = true;
                 update();

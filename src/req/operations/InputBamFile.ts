@@ -39,7 +39,7 @@ export class InputBamFile extends atomic.AtomicOperation
                     if(ev.flags.done)
                     {
                         self.alignData = ev.data.alignData;
-                        if(ev.flags.failure == true)
+                        if(ev.flags.failure == true && self.alignData)
                         {
                             //make sure output dir is deleted on failure
                             self.destinationArtifactsDirectories.push(getArtifactDir(self.alignData));
