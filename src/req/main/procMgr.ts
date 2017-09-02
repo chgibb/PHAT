@@ -10,7 +10,7 @@ winMgr.windowCreators["procMgr"] =
             winMgr.createWithDefault(
                 "Process Manager",
                 "procMgr",
-                600,800,
+                543,331,
                 "file://"+getReadable("procMgr.html"),
                 false,false,
                 0,0
