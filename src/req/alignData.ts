@@ -1,6 +1,6 @@
 const uuidv4 : () => string = require("uuid/v4");
 
-let dFormat = require('./dateFormat');
+import * as dFormat from "./dateFormat";
 import {getReadableAndWritable} from "./getAppPath";
 import Fastq from "./fastq";
 import {Fasta} from "./fasta";
