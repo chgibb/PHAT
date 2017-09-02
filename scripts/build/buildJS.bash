@@ -16,7 +16,7 @@ cp src/pileup.js/style/pileup.css dist/styles/pileup.css
 if [[ "$1" != "prod" ]]; then
 	./node_modules/.bin/tsc
 fi
-if [[ "$1" == "prod" ]]; then
+if [[ "$1" == "opt" ]]; then
 	./node_modules/.bin/tsc -p tsconfigProd.json
 fi
 #Compilation failed somewhere
