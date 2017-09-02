@@ -52,7 +52,7 @@ export class View extends viewMgr.View
                         {
                             res += `<td>${trimPath(this.pids[i].url)}</td>`;
                         }
-                        res += `<td>${this.pids[i].cpu ? this.pids[i].cpu : ""}</th>`;
+                        res += `<td>${this.pids[i].cpu ? this.pids[i].cpu.toString().substr(0,4) : ""}</th>`;
                         res += `<td>${this.pids[i].memory ? formatByteString(this.pids[i].memory) : ""}</th>`;
                         res += `</tr>`;
                     }
