@@ -13,7 +13,12 @@ function cleanTSArtifacts {
 }
 cp src/pileup.js/style/pileup.css dist/styles/pileup.css
 
-./node_modules/.bin/tsc
+if [[ "$1" != "prod" ]]; then
+	./node_modules/.bin/tsc
+fi
+if [[ "$1" == "prod" ]]; then
+	./node_modules/.bin/tsc -p tsconfigProd.json
+fi
 #Compilation failed somewhere
 if [ $? != 0 ]; then
     cleanTSArtifacts
