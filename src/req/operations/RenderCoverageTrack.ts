@@ -35,6 +35,7 @@ export class RenderCoverageTrackForContig extends atomic.AtomicOperation
         this.logRecord = atomic.openLog(this.name,"Render Coverage Track");
         let self = this;
         this.renderCoverageTrackProcess = cp.fork(getReadable("RenderCoverageTrack.js"));
+        this.addPID(this.renderCoverageTrackProcess.pid);
         self.renderCoverageTrackProcess.on(
             "message",function(ev : AtomicOperationForkEvent)
             {

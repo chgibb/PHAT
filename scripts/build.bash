@@ -24,14 +24,14 @@ cp src/*.html dist
 #for each script in scripts/build, run it
 for f in scripts/build/*.sh
 do
-	sh $f
+	sh $f $1
 	if [ $? != 0 ]; then
 		exit 1
 	fi
 done
 for f in scripts/build/*.bash
 do
-	bash $f
+	bash $f $1
 	if [ $? != 0 ]; then
 		exit 1
 	fi

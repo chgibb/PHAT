@@ -8,7 +8,7 @@
             "cwd" : "${workspaceRoot}/phat-linux-x64",
             "runtimeExecutable" : "${workspaceRoot}/phat-linux-x64/phat",
             "program" : "${workspaceRoot}/phat-linux-x64/resources/app/main.js",
-            "protocol" : "legacy"
+            "protocol" : "inspector"
         },
         {
             "name" : "Debug Win32",
@@ -17,7 +17,7 @@
             "cwd" : "${workspaceRoot}/phat-win32-x64",
             "runtimeExecutable" : "${workspaceRoot}/phat-win32-x64/phat.exe",
             "program" : "${workspaceRoot}/phat-win32-x64/resources/app/main.js",
-            "protocol" : "legacy"
+            "protocol" : "inspector"
         }
     ]
 }

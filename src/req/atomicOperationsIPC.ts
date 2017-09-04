@@ -68,4 +68,6 @@ export interface AtomicOperationForkEvent
     progressMessage? : string;
     step? : number;
     bamPath? : string;
+
+    pid? : number;
 }

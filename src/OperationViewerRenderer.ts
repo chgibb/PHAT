@@ -9,9 +9,9 @@ import * as masterView from "./req/renderer/OperationViewerRenderer/masterView";
 import * as runningView from "./req/renderer/OperationViewerRenderer/runningView";
 import * as logView from "./req/renderer/OperationViewerRenderer/logView";
 
-import * as $ from "jquery";
+const $ = require("jquery");
 (<any>window).$ = $;
-require("./req/renderer/commonBehaviour");
+import "./req/renderer/commonBehaviour";
 
 function postRender(view : viewMgr.View) : void
 {

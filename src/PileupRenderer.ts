@@ -3,7 +3,7 @@ const ipc = electron.ipcRenderer;
 
 import {showPileup} from "./req/renderer/PileupRenderer/showPileup"
 
-require("./req/renderer/commonBehaviour");
+import "./req/renderer/commonBehaviour";
 
 const pileup = require("./../forDist/pileup");
 (<any>window).pileup = pileup;
