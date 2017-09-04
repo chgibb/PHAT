@@ -12,7 +12,7 @@ import * as viewMgr from "./../viewMgr";
 import * as masterView from "./masterView";
 import {AlignData} from "./../../alignData";
 import * as cf from "./../circularFigure";
-import {displayFigure} from "./displayFigure";
+import {displayInteractiveFigure} from "./displayFigure";
 import {centreFigure} from "./centreFigure";
 import {writeLoadingModal} from "./writeLoadingModal";
 import {setSelectedContigByUUID} from "./writeContigEditorModal";
@@ -156,7 +156,7 @@ export class GenomeView extends viewMgr.View implements cf.FigureCanvas
                 
                 let self = this;
                 setTimeout(function(){
-                    displayFigure(self).then(() => {
+                    displayInteractiveFigure(self).then(() => {
                         masterView.loadingModal = false;
                         masterView.dismissModal();
                         setTimeout(function(){
