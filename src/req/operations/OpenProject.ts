@@ -28,7 +28,7 @@ export class OpenProject extends atomic.AtomicOperation
         this.logRecord = atomic.openLog(this.name,"Open Project");
         let self = this;
         this.openProjectProcess = cp.fork(getReadable("OpenProject.js"));
-
+        this.addPID(this.openProjectProcess.pid);
         self.openProjectProcess.on(
             "message",function(ev : AtomicOperationForkEvent)
             {

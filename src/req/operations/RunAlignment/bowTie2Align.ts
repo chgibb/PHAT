@@ -77,6 +77,7 @@ export function bowTie2Align(alignData : AlignData,logger : atomic.AtomicOperati
         try
         {
             bowtieJob.Run();
+            logger.addPIDFromFork(bowtieJob.pid);
         }
         catch(err)
         {

@@ -34,6 +34,7 @@ export function faToTwoBit(op : IndexFastaForVisualization) : Promise<{}>
         try
         {
             op.twoBitJob.Run();
+            op.addPIDFromFork(op.twoBitJob.pid);
         }
         catch(err)
         {

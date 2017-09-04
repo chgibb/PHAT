@@ -53,6 +53,7 @@ export function bowTie2Build(op : IndexFastaForAlignment) : Promise<string | und
         try
         {
             op.bowtieJob.Run();
+            op.addPIDFromFork(op.bowtieJob.pid);
         }
         catch(err)
         {

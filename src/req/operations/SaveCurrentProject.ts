@@ -22,7 +22,7 @@ export class SaveCurrentProject extends atomic.AtomicOperation
         this.logRecord = atomic.openLog(this.name,"Save Current Project");
         let self = this;
         this.saveCurrentProjectProcess = cp.fork(getReadable("SaveCurrentProject.js"));
-
+        this.addPID(this.saveCurrentProjectProcess.pid);
         self.saveCurrentProjectProcess.on(
             "message",function(ev : AtomicOperationForkEvent)
             {

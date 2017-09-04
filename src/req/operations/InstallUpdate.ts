@@ -21,6 +21,7 @@ export class InstallUpdate extends atomic.AtomicOperation
         try
         {
             this.installUpdateJob = cp.fork(getReadable("installUpdate.js"));
+            this.addPID(this.installUpdateJob.pid);
             this.installUpdateJob.on
             (
                 "message",function(data : any)

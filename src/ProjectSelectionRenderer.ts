@@ -19,9 +19,9 @@ import * as splashView from "./req/renderer/ProjectSelectionRenderer/splashView"
 import * as openProjectView from "./req/renderer/ProjectSelectionRenderer/openProjectView";
 import * as helpView from "./req/renderer/ProjectSelectionRenderer/helpView";
 
-import * as $ from "jquery";
+const $ = require("jquery");
 (<any>window).$ = $;
-require("./req/renderer/commonBehaviour");
+import "./req/renderer/commonBehaviour";
 
 $
 (

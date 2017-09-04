@@ -40,6 +40,7 @@ export function samToolsIndex(alignData : AlignData,logger : atomic.AtomicOperat
         try
         {
             samToolsIndexJob.Run();
+            logger.addPIDFromFork(samToolsIndexJob.pid);
         }
         catch(err)
         {
