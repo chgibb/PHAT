@@ -83,39 +83,11 @@ export async function displayInteractiveFigure(self : GenomeView) : Promise<void
                             $div = $(`
                                 <div id="${self.div}">
                                     
-                                        ${(()=>{
-                                            let res = "";
-                                            for(let i = 0; i != self.genome.renderedCoverageTracks.length; ++i)
-                                            {
-                                                if(self.genome.renderedCoverageTracks[i].checked)
-                                                {
-                                                    try
-                                                    {
-                                                        res += `<div style="position:absolute;z-index:-99;">`;
-                                                        res += tc.getCachedCoverageTrack(self.genome.renderedCoverageTracks[i]);
-                                                        res += `</div>`;
-                                                    }
-                                                    catch(err){}
-                                                }
-                                            }
-                                            for(let i = 0; i != self.genome.renderedSNPTracks.length; ++i)
-                                            {
-                                                if(self.genome.renderedSNPTracks[i].checked)
-                                                {
-                                                    try
-                                                    {
-                                                        res += `<div style="position:absolute;z-index:-99;">`;
-                                                        res += tc.getCachedSNPTrack(self.genome.renderedSNPTracks[i]);
-                                                        res += `</div>`;
-                                                    }
-                                                    catch(err){}
-                                                }
-                                            }
-                                            return res;
-                                        })()}
-                                        <div id="toCompile">
-                                            ${templates}
-                                        </div>
+                                    ${getSelectedDataTrackSVGsFromCache(self)}
+
+                                    <div id="toCompile">
+                                        ${templates}
+                                    </div>
                                 </div>
                             `);
                             $(document.body).append($div);
@@ -166,4 +138,36 @@ export async function displayInteractiveFigure(self : GenomeView) : Promise<void
             });
         });
     });
+}
+
+export function getSelectedDataTrackSVGsFromCache(self : GenomeView) : string
+{
+    let res = "";
+    for(let i = 0; i != self.genome.renderedCoverageTracks.length; ++i)
+    {
+        if(self.genome.renderedCoverageTracks[i].checked)
+        {
+            try
+            {
+                res += `<div style="position:absolute;z-index:-99;">`;
+                res += tc.getCachedCoverageTrack(self.genome.renderedCoverageTracks[i]);
+                res += `</div>`;
+            }
+            catch(err){}
+        }
+    }
+    for(let i = 0; i != self.genome.renderedSNPTracks.length; ++i)
+    {
+        if(self.genome.renderedSNPTracks[i].checked)
+        {
+            try
+            {
+                res += `<div style="position:absolute;z-index:-99;">`;
+                res += tc.getCachedSNPTrack(self.genome.renderedSNPTracks[i]);
+                res += `</div>`;
+            }
+            catch(err){}
+        }
+    }
+    return res;
 }
