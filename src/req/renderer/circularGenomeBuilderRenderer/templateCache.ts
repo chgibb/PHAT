@@ -37,7 +37,7 @@ class CachedSNPTrackSVG
     }
 }
 
-let baseFigureSVG : string = undefined;
+export let baseFigureSVG : string = undefined;
 
 let coverageTrackCache = new Array<CachedCoverageTrackSVG>();;
 let SNPTrackCache = new Array<CachedSNPTrackSVG>();
