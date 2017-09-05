@@ -16,7 +16,7 @@ export function add(
 {
     let res = `
         <trackmarker 
-       ${options.isInteractive ?  `markerclass="trackMarkerHover" markerclick="${options.onClick}($event,$marker,${options.uuid})"` : ""} ${
+        ${options.isInteractive ? `markerclass="trackMarkerHover"` : ""} markerclick="${options.onClick}($event,$marker,'${options.uuid}')" ${
             (
                 ()=>
                 {
