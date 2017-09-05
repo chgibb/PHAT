@@ -196,7 +196,7 @@ export function removeTrack(uuid : string) : void
     }
 }
 
-export function triggerReCompileForAllTracks(newFigure : cf.CircularFigure) : void
+export function triggerReCompileForWholeFigure(newFigure : cf.CircularFigure) : void
 {
     if(!figure)
         return;
