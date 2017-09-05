@@ -175,6 +175,7 @@ export class CircularFigure
     public height : number;
     public width : number;
     public isInteractive : boolean;
+    public showContigNames : boolean;
     public circularFigureBPTrackOptions : CircularFigureBPTrackOptions;
     public renderedCoverageTracks : Array<RenderedCoverageTrackRecord>;
     public renderedSNPTracks : Array<RenderedSNPTrackRecord>;
@@ -205,8 +206,12 @@ export class CircularFigure
         }
         this.customContigs = new Array<Contig>();
         this.isInteractive = true;
+        this.showContigNames = true;
         if(this.contigs.length >= 50)
+        {
             this.isInteractive = false;
+            this.showContigNames = false;
+        }
         cacheBaseFigure(this);
     }
 }
@@ -257,7 +262,7 @@ export function renderContig(figure : CircularFigure,contig : Contig,start : num
             ${markerLabel.add(
             {
                 type : "path",
-                text : contig.alias,
+                text : figure.showContigNames ?  contig.alias : "",
                 labelStyle : `fill:${contig.fontFill};opacity:${contig.opacity};`
             })}
             ${markerLabel.end()}
