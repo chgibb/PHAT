@@ -1,5 +1,5 @@
 export function add(
-    options? : {
+    options : {
         start? : string,
         end? : string,
         markerStyle? : string,
@@ -9,13 +9,14 @@ export function add(
         vAdjust? : number,
         wAdjust? : string,
         uuid? : string,
-        onClick? : string
+        onClick? : string,
+        isInteractive : boolean
     }
 ) : string
 {
     let res = `
         <trackmarker 
-        markerclass="trackMarkerHover" markerclick="${options.onClick}($event,$marker,'${options.uuid}')" ${
+       ${options.isInteractive ?  `markerclass="trackMarkerHover" markerclick="${options.onClick}($event,$marker,${options.uuid})"` : ""} ${
             (
                 ()=>
                 {

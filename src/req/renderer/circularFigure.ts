@@ -236,7 +236,7 @@ export abstract class FigureCanvas
  * @param {number} [end=-1] 
  * @returns {string} 
  */
-export function renderContig(contig : Contig,start : number = -1,end : number = -1) : string
+export function renderContig(figure : CircularFigure,contig : Contig,start : number = -1,end : number = -1) : string
 {
     if(start == -1)
         start = contig.start;
@@ -251,7 +251,8 @@ export function renderContig(contig : Contig,start : number = -1,end : number = 
             vAdjust : contig.vAdjust,
             markerStyle : `fill:${contig.color};opacity:${contig.opacity};`,
             uuid : contig.uuid,
-            onClick : "markerOnClick"
+            onClick : "markerOnClick",
+            isInteractive : figure.isInteractive
         })}
             ${markerLabel.add(
             {
@@ -293,12 +294,12 @@ export function renderBaseFigure(figure : CircularFigure) : string
                 let lastLocation = 0;
                 for(let i = 0; i != figure.contigs.length; ++i)
                 {
-                    res += renderContig(figure.contigs[i],lastLocation,lastLocation+figure.contigs[i].bp);
+                    res += renderContig(figure,figure.contigs[i],lastLocation,lastLocation+figure.contigs[i].bp);
                     lastLocation = lastLocation + figure.contigs[i].bp;
                 }
                 for(let i = 0; i != figure.customContigs.length; ++i)
                 {
-                    res += renderContig(figure.customContigs[i],figure.customContigs[i].start,figure.customContigs[i].end);
+                    res += renderContig(figure,figure.customContigs[i],figure.customContigs[i].start,figure.customContigs[i].end);
                 }
                 return res; 
             })()}
