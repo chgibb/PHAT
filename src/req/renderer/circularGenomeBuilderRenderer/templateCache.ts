@@ -42,11 +42,16 @@ export let baseFigureSVG : string = undefined;
 let coverageTrackCache = new Array<CachedCoverageTrackSVG>();;
 let SNPTrackCache = new Array<CachedSNPTrackSVG>();
 
+export function resetBaseFigureSVG() : void
+{
+    baseFigureSVG = undefined;
+}
+
 export function resetCaches() : void
 {
     coverageTrackCache = new Array<CachedCoverageTrackSVG>();
     SNPTrackCache = new Array<CachedSNPTrackSVG>();
-    baseFigureSVG = "";
+    baseFigureSVG = undefined
 }
 
 export function refreshCache(newFigure : cf.CircularFigure) : void
