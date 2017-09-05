@@ -46,6 +46,7 @@ export function resetCaches() : void
 {
     coverageTrackCache = new Array<CachedCoverageTrackSVG>();
     SNPTrackCache = new Array<CachedSNPTrackSVG>();
+    baseFigureSVG = "";
 }
 
 export function refreshCache(newFigure : cf.CircularFigure) : void
