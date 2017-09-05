@@ -7,6 +7,20 @@ import * as viewMgr from "./../viewMgr";
 import * as masterView from "./masterView";
 import {GenomeView} from "./genomeView";
 import {centreFigure} from "./centreFigure";
+export async function displayFigure(self : GenomeView) : Promise<void>
+{
+    if(!self.genome.isInteractive)
+        return await displayNonInteractiveFigure(self);
+    else
+        return await displayInteractiveFigure(self);
+
+}
+export async function displayNonInteractiveFigure(self : GenomeView) : Promise<void>
+{
+    return new Promise<void>((resolve,reject) => {
+        resolve();
+    });
+}
 export async function displayInteractiveFigure(self : GenomeView) : Promise<void>
 {
     //This is an unholy mess adapted from the example given inline in the
