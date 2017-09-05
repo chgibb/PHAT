@@ -207,7 +207,12 @@ export class CircularFigure
         this.customContigs = new Array<Contig>();
         this.isInteractive = true;
         this.showContigNames = true;
-        if(this.contigs.length >= 50)
+        let totalBP = 0;
+        for(let i = 0; i != this.contigs.length; ++i)
+        {
+            totalBP += this.contigs[i].bp;
+        }
+        if(this.contigs.length >= 50 || totalBP >= 1000000)
         {
             this.isInteractive = false;
             this.showContigNames = false;
