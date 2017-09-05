@@ -174,6 +174,7 @@ export class CircularFigure
     public radius : number;
     public height : number;
     public width : number;
+    public isInteractive : boolean;
     public circularFigureBPTrackOptions : CircularFigureBPTrackOptions;
     public renderedCoverageTracks : Array<RenderedCoverageTrackRecord>;
     public renderedSNPTracks : Array<RenderedSNPTrackRecord>;
@@ -203,6 +204,9 @@ export class CircularFigure
             this.contigs[1].loaded = true;
         }
         this.customContigs = new Array<Contig>();
+        this.isInteractive = true;
+        if(this.contigs.length >= 50)
+            this.isInteractive = false;
         cacheBaseFigure(this);
     }
 }
