@@ -285,7 +285,8 @@ export function renderBaseFigure(figure : CircularFigure) : string
             {
                 text : figure.name,
                 labelStyle : "font-size:20px;font-weight:400",
-                onClick : "figureNameOnClick"
+                onClick : "figureNameOnClick",
+                isInteractive : figure.isInteractive
             })}
             ${trackLabel.end()}
             ${(()=>
