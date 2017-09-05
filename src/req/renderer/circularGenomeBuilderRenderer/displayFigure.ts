@@ -19,6 +19,17 @@ export async function displayNonInteractiveFigure(self : GenomeView) : Promise<v
 {
     return new Promise<void>((resolve,reject) => {
         tc.refreshCache(self.genome);
+        removeDiv(self);
+
+        let $div : any = $(`
+            <div id="${self.div}">
+                ${getSelectedDataTrackSVGsFromCache(self)}
+                ${tc.baseFigureSVG ? tc.baseFigureSVG : ""}
+            </div>
+        `);
+
+        $(document.body).append($div);
+        centreFigure(document.getElementById(self.div),self.genome);
         resolve();
     });
 }
