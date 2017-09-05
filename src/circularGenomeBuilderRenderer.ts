@@ -156,10 +156,16 @@ $
                                         totalTracks++;
                                         if(ops[i].flags.done && ops[i].flags.success)
                                         {
-                                            console.log("compiled "+ops[i].uuid);
                                             if(ops[i].uuid)
                                             {
+                                                console.log("compiled "+ops[i].uuid);
                                                 tc.removeTrack(ops[i].uuid);
+                                                genomeView.firstRender = true;
+                                            }
+                                            else if(ops[i].compileBase)
+                                            {
+                                                console.log("compiled base figure");
+                                                tc.resetBaseFigureSVG();
                                                 genomeView.firstRender = true;
                                             }
                                         }
