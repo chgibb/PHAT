@@ -200,6 +200,17 @@ export function triggerReCompileForAllTracks(newFigure : cf.CircularFigure) : vo
 {
     if(!figure)
         return;
+    if(!figure.isInteractive)
+    {
+        ipc.send(
+            "runOperation",
+            <AtomicOperationIPC>{
+                opName : "compileTemplates",
+                figure : newFigure,
+                compileBase : true
+            }
+        );
+    }
     for(let i = 0; i != coverageTrackCache.length; ++i)
     {
         ipc.send(
