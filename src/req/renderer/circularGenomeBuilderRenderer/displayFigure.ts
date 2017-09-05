@@ -40,19 +40,8 @@ export async function displayInteractiveFigure(self : GenomeView) : Promise<void
             return new Promise<void>((resolve,reject) => {
                 setImmediate(function(){
                     setImmediate(function(){
-                        try
-                        {
-                            document.body.removeChild(document.getElementById("controls"));
-                        }
-                        catch(err){}
-                        try
-                        {
-                            //Remove the div this view is bound to
-                            document.body.removeChild(document.getElementById(self.div));
-                        }
-                        catch(err){}
-                        $("#"+self.div).remove();
-
+                        
+                        removeDiv(self);
         
                         for(let i = 0; i != self.genome.contigs.length; ++i)
                         {
@@ -138,6 +127,22 @@ export async function displayInteractiveFigure(self : GenomeView) : Promise<void
             });
         });
     });
+}
+
+export function removeDiv(self : GenomeView) : void
+{
+    try
+    {
+        document.body.removeChild(document.getElementById("controls"));
+    }
+    catch(err){}
+    try
+    {
+        //Remove the div this view is bound to
+        document.body.removeChild(document.getElementById(self.div));
+    }
+    catch(err){}
+    $("#"+self.div).remove();
 }
 
 export function getSelectedDataTrackSVGsFromCache(self : GenomeView) : string
