@@ -18,6 +18,7 @@ export async function displayFigure(self : GenomeView) : Promise<void>
 export async function displayNonInteractiveFigure(self : GenomeView) : Promise<void>
 {
     return new Promise<void>((resolve,reject) => {
+        tc.refreshCache(self.genome);
         resolve();
     });
 }
