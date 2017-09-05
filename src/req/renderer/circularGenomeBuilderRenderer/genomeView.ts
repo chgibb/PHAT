@@ -37,6 +37,8 @@ export class GenomeView extends viewMgr.View implements cf.FigureCanvas
     public onUnMount() : void{}
     public updateScope(scope? : cf.FigureCanvas) : void
     {
+        if(!this.genome.isInteractive)
+            return;
         if(scope)
             this.scope = scope;
         this.scope.genome = this.genome;
