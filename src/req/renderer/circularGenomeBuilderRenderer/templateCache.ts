@@ -124,21 +124,6 @@ export function refreshCache(newFigure : cf.CircularFigure) : void
             }
         }
     }
-
-    /*for(let i = 0; i != newFigure.renderedSNPTracks.length; ++i)
-    {
-        found = false;
-        for(let k = 0; k != SNPTrackCache.length; ++k)
-        {
-            if(newFigure.renderedSNPTracks[i].uuid == SNPTrackCache[k].trackRecord.uuid)
-            {
-                found = true;
-                break;
-            }
-        }
-        if(!found)
-            SNPTrackCache.push(new CachedSNPTrackSVG(newFigure.renderedSNPTracks[i]));
-    }*/
 }
 
 //retrieve loaded tracks
