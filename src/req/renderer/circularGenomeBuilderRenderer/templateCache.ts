@@ -37,7 +37,7 @@ class CachedSNPTrackSVG
     }
 }
 
-let baseFigureSVG = "";
+let baseFigureSVG : string = undefined;
 
 let coverageTrackCache = new Array<CachedCoverageTrackSVG>();;
 let SNPTrackCache = new Array<CachedSNPTrackSVG>();
@@ -55,6 +55,28 @@ export function refreshCache(newFigure : cf.CircularFigure) : void
     {
         resetCaches();
         figure = newFigure;
+    }
+    console.log(newFigure);
+    if(!newFigure.isInteractive)
+    {
+        if(!baseFigureSVG)
+        {
+            try
+            {
+                baseFigureSVG = cf.getBaseFigureSVGFromCache(figure);
+            }
+            catch(err)
+            {
+                ipc.send(
+                    "runOperation",
+                    <AtomicOperationIPC>{
+                        opName : "compileTemplates",
+                        figure : newFigure,
+                        compileBase : true
+                    }
+                );
+            }
+        }
     }
 
     //load tracks which had not been loaded previously
