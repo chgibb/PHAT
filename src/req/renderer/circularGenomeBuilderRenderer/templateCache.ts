@@ -37,7 +37,7 @@ class CachedSNPTrackSVG
     }
 }
 
-let baseFigureTemplateString = "";
+let baseFigureSVG = "";
 
 let coverageTrackCache = new Array<CachedCoverageTrackSVG>();;
 let SNPTrackCache = new Array<CachedSNPTrackSVG>();
