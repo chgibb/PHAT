@@ -83,6 +83,8 @@ function compileAndSend()
         }
     });
     process.exit(0);
+    console.log("called exit");
+    atomic.logString(logger.logRecord,"called exit");
 }
 
 process.on(
