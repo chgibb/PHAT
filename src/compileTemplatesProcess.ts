@@ -82,9 +82,7 @@ function compileAndSend()
             figure : figure
         }
     });
-    process.exit(0);
-    console.log("called exit");
-    atomic.logString(logger.logRecord,"called exit");
+    process.exitCode = 0;
 }
 
 process.on(
