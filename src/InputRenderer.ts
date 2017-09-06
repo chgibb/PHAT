@@ -15,9 +15,9 @@ import {IndexFastaForVisualization} from "./req/operations/indexFastaForVisualiz
 import {InputBamFile} from "./req/operations/InputBamFile";
 import {LinkRefSeqToAlignment} from "./req/operations/LinkRefSeqToAlignment";
 
-import * as $ from "jquery";
+const $ = require("jquery");
 (<any>window).$ = $;
-require("./req/renderer/commonBehaviour");
+import "./req/renderer/commonBehaviour";
 
 function postRender(view : viewMgr.View) : void
 {

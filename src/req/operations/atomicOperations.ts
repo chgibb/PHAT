@@ -104,6 +104,15 @@ export abstract class AtomicOperation
     public totalSteps : number;
     public extraData : any;
 
+    /**
+     * PIDs managed by the operation
+     * 
+     * @private
+     * @type {Array<number>}
+     * @memberof AtomicOperation
+     */
+    private pids : Array<number>;
+
 
     /**
      * Indicates whether the operation is currently executing
@@ -138,6 +147,8 @@ export abstract class AtomicOperation
         this.running = false;
 
         this.ignoreScheduler = false;
+
+        this.pids = new Array<number>();
     }
     public getGeneratedArtifacts() : Array<string>
     {
@@ -200,7 +211,50 @@ export abstract class AtomicOperation
         flags.failure = false;
     }
 
-    
+
+    /**
+     * Register a new PID with the operation
+     * 
+     * @param {number} pid 
+     * @memberof AtomicOperation
+     */
+    public addPID(pid : number) : void
+    {
+        this.pids.push(pid);
+    }    
+
+    /**
+     * Register a new PID with the operation. Detects if the operation is running in a fork 
+     * and passes the registration through to the managing process
+     * 
+     * @param {number} pid 
+     * @memberof AtomicOperation
+     */
+    public addPIDFromFork(pid : number) : void
+    {
+        //running forked
+        if(process.send)
+        {
+            process.send(
+                <AtomicOperationForkEvent>{
+                    pid : pid
+                }
+            );
+        }
+        else
+            this.addPID(pid);
+    }
+
+    /**
+     * Returns all PIDs registered to this operation. All PIDs are not guaranteed to be active
+     * 
+     * @returns {Array<number>} 
+     * @memberof AtomicOperation
+     */
+    public getPIDs() : Array<number>
+    {
+        return this.pids;
+    }
 
     /**
      * Method called by the scheduler when first invoking the operation

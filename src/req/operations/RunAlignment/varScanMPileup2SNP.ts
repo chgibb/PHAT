@@ -71,6 +71,7 @@ export function varScanMPileup2SNP(alignData : AlignData,logger : atomic.AtomicO
         try
         {
             varScanMPileup2SNPJob.Run();
+            logger.addPIDFromFork(varScanMPileup2SNPJob.pid);
         }
         catch(err)
         {

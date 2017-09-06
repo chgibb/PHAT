@@ -27,6 +27,7 @@ export class LinkRefSeqToAlignment extends atomic.AtomicOperation
         this.closeLogOnSuccess = false;
         let self = this;
         this.linkRefSeqToAlignmentProcess = cp.fork(getReadable("LinkRefSeqToAlignment.js"));
+        this.addPID(this.linkRefSeqToAlignmentProcess.pid);
         self.linkRefSeqToAlignmentProcess.on(
             "message",function(ev : AtomicOperationForkEvent){
                 if(ev.finishedSettingData == true)

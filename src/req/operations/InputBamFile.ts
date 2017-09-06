@@ -23,6 +23,7 @@ export class InputBamFile extends atomic.AtomicOperation
         this.closeLogOnSuccess = false;
         let self = this;
         this.inputBamFileProcess = cp.fork(getReadable("InputBamFile.js"));
+        this.addPID(this.inputBamFileProcess.pid);
         self.inputBamFileProcess.on(
             "message",function(ev : AtomicOperationForkEvent){
                 if(ev.finishedSettingData == true)

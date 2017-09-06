@@ -44,6 +44,7 @@ export class RunAlignment extends atomic.AtomicOperation
         this.closeLogOnSuccess = false;
         let self = this;
         this.runAlignmentProcess = cp.fork(getReadable("RunAlignment.js"));
+        this.addPID(this.runAlignmentProcess.pid);
         self.runAlignmentProcess.on(
             "message",function(ev : AtomicOperationForkEvent){
                 if(ev.finishedSettingData == true)
@@ -53,6 +54,11 @@ export class RunAlignment extends atomic.AtomicOperation
                             run : true
                         }
                     );
+                }
+                if(ev.pid)
+                {
+                    self.addPID(ev.pid);
+                    console.log(ev.pid);
                 }
                 if(ev.update == true)
                 {

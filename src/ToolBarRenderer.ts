@@ -4,9 +4,9 @@ const ipc = electron.ipcRenderer;
 import {AtomicOperation} from "./req/operations/atomicOperations"
 import {KeySubEvent} from "./req/ipcEvents";
 
-import * as $ from "jquery";
+const $ = require("jquery");
 (<any>window).$ = $;
-require("./req/renderer/commonBehaviour");
+import "./req/renderer/commonBehaviour";
 
 $
 (

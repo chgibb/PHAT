@@ -7,9 +7,9 @@ import {CircularFigure,} from "./req/renderer/circularFigure";
 import {GetKeyEvent,KeySubEvent} from "./req/ipcEvents";
 import {CompileTemplates} from "./req/operations/CompileTemplates";
 import * as tc from "./req/renderer/circularGenomeBuilderRenderer/templateCache";
-require("./req/renderer/commonBehaviour");
+import "./req/renderer/commonBehaviour";
 
-import * as $ from "jquery";
+const $ = require("jquery");
 (<any>window).$ = $;
 $
 (

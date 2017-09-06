@@ -78,6 +78,7 @@ export function samToolsDepth(alignData: AlignData,logger : atomic.AtomicOperati
     try
     {
         samToolsDepthJob.Run();
+        logger.addPIDFromFork(samToolsDepthJob.pid);
     }
     catch(err)
     {

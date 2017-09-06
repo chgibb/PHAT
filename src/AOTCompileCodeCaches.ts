@@ -1,7 +1,7 @@
 import * as electron from "electron";
 let app = electron.app;
 
-require("./req/main/main");
+import "./req/main/main";
 
 import * as winMgr from "./req/main/winMgr";
 

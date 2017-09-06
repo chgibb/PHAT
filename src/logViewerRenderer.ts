@@ -5,7 +5,7 @@ const ipc = electron.ipcRenderer;
 
 import {streamLogToNode} from "./req/renderer/LogViewerRenderer/streamLogToNode";
 import {LogRecord} from "./req/operations/atomicOperations";
-require("./req/renderer/commonBehaviour");
+import "./req/renderer/commonBehaviour";
 
 ipc.on(
     "logViewer",

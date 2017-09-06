@@ -23,7 +23,7 @@ import {writeContigCreatorModal} from "./writeContigCreatorModal";
 import {writeLoadingModal} from "./writeLoadingModal";
 
 
-import * as $ from "jquery";
+const $ = require("jquery");
 (<any>window).$ = $;
 (<any>window).jQuery = $;
 (<any>window).Tether = require("tether");

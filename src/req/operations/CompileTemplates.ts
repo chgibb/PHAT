@@ -31,7 +31,7 @@ export class CompileTemplates extends atomic.AtomicOperation
     {
         let self = this;
         this.compileTemplatesProcess = cp.fork(getReadable("compileTemplates.js"));
-
+        this.addPID(this.compileTemplatesProcess.pid);
         self.compileTemplatesProcess.on(
             "message",function(ev : AtomicOperationForkEvent){
                 if(ev.update == true)
