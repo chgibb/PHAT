@@ -315,6 +315,19 @@ export class ForkLogger extends AtomicOperation
     public run(){}
 }
 
+
+/**
+ * Disconnects IPC channel and triggers a process exit of retCode
+ * 
+ * @export
+ * @param {number} retCode 
+ */
+export function exitFork(retCode : number) : void
+{
+    process.disconnect();
+    process.exitCode = retCode;
+}
+
 /**
  * Registers traps for unhandled errors in the current process. Logs exception details and stack traces
  * using the provided logger
