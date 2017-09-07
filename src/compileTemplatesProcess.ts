@@ -82,7 +82,7 @@ function compileAndSend()
             figure : figure
         }
     });
-    process.exitCode = 0;
+    atomic.exitFork(0);
 }
 
 process.on(
