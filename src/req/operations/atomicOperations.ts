@@ -295,7 +295,7 @@ export abstract class AtomicOperation
      */
     public logObject(obj : any) : void
     {
-        logString(this.logRecord,JSON.stringify(obj));
+        logString(this.logRecord,JSON.stringify(obj,undefined,4));
     }
 }
 
