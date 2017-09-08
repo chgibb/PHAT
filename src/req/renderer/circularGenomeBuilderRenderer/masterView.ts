@@ -10,6 +10,7 @@ import {SaveKeyEvent} from "./../../ipcEvents";
 import {AtomicOperationIPC} from "./../../atomicOperationsIPC";
 import * as viewMgr from "./../viewMgr";
 import {CircularFigure,} from "./../circularFigure";
+import {reCacheBaseFigure} from "./reCacheBaseFigure";
 import {Fasta} from "./../../fasta";
 import {AlignData} from "./../../alignData";
 
@@ -180,6 +181,27 @@ export class View extends viewMgr.View
                 }
             }
         }
+        document.getElementById("figureOptions").onclick = function(this : HTMLElement,ev : MouseEvent){
+            if((<any>event.target).id == `${genomeView.genome.uuid}ToggleInteractivity`)
+            {
+                genomeView.genome.isInteractive = !genomeView.genome.isInteractive;
+                reCacheBaseFigure(genomeView.genome);
+                tc.resetCaches();
+                self.dataChanged();
+                genomeView.firstRender = true;
+                viewMgr.render();
+            }
+            if((<any>event.target).id == `${genomeView.genome.uuid}ToggleContigNames`)
+            {
+                genomeView.genome.showContigNames = !genomeView.genome.showContigNames;
+                reCacheBaseFigure(genomeView.genome);
+                tc.resetCaches();
+                self.dataChanged();
+                genomeView.firstRender = true;
+                viewMgr.render();
+            }
+        }
+
         document.getElementById("showBPIntervalCheckBox").onclick = function(this : HTMLElement,ev : MouseEvent){
             document.getElementById("updateNavBarButton").click();
         }
@@ -282,6 +304,7 @@ export class View extends viewMgr.View
     }
     public renderView() : string
     {
+        let genomeView = <GenomeView.GenomeView>viewMgr.getViewByName("genomeView",this.views);
         let res = "";
         for(let i = 0; i != this.fastaInputs.length; ++i)
         {
@@ -306,6 +329,15 @@ export class View extends viewMgr.View
             }
         }
         document.getElementById("figures").innerHTML = res;
+
+        res = ""
+        if(genomeView.genome)
+        {
+            res += `<li><a href="#" id="${genomeView.genome.uuid}ToggleInteractivity">${genomeView.genome.isInteractive ? "Disable Interactivity" : "Enable Interactivity"}</a></li>`;
+            res += `<li><a href="#" id="${genomeView.genome.uuid}ToggleContigNames">${genomeView.genome.showContigNames ? "Don't Show Contig Names" : "Show Contig Names"}</a></li>`;
+        }
+        document.getElementById("figureOptions").innerHTML = res;
+
         for(let i = 0; i != this.views.length; ++i)
         {
             this.views[i].render();
