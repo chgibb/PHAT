@@ -398,7 +398,7 @@ export function handleForkFailures(logger? : ForkLogger,progressMessage? : strin
         }
 
         process.send(failureObj);
-        process.exit(1);
+        exitFork(1);
 
     };
     (process as NodeJS.EventEmitter).on("uncaughtException",function(err : Error){
