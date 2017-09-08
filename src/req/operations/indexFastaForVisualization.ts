@@ -40,7 +40,7 @@ export class IndexFastaForVisualization extends atomic.AtomicOperation
                 {
                     self.progressMessage = "Building 2bit archive";
                     self.update();
-                    await faToTwoBit(self);
+                    //await faToTwoBit(self);
                     self.setSuccess(self.twoBitFlags);
                     
                     self.progressMessage = "Reading contigs";
