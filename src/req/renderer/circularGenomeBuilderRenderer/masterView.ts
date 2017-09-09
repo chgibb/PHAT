@@ -283,6 +283,10 @@ export class View extends viewMgr.View
             }
             if(radiusHasChanged)
             {
+                if(!genomeView.genome.isInteractive)
+                {
+                    reCacheBaseFigure(genomeView.genome);
+                }
                 tc.triggerReCompileForWholeFigure(genomeView.genome);
             }
             genomeView.updateScope();
