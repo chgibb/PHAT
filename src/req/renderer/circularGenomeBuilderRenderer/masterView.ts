@@ -259,6 +259,8 @@ export class View extends viewMgr.View
 
         document.getElementById("updateNavBarButton").onclick = function(this : HTMLElement,ev : MouseEvent){
             let radiusHasChanged = false;
+            let trackIntervalChanged = false;
+            let showIntervalChanged = false;
             if(!genomeView.genome)
                     return;
             let radius = parseInt((<HTMLInputElement>document.getElementById("figureRadiusInput")).value);
@@ -271,7 +273,11 @@ export class View extends viewMgr.View
 
             let trackInterval = parseInt((<HTMLInputElement>document.getElementById("figureBPIntervalInput")).value);
             if(trackInterval)
+            {
+                if(trackInterval != genomeView.genome.circularFigureBPTrackOptions.interval)
+                    trackIntervalChanged = true;
                 genomeView.genome.circularFigureBPTrackOptions.interval = trackInterval;
+            }
 
             let showInterval = ((<HTMLInputElement>document.getElementById("showBPIntervalCheckBox")).checked);
             if(showInterval !== undefined)
@@ -281,7 +287,7 @@ export class View extends viewMgr.View
                 else
                     genomeView.genome.circularFigureBPTrackOptions.showLabels = 0;
             }
-            if(radiusHasChanged)
+            if(radiusHasChanged || trackIntervalChanged || showIntervalChanged)
             {
                 if(!genomeView.genome.isInteractive)
                 {
