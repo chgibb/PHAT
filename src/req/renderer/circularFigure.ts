@@ -379,6 +379,20 @@ export function getBaseFigureSVGFromCache(figure : CircularFigure) : string
     return (<any>fs.readFileSync(getReadableAndWritable(`rt/circularFigures/${figure.uuid}/baseFigure.svg`)));
 }
 
+/**
+ * Deletes the contents of the current disk SVG cache for the base figure of figure
+ * 
+ * @export
+ * @param {CircularFigure} figure 
+ */
+export function deleteBaseFigureSVGFromCache(figure : CircularFigure) : void
+{
+    try
+    {
+        fs.unlinkSync(getReadableAndWritable(`rt/circularFigures/${figure.uuid}/baseFigure.svg`));
+    }
+    catch(err){}
+}
 
 /**
  * Returns the distance from the begginning of the figure to the begginning of the contig specified by contiguuid
