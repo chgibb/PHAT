@@ -282,6 +282,8 @@ export class View extends viewMgr.View
             let showInterval = ((<HTMLInputElement>document.getElementById("showBPIntervalCheckBox")).checked);
             if(showInterval !== undefined)
             {
+                if((showInterval === true && genomeView.genome.circularFigureBPTrackOptions.showLabels == 0) || (showInterval === false && genomeView.genome.circularFigureBPTrackOptions.showLabels == 1))
+                    showIntervalChanged = true;
                 if(showInterval === true)
                     genomeView.genome.circularFigureBPTrackOptions.showLabels = 1;
                 else
