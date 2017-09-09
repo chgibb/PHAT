@@ -7,6 +7,7 @@ export async function reCacheBaseFigure(figure : cf.CircularFigure) : Promise<vo
                 setImmediate(function(){
                     setImmediate(function(){
                         cf.cacheBaseFigure(figure);
+                        cf.deleteBaseFigureSVGFromCache(figure);
                         resolve();
                     });
                 });
