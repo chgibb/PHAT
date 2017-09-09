@@ -9,7 +9,7 @@ const dialogs = Dialogs();
 import {SaveKeyEvent} from "./../../ipcEvents";
 import {AtomicOperationIPC} from "./../../atomicOperationsIPC";
 import * as viewMgr from "./../viewMgr";
-import {CircularFigure,} from "./../circularFigure";
+import {CircularFigure} from "./../circularFigure";
 import {reCacheBaseFigure} from "./reCacheBaseFigure";
 import {Fasta} from "./../../fasta";
 import {AlignData} from "./../../alignData";
