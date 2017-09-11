@@ -347,6 +347,10 @@ export function makeFork(target : string,data : any,cb : (ev : any) => void) : c
         cb(ev);
     });
 
+    res.on("exit",function(code : number){
+        console.log(`${target} exited with ${code}`);
+    });
+
     setTimeout(
         function(){
             res.send(data);
