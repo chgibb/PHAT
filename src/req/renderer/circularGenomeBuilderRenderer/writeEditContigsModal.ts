@@ -23,12 +23,19 @@ export function writeEditContigsModal() : void
         {
             for(let i = 0; i != genomeView.genome.customContigs.length; ++i)
             {
-                body += `<p id="${genomeView.genome.customContigs[i].uuid}Edit">${genomeView.genome.customContigs[i].name}</p>`;
+                body += `<p class="activeHover" id="${genomeView.genome.customContigs[i].uuid}Edit">${genomeView.genome.customContigs[i].name}</p>`;
             }
         }
         else
         {
             body += `<p>No custom contigs</p>`;
+        }
+
+        body += `<h5>Reference Contigs</h5>`;
+
+        for(let i = 0; i != genomeView.genome.contigs.length; ++i)
+        {
+            body += `<p class="activeHover" id="${genomeView.genome.contigs[i].uuid}Edit">${genomeView.genome.contigs[i].name}</p>`;
         }
     }
 
