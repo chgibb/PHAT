@@ -62,49 +62,5 @@ export class LinkRefSeqToAlignment extends atomic.AtomicOperation
             }
         });
         this.addPID(this.linkRefSeqToAlignmentProcess.pid);
-        /*self.linkRefSeqToAlignmentProcess.on(
-            "message",function(ev : AtomicOperationForkEvent){
-                if(ev.finishedSettingData == true)
-                {
-                    self.linkRefSeqToAlignmentProcess.send(
-                        <AtomicOperationForkEvent>{
-                            run : true
-                        }
-                    );
-                }
-                if(ev.update == true)
-                {
-                    self.flags = ev.flags;
-                    if(ev.flags.success == true)
-                    {
-                        self.alignData = ev.data.alignData;
-                    }
-                    if(ev.flags.done)
-                    {
-                        self.logRecord = ev.logRecord;
-                        atomic.recordLogRecord(ev.logRecord);
-                    }
-                    self.step = ev.step;
-                    self.progressMessage = ev.progressMessage;
-                    console.log(self.step+" "+self.progressMessage);
-                    self.update();
-                }
-            }
-        );
-        setTimeout(
-            function(){
-                self.linkRefSeqToAlignmentProcess.send(
-                    <AtomicOperationForkEvent>{
-                        setData : true,
-                        data : {
-                            align : self.alignData,
-                            fasta : self.fasta
-                        },
-                        name : self.name,
-                        description : "Link Ref Seq To Alignment"
-                    }
-                );
-            },500
-        );*/
     }
 }
