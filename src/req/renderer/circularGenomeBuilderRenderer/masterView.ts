@@ -149,7 +149,7 @@ export class View extends viewMgr.View
         let genomeView = <GenomeView.GenomeView>viewMgr.getViewByName("genomeView",this.views);
         let self = this;
         window.onbeforeunload = function(e){
-            self.dataChanged();
+            self.saveFigureChanges();
         }
         document.getElementById("figures").onclick = function(this : HTMLElement,ev : MouseEvent){
             for(let i = 0; i != self.fastaInputs.length; ++i)
@@ -161,7 +161,7 @@ export class View extends viewMgr.View
                         self.fastaInputs[i].uuid,
                         self.fastaInputs[i].contigs
                     ));
-                    self.dataChanged();
+                    self.saveFigureChanges();
                     genomeView.genome = self.circularFigures[self.circularFigures.length - 1];
                     genomeView.firstRender = true;
                     viewMgr.render();
@@ -185,18 +185,14 @@ export class View extends viewMgr.View
             if((<any>event.target).id == `${genomeView.genome.uuid}ToggleInteractivity`)
             {
                 genomeView.genome.isInteractive = !genomeView.genome.isInteractive;
-                reCacheBaseFigure(genomeView.genome);
-                tc.resetCaches();
-                self.dataChanged();
+                self.saveFigureChanges();
                 genomeView.firstRender = true;
                 viewMgr.render();
             }
             if((<any>event.target).id == `${genomeView.genome.uuid}ToggleContigNames`)
             {
                 genomeView.genome.showContigNames = !genomeView.genome.showContigNames;
-                reCacheBaseFigure(genomeView.genome);
-                tc.resetCaches();
-                self.dataChanged();
+                self.saveFigureChanges();
                 genomeView.firstRender = true;
                 viewMgr.render();
             }
@@ -295,14 +291,10 @@ export class View extends viewMgr.View
             }
             if(radiusHasChanged || trackIntervalChanged || showIntervalChanged)
             {
-                if(!genomeView.genome.isInteractive)
-                {
-                    reCacheBaseFigure(genomeView.genome);
-                }
-                tc.triggerReCompileForWholeFigure(genomeView.genome);
+                genomeView.firstRender = true;
+                self.saveFigureChanges();
             }
             genomeView.updateScope();
-            self.dataChanged();
             viewMgr.render();
         }
 
@@ -396,6 +388,19 @@ export class View extends viewMgr.View
                 val : this.circularFigures
             }
         );
+    }
+    public saveFigureChanges() : void
+    {
+        let genomeView = <GenomeView.GenomeView>viewMgr.getViewByName("genomeView",this.views);       
+        this.dataChanged();
+        if(genomeView.genome)
+        {
+            if(!genomeView.genome.isInteractive)
+            {
+                tc.resetCaches();
+            }
+            reCacheBaseFigure(genomeView.genome);
+        }
     }
     public divClickEvents(event : JQueryEventObject) : void
     {

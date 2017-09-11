@@ -122,12 +122,7 @@ export class GenomeView extends viewMgr.View implements cf.FigureCanvas
 
                 
                 //Save changes
-                masterView.dataChanged();
-                if(!self.genome.isInteractive)
-                {
-                    reCacheBaseFigure(self.genome);
-                    tc.resetCaches();
-                }
+                masterView.saveFigureChanges();
                 //Re render
                 genomeView.firstRender = true;
                 viewMgr.render();
