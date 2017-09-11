@@ -200,6 +200,10 @@ export class View extends viewMgr.View
                 genomeView.firstRender = true;
                 viewMgr.render();
             }
+            if((<any>event.target).id == `EditFigureName`)
+            {
+                genomeView.figureNameOnClick();
+            }
         }
 
         document.getElementById("showBPIntervalCheckBox").onclick = function(this : HTMLElement,ev : MouseEvent){
@@ -347,6 +351,7 @@ export class View extends viewMgr.View
         {
             res += `<li><a href="#" id="${genomeView.genome.uuid}ToggleInteractivity">${genomeView.genome.isInteractive ? "Disable Interactivity" : "Enable Interactivity"}</a></li>`;
             res += `<li><a href="#" id="${genomeView.genome.uuid}ToggleContigNames">${genomeView.genome.showContigNames ? "Don't Show Contig Names" : "Show Contig Names"}</a></li>`;
+            res += `<li><a href="#" id="EditFigureName">Edit Figure Name</a></li>`;
         }
         document.getElementById("figureOptions").innerHTML = res;
 
