@@ -344,6 +344,7 @@ export class View extends viewMgr.View
             res += `<li><a href="#" id="${genomeView.genome.uuid}ToggleInteractivity">${genomeView.genome.isInteractive ? "Disable Interactivity" : "Enable Interactivity"}</a></li>`;
             res += `<li><a href="#" id="${genomeView.genome.uuid}ToggleContigNames">${genomeView.genome.showContigNames ? "Don't Show Contig Names" : "Show Contig Names"}</a></li>`;
             res += `<li><a href="#" id="EditFigureName">Edit Figure Name</a></li>`;
+            res += `<li><a href="#" id="EditContigs">Edit Contigs</a></li>`;
         }
         document.getElementById("figureOptions").innerHTML = res;
 
