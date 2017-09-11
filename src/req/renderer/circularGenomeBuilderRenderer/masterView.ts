@@ -21,6 +21,7 @@ import {writeAlignsModal} from "./writeAlignsModal";
 import {writeAvailableTracksModal} from "./writeAvailableTracksModal";
 import {writeContigEditorModal} from "./writeContigEditorModal";
 import {writeContigCreatorModal} from "./writeContigCreatorModal";
+import {writeEditContigsModal} from "./writeEditContigsModal";
 import {writeLoadingModal} from "./writeLoadingModal";
 
 
@@ -43,6 +44,7 @@ export class View extends viewMgr.View
     public availableTracksModalOpen : boolean;
     public contigEditorModalOpen : boolean;
     public contigCreatorModalOpen : boolean;
+    public editContigsModalOpen : boolean;
     public loadingModal : boolean;
     public constructor(div : string)
     {
@@ -54,6 +56,7 @@ export class View extends viewMgr.View
         this.availableTracksModalOpen = false;
         this.contigEditorModalOpen = false;
         this.contigCreatorModalOpen = false;
+        this.editContigsModalOpen = false;
         this.loadingModal = false;
     }
     public getAlignsForOpenGenome() : Array<AlignData> | undefined
@@ -199,6 +202,13 @@ export class View extends viewMgr.View
             if((<any>event.target).id == `EditFigureName`)
             {
                 genomeView.figureNameOnClick();
+            }
+            if((<any>event.target).id ==`EditContigs`)
+            {
+                self.editContigsModalOpen = true;
+                writeEditContigsModal();
+                self.showModal();
+
             }
         }
 
