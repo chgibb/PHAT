@@ -16,6 +16,8 @@ import {displayFigure} from "./displayFigure";
 import {centreFigure} from "./centreFigure";
 import {writeLoadingModal} from "./writeLoadingModal";
 import {setSelectedContigByUUID} from "./writeContigEditorModal";
+import {reCacheBaseFigure} from "./reCacheBaseFigure";
+import * as tc from "./templateCache";
 
 import {writeSVG,serializeFigure,renderSVG} from "./exportToSVG";
 
@@ -118,10 +120,16 @@ export class GenomeView extends viewMgr.View implements cf.FigureCanvas
                 let masterView = <masterView.View>viewMgr.getViewByName("masterView");
                 let genomeView = <GenomeView>viewMgr.getViewByName("genomeView",masterView.views);
 
-                genomeView.firstRender = true;
+                
                 //Save changes
                 masterView.dataChanged();
+                if(!self.genome.isInteractive)
+                {
+                    reCacheBaseFigure(self.genome);
+                    tc.resetCaches();
+                }
                 //Re render
+                genomeView.firstRender = true;
                 viewMgr.render();
             }
         });
