@@ -174,12 +174,14 @@ $
                             }
                             if(totalTracks > 0)
                                 document.getElementById("navBarLoadingText").innerHTML = `Recalculating ${totalTracks} tracks`;
-                            if(totalTracks == 1)
+                            if(totalTracks == 0)
                             {
-                                setTimeout(function(){
-                                    document.getElementById("navBarLoadingText").innerHTML = ``;
-                                },1000);
+                                document.getElementById("navBarLoadingText").innerHTML = ``;
                             }
+                        }
+                        else if(arg.val === undefined)
+                        {
+                            document.getElementById("navBarLoadingText").innerHTML = ``;
                         }
                     }
                 }
