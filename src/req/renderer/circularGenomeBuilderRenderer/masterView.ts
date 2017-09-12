@@ -95,6 +95,7 @@ export class View extends viewMgr.View
         this.availableTracksModalOpen = false;
         this.contigCreatorModalOpen = false;
         this.contigEditorModalOpen = false;
+        this.editContigsModalOpen = false;
     }
     public setSelectedFigureInDropDown() : void
     {
@@ -302,6 +303,7 @@ export class View extends viewMgr.View
             if(radiusHasChanged || trackIntervalChanged || showIntervalChanged)
             {
                 genomeView.firstRender = true;
+                tc.triggerReCompileForWholeFigure(genomeView.genome);
                 self.saveFigureChanges();
             }
             genomeView.updateScope();
@@ -406,10 +408,7 @@ export class View extends viewMgr.View
         this.dataChanged();
         if(genomeView.genome)
         {
-            if(!genomeView.genome.isInteractive)
-            {
                 tc.resetCaches();
-            }
             reCacheBaseFigure(genomeView.genome);
         }
     }
