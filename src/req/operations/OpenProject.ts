@@ -27,49 +27,37 @@ export class OpenProject extends atomic.AtomicOperation
     {
         this.logRecord = atomic.openLog(this.name,"Open Project");
         let self = this;
-        this.openProjectProcess = cp.fork(getReadable("OpenProject.js"));
-        this.addPID(this.openProjectProcess.pid);
-        self.openProjectProcess.on(
-            "message",function(ev : AtomicOperationForkEvent)
+        this.openProjectProcess = atomic.makeFork("OpenProject.js",<AtomicOperationForkEvent>{
+            setData : true,
+            data : {
+                proj : self.proj,
+                externalProjectPath : self.externalProjectPath
+            },
+            readableBasePath : getReadable(""),
+            writableBasePath : getWritable(""),
+            readableAndWritableBasePath : getReadableAndWritable("")
+
+        },function(ev : AtomicOperationForkEvent){
+            self.logObject(ev);
+            if(ev.finishedSettingData == true)
             {
-                self.logObject(ev);
-                if(ev.finishedSettingData == true)
-                {
-                    self.openProjectProcess.send(
-                        <AtomicOperationForkEvent>{
-                            run : true
-                        }
-                    );
-                }
-                if(ev.update == true)
-                {
-                    self.extraData = ev.data;
-                    self.flags = ev.flags;
-                    if(ev.flags.success == true)
-                    {
-                        self.setSuccess(self.flags);
-                    }
-                    self.update();
-                }
-            }
-        );
-        setTimeout(
-            function(){
                 self.openProjectProcess.send(
                     <AtomicOperationForkEvent>{
-                        setData : true,
-                        data : {
-                            proj : self.proj,
-                            externalProjectPath : self.externalProjectPath
-                        },
-                        readableBasePath : getReadable(""),
-                        writableBasePath : getWritable(""),
-                        readableAndWritableBasePath : getReadableAndWritable("")
-
+                        run : true
                     }
                 );
-            },10
-        );
-
+            }
+            if(ev.update == true)
+            {
+                self.extraData = ev.data;
+                self.flags = ev.flags;
+                if(ev.flags.success == true)
+                {
+                    self.setSuccess(self.flags);
+                }
+                self.update();
+            }
+        });
+        this.addPID(this.openProjectProcess.pid);
     }
 }

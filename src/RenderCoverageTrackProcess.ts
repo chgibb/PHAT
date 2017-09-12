@@ -1,3 +1,4 @@
+import * as atomic from "./req/operations/atomicOperations";
 import {AtomicOperationForkEvent,CompletionFlags} from "./req/atomicOperationsIPC";
 import {AlignData} from "./req/alignData"
 import * as cf from "./req/renderer/circularFigure";
@@ -39,7 +40,7 @@ process.on
                         }
                     }
                 );
-                process.exit(0);
+                atomic.exitFork(0);
             });
         }
     }  
@@ -55,5 +56,5 @@ process.on
             data : err
         }
     );
-    process.exit(1);
+    atomic.exitFork(1);
 });

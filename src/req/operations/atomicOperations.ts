@@ -1,6 +1,7 @@
 import {EventEmitter} from "events";
 import * as fs from "fs";
 import * as readline from "readline";
+import * as cp from "child_process";
 
 const uuidv4 : () => string = require("uuid/v4");
 import * as rimraf from "rimraf";
@@ -8,7 +9,7 @@ import * as mkdirp from "mkdirp";
 
 import {AtomicOperationForkEvent} from "./../atomicOperationsIPC";
 import {SpawnRequestParams} from "./../JobIPC";
-import {getReadableAndWritable} from "./../getAppPath";
+import {getReadableAndWritable,getReadable} from "./../getAppPath";
 
 /**
  * Class representing some operation which should be run atomically
@@ -294,7 +295,7 @@ export abstract class AtomicOperation
      */
     public logObject(obj : any) : void
     {
-        logString(this.logRecord,JSON.stringify(obj));
+        logString(this.logRecord,JSON.stringify(obj,undefined,4));
     }
 }
 
@@ -313,6 +314,62 @@ export class ForkLogger extends AtomicOperation
     }
     public setData(data : any){}
     public run(){}
+}
+
+
+/**
+ * Forks target, passing data and piping stdout/stderr to console.
+ * Calls cb on messages from the forked ChildProcess
+ * 
+ * @export
+ * @param {string} target 
+ * @param {*} data 
+ * @param {(ev : any) => void} cb 
+ * @returns {cp.ChildProcess} 
+ */
+export function makeFork(target : string,data : any,cb : (ev : any) => void) : cp.ChildProcess
+{
+    let res = cp.fork(
+        getReadable(target),[],<cp.ForkOptions>{
+            silent : true
+        }
+    );
+
+    res.stdout.on("data",function(data : Buffer){
+        console.log(data.toString());
+    });
+
+    res.stderr.on("data",function(data : Buffer){
+        console.error(data.toString());
+    });
+
+    res.on("message",function(ev : any){
+        cb(ev);
+    });
+
+    res.on("exit",function(code : number){
+        console.log(`${target} exited with ${code}`);
+    });
+
+    setTimeout(
+        function(){
+            res.send(data);
+        },10
+    );
+
+    return res;
+}
+
+/**
+ * Disconnects IPC channel and triggers a process exit of retCode
+ * 
+ * @export
+ * @param {number} retCode 
+ */
+export function exitFork(retCode : number) : void
+{
+    process.disconnect();
+    process.exitCode = retCode;
 }
 
 /**
@@ -345,7 +402,7 @@ export function handleForkFailures(logger? : ForkLogger,progressMessage? : strin
         }
 
         process.send(failureObj);
-        process.exit(1);
+        exitFork(1);
 
     };
     (process as NodeJS.EventEmitter).on("uncaughtException",function(err : Error){
