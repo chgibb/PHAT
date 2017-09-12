@@ -161,6 +161,12 @@ export async function displayInteractiveFigure(self : GenomeView) : Promise<void
     });
 }
 
+/**
+ * Delete the div used by self for rendering
+ * 
+ * @export
+ * @param {GenomeView} self 
+ */
 export function removeDiv(self : GenomeView) : void
 {
     try
@@ -177,6 +183,13 @@ export function removeDiv(self : GenomeView) : void
     $("#"+self.div).remove();
 }
 
+/**
+ * Returns SVGs for all selected tracks, wrapped in divs ready for rendering
+ * 
+ * @export
+ * @param {GenomeView} self 
+ * @returns {string} 
+ */
 export function getSelectedDataTrackSVGsFromCache(self : GenomeView) : string
 {
     let res = "";
