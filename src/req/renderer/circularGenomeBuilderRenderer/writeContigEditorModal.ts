@@ -9,6 +9,13 @@ import {reCacheBaseFigure} from "./reCacheBaseFigure";
 import {writeLoadingModal} from "./writeLoadingModal";
 let contig : cf.Contig;
 let editedAlias = "";
+/**
+ * Set the contig to edit by uuid
+ * 
+ * @export
+ * @param {string} uuid 
+ * @returns {void} 
+ */
 export function setSelectedContigByUUID(uuid : string) : void
 {
     let masterView = <masterView.View>viewMgr.getViewByName("masterView");
@@ -35,6 +42,11 @@ export function setSelectedContigByUUID(uuid : string) : void
     }
 }
 
+/**
+ * Writes the contig editor menu into the modal
+ * 
+ * @export
+ */
 export function writeContigEditorModal() : void
 {
     if(!contig)

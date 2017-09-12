@@ -2,6 +2,11 @@ import * as viewMgr from "./../viewMgr";
 import * as masterView from "./masterView";
 import * as genomeView from "./genomeView";
 
+/**
+ * Writes the list of contigs to edit into the modal
+ * 
+ * @export
+ */
 export function writeEditContigsModal() : void
 {
     let masterView = <masterView.View>viewMgr.getViewByName("masterView");

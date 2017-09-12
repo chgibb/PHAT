@@ -7,6 +7,13 @@ import * as viewMgr from "./../viewMgr";
 import * as masterView from "./masterView";
 import {GenomeView} from "./genomeView";
 import {centreFigure} from "./centreFigure";
+/**
+ * Displays the currently set figure
+ * 
+ * @export
+ * @param {GenomeView} self 
+ * @returns {Promise<void>} 
+ */
 export async function displayFigure(self : GenomeView) : Promise<void>
 {
     if(!self.genome.isInteractive)
@@ -15,6 +22,13 @@ export async function displayFigure(self : GenomeView) : Promise<void>
         return await displayInteractiveFigure(self);
 
 }
+/**
+ * Renders a figure as a non-interactive SVG using the specified canvas
+ * 
+ * @export
+ * @param {GenomeView} self 
+ * @returns {Promise<void>} 
+ */
 export async function displayNonInteractiveFigure(self : GenomeView) : Promise<void>
 {
     return new Promise<void>((resolve,reject) => {
@@ -33,6 +47,13 @@ export async function displayNonInteractiveFigure(self : GenomeView) : Promise<v
         resolve();
     });
 }
+/**
+ * Renders a figure as interactive using Angular bindings using the specified canvas
+ * 
+ * @export
+ * @param {GenomeView} self 
+ * @returns {Promise<void>} 
+ */
 export async function displayInteractiveFigure(self : GenomeView) : Promise<void>
 {
     //This is an unholy mess adapted from the example given inline in the

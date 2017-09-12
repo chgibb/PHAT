@@ -4,6 +4,11 @@ import * as genomeView from "./genomeView";
 import * as cf from "./../circularFigure";
 import {reCacheBaseFigure} from "./reCacheBaseFigure";
 import {writeLoadingModal} from "./writeLoadingModal";
+/**
+ * Writes the contig creation menu into the modal
+ * 
+ * @export
+ */
 export function writeContigCreatorModal() : void
 {
     let masterView = <masterView.View>viewMgr.getViewByName("masterView");

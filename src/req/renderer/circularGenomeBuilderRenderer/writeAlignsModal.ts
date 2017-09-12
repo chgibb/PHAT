@@ -3,6 +3,11 @@ import * as masterView from "./masterView";
 import * as genomeView from "./genomeView";
 import {writeAvailableTracksModal,setSelectedAlign} from "./writeAvailableTracksModal";
 import {getReadable} from "./../../getAppPath";
+/**
+ * Writes the alignment selection menu into the modal
+ * 
+ * @export
+ */
 export function writeAlignsModal() : void
 {
     let masterView = <masterView.View>viewMgr.getViewByName("masterView");
