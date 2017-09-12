@@ -105,20 +105,8 @@ export function writeContigEditorModal() : void
         }
         masterView.contigEditorModalOpen = false;
         masterView.dismissModal();
-
-        masterView.dataChanged();
-
-        masterView.loadingModal = true;
-        writeLoadingModal();
-
-        setTimeout(function(){
-            reCacheBaseFigure(genomeView.genome);
-            masterView.loadingModal = false;
-            masterView.dismissModal();
-            genomeView.firstRender = true;
-            viewMgr.render();
-        },10);
-
+        genomeView.firstRender = true;
+        masterView.saveFigureChanges();
         viewMgr.render();
     
     }
