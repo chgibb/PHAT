@@ -2,6 +2,15 @@ import * as fs from "fs";
 
 import {GenomeView} from "./genomeView";
 import * as cf from "./../circularFigure";
+/**
+ * Writes the SVG to fileName. Allows DOM updates to interleave execution
+ * 
+ * @export
+ * @param {GenomeView} self 
+ * @param {string} fileName 
+ * @param {string} svg 
+ * @returns {Promise<void>} 
+ */
 export async function writeSVG(self : GenomeView,fileName : string,svg : string) : Promise<void>
 {
     return new Promise<void>((resolve,reject) => {
@@ -20,6 +29,13 @@ export async function writeSVG(self : GenomeView,fileName : string,svg : string)
     });
 }
 
+/**
+ * Serializes the canvas div. Allows DOM updates to interleave execution
+ * 
+ * @export
+ * @param {GenomeView} self 
+ * @returns {Promise<string>} 
+ */
 export async function serializeFigure(self : GenomeView) : Promise<string>
 {
     return new Promise<string>((resolve,reject) => {
@@ -47,6 +63,13 @@ export async function serializeFigure(self : GenomeView) : Promise<string>
     valid SVG. Here, we pass all of the raw templates needed for the current figure to angular to compile into
     one single SVG that is ready for serialization.
 */
+/**
+ * JIT compiles the entire figure into one SVG, ignoring all precompiled SVGS. Allows DOM updates to interleave execution
+ * 
+ * @export
+ * @param {GenomeView} self 
+ * @returns {Promise<void>} 
+ */
 export async function renderSVG(self : GenomeView) : Promise<void>
 {
     return new Promise<void>((resolve,reject) => {

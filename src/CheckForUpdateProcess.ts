@@ -1,4 +1,5 @@
 import {AtomicOperationForkEvent,CompletionFlags} from "./req/atomicOperationsIPC";
+import * as atomic from "./req/operations/atomicOperations";
 import * as getUpdate from "./req/getLatestUpdate";
 
 let flags : CompletionFlags = new CompletionFlags();
@@ -28,7 +29,7 @@ process.on
                         data : res
                     }
                 );
-                process.exit(0);
+                atomic.exitFork(0);
             }).catch((arg : any) => {
                 console.log(arg);
                 flags.done = true;
@@ -41,7 +42,7 @@ process.on
                         data : arg
                     }
                 );
-                process.exit(1);
+                atomic.exitFork(1);
             });
         }
     }
@@ -58,7 +59,7 @@ process.on
             data : err.message
         }
     );
-    process.exit(1);
+    atomic.exitFork(1);
 });
 process.on("unhandledRejection",function(err : Error){
     console.log(err);
@@ -72,5 +73,5 @@ process.on("unhandledRejection",function(err : Error){
             data : err.message
         }
     );
-    process.exit(1);
+    atomic.exitFork(1);
 });

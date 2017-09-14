@@ -1,18 +1,12 @@
 import * as cf from "./../circularFigure";
-export async function reCacheBaseFigure(figure : cf.CircularFigure) : Promise<void>
+/**
+ * Rerenders figure's template cache, resets SVG cache
+ * 
+ * @export
+ * @param {cf.CircularFigure} figure 
+ */
+export function reCacheBaseFigure(figure : cf.CircularFigure) : void
 {
-    return new Promise<void>((resolve,reject) => {
-        (async function() : Promise<void> {
-            return new Promise<void>((resolve,reject) => {
-                setImmediate(function(){
-                    setImmediate(function(){
-                        cf.cacheBaseFigure(figure);
-                        resolve();
-                    });
-                });
-            });
-        })().then(() => {
-            resolve();
-        });
-    });
+    cf.cacheBaseFigure(figure);
+    cf.deleteBaseFigureSVGFromCache(figure);
 }

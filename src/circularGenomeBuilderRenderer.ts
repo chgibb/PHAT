@@ -156,10 +156,16 @@ $
                                         totalTracks++;
                                         if(ops[i].flags.done && ops[i].flags.success)
                                         {
-                                            console.log("compiled "+ops[i].uuid);
                                             if(ops[i].uuid)
                                             {
+                                                console.log("compiled "+ops[i].uuid);
                                                 tc.removeTrack(ops[i].uuid);
+                                                genomeView.firstRender = true;
+                                            }
+                                            else if(ops[i].compileBase)
+                                            {
+                                                console.log("compiled base figure");
+                                                tc.resetBaseFigureSVG();
                                                 genomeView.firstRender = true;
                                             }
                                         }
@@ -168,12 +174,14 @@ $
                             }
                             if(totalTracks > 0)
                                 document.getElementById("navBarLoadingText").innerHTML = `Recalculating ${totalTracks} tracks`;
-                            if(totalTracks == 1)
+                            if(totalTracks == 0)
                             {
-                                setTimeout(function(){
-                                    document.getElementById("navBarLoadingText").innerHTML = ``;
-                                },1000);
+                                document.getElementById("navBarLoadingText").innerHTML = ``;
                             }
+                        }
+                        else if(arg.val === undefined)
+                        {
+                            document.getElementById("navBarLoadingText").innerHTML = ``;
                         }
                     }
                 }

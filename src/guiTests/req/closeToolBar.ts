@@ -11,7 +11,6 @@ export async function closeToolBar() : Promise<void>
                 {
                     console.log("Failed to open tool bar!");
                     console.log(toolBar);
-                    //process.exit(1);
                 }
                 toolBar[0].close();
                 resolve();

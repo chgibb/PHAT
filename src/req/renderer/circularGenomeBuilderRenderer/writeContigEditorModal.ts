@@ -9,6 +9,13 @@ import {reCacheBaseFigure} from "./reCacheBaseFigure";
 import {writeLoadingModal} from "./writeLoadingModal";
 let contig : cf.Contig;
 let editedAlias = "";
+/**
+ * Set the contig to edit by uuid
+ * 
+ * @export
+ * @param {string} uuid 
+ * @returns {void} 
+ */
 export function setSelectedContigByUUID(uuid : string) : void
 {
     let masterView = <masterView.View>viewMgr.getViewByName("masterView");
@@ -35,6 +42,11 @@ export function setSelectedContigByUUID(uuid : string) : void
     }
 }
 
+/**
+ * Writes the contig editor menu into the modal
+ * 
+ * @export
+ */
 export function writeContigEditorModal() : void
 {
     if(!contig)
@@ -105,21 +117,8 @@ export function writeContigEditorModal() : void
         }
         masterView.contigEditorModalOpen = false;
         masterView.dismissModal();
-
-        masterView.dataChanged();
-
-        masterView.loadingModal = true;
-        writeLoadingModal();
-
-        setTimeout(function(){
-            reCacheBaseFigure(genomeView.genome).then(() => {
-                masterView.loadingModal = false;
-                masterView.dismissModal();
-                genomeView.firstRender = true;
-                viewMgr.render();
-            });
-        },10);
-
+        genomeView.firstRender = true;
+        masterView.saveFigureChanges();
         viewMgr.render();
     
     }

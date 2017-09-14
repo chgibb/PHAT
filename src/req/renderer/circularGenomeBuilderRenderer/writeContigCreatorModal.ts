@@ -4,6 +4,11 @@ import * as genomeView from "./genomeView";
 import * as cf from "./../circularFigure";
 import {reCacheBaseFigure} from "./reCacheBaseFigure";
 import {writeLoadingModal} from "./writeLoadingModal";
+/**
+ * Writes the contig creation menu into the modal
+ * 
+ * @export
+ */
 export function writeContigCreatorModal() : void
 {
     let masterView = <masterView.View>viewMgr.getViewByName("masterView");
@@ -61,12 +66,11 @@ export function writeContigCreatorModal() : void
             masterView.loadingModal = true;
             writeLoadingModal();
             setTimeout(function(){
-                reCacheBaseFigure(genomeView.genome).then(() => {
-                    masterView.loadingModal = false;
-                    masterView.dismissModal();
-                    genomeView.firstRender = true;
-                    viewMgr.render();
-                });
+                reCacheBaseFigure(genomeView.genome);
+                masterView.loadingModal = false;
+                masterView.dismissModal();
+                genomeView.firstRender = true;
+                viewMgr.render();
             },10);
 
             viewMgr.render();

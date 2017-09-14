@@ -7,7 +7,54 @@ import * as viewMgr from "./../viewMgr";
 import * as masterView from "./masterView";
 import {GenomeView} from "./genomeView";
 import {centreFigure} from "./centreFigure";
+/**
+ * Displays the currently set figure
+ * 
+ * @export
+ * @param {GenomeView} self 
+ * @returns {Promise<void>} 
+ */
 export async function displayFigure(self : GenomeView) : Promise<void>
+{
+    if(!self.genome.isInteractive)
+        return await displayNonInteractiveFigure(self);
+    else
+        return await displayInteractiveFigure(self);
+
+}
+/**
+ * Renders a figure as a non-interactive SVG using the specified canvas
+ * 
+ * @export
+ * @param {GenomeView} self 
+ * @returns {Promise<void>} 
+ */
+export async function displayNonInteractiveFigure(self : GenomeView) : Promise<void>
+{
+    return new Promise<void>((resolve,reject) => {
+        tc.refreshCache(self.genome);
+        removeDiv(self);
+
+        let $div : any = $(`
+            <div id="${self.div}">
+                ${getSelectedDataTrackSVGsFromCache(self)}
+                ${tc.baseFigureSVG ? tc.baseFigureSVG : ""}
+            </div>
+        `);
+
+        $(document.body).append($div);
+        centreFigure(document.getElementById(self.div),self.genome);
+        resolve();
+    });
+}
+/**
+ * Renders a figure as interactive using Angular bindings using the specified canvas
+ * 
+ * @export
+ * @param {GenomeView} self 
+ * @returns {Promise<void>} 
+ */
+export async function displayInteractiveFigure(self : GenomeView) : Promise<void>
 {
     //This is an unholy mess adapted from the example given inline in the
     //angular source code https://github.com/angular/angular.js/blob/master/src/auto/injector.js
@@ -25,19 +72,8 @@ export async function displayFigure(self : GenomeView) : Promise<void>
             return new Promise<void>((resolve,reject) => {
                 setImmediate(function(){
                     setImmediate(function(){
-                        try
-                        {
-                            document.body.removeChild(document.getElementById("controls"));
-                        }
-                        catch(err){}
-                        try
-                        {
-                            //Remove the div this view is bound to
-                            document.body.removeChild(document.getElementById(self.div));
-                        }
-                        catch(err){}
-                        $("#"+self.div).remove();
-
+                        
+                        removeDiv(self);
         
                         for(let i = 0; i != self.genome.contigs.length; ++i)
                         {
@@ -68,39 +104,11 @@ export async function displayFigure(self : GenomeView) : Promise<void>
                             $div = $(`
                                 <div id="${self.div}">
                                     
-                                        ${(()=>{
-                                            let res = "";
-                                            for(let i = 0; i != self.genome.renderedCoverageTracks.length; ++i)
-                                            {
-                                                if(self.genome.renderedCoverageTracks[i].checked)
-                                                {
-                                                    try
-                                                    {
-                                                        res += `<div style="position:absolute;z-index:-99;">`;
-                                                        res += tc.getCachedCoverageTrack(self.genome.renderedCoverageTracks[i]);
-                                                        res += `</div>`;
-                                                    }
-                                                    catch(err){}
-                                                }
-                                            }
-                                            for(let i = 0; i != self.genome.renderedSNPTracks.length; ++i)
-                                            {
-                                                if(self.genome.renderedSNPTracks[i].checked)
-                                                {
-                                                    try
-                                                    {
-                                                        res += `<div style="position:absolute;z-index:-99;">`;
-                                                        res += tc.getCachedSNPTrack(self.genome.renderedSNPTracks[i]);
-                                                        res += `</div>`;
-                                                    }
-                                                    catch(err){}
-                                                }
-                                            }
-                                            return res;
-                                        })()}
-                                        <div id="toCompile">
-                                            ${templates}
-                                        </div>
+                                    ${getSelectedDataTrackSVGsFromCache(self)}
+
+                                    <div id="toCompile">
+                                        ${templates}
+                                    </div>
                                 </div>
                             `);
                             $(document.body).append($div);
@@ -151,4 +159,65 @@ export async function displayFigure(self : GenomeView) : Promise<void>
             });
         });
     });
+}
+
+/**
+ * Delete the div used by self for rendering
+ * 
+ * @export
+ * @param {GenomeView} self 
+ */
+export function removeDiv(self : GenomeView) : void
+{
+    try
+    {
+        document.body.removeChild(document.getElementById("controls"));
+    }
+    catch(err){}
+    try
+    {
+        //Remove the div this view is bound to
+        document.body.removeChild(document.getElementById(self.div));
+    }
+    catch(err){}
+    $("#"+self.div).remove();
+}
+
+/**
+ * Returns SVGs for all selected tracks, wrapped in divs ready for rendering
+ * 
+ * @export
+ * @param {GenomeView} self 
+ * @returns {string} 
+ */
+export function getSelectedDataTrackSVGsFromCache(self : GenomeView) : string
+{
+    let res = "";
+    for(let i = 0; i != self.genome.renderedCoverageTracks.length; ++i)
+    {
+        if(self.genome.renderedCoverageTracks[i].checked)
+        {
+            try
+            {
+                res += `<div style="position:absolute;z-index:-99;">`;
+                res += tc.getCachedCoverageTrack(self.genome.renderedCoverageTracks[i]);
+                res += `</div>`;
+            }
+            catch(err){}
+        }
+    }
+    for(let i = 0; i != self.genome.renderedSNPTracks.length; ++i)
+    {
+        if(self.genome.renderedSNPTracks[i].checked)
+        {
+            try
+            {
+                res += `<div style="position:absolute;z-index:-99;">`;
+                res += tc.getCachedSNPTrack(self.genome.renderedSNPTracks[i]);
+                res += `</div>`;
+            }
+            catch(err){}
+        }
+    }
+    return res;
 }

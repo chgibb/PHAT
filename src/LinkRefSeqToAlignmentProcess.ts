@@ -98,7 +98,7 @@ process.on(
                 flags.success = true;
                 update();
 
-                process.exit(0);
+                atomic.exitFork(0);
             })();
         }
     }
