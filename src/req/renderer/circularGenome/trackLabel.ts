@@ -1,15 +1,16 @@
 export function add(
-    options? : {
+    options : {
         text? : string,
         labelStyle? : string,
         vAdjust? : string,
         wAdjust? : string,
-        onClick? : string
+        onClick? : string,
+        isInteractive : boolean
     }
 ) : string
 {
     let res = `
-        <tracklabel class="trackLabelHover" ${(()=>{return options.onClick ? `ng-click="${options.onClick}()"` : "";})()} ${
+        <tracklabel ${options.isInteractive ?  `class="trackLabelHover" ${(()=>{return options.onClick ? `ng-click="${options.onClick}()"` : "";})()}` : ""} ${
             (
                 ()=>
                 {

@@ -174,6 +174,8 @@ export class CircularFigure
     public radius : number;
     public height : number;
     public width : number;
+    public isInteractive : boolean;
+    public showContigNames : boolean;
     public circularFigureBPTrackOptions : CircularFigureBPTrackOptions;
     public renderedCoverageTracks : Array<RenderedCoverageTrackRecord>;
     public renderedSNPTracks : Array<RenderedSNPTrackRecord>;
@@ -203,6 +205,18 @@ export class CircularFigure
             this.contigs[1].loaded = true;
         }
         this.customContigs = new Array<Contig>();
+        this.isInteractive = true;
+        this.showContigNames = true;
+        let totalBP = 0;
+        for(let i = 0; i != this.contigs.length; ++i)
+        {
+            totalBP += this.contigs[i].bp;
+        }
+        if(this.contigs.length >= 50 || totalBP >= 1000000)
+        {
+            this.isInteractive = false;
+            this.showContigNames = false;
+        }
         cacheBaseFigure(this);
     }
 }
@@ -232,7 +246,7 @@ export abstract class FigureCanvas
  * @param {number} [end=-1] 
  * @returns {string} 
  */
-export function renderContig(contig : Contig,start : number = -1,end : number = -1) : string
+export function renderContig(figure : CircularFigure,contig : Contig,start : number = -1,end : number = -1) : string
 {
     if(start == -1)
         start = contig.start;
@@ -247,12 +261,13 @@ export function renderContig(contig : Contig,start : number = -1,end : number = 
             vAdjust : contig.vAdjust,
             markerStyle : `fill:${contig.color};opacity:${contig.opacity};`,
             uuid : contig.uuid,
-            onClick : "markerOnClick"
+            onClick : "markerOnClick",
+            isInteractive : figure.isInteractive
         })}
             ${markerLabel.add(
             {
                 type : "path",
-                text : contig.alias,
+                text : figure.showContigNames ?  contig.alias : "",
                 labelStyle : `fill:${contig.fontFill};opacity:${contig.opacity};`
             })}
             ${markerLabel.end()}
@@ -280,7 +295,8 @@ export function renderBaseFigure(figure : CircularFigure) : string
             {
                 text : figure.name,
                 labelStyle : "font-size:20px;font-weight:400",
-                onClick : "figureNameOnClick"
+                onClick : "figureNameOnClick",
+                isInteractive : figure.isInteractive
             })}
             ${trackLabel.end()}
             ${(()=>
@@ -289,12 +305,12 @@ export function renderBaseFigure(figure : CircularFigure) : string
                 let lastLocation = 0;
                 for(let i = 0; i != figure.contigs.length; ++i)
                 {
-                    res += renderContig(figure.contigs[i],lastLocation,lastLocation+figure.contigs[i].bp);
+                    res += renderContig(figure,figure.contigs[i],lastLocation,lastLocation+figure.contigs[i].bp);
                     lastLocation = lastLocation + figure.contigs[i].bp;
                 }
                 for(let i = 0; i != figure.customContigs.length; ++i)
                 {
-                    res += renderContig(figure.customContigs[i],figure.customContigs[i].start,figure.customContigs[i].end);
+                    res += renderContig(figure,figure.customContigs[i],figure.customContigs[i].start,figure.customContigs[i].end);
                 }
                 return res; 
             })()}
@@ -363,6 +379,20 @@ export function getBaseFigureSVGFromCache(figure : CircularFigure) : string
     return (<any>fs.readFileSync(getReadableAndWritable(`rt/circularFigures/${figure.uuid}/baseFigure.svg`)));
 }
 
+/**
+ * Deletes the contents of the current disk SVG cache for the base figure of figure
+ * 
+ * @export
+ * @param {CircularFigure} figure 
+ */
+export function deleteBaseFigureSVGFromCache(figure : CircularFigure) : void
+{
+    try
+    {
+        fs.unlinkSync(getReadableAndWritable(`rt/circularFigures/${figure.uuid}/baseFigure.svg`));
+    }
+    catch(err){}
+}
 
 /**
  * Returns the distance from the begginning of the figure to the begginning of the contig specified by contiguuid

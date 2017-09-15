@@ -43,55 +43,45 @@ export class RunAlignment extends atomic.AtomicOperation
         this.closeLogOnFailure = false;
         this.closeLogOnSuccess = false;
         let self = this;
-        this.runAlignmentProcess = cp.fork(getReadable("RunAlignment.js"));
-        this.addPID(this.runAlignmentProcess.pid);
-        self.runAlignmentProcess.on(
-            "message",function(ev : AtomicOperationForkEvent){
-                if(ev.finishedSettingData == true)
-                {
-                    self.runAlignmentProcess.send(
-                        <AtomicOperationForkEvent>{
-                            run : true
-                        }
-                    );
-                }
-                if(ev.pid)
-                {
-                    self.addPID(ev.pid);
-                    console.log(ev.pid);
-                }
-                if(ev.update == true)
-                {
-                    self.flags = ev.flags;
-                    if(ev.flags.success == true)
-                    {
-                        self.alignData = ev.data.alignData;
-                    }
-                    if(ev.flags.done)
-                    {
-                        self.logRecord = ev.logRecord;
-                        atomic.recordLogRecord(ev.logRecord);
-                    }
-                    self.step = ev.step;
-                    self.progressMessage = ev.progressMessage;
-                    console.log(self.step+" "+self.progressMessage);
-                    self.update();
-                }
-            }
-        );
-        setTimeout(
-            function(){
+        this.runAlignmentProcess = atomic.makeFork("RunAlignment.js",<AtomicOperationForkEvent>{
+            setData : true,
+            data : {
+                alignData : self.alignData
+            },
+            name : self.name,
+            description : "Run Alignment"
+        },function(ev : AtomicOperationForkEvent){
+            if(ev.finishedSettingData == true)
+            {
                 self.runAlignmentProcess.send(
                     <AtomicOperationForkEvent>{
-                        setData : true,
-                        data : {
-                            alignData : self.alignData
-                        },
-                        name : self.name,
-                        description : "Run Alignment"
+                        run : true
                     }
                 );
-            },500
-        );
+            }
+            if(ev.pid)
+            {
+                self.addPID(ev.pid);
+                console.log(ev.pid);
+            }
+            if(ev.update == true)
+            {
+                self.flags = ev.flags;
+                if(ev.flags.success == true)
+                {
+                    self.alignData = ev.data.alignData;
+                }
+                if(ev.flags.done)
+                {
+                    self.logRecord = ev.logRecord;
+                    atomic.recordLogRecord(ev.logRecord);
+                }
+                self.step = ev.step;
+                self.progressMessage = ev.progressMessage;
+                console.log(self.step+" "+self.progressMessage);
+                self.update();
+            }
+        });
+        this.addPID(this.runAlignmentProcess.pid);
     }
 }

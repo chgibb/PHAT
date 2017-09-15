@@ -34,9 +34,40 @@ export class RenderCoverageTrackForContig extends atomic.AtomicOperation
     {
         this.logRecord = atomic.openLog(this.name,"Render Coverage Track");
         let self = this;
-        this.renderCoverageTrackProcess = cp.fork(getReadable("RenderCoverageTrack.js"));
+        this.renderCoverageTrackProcess = atomic.makeFork("RenderCoverageTrack.js",<AtomicOperationForkEvent>{
+            setData : true,
+            data : {
+                alignData : self.alignData,
+                contiguuid : self.contiguuid,
+                circularFigure : self.circularFigure,
+                colour : self.colour
+            }
+        },function(ev : AtomicOperationForkEvent){
+            if(ev.finishedSettingData == true)
+            {
+                self.renderCoverageTrackProcess.send(
+                    <AtomicOperationForkEvent>{
+                        run : true
+                    }
+                );
+            }
+
+            if(ev.update == true)
+            {
+                self.extraData = ev.data;
+                self.flags = ev.flags;
+                if(ev.flags.success == true)
+                {
+                    self.circularFigure = ev.data.circularFigure;
+                    self.contiguuid = ev.data.contiguuid;
+                    self.alignData = ev.data.alignData;
+                    self.colour = ev.data.colour;
+                }
+                self.update();
+            }
+        });
         this.addPID(this.renderCoverageTrackProcess.pid);
-        self.renderCoverageTrackProcess.on(
+        /*self.renderCoverageTrackProcess.on(
             "message",function(ev : AtomicOperationForkEvent)
             {
                 if(ev.finishedSettingData == true)
@@ -77,6 +108,6 @@ export class RenderCoverageTrackForContig extends atomic.AtomicOperation
                     }
                 );
             },500
-        );
+        );*/
     }
 }
