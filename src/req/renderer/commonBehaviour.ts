@@ -46,7 +46,7 @@ document.addEventListener
 
 //Enable experimental feature on press of "1" key
 window.onkeypress = function(e : KeyboardEvent){
-    if(e.which == 49)
+    if(e.key == "1" && e.ctrlKey)
     {
         dialogs.confirm(
             `Pressing OK will open the process manager. This feature is currently experimental
