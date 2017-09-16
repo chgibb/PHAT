@@ -23,38 +23,26 @@ export class CheckForUpdate extends atomic.AtomicOperation
         this.closeLogOnSuccess = true;
         this.logRecord = atomic.openLog(this.name,"Check for Update");
         let self = this;
-        this.checkForUpdateProcess = cp.fork(getReadable("CheckForUpdate.js"));
-        this.addPID(this.checkForUpdateProcess.pid);
-        this.checkForUpdateProcess.on(
-            "message",function(ev : AtomicOperationForkEvent)
+        this.checkForUpdateProcess = atomic.makeFork("CheckForUpdate.js",<AtomicOperationForkEvent>{
+            setData : true,
+            data : <AtomicOperationIPC>{}
+        },function(ev : AtomicOperationForkEvent){
+            self.logObject(ev);
+            if(ev.finishedSettingData == true)
             {
-                self.logObject(ev);
-                if(ev.finishedSettingData == true)
-                {
-                    self.checkForUpdateProcess.send(
-                        <AtomicOperationForkEvent>{
-                            run : true
-                        }
-                    );
-                }
-                if(ev.update == true)
-                {
-                    self.extraData = ev.data;
-                    self.flags = ev.flags;
-                    self.update();
-                }
-            }
-        );
-        setTimeout(
-            function(){
                 self.checkForUpdateProcess.send(
                     <AtomicOperationForkEvent>{
-                        setData : true,
-                        data : <AtomicOperationIPC>{
-                        }
+                        run : true
                     }
                 );
-            },500
-        );
+            }
+            if(ev.update == true)
+            {
+                self.extraData = ev.data;
+                self.flags = ev.flags;
+                self.update();
+            }    
+        });
+        this.addPID(this.checkForUpdateProcess.pid);
     }
 }

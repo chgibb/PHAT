@@ -5,6 +5,10 @@
  */
 import * as electron from "electron";
 const remote = electron.remote;
+const ipc = electron.ipcRenderer;
+
+const Dialogs = require("dialogs");
+const dialogs = Dialogs();
 
 /*
  Adapted from answer by Fizer Khan
@@ -39,3 +43,21 @@ document.addEventListener
         e.stopPropagation();
     }
 );
+
+//Enable experimental feature on press of "1" key
+window.onkeypress = function(e : KeyboardEvent){
+    if(e.which == 49)
+    {
+        dialogs.confirm(
+            `Pressing OK will open the process manager. This feature is currently experimental
+            and may not work at all on your system.`,
+            `Go`,
+            function(ok : boolean){
+                if(ok)
+                {
+                    ipc.send("openWindow",{refName : "procMgr"});
+                }
+            }
+        );
+    }
+}

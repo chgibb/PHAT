@@ -81,8 +81,9 @@ function compileAndSend()
         data : {
             figure : figure
         }
+    },function(){
+        process.exit(0);
     });
-    process.exit(0);
 }
 
 process.on(

@@ -1,11 +1,11 @@
-import {handleForkFailures} from "./req/operations/atomicOperations";
+import * as atomic from "./req/operations/atomicOperations";
 import {AtomicOperationForkEvent,CompletionFlags} from "./req/atomicOperationsIPC";
 import {ProjectManifest} from "./req/projectManifest";
 import {saveCurrentProject} from "./req//saveCurrentProject";
 
 let proj : ProjectManifest;
 let flags : CompletionFlags = new CompletionFlags();
-handleForkFailures();
+atomic.handleForkFailures();
 process.on
 (
     "message",function(ev : AtomicOperationForkEvent)
@@ -29,7 +29,7 @@ process.on
                         flags : flags,
                     }
                 );
-                process.exit(0);
+                atomic.exitFork(0);
             }).catch((err) => {
                 flags.done = true;
                 flags.failure = true;
@@ -41,7 +41,7 @@ process.on
                         data : err
                     }
                 );
-                process.exit(1);
+                atomic.exitFork(1);
             });
         }
     }  

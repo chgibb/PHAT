@@ -1,4 +1,11 @@
 import * as cf from "./../circularFigure";
+/**
+ * Center div based on the dimensions of figure and the window
+ * 
+ * @export
+ * @param {HTMLElement} div 
+ * @param {cf.CircularFigure} figure 
+ */
 export function centreFigure(div : HTMLElement,figure : cf.CircularFigure) : void
 {
     if(div)

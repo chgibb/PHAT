@@ -1,3 +1,8 @@
+/**
+ * Writes a generic loading message into the modal. May be modified by #loadingText after being written
+ * 
+ * @export
+ */
 export function writeLoadingModal() : void
 {
     let title = `Loading...`;

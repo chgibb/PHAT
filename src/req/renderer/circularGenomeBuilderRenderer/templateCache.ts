@@ -37,23 +37,69 @@ class CachedSNPTrackSVG
     }
 }
 
-let baseFigureTemplateString = "";
+export let baseFigureSVG : string = undefined;
 
 let coverageTrackCache = new Array<CachedCoverageTrackSVG>();;
 let SNPTrackCache = new Array<CachedSNPTrackSVG>();
 
+/**
+ * Clear the in-memory cache of the SVG for the base figure
+ * 
+ * @export
+ */
+export function resetBaseFigureSVG() : void
+{
+    baseFigureSVG = undefined;
+}
+
+/**
+ * Clear all in-memory caches
+ * 
+ * @export
+ */
 export function resetCaches() : void
 {
     coverageTrackCache = new Array<CachedCoverageTrackSVG>();
     SNPTrackCache = new Array<CachedSNPTrackSVG>();
+    baseFigureSVG = undefined
 }
 
+/**
+ * Update caches for newFigure with new data (if changes are detected).
+ * Will reset and rebuild caches if this function is called with a figure
+ * different from the one used the last time it was called
+ * 
+ * @export
+ * @param {cf.CircularFigure} newFigure 
+ */
 export function refreshCache(newFigure : cf.CircularFigure) : void
 {
     if(!figure || newFigure.uuid != figure.uuid)
     {
         resetCaches();
         figure = newFigure;
+    }
+    console.log(newFigure);
+    if(!newFigure.isInteractive)
+    {
+        if(!baseFigureSVG)
+        {
+            try
+            {
+                baseFigureSVG = cf.getBaseFigureSVGFromCache(figure);
+            }
+            catch(err)
+            {
+                ipc.send(
+                    "runOperation",
+                    <AtomicOperationIPC>{
+                        opName : "compileTemplates",
+                        figure : newFigure,
+                        compileBase : true
+                    }
+                );
+            }
+        }
     }
 
     //load tracks which had not been loaded previously
@@ -123,24 +169,16 @@ export function refreshCache(newFigure : cf.CircularFigure) : void
             }
         }
     }
-
-    /*for(let i = 0; i != newFigure.renderedSNPTracks.length; ++i)
-    {
-        found = false;
-        for(let k = 0; k != SNPTrackCache.length; ++k)
-        {
-            if(newFigure.renderedSNPTracks[i].uuid == SNPTrackCache[k].trackRecord.uuid)
-            {
-                found = true;
-                break;
-            }
-        }
-        if(!found)
-            SNPTrackCache.push(new CachedSNPTrackSVG(newFigure.renderedSNPTracks[i]));
-    }*/
 }
 
-//retrieve loaded tracks
+
+/**
+ * Retrieve an (already loaded) SVG for the specified coverage track
+ * 
+ * @export
+ * @param {cf.RenderedCoverageTrackRecord} trackRecord 
+ * @returns {string} 
+ */
 export function getCachedCoverageTrack(trackRecord : cf.RenderedCoverageTrackRecord) : string
 {
     for(let i = 0; i != coverageTrackCache.length; ++i)
@@ -151,6 +189,13 @@ export function getCachedCoverageTrack(trackRecord : cf.RenderedCoverageTrackRec
     throw new Error(`Could not fetch ${trackRecord.uuid} from cache`);
 }
 
+/**
+ * Retrieve an (already loaded) SVG for the specified SNP track
+ * 
+ * @export
+ * @param {cf.RenderedSNPTrackRecord} trackRecord 
+ * @returns {string} 
+ */
 export function getCachedSNPTrack(trackRecord : cf.RenderedSNPTrackRecord) : string
 {
     for(let i = 0; i != SNPTrackCache.length; ++i)
@@ -161,6 +206,13 @@ export function getCachedSNPTrack(trackRecord : cf.RenderedSNPTrackRecord) : str
     throw new Error(`Could not fetch ${trackRecord.uuid} from cache`);
 }
 
+/**
+ * Deletes the track specified by uuid from the in-memory cache
+ * 
+ * @export
+ * @param {string} uuid 
+ * @returns {void} 
+ */
 export function removeTrack(uuid : string) : void
 {
     for(let i = 0; i != coverageTrackCache.length; ++i)
@@ -183,10 +235,28 @@ export function removeTrack(uuid : string) : void
     }
 }
 
-export function triggerReCompileForAllTracks(newFigure : cf.CircularFigure) : void
+/**
+ * Triggers a compile for each compononent of newFigure (including non-visible data tracks) regardless of cache status.
+ * Will only trigger a compile for the base figure if the figure is non-interactive
+ * @export
+ * @param {cf.CircularFigure} newFigure 
+ * @returns {void} 
+ */
+export function triggerReCompileForWholeFigure(newFigure : cf.CircularFigure) : void
 {
     if(!figure)
         return;
+    if(!figure.isInteractive)
+    {
+        ipc.send(
+            "runOperation",
+            <AtomicOperationIPC>{
+                opName : "compileTemplates",
+                figure : newFigure,
+                compileBase : true
+            }
+        );
+    }
     for(let i = 0; i != coverageTrackCache.length; ++i)
     {
         ipc.send(
