@@ -22,7 +22,7 @@ test_script:
  - bash scripts/prepareWindowsRelease.bash
 
 artifacts:
-  - path: phat-win32-x64-update.tar.gz
+  - path: phat-win32-x64-update-full.tar.gz
     name: to-publish
 
   - path: phat-win32-x64-setup.exe
