@@ -24,7 +24,7 @@ gboolean waitThenClose()
 {
     int* status;
     waitpid(pid,status,WNOHANG);
-    if(WIFEXITED(status))
+    if(WIFEXITED(*status))
     {
         gtk_main_quit();
 
