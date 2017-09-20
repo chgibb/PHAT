@@ -10,6 +10,7 @@ mv resources/app/installUpdateProcess.exe resources/app/newinstallUpdateProcess.
 mv resources/app/installUpdateNotificationWin32.exe resources/app/newinstallUpdateNotificationWin32.exe
 
 tar -zcvf phat-win32-x64-update-full.tar.gz --exclude=*.tar.gz *
+cp phat-win32-x64-update-full.tar.gz phat-win32-x64-update.tar.gz
 
 mv resources/app/newCSharpCode.SharpZipLib.dll resources/app/ICSharpCode.SharpZipLib.dll 
 mv resources/app/newinstallUpdateProcess.exe resources/app/installUpdateProcess.exe 
