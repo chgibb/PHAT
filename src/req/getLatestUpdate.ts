@@ -12,7 +12,7 @@ else if(process.platform == "win32")
 
 let isRightArch : RegExp = new RegExp("(x64)","i");
 
-let isUpdate : RegExp = new RegExp("(update)","i");
+let isUpdateFull : RegExp = new RegExp("(update-full)","i");
 
 export interface Status
 {
@@ -58,7 +58,7 @@ export function getLatestUpdate(userName : string,repo : string) : Promise<{}>
                     for(let k = 0; k != arg.data[i].assets.length; ++k)
                     {
                         if(
-                            isUpdate.test(arg.data[i].assets[k].name) &&
+                            isUpdateFull.test(arg.data[i].assets[k].name) &&
                             isRightOS.test(arg.data[i].assets[k].name) &&
                             isRightArch.test(arg.data[i].assets[k].name)
                         )
