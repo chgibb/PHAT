@@ -121,7 +121,7 @@ process.on(
                                                 flags.done = true;
                                                 flags.success = true;
                                                 update();
-                                                process.exit(0);
+                                                atomic.exitFork(0);
 
                                             });
                                         });

@@ -5,9 +5,9 @@ import {GetKeyEvent,KeySubEvent} from "./req/ipcEvents";
 import * as viewMgr from "./req/renderer/viewMgr";
 import * as reportView from "./req/renderer/AlignRenderer/reportView"
 
-import * as $ from "jquery";
+const $ = require("jquery");
 (<any>window).$ = $;
-require("./req/renderer/commonBehaviour");
+import "./req/renderer/commonBehaviour";
 
 $
 (
@@ -34,7 +34,15 @@ $
                 replyChannel : "align"
             }
         );
-
+        ipc.send(
+            "getKey",
+            <GetKeyEvent>{
+                action : "getKey",
+                channel : "application",
+                key : "operations",
+                replyChannel : "align"
+            }
+        );
         ipc.send(
             "keySub",
             <KeySubEvent>{

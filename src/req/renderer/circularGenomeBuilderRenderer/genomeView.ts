@@ -16,17 +16,51 @@ import {displayFigure} from "./displayFigure";
 import {centreFigure} from "./centreFigure";
 import {writeLoadingModal} from "./writeLoadingModal";
 import {setSelectedContigByUUID} from "./writeContigEditorModal";
+import {reCacheBaseFigure} from "./reCacheBaseFigure";
+import * as tc from "./templateCache";
 
 import {writeSVG,serializeFigure,renderSVG} from "./exportToSVG";
 
 require("angular");
 require("@chgibb/angularplasmid");
 let app : any = angular.module('myApp',['angularplasmid']);
+/**
+ * Manages the display and behaviour of the figure being edited
+ * 
+ * @export
+ * @class GenomeView
+ * @extends {viewMgr.View}
+ * @implements {cf.FigureCanvas}
+ */
 export class GenomeView extends viewMgr.View implements cf.FigureCanvas
 {
+    /**
+     * The current figure being displayed
+     * 
+     * @type {cf.CircularFigure}
+     * @memberof GenomeView
+     */
     public genome : cf.CircularFigure;
+    /**
+     * Reconstruct the figure using cached data
+     * 
+     * @type {boolean}
+     * @memberof GenomeView
+     */
     public firstRender : boolean;
+    /**
+     * Aligns for this figure
+     * 
+     * @type {Array<AlignData>}
+     * @memberof GenomeView
+     */
     public alignData : Array<AlignData>;
+    /**
+     * Bound Angular scope for genome
+     * 
+     * @type {*}
+     * @memberof GenomeView
+     */
     public scope : any;
     public constructor(name : string,div : string)
     {
@@ -35,8 +69,17 @@ export class GenomeView extends viewMgr.View implements cf.FigureCanvas
     }
     public onMount() : void{}
     public onUnMount() : void{}
+    /**
+     * Update the Angular scope for genome
+     * 
+     * @param {cf.FigureCanvas} [scope] 
+     * @returns {void} 
+     * @memberof GenomeView
+     */
     public updateScope(scope? : cf.FigureCanvas) : void
     {
+        if(!this.genome.isInteractive)
+            return;
         if(scope)
             this.scope = scope;
         this.scope.genome = this.genome;
@@ -51,6 +94,11 @@ export class GenomeView extends viewMgr.View implements cf.FigureCanvas
         this.scope.div = this.div;
     }
     
+    /**
+     * Export genome to SVG
+     * 
+     * @memberof GenomeView
+     */
     public exportSVG()
     {   
         let self = this;
@@ -96,6 +144,14 @@ export class GenomeView extends viewMgr.View implements cf.FigureCanvas
             }
         );
     }
+    /**
+     * Called when a trackMarker is clicked by the user
+     * 
+     * @param {*} $event 
+     * @param {*} $marker 
+     * @param {string} uuid 
+     * @memberof GenomeView
+     */
     public markerOnClick($event : any,$marker : any,uuid : string) : void
     {
         let masterView = <masterView.View>viewMgr.getViewByName("masterView");
@@ -104,6 +160,11 @@ export class GenomeView extends viewMgr.View implements cf.FigureCanvas
         masterView.showModal();
         viewMgr.render();
     }
+    /**
+     * Called when the name of the figure is clicked by the user
+     * 
+     * @memberof GenomeView
+     */
     public figureNameOnClick() : void
     {
         let self = this;
@@ -116,14 +177,20 @@ export class GenomeView extends viewMgr.View implements cf.FigureCanvas
                 let masterView = <masterView.View>viewMgr.getViewByName("masterView");
                 let genomeView = <GenomeView>viewMgr.getViewByName("genomeView",masterView.views);
 
-                genomeView.firstRender = true;
+                
                 //Save changes
-                masterView.dataChanged();
+                masterView.saveFigureChanges();
                 //Re render
+                genomeView.firstRender = true;
                 viewMgr.render();
             }
         });
     }
+    /**
+     * Should be called when genome.radius changes
+     * 
+     * @memberof GenomeView
+     */
     public inputRadiusOnChange()
     {
         this.genome.height = this.genome.radius*10;
@@ -131,6 +198,11 @@ export class GenomeView extends viewMgr.View implements cf.FigureCanvas
         //Re center figure
         this.postRender();
     }
+    /**
+     * Should be called when the track interval changes
+     * 
+     * @memberof GenomeView
+     */
     public showBPTrackOnChange()
     {
         let masterView = <masterView.View>viewMgr.getViewByName("masterView");
@@ -172,6 +244,11 @@ export class GenomeView extends viewMgr.View implements cf.FigureCanvas
             return " ";
         return undefined;
     }
+    /**
+     * Recenter figure and clean artifacts
+     * 
+     * @memberof GenomeView
+     */
     public postRender() : void
     {
         if(this.genome !== undefined)

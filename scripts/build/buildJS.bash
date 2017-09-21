@@ -13,18 +13,41 @@ function cleanTSArtifacts {
 }
 cp src/pileup.js/style/pileup.css dist/styles/pileup.css
 
-./node_modules/.bin/tsc
+if [[ "$1" != "prod" ]]; then
+	./node_modules/.bin/tsc
+fi
+if [[ "$1" == "opt" ]]; then
+	./node_modules/.bin/tsc -p tsconfigProd.json
+fi
 #Compilation failed somewhere
 if [ $? != 0 ]; then
     cleanTSArtifacts
 	exit 1
 fi
+
+if [[ "$1" == "opt" ]]; then
+	for f in src/*.js
+	do
+		destination=$(echo $f | awk '{gsub("src/","dist/");print}')
+		printf "Shaking "
+		printf $f
+		printf "\n"
+		./node_modules/.bin/rollup $f --o $f --f cjs
+		if [ $? != 0 ]; then
+			cleanTSArtifacts
+			exit 1
+		fi
+	done
+fi
 for f in src/*.js
 do
+	
+	destination=$(echo $f | awk '{gsub("src/","dist/");print}')
+
 	printf "Bundling "
 	printf $f
 	printf "\n"
-	destination=$(echo $f | awk '{gsub("src/","dist/");print}')
+
 	if [[ "$f" != "src/compileTemplatesProcess.js" ]]; then
 		./node_modules/.bin/browserify $f --node --debug -o $destination  --exclude electron --ignore-missing --noparse=jquery
 	fi

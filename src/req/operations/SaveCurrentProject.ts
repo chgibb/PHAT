@@ -21,42 +21,30 @@ export class SaveCurrentProject extends atomic.AtomicOperation
     {
         this.logRecord = atomic.openLog(this.name,"Save Current Project");
         let self = this;
-        this.saveCurrentProjectProcess = cp.fork(getReadable("SaveCurrentProject.js"));
-
-        self.saveCurrentProjectProcess.on(
-            "message",function(ev : AtomicOperationForkEvent)
+        this.saveCurrentProjectProcess = atomic.makeFork("SaveCurrentProject.js",<AtomicOperationForkEvent>{
+            setData : true,
+            data : self.proj
+        },function(ev : AtomicOperationForkEvent){
+            self.logObject(ev);
+            if(ev.finishedSettingData == true)
             {
-                self.logObject(ev);
-                if(ev.finishedSettingData == true)
-                {
-                    self.saveCurrentProjectProcess.send(
-                        <AtomicOperationForkEvent>{
-                            run : true
-                        }
-                    );
-                }
-                if(ev.update == true)
-                {
-                    self.extraData = ev.data;
-                    self.flags = ev.flags;
-                    if(ev.flags.success == true)
-                    {
-                        self.setSuccess(self.flags);
-                    }
-                    self.update();
-                }
-            }
-        );
-        setTimeout(
-            function(){
                 self.saveCurrentProjectProcess.send(
                     <AtomicOperationForkEvent>{
-                        setData : true,
-                        data : self.proj
+                        run : true
                     }
                 );
-            },500
-        );
-
+            }
+            if(ev.update == true)
+            {
+                self.extraData = ev.data;
+                self.flags = ev.flags;
+                if(ev.flags.success == true)
+                {
+                    self.setSuccess(self.flags);
+                }
+                self.update();
+            }
+        });
+        this.addPID(this.saveCurrentProjectProcess.pid);
     }
 }

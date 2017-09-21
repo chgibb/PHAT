@@ -33,6 +33,43 @@ export function pushWindow(refName : string,ref : Electron.BrowserWindow) : void
 	windows.push(new WindowRef(refName,ref));
 }
 
+export function getWindowPIDs() : Array<number>
+{
+	for(let i : number = windows.length - 1; i >= 0; --i)
+	{
+		try
+		{
+			windows[i].window.isResizable();
+		}
+		catch(err)
+		{
+			windows.splice(i,1);
+		}
+	}
+	let res = new Array<number>();
+	for(let i = 0; i != windows.length; ++i)
+	{
+		res.push(windows[i].window.webContents.getOSProcessId());
+	}
+	return res;
+}
+
+export function getOpenWindows() : Array<WindowRef>
+{
+	for(let i : number = windows.length - 1; i >= 0; --i)
+	{
+		try
+		{
+			windows[i].window.isResizable();
+		}
+		catch(err)
+		{
+			windows.splice(i,1);
+		}
+	}
+	return windows;
+}
+
 export function closeAllExcept(refName : string) : void
 {
 	for(let i : number = windows.length - 1; i >= 0; --i)

@@ -118,7 +118,7 @@ export function getIndexOfViewByName(name : string,targetArr : Array<View>) : nu
     if(targetArr)
         arr = targetArr;
     else
-        arr = module.exports.views;
+        arr = views;
     for(var i = arr.length - 1; i >= 0; --i)
     {
         if(arr[i].name == name)
@@ -195,7 +195,7 @@ export function changeView(newView : string) : void
     
     newViewRef.mount();
 
-    module.exports.render();
+    render();
 }
 
 export let views : Array<View> = new Array<View>();

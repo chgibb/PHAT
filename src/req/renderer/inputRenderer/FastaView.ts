@@ -4,6 +4,7 @@ import {Fasta} from "./../../fasta";
 export class View extends viewMgr.View
 {
     public fastaInputs : Array<Fasta>;
+    public progressMessage : string;
     public constructor(div : string)
     {
         super("fastaView",div);
@@ -14,14 +15,16 @@ export class View extends viewMgr.View
     public renderView() : string
     {
         return `
-        <img class="topButton activeHover activeHoverButton" id="browseFastaFiles" src="${getReadable("img/browseButton.png")}"><br />
+            <img class="topButton activeHover activeHoverButton" id="browseFastaFiles" src="${getReadable("img/browseButton.png")}"><br />
+            <p id="loadingText">${this.progressMessage}</p>
             <div id="fastaTableDiv" style="width:100%;">
                 <table style="width:100%;">
                     <tr>
                         <th>Reference Name</th>
                         <th>Directory</th>
                         <th>Size</th>
-                        <th>Indexed</th>
+                        <th>Ready for Alignment</th>
+                        <th>Ready for Visualization</th>
                     </tr>
                     ${(()=>{
                         let res = "";
@@ -32,7 +35,8 @@ export class View extends viewMgr.View
                                     <td class="${this.fastaInputs[i].uuid}Class">${this.fastaInputs[i].alias}</td>
                                     <td class="${this.fastaInputs[i].uuid}Class">${this.fastaInputs[i].imported ? "In Project" : this.fastaInputs[i].path}</td>
                                     <td class="${this.fastaInputs[i].uuid}Class">${this.fastaInputs[i].sizeString}</td>
-                                    <td class="${this.fastaInputs[i].uuid}Class" id="${this.fastaInputs[i].uuid}Index">${this.fastaInputs[i].indexed != false ? `<img src="${getReadable("img/pass.png")}">` : "Not Indexed"}</td>
+                                    <td class="${this.fastaInputs[i].uuid}Class" id="${this.fastaInputs[i].uuid}Index">${this.fastaInputs[i].indexed != false ? `<img src="${getReadable("img/pass.png")}">` : "Not Ready"}</td>
+                                    <td class="${this.fastaInputs[i].uuid}Class" id="${this.fastaInputs[i].uuid}IndexForVisualization">${this.fastaInputs[i].indexedForVisualization ? `<img src="${getReadable("img/pass.png")}">` : "Not Ready"}</td>
                                 </tr>
                             `;
                         }

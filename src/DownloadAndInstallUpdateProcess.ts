@@ -3,6 +3,7 @@ import * as cp from "child_process";
 
 let GitHubReleases = require("github-releases");
 
+import * as atomic from "./req/operations/atomicOperations";
 import {AtomicOperationForkEvent,CompletionFlags} from "./req/atomicOperationsIPC";
 import {getReadable} from "./req/getAppPath";
 
@@ -71,7 +72,7 @@ process.on
                         );
                         installer.unref();
                     }
-                    process.exit(0);
+                    atomic.exitFork(0);
 
                 });
             });
@@ -90,7 +91,7 @@ process.on
             data : err
         }
     );
-    process.exit(1);
+    atomic.exitFork(1);
 });
 process.on("unhandledRejection",function(err : string){
     console.log("ERROR "+err);
@@ -104,5 +105,5 @@ process.on("unhandledRejection",function(err : string){
             data : err
         }
     );
-    process.exit(1);
+    atomic.exitFork(1);
 });

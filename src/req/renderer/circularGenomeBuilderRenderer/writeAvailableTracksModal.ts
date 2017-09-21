@@ -10,10 +10,21 @@ import {getReadable} from "./../../getAppPath";
 
 require("@claviska/jquery-minicolors");
 let selectedAlign : AlignData;
+/**
+ * Set the selected alignment to view track options for
+ * 
+ * @export
+ * @param {AlignData} align 
+ */
 export function setSelectedAlign(align : AlignData) : void
 {
     selectedAlign = align;
 }
+/**
+ * Writes the data track selection menu into the modal
+ * 
+ * @export
+ */
 export function writeAvailableTracksModal() : void
 {
     let masterView = <masterView.View>viewMgr.getViewByName("masterView");
