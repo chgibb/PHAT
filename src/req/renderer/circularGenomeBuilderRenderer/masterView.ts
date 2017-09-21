@@ -9,7 +9,8 @@ const dialogs = Dialogs();
 import {SaveKeyEvent} from "./../../ipcEvents";
 import {AtomicOperationIPC} from "./../../atomicOperationsIPC";
 import * as viewMgr from "./../viewMgr";
-import {CircularFigure,} from "./../circularFigure";
+import {CircularFigure} from "./../circularFigure";
+import {reCacheBaseFigure} from "./reCacheBaseFigure";
 import {Fasta} from "./../../fasta";
 import {AlignData} from "./../../alignData";
 
@@ -20,10 +21,11 @@ import {writeAlignsModal} from "./writeAlignsModal";
 import {writeAvailableTracksModal} from "./writeAvailableTracksModal";
 import {writeContigEditorModal} from "./writeContigEditorModal";
 import {writeContigCreatorModal} from "./writeContigCreatorModal";
+import {writeEditContigsModal} from "./writeEditContigsModal";
 import {writeLoadingModal} from "./writeLoadingModal";
 
 
-import * as $ from "jquery";
+const $ = require("jquery");
 (<any>window).$ = $;
 (<any>window).jQuery = $;
 (<any>window).Tether = require("tether");
@@ -32,6 +34,13 @@ export function addView(arr : Array<viewMgr.View>,div : string)
 {
     arr.push(new View(div));
 }
+/**
+ * Manages the display and the behaviour of the figure editor
+ * 
+ * @export
+ * @class View
+ * @extends {viewMgr.View}
+ */
 export class View extends viewMgr.View
 {
     public views : Array<viewMgr.View>;
@@ -42,6 +51,7 @@ export class View extends viewMgr.View
     public availableTracksModalOpen : boolean;
     public contigEditorModalOpen : boolean;
     public contigCreatorModalOpen : boolean;
+    public editContigsModalOpen : boolean;
     public loadingModal : boolean;
     public constructor(div : string)
     {
@@ -53,8 +63,15 @@ export class View extends viewMgr.View
         this.availableTracksModalOpen = false;
         this.contigEditorModalOpen = false;
         this.contigCreatorModalOpen = false;
+        this.editContigsModalOpen = false;
         this.loadingModal = false;
     }
+    /**
+     * Retrieve all the alignments run for the currently open figure
+     * 
+     * @returns {(Array<AlignData> | undefined)} 
+     * @memberof View
+     */
     public getAlignsForOpenGenome() : Array<AlignData> | undefined
     {
         let res : Array<AlignData> = new Array<AlignData>();
@@ -63,7 +80,7 @@ export class View extends viewMgr.View
             return undefined;
         for(let i = 0; i != this.alignData.length; ++i)
         {
-            if(this.alignData[i].fasta.uuid == genomeView.genome.uuidFasta)
+            if(this.alignData[i].fasta && this.alignData[i].fasta.uuid == genomeView.genome.uuidFasta)
             {
                 res.push(this.alignData[i]);
             }
@@ -72,6 +89,11 @@ export class View extends viewMgr.View
             return undefined;
         return res;
     }
+    /**
+     * Show the modal, with whatever happens to be on it. Bootstrap only allows a single modal
+     * 
+     * @memberof View
+     */
     public showModal() : void
     {
         try
@@ -81,6 +103,11 @@ export class View extends viewMgr.View
         }
         catch(err){}
     }
+    /**
+     * Dismiss the modal
+     * 
+     * @memberof View
+     */
     public dismissModal() : void
     {
         (<any>$(".modal")).modal("hide");
@@ -91,7 +118,14 @@ export class View extends viewMgr.View
         this.availableTracksModalOpen = false;
         this.contigCreatorModalOpen = false;
         this.contigEditorModalOpen = false;
+        this.editContigsModalOpen = false;
     }
+    /**
+     * Highlight the currently open figure in the "Figures" dropdown
+     * 
+     * @returns {void} 
+     * @memberof View
+     */
     public setSelectedFigureInDropDown() : void
     {
         let genomeView = <GenomeView.GenomeView>viewMgr.getViewByName("genomeView",this.views);
@@ -109,6 +143,11 @@ export class View extends viewMgr.View
             }
         }
     }
+    /**
+     * Update the textbox in the navbar with the radius of the open figure
+     * 
+     * @memberof View
+     */
     public setFigureRadiusInInput() : void
     {
         let genomeView = <GenomeView.GenomeView>viewMgr.getViewByName("genomeView",this.views);
@@ -118,6 +157,11 @@ export class View extends viewMgr.View
         else
             el.value = genomeView.genome.radius.toString();
     }
+    /**
+     * Update the textbox in the navbar with the track interval of the open figure
+     * 
+     * @memberof View
+     */
     public setFigureBPIntervalInput() : void
     {
         let genomeView = <GenomeView.GenomeView>viewMgr.getViewByName("genomeView",this.views);
@@ -127,6 +171,12 @@ export class View extends viewMgr.View
         else
             el.value = genomeView.genome.circularFigureBPTrackOptions.interval.toString();
     }
+    /**
+     * Update the checkbox in the navbar with the interval status of the open figure
+     * 
+     * @returns {void} 
+     * @memberof View
+     */
     public setShowBPIntervalCheckBox() : void
     {
         let genomeView = <GenomeView.GenomeView>viewMgr.getViewByName("genomeView",this.views);
@@ -138,6 +188,11 @@ export class View extends viewMgr.View
         else if(genomeView.genome.circularFigureBPTrackOptions.showLabels == 1)
             checkbox.checked = true;
     }
+    /**
+     * On startup. Apply behaviour to static dropdowns and controls
+     * 
+     * @memberof View
+     */
     public onMount() : void
     {
         GenomeView.addView(this.views,"genomeView");
@@ -148,7 +203,7 @@ export class View extends viewMgr.View
         let genomeView = <GenomeView.GenomeView>viewMgr.getViewByName("genomeView",this.views);
         let self = this;
         window.onbeforeunload = function(e){
-            self.dataChanged();
+            self.saveFigureChanges();
         }
         document.getElementById("figures").onclick = function(this : HTMLElement,ev : MouseEvent){
             for(let i = 0; i != self.fastaInputs.length; ++i)
@@ -160,7 +215,7 @@ export class View extends viewMgr.View
                         self.fastaInputs[i].uuid,
                         self.fastaInputs[i].contigs
                     ));
-                    self.dataChanged();
+                    self.saveFigureChanges();
                     genomeView.genome = self.circularFigures[self.circularFigures.length - 1];
                     genomeView.firstRender = true;
                     viewMgr.render();
@@ -180,6 +235,34 @@ export class View extends viewMgr.View
                 }
             }
         }
+        document.getElementById("figureOptions").onclick = function(this : HTMLElement,ev : MouseEvent){
+            if((<any>event.target).id == `${genomeView.genome.uuid}ToggleInteractivity`)
+            {
+                genomeView.genome.isInteractive = !genomeView.genome.isInteractive;
+                self.saveFigureChanges();
+                genomeView.firstRender = true;
+                viewMgr.render();
+            }
+            if((<any>event.target).id == `${genomeView.genome.uuid}ToggleContigNames`)
+            {
+                genomeView.genome.showContigNames = !genomeView.genome.showContigNames;
+                self.saveFigureChanges();
+                genomeView.firstRender = true;
+                viewMgr.render();
+            }
+            if((<any>event.target).id == `EditFigureName`)
+            {
+                genomeView.figureNameOnClick();
+            }
+            if((<any>event.target).id ==`EditContigs`)
+            {
+                self.editContigsModalOpen = true;
+                writeEditContigsModal();
+                self.showModal();
+
+            }
+        }
+
         document.getElementById("showBPIntervalCheckBox").onclick = function(this : HTMLElement,ev : MouseEvent){
             document.getElementById("updateNavBarButton").click();
         }
@@ -237,6 +320,8 @@ export class View extends viewMgr.View
 
         document.getElementById("updateNavBarButton").onclick = function(this : HTMLElement,ev : MouseEvent){
             let radiusHasChanged = false;
+            let trackIntervalChanged = false;
+            let showIntervalChanged = false;
             if(!genomeView.genome)
                     return;
             let radius = parseInt((<HTMLInputElement>document.getElementById("figureRadiusInput")).value);
@@ -249,22 +334,29 @@ export class View extends viewMgr.View
 
             let trackInterval = parseInt((<HTMLInputElement>document.getElementById("figureBPIntervalInput")).value);
             if(trackInterval)
+            {
+                if(trackInterval != genomeView.genome.circularFigureBPTrackOptions.interval)
+                    trackIntervalChanged = true;
                 genomeView.genome.circularFigureBPTrackOptions.interval = trackInterval;
+            }
 
             let showInterval = ((<HTMLInputElement>document.getElementById("showBPIntervalCheckBox")).checked);
             if(showInterval !== undefined)
             {
+                if((showInterval === true && genomeView.genome.circularFigureBPTrackOptions.showLabels == 0) || (showInterval === false && genomeView.genome.circularFigureBPTrackOptions.showLabels == 1))
+                    showIntervalChanged = true;
                 if(showInterval === true)
                     genomeView.genome.circularFigureBPTrackOptions.showLabels = 1;
                 else
                     genomeView.genome.circularFigureBPTrackOptions.showLabels = 0;
             }
-            if(radiusHasChanged)
+            if(radiusHasChanged || trackIntervalChanged || showIntervalChanged)
             {
-                tc.triggerReCompileForAllTracks(genomeView.genome);
+                genomeView.firstRender = true;
+                tc.triggerReCompileForWholeFigure(genomeView.genome);
+                self.saveFigureChanges();
             }
             genomeView.updateScope();
-            self.dataChanged();
             viewMgr.render();
         }
 
@@ -280,12 +372,19 @@ export class View extends viewMgr.View
             this.views[i].onUnMount();
         }
     }
+    /**
+     * Update dynamic dropdowns and controls. Call render on GenomeView
+     * 
+     * @returns {string} 
+     * @memberof View
+     */
     public renderView() : string
     {
+        let genomeView = <GenomeView.GenomeView>viewMgr.getViewByName("genomeView",this.views);
         let res = "";
         for(let i = 0; i != this.fastaInputs.length; ++i)
         {
-            if(this.fastaInputs[i].checked && this.fastaInputs[i].indexed)
+            if(this.fastaInputs[i].checked && this.fastaInputs[i].indexedForVisualization)
             {
                 res += `
                     <li><b>${this.fastaInputs[i].alias}</b></li>
@@ -306,6 +405,17 @@ export class View extends viewMgr.View
             }
         }
         document.getElementById("figures").innerHTML = res;
+
+        res = ""
+        if(genomeView.genome)
+        {
+            res += `<li><a href="#" id="${genomeView.genome.uuid}ToggleInteractivity">${genomeView.genome.isInteractive ? "Disable Interactivity" : "Enable Interactivity"}</a></li>`;
+            res += `<li><a href="#" id="${genomeView.genome.uuid}ToggleContigNames">${genomeView.genome.showContigNames ? "Don't Show Contig Names" : "Show Contig Names"}</a></li>`;
+            res += `<li><a href="#" id="EditFigureName">Edit Figure Name</a></li>`;
+            res += `<li><a href="#" id="EditContigs">Edit Contigs</a></li>`;
+        }
+        document.getElementById("figureOptions").innerHTML = res;
+
         for(let i = 0; i != this.views.length; ++i)
         {
             this.views[i].render();
@@ -336,6 +446,11 @@ export class View extends viewMgr.View
         this.setFigureBPIntervalInput();
         this.setShowBPIntervalCheckBox();
     }
+    /**
+     * Save circular figures for the open project
+     * 
+     * @memberof View
+     */
     public dataChanged() : void
     {
         ipc.send(
@@ -347,6 +462,21 @@ export class View extends viewMgr.View
                 val : this.circularFigures
             }
         );
+    }
+    /**
+     * Save changes to the open figure. Resets SVG caches to force figure updating
+     * 
+     * @memberof View
+     */
+    public saveFigureChanges() : void
+    {
+        let genomeView = <GenomeView.GenomeView>viewMgr.getViewByName("genomeView",this.views);       
+        this.dataChanged();
+        if(genomeView.genome)
+        {
+            tc.resetCaches();
+            reCacheBaseFigure(genomeView.genome);
+        }
     }
     public divClickEvents(event : JQueryEventObject) : void
     {

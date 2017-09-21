@@ -15,7 +15,13 @@ export function appMenu() : Array<Electron.MenuItemConstructorOptions>
                     click(){
                         winMgr.windowCreators["operationViewer"].Create();
                     }
-                }
+				}/*,
+				{
+					label : 'Process Manager',
+					click(){
+						winMgr.windowCreators["procMgr"].Create();
+					}
+				}*/
 			]
 		},
 		{

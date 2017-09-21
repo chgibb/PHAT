@@ -1,7 +1,12 @@
 import {AtomicOperationForkEvent,CompletionFlags} from "./req/atomicOperationsIPC";
+import * as atomic from "./req/operations/atomicOperations";
 import * as getUpdate from "./req/getLatestUpdate";
 
 let flags : CompletionFlags = new CompletionFlags();
+
+setTimeout(function(){
+    throw new Error("Took too long to determine network connectivity");
+},5000);
 
 process.on
 (
@@ -24,7 +29,7 @@ process.on
                         data : res
                     }
                 );
-                process.exit(0);
+                atomic.exitFork(0);
             }).catch((arg : any) => {
                 console.log(arg);
                 flags.done = true;
@@ -37,12 +42,12 @@ process.on
                         data : arg
                     }
                 );
-                process.exit(1);
+                atomic.exitFork(1);
             });
         }
     }
 );
-(process as NodeJS.EventEmitter).on("uncaughtException",function(err : string){
+(process as NodeJS.EventEmitter).on("uncaughtException",function(err : Error){
     console.log(err);
     flags.done = true;
     flags.failure = true;
@@ -51,12 +56,12 @@ process.on
         <AtomicOperationForkEvent>{
             update : true,
             flags : flags,
-            data : err
+            data : err.message
         }
     );
-    process.exit(1);
+    atomic.exitFork(1);
 });
-process.on("unhandledRejection",function(err : string){
+process.on("unhandledRejection",function(err : Error){
     console.log(err);
     flags.done = true;
     flags.failure = true;
@@ -65,8 +70,8 @@ process.on("unhandledRejection",function(err : string){
         <AtomicOperationForkEvent>{
             update : true,
             flags : flags,
-            data : err
+            data : err.message
         }
     );
-    process.exit(1);
+    atomic.exitFork(1);
 });

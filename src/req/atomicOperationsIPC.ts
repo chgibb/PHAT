@@ -20,6 +20,9 @@ export interface AtomicOperationIPC
     key? : string;
     uuid? : string;
 
+    fasta? : Fasta;
+    align? : AlignData;
+
     alignuuid? : string;
     figureuuid? : string;
     colour? : string;
@@ -64,4 +67,7 @@ export interface AtomicOperationForkEvent
     logRecord? : LogRecord;
     progressMessage? : string;
     step? : number;
+    bamPath? : string;
+
+    pid? : number;
 }

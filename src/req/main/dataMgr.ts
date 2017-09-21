@@ -13,7 +13,6 @@ export function loadData(path : string) : boolean
     }
     catch(err)
     {
-        console.log(err);
         return false;
     }
 }

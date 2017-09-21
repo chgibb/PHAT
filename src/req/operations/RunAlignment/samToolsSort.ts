@@ -44,6 +44,7 @@ export function samToolsSort(alignData : AlignData,logger : atomic.AtomicOperati
         try
         {
             samToolsSortJob.Run();
+            logger.addPIDFromFork(samToolsSortJob.pid);
         }
         catch(err)
         {

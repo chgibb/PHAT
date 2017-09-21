@@ -138,6 +138,7 @@ export class GenerateQCReport extends atomic.AtomicOperation
 		try
 		{
 			this.fastQCJob.Run();
+			this.addPID(this.fastQCJob.pid);
 		}
 		//Failed to spawn job
 		catch(err)

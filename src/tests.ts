@@ -3,16 +3,27 @@ import {registerOperations} from "./req/tests/registerOperations";
 
 import {rebuildRTDirectory} from "./req/main/rebuildRTDirectory";
 
+import {getUnSortedBam,getSam} from "./req/alignData";
+
 import * as L6R1R1 from "./req/tests/L6R1R1";
 import * as L6R1R2 from "./req/tests/L6R1R2";
 import * as hpv16Ref from "./req/tests/hpv16Ref";
 import * as hpv18Ref from "./req/tests/hpv18Ref";
 import * as hpv16Figure from "./req/tests/hpv16Figure";
+import * as L6R1HPV16Align from "./req/tests/L6R1HPV16Align";
+import * as L6R1HPV18Align from "./req/tests/L6R1HPV18Align";
+
+import * as L6R1HPV16AlignImported from "./req/tests/L6R1HPV16AlignImported";
+import * as L6R1HPV18AlignImported from "./req/tests/L6R1HPV18AlignImported";
+
 
 import {testVersionParser} from "./req/tests/testVersionParser";
+
 import {testFastQCReportGeneration} from "./req/tests/testFastQCReportGeneration";
 import {testHPV16Index} from "./req/tests/testHPV16Index";
 import {testHPV18Index} from "./req/tests/testHPV18Index";
+import {testHPV16IndexForVisualization} from "./req/tests/testHPV16IndexForVisualization";
+import {testHPV18IndexForVisualization} from "./req/tests/testHPV18IndexForVisualization";
 import {testL6R1HPV16Alignment} from "./req/tests/testL6R1HPV16Alignment";
 import {testL6R1HPV18Alignment} from "./req/tests/testL6R1HPV18Alignment"
 import {testL6R1HPV16CoverageTrackRenderer} from "./req/tests/testL6R1HPV16CoverageTrackRender";
@@ -21,6 +32,10 @@ import {testL6R1HPV16CoverageTrackCompilation} from "./req/tests/testL6R1HPV16Co
 import {testL6R1HPV18CoverageTrackRenderer} from "./req/tests/testL6R1HPV18CoverageTrackRender";
 import {testL6R1HPV18SNPTrackRenderer} from "./req/tests/testL6R1HPV18SNPTrackRender";
 
+import {testL6R1HPV16AlignImportedImporting} from "./req/tests/testL6R1HPV16AlignImportedImporting";
+import {testL6R1HPV16AlignImportedLinking} from "./req/tests/testL6R1HPV16AlignImportedLinking";
+import {testL6R1HPV18AlignImportedImporting} from "./req/tests/testL6R1HPV18AlignImportedImporting";
+import {testL6R1HPV18AlignImportedLinking} from "./req/tests/testL6R1HPV18AlignImportedLinking";
 
 const pjson = require("./resources/app/package.json");
 import {isBeta,versionIsGreaterThan} from "./req/versionIsGreaterThan";
@@ -68,7 +83,7 @@ async function runTests() : Promise<void>
 		catch(err){}
 
 		console.log("Starting to index hpv16");
-		atomic.addOperation("indexFasta",hpv16Ref.get());
+		atomic.addOperation("indexFastaForAlignment",hpv16Ref.get());
 		try
 		{
 			await testHPV16Index();
@@ -80,7 +95,7 @@ async function runTests() : Promise<void>
 		}
 
 		console.log("Starting to index hpv18");
-		atomic.addOperation("indexFasta",hpv18Ref.get());
+		atomic.addOperation("indexFastaForAlignment",hpv18Ref.get());
 		try
 		{
 			await testHPV18Index();
@@ -88,6 +103,30 @@ async function runTests() : Promise<void>
 		catch(err)
 		{
 			console.log("test index threw exception");
+			return reject();
+		}
+
+		console.log("Starting to index hpv16 for visualization");
+		atomic.addOperation("indexFastaForVisualization",hpv16Ref.get());
+		try
+		{
+			await testHPV16IndexForVisualization();
+		}
+		catch(err)
+		{
+			console.log("test index for visualization threw exception");
+			return reject();
+		}
+
+		console.log("Starting to index hpv18 for visualization");
+		atomic.addOperation("indexFastaForVisualization",hpv18Ref.get());
+		try
+		{
+			await testHPV18IndexForVisualization();
+		}
+		catch(err)
+		{
+			console.log("test index for visualization threw exception");
 			return reject();
 		}
 
@@ -206,6 +245,115 @@ async function runTests() : Promise<void>
 			console.log("coverage track rendering threw exception");
 			return reject();
 		}
+
+		console.log("Importing binary alignment map from L6R1 HPV16 alignment");
+		atomic.addOperation("inputBamFile",getUnSortedBam(L6R1HPV16Align.get()));
+		try
+		{
+			await testL6R1HPV16AlignImportedImporting();
+		}
+		catch(err)
+		{
+			console.log("bam importing threw exception");
+			return reject();
+		}
+
+		console.log("Linking imported L6R1 HPV16 binary alignment map to HPV16");
+		atomic.addOperation("linkRefSeqToAlignment",{
+			align : L6R1HPV16AlignImported.get(),
+			fasta : hpv16Ref.get()
+		});
+		try
+		{
+			await testL6R1HPV16AlignImportedLinking();
+		}
+		catch(err)
+		{
+			console.log("bam linking threw exception");
+			return reject();
+		}
+
+		console.log("Importing binary alignment map from L6R1 HPV18 alignment");
+		atomic.addOperation("inputBamFile",getUnSortedBam(L6R1HPV18Align.get()));
+		try
+		{
+			await testL6R1HPV18AlignImportedImporting();
+		}
+		catch(err)
+		{
+			console.log("bam importing threw exception "+err);
+			return reject();
+		}
+
+		console.log("Linking imported L6R1 HPV18 binary alignment map to HPv18");
+		atomic.addOperation("linkRefSeqToAlignment",{
+			align : L6R1HPV18AlignImported.get(),
+			fasta : hpv18Ref.get()
+		});
+		try
+		{
+			await testL6R1HPV18AlignImportedLinking();
+		}
+		catch(err)
+		{
+			console.log("bam linking threw exception");
+			return reject();
+		}
+
+		console.log("Importing sequence alignment map from L6R1 HPV16 alignment");
+		atomic.addOperation("inputBamFile",getSam(L6R1HPV16Align.get()));
+		try
+		{
+			await testL6R1HPV16AlignImportedImporting();
+		}
+		catch(err)
+		{
+			console.log("sam importing threw exception");
+			return reject();
+		}
+
+		console.log("Linking imported L6R1 HPV16 sequence alignment map to HPV16");
+		atomic.addOperation("linkRefSeqToAlignment",{
+			align : L6R1HPV16AlignImported.get(),
+			fasta : hpv16Ref.get()
+		});
+		try
+		{
+			await testL6R1HPV16AlignImportedLinking();
+		}
+		catch(err)
+		{
+			console.log("sam linking threw exception");
+			return reject();
+		}
+
+		console.log("Importing sequence alignment map from L6R1 HPV18 alignment");
+		atomic.addOperation("inputBamFile",getSam(L6R1HPV18Align.get()));
+		try
+		{
+			await testL6R1HPV18AlignImportedImporting();
+		}
+		catch(err)
+		{
+			console.log("sam importing threw exception "+err);
+			return reject();
+		}
+
+		console.log("Linking imported L6R1 HPV18 sequence alignment map to HPv18");
+		atomic.addOperation("linkRefSeqToAlignment",{
+			align : L6R1HPV18AlignImported.get(),
+			fasta : hpv18Ref.get()
+		});
+		try
+		{
+			await testL6R1HPV18AlignImportedLinking();
+		}
+		catch(err)
+		{
+			console.log("sam linking threw exception");
+			return reject();
+		}
+
 		resolve();
 	});
 

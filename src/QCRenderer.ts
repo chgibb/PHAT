@@ -9,11 +9,9 @@ import * as viewMgr from "./req/renderer/viewMgr";
 import * as summary from "./req/renderer/QCRenderer/summaryView";
 import * as report from "./req/renderer/QCRenderer/reportView";
 
-require("./req/renderer/commonBehaviour");
-
-import * as $ from "jquery";
+const $ = require("jquery");
 (<any>window).$ = $;
-require("./req/renderer/commonBehaviour");
+import "./req/renderer/commonBehaviour";
 
 $
 (
@@ -31,6 +29,15 @@ $
                 action : "keySub",
                 channel : "input",
                 key : "fastqInputs",
+                replyChannel : "QC"
+            }
+        );
+        ipc.send(
+            "getKey",
+            <GetKeyEvent>{
+                action : "getKey",
+                channel : "application",
+                key : "operations",
                 replyChannel : "QC"
             }
         );

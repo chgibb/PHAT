@@ -20,19 +20,15 @@ export class InstallUpdate extends atomic.AtomicOperation
         let self = this;
         try
         {
-            this.installUpdateJob = cp.fork(getReadable("installUpdate.js"));
-            this.installUpdateJob.on
-            (
-                "message",function(data : any)
+            this.installUpdateJob = atomic.makeFork("installUpdate.js",{},function(data : any){
+                if(data.totalFiles)
                 {
-                    if(data.totalFiles)
-                    {
-                        self.filesInUpdate = data.totalFiles;
-                        self.update();
-                        self.setSuccess(self.flags);
-                    }
+                    self.filesInUpdate = data.totalFiles;
+                    self.update();
+                    self.setSuccess(self.flags);
                 }
-            );
+            });
+            this.addPID(this.installUpdateJob.pid);
 
         }
         catch(err)
