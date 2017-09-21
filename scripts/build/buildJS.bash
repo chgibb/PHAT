@@ -5,11 +5,6 @@ function cleanTSArtifacts {
 		artifact=$(echo $f | awk '{gsub("\\.ts",".js");print}')
 		rm $artifact
 	done
-	for f in $(find scripts -name '*.ts'); 
-	do
-		artifact=$(echo $f | awk '{gsub("\\.ts",".js");print}')
-		rm $artifact
-	done
 }
 cp src/pileup.js/style/pileup.css dist/styles/pileup.css
 
