@@ -24,3 +24,4 @@ src/installUpdateProcess/*.dll
 src/**/*.js
 src/*.js
 scripts/diffAndBuildPatch.js
+scripts/downloadFullUpdateFromLastTag.js
