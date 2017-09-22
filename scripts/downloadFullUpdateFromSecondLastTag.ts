@@ -17,10 +17,9 @@ let args = process.argv.slice(2);
 
 let user = args[0];
 let repo = args[1];
-let currentTag = args[2];
-let branch = args[3];
+let branch = args[2];
 
-function getSecondLastTag(user : string,repo : string,branch : string,currentTag : string) : Promise<string>
+function getSecondLastTag(user : string,repo : string,branch : string) : Promise<string>
 {
     //copied almost verbatim from https://github.com/chgibb/PHATDocs/blob/master/scripts/getLastTag.js
     return new Promise<string>((resolve,reject) => {
@@ -30,9 +29,9 @@ function getSecondLastTag(user : string,repo : string,branch : string,currentTag
         ghapi.getRepo(user,repo).listReleases().then((tagsRes : {data : Array<any>}) => {
             if(branch == "beta")
             {
-                for(let i = 0; i != tagsRes.data.length; ++i)
+                for(let i = 1; i != tagsRes.data.length; ++i)
                 {
-                    if(/beta/.test(tagsRes.data[i].tag_name) && tagsRes.data[i].tag_name != currentTag)
+                    if(/beta/.test(tagsRes.data[i].tag_name))
                     {
                         resolve(tagsRes.data[i].tag_name);
                     }
@@ -40,11 +39,9 @@ function getSecondLastTag(user : string,repo : string,branch : string,currentTag
             }
             else if(branch != "beta")
             {
-                for(let i = 0; i != tagsRes.data.length; ++i)
+                for(let i = 1; i != tagsRes.data.length; ++i)
                 {
-                    if(/beta/.test(tagsRes.data[i].tag_name) && tagsRes.data[i].tag_name != currentTag)
-                        continue;
-                    else
+                    if(!/beta/.test(tagsRes.data[i].tag_name))
                     {
                         resolve(tagsRes.data[i].tag_name);
                     }
@@ -73,8 +70,7 @@ function downloadFullUpdateFromTag(user : string,repo : string,tag : string) : P
                                 isRightArch.test(tagsRes.data[i].assets[k].name)
                             )
                             {
-                                console.log(tagsRes.data[i].assets[k]);
-                                //resolve(tagsRes.data[i].asset);
+                                resolve(tagsRes.data[i].assets[k]);
                             }
                         }
                     }
@@ -82,15 +78,19 @@ function downloadFullUpdateFromTag(user : string,repo : string,tag : string) : P
             });
         });
         const ghr = new GitHubReleases({user : user,repo : repo});
-        const ostream = fs.createWriteStream("phat-update-full");
+        const ostream = fs.createWriteStream("phat-update-full.tar.gz");
         ghr.downloadAsset(asset,async (error : string,istream : fs.ReadStream) => {
             if(error)
                 reject(error);
+            istream.pipe(ostream);
+            istream.on("error",(error : string) => {throw new Error(error);});
+            ostream.on("error",(error : string) => {throw new Error(error);});
         });
     });
 }
 
 (async function(){
-    let tag = await getSecondLastTag(user,repo,branch,currentTag);
+    let tag = await getSecondLastTag(user,repo,branch);
+    console.log(`Downloading full update package for ${tag}`);
     await downloadFullUpdateFromTag(user,repo,tag);
 })();
