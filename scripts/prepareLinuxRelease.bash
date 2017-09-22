@@ -10,7 +10,8 @@ mv resources/app/installUpdateNotificationLinux resources/app/newinstallUpdateNo
 mv resources/app/installUpdateProcess resources/app/newinstallUpdateProcess
 mv resources/app/installUpdateProcess.py resources/app/newinstallUpdateProcess.py
 
-tar -zcvf phat-linux-x64-update.tar.gz --exclude=*.tar.gz *
+tar -zcvf phat-linux-x64-update-full.tar.gz --exclude=*.tar.gz *
+cp phat-linux-x64-update-full.tar.gz phat-linux-x64-update.tar.gz
 
 mv resources/app/newinstallUpdateNotificationLinux resources/app/installUpdateNotificationLinux 
 mv resources/app/newinstallUpdateProcess resources/app/installUpdateProcess 
