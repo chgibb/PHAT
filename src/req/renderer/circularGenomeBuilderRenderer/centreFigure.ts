@@ -18,6 +18,7 @@ export function centreFigure(div : HTMLElement,figure : cf.CircularFigure) : voi
         div.style.position = "absolute";
         div.style.height = `${$(window).height()}px`;
         div.style.width = `${$(window).width()}px`;
+        div.style.zoom = `${figure.zoomFactor}`;
 
         let x = 0;
         let y = 0;
