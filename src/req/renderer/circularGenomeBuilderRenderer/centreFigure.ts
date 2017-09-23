@@ -10,6 +10,9 @@ export function centreFigure(div : HTMLElement,figure : cf.CircularFigure) : voi
 {
     if(div)
     {
+        if(figure.zoomFactor === undefined)
+            figure.zoomFactor = 1;
+        
         //expand the div to the new window size
         div.style.zIndex = "-1";
         div.style.position = "absolute";
