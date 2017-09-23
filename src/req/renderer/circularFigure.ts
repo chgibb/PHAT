@@ -799,7 +799,7 @@ export function assembleCompilableTemplates(figure : CircularFigure,templates : 
         totalBP += figure.contigs[i].bp;
     }
     return `
-        <div id="${id}">
+        <div ${id ? `id="${id}"` : ""}>
         ${plasmid.add(
         {
             sequenceLength : totalBP.toString(),
