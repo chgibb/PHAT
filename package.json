@@ -51,6 +51,7 @@
         "bootstrap": "3.3.7",
         "browserify": "^13.1.0",
         "bundle-collapser": "^1.2.1",
+        "delete-empty": "^1.0.1",
         "dialogs": "^1.1.19",
         "electron": "1.7.5",
         "electron-builder": "^19.8.0",
