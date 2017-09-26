@@ -70,7 +70,7 @@ function downloadFullUpdateFromTag(user : string,repo : string,tag : string) : P
                                 isRightArch.test(tagsRes.data[i].assets[k].name)
                             )
                             {
-                                console.log(tagsRes.data[i].asset[k]);
+                                console.log(tagsRes.data[i].assets[k]);
                                 return resolve(tagsRes.data[i].assets[k]);
                             }
                         }
