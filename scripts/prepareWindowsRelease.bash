@@ -12,6 +12,13 @@ mv resources/app/installUpdateNotificationWin32.exe resources/app/newinstallUpda
 tar -zcvf phat-win32-x64-update-full.tar.gz --exclude=*.tar.gz *
 cp phat-win32-x64-update-full.tar.gz phat-win32-x64-update.tar.gz
 
+cd ../
+mv phat-win32-x64/*.tar.gz .
+
+bash scripts/buildDiffUpdate.bash
+
+cd phat-win32-x64
+
 mv resources/app/newCSharpCode.SharpZipLib.dll resources/app/ICSharpCode.SharpZipLib.dll 
 mv resources/app/newinstallUpdateProcess.exe resources/app/installUpdateProcess.exe 
 mv resources/app/newinstallUpdateNotificationWin32.exe resources/app/installUpdateNotificationWin32.exe
