@@ -77,7 +77,19 @@ function downloadFullUpdateFromTag(user : string,repo : string,tag : string) : P
                 }
             });
         });
-        const ghr = new GitHubReleases({user : user,repo : repo});
+        let ghr : any;
+        if(process.env.APPVEYOR)
+        {
+            console.log("detected Appveyor");
+            if(!process.env.GH_TOKEN_APPVEYOR)
+            {
+                console.log("Environment variable GH_TOKEN_APPVEYOR must be set to valid Github token to download releases");
+                reject();
+            }
+            ghr = new GitHubReleases({user : user,repo : repo,token : process.env.GH_TOKEN_APPVEYOR});
+        }
+        else
+        ghr = new GitHubReleases({user : user,repo : repo});
         const ostream = fs.createWriteStream("phat-update-full.tar.gz");
         ghr.downloadAsset(asset,async (error : string,istream : fs.ReadStream) => {
             if(error)
