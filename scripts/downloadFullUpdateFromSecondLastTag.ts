@@ -70,11 +70,13 @@ function downloadFullUpdateFromTag(user : string,repo : string,tag : string) : P
                                 isRightArch.test(tagsRes.data[i].assets[k].name)
                             )
                             {
-                                resolve(tagsRes.data[i].assets[k]);
+                                console.log(tagsRes.data[i].assets[k]);
+                                return resolve(tagsRes.data[i].assets[k]);
                             }
                         }
                     }
                 }
+                return reject(`Failed to find full update package for ${process.platform} ${tag} `);
             });
         });
         let ghr : any;
@@ -93,7 +95,7 @@ function downloadFullUpdateFromTag(user : string,repo : string,tag : string) : P
         const ostream = fs.createWriteStream("phat-update-full.tar.gz");
         ghr.downloadAsset(asset,async (error : string,istream : fs.ReadStream) => {
             if(error)
-                reject(error);
+                return reject(error);
             istream.pipe(ostream);
             istream.on("error",(error : string) => {throw new Error(error);});
             ostream.on("error",(error : string) => {throw new Error(error);});
