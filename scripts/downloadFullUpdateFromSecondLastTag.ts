@@ -70,18 +70,32 @@ function downloadFullUpdateFromTag(user : string,repo : string,tag : string) : P
                                 isRightArch.test(tagsRes.data[i].assets[k].name)
                             )
                             {
-                                resolve(tagsRes.data[i].assets[k]);
+                                console.log(tagsRes.data[i].assets[k]);
+                                return resolve(tagsRes.data[i].assets[k]);
                             }
                         }
                     }
                 }
+                return reject(`Failed to find full update package for ${process.platform} ${tag} `);
             });
         });
-        const ghr = new GitHubReleases({user : user,repo : repo});
+        let ghr : any;
+        if(process.env.APPVEYOR)
+        {
+            console.log("detected Appveyor");
+            if(!process.env.GH_TOKEN_APPVEYOR)
+            {
+                console.log("Environment variable GH_TOKEN_APPVEYOR must be set to valid Github token to download releases");
+                reject();
+            }
+            ghr = new GitHubReleases({user : user,repo : repo,token : process.env.GH_TOKEN_APPVEYOR});
+        }
+        else
+        ghr = new GitHubReleases({user : user,repo : repo});
         const ostream = fs.createWriteStream("phat-update-full.tar.gz");
         ghr.downloadAsset(asset,async (error : string,istream : fs.ReadStream) => {
             if(error)
-                reject(error);
+                return reject(error);
             istream.pipe(ostream);
             istream.on("error",(error : string) => {throw new Error(error);});
             ostream.on("error",(error : string) => {throw new Error(error);});
