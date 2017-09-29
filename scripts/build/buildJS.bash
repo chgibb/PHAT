@@ -39,13 +39,8 @@ do
 	
 	destination=$(echo $f | awk '{gsub("src/","dist/");print}')
 
-	printf "Bundling "
-	printf $f
-	printf "\n"
+	node scripts/bundleJS $f $destination
 
-	if [[ "$f" != "src/compileTemplatesProcess.js" ]]; then
-		./node_modules/.bin/browserify $f --node --debug -o $destination  --exclude electron --ignore-missing --noparse=jquery
-	fi
 	if [[ "$f" == "src/compileTemplatesProcess.js" ]]; then
 		./node_modules/.bin/browserify $f --node --debug -o $destination --exclude electron --ignore-missing  --require @chgibb/angularplasmid --noparse=jquery
 	fi
