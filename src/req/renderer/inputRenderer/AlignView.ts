@@ -15,7 +15,7 @@ export class View extends viewMgr.View
     public renderView() : string
     {
         return `
-        <img class="topButton activeHover activeHoverButton" id="browseAlignFiles" src="${getReadable("img/browseButton.png")}"><br />
+        <img class="topButton inputHover activeHoverButton" id="browseAlignFiles" src="${getReadable("img/browseButton.png")}"><br />
         <p id="loadingText">${this.progressMessage}</p>
         <div id="alignTableDiv" style="width:100%;">
         <table style="width:100%;">
@@ -36,7 +36,7 @@ export class View extends viewMgr.View
                             <tr>
                                 <td>${this.aligns[i].alias}</td>
                                 <td>${this.aligns[i].sizeString ? this.aligns[i].sizeString : "Unknown"}</td>
-                                <td ${this.aligns[i].fasta ? "" : `id="${this.aligns[i].uuid}LinkRef" class="activeHover"`}>${this.aligns[i].fasta ? this.aligns[i].fasta.alias : "Not Linked"}</td>
+                                <td ${this.aligns[i].fasta ? "" : `id="${this.aligns[i].uuid}LinkRef" class="inputHover"`}>${this.aligns[i].fasta ? this.aligns[i].fasta.alias : "Not Linked"}</td>
                             </tr>
                         `;
                     }
