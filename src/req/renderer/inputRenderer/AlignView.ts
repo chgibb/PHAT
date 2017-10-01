@@ -15,7 +15,7 @@ export class View extends viewMgr.View
     public renderView() : string
     {
         return `
-        <img class="topButton inputHover activeHoverButton" id="browseAlignFiles" src="${getReadable("img/browseButton.png")}"><br />
+        <img class="topButton activeHover activeHoverButton" id="browseAlignFiles" src="${getReadable("img/browseButton.png")}"><br />
         <p id="loadingText">${this.progressMessage}</p>
         <div id="alignTableDiv" style="width:100%;">
         <table style="width:100%;">
