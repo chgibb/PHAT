@@ -30,6 +30,8 @@ deploy:
   file_glob : true
   file:
     - phat-linux-x64-portable.tar.gz
+    - phat-linux-x64-update-full.tar.gz
+    - phat-linux-x64-update-diff.tar.gz
     - phat-linux-x64-update.tar.gz
     - phat*.deb
     - phat*.rpm

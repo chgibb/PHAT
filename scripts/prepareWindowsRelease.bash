@@ -9,7 +9,15 @@ mv resources/app/ICSharpCode.SharpZipLib.dll resources/app/newCSharpCode.SharpZi
 mv resources/app/installUpdateProcess.exe resources/app/newinstallUpdateProcess.exe
 mv resources/app/installUpdateNotificationWin32.exe resources/app/newinstallUpdateNotificationWin32.exe
 
-tar -zcvf phat-win32-x64-update.tar.gz --exclude=*.tar.gz *
+tar -zcvf phat-win32-x64-update-full.tar.gz --exclude=*.tar.gz *
+cp phat-win32-x64-update-full.tar.gz phat-win32-x64-update.tar.gz
+
+cd ../
+mv phat-win32-x64/*.tar.gz .
+
+bash scripts/buildDiffUpdate.bash
+
+cd phat-win32-x64
 
 mv resources/app/newCSharpCode.SharpZipLib.dll resources/app/ICSharpCode.SharpZipLib.dll 
 mv resources/app/newinstallUpdateProcess.exe resources/app/installUpdateProcess.exe 
