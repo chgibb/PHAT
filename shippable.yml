@@ -11,6 +11,9 @@ build:
     - sudo apt-get install -y g++
     - sudo apt-get install -y gtk2.0
     - sudo apt-get install -y xfvb
+    - sudo dpkg --configure -a
+    - sudo apt-get update
+    - sudo apt-get install -y -f
     - bash scripts/install.bash
     - bash scripts/build.bash
     
