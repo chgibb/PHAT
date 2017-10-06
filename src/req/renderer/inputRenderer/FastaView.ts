@@ -31,7 +31,7 @@ export class View extends viewMgr.View
                         for(let i = 0; i != this.fastaInputs.length; ++i)
                         {
                             res += `
-                                <tr class="inputHover ${this.fastaInputs[i].uuid}Class" id="${this.fastaInputs[i].uuid}Row">
+                                <tr class="activeHover ${this.fastaInputs[i].uuid}Class" id="${this.fastaInputs[i].uuid}Row">
                                     <td class="${this.fastaInputs[i].uuid}Class">${this.fastaInputs[i].alias}</td>
                                     <td class="${this.fastaInputs[i].uuid}Class">${this.fastaInputs[i].imported ? "In Project" : this.fastaInputs[i].path}</td>
                                     <td class="${this.fastaInputs[i].uuid}Class">${this.fastaInputs[i].sizeString}</td>
