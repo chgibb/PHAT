@@ -3,7 +3,7 @@ import * as masterView from "./masterView";
 import * as genomeView from "./genomeView";
 import * as cf from "./../circularFigure";
 import {reCacheBaseFigure} from "./reCacheBaseFigure";
-import {writeLoadingModal} from "./writeLoadingModal";
+import {showGenericLoadingSpinnerInNavBar,hideSpinnerInNavBar} from "./writeLoadingModal";
 /**
  * Writes the contig creation menu into the modal
  * 
@@ -63,12 +63,10 @@ export function writeContigCreatorModal() : void
             masterView.dismissModal();
             masterView.dataChanged();
 
-            masterView.loadingModal = true;
-            writeLoadingModal();
+            showGenericLoadingSpinnerInNavBar();
             setTimeout(function(){
                 reCacheBaseFigure(genomeView.genome);
-                masterView.loadingModal = false;
-                masterView.dismissModal();
+                hideSpinnerInNavBar();
                 genomeView.firstRender = true;
                 viewMgr.render();
             },10);
