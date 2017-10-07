@@ -172,16 +172,17 @@ $
                                     }
                                 }
                             }
-                            if(totalTracks > 0)
+                            /*if(totalTracks > 0)
                                 document.getElementById("navBarLoadingText").innerHTML = `Recalculating ${totalTracks} tracks`;
+                                */
                             if(totalTracks == 0)
                             {
-                                document.getElementById("navBarLoadingText").innerHTML = ``;
+                                //document.getElementById("navBarLoadingText").innerHTML = ``;
                             }
                         }
                         else if(arg.val === undefined)
                         {
-                            document.getElementById("navBarLoadingText").innerHTML = ``;
+                            //document.getElementById("navBarLoadingText").innerHTML = ``;
                         }
                     }
                 }
