@@ -3,7 +3,7 @@ import * as masterView from "./masterView";
 import * as genomeView from "./genomeView";
 import * as cf from "./../circularFigure";
 import {reCacheBaseFigure} from "./reCacheBaseFigure";
-import {showGenericLoadingSpinnerInNavBar,hideSpinnerInNavBar} from "./writeLoadingModal";
+import {showGenericLoadingSpinnerInNavBar,hideSpinnerInNavBar} from "./loadingSpinner";
 /**
  * Writes the contig creation menu into the modal
  * 

@@ -14,7 +14,7 @@ import {AlignData} from "./../../alignData";
 import * as cf from "./../circularFigure";
 import {displayFigure} from "./displayFigure";
 import {centreFigure} from "./centreFigure";
-import {showGenericLoadingSpinnerInNavBar,hideSpinnerInNavBar} from "./writeLoadingModal";
+import {showGenericLoadingSpinnerInNavBar,hideSpinnerInNavBar} from "./loadingSpinner";
 import {setSelectedContigByUUID} from "./writeContigEditorModal";
 import {reCacheBaseFigure} from "./reCacheBaseFigure";
 import * as tc from "./templateCache";

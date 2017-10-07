@@ -22,7 +22,7 @@ import {writeAvailableTracksModal} from "./writeAvailableTracksModal";
 import {writeContigEditorModal} from "./writeContigEditorModal";
 import {writeContigCreatorModal} from "./writeContigCreatorModal";
 import {writeEditContigsModal} from "./writeEditContigsModal";
-import {showGenericLoadingSpinnerInNavBar} from "./writeLoadingModal";
+import {showGenericLoadingSpinnerInNavBar} from "./loadingSpinner";
 
 
 const $ = require("jquery");
