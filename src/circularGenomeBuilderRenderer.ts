@@ -179,13 +179,11 @@ $
                             if(totalTracks == 0)
                             {
                                 hideSpinnerInNavBar();
-                                //document.getElementById("navBarLoadingText").innerHTML = ``;
                             }
                         }
                         else if(arg.val === undefined)
                         {
                             hideSpinnerInNavBar();
-                            //document.getElementById("navBarLoadingText").innerHTML = ``;
                         }
                     }
                 }
