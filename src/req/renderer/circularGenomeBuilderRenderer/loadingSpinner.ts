@@ -1,5 +1,5 @@
 /**
- * Writes a generic loading message into the modal. May be modified by #loadingText after being written
+ * Displays a generic loading spinner in the nav bar
  * 
  * @export
  */
@@ -11,6 +11,11 @@ export function showGenericLoadingSpinnerInNavBar() : void
     }
 }
 
+/**
+ * Hides all spinners in the nav bar
+ * 
+ * @export
+ */
 export function hideSpinnerInNavBar() : void
 {
     if(document.getElementById("navBarLoadingSpinner").classList.contains("spinner-loader"))
