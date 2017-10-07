@@ -124,10 +124,8 @@ export class GenomeView extends viewMgr.View implements cf.FigureCanvas
                     let masterView = <masterView.View>viewMgr.getViewByName("masterView");
                     
                     showGenericLoadingSpinnerInNavBar();
-                    document.getElementById("loadingText").innerText = "Assembling SVG...";
                     setTimeout(function(){
                         renderSVG(self).then(() => {
-                            document.getElementById("loadingText").innerText = "Serializing...";
                             centreFigure(document.getElementById(self.div),self.genome);
                             serializeFigure(self).then((svg : string) => {
                                 writeSVG(self,fileName,svg).then(() => {
