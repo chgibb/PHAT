@@ -6,6 +6,7 @@ import * as genomeView from "./req/renderer/circularGenomeBuilderRenderer/genome
 import {CircularFigure,} from "./req/renderer/circularFigure";
 import {GetKeyEvent,KeySubEvent} from "./req/ipcEvents";
 import {CompileTemplates} from "./req/operations/CompileTemplates";
+import {showGenericLoadingSpinnerInNavBar,hideSpinnerInNavBar} from "./req/renderer/circularGenomeBuilderRenderer/loadingSpinner";
 import * as tc from "./req/renderer/circularGenomeBuilderRenderer/templateCache";
 import "./req/renderer/commonBehaviour";
 
@@ -172,16 +173,18 @@ $
                                     }
                                 }
                             }
-                            /*if(totalTracks > 0)
-                                document.getElementById("navBarLoadingText").innerHTML = `Recalculating ${totalTracks} tracks`;
-                                */
+                            if(totalTracks > 0)
+                                showGenericLoadingSpinnerInNavBar();
+                                
                             if(totalTracks == 0)
                             {
+                                hideSpinnerInNavBar();
                                 //document.getElementById("navBarLoadingText").innerHTML = ``;
                             }
                         }
                         else if(arg.val === undefined)
                         {
+                            hideSpinnerInNavBar();
                             //document.getElementById("navBarLoadingText").innerHTML = ``;
                         }
                     }
