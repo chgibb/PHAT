@@ -41,6 +41,7 @@
     "devDependencies": {
         "@chgibb/angularplasmid": "^1.0.5",
         "@chgibb/ng-node-compile": "^1.0.6",
+        "@chgibb/css-spinners": "^2.2.1",
         "@claviska/jquery-minicolors": "^2.2.6",
         "@types/fs-extra": "0.0.37",
         "@types/jquery": "^2.0.40",
