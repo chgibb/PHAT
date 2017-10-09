@@ -129,6 +129,7 @@ export class RenderedTrackRecord
  */
 export class RenderedCoverageTrackRecord extends RenderedTrackRecord
 {
+    scaleFactor : number;
     public constructor(
         uuidAlign : string,
         uuidContig : string,
@@ -136,6 +137,7 @@ export class RenderedCoverageTrackRecord extends RenderedTrackRecord
         colour : string)
     {
         super(uuidAlign,uuidContig,uuidFigure,colour);
+        this.scaleFactor = 1;
     }
 }
 
