@@ -97,7 +97,13 @@ export function writeAvailableTracksModal() : void
 
     body += `
         <h4>Create New Tracks</h4>
+        <p>Track Colour</p>
         <input type="text" id="colourPicker" data-format="rgb" value="rgb(0, 0, 0)">
+        <br />
+        <br />
+        <p>Coverage Depth Scale</p>
+        <input type="number" step="0.1" min="0" value="1" id="scaleFactor">
+        <br />
     `;
     for(let i = 0; i != genomeView.genome.contigs.length; ++i)
     {
