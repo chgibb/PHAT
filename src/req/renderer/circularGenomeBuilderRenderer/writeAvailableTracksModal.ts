@@ -193,7 +193,8 @@ export function writeAvailableTracksModal() : void
                         figureuuid : genomeView.genome.uuid,
                         alignuuid : selectedAlign.uuid,
                         uuid : genomeView.genome.contigs[i].uuid,
-                        colour : (<string>(<any>$(document.getElementById("colourPicker"))).minicolors("rgbString"))
+                        colour : (<string>(<any>$(document.getElementById("colourPicker"))).minicolors("rgbString")),
+                        scaleFactor : parseFloat((<HTMLInputElement>document.getElementById("scaleFactor")).value)
                     }
                 );
             }
