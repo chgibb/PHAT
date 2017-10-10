@@ -12,7 +12,7 @@ export class RenderCoverageTrackForContig extends atomic.AtomicOperation
     public contiguuid : string;
     public circularFigure : cf.CircularFigure;
     public colour : string;
-
+    public scaleFactor : number;
     public renderCoverageTrackProcess : cp.ChildProcess;
     constructor()
     {
@@ -22,13 +22,15 @@ export class RenderCoverageTrackForContig extends atomic.AtomicOperation
         circularFigure : cf.CircularFigure,
         contiguuid : string,
         alignData : AlignData,
-        colour : string
+        colour : string,
+        scaleFactor : number
     }) : void
     {
         this.circularFigure = data.circularFigure;
         this.contiguuid = data.contiguuid;
         this.alignData = data.alignData;
         this.colour = data.colour;
+        this.scaleFactor = data.scaleFactor;
     }
     public run() : void
     {
@@ -40,7 +42,8 @@ export class RenderCoverageTrackForContig extends atomic.AtomicOperation
                 alignData : self.alignData,
                 contiguuid : self.contiguuid,
                 circularFigure : self.circularFigure,
-                colour : self.colour
+                colour : self.colour,
+                scaleFactor : self.scaleFactor
             }
         },function(ev : AtomicOperationForkEvent){
             if(ev.finishedSettingData == true)
@@ -67,47 +70,5 @@ export class RenderCoverageTrackForContig extends atomic.AtomicOperation
             }
         });
         this.addPID(this.renderCoverageTrackProcess.pid);
-        /*self.renderCoverageTrackProcess.on(
-            "message",function(ev : AtomicOperationForkEvent)
-            {
-                if(ev.finishedSettingData == true)
-                {
-                    self.renderCoverageTrackProcess.send(
-                        <AtomicOperationForkEvent>{
-                            run : true
-                        }
-                    );
-                }
-
-                if(ev.update == true)
-                {
-                    self.extraData = ev.data;
-                    self.flags = ev.flags;
-                    if(ev.flags.success == true)
-                    {
-                        self.circularFigure = ev.data.circularFigure;
-                        self.contiguuid = ev.data.contiguuid;
-                        self.alignData = ev.data.alignData;
-                        self.colour = ev.data.colour;
-                    }
-                    self.update();
-                }
-            }
-        );
-        setTimeout(
-            function(){
-                self.renderCoverageTrackProcess.send(
-                    <AtomicOperationForkEvent>{
-                        setData : true,
-                        data : {
-                            alignData : self.alignData,
-                            contiguuid : self.contiguuid,
-                            circularFigure : self.circularFigure,
-                            colour : self.colour
-                        }
-                    }
-                );
-            },500
-        );*/
     }
 }
