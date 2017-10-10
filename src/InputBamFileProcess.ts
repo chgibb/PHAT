@@ -66,6 +66,15 @@ process.on(
                 if(bamPath.split(".").pop() == "sam")
                     isSam = true;
 
+                atomic.logString(logger.logRecord,`isSam: ${isSam}  ${"\n"}`);
+                if(isSam)
+                {
+                    progressMessage = "Converting SAM to BAM";
+                    update();
+                    await samToolsView(align,logger);
+
+                }
+
                 progressMessage = "Copying alignment map";
                 update();
                 await new Promise<void>((resolve,reject) => {
@@ -76,14 +85,6 @@ process.on(
                     resolve();
                 });
 
-                atomic.logString(logger.logRecord,`isSam: ${isSam}  ${"\n"}`);
-                if(isSam)
-                {
-                    progressMessage = "Converting SAM to BAM";
-                    update();
-                    await samToolsView(align,logger);
-
-                }
 
                 progressMessage = "Sorting BAM";
                 update();
