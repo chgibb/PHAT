@@ -413,13 +413,14 @@ export function handleForkFailures(logger? : ForkLogger,progressMessage? : strin
         signalFailure(`${err.toString()} ${err.stack}`);
     });
 
-    process.on("unhandledRejection",function(err : Error){
-        console.log(err);
+    process.on("unhandledRejection",function(reason : Error,p : Promise<any>){
+        let errString = `Unhandled rejection ${p} ${reason}`;
+        console.log(errString);
         if(logger !== undefined)
         {
-            logger.logObject(err);
+            logger.logObject(errString);
         }
-        signalFailure(`${err.toString()} ${err.stack}`);
+        signalFailure(`${reason.toString()} ${reason.stack}`);
     });
 }
 
