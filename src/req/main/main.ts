@@ -476,7 +476,10 @@ ipc.on(
 		}
 		else if(arg.opName == "inputBamFile")
 		{
-			atomicOp.addOperation("inputBamFile",arg.filePath);
+			atomicOp.addOperation("inputBamFile",{
+				bamPath : arg.filePath,
+				fasta : arg.fasta
+			});
 		}
 		else if(arg.opName == "linkRefSeqToAlignment")
 		{
