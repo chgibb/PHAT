@@ -34,7 +34,7 @@ export class InputBamFile extends atomic.AtomicOperation
             setData : true,
             data : {
                 bamPath : self.bamPath,
-                fastaPath : getPath(self.fasta)
+                fastaPath : self.fasta ? getPath(self.fasta) : ""
             },
             name : self.name,
             description : "Input Bam File"
