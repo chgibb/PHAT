@@ -17,6 +17,7 @@ let flags : CompletionFlags = new CompletionFlags();
 let align : AlignData = new AlignData();
 align.isExternalAlignment = true;
 let bamPath = "";
+let fastaPath = "";
 let progressMessage = "Sorting BAM";
 
 let logger : atomic.ForkLogger = new atomic.ForkLogger();
@@ -54,6 +55,7 @@ process.on(
         {
             logger.logRecord = atomic.openLog(ev.name,ev.description);
             bamPath = ev.data.bamPath;
+            fastaPath = ev.data.fastaPath;
             align.alias = trimPath(bamPath);
             process.send(<AtomicOperationForkEvent>{
                 finishedSettingData : true

@@ -7,15 +7,17 @@ import {AlignData,getArtifactDir} from "./../alignData";
 export class InputBamFile extends atomic.AtomicOperation
 {
     public bamPath : string;
+    public fastaPath : string;
     public alignData : AlignData;
     public inputBamFileProcess : cp.ChildProcess;
     constructor()
     {
         super();
     }
-    public setData(bamPath : string) : void
+    public setData(bamPath : string,fastaPath? : string) : void
     {
         this.bamPath = bamPath;
+        this.fastaPath = fastaPath;
     }
     public run() : void
     {
@@ -25,7 +27,8 @@ export class InputBamFile extends atomic.AtomicOperation
         this.inputBamFileProcess = atomic.makeFork("InputBamFile.js",<AtomicOperationForkEvent>{
             setData : true,
             data : {
-                bamPath : self.bamPath
+                bamPath : self.bamPath,
+                fastaPath : self.fastaPath
             },
             name : self.name,
             description : "Input Bam File"
