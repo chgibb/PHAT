@@ -354,6 +354,17 @@ async function runTests() : Promise<void>
 			return reject();
 		}
 
+		console.log("Importing headerless sequence alignment map");
+		atomic.addOperation("inputBamFile","data/L6R1HPV16NoHeader.sam");
+		try
+		{
+			await testL6R1HPV16AlignImportedImporting();
+		}
+		catch(err)
+		{
+			console.log("importing headerless sam threw (expected) exception "+err);
+		}
+
 		resolve();
 	});
 
