@@ -247,7 +247,8 @@ async function runTests() : Promise<void>
 		}
 
 		console.log("Importing binary alignment map from L6R1 HPV16 alignment");
-		atomic.addOperation("inputBamFile",getUnSortedBam(L6R1HPV16Align.get()));
+		atomic.addOperation("inputBamFile",{
+			bamPath : getUnSortedBam(L6R1HPV16Align.get())});
 		try
 		{
 			await testL6R1HPV16AlignImportedImporting();
@@ -274,7 +275,9 @@ async function runTests() : Promise<void>
 		}
 
 		console.log("Importing binary alignment map from L6R1 HPV18 alignment");
-		atomic.addOperation("inputBamFile",getUnSortedBam(L6R1HPV18Align.get()));
+		atomic.addOperation("inputBamFile",{
+			bamPath : getUnSortedBam(L6R1HPV18Align.get())
+		});
 		try
 		{
 			await testL6R1HPV18AlignImportedImporting();
@@ -301,7 +304,9 @@ async function runTests() : Promise<void>
 		}
 
 		console.log("Importing sequence alignment map from L6R1 HPV16 alignment");
-		atomic.addOperation("inputBamFile",getSam(L6R1HPV16Align.get()));
+		atomic.addOperation("inputBamFile",{
+			bamPath : getSam(L6R1HPV16Align.get())
+		});
 		try
 		{
 			await testL6R1HPV16AlignImportedImporting();
@@ -328,7 +333,9 @@ async function runTests() : Promise<void>
 		}
 
 		console.log("Importing sequence alignment map from L6R1 HPV18 alignment");
-		atomic.addOperation("inputBamFile",getSam(L6R1HPV18Align.get()));
+		atomic.addOperation("inputBamFile",{
+			bamPath : getSam(L6R1HPV18Align.get())
+		});
 		try
 		{
 			await testL6R1HPV18AlignImportedImporting();
@@ -355,7 +362,9 @@ async function runTests() : Promise<void>
 		}
 
 		console.log("Importing headerless sequence alignment map");
-		atomic.addOperation("inputBamFile","data/L6R1HPV16NoHeader.sam");
+		atomic.addOperation("inputBamFile",{
+			bamPath : "data/L6R1HPV16NoHeader.sam"
+		});
 		try
 		{
 			await testL6R1HPV16AlignImportedImporting();
@@ -363,6 +372,21 @@ async function runTests() : Promise<void>
 		catch(err)
 		{
 			console.log("importing headerless sam threw (expected) exception "+err);
+		}
+
+		console.log("Importing headerless sequence aligment map with ref seq")
+		atomic.addOperation("inputBamFile",{
+			bamPath : "data/L6R1HPV16NoHeader.sam",
+			fasta : hpv16Ref.get()
+		});
+		try
+		{
+			await testL6R1HPV16AlignImportedImporting();
+		}
+		catch(err)
+		{
+			console.log("importing headerless sam with ref seq threw exception "+err);
+			return reject();
 		}
 
 		resolve();
