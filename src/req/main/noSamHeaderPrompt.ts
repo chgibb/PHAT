@@ -1,17 +1,17 @@
 import * as winMgr from "./winMgr";
 import {getReadable} from "./../getAppPath";
 
-winMgr.windowCreators["noSamHeader"] = 
+winMgr.windowCreators["noSamHeaderPrompt"] = 
 {
 	Create : function() 
 	{
 		winMgr.pushWindow(
-			"noSamHeader",
+			"noSamHeaderPrompt",
 			winMgr.createWithDefault(
 				"No Sam Header",
-				"noSamHeader",
+				"noSamHeaderPrompt",
 				928,300,
-				"file://"+getReadable("noSamHeader.html"),
+				"file://"+getReadable("noSamHeaderPrompt.html"),
 				false,false, 545, 85
 			)
 		);
