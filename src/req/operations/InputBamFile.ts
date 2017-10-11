@@ -4,20 +4,24 @@ import * as atomic from "./atomicOperations";
 import {AtomicOperationForkEvent} from "./../atomicOperationsIPC";
 import {getReadable} from "./../getAppPath";
 import {AlignData,getArtifactDir} from "./../alignData";
+import {Fasta,getFaiPath} from "./../fasta";
+import {getPath} from "./../file";
 export class InputBamFile extends atomic.AtomicOperation
 {
     public bamPath : string;
-    public fastaPath : string;
+    public fasta : Fasta;
     public alignData : AlignData;
     public inputBamFileProcess : cp.ChildProcess;
     constructor()
     {
         super();
     }
-    public setData(bamPath : string,fastaPath? : string) : void
+    public setData(bamPath : string,fasta? : Fasta) : void
     {
         this.bamPath = bamPath;
-        this.fastaPath = fastaPath;
+        this.fasta = fasta;
+        if(this.fasta)
+            this.generatedArtifacts.push(`${getPath(this.fasta)}.fai`);
     }
     public run() : void
     {
@@ -28,7 +32,7 @@ export class InputBamFile extends atomic.AtomicOperation
             setData : true,
             data : {
                 bamPath : self.bamPath,
-                fastaPath : self.fastaPath
+                fastaPath : getPath(self.fasta)
             },
             name : self.name,
             description : "Input Bam File"
