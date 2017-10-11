@@ -80,6 +80,7 @@ import "./circularGenomeBuilder";
 import "./OperationViewer";
 import "./logViewer";
 import "./procMgr";
+import "./noSamHeader";
 
 
 app.on
