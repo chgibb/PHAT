@@ -16,10 +16,12 @@ export class InputBamFile extends atomic.AtomicOperation
     {
         super();
     }
-    public setData(bamPath : string,fasta? : Fasta) : void
+    public setData(data : {
+        bamPath : string,fasta? : Fasta
+    }) : void
     {
-        this.bamPath = bamPath;
-        this.fasta = fasta;
+        this.bamPath = data.bamPath;
+        this.fasta = data.fasta;
         if(this.fasta)
             this.generatedArtifacts.push(`${getPath(this.fasta)}.fai`);
     }
