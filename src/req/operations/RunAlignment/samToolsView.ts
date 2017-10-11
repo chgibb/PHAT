@@ -5,6 +5,16 @@ import {SpawnRequestParams} from "./../../JobIPC";
 import {Job,JobCallBackObject} from "./../../main/Job";
 import {parseBowTie2AlignmentReport} from "./../../bowTie2AlignmentReportParser";
 
+/**
+ * Produce an unsorted bam from the sam managed by alignData. fastaPath should be provided to properly convert
+ * headerless sams
+ * 
+ * @export
+ * @param {AlignData} alignData 
+ * @param {atomic.AtomicOperation} logger 
+ * @param {string} [fastaPath] 
+ * @returns {Promise<{}>} 
+ */
 export function samToolsView(alignData : AlignData,logger : atomic.AtomicOperation,fastaPath? : string) : Promise<{}>
 {
     return new Promise((resolve,reject) => {
