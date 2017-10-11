@@ -83,7 +83,7 @@ process.on(
                 {
                     progressMessage = "Converting SAM to BAM";
                     update();
-                    await samToolsView(align,logger);
+                    await samToolsView(align,logger,fastaPath);
 
                 }
 
