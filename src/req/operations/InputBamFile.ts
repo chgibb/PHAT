@@ -24,6 +24,9 @@ export class InputBamFile extends atomic.AtomicOperation
         this.fasta = data.fasta;
         if(this.fasta)
             this.generatedArtifacts.push(`${getPath(this.fasta)}.fai`);
+        this.alignData = new AlignData();
+        this.alignData.isExternalAlignment = true;
+        this.destinationArtifactsDirectories.push(getArtifactDir(this.alignData));
     }
     public run() : void
     {
@@ -34,7 +37,8 @@ export class InputBamFile extends atomic.AtomicOperation
             setData : true,
             data : {
                 bamPath : self.bamPath,
-                fastaPath : self.fasta ? getPath(self.fasta) : ""
+                fastaPath : self.fasta ? getPath(self.fasta) : "",
+                align : self.alignData
             },
             name : self.name,
             description : "Input Bam File"
@@ -53,11 +57,7 @@ export class InputBamFile extends atomic.AtomicOperation
                 if(ev.flags.done)
                 {
                     self.alignData = ev.data.alignData;
-                    if(ev.flags.failure == true && self.alignData)
-                    {
-                        //make sure output dir is deleted on failure
-                        self.destinationArtifactsDirectories.push(getArtifactDir(self.alignData));
-                    }
+                    //make sure output dir is deleted on failure
                     self.logRecord = ev.logRecord;
                     atomic.recordLogRecord(ev.logRecord);
                 }

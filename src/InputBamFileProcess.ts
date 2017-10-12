@@ -14,8 +14,7 @@ import {samToolsIndex} from "./req/operations/RunAlignment/samToolsIndex";
 import {samToolsIdxStats} from "./req/operations/RunAlignment/samToolsIdxStats";
 
 let flags : CompletionFlags = new CompletionFlags();
-let align : AlignData = new AlignData();
-align.isExternalAlignment = true;
+let align : AlignData;
 let bamPath = "";
 let fastaPath = "";
 let progressMessage = "Sorting BAM";
@@ -56,6 +55,7 @@ process.on(
             logger.logRecord = atomic.openLog(ev.name,ev.description);
             bamPath = ev.data.bamPath;
             fastaPath = ev.data.fastaPath;
+            align = ev.data.align;
             align.alias = trimPath(bamPath);
             process.send(<AtomicOperationForkEvent>{
                 finishedSettingData : true
