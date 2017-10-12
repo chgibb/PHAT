@@ -16,7 +16,7 @@ export class OpenNoSamHeaderPrompt extends atomic.AtomicOperation
     public run() : void
     {
         this.logRecord = atomic.openLog("openNoSamHeaderPrompt","Open No Sam Header Prompt");
-        this.logObject(this.inputBamFile);
+        this.logObject(this.inputBamFile.bamPath);
         winMgr.windowCreators["noSamHeaderPrompt"].Create();
 
         let prompts = winMgr.getWindowsByName("noSamHeaderPrompt");
