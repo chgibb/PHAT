@@ -29,6 +29,7 @@ import {CheckForUpdate} from "./../operations/CheckForUpdate";
 import {DownloadAndInstallUpdate} from "./../operations/DownloadAndInstallUpdate";
 import {OpenPileupViewer} from "./../operations/OpenPileupViewer";
 import {OpenLogViewer} from "./../operations/OpenLogViewer";
+import {OpenNoSamHeaderPrompt} from "./../operations/OpenNoSamHeaderPrompt";
 
 import {InputFastqFile} from "./../operations/inputFastqFile";
 import {InputFastaFile} from "./../operations/inputFastaFile";
@@ -102,7 +103,8 @@ app.on
 		atomicOp.register("loadCurrentlyOpenProject",LoadCurrentlyOpenProject);
 
 		atomicOp.register("openPileupViewer",OpenPileupViewer);
-		atomicOp.register("openLogViewer",OpenLogViewer)
+		atomicOp.register("openLogViewer",OpenLogViewer);
+		atomicOp.register("openNoSamHeaderPrompt",OpenNoSamHeaderPrompt);
 		atomicOp.register("inputFastqFile",InputFastqFile);
 		atomicOp.register("inputFastaFile",InputFastaFile);
 		atomicOp.register("inputBamFile",InputBamFile);
@@ -438,6 +440,10 @@ ipc.on(
 		{
 			atomicOp.addOperation("openLogViewer",arg.logRecord);
 		}
+		else if(arg.opName == "openNoSamHeaderPrompt")
+		{
+			atomicOp.addOperation("openNoSamHeaderPrompt",{});
+		}
 		else if(arg.opName == "inputFastqFile")
 		{
 			let fastqs : Array<Fastq> = dataMgr.getKey("input","fastqInputs");
@@ -739,6 +745,10 @@ atomicOp.updates.on(
 			aligns.push(op.alignData);
 			dataMgr.setKey("align","aligns",aligns);
 			winMgr.publishChangeForKey("align","aligns");
+		}
+		else if(op.flags.failure)
+		{
+			atomicOp.addOperation("openNoSamHeaderPrompt",{});
 		}
 	}
 );
