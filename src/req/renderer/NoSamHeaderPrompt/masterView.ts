@@ -24,8 +24,8 @@ export class View extends viewMgr.View
         if(!this.inputBamFile)
             return undefined;
         res += `
-            <h2>The alignment map ${this.inputBamFile.bamPath} could not be input. This may be due to missing header information. Select a reference from below to use to substitute header information</h2>
-            <h2>Note: If you select a reference which was not used to build this alignment map, the result may be unusable or otherwise broken</h2>
+            <h4>The alignment map ${this.inputBamFile.bamPath} could not be input. This may be due to missing header information. Select a reference from below to use to substitute header information.</h4>
+            <h4>Note: If you select a reference which was not used to build this alignment map, the result may be unusable or otherwise broken.</h4>
             <br />
             <div id="fastaTableDiv" style="width:100%;">
             <table style="width:100%;">
