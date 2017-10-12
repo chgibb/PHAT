@@ -23,7 +23,7 @@ export class OpenNoSamHeaderPrompt extends atomic.AtomicOperation
         let self = this;
         setTimeout(
             function(){
-                prompt.webContents.send("noSamHeaderPrompt",self.inputBamFile);
+                prompt.webContents.send("noSamHeaderPrompt",{action : "getKey",key : "inputBamFile",val : self.inputBamFile});
             }
         );
         this.setSuccess(this.flags);
