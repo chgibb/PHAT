@@ -13,10 +13,6 @@ app.commandLine.appendSwitch("js-flags","--expose_gc --nolazy --serialize_eager 
 if(require('electron-squirrel-startup')) app.quit();
 
 import {getReadable,getWritable,getReadableAndWritable} from "./../getAppPath";
-getReadable("");
-getWritable("");
-getReadableAndWritable("");
-
 import {getEdition} from "./../getEdition";
 import {appMenu} from "./appMenu";
 
@@ -65,9 +61,6 @@ import {finishLoadingProject} from "./finishLoadingProject";
 import {GetKeyEvent,SaveKeyEvent,KeySubEvent} from "./../ipcEvents";
 
 var pjson = require('./package.json');
-
-
-(<any>global).state = {};
 
 import "./ProjectSelection";
 import "./toolBar";
