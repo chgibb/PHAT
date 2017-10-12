@@ -748,7 +748,7 @@ atomicOp.updates.on(
 		}
 		else if(op.flags.failure)
 		{
-			atomicOp.addOperation("openNoSamHeaderPrompt",{});
+			atomicOp.addOperation("openNoSamHeaderPrompt",op);
 		}
 	}
 );
