@@ -3,8 +3,12 @@ const ipc = electron.ipcRenderer;
 
 import * as viewMgr from "./../viewMgr";
 
+import {AtomicOperationIPC} from "./../../atomicOperationsIPC";
 import {Fasta} from "./../../fasta";
 import {InputBamFile} from "./../../operations/InputBamFile";
+
+const Dialogs = require("dialogs");
+const dialogs = Dialogs();
 
 export class View extends viewMgr.View
 {
@@ -56,7 +60,31 @@ export class View extends viewMgr.View
     public postRender() : void{}
     public divClickEvents(event : JQueryEventObject) : void
     {
-
+        for(let i = 0; i != this.fastaInputs.length; ++i)
+        {
+            if(event.target.classList.contains(`${this.fastaInputs[i].uuid}Class`))
+            {
+                let self = this;
+                dialogs.confirm(
+                    `Use ${this.fastaInputs[i].alias} for header information?`,
+                    `Build header`,
+                    (ok : boolean) => {
+                        if(ok)
+                        {
+                            ipc.send(
+                                "runOperation",
+                                <AtomicOperationIPC>{
+                                    opName : "inputBamFile",
+                                    filePath : self.inputBamFile.bamPath,
+                                    fasta : self.fastaInputs[i]
+                                }
+                            );
+                            electron.remote.getCurrentWindow().close();
+                        }
+                    }
+                );
+            }
+        }
     }
 }
 
