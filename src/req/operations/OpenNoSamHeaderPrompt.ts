@@ -21,11 +21,15 @@ export class OpenNoSamHeaderPrompt extends atomic.AtomicOperation
 
         let prompts = winMgr.getWindowsByName("noSamHeaderPrompt");
         let prompt = prompts[prompts.length - 1];
-        let self = this;
+        let options = {
+            action : "getKey",
+            key : "inputBamFile",
+            val : this.inputBamFile
+        };
         setTimeout(
             function(){
-                prompt.webContents.send("noSamHeaderPrompt",{action : "getKey",key : "inputBamFile",val : self.inputBamFile});
-            }
+                prompt.webContents.send("noSamHeaderPrompt",options);
+            },500
         );
         this.setSuccess(this.flags);
         this.update();
