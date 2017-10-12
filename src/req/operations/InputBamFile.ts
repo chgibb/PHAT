@@ -56,8 +56,8 @@ export class InputBamFile extends atomic.AtomicOperation
                 self.flags = ev.flags;
                 if(ev.flags.done)
                 {
-                    self.alignData = ev.data.alignData;
-                    //make sure output dir is deleted on failure
+                    if(ev.data.alignData)
+                        self.alignData = ev.data.alignData;
                     self.logRecord = ev.logRecord;
                     atomic.recordLogRecord(ev.logRecord);
                 }
