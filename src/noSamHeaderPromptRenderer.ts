@@ -24,6 +24,15 @@ $(function(){
             action : "getKey"
         }
     );
+    ipc.send(
+        "keySub",
+        <KeySubEvent>{
+            action : "keySub",
+            channel : "input",
+            key : "fastaInputs",
+            replyChannel : "noSamHeaderPrompt"
+        }
+    );
 
     ipc.on("noSamHeaderPrompt",function(event : Electron.IpcMessageEvent,arg : any){
         console.log(arg);
