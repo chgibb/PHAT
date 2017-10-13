@@ -1,0 +1,19 @@
+language : node_js
+node_js:
+  - 8.2.1
+
+build:
+  ci:
+    - sudo -E apt-add-repository -y "ppa:ubuntu-toolchain-r/test"
+    - sudo apt-get update
+    - sudo apt-get install -yq --no-install-suggests --no-install-recommends --force-yes libbz2-1.0
+    - sudo apt-get install -yq --no-install-suggests --no-install-recommends --force-yes libncurses5-dev libncursesw5-dev
+    - sudo apt-get install -yq --no-install-suggests --no-install-recommends --force-yes g++
+    - sudo apt-get install -yq --no-install-suggests --no-install-recommends --force-yes gtk2.0
+    - sudo apt-get install -yq --no-install-suggests --no-install-recommends --force-yes xvfb
+    - sudo dpkg --configure -a
+    - sudo apt-get update
+    - sudo apt-get install -y -f
+    - bash scripts/install.bash
+    - bash scripts/build.bash
+    
