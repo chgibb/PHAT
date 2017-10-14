@@ -25,7 +25,7 @@ export class View extends viewMgr.View
     {
         super("masterView",div);
         this.views = new Array<viewMgr.View>();
-        this.displayInfo = "QCInfo";
+        this.displayInfo = "AlignmentInfo";
         this.fastqInputs = new Array<Fastq>();
         this.fastaInputs = new Array<Fasta>();
         this.alignData = new Array<AlignData>();
