@@ -382,7 +382,6 @@ export function exitFork(retCode : number) : void
 export function handleForkFailures(logger? : ForkLogger,progressMessage? : string)
 {
     let signalFailure = function(err : string){
-        console.log(err);
         let flags : CompletionFlags = new CompletionFlags();
         flags.done = true;
         flags.failure = true;
@@ -406,11 +405,22 @@ export function handleForkFailures(logger? : ForkLogger,progressMessage? : strin
 
     };
     (process as NodeJS.EventEmitter).on("uncaughtException",function(err : Error){
+        console.log(err);
+        if(logger !== undefined)
+        {
+            logger.logObject(err);
+        }
         signalFailure(`${err.toString()} ${err.stack}`);
     });
 
-    process.on("unhandledRejection",function(err : Error){
-        signalFailure(`${err.toString()} ${err.stack}`);
+    process.on("unhandledRejection",function(reason : Error,p : Promise<any>){
+        let errString = `Unhandled rejection ${p} ${reason}`;
+        console.log(errString);
+        if(logger !== undefined)
+        {
+            logger.logObject(errString);
+        }
+        signalFailure(`${reason.toString()} ${reason.stack}`);
     });
 }
 

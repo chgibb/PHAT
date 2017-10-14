@@ -4,6 +4,7 @@ const ipc = electron.ipcRenderer;
 import * as viewMgr from "./../viewMgr";
 import * as masterView from "./masterView";
 import * as genomeView from "./genomeView";
+import * as cf from "./../circularFigure";
 import {AlignData} from "./../../alignData";
 import {AtomicOperationIPC} from "./../../atomicOperationsIPC";
 import {getReadable} from "./../../getAppPath";
@@ -36,6 +37,13 @@ export function writeAvailableTracksModal() : void
         <h4>Available Tracks</h4>   
         <h5>Coverage</h5>
     `;
+    genomeView.genome.renderedCoverageTracks.sort(function(a : cf.RenderedCoverageTrackRecord,b : cf.RenderedCoverageTrackRecord){
+        if(!a.scaleFactor)
+            a.scaleFactor = 1;
+        if(!b.scaleFactor)
+            b.scaleFactor = 1;
+        return a.scaleFactor - b.scaleFactor;
+    });
     let foundTrack = false;
     for(let i = 0; i != genomeView.genome.renderedCoverageTracks.length; ++i)
     {
@@ -46,7 +54,7 @@ export function writeAvailableTracksModal() : void
                 if(genomeView.genome.renderedCoverageTracks[i].uuidContig == selectedAlign.fasta.contigs[j].uuid)
                 {
                     body += `
-                        <p id="${genomeView.genome.renderedCoverageTracks[i].uuid}Available" class="activeHover" style="color:${genomeView.genome.renderedCoverageTracks[i].colour}">${selectedAlign.fasta.contigs[j].name}</p>
+                    <b>Scaled by ${genomeView.genome.renderedCoverageTracks[i].scaleFactor}</b><p id="${genomeView.genome.renderedCoverageTracks[i].uuid}Available" class="activeHover" style="color:${genomeView.genome.renderedCoverageTracks[i].colour}">${selectedAlign.fasta.contigs[j].name}</p>
                     `;
                     foundTrack = true;
                 }
@@ -89,7 +97,13 @@ export function writeAvailableTracksModal() : void
 
     body += `
         <h4>Create New Tracks</h4>
+        <p>Track Colour</p>
         <input type="text" id="colourPicker" data-format="rgb" value="rgb(0, 0, 0)">
+        <br />
+        <br />
+        <p>Coverage Depth Scale</p>
+        <input type="number" step="0.1" min="0" value="1" id="scaleFactor">
+        <br />
     `;
     for(let i = 0; i != genomeView.genome.contigs.length; ++i)
     {
@@ -179,7 +193,8 @@ export function writeAvailableTracksModal() : void
                         figureuuid : genomeView.genome.uuid,
                         alignuuid : selectedAlign.uuid,
                         uuid : genomeView.genome.contigs[i].uuid,
-                        colour : (<string>(<any>$(document.getElementById("colourPicker"))).minicolors("rgbString"))
+                        colour : (<string>(<any>$(document.getElementById("colourPicker"))).minicolors("rgbString")),
+                        scaleFactor : parseFloat((<HTMLInputElement>document.getElementById("scaleFactor")).value)
                     }
                 );
             }
