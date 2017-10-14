@@ -45,6 +45,8 @@ export interface AtomicOperationIPC
     
     compileBase? : boolean;
     figure? : CircularFigure;
+
+    scaleFactor? : number;
 }
 
 /**

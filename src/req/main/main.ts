@@ -13,10 +13,6 @@ app.commandLine.appendSwitch("js-flags","--expose_gc --nolazy --serialize_eager 
 if(require('electron-squirrel-startup')) app.quit();
 
 import {getReadable,getWritable,getReadableAndWritable} from "./../getAppPath";
-getReadable("");
-getWritable("");
-getReadableAndWritable("");
-
 import {getEdition} from "./../getEdition";
 import {appMenu} from "./appMenu";
 
@@ -33,6 +29,7 @@ import {CheckForUpdate} from "./../operations/CheckForUpdate";
 import {DownloadAndInstallUpdate} from "./../operations/DownloadAndInstallUpdate";
 import {OpenPileupViewer} from "./../operations/OpenPileupViewer";
 import {OpenLogViewer} from "./../operations/OpenLogViewer";
+import {OpenNoSamHeaderPrompt} from "./../operations/OpenNoSamHeaderPrompt";
 
 import {InputFastqFile} from "./../operations/inputFastqFile";
 import {InputFastaFile} from "./../operations/inputFastaFile";
@@ -66,9 +63,6 @@ import {GetKeyEvent,SaveKeyEvent,KeySubEvent} from "./../ipcEvents";
 
 var pjson = require('./package.json');
 
-
-(<any>global).state = {};
-
 import "./ProjectSelection";
 import "./toolBar";
 import "./Input";
@@ -80,6 +74,7 @@ import "./circularGenomeBuilder";
 import "./OperationViewer";
 import "./logViewer";
 import "./procMgr";
+import "./noSamHeaderPrompt";
 
 
 app.on
@@ -108,7 +103,8 @@ app.on
 		atomicOp.register("loadCurrentlyOpenProject",LoadCurrentlyOpenProject);
 
 		atomicOp.register("openPileupViewer",OpenPileupViewer);
-		atomicOp.register("openLogViewer",OpenLogViewer)
+		atomicOp.register("openLogViewer",OpenLogViewer);
+		atomicOp.register("openNoSamHeaderPrompt",OpenNoSamHeaderPrompt);
 		atomicOp.register("inputFastqFile",InputFastqFile);
 		atomicOp.register("inputFastaFile",InputFastaFile);
 		atomicOp.register("inputBamFile",InputBamFile);
@@ -340,7 +336,8 @@ ipc.on(
 						circularFigure : circularFigure,
 						contiguuid : arg.uuid,
 						alignData : alignData,
-						colour : arg.colour
+						colour : arg.colour,
+						scaleFactor : arg.scaleFactor
 					}
 				);
 			}
@@ -443,6 +440,10 @@ ipc.on(
 		{
 			atomicOp.addOperation("openLogViewer",arg.logRecord);
 		}
+		else if(arg.opName == "openNoSamHeaderPrompt")
+		{
+			atomicOp.addOperation("openNoSamHeaderPrompt",{});
+		}
 		else if(arg.opName == "inputFastqFile")
 		{
 			let fastqs : Array<Fastq> = dataMgr.getKey("input","fastqInputs");
@@ -475,7 +476,10 @@ ipc.on(
 		}
 		else if(arg.opName == "inputBamFile")
 		{
-			atomicOp.addOperation("inputBamFile",arg.filePath);
+			atomicOp.addOperation("inputBamFile",{
+				bamPath : arg.filePath,
+				fasta : arg.fasta
+			});
 		}
 		else if(arg.opName == "linkRefSeqToAlignment")
 		{
@@ -741,6 +745,10 @@ atomicOp.updates.on(
 			aligns.push(op.alignData);
 			dataMgr.setKey("align","aligns",aligns);
 			winMgr.publishChangeForKey("align","aligns");
+		}
+		else if(op.flags.failure)
+		{
+			atomicOp.addOperation("openNoSamHeaderPrompt",op);
 		}
 	}
 );

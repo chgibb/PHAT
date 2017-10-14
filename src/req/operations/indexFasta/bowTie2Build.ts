@@ -7,6 +7,13 @@ import {getPath} from "./../../file";
 import {SpawnRequestParams} from "./../../JobIPC";
 import {Job,JobCallBackObject} from "./../../main/Job";
 
+/**
+ * Builds a bowtie2 index
+ * 
+ * @export
+ * @param {IndexFastaForAlignment} op 
+ * @returns {(Promise<string | undefined>)} 
+ */
 export function bowTie2Build(op : IndexFastaForAlignment) : Promise<string | undefined>
 {
     return new Promise((resolve,reject) => {

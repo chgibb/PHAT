@@ -7,6 +7,14 @@ import {getPath} from "./../../file";
 import {SpawnRequestParams} from "./../../JobIPC";
 import {Job,JobCallBackObject} from "./../../main/Job";
 
+/**
+ * Produces a samtools fai index for fasta
+ * 
+ * @export
+ * @param {Fasta} fasta 
+ * @param {atomic.AtomicOperation} logger 
+ * @returns {Promise<{}>} 
+ */
 export function samToolsFaidx(fasta : Fasta,logger : atomic.AtomicOperation) : Promise<{}>
 {
     return new Promise((resolve,reject) => {

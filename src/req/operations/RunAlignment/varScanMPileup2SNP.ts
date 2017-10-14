@@ -8,6 +8,14 @@ import {Job,JobCallBackObject} from "./../../main/Job";
 import {varScanMPileup2SNPReportParser} from "./../../varScanMPileup2SNPReportParser";
 import {varScanMPileup2SNPVCF2JSON} from "./../../varScanMPileup2SNPVCF2JSON";
 
+/**
+ * Produce SNP predictions from the mpileup managed by alignData
+ * 
+ * @export
+ * @param {AlignData} alignData 
+ * @param {atomic.AtomicOperation} logger 
+ * @returns {Promise<{}>} 
+ */
 export function varScanMPileup2SNP(alignData : AlignData,logger : atomic.AtomicOperation) : Promise<{}>
 {
     return new Promise((resolve,reject) => {
