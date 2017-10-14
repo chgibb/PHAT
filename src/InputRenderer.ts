@@ -166,7 +166,6 @@ $
                                     if(ops[i].name == "inputBamFile" || ops[i].name == "linkRefSeqToAlignment" ||
                                     ops[i].name == "indexFastaForVisualization" || ops[i].name == "indexFastaForAlignment")
                                     {
-                                        console.log("found input bam file");
                                         masterView.progressMessage = ops[i].progressMessage;
                                         found = true;
                                         break;

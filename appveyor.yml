@@ -6,8 +6,8 @@ install:
   - ps: Install-Product node ''
   - ps: wget "https://github.com/icsharpcode/SharpZipLib/releases/download/0.86.0.518/ICSharpCode.SharpZipLib.dll" -OutFile "src/installUpdateProcess/ICSharpCode.SharpZipLib.dll"
   - ps: wget "https://github.com/chgibb/FastQC0.11.5/releases/download/v0.11.5/FastQC.tar.gz" -OutFile "FastQC.tar.gz"
-  - ps: wget "https://github.com/chgibb/pileup.js/releases/download/v0.6.8/pileup.js" -OutFile "forDist/pileup.js"
-  - ps: wget "https://github.com/chgibb/pileup.js/releases/download/v0.6.8/pileup.css" -OutFile "forDist/styles/pileup.css"
+  - ps: wget "https://github.com/chgibb/pileup.js/releases/download/v0.6.9/pileup.js" -OutFile "forDist/pileup.js"
+  - ps: wget "https://github.com/chgibb/pileup.js/releases/download/v0.6.9/pileup.css" -OutFile "forDist/styles/pileup.css"
   - ps: wget "https://github.com/dkoboldt/varscan/releases/download/2.4.2/VarScan.v2.4.2.jar" -OutFile "forDist/varscan.jar"
   - ps: wget "https://github.com/samtools/samtools/releases/download/1.4.1/samtools-1.4.1.tar.bz2" -OutFile "samtools-1.4.1.tar.bz2"
   - bash scripts/install.bash >nul
@@ -23,6 +23,9 @@ test_script:
 
 artifacts:
   - path: phat-win32-x64-update-full.tar.gz
+    name: to-publish
+
+  - path: phat-win32-x64-update-diff.tar.gz
     name: to-publish
 
   - path: phat-win32-x64-update.tar.gz
@@ -48,6 +51,8 @@ environment:
   APPVEYOR: true
   APPVEYOR_RDP_PASSWORD:
     secure: vR9G9F+rHt8aGtofqsoRh2blpRC8Dy1yd1OtN7LvE18=
+  GH_TOKEN_APPVEYOR:
+    secure: V1YRM+jKAfr0DIpI8p2fKBarTpEbAFx6VuFznHtIyaLpnBg5nieoP//BxqkWZ4SK
 
 notifications:
   - provider: Slack
