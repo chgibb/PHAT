@@ -7,6 +7,14 @@ import {SpawnRequestParams} from "./../../JobIPC";
 import {Job,JobCallBackObject} from "./../../main/Job";
 import {getPath} from "./../../file";
 
+/**
+ * Generate an mpileup using the fasta and sorted bam managed by alignData
+ * 
+ * @export
+ * @param {AlignData} alignData 
+ * @param {atomic.AtomicOperation} logger 
+ * @returns {Promise<{}>} 
+ */
 export function samToolsMPileup(alignData : AlignData,logger : atomic.AtomicOperation) : Promise<{}>
 {
     return new Promise((resolve,reject) => {

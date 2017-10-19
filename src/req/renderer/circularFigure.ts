@@ -129,13 +129,16 @@ export class RenderedTrackRecord
  */
 export class RenderedCoverageTrackRecord extends RenderedTrackRecord
 {
+    scaleFactor : number;
     public constructor(
         uuidAlign : string,
         uuidContig : string,
         uuidFigure : string,
-        colour : string)
+        colour : string,
+        scaleFactor : number)
     {
         super(uuidAlign,uuidContig,uuidFigure,colour);
+        this.scaleFactor = scaleFactor;
     }
 }
 
@@ -426,6 +429,7 @@ interface PositionsWithDepths
     positions : Array<number>;
 }
 
+
 /**
  * Returns the templates for a coverage track of align for the contig specified by contiguuid on figure in the specified colour
  * 
@@ -434,13 +438,15 @@ interface PositionsWithDepths
  * @param {string} contiguuid 
  * @param {AlignData} align 
  * @param {string} [colour="rgb(64,64,64)"] 
+ * @param {number} [scaleFactor=1] 
  * @returns {Promise<string>} 
  */
 export async function renderCoverageTrack(
     figure : CircularFigure,
     contiguuid : string,
     align : AlignData,
-    colour : string = "rgb(64,64,64)"
+    colour : string = "rgb(64,64,64)",
+    scaleFactor : number = 1
 ) : Promise<string>
 {
     return new Promise<string>((resolve,reject) => {
@@ -494,7 +500,7 @@ export async function renderCoverageTrack(
                 depths[i].positions.sort(function(a : number,b : number){return a - b});
                 let res = "";
                 //render the start of the current track
-                res += `<plasmidtrack trackstyle="fill-opacity:0.0;fill:${colour}" width="10" radius="{{genome.radius+${100+depths[i].depth}}}" >`;
+                res += `<plasmidtrack trackstyle="fill-opacity:0.0;fill:${colour}" width="10" radius="{{genome.radius+${100+(depths[i].depth*scaleFactor)}}}" >`;
                 //try to find a group of sequential positions
                 for(let k = 0; k != depths[i].positions.length; ++k)
                 {
@@ -519,6 +525,7 @@ export async function renderCoverageTrack(
     });
 }
 
+
 /**
  * Returns the templates for a coverage track of align for the contig specified by contiguuid on figure in the specified colour. Creates and saves a trackrecord
  * on figure with the results
@@ -528,13 +535,15 @@ export async function renderCoverageTrack(
  * @param {string} contiguuid 
  * @param {AlignData} align 
  * @param {string} [colour="rgb(64,64,64)"] 
+ * @param {number} [scaleFactor=1] 
  * @returns {Promise<string>} 
  */
 export async function cacheCoverageTrack(
     figure : CircularFigure,
     contiguuid : string,
     align : AlignData,
-    colour : string = "rgb(64,64,64)"
+    colour : string = "rgb(64,64,64)",
+    scaleFactor : number = 1
 ) : Promise<string>
 {
     return new Promise<string>(async (resolve,reject) => {
@@ -544,8 +553,8 @@ export async function cacheCoverageTrack(
         }
         catch(err){}
     
-        let coverageTracks = await renderCoverageTrack(figure,contiguuid,align,colour);
-        let trackRecord = new RenderedCoverageTrackRecord(align.uuid,contiguuid,figure.uuid,colour);
+        let coverageTracks = await renderCoverageTrack(figure,contiguuid,align,colour,scaleFactor);
+        let trackRecord = new RenderedCoverageTrackRecord(align.uuid,contiguuid,figure.uuid,colour,scaleFactor);
         fs.writeFileSync(getCachedCoverageTrackPath(trackRecord),coverageTracks);
         figure.renderedCoverageTracks.push(trackRecord);
         resolve(coverageTracks);

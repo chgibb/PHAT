@@ -7,6 +7,14 @@ import {SpawnRequestParams} from "./../../JobIPC";
 import {Job,JobCallBackObject} from "./../../main/Job";
 import {samToolsFlagStatReportParser} from "./../../samToolsFlagStatReport";
 
+/**
+ * Populate the flagStatReport prop of alignData using its sorted bam
+ * 
+ * @export
+ * @param {AlignData} alignData 
+ * @param {atomic.AtomicOperation} logger 
+ * @returns {Promise<void>} 
+ */
 export function samToolsFlagStat(alignData : AlignData,logger : atomic.AtomicOperation) : Promise<void>
 {
     return new Promise<void>((resolve,reject) => {

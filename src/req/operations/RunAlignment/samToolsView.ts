@@ -5,7 +5,17 @@ import {SpawnRequestParams} from "./../../JobIPC";
 import {Job,JobCallBackObject} from "./../../main/Job";
 import {parseBowTie2AlignmentReport} from "./../../bowTie2AlignmentReportParser";
 
-export function samToolsView(alignData : AlignData,logger : atomic.AtomicOperation) : Promise<{}>
+/**
+ * Produce an unsorted bam from the sam managed by alignData. fastaPath should be provided to properly convert
+ * headerless sams
+ * 
+ * @export
+ * @param {AlignData} alignData 
+ * @param {atomic.AtomicOperation} logger 
+ * @param {string} [fastaPath] 
+ * @returns {Promise<{}>} 
+ */
+export function samToolsView(alignData : AlignData,logger : atomic.AtomicOperation,fastaPath? : string) : Promise<{}>
 {
     return new Promise((resolve,reject) => {
         let samToolsExe = getReadable('samtools');
@@ -31,17 +41,37 @@ export function samToolsView(alignData : AlignData,logger : atomic.AtomicOperati
             }
         }
         alignData.summary = parseBowTie2AlignmentReport(alignData.summaryText);
-        let samToolsViewJob = new Job(
-            samToolsExe,
-            <string[]>[
-                "view",
-                "-bS",
-                getSam(alignData),
-                "-o",
-                getUnSortedBam(alignData)
-            ],
-            "",true,jobCallBack,{}
-        );
+        let samToolsViewJob : Job;
+        if(!fastaPath)
+        {
+             samToolsViewJob = new Job(
+                samToolsExe,
+                <string[]>[
+                    "view",
+                    "-bS",
+                    getSam(alignData),
+                    "-o",
+                    getUnSortedBam(alignData)
+                ],
+                "",true,jobCallBack,{}
+            );
+        }
+        else if(fastaPath)
+        {
+            samToolsViewJob = new Job(
+                samToolsExe,
+                <string[]>[
+                    "view",
+                    "-bS",
+                    getSam(alignData),
+                    "-T",
+                    fastaPath,
+                    "-o",
+                    getUnSortedBam(alignData)
+                ],
+                "",true,jobCallBack,{}
+            );
+        }
         try
         {
             samToolsViewJob.Run();

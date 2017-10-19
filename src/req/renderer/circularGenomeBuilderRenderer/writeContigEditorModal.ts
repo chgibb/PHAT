@@ -6,7 +6,7 @@ import * as masterView from "./masterView";
 import * as genomeView from "./genomeView";
 import * as cf from "./../circularFigure";
 import {reCacheBaseFigure} from "./reCacheBaseFigure";
-import {writeLoadingModal} from "./writeLoadingModal";
+import {showGenericLoadingSpinnerInNavBar,hideSpinnerInNavBar} from "./loadingSpinner";
 let contig : cf.Contig;
 let editedAlias = "";
 /**

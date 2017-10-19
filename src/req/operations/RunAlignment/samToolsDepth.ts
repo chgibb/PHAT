@@ -7,6 +7,14 @@ import {getReadable} from "./../../getAppPath";
 import {SpawnRequestParams} from "./../../JobIPC";
 import {Job,JobCallBackObject} from "./../../main/Job";
 
+/**
+ * Populate contig coverage files from alignDatas sorted bam
+ * 
+ * @export
+ * @param {AlignData} alignData 
+ * @param {atomic.AtomicOperation} logger 
+ * @returns {Promise<{}>} 
+ */
 export function samToolsDepth(alignData: AlignData,logger : atomic.AtomicOperation) : Promise<{}>
 {
     return new Promise((resolve,reject) => {
