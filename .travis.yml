@@ -5,7 +5,7 @@ node_js:
 addons:
   apt:
     sources:
-      - ubuntu-toolchain-r-test
+    - ubuntu-toolchain-r-test
     packages:
     - xvfb
     - g++-5
@@ -13,20 +13,20 @@ addons:
     - gtk2.0
     - rpm
 install:
-- export DISPLAY=':99.0'
-- Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
-- bash scripts/install.bash
-- bash scripts/buildtests.bash
-script: 
- - npm test
- - bash scripts/cleanTests.bash
- - bash scripts/prepareLinuxRelease.bash
+  - export DISPLAY=':99.0'
+  - Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
+  - bash scripts/install.bash
+  - bash scripts/buildtests.bash
+script:
+  - npm test
+  - bash scripts/cleanTests.bash
+  - bash scripts/prepareLinuxRelease.bash
 notifications:
   slack: zehbelab:BuLG0b1qhVzAyihGf2XbQU4D
 deploy:
   provider: releases
   api_key:
-    secure: S3RVGnsIa4MApOMDckyaOXghyb0MZcLTAgcqrySZdl7B1YKLnwu92bamZvPkxXnTA7cWME3gMlhI3++gh9cGJmtpTRKUvNdIdC4EJh6sGGhjrvkSalKuBYkvm4CoLQA72xtLCpjb6q+V60EsWzY0GtMrUOs6ADhbchBmWHFZSio3a8lrmgGT4gn6jxOBhAlBz6X4lifY7ibTHl8e0cu5HZzclBdzIiFcYR+HhzkOI90X5UxWDVSHj4qVtwilAawk9QMxyED60QT36G7bn2GCaUV9uNSS2MoqIobuCfJDV9SapFVjnLx5MzFiOgyyuF0gbnM4+S4/d4cboEC3o6m37YMGS2RKA+c3IfY6T0zGWlKV3bEcpGXLkI2mM0MmB88vseI5b+Dl8vpxESUytewD7OUUS3JvIT0aMjuqhUFDrHhyrNKregE+I+1F5VJfi8v/4GmcT1c81tcZiPBSOoK1jnGEwAzsYFpPlVBadsvJii/8Jz4djh6OAQ/NukxfkkwcHTxJpDRTZMrCjrtAYSXMz666foim5FwxJKR4TwYBXIQCgWs0hVSc2K5zALhhll4Nf4w8kaxRIFS8A9UzRPMH8QZEjFiR6lsk6K3nLKLTsvteBka/u8cZFrJyRp/q4XdJUihOAFuAg7vtA5vNXW5dqhboX7BA6zooZj8XLT9uk20=
+    secure: b2kCTB5QBZIt0Q/+dZCWPjlh74xLGbbJ8LvYiUb56wK67JdsNAIBLWOClNKjzWtJy43Y2/aN2Y8RNrszP6e0gR1iNqVRwXfqdsIadYfYESs8xrNnEgNHYCjX47zLsc/ag++pXOQILhcgGHQkfLkXbvB7RYpxTWXH9eUEh/BKytNHPg8OwRW3LdwYNmXKJSYV8Hm7mmNsMIrrO1jO4EToT3dJsfVvazUE9eCuf87cQqoVomRSJ31qyBP5HrLLDWnH20NnEOM/B4S921axai9CFXFJQ7+50GZmhOgUpUCND3iMtInzKZydTHfoa82XK3E/VgHTOOn2WHrR8eMOmfuYqhPzgEMJqRrQBYO9zm7M8czzGKdT5XAjnYZjCwxWqISRwY8l82+KeOx55XHhuiLH4jl8Zjl8bLoM+y0cZRLmEQHZSmdYFznArO/ncFutv6tcpyj6qc5U8C9zOtgC6ySYC83nzTUL7CL92yDPULdLeNu+H7MkFtvZ1/Ou5W0dmChhm9MHQ8APgh5oX3UPB84ALXzDIY3F4BW5OSuoXAcSoqc7QIg1hjT40jrtVXWADvoJ5ERdk72ZYJKe8lY0P8mRv8PDZDxnsXnJhV9hJRsyDHf0GGL6lfxvCfr3ecguxX/RvR1rz7wAXD8LfW5poUIehyTJhZ7C6ZghhabxvXAlL8A=
   file_glob : true
   file:
     - phat-linux-x64-portable.tar.gz
