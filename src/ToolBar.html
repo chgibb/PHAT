@@ -6,7 +6,7 @@
 		</script>
 		<meta charset="UTF-8">
 		<link rel="stylesheet" type="text/css" href="styles/ToolBar.css">
-		<link rel="stylesheet" type="text/css" href="bootstrap.min.css">
+		<link rel="stylesheet" type="text/css" href="bootstrap.min.css">		
 		<title>PHAT</title>
   </head>
   <body class="window-color">
@@ -14,12 +14,23 @@
 		  require("./ToolBar");
 	</script>
 	<div id="toolbar">
-		<img class="activeHover activeHoverButton toolBarButton" src="img/input.png" id="input" alt="Input" name="input"></img>
-		<img class="activeHover activeHoverButton toolBarButton" src="img/qc.png" id="QC" name="QC" alt="FastQC"></img>
-		<img class="activeHover activeHoverButton toolBarButton" src="img/align.png" id="align" name="Align" alt="Align"></img>
-		<img class="activeHover activeHoverButton toolBarButton" src="img/output.png" id="output" name="Output" alt="Output"></img>
-		<img class="activeHover activeHoverButton toolBarButton" src="img/genomeBuilder.png" id="circularGenomeBuilder" name="genomeBUilder" alt="genomeBuilder"></img>
-	</div>
+			<img class="activeHover activeHoverButton toolBarButton" data-toggle="tooltip" title="Input fastq and fasta files." src="img/input.png" id="input" alt="Input" name="input"></img>
+			<img class="activeHover activeHoverButton toolBarButton" data-toggle="tooltip" title="View QC" src="img/qc.png" id="QC" name="QC" alt="FastQC"></img>
+			<img class="activeHover activeHoverButton toolBarButton" data-toggle="tooltip" title="Align Data" src="img/align.png" id="align" name="Align" alt="Align"></img>
+			<img class="activeHover activeHoverButton toolBarButton" data-toggle="tooltip" title="Output" src="img/output.png" id="output" name="Output" alt="Output"></img>
+			<img class="activeHover activeHoverButton toolBarButton" data-toggle="tooltip" title="Build Genome Diagram" src="img/genomeBuilder.png" id="circularGenomeBuilder" name="genomeBUilder" alt="genomeBuilder"></img>
+			<div >
+		<div >
+			<a id="docslink" href="" > </a>
+		</div> 
+		<script>
+				$(document).ready(function(){
+					$('[data-toggle="tooltip"]').tooltip({
+						placement : 'bottom',
+						delay : {show: 1000, hide: 100} 
+					});  
+				});
+		</script>
 	<script>
 			console.log("Start up took "+(performance.now()-startUp+"ms"));
 	</script>

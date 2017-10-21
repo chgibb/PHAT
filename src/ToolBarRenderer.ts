@@ -5,9 +5,11 @@ import {AtomicOperation} from "./req/operations/atomicOperations"
 import {KeySubEvent} from "./req/ipcEvents";
 
 const $ = require("jquery");
+const pjson = require("./package.json");
 (<any>window).$ = $;
+(<any>window).jQuery = $;
 import "./req/renderer/commonBehaviour";
-
+require("bootstrap");
 $
 (
     function()
@@ -29,6 +31,36 @@ $
         document.getElementById("circularGenomeBuilder").onclick = function(this : HTMLElement,ev : MouseEvent){
             ipc.send("openWindow",{refName : "circularGenomeBuilder"});
         }
+        document.getElementById("input").onmouseover = function(this : HTMLElement,ev : MouseEvent){
+            document.getElementById("docslink").innerHTML = "Click here to view the Input Documentation.";
+            document.getElementById("docslink").onclick = function(this : HTMLElement,ev : MouseEvent){
+                electron.shell.openExternal(`https://chgibb.github.io/PHATDocs/docs/releases/${pjson.version}/inputtingFiles`);
+            }
+        }   
+        document.getElementById("QC").onmouseover = function(this : HTMLElement,ev : MouseEvent){
+            document.getElementById("docslink").innerHTML = "Click here to view the QC Documentation.";
+            document.getElementById("docslink").onclick = function(this : HTMLElement,ev : MouseEvent){
+                electron.shell.openExternal(`https://chgibb.github.io/PHATDocs/docs/releases/${pjson.version}/QCReports`);
+            }
+        }   
+        document.getElementById("align").onmouseover = function(this : HTMLElement,ev : MouseEvent){
+            document.getElementById("docslink").innerHTML = "Click here to view the Align Documentation.";
+            document.getElementById("docslink").onclick = function(this : HTMLElement,ev : MouseEvent){
+                electron.shell.openExternal(`https://chgibb.github.io/PHATDocs/docs/releases/${pjson.version}/runningAlignments`);
+            }
+        }  
+        document.getElementById("output").onmouseover = function(this : HTMLElement,ev : MouseEvent){
+            document.getElementById("docslink").innerHTML = "Click here to view the Output Documentation.";
+            document.getElementById("docslink").onclick = function(this : HTMLElement,ev : MouseEvent){
+                electron.shell.openExternal(`https://chgibb.github.io/PHATDocs/docs/releases/${pjson.version}/reportsAndAnalyses`);
+            }
+        }  
+        document.getElementById("circularGenomeBuilder").onmouseover = function(this : HTMLElement,ev : MouseEvent){
+            document.getElementById("docslink").innerHTML = "Click here to view the Circular Genome Builder Documentation.";
+            document.getElementById("docslink").onclick = function(this : HTMLElement,ev : MouseEvent){
+                electron.shell.openExternal(`https://chgibb.github.io/PHATDocs/docs/releases/${pjson.version}/circularVisualization`);
+            }
+        }   
 
         ipc.send(
             "keySub",
@@ -85,5 +117,10 @@ $
                 }
             }
         );
+    },
+
+    function l1() {
+            
+            electron.shell.openExternal(`https://chgibb.github.io/PHATDocs/docs/releases/${pjson.version}/home`);       
     }
 );
