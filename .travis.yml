@@ -13,14 +13,14 @@ addons:
     - gtk2.0
     - rpm
 install:
-- export DISPLAY=':99.0'
-- Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
-- bash scripts/install.bash
-- bash scripts/buildtests.bash
+  - export DISPLAY=':99.0'
+  - Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
+  - bash scripts/install.bash
+  - bash scripts/buildtests.bash
 script:
-- npm test
-- bash scripts/cleanTests.bash
-- bash scripts/prepareLinuxRelease.bash
+  - npm test
+  - bash scripts/cleanTests.bash
+  - bash scripts/prepareLinuxRelease.bash
 notifications:
   slack: zehbelab:BuLG0b1qhVzAyihGf2XbQU4D
 deploy:
