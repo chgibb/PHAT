@@ -30,6 +30,8 @@ const $ = require("jquery");
 (<any>window).jQuery = $;
 (<any>window).Tether = require("tether");
 require("bootstrap");
+require("rangeslider.js");
+
 export function addView(arr : Array<viewMgr.View>,div : string)
 {
     arr.push(new View(div));
@@ -357,6 +359,21 @@ export class View extends viewMgr.View
             genomeView.updateScope();
             viewMgr.render();
         }
+
+        // let rangeSliderScale = document.getElementById("rangeSliderScale");
+        // (<any>$(rangeSliderScale)).rangeslider();
+
+        console.log("HELLLLLLLLLLLLLLLO");
+        $('input[type="range"]').rangeslider({
+            polyfill : false,
+            onInit : function() {
+                this.output = $( '<div class="range-output" />' ).insertAfter( this.$range ).html( this.$element.val() );
+            },
+            onSlide : function( position: any,value: any ) {
+                this.output.html( value );
+            }
+        });
+        
 
         //on modal dismissal
         $("#modal").on('hidden.bs.modal',function(){
