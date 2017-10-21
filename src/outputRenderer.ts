@@ -24,9 +24,6 @@ $
             {
                 if(arg.action === "getKey" || arg.action === "keyChange")
                 {
-                    //if(arg.key == "fastqInputs" && arg.val !== undefined)
-                     //   (<reportView.ReportView>viewMgr.getViewByName("report",(<masterView.MasterView>viewMgr.getViewByName("masterReportView")).views)).fastqInputs = arg.val;
-                
                      let masterView = <masterView.View>viewMgr.getViewByName("masterView");
                      if(arg.key == "fastqInputs" && arg.val !== undefined)
                      {

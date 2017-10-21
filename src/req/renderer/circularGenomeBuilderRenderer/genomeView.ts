@@ -14,7 +14,7 @@ import {AlignData} from "./../../alignData";
 import * as cf from "./../circularFigure";
 import {displayFigure} from "./displayFigure";
 import {centreFigure} from "./centreFigure";
-import {writeLoadingModal} from "./writeLoadingModal";
+import {showGenericLoadingSpinnerInNavBar,hideSpinnerInNavBar} from "./loadingSpinner";
 import {setSelectedContigByUUID} from "./writeContigEditorModal";
 import {reCacheBaseFigure} from "./reCacheBaseFigure";
 import * as tc from "./templateCache";
@@ -123,18 +123,15 @@ export class GenomeView extends viewMgr.View implements cf.FigureCanvas
                 {
                     let masterView = <masterView.View>viewMgr.getViewByName("masterView");
                     
-                    masterView.loadingModal = true;
-                    writeLoadingModal();
-                    masterView.showModal();
-                    document.getElementById("loadingText").innerText = "Assembling SVG...";
+                    showGenericLoadingSpinnerInNavBar();
                     setTimeout(function(){
                         renderSVG(self).then(() => {
-                            document.getElementById("loadingText").innerText = "Serializing...";
                             centreFigure(document.getElementById(self.div),self.genome);
                             serializeFigure(self).then((svg : string) => {
                                 writeSVG(self,fileName,svg).then(() => {
                                     masterView.dismissModal();
                                     self.firstRender = true;
+                                    hideSpinnerInNavBar();
                                     viewMgr.render();
                                 });
                             });
@@ -222,15 +219,12 @@ export class GenomeView extends viewMgr.View implements cf.FigureCanvas
             //All figure updates are handled through angular bindings
             if(this.firstRender)
             {
-                masterView.loadingModal = true;
-                writeLoadingModal();
-                masterView.showModal();
+                showGenericLoadingSpinnerInNavBar();
                 
                 let self = this;
                 setTimeout(function(){
                     displayFigure(self).then(() => {
-                        masterView.loadingModal = false;
-                        masterView.dismissModal();
+                        hideSpinnerInNavBar();
                         setTimeout(function(){
                             window.dispatchEvent(new Event("resize"));
                         },10);

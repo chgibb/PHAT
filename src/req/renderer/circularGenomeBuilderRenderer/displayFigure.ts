@@ -81,7 +81,6 @@ export async function displayInteractiveFigure(self : GenomeView) : Promise<void
                         }
                         console.log("finished setup");
 
-                        document.getElementById("loadingText").innerText = "Getting templates...";
                         console.log("set loading 1");
                         resolve();
                     });
@@ -115,7 +114,6 @@ export async function displayInteractiveFigure(self : GenomeView) : Promise<void
                             centreFigure(document.getElementById(self.div),self.genome);
                             console.log("appended div");
 
-                            document.getElementById("loadingText").innerText = "Compiling templates...";
                             console.log("set loading 2");
                             resolve();
                         });
