@@ -359,11 +359,7 @@ export class View extends viewMgr.View
             genomeView.updateScope();
             viewMgr.render();
         }
-
-        // let rangeSliderScale = document.getElementById("rangeSliderScale");
-        // (<any>$(rangeSliderScale)).rangeslider();
-
-        console.log("HELLLLLLLLLLLLLLLO");
+        
         $('input[type="range"]').rangeslider({
             polyfill : false,
             onInit : function() {
