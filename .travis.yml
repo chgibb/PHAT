@@ -13,29 +13,29 @@ addons:
     - gtk2.0
     - rpm
 install:
-  - export DISPLAY=':99.0'
-  - Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
-  - bash scripts/install.bash
-  - bash scripts/buildtests.bash
+- export DISPLAY=':99.0'
+- Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
+- bash scripts/install.bash
+- bash scripts/buildtests.bash
 script:
-  - npm test
-  - bash scripts/cleanTests.bash
-  - bash scripts/prepareLinuxRelease.bash
+- npm test
+- bash scripts/cleanTests.bash
+- bash scripts/prepareLinuxRelease.bash
 notifications:
   slack: zehbelab:BuLG0b1qhVzAyihGf2XbQU4D
 deploy:
   provider: releases
-  api_key:
-    secure: b2kCTB5QBZIt0Q/+dZCWPjlh74xLGbbJ8LvYiUb56wK67JdsNAIBLWOClNKjzWtJy43Y2/aN2Y8RNrszP6e0gR1iNqVRwXfqdsIadYfYESs8xrNnEgNHYCjX47zLsc/ag++pXOQILhcgGHQkfLkXbvB7RYpxTWXH9eUEh/BKytNHPg8OwRW3LdwYNmXKJSYV8Hm7mmNsMIrrO1jO4EToT3dJsfVvazUE9eCuf87cQqoVomRSJ31qyBP5HrLLDWnH20NnEOM/B4S921axai9CFXFJQ7+50GZmhOgUpUCND3iMtInzKZydTHfoa82XK3E/VgHTOOn2WHrR8eMOmfuYqhPzgEMJqRrQBYO9zm7M8czzGKdT5XAjnYZjCwxWqISRwY8l82+KeOx55XHhuiLH4jl8Zjl8bLoM+y0cZRLmEQHZSmdYFznArO/ncFutv6tcpyj6qc5U8C9zOtgC6ySYC83nzTUL7CL92yDPULdLeNu+H7MkFtvZ1/Ou5W0dmChhm9MHQ8APgh5oX3UPB84ALXzDIY3F4BW5OSuoXAcSoqc7QIg1hjT40jrtVXWADvoJ5ERdk72ZYJKe8lY0P8mRv8PDZDxnsXnJhV9hJRsyDHf0GGL6lfxvCfr3ecguxX/RvR1rz7wAXD8LfW5poUIehyTJhZ7C6ZghhabxvXAlL8A=
-  file_glob : true
+  file_glob: true
   file:
-    - phat-linux-x64-portable.tar.gz
-    - phat-linux-x64-update-full.tar.gz
-    - phat-linux-x64-update-diff.tar.gz
-    - phat-linux-x64-update.tar.gz
-    - phat*.deb
-    - phat*.rpm
+  - phat-linux-x64-portable.tar.gz
+  - phat-linux-x64-update-full.tar.gz
+  - phat-linux-x64-update-diff.tar.gz
+  - phat-linux-x64-update.tar.gz
+  - phat*.deb
+  - phat*.rpm
   skip_cleanup: true
   on:
     repo: chgibb/PHAT
     tags: true
+  api-key:
+    secure: Z/e2CUJQ9ELSKpDghDZet9Rfvg4y74ViTYJizo5UtGbFCX55NtND9juljWFNh3klaTJ8UtyThFHMs1znfIujPGU5AFoMHaiAEtBi5Qs1tAwGqiyTdrOGCdTBGQqejqECRndkgjfibGLfLIYQzCsfwdrk83U28koGxPttIHmLes1Xo89Ixlv+NmufQL1L3DOXQc6Ayx8buyJGkXHkaUN4Ho0pHQIGcxvFVcTvWU0QBJD1dTeE1Unj4L02o30Xv649nVZB9lVoq49cG3eFrtv/+TA2yb15SVxLIVH9P/usZ6nR8ABfIveMDB+43YYpDza54iS1VOZQcj95wztgtxoMcrPIzzGkEGX6MiHf20zzJde5xxnEzRkyUjiKcuBec+0MhetoxOLcdECCpMyjOOBdLgraDeXTIdroPMBdu87N0vV27mDPypzHztZN1e3+c00yrAn/JmB3hOMUEBtDABX9cI6O87aS7FxN5R/pQF1gDolAzQqz6dVPvFxWTlfFBI4tuvBi/XMcWL2eKBiw4mKbdlxmUZKsBQPODqstxYHi5CfitOk8XTgJvSssJDX3kjZSXT/VtmZtUXnXS/uxxK0h2b2LNMzTN/dt4PQ5kaGFK6NzXRgK3dH5ui4tiXbrMO5ybFbq2FZ/hROxKZkb/gSyRawA3YTB5oZggo56w4RUeuE=
