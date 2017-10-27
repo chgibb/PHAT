@@ -70,7 +70,7 @@ export function renderAlignmentReportTable() : string
 
                     res += "<tr>";
                     if(rightPanel.alignmentInfoSelection.alias)
-                        res += `<td class="activeHover" id="${masterView.alignData[i].uuid}ViewAlignment">${masterView.alignData[i].alias}</td>`;
+                        res += `<td class="cellHover" id="${masterView.alignData[i].uuid}ViewAlignment">${masterView.alignData[i].alias}</td>`;
 
                     if(rightPanel.alignmentInfoSelection.sizeInBytes)
                         res += `<td>${masterView.alignData[i].size}</td>`;
@@ -106,11 +106,11 @@ export function renderAlignmentReportTable() : string
                     {
                         if(!masterView.alignData[i].isExternalAlignment)
                         {
-                            res += `<td class="activeHover" id="${masterView.alignData[i].uuid}AlignmentRate">${masterView.alignData[i].summary.overallAlignmentRate}</td>`;
+                            res += `<td class="cellHover" id="${masterView.alignData[i].uuid}AlignmentRate">${masterView.alignData[i].summary.overallAlignmentRate}</td>`;
                         }
                         else
                         {
-                            res += `<td class="activeHover" id="${masterView.alignData[i].uuid}AlignmentRate">${masterView.alignData[i].flagStatReport.overallAlignmentRate}</td>`;
+                            res += `<td class="cellHover" id="${masterView.alignData[i].uuid}AlignmentRate">${masterView.alignData[i].flagStatReport.overallAlignmentRate}</td>`;
                         }
                     }
 
@@ -165,7 +165,7 @@ export function renderAlignmentReportTable() : string
                     {
                         if(masterView.alignData[i].varScanSNPSummary)
                         {
-                            res += `<td class="activeHover" id="${masterView.alignData[i].uuid}ViewSNPs">${masterView.alignData[i].varScanSNPSummary.SNPsReported}</td>`;
+                            res += `<td class="cellHover" id="${masterView.alignData[i].uuid}ViewSNPs">${masterView.alignData[i].varScanSNPSummary.SNPsReported}</td>`;
                         }
                         else
                         {

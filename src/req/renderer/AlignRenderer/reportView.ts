@@ -47,14 +47,14 @@ export class ReportView extends viewMgr.View
                     res += `<tr>`;
                     if(this.selectedFastq1 && this.fastqInputs[i].uuid == this.selectedFastq1.uuid)
                     {
-                        res += `<td class="activeHover selected" id="${this.fastqInputs[i].uuid}">${this.fastqInputs[i].alias} <b style="float:right;">1</b></td>`;
+                        res += `<td class="cellHover selected" id="${this.fastqInputs[i].uuid}">${this.fastqInputs[i].alias} <b style="float:right;">1</b></td>`;
                     }
                     else if(this.selectedFastq2 && this.fastqInputs[i].uuid == this.selectedFastq2.uuid)
                     {
-                        res += `<td class="activeHover selected" id="${this.fastqInputs[i].uuid}">${this.fastqInputs[i].alias} <b style="float:right;">2</b></td>`;
+                        res += `<td class="cellHover selected" id="${this.fastqInputs[i].uuid}">${this.fastqInputs[i].alias} <b style="float:right;">2</b></td>`;
                     }
                     else
-                        res += `<td class="activeHover" id="${this.fastqInputs[i].uuid}">${this.fastqInputs[i].alias}</td>`;
+                        res += `<td class="cellHover" id="${this.fastqInputs[i].uuid}">${this.fastqInputs[i].alias}</td>`;
                     res += `</tr>`;
                 }
                 res += `</table>`;
@@ -77,10 +77,10 @@ export class ReportView extends viewMgr.View
                     res += `<tr>`;
                     if(this.selectedFasta && this.fastaInputs[i].uuid == this.selectedFasta.uuid)
                     {
-                        res += `<td class="activeHover selected" id="${this.fastaInputs[i].uuid}">${this.fastaInputs[i].alias} <b style="float:right;">*</b></td>`;
+                        res += `<td class="cellHover selected" id="${this.fastaInputs[i].uuid}">${this.fastaInputs[i].alias} <b style="float:right;">*</b></td>`;
                     }
                     else
-                        res += `<td class="activeHover" id="${this.fastaInputs[i].uuid}">${this.fastaInputs[i].alias}</td>`;
+                        res += `<td class="cellHover" id="${this.fastaInputs[i].uuid}">${this.fastaInputs[i].alias}</td>`;
                     res += `</tr>`;
                 }
                 res += `</table>`;
