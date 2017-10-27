@@ -5,7 +5,7 @@ node_js:
 addons:
   apt:
     sources:
-      - ubuntu-toolchain-r-test
+    - ubuntu-toolchain-r-test
     packages:
     - xvfb
     - g++-5
@@ -17,24 +17,24 @@ install:
 - Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
 - bash scripts/install.bash
 - bash scripts/buildtests.bash
-script: 
- - npm test
- - bash scripts/cleanTests.bash
- - bash scripts/prepareLinuxRelease.bash
+script:
+- npm test
+- bash scripts/cleanTests.bash
+- bash scripts/prepareLinuxRelease.bash
 notifications:
   slack: zehbelab:BuLG0b1qhVzAyihGf2XbQU4D
 deploy:
   provider: releases
   api_key:
-    secure: S3RVGnsIa4MApOMDckyaOXghyb0MZcLTAgcqrySZdl7B1YKLnwu92bamZvPkxXnTA7cWME3gMlhI3++gh9cGJmtpTRKUvNdIdC4EJh6sGGhjrvkSalKuBYkvm4CoLQA72xtLCpjb6q+V60EsWzY0GtMrUOs6ADhbchBmWHFZSio3a8lrmgGT4gn6jxOBhAlBz6X4lifY7ibTHl8e0cu5HZzclBdzIiFcYR+HhzkOI90X5UxWDVSHj4qVtwilAawk9QMxyED60QT36G7bn2GCaUV9uNSS2MoqIobuCfJDV9SapFVjnLx5MzFiOgyyuF0gbnM4+S4/d4cboEC3o6m37YMGS2RKA+c3IfY6T0zGWlKV3bEcpGXLkI2mM0MmB88vseI5b+Dl8vpxESUytewD7OUUS3JvIT0aMjuqhUFDrHhyrNKregE+I+1F5VJfi8v/4GmcT1c81tcZiPBSOoK1jnGEwAzsYFpPlVBadsvJii/8Jz4djh6OAQ/NukxfkkwcHTxJpDRTZMrCjrtAYSXMz666foim5FwxJKR4TwYBXIQCgWs0hVSc2K5zALhhll4Nf4w8kaxRIFS8A9UzRPMH8QZEjFiR6lsk6K3nLKLTsvteBka/u8cZFrJyRp/q4XdJUihOAFuAg7vtA5vNXW5dqhboX7BA6zooZj8XLT9uk20=
-  file_glob : true
+    - secure: "DfPPDQCPT+v+nFHcMJV618eybEpSdt1W4ewHjSRhKqIEWmOIVh6D7NB8adKHJUCBiz4LuJgrZtm+xQrlw3ysTeSP45lvJgrNLj7BF8t8wxy0CewK3CJkpGJQmy2J+BROjFTXWyDH/hIig9L5w0b+odaQDSTMu3AA+xczYuAFn60kWXPlbQVhxFNlAQK5KvAZe66BxMarjZl3WvvnYHVsM0appiE5eIypdS+WOPMXPK56WKmHQ9ECNGErw9GIfasdsXAtSIFD7RThoaw96qzvkCVcW+CRbVC4sCnZYS4xZy/JbXvFopi/coE9rCKNH3jbIC2v1PI09RxhD7l4Sv2nLboELSPRjBw4WWBboybrLVApYsBD+AuTlwbVLyVKToT24tfwBAqYnDfIsWOHdblZvOOkLKss7hCfGlQxHZRjyqiMwQmxDuZyK3No8XE5hlV2md61u+/popWxzzWShl/ckZeIiSW1I66a0wBBcnDjh9CX+Qx3BNFTL9yJiAFPjh5xd/2/4x7tOIdvTNvW8mBEY2ADS02W2RHIrAUyxjxZew2cUE7jbt6zdSOm4XIPtNytXj8QdlF+bfw0g4gfRgvuQrNCBLqHgu12KilSVsFWt3dGG/THuTw8/BtcvzVi119ygnfHHBe5XdZmbWBi75EjrauSSqBLzkUb8EIzAnJ7VJw="
+  file_glob: true
   file:
-    - phat-linux-x64-portable.tar.gz
-    - phat-linux-x64-update-full.tar.gz
-    - phat-linux-x64-update-diff.tar.gz
-    - phat-linux-x64-update.tar.gz
-    - phat*.deb
-    - phat*.rpm
+  - phat-linux-x64-portable.tar.gz
+  - phat-linux-x64-update-full.tar.gz
+  - phat-linux-x64-update-diff.tar.gz
+  - phat-linux-x64-update.tar.gz
+  - phat*.deb
+  - phat*.rpm
   skip_cleanup: true
   on:
     repo: chgibb/PHAT
