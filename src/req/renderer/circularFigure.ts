@@ -177,6 +177,7 @@ export class CircularFigure
     public radius : number;
     public height : number;
     public width : number;
+    public zoomFactor : number;
     public isInteractive : boolean;
     public showContigNames : boolean;
     public circularFigureBPTrackOptions : CircularFigureBPTrackOptions;
@@ -191,6 +192,7 @@ export class CircularFigure
         this.radius = 120;
         this.height = this.radius*10;
         this.width = this.radius*10;
+        this.zoomFactor = 1;
         this.circularFigureBPTrackOptions = new CircularFigureBPTrackOptions();
         this.renderedCoverageTracks = new Array<RenderedCoverageTrackRecord>();
         this.renderedSNPTracks = new Array<RenderedSNPTrackRecord>();
@@ -806,7 +808,7 @@ export function assembleCompilableTemplates(figure : CircularFigure,templates : 
         totalBP += figure.contigs[i].bp;
     }
     return `
-        <div id="${id}">
+        <div ${id ? `id="${id}"` : ""}>
         ${plasmid.add(
         {
             sequenceLength : totalBP.toString(),
