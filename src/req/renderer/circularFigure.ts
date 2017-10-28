@@ -796,6 +796,14 @@ export function getSNPTrackSVGFromCache(trackRecord : RenderedSNPTrackRecord) : 
     return fs.readFileSync(getCachedSNPTrackSVGPath(trackRecord)).toString();
 }
 
+/**
+ * Compile trackRecord against figure. Returns the resulting SVG
+ * 
+ * @export
+ * @param {RenderedCoverageTrackRecord} trackRecord 
+ * @param {CircularFigure} figure 
+ * @returns {Promise<string>} 
+ */
 export function compileCoverageTrackSVG(trackRecord : RenderedCoverageTrackRecord,figure : CircularFigure) : Promise<string>
 {
     let template = fs.readFileSync(getCachedCoverageTrackPath(trackRecord)).toString();

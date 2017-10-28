@@ -42,6 +42,14 @@ export let baseFigureSVG : string = undefined;
 let coverageTrackCache = new Array<CachedCoverageTrackSVG>();;
 let SNPTrackCache = new Array<CachedSNPTrackSVG>();
 
+/**
+ * Compile and overwrite disk cache for track
+ * 
+ * @export
+ * @param {cf.RenderedCoverageTrackRecord} track 
+ * @param {cf.CircularFigure} figure 
+ * @returns {Promise<string>} 
+ */
 export function compileCoverageTrack(track : cf.RenderedCoverageTrackRecord,figure : cf.CircularFigure) : Promise<string>
 {
     return new Promise<string>(async (resolve,reject) => {
@@ -73,6 +81,11 @@ export function resetCaches() : void
     baseFigureSVG = undefined
 }
 
+/**
+ * Reset just the base figure cache
+ * 
+ * @export
+ */
 export function resetBaseFigureCache() : void
 {
     baseFigureSVG = undefined;
@@ -232,12 +245,14 @@ export function removeTrack(uuid : string) : void
     }
 }
 
+
 /**
  * Triggers a compile for each compononent of newFigure (including non-visible data tracks) regardless of cache status.
  * Will only trigger a compile for the base figure if the figure is non-interactive
+ * 
  * @export
  * @param {cf.CircularFigure} newFigure 
- * @returns {void} 
+ * @returns 
  */
 export async function triggerReCompileForWholeFigure(newFigure : cf.CircularFigure)
 {
