@@ -106,7 +106,6 @@ export async function refreshCache(newFigure : cf.CircularFigure)
         resetCaches();
         figure = newFigure;
     }
-    console.log(newFigure);
     if(!newFigure.isInteractive)
     {
         if(!baseFigureSVG)
