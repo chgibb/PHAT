@@ -33,7 +33,7 @@ export async function displayNonInteractiveFigure(self : GenomeView) : Promise<v
 {
     return new Promise<void>(async (resolve,reject) => {
         await tc.refreshCache(self.genome);
-        removeDiv(self);
+        cleanCanvas(self);
 
         let $div : any = $(`
             <div id="${self.div}">
@@ -69,7 +69,7 @@ export async function displayInteractiveFigure(self : GenomeView) : Promise<void
         let totalBP = 0;
         let $div : any;
 
-        removeDiv(self);
+        cleanCanvas(self);
         
         for(let i = 0; i != self.genome.contigs.length; ++i)
         {
@@ -125,25 +125,22 @@ export async function displayInteractiveFigure(self : GenomeView) : Promise<void
 }
 
 /**
- * Delete the div used by self for rendering
+ * Delete the div used by self for rendering and GC
  * 
  * @export
  * @param {GenomeView} self 
  */
-export function removeDiv(self : GenomeView) : void
+export function cleanCanvas(self : GenomeView) : void
 {
-    try
+    let div = document.getElementById(self.div);
+    //explicitly remove children to prevent creating detached DOM nodes
+    while(div.firstChild)
     {
-        document.body.removeChild(document.getElementById("controls"));
+        div.removeChild(div.firstChild);
     }
-    catch(err){}
-    try
-    {
-        //Remove the div this view is bound to
-        document.body.removeChild(document.getElementById(self.div));
-    }
-    catch(err){}
-    $("#"+self.div).remove();
+    document.body.removeChild(div);
+    //force a GC pass
+    (<any>global).gc();
 }
 
 /**
