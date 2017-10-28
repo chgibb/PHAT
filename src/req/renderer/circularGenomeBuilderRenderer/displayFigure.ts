@@ -63,98 +63,63 @@ export async function displayInteractiveFigure(self : GenomeView) : Promise<void
     //the page.
     //The promise and setImmediate wrapping around each step is to ensure that the event loop has a chance to process
     //DOM updates, so we can signal our progress to the user in the loading modal.
-    return new Promise<void>((resolve,reject) => {
+    return new Promise<void>(async (resolve,reject) => {
 
         let masterView = <masterView.View>viewMgr.getViewByName("masterView");
         let totalBP = 0;
         let $div : any;
-        (async function() : Promise<void>{
-            return new Promise<void>((resolve,reject) => {
-                setImmediate(function(){
-                    setImmediate(function(){
-                        
-                        removeDiv(self);
+
+        removeDiv(self);
         
-                        for(let i = 0; i != self.genome.contigs.length; ++i)
-                        {
-                            totalBP += self.genome.contigs[i].bp;
-                        }
-                        console.log("finished setup");
+        for(let i = 0; i != self.genome.contigs.length; ++i)
+        {
+            totalBP += self.genome.contigs[i].bp;
+        }
 
-                        console.log("set loading 1");
-                        resolve();
-                    });
-                });
-            });
-        })().then(() => {
-            (async function() : Promise<void>{
-                return new Promise<void>((resolve,reject) =>{
-                    setImmediate(function(){
-                        setImmediate(async function(){
-                            await tc.refreshCache(self.genome);
-                            let templates = cf.assembleCompilableTemplates(
-                                self.genome,
-                                `
-                                    ${cf.getBaseFigureFromCache(self.genome)}
-                                `
-                                );
-                            //instead of forcing angular to walk through all the svgs as well as the actual angular templates
-                            //in the base figure we actually want compiled, separate them into separate divs
-                            $div = $(`
-                                <div id="${self.div}">
+        await tc.refreshCache(self.genome);
+        let templates = cf.assembleCompilableTemplates(
+            self.genome,
+            `${cf.getBaseFigureFromCache(self.genome)}`
+        );
+        //instead of forcing angular to walk through all the svgs as well as the actual angular templates
+        //in the base figure we actually want compiled, separate them into separate divs
+        $div = $(`
+            <div id="${self.div}">
                                     
-                                    ${getSelectedDataTrackSVGsFromCache(self)}
+                ${getSelectedDataTrackSVGsFromCache(self)}
 
-                                    <div id="toCompile">
-                                        ${templates}
-                                    </div>
-                                </div>
-                            `);
-                            $(document.body).append($div);
-                            centreFigure(document.getElementById(self.div),self.genome);
-                            console.log("appended div");
+                <div id="toCompile">
+                    ${templates}
+                    </div>
+                </div>
+        `);
+        $(document.body).append($div);
+        centreFigure(document.getElementById(self.div),self.genome);
+        console.log("appended div");
 
-                            console.log("set loading 2");
-                            resolve();
-                        });
-                    });
-                });
-            })().then(() => {
-                (async function() : Promise<void>{
-                    return new Promise<void>((resolve,reject) => {
-                        setImmediate(function(){
-                            setImmediate(function(){
-                                let divToCompile : HTMLElement = document.getElementById("toCompile");
-                                angular.element(divToCompile).injector().invoke(function($compile : any){
-                                    //This should probably be done with an actual angular scope instead 
-                                    //of mutating the existing scope
-                                    let scope = angular.element(divToCompile).scope();
+        let divToCompile : HTMLElement = document.getElementById("toCompile");
+        angular.element(divToCompile).injector().invoke(function($compile : any){
+            //This should probably be done with an actual angular scope instead 
+            //of mutating the existing scope
+            let scope = angular.element(divToCompile).scope();
 
-                                    //occasionally, when resizing extremely large figures scope() may return undefined
-                                    //may be related to https://github.com/angular/angular.js/issues/9515
-                                    if(scope)
-                                    {
-                                        self.updateScope(scope);
-                                        $compile(divToCompile)(scope);
-                                        console.log("finished compiling");
-                                    }
-                                    else
-                                    {
-                                        console.log("Scope was undefined. Deferring rerender");
-                                        setTimeout(function(){
-                                            self.firstRender = true;
-                                            viewMgr.render();
-                                        },1000);
-                                    }
-                                    resolve();
-                                });
-                            });
-                        });
-                    });
-                })().then(() => {
-                    resolve();
-                });
-            });
+            //occasionally, when resizing extremely large figures scope() may return undefined
+            //may be related to https://github.com/angular/angular.js/issues/9515
+            if(scope)
+            {
+                self.updateScope(scope);
+                $compile(divToCompile)(scope);
+                console.log("finished compiling");
+            }
+            else
+            {
+                console.log("Scope was undefined. Deferring rerender");
+                setTimeout(function(){
+                    self.firstRender = true;
+                    viewMgr.render();
+                },1000);
+            }
+            resolve();
         });
     });
 }
