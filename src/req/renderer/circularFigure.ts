@@ -1,9 +1,14 @@
+/// <reference path="../../../node_modules/@chgibb/ngplasmid/lib/html" />
+/// <reference path="../../../node_modules/@chgibb/ngplasmid/lib/directives" />
+
 import * as fs from "fs";
 import * as readline from "readline";
 
 const jsonFile = require("jsonfile");
 const uuidv4 : () => string = require("uuid/v4");
 import * as mkdirp from "mkdirp";
+import * as html from "@chgibb/ngplasmid/lib/html";
+import * as directives from "@chgibb/ngplasmid/lib/directives";
 
 import {getReadableAndWritable} from "./../getAppPath";
 import * as fastaContigLoader from "./../fastaContigLoader";
@@ -789,6 +794,21 @@ export function cacheSNPTrackSVG(trackRecord : RenderedSNPTrackRecord,svg : stri
 export function getSNPTrackSVGFromCache(trackRecord : RenderedSNPTrackRecord) : string
 {
     return fs.readFileSync(getCachedSNPTrackSVGPath(trackRecord)).toString();
+}
+
+export function compileCoverageTrackSVG(trackRecord : RenderedCoverageTrackRecord,figure : CircularFigure) : Promise<string>
+{
+    let template = fs.readFileSync(getCachedCoverageTrackPath(trackRecord)).toString();
+    return new Promise<string>(async(resolve,reject) => {
+        let nodes : Array<html.Node> = await html.loadFromString(template);
+        let plasmid : directives.Plasmid = new directives.Plasmid();
+        plasmid.$scope = {
+            genome : figure
+        };
+        plasmid.fromNode(nodes[0]);
+        resolve(plasmid.renderStart()+plasmid.renderEnd());
+    });
+
 }
 
 /**
