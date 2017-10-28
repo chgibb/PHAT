@@ -3,7 +3,7 @@
     {
         "module" : "commonjs",
         "moduleResolution": "node",
-        "target" : "es6",
+        "target" : "esnext",
         "noImplicitAny" : true,
         "noImplicitReturns" : true,
         "noImplicitThis": true,
