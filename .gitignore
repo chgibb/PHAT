@@ -27,3 +27,4 @@ src/*.js
 scripts/diffAndBuildPatch.js
 scripts/downloadFullUpdateFromSecondLastTag.js
 scripts/getReleaseTypeFromPackage.js
+scripts/rollup.js

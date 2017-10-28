@@ -6,7 +6,7 @@ import * as readline from "readline";
 
 const jsonFile = require("jsonfile");
 const uuidv4 : () => string = require("uuid/v4");
-import * as mkdirp from "mkdirp";
+const mkdirp = require("mkdirp");
 import * as html from "@chgibb/ngplasmid/lib/html";
 import * as directives from "@chgibb/ngplasmid/lib/directives";
 
