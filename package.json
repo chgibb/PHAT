@@ -40,8 +40,9 @@
     "homepage": "",
     "devDependencies": {
         "@chgibb/angularplasmid": "^1.0.5",
-        "@chgibb/ng-node-compile": "^1.0.6",
         "@chgibb/css-spinners": "^2.2.1",
+        "@chgibb/ng-node-compile": "^1.0.6",
+        "@chgibb/ngplasmid": "0.0.6",
         "@claviska/jquery-minicolors": "^2.2.6",
         "@types/fs-extra": "0.0.37",
         "@types/jquery": "^2.0.40",
@@ -66,6 +67,7 @@
         "github-releases": "^0.3.2",
         "grunt": "^1.0.1",
         "gunzip-maybe": "^1.4.0",
+        "htmlparser2": "^3.9.2",
         "jquery": "^3.1.1",
         "jsdoc": "^3.4.3",
         "jsonfile": "^2.4.0",
