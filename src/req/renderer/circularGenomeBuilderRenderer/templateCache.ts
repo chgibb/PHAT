@@ -42,6 +42,15 @@ export let baseFigureSVG : string = undefined;
 let coverageTrackCache = new Array<CachedCoverageTrackSVG>();;
 let SNPTrackCache = new Array<CachedSNPTrackSVG>();
 
+export function compileCoverageTrack(track : cf.RenderedCoverageTrackRecord,figure : cf.CircularFigure) : Promise<string>
+{
+    return new Promise<string>(async (resolve,reject) => {
+        let svg = await cf.compileCoverageTrackSVG(track,figure);
+        cf.cachCoverageTrackSVG(track,svg);
+        resolve(svg);
+    });
+}
+
 /**
  * Clear the in-memory cache of the SVG for the base figure
  * 
@@ -64,6 +73,11 @@ export function resetCaches() : void
     baseFigureSVG = undefined
 }
 
+export function resetBaseFigureCache() : void
+{
+    baseFigureSVG = undefined;
+}
+
 /**
  * Update caches for newFigure with new data (if changes are detected).
  * Will reset and rebuild caches if this function is called with a figure
@@ -72,7 +86,7 @@ export function resetCaches() : void
  * @export
  * @param {cf.CircularFigure} newFigure 
  */
-export function refreshCache(newFigure : cf.CircularFigure) : void
+export async function refreshCache(newFigure : cf.CircularFigure)
 {
     if(!figure || newFigure.uuid != figure.uuid)
     {
@@ -120,19 +134,11 @@ export function refreshCache(newFigure : cf.CircularFigure) : void
             try
             {
                 coverageTrackCache.push(new CachedCoverageTrackSVG(newFigure.renderedCoverageTracks[i]));
-        
             }
             catch(err)
             {
-                ipc.send(
-                    "runOperation",
-                    <AtomicOperationIPC>{
-                        opName : "compileTemplates",
-                        figure : newFigure,
-                        uuid : newFigure.renderedCoverageTracks[i].uuid,
-                        compileBase : false
-                    }
-                );
+                await compileCoverageTrack(newFigure.renderedCoverageTracks[i],newFigure);
+                coverageTrackCache.push(new CachedCoverageTrackSVG(newFigure.renderedCoverageTracks[i]));
             }
         }
     }
@@ -215,15 +221,6 @@ export function getCachedSNPTrack(trackRecord : cf.RenderedSNPTrackRecord) : str
  */
 export function removeTrack(uuid : string) : void
 {
-    for(let i = 0; i != coverageTrackCache.length; ++i)
-    {
-        if(coverageTrackCache[i].trackRecord.uuid == uuid)
-        {
-            coverageTrackCache.splice(i,1);
-            console.log("removed "+uuid);
-            return;
-        }
-    }
     for(let i = 0; i != SNPTrackCache.length; ++i)
     {
         if(SNPTrackCache[i].trackRecord.uuid == uuid)
@@ -242,7 +239,7 @@ export function removeTrack(uuid : string) : void
  * @param {cf.CircularFigure} newFigure 
  * @returns {void} 
  */
-export function triggerReCompileForWholeFigure(newFigure : cf.CircularFigure) : void
+export async function triggerReCompileForWholeFigure(newFigure : cf.CircularFigure)
 {
     if(!figure)
         return;
@@ -259,15 +256,7 @@ export function triggerReCompileForWholeFigure(newFigure : cf.CircularFigure) : 
     }
     for(let i = 0; i != coverageTrackCache.length; ++i)
     {
-        ipc.send(
-            "runOperation",
-            <AtomicOperationIPC>{
-                opName : "compileTemplates",
-                figure : newFigure,
-                compileBase : false,
-                uuid : coverageTrackCache[i].trackRecord.uuid
-            }
-        );
+        coverageTrackCache[i].svg = await compileCoverageTrack(coverageTrackCache[i].trackRecord,newFigure);
     }
     for(let i = 0; i != SNPTrackCache.length; ++i)
     {
