@@ -31,8 +31,8 @@ export async function displayFigure(self : GenomeView) : Promise<void>
  */
 export async function displayNonInteractiveFigure(self : GenomeView) : Promise<void>
 {
-    return new Promise<void>((resolve,reject) => {
-        tc.refreshCache(self.genome);
+    return new Promise<void>(async (resolve,reject) => {
+        await tc.refreshCache(self.genome);
         removeDiv(self);
 
         let $div : any = $(`
@@ -90,8 +90,8 @@ export async function displayInteractiveFigure(self : GenomeView) : Promise<void
             (async function() : Promise<void>{
                 return new Promise<void>((resolve,reject) =>{
                     setImmediate(function(){
-                        setImmediate(function(){
-                            tc.refreshCache(self.genome);
+                        setImmediate(async function(){
+                            await tc.refreshCache(self.genome);
                             let templates = cf.assembleCompilableTemplates(
                                 self.genome,
                                 `
