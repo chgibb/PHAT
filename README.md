@@ -15,6 +15,8 @@ PHAT is under development in the Zehbe Lab ([http://zehbelab.weebly.com/](http:/
 
 Gibb CM, Jackson R, Mohammed S, Fiaidhi J, Zehbe I. Pathogen-Host Analysis Tool (PHAT): an Integrative Platform to Analyze Pathogen-Host Relationships in Next-Generation Sequencing Data. bioRxiv. https://doi.org/10.1101/178327
 
+[![](https://tokei.rs/b1/github/chgibb/PHAT?category=files)](https://github.com/Aaronepower/tokei) [![](https://tokei.rs/b1/github/chgibb/PHAT?category=lines)](https://github.com/Aaronepower/tokei)  
+
 | Build Statuses        | master           | beta  | stable  |
 | ------------- |:-------------:| :-----:|:-------:|
 | Windows       | ![AppVeyor branch](https://ci.appveyor.com/api/projects/status/k0awa1ask2ilarkn/branch/master?svg=true) | ![AppVeyor branch](https://ci.appveyor.com/api/projects/status/k0awa1ask2ilarkn/branch/beta?svg=true) | ![AppVeyor branch](https://ci.appveyor.com/api/projects/status/k0awa1ask2ilarkn/branch/stable?svg=true)
