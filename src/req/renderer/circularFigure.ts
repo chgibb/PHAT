@@ -1,9 +1,14 @@
+/// <reference path="../../../node_modules/@chgibb/ngplasmid/lib/html" />
+/// <reference path="../../../node_modules/@chgibb/ngplasmid/lib/directives" />
+
 import * as fs from "fs";
 import * as readline from "readline";
 
 const jsonFile = require("jsonfile");
 const uuidv4 : () => string = require("uuid/v4");
-import * as mkdirp from "mkdirp";
+const mkdirp = require("mkdirp");
+import * as html from "@chgibb/ngplasmid/lib/html";
+import * as directives from "@chgibb/ngplasmid/lib/directives";
 
 import {getReadableAndWritable} from "./../getAppPath";
 import * as fastaContigLoader from "./../fastaContigLoader";
@@ -789,6 +794,46 @@ export function cacheSNPTrackSVG(trackRecord : RenderedSNPTrackRecord,svg : stri
 export function getSNPTrackSVGFromCache(trackRecord : RenderedSNPTrackRecord) : string
 {
     return fs.readFileSync(getCachedSNPTrackSVGPath(trackRecord)).toString();
+}
+
+/**
+ * Compile trackRecord against figure. Returns the resulting SVG
+ * 
+ * @export
+ * @param {RenderedCoverageTrackRecord} trackRecord 
+ * @param {CircularFigure} figure 
+ * @returns {Promise<string>} 
+ */
+export function compileCoverageTrackSVG(trackRecord : RenderedCoverageTrackRecord,figure : CircularFigure) : Promise<string>
+{
+    let template = fs.readFileSync(getCachedCoverageTrackPath(trackRecord)).toString();
+    return new Promise<string>(async (resolve,reject) => {
+        let nodes : Array<html.Node> = await html.loadFromString(
+            assembleCompilableCoverageTrack(figure,trackRecord)
+        );
+        let plasmid : directives.Plasmid = new directives.Plasmid();
+        plasmid.$scope = {
+            genome : figure
+        };
+        
+        for(let i = 0; i != nodes.length; ++i)
+        {
+            if(nodes[i].name == "div")
+            {
+                for(let k = 0; k != nodes[i].children.length; ++k)
+                {
+                    if(nodes[i].children[k].name == "plasmid")
+                    {
+                        plasmid.fromNode(nodes[i].children[k]);
+                        break;
+                    }
+                }
+            }
+        }
+
+        resolve(plasmid.renderStart()+plasmid.renderEnd());
+    });
+
 }
 
 /**

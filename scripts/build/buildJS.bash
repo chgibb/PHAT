@@ -27,7 +27,7 @@ if [[ "$1" == "opt" ]]; then
 		printf "Shaking "
 		printf $f
 		printf "\n"
-		./node_modules/.bin/rollup $f --o $f --f cjs
+		node scripts/rollup $f
 		if [ $? != 0 ]; then
 			cleanTSArtifacts
 			exit 1
