@@ -42,7 +42,7 @@ export function renderSNPPositionsTable(rows : Array<VCF2JSONRow>) : string
                     res += `<td>${rows[i].chrom}</td>`;
                 
                 if(rightPanel.snpPositionsInfoSelection.position)
-                    res += `<td class="activeHover" id="viewSNP${i}">${rows[i].position}</td>`;
+                    res += `<td class="cellHover" id="viewSNP${i}">${rows[i].position}</td>`;
 
                 if(rightPanel.snpPositionsInfoSelection.ref)
                     res += `<td>${rows[i].ref}</td>`;

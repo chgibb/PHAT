@@ -42,8 +42,8 @@
 
 		
 
-		<nav class="navbar navbar-default">
-  			<div class="container-fluid">
+		<nav class="navbar navbar-default navbar-fixed-top">
+  			<div class="container-fluid standardBGColour">
     			<div class="navbar-header standardBGColour">
       				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
         				<span class="sr-only">Toggle navigation</span>
@@ -82,9 +82,19 @@
       				<ul class="nav navbar-nav navbar-right">
 						  <form class="navbar-form navbar-right">
 							  <div class="form-group">
-								  <input type="number" min="1" class="form-control" id="figureRadiusInput" placeholder="Radius">
-								  <input type="number" min="1" class="form-control" id="figureBPIntervalInput" placeholder="BP Interval">
-								  <input type="checkbox" aria-label="Show" id="showBPIntervalCheckBox">
+									<div class="input-group">
+										<span class="input-group-addon" id="basic-addon3">Radius</span>
+										<input type="number" min="1" class="form-control" id="figureRadiusInput" style="width: 70px;">
+									</div>
+
+									<div class="input-group">
+										<span class="input-group-addon" id="basic-addon3">BP Interval</span>
+										<input type="number" min="1" class="form-control" id="figureBPIntervalInput" style="width: 70px;">
+										<span class="input-group-addon">
+											<input type="checkbox" aria-label="Show" id="showBPIntervalCheckBox">
+										</span>
+									</div>
+								  
 							  </div>
 
 							  <button type="submit" id="updateNavBarButton" class="btn btn-default">Update</button>
