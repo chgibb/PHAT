@@ -1,4 +1,4 @@
-import * as fse from "fs-extra";
+const fse = require("fs-extra");
 
 import * as atomic from "./atomicOperations";
 import * as cf from "./../renderer/circularFigure";

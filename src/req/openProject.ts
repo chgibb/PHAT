@@ -1,6 +1,6 @@
 import * as fs from "fs";
 
-import * as rimraf from "rimraf";
+const rimraf = require("rimraf");
 const tarfs = require("tar-fs");
 const tarStream = require("tar-stream");
 const gunzip = require("gunzip-maybe");

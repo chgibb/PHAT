@@ -1,6 +1,6 @@
 import * as fs from "fs";
 
-import * as mkdirp from "mkdirp";
+const mkdirp = require("mkdirp");
 const tarfs = require("tar-fs");
 
 import {getReadableAndWritable} from "./getAppPath";

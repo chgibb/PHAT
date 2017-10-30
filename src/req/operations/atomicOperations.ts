@@ -5,7 +5,7 @@ import * as cp from "child_process";
 
 const uuidv4 : () => string = require("uuid/v4");
 import * as rimraf from "rimraf";
-import * as mkdirp from "mkdirp";
+const mkdirp = require("mkdirp");
 
 import {AtomicOperationForkEvent} from "./../atomicOperationsIPC";
 import {SpawnRequestParams} from "./../JobIPC";
