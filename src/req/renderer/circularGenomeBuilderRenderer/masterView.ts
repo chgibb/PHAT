@@ -502,7 +502,7 @@ export class View extends viewMgr.View
         this.dataChanged();
         if(genomeView.genome)
         {
-            tc.resetCaches();
+            tc.resetBaseFigureCache();
             reCacheBaseFigure(genomeView.genome);
         }
     }
