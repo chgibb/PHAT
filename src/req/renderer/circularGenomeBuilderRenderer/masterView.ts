@@ -367,6 +367,25 @@ export class View extends viewMgr.View
             },
             onSlide : function( position: any,value: any ) {
                 this.output.html( value );
+                let svgs = (<any>document.getElementsByTagName("svg"));                
+                //var svgs = document.getElementsByTagName("svg");
+                
+                for(var i = 0; i < svgs.length; i++){
+                    svgs[i].setAttribute("name", "ass");
+                    let bbox=svgs[i].getBBox();
+                
+                    let cx=bbox.x+(bbox.width/2),
+                        cy=bbox.y+(bbox.height/2);  
+                    let scalex=value, scaley=value;    
+                    let saclestr=scalex+','+scaley;
+                
+                   let tx=-cx*(scalex-1);
+                   let ty=-cy*(scaley-1);                        
+                   let translatestr=tx+','+ty;
+                
+                   svgs[i].style.webkitTransform = "scale("+saclestr+")";
+                }
+                
             }
         });
         
