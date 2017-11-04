@@ -89,7 +89,9 @@
         "typescript": "^2.2.1",
         "uglify-es": "3.0.4",
         "uuid": "^3.0.1",
-        "walk": "^2.3.9"
+        "walk": "^2.3.9",
+        "plain-draggable": "^2.0.13",
+        "rangeslider.js": "^2.3.1"
     },
     "dependencies": {},
     "optionalDependencies": {
