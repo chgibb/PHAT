@@ -54,6 +54,41 @@ export function getWindowPIDs() : Array<number>
 	return res;
 }
 
+export function getFreeWebContents() : Array<Electron.WebContents>
+{
+	for(let i : number = windows.length - 1; i >= 0; --i)
+	{
+		try
+		{
+			windows[i].window.isResizable();
+		}
+		catch(err)
+		{
+			windows.splice(i,1);
+		}
+	}
+	let res = new Array<Electron.WebContents>();
+
+	let webContents = electron.webContents.getAllWebContents();
+
+	for(let i = 0; i != webContents.length; ++i)
+	{
+		let found = false;
+		for(let k = 0; k != windows.length; ++k)
+		{
+			if(webContents[i].id == windows[k].window.webContents.id)
+			{
+				found = true;
+				break;
+			}
+		}
+		if(!found)
+			res.push(webContents[i]);
+	}
+
+	return res;
+}
+
 export function getOpenWindows() : Array<WindowRef>
 {
 	for(let i : number = windows.length - 1; i >= 0; --i)
