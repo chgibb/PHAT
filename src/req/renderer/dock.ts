@@ -1,6 +1,7 @@
 import * as electron from "electron";
 const ipc = electron.ipcRenderer;
 
+import {AtomicOperationIPC} from "./../atomicOperationsIPC";
 import {getReadable} from "./../getAppPath";
 
 let electronTabs : any = undefined;
@@ -11,13 +12,15 @@ function ensureTabGroupInit() : void
     if(tabGroup)
         return;
 
-    document.body.innerHTML += `
-    <div class="etabs-tabgroup">
-        <div class="etabs-tabs"></div>
-        <div class="etabs-buttons"></div>
+    document.body.insertAdjacentHTML("beforeend",`
+    <div id="dock"
+        <div class="etabs-tabgroup">
+            <div class="etabs-tabs"></div>
+            <div class="etabs-buttons"></div>
+        </div>
+        <div class="etabs-views"></div>
     </div>
-    <div class="etabs-views"></div>
-    `;
+    `);
 
     electronTabs = require("electron-tabs");
 
@@ -59,4 +62,25 @@ export function initializeWindowDock() : void
             webviewAttributes : {nodeintegration : true}
         });
     });
+}
+
+let refNameToDock = "";
+export function makeWindowDockable(refName : string) : void
+{
+    refNameToDock = refName;
+}
+
+export function dockWindow(target = "toolBar") : void
+{
+    if(!refNameToDock)
+        return;
+    ipc.send(
+        "runOperation",
+        <AtomicOperationIPC>{
+            opName : "dockWindow",
+            toDock : refNameToDock,
+            dockTarget : target
+        }
+    );
+    electron.remote.getCurrentWindow().close();
 }
