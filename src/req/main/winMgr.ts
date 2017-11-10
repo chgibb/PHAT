@@ -216,7 +216,13 @@ export function pushKeyTo(
         );
     }
 }
-
+/**
+ * Push key on channel to all subscribing webcontents
+ * 
+ * @export
+ * @param {string} channel 
+ * @param {string} key 
+ */
 export function publishChangeForKey(channel : string,key : string) : void
 {
     for(let i : number = 0; i != dataMgr.keySubs.length; ++i)
