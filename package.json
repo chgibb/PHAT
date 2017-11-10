@@ -41,6 +41,7 @@
     "devDependencies": {
         "@chgibb/angularplasmid": "^1.0.5",
         "@chgibb/css-spinners": "^2.2.1",
+        "@chgibb/electron-tabs": "^0.8.0",
         "@chgibb/ng-node-compile": "^1.0.6",
         "@chgibb/ngplasmid": ">0.0.6",
         "@claviska/jquery-minicolors": "^2.2.6",
@@ -60,7 +61,6 @@
         "electron-ipc-stream": "^0.2.0",
         "electron-packager": "8.7.2",
         "electron-squirrel-startup": "^1.0.0",
-        "electron-tabs": "^0.8.0",
         "electron-winstaller": "^2.5.2",
         "fs-backwards-stream": "0.0.0",
         "fs-extra": "^2.0.0",
