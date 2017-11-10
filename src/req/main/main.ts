@@ -195,9 +195,21 @@ ipc.on
 				isPHATRenderer : true,
 				pid : windows[i].window.webContents.getOSProcessId(),
 				url : windows[i].window.webContents.getURL()
-			}
+			};
 			res.push(curr);
 		}
+		let webContents = winMgr.getFreeWebContents();
+		for(let i = 0; i != webContents.length; ++i)
+		{
+			let curr = <PIDInfo>{
+				isPHAT : true,
+				isPHATRenderer : true,
+				pid : webContents[i].getOSProcessId(),
+				url : webContents[i].getURL()
+			};
+			res.push(curr);
+		}
+
 		for(let i = 0; i != atomicOp.operationsQueue.length; ++i)
 		{
 			if(atomicOp.operationsQueue[i].running == true)
