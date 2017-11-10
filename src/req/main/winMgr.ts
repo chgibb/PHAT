@@ -28,11 +28,24 @@ export let windowCreators : {
 	[index : string] : WindowCreator;
 } = {};
 
+/**
+ * Opens ref with the given refName
+ * 
+ * @export
+ * @param {string} refName 
+ * @param {Electron.BrowserWindow} ref 
+ */
 export function pushWindow(refName : string,ref : Electron.BrowserWindow) : void
 {
 	windows.push(new WindowRef(refName,ref));
 }
 
+/**
+ * Get the PIDs of all open window's webContents
+ * 
+ * @export
+ * @returns {Array<number>} 
+ */
 export function getWindowPIDs() : Array<number>
 {
 	for(let i : number = windows.length - 1; i >= 0; --i)
@@ -54,6 +67,12 @@ export function getWindowPIDs() : Array<number>
 	return res;
 }
 
+/**
+ * Get all WebContents not associated with a BrowserWindow
+ * 
+ * @export
+ * @returns {Array<Electron.WebContents>} 
+ */
 export function getFreeWebContents() : Array<Electron.WebContents>
 {
 	for(let i : number = windows.length - 1; i >= 0; --i)
@@ -89,6 +108,12 @@ export function getFreeWebContents() : Array<Electron.WebContents>
 	return res;
 }
 
+/**
+ * Get all open windows
+ * 
+ * @export
+ * @returns {Array<WindowRef>} 
+ */
 export function getOpenWindows() : Array<WindowRef>
 {
 	for(let i : number = windows.length - 1; i >= 0; --i)
@@ -105,6 +130,12 @@ export function getOpenWindows() : Array<WindowRef>
 	return windows;
 }
 
+/**
+ * Close all windows except those with the given refName
+ * 
+ * @export
+ * @param {string} refName 
+ */
 export function closeAllExcept(refName : string) : void
 {
 	for(let i : number = windows.length - 1; i >= 0; --i)
@@ -125,6 +156,13 @@ export function closeAllExcept(refName : string) : void
 	}
 }
 
+/**
+ * Get all windows with the given refName
+ * 
+ * @export
+ * @param {string} refName 
+ * @returns {Array<Electron.BrowserWindow>} 
+ */
 export function getWindowsByName(refName : string) : Array<Electron.BrowserWindow>
 {
 	let res : Array<Electron.BrowserWindow> = new Array<Electron.BrowserWindow>();
@@ -148,6 +186,16 @@ export function getWindowsByName(refName : string) : Array<Electron.BrowserWindo
 	}
 	return res;
 }
+
+/**
+ * Sends the specified key to the given sender using refName
+ * 
+ * @export
+ * @param {string} channel 
+ * @param {string} key 
+ * @param {string} refName 
+ * @param {Electron.WebContents} sender 
+ */
 export function pushKeyTo(
     channel : string,
     key : string,
