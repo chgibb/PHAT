@@ -3,17 +3,18 @@ const ipc = electron.ipcRenderer;
 
 import {AtomicOperation} from "./req/operations/atomicOperations"
 import {KeySubEvent} from "./req/ipcEvents";
+import {initializeWindowDock} from "./req/renderer/dock";
 
 const $ = require("jquery");
 (<any>window).$ = $;
 import "./req/renderer/commonBehaviour";
 
+
 $
 (
     function()
     {
-
-        
+        initializeWindowDock();
         document.getElementById("input").onclick = function(this : HTMLElement,ev : MouseEvent){
             ipc.send("openWindow",{refName : "input"});
         }
