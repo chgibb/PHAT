@@ -188,7 +188,7 @@ export function createWithDefault(
 ) : Electron.BrowserWindow
 {
 		
-		let windowOptions = dataMgr.getKey(refName,"windowOptions");
+		let windowOptions : Electron.BrowserWindowConstructorOptions = dataMgr.getKey(refName,"windowOptions");
 		if(!windowOptions)
 		{
 			let display = electron.screen.getPrimaryDisplay();
