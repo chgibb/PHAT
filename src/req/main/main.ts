@@ -49,6 +49,8 @@ import {OpenProject} from "./../operations/OpenProject";
 import {SaveCurrentProject} from "./../operations/SaveCurrentProject";
 import {LoadCurrentlyOpenProject} from "./../operations/LoadCurrentlyOpenProject";
 
+import {DockWindow} from "./../operations/DockWindow";
+
 import * as winMgr from "./winMgr";
 
 import {File,getPath} from "./../file";
@@ -58,6 +60,8 @@ import {AlignData} from "./../alignData";
 import {CircularFigure} from "./../renderer/circularFigure";
 import {PIDInfo} from "./../PIDInfo";
 import {finishLoadingProject} from "./finishLoadingProject";
+
+
 
 import {GetKeyEvent,SaveKeyEvent,KeySubEvent} from "./../ipcEvents";
 
@@ -114,6 +118,8 @@ app.on
 		atomicOp.register("copyCircularFigure",CopyCircularFigure);
 		atomicOp.register("deleteCircularFigure",DeleteCircularFigure);
 		atomicOp.register("compileTemplates",CompileTemplates);
+
+		atomicOp.register("dockWindow",DockWindow);
 
 		//on completion of any operation, wait and then broadcast the queue to listening windows
 		atomicOp.setOnComplete(
@@ -572,6 +578,13 @@ ipc.on(
 				figure : arg.figure,
 				uuid : arg.uuid,
 				compileBase : arg.compileBase
+			});
+		}
+		else if(arg.opName == "dockWindow")
+		{
+			atomicOp.addOperation("dockWindow",{
+				toDock : arg.toDock,
+				dockTarget : arg.dockTarget
 			});
 		}
 		dataMgr.setKey("application","operations",atomicOp.operationsQueue);
