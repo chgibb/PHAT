@@ -235,7 +235,20 @@ export function publishChangeForKey(channel : string,key : string) : void
                         val : dataMgr.getKey(channel,key)
                     }
                 );
-            }
+			}
+			let webContents = getFreeWebContents();
+			for(let k : number = 0; k != webContents.length; ++k)
+            {
+                webContents[k].send(
+                    dataMgr.keySubs[i].replyChannel,
+                    <KeyChangeEvent>{
+                        action : "keyChange",
+                        channel : channel,
+                        key : key,
+                        val : dataMgr.getKey(channel,key)
+                    }
+                );
+			}
         }
     }
 }
