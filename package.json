@@ -60,6 +60,7 @@
         "electron-ipc-stream": "^0.2.0",
         "electron-packager": "8.7.2",
         "electron-squirrel-startup": "^1.0.0",
+        "electron-tabs": "^0.8.0",
         "electron-winstaller": "^2.5.2",
         "fs-backwards-stream": "0.0.0",
         "fs-extra": "^2.0.0",
