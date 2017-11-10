@@ -5,6 +5,7 @@ import {GetKeyEvent,KeySubEvent} from "./req/ipcEvents";
 import  {AtomicOperation} from "./req/operations/atomicOperations"
 import  {GenerateQCReport} from "./req/operations/GenerateQCReport"
 import * as viewMgr from "./req/renderer/viewMgr";
+import {makeWindowDockable} from "./req/renderer/dock";
 
 import * as summary from "./req/renderer/QCRenderer/summaryView";
 import * as report from "./req/renderer/QCRenderer/reportView";
@@ -17,6 +18,8 @@ $
 (
     function()
     {
+        makeWindowDockable("QC");
+        
         summary.addView(viewMgr.views,'reports');
         report.addView(viewMgr.views,'reports');
 

@@ -42,6 +42,20 @@ export interface Tab
 
 let refNameToTab : {[key : string] : Tab;} = {};
 
+refNameToTab["input"] = <Tab>{
+    filePath : "Input.html",
+    title : "Input",
+    visible : true,
+    active : true
+};
+
+refNameToTab["QC"] = <Tab>{
+    filePath : "QC.html",
+    title : "QC",
+    visible : true,
+    active : true
+};
+
 refNameToTab["circularGenomeBuilder"] = <Tab>{
     filePath : "circularGenomeBuilder.html",
     title : "Genome Builder",

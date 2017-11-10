@@ -4,6 +4,7 @@ const ipc = electron.ipcRenderer;
 import {GetKeyEvent,KeySubEvent} from "./req/ipcEvents";
 
 import * as viewMgr from "./req/renderer/viewMgr";
+import {makeWindowDockable} from "./req/renderer/dock";
 
 import * as masterView from "./req/renderer/inputRenderer/masterView";
 import * as fastqView from "./req/renderer/inputRenderer/FastqView";
@@ -39,6 +40,7 @@ $
 (
     function()
     {
+        makeWindowDockable("input");
         viewMgr.setPostRender(postRender);
         masterView.addView(viewMgr.views,'view');
 
