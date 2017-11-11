@@ -6,7 +6,7 @@ import {getReadable} from "./../getAppPath";
 
 let electronTabs : any = undefined;
 let tabGroup : any = undefined;
-
+let dragula : any = undefined;
 function ensureTabGroupInit() : void
 {
     if(tabGroup)
@@ -23,9 +23,16 @@ function ensureTabGroupInit() : void
     `);
 
     electronTabs = require("@chgibb/electron-tabs");
+    dragula = require("dragula");
 
-    tabGroup = new electronTabs();
-
+    tabGroup = new electronTabs({
+        ready : function(tabGroup : any){
+            dragula([tabGroup.tabContainer],{
+                direction : "horizontal"
+            });
+        }
+    });
+    
     tabGroup.on("tab-added",function(tab : any,tabGroup : any){
         let tabs = document.getElementsByClassName("etabs-tab");
         for(let i = 0; i != tabs.length; ++i)
