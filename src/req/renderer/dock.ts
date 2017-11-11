@@ -25,6 +25,27 @@ function ensureTabGroupInit() : void
     electronTabs = require("@chgibb/electron-tabs");
 
     tabGroup = new electronTabs();
+
+    refNameToTab["input"] = <Tab>{
+        filePath : "Input.html",
+        title : "Input",
+        visible : true,
+        active : true
+    };
+    
+    refNameToTab["QC"] = <Tab>{
+        filePath : "QC.html",
+        title : "QC",
+        visible : true,
+        active : true
+    };
+    
+    refNameToTab["circularGenomeBuilder"] = <Tab>{
+        filePath : "circularGenomeBuilder.html",
+        title : "Genome Builder",
+        visible : true,
+        active : true
+    };
 }
 
 export interface DockIpc
@@ -41,27 +62,6 @@ export interface Tab
 }
 
 let refNameToTab : {[key : string] : Tab;} = {};
-
-refNameToTab["input"] = <Tab>{
-    filePath : "Input.html",
-    title : "Input",
-    visible : true,
-    active : true
-};
-
-refNameToTab["QC"] = <Tab>{
-    filePath : "QC.html",
-    title : "QC",
-    visible : true,
-    active : true
-};
-
-refNameToTab["circularGenomeBuilder"] = <Tab>{
-    filePath : "circularGenomeBuilder.html",
-    title : "Genome Builder",
-    visible : true,
-    active : true
-};
 
 export function initializeWindowDock() : void
 {
