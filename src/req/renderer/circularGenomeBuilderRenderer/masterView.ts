@@ -379,11 +379,11 @@ export class View extends viewMgr.View
                     let scalex=value, scaley=value;    
                     let saclestr=scalex+','+scaley;
                 
-                   let tx=-cx*(scalex-1);
-                   let ty=-cy*(scaley-1);                        
-                   let translatestr=tx+','+ty;
-                
-                   svgs[i].style.webkitTransform = "scale("+saclestr+")";
+                    let tx=-cx*(scalex-1);
+                    let ty=-cy*(scaley-1);                        
+                    let translatestr=tx+','+ty;
+                    
+                    svgs[i].style.webkitTransform = "scale("+saclestr+")";
                 }
                 
             }
