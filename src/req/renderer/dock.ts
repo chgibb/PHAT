@@ -26,6 +26,15 @@ function ensureTabGroupInit() : void
 
     tabGroup = new electronTabs();
 
+    tabGroup.on("tab-added",function(tab : any,tabGroup : any){
+        let tabs = document.getElementsByClassName("etabs-tab");
+        for(let i = 0; i != tabs.length; ++i)
+        {
+            if(!tabs[i].classList.contains("activeHover"))
+                tabs[i].classList.add("activeHover");
+        }
+    });
+
     refNameToTab["input"] = <Tab>{
         filePath : "Input.html",
         title : "Input",
