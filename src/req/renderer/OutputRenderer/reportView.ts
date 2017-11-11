@@ -17,6 +17,8 @@ import {renderAlignmentReportTable} from "./reportView/renderAlignmentReportTabl
 import {renderSNPPositionsTable} from "./reportView/renderSNPPositionsTable";
 import {renderMappedReadsPerContigTable} from "./reportView/renderMappedReadsPerContigTable";
 
+import {getReadable} from "./../../getAppPath";
+
 export class QCReportTableSortOptions
 {
     public aliasAscending : boolean;
@@ -59,7 +61,7 @@ export class View extends viewMgr.View
     public renderView() : string
     {
         let masterView = <masterView.View>viewMgr.getViewByName("masterView");
-
+        
         //if we're looking at SNP position, refresh table information if the alignment being inspected has changed
         if(masterView.displayInfo == "SNPPositions")
         {
@@ -73,8 +75,8 @@ export class View extends viewMgr.View
             }
         }
         return `
-        <img class="activeHover activeHoverButton" id="viewQC" src="img/fastqButtonActive.png">
-        <img class="activeHover activeHoverButton" id="viewAlign" src="img/refSeqButton.png">
+        <img class="activeHover activeHoverButton" id="viewQC" src="${masterView.displayInfo == "QCInfo" ? getReadable("img/fastqButtonActive.png") : getReadable("img/fastqButton.png")}">
+        <img class="activeHover activeHoverButton" id="viewAlign" src="${masterView.displayInfo == "AlignmentInfo" ? getReadable("img/alignButtonActive.png") : getReadable("img/alignButton.png")}">
             ${renderQCReportTable()}
             ${renderAlignmentReportTable()}
             ${renderSNPPositionsTable(this.vcfRows)}
@@ -86,16 +88,11 @@ export class View extends viewMgr.View
     public dataChanged() : void{}
     public divClickEvents(event : JQueryEventObject) : void
     {
-        if(event.target.id == "viewQC"){
-            console.log("button 1");
-        }
-        if(event.target.id == "viewAlign"){
-            console.log("button 2");
-        }
         if(!event.target.id)
             return;
         let masterView = <masterView.View>viewMgr.getViewByName("masterView");
         let rightPanel = <rightPanel.View>viewMgr.getViewByName("rightPanel",masterView.views);
+
         for(let i = 0; i != masterView.alignData.length; ++i)
         {
             if(event.target.id == masterView.alignData[i].uuid+"ViewSNPs")
@@ -215,5 +212,17 @@ export class View extends viewMgr.View
             viewMgr.render();
             return;
         }
+
+        if(event.target.id == "viewQC"){
+            masterView.displayInfo = "QCInfo";
+            viewMgr.render();
+            return;
+        }
+        if(event.target.id == "viewAlign"){
+            masterView.displayInfo = "AlignmentInfo";
+            viewMgr.render();
+            return;
+        }
+
     }
 }
