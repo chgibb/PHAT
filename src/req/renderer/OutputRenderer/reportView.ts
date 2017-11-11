@@ -72,8 +72,9 @@ export class View extends viewMgr.View
                 this.inspectingUUID = masterView.inspectingUUID;
             }
         }
-
         return `
+        <img class="activeHover activeHoverButton" id="viewQC" src="img/fastqButtonActive.png">
+        <img class="activeHover activeHoverButton" id="viewAlign" src="img/refSeqButton.png">
             ${renderQCReportTable()}
             ${renderAlignmentReportTable()}
             ${renderSNPPositionsTable(this.vcfRows)}
@@ -85,6 +86,12 @@ export class View extends viewMgr.View
     public dataChanged() : void{}
     public divClickEvents(event : JQueryEventObject) : void
     {
+        if(event.target.id == "viewQC"){
+            console.log("button 1");
+        }
+        if(event.target.id == "viewAlign"){
+            console.log("button 2");
+        }
         if(!event.target.id)
             return;
         let masterView = <masterView.View>viewMgr.getViewByName("masterView");
