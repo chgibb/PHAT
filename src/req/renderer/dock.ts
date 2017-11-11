@@ -45,7 +45,14 @@ function ensureTabGroupInit() : void
         title : "Align",
         visible : true,
         active : true
-    }
+    };
+
+    refNameToTab["output"] = <Tab>{
+        filePath : "Output.html",
+        title : "Output",
+        visible : true,
+        active : true
+    };
     
     refNameToTab["circularGenomeBuilder"] = <Tab>{
         filePath : "circularGenomeBuilder.html",
