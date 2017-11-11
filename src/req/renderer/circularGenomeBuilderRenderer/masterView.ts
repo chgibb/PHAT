@@ -363,15 +363,15 @@ export class View extends viewMgr.View
         $('input[type="range"]').rangeslider({
             polyfill : false,
             onInit : function() {
+                // DEBUG
                 this.output = $( '<div class="range-output" />' ).insertAfter( this.$range ).html( this.$element.val() );
             },
             onSlide : function( position: any,value: any ) {
+                // DEBUG
                 this.output.html( value );
                 let svgs = (<any>document.getElementsByTagName("svg"));                
-                //var svgs = document.getElementsByTagName("svg");
                 
                 for(var i = 0; i < svgs.length; i++){
-                    svgs[i].setAttribute("name", "ass");
                     let bbox=svgs[i].getBBox();
                 
                     let cx=bbox.x+(bbox.width/2),
