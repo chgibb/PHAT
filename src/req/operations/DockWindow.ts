@@ -1,5 +1,6 @@
 import * as atomic from "./atomicOperations";
 import * as winMgr from "./../main/winMgr";
+import * as dataMgr from "./../main/dataMgr";
 import {DockIpc} from "./../renderer/dock";
 export class DockWindow extends atomic.AtomicOperation
 {
@@ -28,6 +29,19 @@ export class DockWindow extends atomic.AtomicOperation
             "dockWindow",
             <DockIpc>{refName : this.toDock}
         );
+
+        //if the dock target is smaller than the window we're docking, expand the target to fit
+        let newWindowOptions = dataMgr.getKey(this.toDock,"windowOptions");
+        if(newWindowOptions)
+        {
+            let bounds = target.getBounds();
+            if(bounds.height < newWindowOptions.height)
+                bounds.height = newWindowOptions.height;
+            if(bounds.width < newWindowOptions.width)
+                bounds.width = newWindowOptions.width;
+            
+            target.setBounds(bounds,true);
+        }
         this.flags.success = true;
         this.flags.done = true;
         this.update();
