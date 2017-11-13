@@ -96,7 +96,6 @@ let refNameToTab : {[key : string] : Tab;} = {};
 export function initializeWindowDock() : void
 {
     ipc.on("dockWindow",function(event : Electron.IpcMessageEvent,arg : DockIpc){
-        console.log(arg);
         ensureTabGroupInit();
         let tab = refNameToTab[arg.refName];
         tabGroup.addTab({
