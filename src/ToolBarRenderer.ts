@@ -3,7 +3,7 @@ const ipc = electron.ipcRenderer;
 
 import {AtomicOperation} from "./req/operations/atomicOperations"
 import {KeySubEvent} from "./req/ipcEvents";
-import {initializeWindowDock} from "./req/renderer/dock";
+import {initializeWindowDock,dockWindow} from "./req/renderer/dock";
 
 const $ = require("jquery");
 (<any>window).$ = $;
@@ -16,19 +16,24 @@ $
     {
         initializeWindowDock();
         document.getElementById("input").onclick = function(this : HTMLElement,ev : MouseEvent){
-            ipc.send("openWindow",{refName : "input"});
+            //ipc.send("openWindow",{refName : "input"});
+            dockWindow("input","toolBar");
         }
         document.getElementById("QC").onclick = function(this : HTMLElement,ev : MouseEvent){
-            ipc.send("openWindow",{refName : "QC"});
+            //ipc.send("openWindow",{refName : "QC"});
+            dockWindow("QC","toolBar");
         }
         document.getElementById("align").onclick = function(this : HTMLElement,ev : MouseEvent){
-            ipc.send("openWindow",{refName : "align"});
+            //ipc.send("openWindow",{refName : "align"});
+            dockWindow("align","toolBar");
         }
         document.getElementById("output").onclick = function(this : HTMLElement,ev : MouseEvent){
-            ipc.send("openWindow",{refName : "output"});
+            //ipc.send("openWindow",{refName : "output"});
+            dockWindow("output","toolBar");
         }
         document.getElementById("circularGenomeBuilder").onclick = function(this : HTMLElement,ev : MouseEvent){
-            ipc.send("openWindow",{refName : "circularGenomeBuilder"});
+            //ipc.send("openWindow",{refName : "circularGenomeBuilder"});
+            dockWindow("circularGenomeBuilder","toolBar");
         }
 
         ipc.send(
