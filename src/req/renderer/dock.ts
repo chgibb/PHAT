@@ -118,13 +118,18 @@ export function dockThisWindow(target = "toolBar") : void
 {
     if(!refNameToDock)
         return;
+    dockWindow(refNameToDock,target);
+    electron.remote.getCurrentWindow().close();
+}
+
+export function dockWindow(refName : string,target : string) : void
+{
     ipc.send(
         "runOperation",
         <AtomicOperationIPC>{
             opName : "dockWindow",
-            toDock : refNameToDock,
+            toDock : refName,
             dockTarget : target
         }
     );
-    electron.remote.getCurrentWindow().close();
 }
