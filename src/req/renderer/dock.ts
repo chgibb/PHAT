@@ -114,7 +114,7 @@ export function makeWindowDockable(refName : string) : void
     refNameToDock = refName;
 }
 
-export function dockWindow(target = "toolBar") : void
+export function dockThisWindow(target = "toolBar") : void
 {
     if(!refNameToDock)
         return;
