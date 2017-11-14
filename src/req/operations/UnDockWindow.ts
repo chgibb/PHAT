@@ -29,7 +29,7 @@ export class UnDockWindow extends atomic.AtomicOperation
         await winMgr.createWCHost(this.refName);
         
         let target = winMgr.getWindowsByName(this.refName)[0];
-        console.log(target);
+
         target.webContents.send("changeGuestInstance",{
             guestinstance : this.guestinstance
         });
