@@ -50,6 +50,9 @@ export interface AtomicOperationIPC
 
     toDock? : string;
     dockTarget? : string;
+
+    refName? : string;
+    guestinstance? : number;
 }
 
 /**
