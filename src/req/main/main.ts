@@ -50,6 +50,7 @@ import {SaveCurrentProject} from "./../operations/SaveCurrentProject";
 import {LoadCurrentlyOpenProject} from "./../operations/LoadCurrentlyOpenProject";
 
 import {DockWindow} from "./../operations/DockWindow";
+import {UnDockWindow} from "./../operations/UnDockWindow";
 
 import * as winMgr from "./winMgr";
 
@@ -120,6 +121,7 @@ app.on
 		atomicOp.register("compileTemplates",CompileTemplates);
 
 		atomicOp.register("dockWindow",DockWindow);
+		atomicOp.register("unDockWindow",UnDockWindow);
 
 		//on completion of any operation, wait and then broadcast the queue to listening windows
 		atomicOp.setOnComplete(
@@ -585,6 +587,13 @@ ipc.on(
 			atomicOp.addOperation("dockWindow",{
 				toDock : arg.toDock,
 				dockTarget : arg.dockTarget
+			});
+		}
+		else if(arg.opName == "unDockWindow")
+		{
+			atomicOp.addOperation("unDockWindow",{
+				refName : arg.refName,
+				guestinstance : arg.guestinstance
 			});
 		}
 		dataMgr.setKey("application","operations",atomicOp.operationsQueue);

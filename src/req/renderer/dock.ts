@@ -1,12 +1,15 @@
 import * as electron from "electron";
+const screen = electron.screen;
 const ipc = electron.ipcRenderer;
 
 import {AtomicOperationIPC} from "./../atomicOperationsIPC";
 import {getReadable} from "./../getAppPath";
+import { AtomicOperation } from "../operations/atomicOperations";
 
 let electronTabs : any = undefined;
 let tabGroup : any = undefined;
 let dragula : any = undefined;
+let drake : any = undefined;
 function ensureTabGroupInit() : void
 {
     if(tabGroup)
@@ -27,8 +30,20 @@ function ensureTabGroupInit() : void
 
     tabGroup = new electronTabs({
         ready : function(tabGroup : any){
-            dragula([tabGroup.tabContainer],{
+            drake = dragula([tabGroup.tabContainer],{
                 direction : "horizontal"
+            });
+            drake.on("dragend",function(el : any,container : any,source : any){
+                let clientBounds = electron.remote.getCurrentWindow().getBounds();
+                let cursorPos = screen.getCursorScreenPoint();
+                if(cursorPos.x < clientBounds.x)
+                    unDockActiveTab();
+                else if(cursorPos.y < clientBounds.y)
+                    unDockActiveTab();
+                else if(cursorPos.x > clientBounds.x + clientBounds.width)
+                    unDockActiveTab();
+                else if(cursorPos.y > clientBounds.y + clientBounds.height)
+                    unDockActiveTab();
             });
         }
     });
@@ -93,17 +108,32 @@ export interface Tab
 
 let refNameToTab : {[key : string] : Tab;} = {};
 
+function getRefNameFromTitle(title : string) : string | undefined
+{
+    for(let i in refNameToTab)
+    {
+        if(refNameToTab[i].title == title)
+        {
+            return i;
+        }
+    }
+    return undefined;
+}
+
 export function initializeWindowDock() : void
 {
     ipc.on("dockWindow",function(event : Electron.IpcMessageEvent,arg : DockIpc){
         ensureTabGroupInit();
         let tab = refNameToTab[arg.refName];
-        tabGroup.addTab({
+        let newTab = tabGroup.addTab({
             title : tab.title,
             src : `file://${getReadable(tab.filePath)}`,
             visible : tab.visible,
             active : tab.active,
             webviewAttributes : {nodeintegration : true}
+        });
+        newTab.webview.addEventListener("destroyed",function(e : any){
+            newTab.close();
         });
     });
 }
@@ -119,7 +149,6 @@ export function dockThisWindow(target = "toolBar") : void
     if(!refNameToDock)
         return;
     dockWindow(refNameToDock,target);
-    electron.remote.getCurrentWindow().close();
 }
 
 export function dockWindow(refName : string,target : string) : void
@@ -130,6 +159,18 @@ export function dockWindow(refName : string,target : string) : void
             opName : "dockWindow",
             toDock : refName,
             dockTarget : target
+        }
+    );
+}
+
+export function unDockActiveTab() : void
+{
+    ipc.send(
+        "runOperation",
+        <AtomicOperationIPC>{
+            opName : "unDockWindow",
+            refName : getRefNameFromTitle(tabGroup.getActiveTab().title),
+            guestinstance : tabGroup.getActiveTab().webview.guestinstance
         }
     );
 }
