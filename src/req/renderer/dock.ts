@@ -36,6 +36,8 @@ function ensureTabGroupInit() : void
             drake.on("dragend",function(el : any,container : any,source : any){
                 let clientBounds = electron.remote.getCurrentWindow().getBounds();
                 let cursorPos = screen.getCursorScreenPoint();
+
+                //if a tab is dragged outside of the bounds of the window, undock it
                 if(cursorPos.x < clientBounds.x)
                     unDockActiveTab();
                 else if(cursorPos.y < clientBounds.y)

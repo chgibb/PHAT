@@ -26,10 +26,12 @@ export class UnDockWindow extends atomic.AtomicOperation
     {
         this.logRecord = atomic.openLog(this.name,"UnDock Window");
 
+        //create a new webContents host
         await winMgr.createWCHost(this.refName);
         
         let target = winMgr.getWindowsByName(this.refName)[0];
 
+        //attach the given webContents to the new host
         target.webContents.send("changeGuestInstance",{
             guestinstance : this.guestinstance
         });
