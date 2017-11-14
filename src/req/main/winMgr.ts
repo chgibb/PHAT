@@ -7,6 +7,7 @@ const BrowserWindow = electron.BrowserWindow;
 
 import * as dataMgr from "./dataMgr";
 import {GetKeyEvent,KeyChangeEvent} from "./../ipcEvents";
+import {getReadable} from "../getAppPath";
 
 
 export class WindowRef
@@ -358,6 +359,39 @@ export function createWithDefault(
 			}
 		);
 		return ref;
+}
+/**
+ * Create an empty webcontents host window, hooking into sizing and options for
+ * refName
+ * 
+ * @export
+ * @param {string} refName 
+ * @returns {Promise<void>} 
+ */
+export function createWCHost(refName : string) : Promise<void>
+{
+	return new Promise<void>((resolve,reject) => {
+		let ref = new BrowserWindow();
+		ref.loadURL(`file://${getReadable("wcHost.html")}`);
+
+		ref.on("close",function(){
+			saveBounds(ref,refName);
+		});
+
+		ref.on("move",function(){
+			saveBounds(ref,refName);
+		});
+
+		ref.on("resize",function(){
+			saveBounds(ref,refName);
+		});
+
+		ref.webContents.once("dom-ready",function(){
+			resolve();
+		});
+
+		pushWindow(refName,ref);
+	});
 }
 
 /**
