@@ -964,3 +964,11 @@ atomicOp.updates.on(
 		winMgr.publishChangeForKey("application","operations");
 	}
 );
+
+atomicOp.updates.on(
+	"unDockWindow",function(op : CompileTemplates)
+	{
+		dataMgr.setKey("application","operations",atomicOp.operationsQueue);
+		winMgr.publishChangeForKey("application","operations");
+	}
+);

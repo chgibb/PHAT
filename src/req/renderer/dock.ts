@@ -10,6 +10,12 @@ let electronTabs : any = undefined;
 let tabGroup : any = undefined;
 let dragula : any = undefined;
 let drake : any = undefined;
+
+/**
+ * Initialize tab container and needed third party libraries
+ * 
+ * @returns {void} 
+ */
 function ensureTabGroupInit() : void
 {
     if(tabGroup)
@@ -50,6 +56,7 @@ function ensureTabGroupInit() : void
         }
     });
     
+    //make tabs hoverable
     tabGroup.on("tab-added",function(tab : any,tabGroup : any){
         let tabs = document.getElementsByClassName("etabs-tab");
         for(let i = 0; i != tabs.length; ++i)
@@ -59,6 +66,7 @@ function ensureTabGroupInit() : void
         }
     });
 
+    //map window reference names to config objects for constructing tabs
     refNameToTab["input"] = <Tab>{
         filePath : "Input.html",
         title : "Input",
@@ -99,7 +107,12 @@ export interface DockIpc
 {
     refName : "circularGenomeBuilder";
 }
-
+/**
+ * Config object to construct a tab
+ * 
+ * @export
+ * @interface Tab
+ */
 export interface Tab
 {
     filePath : string;
@@ -110,6 +123,12 @@ export interface Tab
 
 let refNameToTab : {[key : string] : Tab;} = {};
 
+/**
+ * Map from a tab title to its window reference name
+ * 
+ * @param {string} title 
+ * @returns {(string | undefined)} 
+ */
 function getRefNameFromTitle(title : string) : string | undefined
 {
     for(let i in refNameToTab)
@@ -122,11 +141,19 @@ function getRefNameFromTitle(title : string) : string | undefined
     return undefined;
 }
 
+/**
+ * Allow docking of windows into this window
+ * 
+ * @export
+ */
 export function initializeWindowDock() : void
 {
     ipc.on("dockWindow",function(event : Electron.IpcMessageEvent,arg : DockIpc){
+        //lazy load the tab container and associated libraries
         ensureTabGroupInit();
+        //get config object for tab being added
         let tab = refNameToTab[arg.refName];
+        //add tab to tab group
         let newTab = tabGroup.addTab({
             title : tab.title,
             src : `file://${getReadable(tab.filePath)}`,
@@ -134,8 +161,9 @@ export function initializeWindowDock() : void
             active : tab.active,
             webviewAttributes : {nodeintegration : true}
         });
-        newTab.webview.addEventListener("destroyed",function(e : any){
-            newTab.close();
+        //forward console messages from tab into the window's console
+        newTab.webview.addEventListener("console-message",function(e : any){
+            console.log(`${tab.title}: ${e.message}`);
         });
     });
 }
@@ -153,6 +181,13 @@ export function dockThisWindow(target = "toolBar") : void
     dockWindow(refNameToDock,target);
 }
 
+/**
+ * Dock a new window given by refName into the window given by target
+ * 
+ * @export
+ * @param {string} refName 
+ * @param {string} target 
+ */
 export function dockWindow(refName : string,target : string) : void
 {
     ipc.send(
@@ -165,8 +200,15 @@ export function dockWindow(refName : string,target : string) : void
     );
 }
 
+/**
+ * Move the active tab into its own window
+ * 
+ * @export
+ */
 export function unDockActiveTab() : void
 {
+    //mutate a property onto the active tab object to indicate it is being moved into a new window
+    tabGroup.getActiveTab().unDocked = true;
     ipc.send(
         "runOperation",
         <AtomicOperationIPC>{
@@ -175,4 +217,28 @@ export function unDockActiveTab() : void
             guestinstance : tabGroup.getActiveTab().webview.guestinstance
         }
     );
+}
+
+/**
+ * Clean up tabs whos guestinstances have been moved
+ * 
+ * @export
+ */
+export function removeZombieTabs() : void
+{
+    //The "destroy" event on <webview>s is broken https://github.com/electron/electron/issues/9675
+    //We have to manually remove tabs that have been moved into new windows
+    //let the event loop spin before we try to remove
+    setTimeout(function(){
+        setImmediate(function(){
+            setImmediate(function(){
+                tabGroup.eachTab(function(currentTab : any,index : number,tabs : Array<any>){
+                    if(currentTab.unDocked){
+                        console.log(`removed ${currentTab.title}`);
+                        currentTab.close();
+                    }
+                });
+            });
+        });
+    },10);
 }

@@ -3,7 +3,7 @@ const ipc = electron.ipcRenderer;
 
 import {AtomicOperation} from "./req/operations/atomicOperations"
 import {KeySubEvent} from "./req/ipcEvents";
-import {initializeWindowDock,dockWindow} from "./req/renderer/dock";
+import {initializeWindowDock,dockWindow,removeZombieTabs} from "./req/renderer/dock";
 
 const $ = require("jquery");
 (<any>window).$ = $;
@@ -57,6 +57,14 @@ $
                         let ops : Array<AtomicOperation> = <Array<AtomicOperation>>arg.val;
                         for(let i = 0; i != ops.length; ++i)
                         {
+                            if(ops[i].name == "unDockWindow")
+                            {
+                                //when undocking has completed, clean up the tab left behind in the dock
+                                //We have to do this manually as <webview>s "destroy" event is broken https://github.com/electron/electron/issues/9675
+                                if(ops[i].flags.done && ops[i].flags.success)
+                                    removeZombieTabs();
+
+                            }
                             if(ops[i].name == "saveCurrentProject")
                             {
                                 document.body.innerHTML = `<h1>Saving Project</h1>`;
