@@ -22,7 +22,7 @@ function ensureTabGroupInit() : void
         return;
 
     document.body.insertAdjacentHTML("beforeend",`
-    <div id="dock"
+    <div id="dock">
         <div class="etabs-tabgroup">
             <div class="etabs-tabs"></div>
             <div class="etabs-buttons"></div>
