@@ -13,6 +13,10 @@ ipc.on("changeGuestInstance",function(event : Electron.IpcMessageEvent,arg : any
 
 });
 
+ipc.on("devtools-opened",function(){
+    (<any>webview).getWebContents().openDevTools({mode : "right"});
+});
+
 function pollWebContents(webView : any,arg : any) : void
 {
     if((<any>webView).getWebContents())
