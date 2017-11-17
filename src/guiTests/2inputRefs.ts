@@ -11,7 +11,7 @@ import {indexSuccess} from "./req/input/indexSuccess";
 import {closeToolBar} from "./req/closeToolBar";
 
 async function runTest() : Promise<void>
-{/*
+{
     await openProjectsView();
     await openFirstProject();
     await openInputWindow();
@@ -23,7 +23,7 @@ async function runTest() : Promise<void>
         {
             await closeToolBar();
         }
-    });*/
+    });
 }
 setTimeout(function(){
     runTest();

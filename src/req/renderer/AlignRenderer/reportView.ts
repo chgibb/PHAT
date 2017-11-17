@@ -118,7 +118,7 @@ export class ReportView extends viewMgr.View
                         <br />
                         <br />
                     `;
-                    try
+                    if(this.operations)
                     {
                         for(let i = 0; i != this.operations.length; ++i)
                         {
@@ -140,7 +140,6 @@ export class ReportView extends viewMgr.View
                             }
                         }
                     }
-                    catch(err){}
                     return res;
                 })()}
             </div>

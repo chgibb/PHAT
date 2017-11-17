@@ -8,10 +8,10 @@ import {closeToolBar} from "./req/closeToolBar";
 
 async function runTest() : Promise<void>
 {
-    /*await createNewProject();
+    await createNewProject();
     await openProjectsView();
     await openFirstProject();
-    await closeToolBar();*/
+    await closeToolBar();
 }
 setTimeout(function(){
     runTest();

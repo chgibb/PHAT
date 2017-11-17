@@ -5,7 +5,6 @@ import * as masterView from "./req/renderer/circularGenomeBuilderRenderer/master
 import * as genomeView from "./req/renderer/circularGenomeBuilderRenderer/genomeView";
 import {CircularFigure,} from "./req/renderer/circularFigure";
 import {GetKeyEvent,KeySubEvent} from "./req/ipcEvents";
-import {makeWindowDockable} from "./req/renderer/dock";
 import {CompileTemplates} from "./req/operations/CompileTemplates";
 import {showGenericLoadingSpinnerInNavBar,hideSpinnerInNavBar} from "./req/renderer/circularGenomeBuilderRenderer/loadingSpinner";
 import * as tc from "./req/renderer/circularGenomeBuilderRenderer/templateCache";
@@ -17,7 +16,6 @@ $
 (
     function()
     {
-        makeWindowDockable("circularGenomeBuilder");
         masterView.addView(viewMgr.views,"view");
         viewMgr.changeView("masterView");
         viewMgr.render();

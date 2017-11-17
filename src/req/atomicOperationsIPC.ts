@@ -47,12 +47,6 @@ export interface AtomicOperationIPC
     figure? : CircularFigure;
 
     scaleFactor? : number;
-
-    toDock? : string;
-    dockTarget? : string;
-
-    refName? : string;
-    guestinstance? : number;
 }
 
 /**

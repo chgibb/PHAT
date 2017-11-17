@@ -14,8 +14,6 @@ sassc.exe
 forDist/styles/jquery.minicolors.css
 forDist/styles/jquery.minicolors.png
 forDist/styles/spinner.css
-forDist/styles/electron-tabs.css
-forDist/styles/dragula.css
 forDist/*.dll
 forDist/*.jar
 forDist/FastQC/**

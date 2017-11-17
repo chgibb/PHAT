@@ -49,9 +49,6 @@ import {OpenProject} from "./../operations/OpenProject";
 import {SaveCurrentProject} from "./../operations/SaveCurrentProject";
 import {LoadCurrentlyOpenProject} from "./../operations/LoadCurrentlyOpenProject";
 
-import {DockWindow} from "./../operations/DockWindow";
-import {UnDockWindow} from "./../operations/UnDockWindow";
-
 import * as winMgr from "./winMgr";
 
 import {File,getPath} from "./../file";
@@ -61,8 +58,6 @@ import {AlignData} from "./../alignData";
 import {CircularFigure} from "./../renderer/circularFigure";
 import {PIDInfo} from "./../PIDInfo";
 import {finishLoadingProject} from "./finishLoadingProject";
-
-
 
 import {GetKeyEvent,SaveKeyEvent,KeySubEvent} from "./../ipcEvents";
 
@@ -119,9 +114,6 @@ app.on
 		atomicOp.register("copyCircularFigure",CopyCircularFigure);
 		atomicOp.register("deleteCircularFigure",DeleteCircularFigure);
 		atomicOp.register("compileTemplates",CompileTemplates);
-
-		atomicOp.register("dockWindow",DockWindow);
-		atomicOp.register("unDockWindow",UnDockWindow);
 
 		//on completion of any operation, wait and then broadcast the queue to listening windows
 		atomicOp.setOnComplete(
@@ -203,21 +195,9 @@ ipc.on
 				isPHATRenderer : true,
 				pid : windows[i].window.webContents.getOSProcessId(),
 				url : windows[i].window.webContents.getURL()
-			};
+			}
 			res.push(curr);
 		}
-		let webContents = winMgr.getFreeWebContents();
-		for(let i = 0; i != webContents.length; ++i)
-		{
-			let curr = <PIDInfo>{
-				isPHAT : true,
-				isPHATRenderer : true,
-				pid : webContents[i].getOSProcessId(),
-				url : webContents[i].getURL()
-			};
-			res.push(curr);
-		}
-
 		for(let i = 0; i != atomicOp.operationsQueue.length; ++i)
 		{
 			if(atomicOp.operationsQueue[i].running == true)
@@ -580,20 +560,6 @@ ipc.on(
 				figure : arg.figure,
 				uuid : arg.uuid,
 				compileBase : arg.compileBase
-			});
-		}
-		else if(arg.opName == "dockWindow")
-		{
-			atomicOp.addOperation("dockWindow",{
-				toDock : arg.toDock,
-				dockTarget : arg.dockTarget
-			});
-		}
-		else if(arg.opName == "unDockWindow")
-		{
-			atomicOp.addOperation("unDockWindow",{
-				refName : arg.refName,
-				guestinstance : arg.guestinstance
 			});
 		}
 		dataMgr.setKey("application","operations",atomicOp.operationsQueue);
@@ -959,14 +925,6 @@ atomicOp.updates.on(
 
 atomicOp.updates.on(
 	"compileTemplates",function(op : CompileTemplates)
-	{
-		dataMgr.setKey("application","operations",atomicOp.operationsQueue);
-		winMgr.publishChangeForKey("application","operations");
-	}
-);
-
-atomicOp.updates.on(
-	"unDockWindow",function(op : CompileTemplates)
 	{
 		dataMgr.setKey("application","operations",atomicOp.operationsQueue);
 		winMgr.publishChangeForKey("application","operations");
