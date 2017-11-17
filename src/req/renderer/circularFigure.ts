@@ -1,9 +1,14 @@
+/// <reference path="../../../node_modules/@chgibb/ngplasmid/lib/html" />
+/// <reference path="../../../node_modules/@chgibb/ngplasmid/lib/directives" />
+
 import * as fs from "fs";
 import * as readline from "readline";
 
 const jsonFile = require("jsonfile");
 const uuidv4 : () => string = require("uuid/v4");
-import * as mkdirp from "mkdirp";
+const mkdirp = require("mkdirp");
+import * as html from "@chgibb/ngplasmid/lib/html";
+import * as directives from "@chgibb/ngplasmid/lib/directives";
 
 import {getReadableAndWritable} from "./../getAppPath";
 import * as fastaContigLoader from "./../fastaContigLoader";
@@ -129,13 +134,16 @@ export class RenderedTrackRecord
  */
 export class RenderedCoverageTrackRecord extends RenderedTrackRecord
 {
+    scaleFactor : number;
     public constructor(
         uuidAlign : string,
         uuidContig : string,
         uuidFigure : string,
-        colour : string)
+        colour : string,
+        scaleFactor : number)
     {
         super(uuidAlign,uuidContig,uuidFigure,colour);
+        this.scaleFactor = scaleFactor;
     }
 }
 
@@ -174,6 +182,7 @@ export class CircularFigure
     public radius : number;
     public height : number;
     public width : number;
+    public zoomFactor : number;
     public isInteractive : boolean;
     public showContigNames : boolean;
     public circularFigureBPTrackOptions : CircularFigureBPTrackOptions;
@@ -188,6 +197,7 @@ export class CircularFigure
         this.radius = 120;
         this.height = this.radius*10;
         this.width = this.radius*10;
+        this.zoomFactor = 1;
         this.circularFigureBPTrackOptions = new CircularFigureBPTrackOptions();
         this.renderedCoverageTracks = new Array<RenderedCoverageTrackRecord>();
         this.renderedSNPTracks = new Array<RenderedSNPTrackRecord>();
@@ -426,6 +436,7 @@ interface PositionsWithDepths
     positions : Array<number>;
 }
 
+
 /**
  * Returns the templates for a coverage track of align for the contig specified by contiguuid on figure in the specified colour
  * 
@@ -434,13 +445,15 @@ interface PositionsWithDepths
  * @param {string} contiguuid 
  * @param {AlignData} align 
  * @param {string} [colour="rgb(64,64,64)"] 
+ * @param {number} [scaleFactor=1] 
  * @returns {Promise<string>} 
  */
 export async function renderCoverageTrack(
     figure : CircularFigure,
     contiguuid : string,
     align : AlignData,
-    colour : string = "rgb(64,64,64)"
+    colour : string = "rgb(64,64,64)",
+    scaleFactor : number = 1
 ) : Promise<string>
 {
     return new Promise<string>((resolve,reject) => {
@@ -494,7 +507,7 @@ export async function renderCoverageTrack(
                 depths[i].positions.sort(function(a : number,b : number){return a - b});
                 let res = "";
                 //render the start of the current track
-                res += `<plasmidtrack trackstyle="fill-opacity:0.0;fill:${colour}" width="10" radius="{{genome.radius+${100+depths[i].depth}}}" >`;
+                res += `<plasmidtrack trackstyle="fill-opacity:0.0;fill:${colour}" width="10" radius="{{genome.radius+${100+(depths[i].depth*scaleFactor)}}}" >`;
                 //try to find a group of sequential positions
                 for(let k = 0; k != depths[i].positions.length; ++k)
                 {
@@ -519,6 +532,7 @@ export async function renderCoverageTrack(
     });
 }
 
+
 /**
  * Returns the templates for a coverage track of align for the contig specified by contiguuid on figure in the specified colour. Creates and saves a trackrecord
  * on figure with the results
@@ -528,13 +542,15 @@ export async function renderCoverageTrack(
  * @param {string} contiguuid 
  * @param {AlignData} align 
  * @param {string} [colour="rgb(64,64,64)"] 
+ * @param {number} [scaleFactor=1] 
  * @returns {Promise<string>} 
  */
 export async function cacheCoverageTrack(
     figure : CircularFigure,
     contiguuid : string,
     align : AlignData,
-    colour : string = "rgb(64,64,64)"
+    colour : string = "rgb(64,64,64)",
+    scaleFactor : number = 1
 ) : Promise<string>
 {
     return new Promise<string>(async (resolve,reject) => {
@@ -544,8 +560,8 @@ export async function cacheCoverageTrack(
         }
         catch(err){}
     
-        let coverageTracks = await renderCoverageTrack(figure,contiguuid,align,colour);
-        let trackRecord = new RenderedCoverageTrackRecord(align.uuid,contiguuid,figure.uuid,colour);
+        let coverageTracks = await renderCoverageTrack(figure,contiguuid,align,colour,scaleFactor);
+        let trackRecord = new RenderedCoverageTrackRecord(align.uuid,contiguuid,figure.uuid,colour,scaleFactor);
         fs.writeFileSync(getCachedCoverageTrackPath(trackRecord),coverageTracks);
         figure.renderedCoverageTracks.push(trackRecord);
         resolve(coverageTracks);
@@ -781,6 +797,46 @@ export function getSNPTrackSVGFromCache(trackRecord : RenderedSNPTrackRecord) : 
 }
 
 /**
+ * Compile trackRecord against figure. Returns the resulting SVG
+ * 
+ * @export
+ * @param {RenderedCoverageTrackRecord} trackRecord 
+ * @param {CircularFigure} figure 
+ * @returns {Promise<string>} 
+ */
+export function compileCoverageTrackSVG(trackRecord : RenderedCoverageTrackRecord,figure : CircularFigure) : Promise<string>
+{
+    let template = fs.readFileSync(getCachedCoverageTrackPath(trackRecord)).toString();
+    return new Promise<string>(async (resolve,reject) => {
+        let nodes : Array<html.Node> = await html.loadFromString(
+            assembleCompilableCoverageTrack(figure,trackRecord)
+        );
+        let plasmid : directives.Plasmid = new directives.Plasmid();
+        plasmid.$scope = {
+            genome : figure
+        };
+        
+        for(let i = 0; i != nodes.length; ++i)
+        {
+            if(nodes[i].name == "div")
+            {
+                for(let k = 0; k != nodes[i].children.length; ++k)
+                {
+                    if(nodes[i].children[k].name == "plasmid")
+                    {
+                        plasmid.fromNode(nodes[i].children[k]);
+                        break;
+                    }
+                }
+            }
+        }
+
+        resolve(plasmid.renderStart()+plasmid.renderEnd());
+    });
+
+}
+
+/**
  * Wraps templates with the correct markup, based on figure to make them compilable by Angular
  * 
  * @export
@@ -797,7 +853,7 @@ export function assembleCompilableTemplates(figure : CircularFigure,templates : 
         totalBP += figure.contigs[i].bp;
     }
     return `
-        <div id="${id}">
+        <div ${id ? `id="${id}"` : ""}>
         ${plasmid.add(
         {
             sequenceLength : totalBP.toString(),

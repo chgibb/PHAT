@@ -22,7 +22,7 @@ import {writeAvailableTracksModal} from "./writeAvailableTracksModal";
 import {writeContigEditorModal} from "./writeContigEditorModal";
 import {writeContigCreatorModal} from "./writeContigCreatorModal";
 import {writeEditContigsModal} from "./writeEditContigsModal";
-import {writeLoadingModal} from "./writeLoadingModal";
+import {showGenericLoadingSpinnerInNavBar} from "./loadingSpinner";
 
 
 const $ = require("jquery");
@@ -52,7 +52,6 @@ export class View extends viewMgr.View
     public contigEditorModalOpen : boolean;
     public contigCreatorModalOpen : boolean;
     public editContigsModalOpen : boolean;
-    public loadingModal : boolean;
     public constructor(div : string)
     {
         super("masterView",div);
@@ -64,7 +63,6 @@ export class View extends viewMgr.View
         this.contigEditorModalOpen = false;
         this.contigCreatorModalOpen = false;
         this.editContigsModalOpen = false;
-        this.loadingModal = false;
     }
     /**
      * Retrieve all the alignments run for the currently open figure
@@ -429,8 +427,6 @@ export class View extends viewMgr.View
         if(this.contigCreatorModalOpen)
             writeContigCreatorModal();
 
-        if(this.loadingModal)
-            writeLoadingModal();
         //viewMgr will not call postRender for a view that does no rendering so we'll do it explicitly
         this.postRender();
         return undefined;
@@ -474,7 +470,7 @@ export class View extends viewMgr.View
         this.dataChanged();
         if(genomeView.genome)
         {
-            tc.resetCaches();
+            tc.resetBaseFigureCache();
             reCacheBaseFigure(genomeView.genome);
         }
     }

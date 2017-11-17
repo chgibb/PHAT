@@ -13,6 +13,7 @@ sassc
 sassc.exe
 forDist/styles/jquery.minicolors.css
 forDist/styles/jquery.minicolors.png
+forDist/styles/spinner.css
 forDist/*.dll
 forDist/*.jar
 forDist/FastQC/**
@@ -23,3 +24,7 @@ src/installUpdateProcess/*.dll
 \.idea/
 src/**/*.js
 src/*.js
+scripts/diffAndBuildPatch.js
+scripts/downloadFullUpdateFromSecondLastTag.js
+scripts/getReleaseTypeFromPackage.js
+scripts/rollup.js

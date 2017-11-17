@@ -43,6 +43,23 @@ let coverageTrackCache = new Array<CachedCoverageTrackSVG>();;
 let SNPTrackCache = new Array<CachedSNPTrackSVG>();
 
 /**
+ * Compile and overwrite disk cache for track
+ * 
+ * @export
+ * @param {cf.RenderedCoverageTrackRecord} track 
+ * @param {cf.CircularFigure} figure 
+ * @returns {Promise<string>} 
+ */
+export function compileCoverageTrack(track : cf.RenderedCoverageTrackRecord,figure : cf.CircularFigure) : Promise<string>
+{
+    return new Promise<string>(async (resolve,reject) => {
+        let svg = await cf.compileCoverageTrackSVG(track,figure);
+        cf.cachCoverageTrackSVG(track,svg);
+        resolve(svg);
+    });
+}
+
+/**
  * Clear the in-memory cache of the SVG for the base figure
  * 
  * @export
@@ -65,6 +82,16 @@ export function resetCaches() : void
 }
 
 /**
+ * Reset just the base figure cache
+ * 
+ * @export
+ */
+export function resetBaseFigureCache() : void
+{
+    baseFigureSVG = undefined;
+}
+
+/**
  * Update caches for newFigure with new data (if changes are detected).
  * Will reset and rebuild caches if this function is called with a figure
  * different from the one used the last time it was called
@@ -72,14 +99,13 @@ export function resetCaches() : void
  * @export
  * @param {cf.CircularFigure} newFigure 
  */
-export function refreshCache(newFigure : cf.CircularFigure) : void
+export async function refreshCache(newFigure : cf.CircularFigure)
 {
     if(!figure || newFigure.uuid != figure.uuid)
     {
         resetCaches();
         figure = newFigure;
     }
-    console.log(newFigure);
     if(!newFigure.isInteractive)
     {
         if(!baseFigureSVG)
@@ -120,19 +146,11 @@ export function refreshCache(newFigure : cf.CircularFigure) : void
             try
             {
                 coverageTrackCache.push(new CachedCoverageTrackSVG(newFigure.renderedCoverageTracks[i]));
-        
             }
             catch(err)
             {
-                ipc.send(
-                    "runOperation",
-                    <AtomicOperationIPC>{
-                        opName : "compileTemplates",
-                        figure : newFigure,
-                        uuid : newFigure.renderedCoverageTracks[i].uuid,
-                        compileBase : false
-                    }
-                );
+                await compileCoverageTrack(newFigure.renderedCoverageTracks[i],newFigure);
+                coverageTrackCache.push(new CachedCoverageTrackSVG(newFigure.renderedCoverageTracks[i]));
             }
         }
     }
@@ -215,15 +233,6 @@ export function getCachedSNPTrack(trackRecord : cf.RenderedSNPTrackRecord) : str
  */
 export function removeTrack(uuid : string) : void
 {
-    for(let i = 0; i != coverageTrackCache.length; ++i)
-    {
-        if(coverageTrackCache[i].trackRecord.uuid == uuid)
-        {
-            coverageTrackCache.splice(i,1);
-            console.log("removed "+uuid);
-            return;
-        }
-    }
     for(let i = 0; i != SNPTrackCache.length; ++i)
     {
         if(SNPTrackCache[i].trackRecord.uuid == uuid)
@@ -235,14 +244,16 @@ export function removeTrack(uuid : string) : void
     }
 }
 
+
 /**
  * Triggers a compile for each compononent of newFigure (including non-visible data tracks) regardless of cache status.
  * Will only trigger a compile for the base figure if the figure is non-interactive
+ * 
  * @export
  * @param {cf.CircularFigure} newFigure 
- * @returns {void} 
+ * @returns 
  */
-export function triggerReCompileForWholeFigure(newFigure : cf.CircularFigure) : void
+export async function triggerReCompileForWholeFigure(newFigure : cf.CircularFigure)
 {
     if(!figure)
         return;
@@ -259,15 +270,7 @@ export function triggerReCompileForWholeFigure(newFigure : cf.CircularFigure) : 
     }
     for(let i = 0; i != coverageTrackCache.length; ++i)
     {
-        ipc.send(
-            "runOperation",
-            <AtomicOperationIPC>{
-                opName : "compileTemplates",
-                figure : newFigure,
-                compileBase : false,
-                uuid : coverageTrackCache[i].trackRecord.uuid
-            }
-        );
+        coverageTrackCache[i].svg = await compileCoverageTrack(coverageTrackCache[i].trackRecord,newFigure);
     }
     for(let i = 0; i != SNPTrackCache.length; ++i)
     {

@@ -1,4 +1,4 @@
-import * as fse from "fs-extra";
+const fse = require("fs-extra");
 const uuidv4 : () => string = require("uuid/v4");
 
 import * as atomic from "./atomicOperations";
