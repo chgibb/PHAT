@@ -10,6 +10,8 @@ const ipc = electron.ipcRenderer;
 const Dialogs = require("dialogs");
 const dialogs = Dialogs();
 
+import {dockThisWindow} from "./dock";
+
 /*
  Adapted from answer by Fizer Khan
  http://stackoverflow.com/questions/205688/javascript-exception-handling
@@ -59,5 +61,9 @@ window.onkeypress = function(e : KeyboardEvent){
                 }
             }
         );
+    }
+    else if(e.key == "2" && e.ctrlKey)
+    {
+        dockThisWindow();
     }
 }

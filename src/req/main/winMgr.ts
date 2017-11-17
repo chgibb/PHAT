@@ -7,6 +7,7 @@ const BrowserWindow = electron.BrowserWindow;
 
 import * as dataMgr from "./dataMgr";
 import {GetKeyEvent,KeyChangeEvent} from "./../ipcEvents";
+import {getReadable} from "../getAppPath";
 
 
 export class WindowRef
@@ -28,11 +29,24 @@ export let windowCreators : {
 	[index : string] : WindowCreator;
 } = {};
 
+/**
+ * Opens ref with the given refName
+ * 
+ * @export
+ * @param {string} refName 
+ * @param {Electron.BrowserWindow} ref 
+ */
 export function pushWindow(refName : string,ref : Electron.BrowserWindow) : void
 {
 	windows.push(new WindowRef(refName,ref));
 }
 
+/**
+ * Get the PIDs of all open window's webContents
+ * 
+ * @export
+ * @returns {Array<number>} 
+ */
 export function getWindowPIDs() : Array<number>
 {
 	for(let i : number = windows.length - 1; i >= 0; --i)
@@ -54,6 +68,53 @@ export function getWindowPIDs() : Array<number>
 	return res;
 }
 
+/**
+ * Get all WebContents not associated with a BrowserWindow
+ * 
+ * @export
+ * @returns {Array<Electron.WebContents>} 
+ */
+export function getFreeWebContents() : Array<Electron.WebContents>
+{
+	for(let i : number = windows.length - 1; i >= 0; --i)
+	{
+		try
+		{
+			windows[i].window.isResizable();
+		}
+		catch(err)
+		{
+			windows.splice(i,1);
+		}
+	}
+	let res = new Array<Electron.WebContents>();
+
+	let webContents = electron.webContents.getAllWebContents();
+
+	for(let i = 0; i != webContents.length; ++i)
+	{
+		let found = false;
+		for(let k = 0; k != windows.length; ++k)
+		{
+			if(webContents[i].id == windows[k].window.webContents.id)
+			{
+				found = true;
+				break;
+			}
+		}
+		if(!found)
+			res.push(webContents[i]);
+	}
+
+	return res;
+}
+
+/**
+ * Get all open windows
+ * 
+ * @export
+ * @returns {Array<WindowRef>} 
+ */
 export function getOpenWindows() : Array<WindowRef>
 {
 	for(let i : number = windows.length - 1; i >= 0; --i)
@@ -70,6 +131,12 @@ export function getOpenWindows() : Array<WindowRef>
 	return windows;
 }
 
+/**
+ * Close all windows except those with the given refName
+ * 
+ * @export
+ * @param {string} refName 
+ */
 export function closeAllExcept(refName : string) : void
 {
 	for(let i : number = windows.length - 1; i >= 0; --i)
@@ -90,6 +157,13 @@ export function closeAllExcept(refName : string) : void
 	}
 }
 
+/**
+ * Get all windows with the given refName
+ * 
+ * @export
+ * @param {string} refName 
+ * @returns {Array<Electron.BrowserWindow>} 
+ */
 export function getWindowsByName(refName : string) : Array<Electron.BrowserWindow>
 {
 	let res : Array<Electron.BrowserWindow> = new Array<Electron.BrowserWindow>();
@@ -113,6 +187,16 @@ export function getWindowsByName(refName : string) : Array<Electron.BrowserWindo
 	}
 	return res;
 }
+
+/**
+ * Sends the specified key to the given sender using refName
+ * 
+ * @export
+ * @param {string} channel 
+ * @param {string} key 
+ * @param {string} refName 
+ * @param {Electron.WebContents} sender 
+ */
 export function pushKeyTo(
     channel : string,
     key : string,
@@ -133,7 +217,13 @@ export function pushKeyTo(
         );
     }
 }
-
+/**
+ * Push key on channel to all subscribing webcontents
+ * 
+ * @export
+ * @param {string} channel 
+ * @param {string} key 
+ */
 export function publishChangeForKey(channel : string,key : string) : void
 {
     for(let i : number = 0; i != dataMgr.keySubs.length; ++i)
@@ -152,7 +242,20 @@ export function publishChangeForKey(channel : string,key : string) : void
                         val : dataMgr.getKey(channel,key)
                     }
                 );
-            }
+			}
+			let webContents = getFreeWebContents();
+			for(let k : number = 0; k != webContents.length; ++k)
+            {
+                webContents[k].send(
+                    dataMgr.keySubs[i].replyChannel,
+                    <KeyChangeEvent>{
+                        action : "keyChange",
+                        channel : channel,
+                        key : key,
+                        val : dataMgr.getKey(channel,key)
+                    }
+                );
+			}
         }
     }
 }
@@ -188,7 +291,7 @@ export function createWithDefault(
 ) : Electron.BrowserWindow
 {
 		
-		let windowOptions = dataMgr.getKey(refName,"windowOptions");
+		let windowOptions : Electron.BrowserWindowConstructorOptions = dataMgr.getKey(refName,"windowOptions");
 		if(!windowOptions)
 		{
 			let display = electron.screen.getPrimaryDisplay();
@@ -256,6 +359,47 @@ export function createWithDefault(
 			}
 		);
 		return ref;
+}
+/**
+ * Create an empty webcontents host window, hooking into sizing and options for
+ * refName
+ * 
+ * @export
+ * @param {string} refName 
+ * @returns {Promise<void>} 
+ */
+export function createWCHost(refName : string) : Promise<void>
+{
+	return new Promise<void>((resolve,reject) => {
+		let ref = new BrowserWindow();
+		ref.loadURL(`file://${getReadable("wcHost.html")}`);
+
+		ref.on("close",function(){
+			saveBounds(ref,refName);
+		});
+
+		ref.on("move",function(){
+			saveBounds(ref,refName);
+		});
+
+		ref.on("resize",function(){
+			saveBounds(ref,refName);
+		});
+
+		ref.webContents.on("devtools-opened",function(){
+			ref.webContents.send("devtools-opened");
+		});
+
+		ref.webContents.on("devtools-closed",function(){
+			ref.webContents.send("devtools-closed");
+		});
+
+		ref.webContents.once("dom-ready",function(){
+			resolve();
+		});
+
+		pushWindow(refName,ref);
+	});
 }
 
 /**

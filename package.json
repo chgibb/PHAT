@@ -41,6 +41,7 @@
     "devDependencies": {
         "@chgibb/angularplasmid": "^1.0.5",
         "@chgibb/css-spinners": "^2.2.1",
+        "@chgibb/electron-tabs": "^0.8.0",
         "@chgibb/ng-node-compile": "^1.0.6",
         "@chgibb/ngplasmid": "^0.0.8",
         "@claviska/jquery-minicolors": "^2.2.6",
@@ -55,6 +56,7 @@
         "bundle-collapser": "^1.2.1",
         "delete-empty": "^1.0.1",
         "dialogs": "^1.1.19",
+        "dragula": "^3.7.2",
         "electron": "1.7.5",
         "electron-builder": "^19.8.0",
         "electron-ipc-stream": "^0.2.0",

@@ -1,5 +1,7 @@
 /// <reference path="../../../node_modules/@chgibb/ngplasmid/lib/html" />
 /// <reference path="../../../node_modules/@chgibb/ngplasmid/lib/directives" />
+/// <reference path="../../../node_modules/@chgibb/ngplasmid/lib/services" />
+/// <reference path="../../../node_modules/@chgibb/ngplasmid/lib/interpolate" />
 
 import * as fs from "fs";
 import * as readline from "readline";
