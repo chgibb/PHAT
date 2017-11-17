@@ -386,6 +386,14 @@ export function createWCHost(refName : string) : Promise<void>
 			saveBounds(ref,refName);
 		});
 
+		ref.webContents.on("devtools-opened",function(){
+			ref.webContents.send("devtools-opened");
+		});
+
+		ref.webContents.on("devtools-closed",function(){
+			ref.webContents.send("devtools-closed");
+		});
+
 		ref.webContents.once("dom-ready",function(){
 			resolve();
 		});
