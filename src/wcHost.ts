@@ -19,6 +19,8 @@ function pollWebContents(webView : any,arg : any) : void
     {
         console.log("ready");
         ipc.send(`guestInstance-${arg.guestinstance}-Attached`,{});
+        (<any>webview).style.height = "100%";
+        (<any>webview).style.width = "100%";
     }
     else
     {
