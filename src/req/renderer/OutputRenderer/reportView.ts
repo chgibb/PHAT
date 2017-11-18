@@ -8,6 +8,7 @@ import {getReadableAndWritable} from "./../../getAppPath";
 import * as viewMgr from "./../viewMgr";
 import * as masterView from "./masterView";
 import * as rightPanel from "./rightPanel";
+import * as reportView from "./reportView";
 
 import {VCF2JSONRow} from "./../../varScanMPileup2SNPVCF2JSON";
 import {Fasta} from "./../../fasta";
@@ -18,6 +19,10 @@ import {renderSNPPositionsTable} from "./reportView/renderSNPPositionsTable";
 import {renderMappedReadsPerContigTable} from "./reportView/renderMappedReadsPerContigTable";
 
 import {getReadable} from "./../../getAppPath";
+
+import {CSVExportDialog} from "./CSVExportDialog";
+import {XLSExportDialog} from "./XLSExportDialog";
+
 
 export class QCReportTableSortOptions
 {
@@ -75,13 +80,14 @@ export class View extends viewMgr.View
             }
         }
         return `
-        <img class="activeHover activeHoverButton" id="viewQC" src="${masterView.displayInfo == "QCInfo" ? getReadable("img/fastqButtonActive.png") : getReadable("img/fastqButton.png")}">
-        <img class="activeHover activeHoverButton" id="viewAlign" src="${masterView.displayInfo == "AlignmentInfo" ? getReadable("img/alignButtonActive.png") : getReadable("img/alignButton.png")}">
+            <img class="activeHover activeHoverButton" id="viewQC" src="${masterView.displayInfo == "QCInfo" ? getReadable("img/fastqButtonActive.png") : getReadable("img/fastqButton.png")}">
+            <img class="activeHover activeHoverButton" id="viewAlign" src="${masterView.displayInfo == "AlignmentInfo" ? getReadable("img/alignButtonActive.png") : getReadable("img/alignButton.png")}">
             ${renderQCReportTable()}
             ${renderAlignmentReportTable()}
             ${renderSNPPositionsTable(this.vcfRows)}
             ${renderMappedReadsPerContigTable()}
-
+            <br/><button id="exportXLS">Export Excel</button>
+            <br/><button id="exportCSV">Export CSV</button>
         `;
     }
     public postRender() : void{}
@@ -221,6 +227,18 @@ export class View extends viewMgr.View
         if(event.target.id == "viewAlign"){
             masterView.displayInfo = "AlignmentInfo";
             viewMgr.render();
+            return;
+        }
+
+        if(event.target.id == "exportXLS")
+        {   
+            let reportView = <reportView.View>viewMgr.getViewByName("reportView",masterView.views);
+            XLSExportDialog(reportView.renderView());
+            return;
+        }
+        if (event.target.id == "exportCSV"){
+            let reportView = <reportView.View>viewMgr.getViewByName("reportView",masterView.views);
+            CSVExportDialog(reportView.renderView());
             return;
         }
 
