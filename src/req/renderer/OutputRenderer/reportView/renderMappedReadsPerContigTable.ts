@@ -25,12 +25,12 @@ export function renderMappedReadsPerContigTable() : string
             })()}
             ${(()=>{
                 let res = "";
-                for(let i = 0; i != masterView.alignData.length-1; ++i)
+                for(let i = 0; i != masterView.alignData.length; ++i)
                 {
                     
                     if(masterView.alignData[i].uuid == masterView.inspectingUUID)
                     {
-                        for(let k = 0; k != masterView.alignData[i].idxStatsReport.length; ++k)
+                        for(let k = 0; k != masterView.alignData[i].idxStatsReport.length-1; ++k)
                         {
                                 res += "<tr>";
                                 if(rightPanel.mapppedReadsPerContigInfoSelection.refSeqName)
