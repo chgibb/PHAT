@@ -25,7 +25,7 @@ export function renderMappedReadsPerContigTable() : string
             })()}
             ${(()=>{
                 let res = "";
-                for(let i = 0; i != masterView.alignData.length; ++i)
+                for(let i = 0; i != masterView.alignData.length-1; ++i)
                 {
                     
                     if(masterView.alignData[i].uuid == masterView.inspectingUUID)
