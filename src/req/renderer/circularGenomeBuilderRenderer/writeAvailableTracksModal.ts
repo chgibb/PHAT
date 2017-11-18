@@ -9,7 +9,7 @@ import {AlignData} from "./../../alignData";
 import {AtomicOperationIPC} from "./../../atomicOperationsIPC";
 import {getReadable} from "./../../getAppPath";
 
-require("@claviska/jquery-minicolors");
+require("@pynner/jquery-minicolors");
 let selectedAlign : AlignData;
 /**
  * Set the selected alignment to view track options for

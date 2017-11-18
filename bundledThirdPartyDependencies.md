@@ -59,7 +59,7 @@
 - Pileup.js
 
 ## NPM Dependencies
-- @claviska/jquery-minicolors 2.2.6  
+- @pynner/jquery-minicolors 2.2.6  
 - @types/electron  1.4.33  
 - @types/fs-extra  0.0.37  
 - @types/jquery 2.0.40  
