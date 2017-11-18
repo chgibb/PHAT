@@ -259,78 +259,84 @@ export function publishChangeForKey(channel : string,key : string) : void
         }
     }
 }
-
 /**
- * Creates a new renderer window with default events attached.
- * Also initializes a state channel with refName if it does not already exist.
- * If a state channel already exists with refName, then the new window will be initalized
- * with the saved windowOptions on that channel.
- * If a state channel does not already exist then the window's width, height,title and alwaysOnTop
- * attributes will be taken from the function's paramaters.
+ * Initializes window options on refName
+ * 
+ * @export
  * @param {string} title - Text to display on window border
  * @param {string} refName - State channel for this window to save it's bounds and position to / load from
- * @param {number} width - Width to initialize window with
+ * @param {number} width - Width to initialize window with 
  * @param {number} height - Height to initialize window with
- * @param {string} html - Path to HTML file to load into window
- * @param {boolean} debug - Turn on dev tools on window open
- * @param {boolean} alwaysOnTop - Window will always be ontop of all other windows
- * @param {number} minWidth - Minimum width for window
- * @param {number} minHeight - Minimum height for window
- * @returns {Electron.BrowserWindow} - Reference to created window object
+ * @param {boolean} [debug] - Turn on dev tools on window open
+ * @param {boolean} [alwaysOnTop] - Window will always be ontop of all other windows
+ * @param {number} [minWidth] - Minimum width for window
+ * @param {number} [minHeight] - Minimum height for window
  */
-export function createWithDefault(
+export function initWindowOptions(
 	title : string,
 	refName : string,
 	width : number,
 	height : number,
-	html : string,
-	debug? : boolean,
 	alwaysOnTop? : boolean,
 	minWidth? : number,
 	minHeight? : number
+) : void {
+	let windowOptions : Electron.BrowserWindowConstructorOptions = dataMgr.getKey(refName,"windowOptions");
+	if(!windowOptions)
+	{
+		let display = electron.screen.getPrimaryDisplay();
+		if(refName == "toolBar")
+		{
+			width = display.workArea.width/4;
+			height = display.workArea.height/8;
+		}
+		let x = (display.workArea.width/2)-(width/2);
+		let y = 0;
+		windowOptions = 
+		{
+			x : x,
+			y : y,
+			width : width,
+			height : height,
+			useContentSize : false,
+			center : true,
+			minWidth: minWidth,
+			minHeight: minHeight,
+			resizable : true,
+			movable : true,
+			minimizable : true,
+			maximizable : true,
+			closable : true,
+			alwaysOnTop : alwaysOnTop,
+			fullscreen : false,
+			title : title,
+			icon : './../icon.png',
+			webPreferences : {
+				nodeIntegrationInWorker : true
+			}
+			
+		};
+		
+		dataMgr.setKey(refName,"windowOptions",windowOptions);
+	}
+}
+/**
+ * Opens a new window using window options identified by refName
+ * 
+ * @export
+ * @param {string} refName - State channel to retrieve options from. Must be already initialized
+ * @param {string} html - URL to load
+ * @param {boolean} debug - Initial state of devtools
+ * @returns {Electron.BrowserWindow} 
+ */
+export function createFromOptions(
+	refName : string,
+	html : string,
+	debug : boolean
 ) : Electron.BrowserWindow
 {
-		
 		let windowOptions : Electron.BrowserWindowConstructorOptions = dataMgr.getKey(refName,"windowOptions");
-		if(!windowOptions)
-		{
-			let display = electron.screen.getPrimaryDisplay();
-			if(refName == "toolBar")
-			{
-				width = display.workArea.width/4;
-				height = display.workArea.height/8;
-			}
-			let x = (display.workArea.width/2)-(width/2);
-			let y = 0;
-			windowOptions = 
-			{
-				x : x,
-				y : y,
-				width : width,
-				height : height,
-				useContentSize : false,
-				center : true,
-				minWidth: minWidth,
-				minHeight: minHeight,
-				resizable : true,
-				movable : true,
-				minimizable : true,
-				maximizable : true,
-				closable : true,
-				alwaysOnTop : alwaysOnTop,
-				fullscreen : false,
-				title : title,
-				icon : './../icon.png',
-				webPreferences : {
-					nodeIntegrationInWorker : true
-				}
-				
-			};
-			
-			dataMgr.setKey(refName,"windowOptions",windowOptions);
-		}
-		
-		
+
 		let ref = new BrowserWindow(windowOptions);
 
 		ref.loadURL(html);
@@ -371,7 +377,9 @@ export function createWithDefault(
 export function createWCHost(refName : string) : Promise<void>
 {
 	return new Promise<void>((resolve,reject) => {
-		let ref = new BrowserWindow();
+		let windowOptions : Electron.BrowserWindowConstructorOptions = dataMgr.getKey(refName,"windowOptions");
+
+		let ref = new BrowserWindow(windowOptions);
 		ref.loadURL(`file://${getReadable("wcHost.html")}`);
 
 		ref.on("close",function(){
