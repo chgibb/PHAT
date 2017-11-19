@@ -124,24 +124,6 @@ export interface Tab
 let refNameToTab : {[key : string] : Tab;} = {};
 
 /**
- * Map from a tab title to its window reference name
- * 
- * @param {string} title 
- * @returns {(string | undefined)} 
- */
-function getRefNameFromTitle(title : string) : string | undefined
-{
-    for(let i in refNameToTab)
-    {
-        if(refNameToTab[i].title == title)
-        {
-            return i;
-        }
-    }
-    return undefined;
-}
-
-/**
  * Allow docking of windows into this window
  * 
  * @export
@@ -161,6 +143,10 @@ export function initializeWindowDock() : void
             active : tab.active,
             webviewAttributes : {nodeintegration : true}
         });
+
+        //add prop
+        newTab.refName = arg.refName;
+
         //forward console messages from tab into the window's console
         newTab.webview.addEventListener("console-message",function(e : any){
             console.log(`${tab.title}: ${e.message}`);
@@ -213,7 +199,7 @@ export function unDockActiveTab() : void
         "runOperation",
         <AtomicOperationIPC>{
             opName : "unDockWindow",
-            refName : getRefNameFromTitle(tabGroup.getActiveTab().title),
+            refName : tabGroup.getActiveTab().refName,
             guestinstance : tabGroup.getActiveTab().webview.guestinstance
         }
     );
