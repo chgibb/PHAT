@@ -66,6 +66,19 @@ function ensureTabGroupInit() : void
         }
     });
 
+    window.addEventListener("keypress",function(this : Window,e : KeyboardEvent){
+        if(e.ctrlKey)
+        {
+            if(e.key == "w")
+            {
+                let activeTab = tabGroup.getActiveTab();
+                if(activeTab)
+                    activeTab.close();
+                return;
+            }
+        }
+    });
+
     //map window reference names to config objects for constructing tabs
     refNameToTab["input"] = <Tab>{
         filePath : "Input.html",
