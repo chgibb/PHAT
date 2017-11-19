@@ -4,6 +4,7 @@ const webContents = electron.webContents;
 
 import * as atomic from "./atomicOperations";
 import * as winMgr from "./../main/winMgr";
+
 export class UnDockWindow extends atomic.AtomicOperation
 {
     public refName : string;
