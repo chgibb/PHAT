@@ -4,7 +4,7 @@ import {add} from "./afterProjectLoad";
 
 add(function(){
 	winMgr.initWindowOptions(
-		"circularGenomeBuilder",
+		"Circular Genome Builder",
 		"circularGenomeBuilder",
 		928,300,
 		false,
