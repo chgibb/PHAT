@@ -52,6 +52,8 @@ import {LoadCurrentlyOpenProject} from "./../operations/LoadCurrentlyOpenProject
 import {DockWindow} from "./../operations/DockWindow";
 import {UnDockWindow} from "./../operations/UnDockWindow";
 
+import {ChangeTitle} from "./../operations/ChangeTitle";
+
 import * as winMgr from "./winMgr";
 
 import {File,getPath} from "./../file";
@@ -122,6 +124,8 @@ app.on
 
 		atomicOp.register("dockWindow",DockWindow);
 		atomicOp.register("unDockWindow",UnDockWindow);
+
+		atomicOp.register("changeTitle",ChangeTitle);
 
 		//on completion of any operation, wait and then broadcast the queue to listening windows
 		atomicOp.setOnComplete(
@@ -596,6 +600,13 @@ ipc.on(
 				guestinstance : arg.guestinstance
 			});
 		}
+		else if(arg.opName == "changeTitle")
+		{
+			atomicOp.addOperation("changeTitle",{
+				id : arg.id,
+				newTitle : arg.newTitle
+			});
+		}
 		dataMgr.setKey("application","operations",atomicOp.operationsQueue);
 		winMgr.publishChangeForKey("application","operations");
 	}
@@ -966,9 +977,17 @@ atomicOp.updates.on(
 );
 
 atomicOp.updates.on(
-	"unDockWindow",function(op : CompileTemplates)
+	"unDockWindow",function(op : UnDockWindow)
 	{
 		dataMgr.setKey("application","operations",atomicOp.operationsQueue);
 		winMgr.publishChangeForKey("application","operations");
 	}
 );
+
+atomicOp.updates.on(
+	"changeTitle",function(op : ChangeTitle)
+	{
+		dataMgr.setKey("application","operations",atomicOp.operationsQueue);
+		winMgr.publishChangeForKey("application","operations");
+	}
+)
