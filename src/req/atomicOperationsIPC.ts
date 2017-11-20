@@ -53,6 +53,10 @@ export interface AtomicOperationIPC
 
     refName? : string;
     guestinstance? : number;
+
+    id? : number;
+
+    newTitle? : string;
 }
 
 /**
