@@ -4,7 +4,6 @@ const ipc = electron.ipcRenderer;
 
 import {AtomicOperationIPC} from "./../atomicOperationsIPC";
 import {getReadable} from "./../getAppPath";
-import { AtomicOperation } from "../operations/atomicOperations";
 
 let electronTabs : any = undefined;
 let tabGroup : any = undefined;
@@ -77,6 +76,15 @@ function ensureTabGroupInit() : void
                 return;
             }
         }
+    });
+
+    ipc.on("changeTitle",function(event : Electron.IpcMessageEvent,arg : any){
+        tabGroup.eachTab(function(currentTab : any,index : number,tabs : Array<any>){
+            if(currentTab.webview.getWebContents().id == arg.id)
+            {
+                currentTab.setTitle(arg.newTitle);
+            }
+        });
     });
 
     //map window reference names to config objects for constructing tabs
