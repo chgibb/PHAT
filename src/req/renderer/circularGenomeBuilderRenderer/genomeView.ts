@@ -14,6 +14,7 @@ import {AlignData} from "./../../alignData";
 import * as cf from "./../circularFigure";
 import {displayFigure} from "./displayFigure";
 import {centreFigure} from "./centreFigure";
+import {changeWindowTitle} from "./../changeWindowTitle";
 import {showGenericLoadingSpinnerInNavBar,hideSpinnerInNavBar} from "./loadingSpinner";
 import {setSelectedContigByUUID} from "./writeContigEditorModal";
 import {reCacheBaseFigure} from "./reCacheBaseFigure";
@@ -173,10 +174,10 @@ export class GenomeView extends viewMgr.View implements cf.FigureCanvas
                 cf.cacheBaseFigure(self.genome);
                 let masterView = <masterView.View>viewMgr.getViewByName("masterView");
                 let genomeView = <GenomeView>viewMgr.getViewByName("genomeView",masterView.views);
-
                 
                 //Save changes
                 masterView.saveFigureChanges();
+                changeWindowTitle(self.genome.name);
                 //Re render
                 genomeView.firstRender = true;
                 viewMgr.render();
