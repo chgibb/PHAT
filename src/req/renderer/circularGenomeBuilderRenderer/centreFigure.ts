@@ -16,8 +16,8 @@ export function centreFigure(div : HTMLElement,figure : cf.CircularFigure) : voi
         //expand the div to the new window size
         div.style.zIndex = "-1";
         div.style.position = "absolute";
-        div.style.height = `${$(window).height()}px`;
-        div.style.width = `${$(window).width()}px`;
+        div.style.height = `${document.documentElement.clientHeight}px`;
+        div.style.width = `${document.documentElement.clientWidth}px`;
         div.style.zoom = `${figure.zoomFactor}`;
 
         let x = 0;
