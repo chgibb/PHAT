@@ -220,6 +220,7 @@ export class GenomeView extends viewMgr.View implements cf.FigureCanvas
             //All figure updates are handled through angular bindings
             if(this.firstRender)
             {
+                let startUp = performance.now();
                 showGenericLoadingSpinnerInNavBar();
                 
                 let self = this;
@@ -228,6 +229,7 @@ export class GenomeView extends viewMgr.View implements cf.FigureCanvas
                         hideSpinnerInNavBar();
                         setTimeout(function(){
                             window.dispatchEvent(new Event("resize"));
+                            console.log(`re-rendering figure took ${(performance.now()-startUp)}`);
                         },10);
                     });
                 },10);
