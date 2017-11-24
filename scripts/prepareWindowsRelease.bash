@@ -2,7 +2,7 @@
 
 if [[ "$APPVEYOR" == true ]]; then
     printf "Detected Appveyor\n"
-    if [["$APPVEYOR_REPO_TAG" == false]]; then
+    if [[ "$APPVEYOR_REPO_TAG" == false ]]; then
         printf "Not running tag build. Aborting artifact preparation.\n"
         exit 0
     fi
