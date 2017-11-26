@@ -36,7 +36,7 @@ export class View extends viewMgr.View
                             <tr>
                                 <td>${this.aligns[i].alias}</td>
                                 <td>${this.aligns[i].sizeString ? this.aligns[i].sizeString : "Unknown"}</td>
-                                <td ${this.aligns[i].fasta ? "" : `id="${this.aligns[i].uuid}LinkRef" class="activeHover"`}>${this.aligns[i].fasta ? this.aligns[i].fasta.alias : "Not Linked"}</td>
+                                <td ${this.aligns[i].fasta ? "" : `id="${this.aligns[i].uuid}LinkRef" class="cellHover"`}>${this.aligns[i].fasta ? this.aligns[i].fasta.alias : "Not Linked"}</td>
                             </tr>
                         `;
                     }
