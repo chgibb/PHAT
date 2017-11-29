@@ -1,5 +1,15 @@
 import * as winMgr from "./winMgr";
 import {getReadable} from "./../getAppPath";
+import {add} from "./afterProjectLoad";
+
+add(function(){
+	winMgr.initWindowOptions(
+		"No Sam Header",
+		"noSamHeaderPrompt",
+		928,300,
+		false, 545, 85
+	);
+});
 
 winMgr.windowCreators["noSamHeaderPrompt"] = 
 {
@@ -7,12 +17,10 @@ winMgr.windowCreators["noSamHeaderPrompt"] =
 	{
 		winMgr.pushWindow(
 			"noSamHeaderPrompt",
-			winMgr.createWithDefault(
-				"No Sam Header",
+			winMgr.createFromOptions(
 				"noSamHeaderPrompt",
-				928,300,
 				"file://"+getReadable("noSamHeaderPrompt.html"),
-				false,false, 545, 85
+				false
 			)
 		);
 	}

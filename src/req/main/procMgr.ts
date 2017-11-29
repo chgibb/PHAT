@@ -1,5 +1,16 @@
 import * as winMgr from "./winMgr";
 import {getReadable} from "./../getAppPath";
+import {add} from "./afterProjectLoad";
+
+add(function(){
+    winMgr.initWindowOptions(
+        "Process Manager",
+        "procMgr",
+        543,331,
+        false,
+        0,0
+    );
+});
 
 winMgr.windowCreators["procMgr"] = 
 {
@@ -7,13 +18,10 @@ winMgr.windowCreators["procMgr"] =
     {
         winMgr.pushWindow(
             "procMgr",
-            winMgr.createWithDefault(
-                "Process Manager",
+            winMgr.createFromOptions(
                 "procMgr",
-                543,331,
                 "file://"+getReadable("procMgr.html"),
-                false,false,
-                0,0
+                false
             )
         );
     }
