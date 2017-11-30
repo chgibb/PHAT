@@ -4,6 +4,7 @@ const ipc = electron.ipcRenderer;
 import {GetKeyEvent,KeySubEvent} from "./req/ipcEvents";
 
 import * as viewMgr from "./req/renderer/viewMgr";
+import {makeWindowDockable} from "./req/renderer/dock";
 
 import * as masterView from "./req/renderer/inputRenderer/masterView";
 import * as fastqView from "./req/renderer/inputRenderer/FastqView";
@@ -39,6 +40,7 @@ $
 (
     function()
     {
+        makeWindowDockable("input");
         viewMgr.setPostRender(postRender);
         masterView.addView(viewMgr.views,'view');
 
@@ -158,20 +160,24 @@ $
                         if(arg.val !== undefined)
                         {
                             let ops : Array<AtomicOperation> = arg.val;
-                            console.log(ops);
-                            for(let i = 0; i != ops.length; ++i)
+                            //occasionally when docking, we can recieve the deleted window docking operation
+                            try
                             {
-                                if(ops[i].running)
+                                for(let i = 0; i != ops.length; ++i)
                                 {
-                                    if(ops[i].name == "inputBamFile" || ops[i].name == "linkRefSeqToAlignment" ||
-                                    ops[i].name == "indexFastaForVisualization" || ops[i].name == "indexFastaForAlignment")
+                                    if(ops[i].running)
                                     {
-                                        masterView.progressMessage = ops[i].progressMessage;
-                                        found = true;
-                                        break;
+                                        if(ops[i].name == "inputBamFile" || ops[i].name == "linkRefSeqToAlignment" ||
+                                        ops[i].name == "indexFastaForVisualization" || ops[i].name == "indexFastaForAlignment")
+                                        {
+                                            masterView.progressMessage = ops[i].progressMessage;
+                                            found = true;
+                                            break;
+                                        }
                                     }
                                 }
                             }
+                            catch(err){}
                         }
                     }
                     if(!found)
