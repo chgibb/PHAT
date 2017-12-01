@@ -316,8 +316,6 @@ export class View extends viewMgr.View
         {
             if(masterView.displayInfo == "QCInfo")
             {
-                //restore tab radios
-                (<HTMLInputElement>document.getElementById("QCInfo")).checked = true;
                 //restore individual options checkboxs
                 for(let i in this.fastQInfoSelection)
                 {
@@ -330,7 +328,6 @@ export class View extends viewMgr.View
             }
             if(masterView.displayInfo == "RefSeqInfo")
             {
-                (<HTMLInputElement>document.getElementById("RefSeqInfo")).checked = true;
                 for(let i in this.refSeqInfoSelection)
                 {
                     if(this.refSeqInfoSelection.hasOwnProperty(i))
@@ -345,7 +342,6 @@ export class View extends viewMgr.View
             }
             if(masterView.displayInfo == "AlignmentInfo")
             {
-                (<HTMLInputElement>document.getElementById("AlignmentInfo")).checked = true;
                 for(let i in this.alignmentInfoSelection)
                 {
                     if(this.alignmentInfoSelection.hasOwnProperty(i))
