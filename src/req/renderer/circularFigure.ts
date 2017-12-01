@@ -870,7 +870,7 @@ export function compileCoverageTrackSVG(trackRecord : RenderedCoverageTrackRecor
                     {
                         if(nodes[i].children[k].name == "plasmid")
                         {
-                            plasmid.fromNode(nodes[i].children[k]);
+                            plasmid.fromNode<html.Node>(nodes[i].children[k]);
                             break;
                         }
                     }
