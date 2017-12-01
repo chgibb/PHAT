@@ -623,17 +623,35 @@ export function getCoverageTrackSVGFromCache(trackRecord : RenderedCoverageTrack
 {
     return fs.readFileSync(getCachedCoverageTrackSVGPath(trackRecord)).toString();
 }
-
+/**
+ * Returns the path to the protocol buffer cache for the specified coverage track
+ * 
+ * @export
+ * @param {RenderedCoverageTrackRecord} trackRecord 
+ * @returns {string} 
+ */
 export function getCoverageTrackPBPath(trackRecord : RenderedCoverageTrackRecord) : string
 {
     return getReadableAndWritable(`rt/circularFigures/${trackRecord.uuidFigure}/coverage/${trackRecord.uuidAlign}/${trackRecord.uuidContig}/${trackRecord.uuid}.pb`);
 }
-
+/**
+ * Returns the disk protocol buffer cache for the specified coverage track
+ * 
+ * @export
+ * @param {RenderedCoverageTrackRecord} trackRecord 
+ * @returns {Buffer} 
+ */
 export function getCoverageTrackPBFromCache(trackRecord : RenderedCoverageTrackRecord) : Buffer
 {
     return fs.readFileSync(getCoverageTrackPBPath(trackRecord));
 }
-
+/**
+ * Overwrites the disk protocol buffer cache for the specified coverage track
+ * 
+ * @export
+ * @param {RenderedCoverageTrackRecord} trackRecord 
+ * @param {ngDirectives.Plasmid} plasmid 
+ */
 export function cacheCoverageTrackPB(trackRecord : RenderedCoverageTrackRecord,plasmid : ngDirectives.Plasmid) : void
 {
     let pb = pbDirectives.Node.create(plasmidToPB(plasmid));
