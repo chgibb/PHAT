@@ -12,7 +12,7 @@ const jsonFile = require("jsonfile");
 const uuidv4 : () => string = require("uuid/v4");
 const mkdirp = require("mkdirp");
 import * as html from "@chgibb/ngplasmid/lib/html";
-import * as directives from "@chgibb/ngplasmid/lib/directives";
+import * as ngDirectives from "@chgibb/ngplasmid/lib/directives";
 import * as pbDirectives from "@chgibb/ngplasmid/lib/directiveToPB";
 
 import {getReadableAndWritable} from "./../getAppPath";
@@ -817,7 +817,7 @@ export function compileCoverageTrackSVG(trackRecord : RenderedCoverageTrackRecor
         let nodes : Array<html.Node> = await html.loadFromString(
             assembleCompilableCoverageTrack(figure,trackRecord)
         );
-        let plasmid : directives.Plasmid = new directives.Plasmid();
+        let plasmid : ngDirectives.Plasmid = new ngDirectives.Plasmid();
         plasmid.$scope = {
             genome : figure
         };
