@@ -247,5 +247,5 @@ export function removeZombieTabs() : void
                 });
             });
         });
-    },10);
+    },100);
 }

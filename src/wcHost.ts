@@ -1,4 +1,5 @@
 import * as electron from "electron";
+import { setTimeout } from "timers";
 const ipc = electron.ipcRenderer;
 
 let webview = document.getElementsByTagName("webview")[0];
@@ -23,8 +24,11 @@ function pollWebContents(webView : any,arg : any) : void
     {
         console.log("ready");
         ipc.send(`guestInstance-${arg.guestinstance}-Attached`,{});
-        (<any>webview).style.height = "100%";
+        (<any>webview).style.height = "100%"; 
         (<any>webview).style.width = "100%";
+        setTimeout(function(){
+            (<any>webView).getWebContents().invalidate();
+        },100);
     }
     else
     {
