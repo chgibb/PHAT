@@ -142,17 +142,6 @@ export class View extends viewMgr.View
     public renderView() : string
     {
         return `
-            <div>
-                <div style="display:inline-block;">
-                    <input style="display:inline-block;" id="QCInfo" type="radio" name="selectedInfo" />
-                        <p style="display:inline-block;">FastQ QC Info</p>
-                </div>
-
-                <div style="display:inline-block;">
-                    <input style="display:inline-block;" id="AlignmentInfo" type="radio" name="selectedInfo" />
-                        <p style="display:inline-block;">Alignment Info</p>
-                </div>
-            </div>
             ${(()=>{
                 let res = "";
                 let masterView = <masterView.View>viewMgr.getViewByName("masterView");
@@ -314,14 +303,6 @@ export class View extends viewMgr.View
                     if(!found)
                         throw new Error("No alignment to inspect");
                 }
-                res += `
-                    <br />
-                    <br />
-                    <input type="radio" id="XLSExport" name="exportType">Excel</input>
-                    <input type="radio" id="CSVExport" name="exportType">CSV</input>
-                    <br />
-                    <button id="exportReport">Export</button
-                `;
 
                 return res;
             })()}
@@ -335,8 +316,6 @@ export class View extends viewMgr.View
         {
             if(masterView.displayInfo == "QCInfo")
             {
-                //restore tab radios
-                (<HTMLInputElement>document.getElementById("QCInfo")).checked = true;
                 //restore individual options checkboxs
                 for(let i in this.fastQInfoSelection)
                 {
@@ -349,7 +328,6 @@ export class View extends viewMgr.View
             }
             if(masterView.displayInfo == "RefSeqInfo")
             {
-                (<HTMLInputElement>document.getElementById("RefSeqInfo")).checked = true;
                 for(let i in this.refSeqInfoSelection)
                 {
                     if(this.refSeqInfoSelection.hasOwnProperty(i))
@@ -364,7 +342,6 @@ export class View extends viewMgr.View
             }
             if(masterView.displayInfo == "AlignmentInfo")
             {
-                (<HTMLInputElement>document.getElementById("AlignmentInfo")).checked = true;
                 for(let i in this.alignmentInfoSelection)
                 {
                     if(this.alignmentInfoSelection.hasOwnProperty(i))

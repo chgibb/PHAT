@@ -1,4 +1,13 @@
 (set -o igncr) 2>/dev/null && set -o igncr; # For Cygwin on Windows compaibility
+
+if [[ "$APPVEYOR" == true ]]; then
+    printf "Detected Appveyor\n"
+    if [[ "$APPVEYOR_REPO_TAG" != true ]]; then
+        printf "Not running tag build. Aborting artifact preparation.\n"
+        exit 0
+    fi
+fi
+
 bash scripts/cleanTests.bash
 bash scripts/build.bash
 bash scripts/optPackage.bash
@@ -34,4 +43,3 @@ cd ../
 mv phat-win32-x64/*.zip .
 
 node scripts/buildWinInstaller
-

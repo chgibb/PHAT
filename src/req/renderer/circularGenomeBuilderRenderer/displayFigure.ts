@@ -83,7 +83,7 @@ export async function displayInteractiveFigure(self : GenomeView) : Promise<void
         );
         //instead of forcing angular to walk through all the svgs as well as the actual angular templates
         //in the base figure we actually want compiled, separate them into separate divs
-        $div = $(`
+        $div = `
             <div id="${self.div}">
                                     
                 ${getSelectedDataTrackSVGsFromCache(self)}
@@ -92,8 +92,8 @@ export async function displayInteractiveFigure(self : GenomeView) : Promise<void
                     ${templates}
                     </div>
                 </div>
-        `);
-        $(document.body).append($div);
+        `;
+        document.body.insertAdjacentHTML("beforeend",$div);
         centreFigure(document.getElementById(self.div),self.genome);
         console.log("appended div");
 
