@@ -13,6 +13,7 @@ import {CircularFigure} from "./../circularFigure";
 import {reCacheBaseFigure} from "./reCacheBaseFigure";
 import {Fasta} from "./../../fasta";
 import {AlignData} from "./../../alignData";
+import {changeWindowTitle} from "./../changeWindowTitle";
 
 import * as GenomeView from "./genomeView";
 import * as tc from "./templateCache";
@@ -215,6 +216,7 @@ export class View extends viewMgr.View
                     ));
                     self.saveFigureChanges();
                     genomeView.genome = self.circularFigures[self.circularFigures.length - 1];
+                    changeWindowTitle(genomeView.genome.name);
                     genomeView.firstRender = true;
                     viewMgr.render();
                     self.setSelectedFigureInDropDown();
@@ -226,6 +228,7 @@ export class View extends viewMgr.View
                 if((<any>ev.target).id == `${self.circularFigures[i].uuid}Open`)
                 {
                     genomeView.genome = self.circularFigures[i];
+                    changeWindowTitle(genomeView.genome.name);
                     genomeView.firstRender = true;
                     viewMgr.render();
                     self.setSelectedFigureInDropDown();

@@ -3,6 +3,7 @@ const ipc = electron.ipcRenderer;
 
 import {GetKeyEvent,KeySubEvent} from "./req/ipcEvents";
 import * as viewMgr from "./req/renderer/viewMgr";
+import {makeWindowDockable} from "./req/renderer/dock";
 import * as reportView from "./req/renderer/AlignRenderer/reportView"
 
 const $ = require("jquery");
@@ -13,6 +14,7 @@ $
 (
     function()
     {
+        makeWindowDockable("align");
         reportView.addView(viewMgr.views,"container");
 
         viewMgr.changeView("report");

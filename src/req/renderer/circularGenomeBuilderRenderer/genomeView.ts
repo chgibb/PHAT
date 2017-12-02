@@ -14,6 +14,7 @@ import {AlignData} from "./../../alignData";
 import * as cf from "./../circularFigure";
 import {displayFigure} from "./displayFigure";
 import {centreFigure} from "./centreFigure";
+import {changeWindowTitle} from "./../changeWindowTitle";
 import {showGenericLoadingSpinnerInNavBar,hideSpinnerInNavBar} from "./loadingSpinner";
 import {setSelectedContigByUUID} from "./writeContigEditorModal";
 import {reCacheBaseFigure} from "./reCacheBaseFigure";
@@ -173,10 +174,10 @@ export class GenomeView extends viewMgr.View implements cf.FigureCanvas
                 cf.cacheBaseFigure(self.genome);
                 let masterView = <masterView.View>viewMgr.getViewByName("masterView");
                 let genomeView = <GenomeView>viewMgr.getViewByName("genomeView",masterView.views);
-
                 
                 //Save changes
                 masterView.saveFigureChanges();
+                changeWindowTitle(self.genome.name);
                 //Re render
                 genomeView.firstRender = true;
                 viewMgr.render();
@@ -219,6 +220,7 @@ export class GenomeView extends viewMgr.View implements cf.FigureCanvas
             //All figure updates are handled through angular bindings
             if(this.firstRender)
             {
+                let startUp = performance.now();
                 showGenericLoadingSpinnerInNavBar();
                 
                 let self = this;
@@ -227,6 +229,7 @@ export class GenomeView extends viewMgr.View implements cf.FigureCanvas
                         hideSpinnerInNavBar();
                         setTimeout(function(){
                             window.dispatchEvent(new Event("resize"));
+                            console.log(`re-rendering figure took ${(performance.now()-startUp)}`);
                         },10);
                     });
                 },10);

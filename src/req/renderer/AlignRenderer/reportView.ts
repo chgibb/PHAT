@@ -118,7 +118,7 @@ export class ReportView extends viewMgr.View
                         <br />
                         <br />
                     `;
-                    if(this.operations)
+                    if(this.operations !== undefined && this.operations.length)
                     {
                         for(let i = 0; i != this.operations.length; ++i)
                         {
