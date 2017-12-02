@@ -236,11 +236,12 @@ export class View extends viewMgr.View
                 }
             }
         }
-        document.getElementById("figureOptions").onclick = function(this : HTMLElement,ev : MouseEvent){
+        document.getElementById("figureOptions").onclick = async function(this : HTMLElement,ev : MouseEvent){
             if((<any>event.target).id == `${genomeView.genome.uuid}ToggleInteractivity`)
             {
                 genomeView.genome.isInteractive = !genomeView.genome.isInteractive;
                 self.saveFigureChanges();
+                await tc.triggerReCompileForWholeFigure(genomeView.genome);
                 genomeView.firstRender = true;
                 viewMgr.render();
             }
@@ -248,6 +249,7 @@ export class View extends viewMgr.View
             {
                 genomeView.genome.showContigNames = !genomeView.genome.showContigNames;
                 self.saveFigureChanges();
+                await tc.triggerReCompileForWholeFigure(genomeView.genome);
                 genomeView.firstRender = true;
                 viewMgr.render();
             }
@@ -319,7 +321,7 @@ export class View extends viewMgr.View
             );
         }
 
-        document.getElementById("updateNavBarButton").onclick = function(this : HTMLElement,ev : MouseEvent){
+        document.getElementById("updateNavBarButton").onclick = async function(this : HTMLElement,ev : MouseEvent){
             let radiusHasChanged = false;
             let trackIntervalChanged = false;
             let showIntervalChanged = false;
@@ -354,8 +356,8 @@ export class View extends viewMgr.View
             if(radiusHasChanged || trackIntervalChanged || showIntervalChanged)
             {
                 genomeView.firstRender = true;
-                tc.triggerReCompileForWholeFigure(genomeView.genome);
                 self.saveFigureChanges();
+                await tc.triggerReCompileForWholeFigure(genomeView.genome);
             }
             genomeView.updateScope();
             viewMgr.render();

@@ -411,7 +411,13 @@ export function deleteBaseFigureSVGFromCache(figure : CircularFigure) : void
     }
     catch(err){}
 }
-
+/**
+ * Compile base figure. Returns the resulting SVG
+ * 
+ * @export
+ * @param {CircularFigure} figure 
+ * @returns {Promise<string>} 
+ */
 export function compileBaseFigureSVG(figure : CircularFigure) : Promise<string>
 {
     return new Promise<string>(async (resolve,reject) => {

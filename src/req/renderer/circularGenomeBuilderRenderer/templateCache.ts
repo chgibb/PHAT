@@ -68,10 +68,24 @@ export function compileCoverageTrack(track : cf.RenderedCoverageTrackRecord,figu
  */
 export function compileSNPTrack(track : cf.RenderedSNPTrackRecord,figure : cf.CircularFigure) : Promise<string>
 {
-    
     return new Promise<string>(async (resolve,reject) => {
         let svg = await cf.compileSNPTrackSVG(track,figure);
         cf.cacheSNPTrackSVG(track,svg);
+        resolve(svg);
+    });
+}
+/**
+ * Compile and overwrite disk cache for figure's base figure SVG
+ * 
+ * @export
+ * @param {cf.CircularFigure} figure 
+ * @returns {Promise<string>} 
+ */
+export function compileBaseFigure(figure : cf.CircularFigure) : Promise<string>
+{
+    return new Promise<string>(async (resolve,reject) => {
+        let svg = await cf.compileBaseFigureSVG(figure);
+        cf.cacheBaseFigureSVG(figure,svg);
         resolve(svg);
     });
 }
@@ -133,14 +147,7 @@ export async function refreshCache(newFigure : cf.CircularFigure)
             }
             catch(err)
             {
-                ipc.send(
-                    "runOperation",
-                    <AtomicOperationIPC>{
-                        opName : "compileTemplates",
-                        figure : newFigure,
-                        compileBase : true
-                    }
-                );
+                baseFigureSVG = await compileBaseFigure(figure);
             }
         }
     }
@@ -265,18 +272,11 @@ export function removeTrack(uuid : string) : void
  */
 export async function triggerReCompileForWholeFigure(newFigure : cf.CircularFigure)
 {
-    if(!figure)
+    if(!newFigure)
         return;
-    if(!figure.isInteractive)
+    if(!newFigure.isInteractive)
     {
-        ipc.send(
-            "runOperation",
-            <AtomicOperationIPC>{
-                opName : "compileTemplates",
-                figure : newFigure,
-                compileBase : true
-            }
-        );
+        baseFigureSVG = await compileBaseFigure(newFigure);
     }
     for(let i = 0; i != coverageTrackCache.length; ++i)
     {
