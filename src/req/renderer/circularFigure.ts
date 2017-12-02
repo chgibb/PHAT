@@ -847,7 +847,6 @@ export function getSNPTrackSVGFromCache(trackRecord : RenderedSNPTrackRecord) : 
  */
 export function compileCoverageTrackSVG(trackRecord : RenderedCoverageTrackRecord,figure : CircularFigure) : Promise<string>
 {
-    let template = fs.readFileSync(getCachedCoverageTrackPath(trackRecord)).toString();
 
     return new Promise<string>(async (resolve,reject) => {
 
@@ -907,7 +906,6 @@ export function compileCoverageTrackSVG(trackRecord : RenderedCoverageTrackRecor
 
 export function compileSNPTrackSVG(trackRecord : RenderedSNPTrackRecord,figure : CircularFigure) : Promise<string>
 {
-    let template = fs.readFileSync(getCachedSNPTrackPath(trackRecord)).toString();
 
     return new Promise<string>(async (resolve,reject) => {
 
