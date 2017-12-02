@@ -241,17 +241,11 @@ export class View extends viewMgr.View
             {
                 genomeView.genome.isInteractive = !genomeView.genome.isInteractive;
                 self.saveFigureChanges();
-                await tc.triggerReCompileForWholeFigure(genomeView.genome);
-                genomeView.firstRender = true;
-                viewMgr.render();
             }
             if((<any>event.target).id == `${genomeView.genome.uuid}ToggleContigNames`)
             {
                 genomeView.genome.showContigNames = !genomeView.genome.showContigNames;
                 self.saveFigureChanges();
-                await tc.triggerReCompileForWholeFigure(genomeView.genome);
-                genomeView.firstRender = true;
-                viewMgr.render();
             }
             if((<any>event.target).id == `EditFigureName`)
             {
@@ -357,10 +351,8 @@ export class View extends viewMgr.View
             {
                 genomeView.firstRender = true;
                 self.saveFigureChanges();
-                await tc.triggerReCompileForWholeFigure(genomeView.genome);
             }
             genomeView.updateScope();
-            viewMgr.render();
         }
 
         //on modal dismissal
