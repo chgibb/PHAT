@@ -412,6 +412,37 @@ export function deleteBaseFigureSVGFromCache(figure : CircularFigure) : void
     catch(err){}
 }
 
+export function compileBaseFigureSVG(figure : CircularFigure) : Promise<string>
+{
+    return new Promise<string>(async (resolve,reject) => {
+
+        let nodes : Array<html.Node> = await html.loadFromString(
+            assembleCompilableBaseFigureTemplates(figure)
+        );
+
+        let plasmid : ngDirectives.Plasmid = new ngDirectives.Plasmid();
+        plasmid.$scope = {
+            genome : figure
+        };
+
+        for(let i = 0; i != nodes.length; ++i)
+        {
+            if(nodes[i].name == "div")
+            {
+                for(let k = 0; k != nodes[i].children.length; ++k)
+                {
+                    if(nodes[i].children[k].name == "plasmid")
+                    {
+                        plasmid.fromNode<html.Node>(nodes[i].children[k]);
+                        break;
+                    }
+                }
+            }
+        }
+        resolve(plasmid.renderStart()+plasmid.renderEnd());
+    });
+}
+
 /**
  * Returns the distance from the begginning of the figure to the begginning of the contig specified by contiguuid
  * 
