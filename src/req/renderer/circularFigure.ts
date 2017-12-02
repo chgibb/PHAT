@@ -848,6 +848,7 @@ export function getSNPTrackSVGFromCache(trackRecord : RenderedSNPTrackRecord) : 
 export function compileCoverageTrackSVG(trackRecord : RenderedCoverageTrackRecord,figure : CircularFigure) : Promise<string>
 {
     let template = fs.readFileSync(getCachedCoverageTrackPath(trackRecord)).toString();
+
     return new Promise<string>(async (resolve,reject) => {
 
         if(fs.existsSync(getCoverageTrackPBPath(trackRecord)))
@@ -875,6 +876,7 @@ export function compileCoverageTrackSVG(trackRecord : RenderedCoverageTrackRecor
             let nodes : Array<html.Node> = await html.loadFromString(
                 assembleCompilableCoverageTrack(figure,trackRecord)
             );
+
             let plasmid : ngDirectives.Plasmid = new ngDirectives.Plasmid();
             plasmid.$scope = {
                 genome : figure
@@ -901,6 +903,40 @@ export function compileCoverageTrackSVG(trackRecord : RenderedCoverageTrackRecor
         }
     });
 
+}
+
+export function compileSNPTrackSVG(trackRecord : RenderedSNPTrackRecord,figure : CircularFigure) : Promise<string>
+{
+    let template = fs.readFileSync(getCachedSNPTrackPath(trackRecord)).toString();
+
+    return new Promise<string>(async (resolve,reject) => {
+
+        let nodes : Array<html.Node> = await html.loadFromString(
+            assembleCompilableSNPTrack(figure,trackRecord)
+        );
+
+        let plasmid : ngDirectives.Plasmid = new ngDirectives.Plasmid();
+        plasmid.$scope = {
+            genome : figure
+        };
+
+        for(let i = 0; i != nodes.length; ++i)
+        {
+            if(nodes[i].name == "div")
+            {
+                for(let k = 0; k != nodes[i].children.length; ++k)
+                {
+                    if(nodes[i].children[k].name == "plasmid")
+                    {
+                        plasmid.fromNode<html.Node>(nodes[i].children[k]);
+                        break;
+                    }
+                }
+            }
+        }
+
+        resolve(plasmid.renderStart()+plasmid.renderEnd());
+    });
 }
 
 /**
