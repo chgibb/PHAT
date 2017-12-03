@@ -394,7 +394,7 @@ export function getBaseFigureFromCache(figure : CircularFigure) : string
  */
 export function getBaseFigureSVGFromCache(figure : CircularFigure) : string
 {
-    return (<any>fs.readFileSync(getReadableAndWritable(`rt/circularFigures/${figure.uuid}/baseFigure.svg`)));
+    return fs.readFileSync(getReadableAndWritable(`rt/circularFigures/${figure.uuid}/baseFigure.svg`)).toString();
 }
 
 /**
