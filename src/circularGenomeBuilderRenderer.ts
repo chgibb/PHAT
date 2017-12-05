@@ -87,7 +87,7 @@ $
         );
         ipc.on
         (
-            'circularGenomeBuilder',function(event : Electron.IpcMessageEvent,arg : any)
+            'circularGenomeBuilder',async function(event : Electron.IpcMessageEvent,arg : any)
             {
                 if(arg.action == "getKey" || arg.action == "keyChange")
                 {
@@ -130,6 +130,8 @@ $
                                     {
                                         found = true;
                                         genomeView.genome = masterView.circularFigures[i];
+                                        await tc.triggerReCompileForWholeFigure(genomeView.genome);
+                                        genomeView.firstRender = true;
                                         break;
                                     }
                                 }
