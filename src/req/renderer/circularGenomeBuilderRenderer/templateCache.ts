@@ -58,6 +58,37 @@ export function compileCoverageTrack(track : cf.RenderedCoverageTrackRecord,figu
         resolve(svg);
     });
 }
+/**
+ * Compile and overwrite disk cache for track
+ * 
+ * @export
+ * @param {cf.RenderedSNPTrackRecord} track 
+ * @param {cf.CircularFigure} figure 
+ * @returns {Promise<string>} 
+ */
+export function compileSNPTrack(track : cf.RenderedSNPTrackRecord,figure : cf.CircularFigure) : Promise<string>
+{
+    return new Promise<string>(async (resolve,reject) => {
+        let svg = await cf.compileSNPTrackSVG(track,figure);
+        cf.cacheSNPTrackSVG(track,svg);
+        resolve(svg);
+    });
+}
+/**
+ * Compile and overwrite disk cache for figure's base figure SVG
+ * 
+ * @export
+ * @param {cf.CircularFigure} figure 
+ * @returns {Promise<string>} 
+ */
+export function compileBaseFigure(figure : cf.CircularFigure) : Promise<string>
+{
+    return new Promise<string>(async (resolve,reject) => {
+        let svg = await cf.compileBaseFigureSVG(figure);
+        cf.cacheBaseFigureSVG(figure,svg);
+        resolve(svg);
+    });
+}
 
 /**
  * Clear the in-memory cache of the SVG for the base figure
@@ -116,14 +147,7 @@ export async function refreshCache(newFigure : cf.CircularFigure)
             }
             catch(err)
             {
-                ipc.send(
-                    "runOperation",
-                    <AtomicOperationIPC>{
-                        opName : "compileTemplates",
-                        figure : newFigure,
-                        compileBase : true
-                    }
-                );
+                baseFigureSVG = await compileBaseFigure(figure);
             }
         }
     }
@@ -175,15 +199,8 @@ export async function refreshCache(newFigure : cf.CircularFigure)
             }
             catch(err)
             {
-                ipc.send(
-                    "runOperation",
-                    <AtomicOperationIPC>{
-                        opName : "compileTemplates",
-                        figure : newFigure,
-                        uuid : newFigure.renderedSNPTracks[i].uuid,
-                        compileBase : false
-                    }
-                );
+                await compileSNPTrack(newFigure.renderedSNPTracks[i],newFigure);
+                SNPTrackCache.push(new CachedSNPTrackSVG(newFigure.renderedSNPTracks[i]));
             }
         }
     }
@@ -255,18 +272,11 @@ export function removeTrack(uuid : string) : void
  */
 export async function triggerReCompileForWholeFigure(newFigure : cf.CircularFigure)
 {
-    if(!figure)
+    if(!newFigure)
         return;
-    if(!figure.isInteractive)
+    if(!newFigure.isInteractive)
     {
-        ipc.send(
-            "runOperation",
-            <AtomicOperationIPC>{
-                opName : "compileTemplates",
-                figure : newFigure,
-                compileBase : true
-            }
-        );
+        baseFigureSVG = await compileBaseFigure(newFigure);
     }
     for(let i = 0; i != coverageTrackCache.length; ++i)
     {
@@ -274,14 +284,6 @@ export async function triggerReCompileForWholeFigure(newFigure : cf.CircularFigu
     }
     for(let i = 0; i != SNPTrackCache.length; ++i)
     {
-        ipc.send(
-            "runOperation",
-            <AtomicOperationIPC>{
-                opName : "compileTemplates",
-                figure : newFigure,
-                compileBase : false,
-                uuid : SNPTrackCache[i].trackRecord.uuid
-            }
-        );
+        SNPTrackCache[i].svg = await compileSNPTrack(SNPTrackCache[i].trackRecord,newFigure);
     }
 }

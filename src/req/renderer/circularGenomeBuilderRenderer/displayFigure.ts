@@ -35,14 +35,19 @@ export async function displayNonInteractiveFigure(self : GenomeView) : Promise<v
         await tc.refreshCache(self.genome);
         cleanCanvas(self);
 
-        let $div : any = $(`
+        let $div : any = `
             <div id="${self.div}">
                 ${getSelectedDataTrackSVGsFromCache(self)}
                 ${tc.baseFigureSVG ? tc.baseFigureSVG : ""}
             </div>
-        `);
+        `;
 
-        $(document.body).append($div);
+        document.body.insertAdjacentHTML("beforeend",$div);
+        let svgs = document.getElementsByTagName("svg");
+        for(let i = 0; i != svgs.length; ++i)
+        {
+            (<any>svgs[i].style).shapeRendering = "optimizeSpeed";
+        }
         centreFigure(document.getElementById(self.div),self.genome);
         resolve();
     });
