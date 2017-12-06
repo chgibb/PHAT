@@ -80,7 +80,6 @@ export async function displayInteractiveFigure(self : GenomeView) : Promise<void
         {
             totalBP += self.genome.contigs[i].bp;
         }
-
         await tc.refreshCache(self.genome);
         let templates = cf.assembleCompilableTemplates(
             self.genome,

@@ -130,7 +130,6 @@ $
                                     {
                                         found = true;
                                         genomeView.genome = masterView.circularFigures[i];
-                                        await tc.triggerReCompileForWholeFigure(genomeView.genome);
                                         genomeView.firstRender = true;
                                         break;
                                     }

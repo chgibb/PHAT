@@ -100,11 +100,16 @@ export function resetBaseFigureCache() : void
  */
 export async function refreshCache(newFigure : cf.CircularFigure)
 {
+    //if we're switching to a different figure, blow up everything
     if(!figure || newFigure.uuid != figure.uuid)
     {
         resetCaches();
         figure = newFigure;
     }
+
+    //it's the same figure, update to reflect changes when maps are compiled
+    else
+        figure = newFigure;
     if(!newFigure.isInteractive)
     {
         if(!baseFigureSVG)
