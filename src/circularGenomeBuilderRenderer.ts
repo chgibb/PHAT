@@ -143,52 +143,7 @@ $
                             
                         }
                     }
-                    if(arg.key == "operations")
-                    {
-                        if(arg.val !== undefined)
-                        {
-                            let masterView = <masterView.View>viewMgr.getViewByName("masterView");
-                            let genomeView = <genomeView.GenomeView>viewMgr.getViewByName("genomeView",masterView.views);
-                            let ops : Array<CompileTemplates> = arg.val;
-                            let totalTracks = 0;
-                            for(let i = 0; i != ops.length; ++i)
-                            {
-                                if(ops[i].name == "compileTemplates")
-                                {
-                                    if(genomeView.genome && ops[i].figure.uuid == genomeView.genome.uuid)
-                                    {
-                                        totalTracks++;
-                                        if(ops[i].flags.done && ops[i].flags.success)
-                                        {
-                                            if(ops[i].uuid)
-                                            {
-                                                console.log("compiled "+ops[i].uuid);
-                                                tc.removeTrack(ops[i].uuid);
-                                                genomeView.firstRender = true;
-                                            }
-                                            else if(ops[i].compileBase)
-                                            {
-                                                console.log("compiled base figure");
-                                                tc.resetBaseFigureSVG();
-                                                genomeView.firstRender = true;
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                            if(totalTracks > 0)
-                                showGenericLoadingSpinnerInNavBar();
-                                
-                            if(totalTracks == 0)
-                            {
-                                hideSpinnerInNavBar();
-                            }
-                        }
-                        else if(arg.val === undefined)
-                        {
-                            hideSpinnerInNavBar();
-                        }
-                    }
+                    
                 }
                 viewMgr.render();
             }
