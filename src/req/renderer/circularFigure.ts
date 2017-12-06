@@ -1055,3 +1055,25 @@ export function assembleCompilableSNPTrack(figure : CircularFigure,trackRecord :
         ).toString()
     );
 }
+
+export function renderCoverageTrackToCanvas(
+    map : CoverageTrackMap,
+    figure : CircularFigure,
+    ctx : CanvasRenderingContext2D
+) : void {
+    map.$scope = {genome : figure};
+    map.interpolateAttributes();
+    for(let i = 0; i != map.tracks.length; ++i)
+    {
+        map.tracks[i].interpolateAttributes();
+        for(let k = 0; k != map.tracks[i].children.length; ++k)
+        {
+            map.tracks[i].children[k].interpolateAttributes();
+            ctx.stroke(
+                new Path2D(
+                    (<any>map.tracks[i].children[k].getSVGPath())
+                )
+            );
+        }
+    }
+}

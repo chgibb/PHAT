@@ -7,6 +7,7 @@ import * as viewMgr from "./../viewMgr";
 import * as masterView from "./masterView";
 import {GenomeView} from "./genomeView";
 import {centreFigure} from "./centreFigure";
+
 /**
  * Displays the currently set figure
  * 
@@ -33,9 +34,10 @@ export async function displayNonInteractiveFigure(self : GenomeView) : Promise<v
 {
     return new Promise<void>(async (resolve,reject) => {
         await tc.refreshCache(self.genome);
+        
         cleanCanvas(self);
-
-        let $div : any = `
+        /*
+        let $div  = `
             <div id="${self.div}">
                 ${getSelectedDataTrackSVGsFromCache(self)}
                 ${tc.baseFigureSVG ? tc.baseFigureSVG : ""}
@@ -49,6 +51,22 @@ export async function displayNonInteractiveFigure(self : GenomeView) : Promise<v
             (<any>svgs[i].style).shapeRendering = "optimizeSpeed";
         }
         centreFigure(document.getElementById(self.div),self.genome);
+        resolve();*/
+
+        let canvas : HTMLCanvasElement = <HTMLCanvasElement>document.getElementById("nonInteractiveFigureCanvas");
+        if(!canvas)
+        {
+            let $div = `
+                <div id="canvasWrapper">
+                    <canvas id="nonInteractiveFigureCanvas" style="position:absolute;left:0px;top:0px;"></canvas>
+                </div>
+            `;
+            document.body.insertAdjacentHTML("beforeend",$div);
+        }
+        canvas = <HTMLCanvasElement>document.getElementById("nonInteractiveFigureCanvas");
+        canvas.setAttribute("width",`${document.documentElement.clientHeight}px`);
+        canvas.setAttribute("height",`${document.documentElement.clientWidth}px`);
+        tc.renderToCanvas(canvas.getContext("2d"));
         resolve();
     });
 }
@@ -75,6 +93,8 @@ export async function displayInteractiveFigure(self : GenomeView) : Promise<void
         let $div : any;
 
         cleanCanvas(self);
+        if(document.getElementById("canvasWrapper"))
+            document.getElementById("canvasWrapper").outerHTML = "";
         
         for(let i = 0; i != self.genome.contigs.length; ++i)
         {
@@ -137,12 +157,15 @@ export async function displayInteractiveFigure(self : GenomeView) : Promise<void
 export function cleanCanvas(self : GenomeView) : void
 {
     let div = document.getElementById(self.div);
-    //explicitly remove children to prevent creating detached DOM nodes
-    while(div.firstChild)
+    if(div)
     {
-        div.removeChild(div.firstChild);
+        //explicitly remove children to prevent creating detached DOM nodes
+        while(div.firstChild)
+        {
+            div.removeChild(div.firstChild);
+        }
+        document.body.removeChild(div);
     }
-    document.body.removeChild(div);
     //force a GC pass
     (<any>global).gc();
 }

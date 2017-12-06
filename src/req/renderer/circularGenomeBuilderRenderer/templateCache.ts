@@ -207,6 +207,11 @@ export function getSNPTrackSVG(trackRecord : cf.RenderedSNPTrackRecord) : string
     throw new Error(`Could not fetch ${trackRecord.uuid} from cache`);
 }
 
+export function renderToCanvas(ctx : CanvasRenderingContext2D) : void
+{
+    cf.renderCoverageTrackToCanvas(coverageTrackMaps[0].map,figure,ctx);
+}
+
 
 /**
  * Deletes the track specified by uuid from the in-memory cache
