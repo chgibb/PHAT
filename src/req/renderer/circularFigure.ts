@@ -174,6 +174,22 @@ export class RenderedSNPTrackRecord extends RenderedTrackRecord
     }
 }
 
+export class CoverageTrackMap extends ngDirectives.Plasmid
+{
+    public constructor()
+    {
+        super();
+    }
+}
+
+export class SNPTrackMap extends ngDirectives.Plasmid
+{
+    public constructor()
+    {
+        super();
+    }
+}
+
 /**
  * Contains all structures needed to manipulate a circular figure
  * 
@@ -872,6 +888,94 @@ export function cacheSNPTrackSVG(trackRecord : RenderedSNPTrackRecord,svg : stri
 export function getSNPTrackSVGFromCache(trackRecord : RenderedSNPTrackRecord) : string
 {
     return fs.readFileSync(getCachedSNPTrackSVGPath(trackRecord)).toString();
+}
+
+export function buildCoverageTrackMap(trackRecord : RenderedCoverageTrackRecord,figure : CircularFigure) : Promise<CoverageTrackMap>
+{
+
+    return new Promise<CoverageTrackMap>(async (resolve,reject) => {
+
+        let map : CoverageTrackMap = new CoverageTrackMap();
+        map.$scope = {
+            genome : figure
+        };
+
+        //try to build from protocol buffer
+        if(fs.existsSync(getCoverageTrackPBPath(trackRecord)))
+        {
+            map.fromNode<any>(
+                pbDirectives.Node.decode(
+                    fs.readFileSync(
+                        getCoverageTrackPBPath(trackRecord)
+                    )
+                )
+            );
+            resolve(map);
+        }
+
+        //first time for this coverage track
+        else
+        {
+            let nodes : Array<html.Node> = await html.loadFromString(
+                assembleCompilableCoverageTrack(figure,trackRecord)
+            );
+
+            for(let i = 0; i != nodes.length; ++i)
+            {
+                if(nodes[i].name == "div")
+                {
+                    for(let k = 0; k != nodes[i].children.length; ++k)
+                    {
+                        if(nodes[i].children[k].name == "plasmid")
+                        {
+                            map.fromNode<html.Node>(nodes[i].children[k]);
+                            break;
+                        }
+                    }
+                    break;
+                }
+            }
+
+            //write optimized protocol buffer version for future use
+            cacheCoverageTrackPB(trackRecord,map);
+
+            resolve(map);
+        }
+    });
+}
+
+export function buildSNPTrackMap(trackRecord : RenderedSNPTrackRecord,figure : CircularFigure) : Promise<SNPTrackMap>
+{
+
+    return new Promise<SNPTrackMap>(async (resolve,reject) => {
+
+        let nodes : Array<html.Node> = await html.loadFromString(
+            assembleCompilableSNPTrack(figure,trackRecord)
+        );
+
+        let map : SNPTrackMap = new SNPTrackMap();
+        map.$scope = {
+            genome : figure
+        };
+
+        for(let i = 0; i != nodes.length; ++i)
+        {
+            if(nodes[i].name == "div")
+            {
+                for(let k = 0; k != nodes[i].children.length; ++k)
+                {
+                    if(nodes[i].children[k].name == "plasmid")
+                    {
+                        map.fromNode<html.Node>(nodes[i].children[k]);
+                        break;
+                    }
+                }
+                break;
+            }
+        }
+
+        resolve(map);
+    });
 }
 
 /**
