@@ -264,7 +264,7 @@ export abstract class FigureCanvas
  * @param {number} [end=-1] 
  * @returns {string} 
  */
-export function renderContig(figure : CircularFigure,contig : Contig,start : number = -1,end : number = -1) : string
+export function buildContigTemplate(figure : CircularFigure,contig : Contig,start : number = -1,end : number = -1) : string
 {
     if(start == -1)
         start = contig.start;
@@ -301,7 +301,7 @@ export function renderContig(figure : CircularFigure,contig : Contig,start : num
  * @param {CircularFigure} figure 
  * @returns {string} 
  */
-export function renderBaseFigure(figure : CircularFigure) : string
+export function buildBaseFigureTemplate(figure : CircularFigure) : string
 {
     return `
         ${plasmidTrack.add(
@@ -323,12 +323,12 @@ export function renderBaseFigure(figure : CircularFigure) : string
                 let lastLocation = 0;
                 for(let i = 0; i != figure.contigs.length; ++i)
                 {
-                    res += renderContig(figure,figure.contigs[i],lastLocation,lastLocation+figure.contigs[i].bp);
+                    res += buildContigTemplate(figure,figure.contigs[i],lastLocation,lastLocation+figure.contigs[i].bp);
                     lastLocation = lastLocation + figure.contigs[i].bp;
                 }
                 for(let i = 0; i != figure.customContigs.length; ++i)
                 {
-                    res += renderContig(figure,figure.customContigs[i],figure.customContigs[i].start,figure.customContigs[i].end);
+                    res += buildContigTemplate(figure,figure.customContigs[i],figure.customContigs[i].start,figure.customContigs[i].end);
                 }
                 return res; 
             })()}
@@ -358,7 +358,7 @@ export function cacheBaseFigure(figure : CircularFigure) : void
         fs.mkdirSync(getReadableAndWritable(`rt/circularFigures/${figure.uuid}`));
     }
     catch(err){}
-    fs.writeFileSync(getReadableAndWritable(`rt/circularFigures/${figure.uuid}/baseFigure`),renderBaseFigure(figure));
+    fs.writeFileSync(getReadableAndWritable(`rt/circularFigures/${figure.uuid}/baseFigure`),buildBaseFigureTemplate(figure));
 }
 
 /**
@@ -493,7 +493,7 @@ interface PositionsWithDepths
  * @param {number} [scaleFactor=1] 
  * @returns {Promise<string>} 
  */
-export async function renderCoverageTrack(
+export async function buildCoverageTrackTemplate(
     figure : CircularFigure,
     contiguuid : string,
     align : AlignData,
@@ -605,7 +605,7 @@ export async function cacheCoverageTrack(
         }
         catch(err){}
     
-        let coverageTracks = await renderCoverageTrack(figure,contiguuid,align,colour,scaleFactor);
+        let coverageTracks = await buildCoverageTrackTemplate(figure,contiguuid,align,colour,scaleFactor);
         let trackRecord = new RenderedCoverageTrackRecord(align.uuid,contiguuid,figure.uuid,colour,scaleFactor);
         fs.writeFileSync(getCachedCoverageTrackPath(trackRecord),coverageTracks);
         figure.renderedCoverageTracks.push(trackRecord);
@@ -720,7 +720,7 @@ interface SNPPosition
  * @param {string} [colour="rgb(64,64,64)"] 
  * @returns {Promise<string>} 
  */
-export function renderSNPTrack(
+export function buildSNPTrackTemplate(
     figure : CircularFigure,
     contiguuid : string,
     align : AlignData,
@@ -818,7 +818,7 @@ export function cacheSNPTrack(
             mkdirp.sync(getReadableAndWritable(`rt/circularFigures/${figure.uuid}/snp/${align.uuid}/${contiguuid}`));
         }
         catch(err){}
-        let SNPTracks = await renderSNPTrack(figure,contiguuid,align,colour);
+        let SNPTracks = await buildSNPTrackTemplate(figure,contiguuid,align,colour);
         let trackRecord = new RenderedSNPTrackRecord(align.uuid,contiguuid,figure.uuid,colour);
         fs.writeFileSync(getCachedSNPTrackPath(trackRecord),SNPTracks);
         figure.renderedSNPTracks.push(trackRecord);
