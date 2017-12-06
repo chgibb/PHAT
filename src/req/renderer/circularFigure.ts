@@ -134,7 +134,7 @@ export class RenderedTrackRecord
 }
 
 /**
- * Contains a record to retrieve/manipulate a coverage track which has been rendered
+ * Contains a record to retrieve/manipulate a coverage track which has been built
  * 
  * @export
  * @class RenderedCoverageTrackRecord
@@ -156,7 +156,7 @@ export class RenderedCoverageTrackRecord extends RenderedTrackRecord
 }
 
 /**
- * Contains a record to retrieve/manipulate a SNP track which has been rendered
+ * Contains a record to retrieve/manipulate a SNP track which has been built
  * 
  * @export
  * @class RenderedSNPTrackRecord
@@ -175,7 +175,7 @@ export class RenderedSNPTrackRecord extends RenderedTrackRecord
 }
 
 /**
- * Contains all structures needed to render a circular figure
+ * Contains all structures needed to manipulate a circular figure
  * 
  * @export
  * @class CircularFigure
