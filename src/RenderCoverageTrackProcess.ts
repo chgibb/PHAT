@@ -27,7 +27,7 @@ process.on
 
         if(ev.run == true)
         {
-            cf.cacheCoverageTrack(circularFigure,contiguuid,align,colour,scaleFactor).then((coverageTracks : string) => {
+            cf.cacheCoverageTrackTemplate(circularFigure,contiguuid,align,colour,scaleFactor).then((coverageTracks : string) => {
                 flags.done = true;
                 flags.success = true;
                 process.send(

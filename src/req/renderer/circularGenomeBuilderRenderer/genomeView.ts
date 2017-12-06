@@ -171,7 +171,7 @@ export class GenomeView extends viewMgr.View implements cf.FigureCanvas
             {
                 self.genome.name = text;
                 //Overwrite old template cache for figure
-                cf.cacheBaseFigure(self.genome);
+                cf.cacheBaseFigureTemplate(self.genome);
                 let masterView = <masterView.View>viewMgr.getViewByName("masterView");
                 let genomeView = <GenomeView>viewMgr.getViewByName("genomeView",masterView.views);
                 

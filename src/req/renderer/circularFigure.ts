@@ -235,7 +235,7 @@ export class CircularFigure
             this.isInteractive = false;
             this.showContigNames = false;
         }
-        cacheBaseFigure(this);
+        cacheBaseFigureTemplate(this);
     }
 }
 
@@ -351,7 +351,7 @@ export function buildBaseFigureTemplate(figure : CircularFigure) : string
  * @export
  * @param {CircularFigure} figure 
  */
-export function cacheBaseFigure(figure : CircularFigure) : void
+export function cacheBaseFigureTemplate(figure : CircularFigure) : void
 {
     try
     {
@@ -380,7 +380,7 @@ export function cacheBaseFigureSVG(figure : CircularFigure,svg : string) : void
  * @param {CircularFigure} figure 
  * @returns {string} 
  */
-export function getBaseFigureFromCache(figure : CircularFigure) : string
+export function getBaseFigureTemplateFromCache(figure : CircularFigure) : string
 {
     return (<any>fs.readFileSync(getReadableAndWritable(`rt/circularFigures/${figure.uuid}/baseFigure`)));
 }
@@ -590,7 +590,7 @@ export async function buildCoverageTrackTemplate(
  * @param {number} [scaleFactor=1] 
  * @returns {Promise<string>} 
  */
-export async function cacheCoverageTrack(
+export async function cacheCoverageTrackTemplate(
     figure : CircularFigure,
     contiguuid : string,
     align : AlignData,
@@ -607,7 +607,7 @@ export async function cacheCoverageTrack(
     
         let coverageTracks = await buildCoverageTrackTemplate(figure,contiguuid,align,colour,scaleFactor);
         let trackRecord = new RenderedCoverageTrackRecord(align.uuid,contiguuid,figure.uuid,colour,scaleFactor);
-        fs.writeFileSync(getCachedCoverageTrackPath(trackRecord),coverageTracks);
+        fs.writeFileSync(getCachedCoverageTrackTemplatePath(trackRecord),coverageTracks);
         figure.renderedCoverageTracks.push(trackRecord);
         resolve(coverageTracks);
     });
@@ -620,7 +620,7 @@ export async function cacheCoverageTrack(
  * @param {RenderedCoverageTrackRecord} trackRecord 
  * @returns {string} 
  */
-export function getCachedCoverageTrackPath(trackRecord : RenderedCoverageTrackRecord) : string
+export function getCachedCoverageTrackTemplatePath(trackRecord : RenderedCoverageTrackRecord) : string
 {
     return getReadableAndWritable(`rt/circularFigures/${trackRecord.uuidFigure}/coverage/${trackRecord.uuidAlign}/${trackRecord.uuidContig}/${trackRecord.uuid}`);
 }
@@ -805,7 +805,7 @@ export function buildSNPTrackTemplate(
  * @param {string} [colour="rgb(64,64,64)"] 
  * @returns {Promise<string>} 
  */
-export function cacheSNPTrack(
+export function cacheSNPTrackTemplate(
     figure : CircularFigure,
     contiguuid : string,
     align : AlignData,
@@ -820,7 +820,7 @@ export function cacheSNPTrack(
         catch(err){}
         let SNPTracks = await buildSNPTrackTemplate(figure,contiguuid,align,colour);
         let trackRecord = new RenderedSNPTrackRecord(align.uuid,contiguuid,figure.uuid,colour);
-        fs.writeFileSync(getCachedSNPTrackPath(trackRecord),SNPTracks);
+        fs.writeFileSync(getCachedSNPTrackTemplatePath(trackRecord),SNPTracks);
         figure.renderedSNPTracks.push(trackRecord);
         resolve(SNPTracks);
     });
@@ -833,7 +833,7 @@ export function cacheSNPTrack(
  * @param {RenderedSNPTrackRecord} trackRecord 
  * @returns {string} 
  */
-export function getCachedSNPTrackPath(trackRecord : RenderedSNPTrackRecord) : string
+export function getCachedSNPTrackTemplatePath(trackRecord : RenderedSNPTrackRecord) : string
 {
     return getReadableAndWritable(`rt/circularFigures/${trackRecord.uuidFigure}/snp/${trackRecord.uuidAlign}/${trackRecord.uuidContig}/${trackRecord.uuid}`);
 }
@@ -1013,7 +1013,7 @@ export function assembleCompilableTemplates(figure : CircularFigure,templates : 
  */
 export function assembleCompilableBaseFigureTemplates(figure : CircularFigure) : string
 {
-    return assembleCompilableTemplates(figure,getBaseFigureFromCache(figure));
+    return assembleCompilableTemplates(figure,getBaseFigureTemplateFromCache(figure));
 }
 
 /**
@@ -1029,7 +1029,7 @@ export function assembleCompilableCoverageTrack(figure : CircularFigure,trackRec
     return assembleCompilableTemplates(
         figure,
         fs.readFileSync(
-            getCachedCoverageTrackPath(trackRecord)
+            getCachedCoverageTrackTemplatePath(trackRecord)
         ).toString()
     );
 }
@@ -1047,7 +1047,7 @@ export function assembleCompilableSNPTrack(figure : CircularFigure,trackRecord :
     return assembleCompilableTemplates(
         figure,
         fs.readFileSync(
-            getCachedSNPTrackPath(trackRecord)
+            getCachedSNPTrackTemplatePath(trackRecord)
         ).toString()
     );
 }
