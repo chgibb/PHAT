@@ -15,65 +15,33 @@ import * as cf from "./../circularFigure";
 
 let figure : cf.CircularFigure;
 
-class CachedCoverageTrackSVG
+class CoverageTrackMap
 {
     public trackRecord : cf.RenderedCoverageTrackRecord;
-    public svg : string;
-    public constructor(trackRecord : cf.RenderedCoverageTrackRecord)
+    public map : cf.CoverageTrackMap;
+    public async build(trackRecord : cf.RenderedCoverageTrackRecord,figure : cf.CircularFigure)
     {
         this.trackRecord = trackRecord;
-        this.svg = cf.getCoverageTrackSVGFromCache(trackRecord);
+        this.map = await cf.buildCoverageTrackMap(trackRecord,figure);
     }
 }
 
-class CachedSNPTrackSVG
+class SNPTrackMap
 {
     public trackRecord : cf.RenderedSNPTrackRecord;
-    public svg : string;
-    public constructor(trackRecord : cf.RenderedSNPTrackRecord)
+    public map : cf.SNPTrackMap;
+    public async build(trackRecord : cf.RenderedSNPTrackRecord,figure : cf.CircularFigure)
     {
         this.trackRecord = trackRecord;
-        this.svg = cf.getSNPTrackSVGFromCache(trackRecord);
+        this.map = await cf.buildSNPTrackMap(trackRecord,figure);
     }
 }
 
 export let baseFigureSVG : string = undefined;
 
-let coverageTrackCache = new Array<CachedCoverageTrackSVG>();;
-let SNPTrackCache = new Array<CachedSNPTrackSVG>();
+let coverageTrackMaps = new Array<CoverageTrackMap>();
+let SNPTrackMaps = new Array<SNPTrackMap>();
 
-/**
- * Compile and overwrite disk cache for track
- * 
- * @export
- * @param {cf.RenderedCoverageTrackRecord} track 
- * @param {cf.CircularFigure} figure 
- * @returns {Promise<string>} 
- */
-export function compileCoverageTrack(track : cf.RenderedCoverageTrackRecord,figure : cf.CircularFigure) : Promise<string>
-{
-    return new Promise<string>(async (resolve,reject) => {
-        let svg = await cf.compileCoverageTrackSVG(track,figure);
-        cf.cachCoverageTrackSVG(track,svg);
-        resolve(svg);
-    });
-}
-/**
- * Compile and overwrite disk cache for track
- * 
- * @export
- * @param {cf.RenderedSNPTrackRecord} track 
- * @param {cf.CircularFigure} figure 
- * @returns {Promise<string>} 
- */
-export function compileSNPTrack(track : cf.RenderedSNPTrackRecord,figure : cf.CircularFigure) : Promise<string>
-{
-    return new Promise<string>(async (resolve,reject) => {
-        let svg = await cf.compileSNPTrackSVG(track,figure);
-        cf.cacheSNPTrackSVG(track,svg);
-        resolve(svg);
-    });
-}
 /**
  * Compile and overwrite disk cache for figure's base figure SVG
  * 
@@ -107,8 +75,8 @@ export function resetBaseFigureSVG() : void
  */
 export function resetCaches() : void
 {
-    coverageTrackCache = new Array<CachedCoverageTrackSVG>();
-    SNPTrackCache = new Array<CachedSNPTrackSVG>();
+    coverageTrackMaps = new Array<CoverageTrackMap>();
+    SNPTrackMaps = new Array<SNPTrackMap>();
     baseFigureSVG = undefined
 }
 
@@ -157,9 +125,9 @@ export async function refreshCache(newFigure : cf.CircularFigure)
     for(let i = 0; i != newFigure.renderedCoverageTracks.length; ++i)
     {
         found = false;
-        for(let k = 0; k != coverageTrackCache.length; ++k)
+        for(let k = 0; k != coverageTrackMaps.length; ++k)
         {
-            if(newFigure.renderedCoverageTracks[i].uuid == coverageTrackCache[k].trackRecord.uuid)
+            if(newFigure.renderedCoverageTracks[i].uuid == coverageTrackMaps[k].trackRecord.uuid)
             {
                 found = true;
                 break;
@@ -167,15 +135,9 @@ export async function refreshCache(newFigure : cf.CircularFigure)
         }
         if(!found)
         {
-            try
-            {
-                coverageTrackCache.push(new CachedCoverageTrackSVG(newFigure.renderedCoverageTracks[i]));
-            }
-            catch(err)
-            {
-                await compileCoverageTrack(newFigure.renderedCoverageTracks[i],newFigure);
-                coverageTrackCache.push(new CachedCoverageTrackSVG(newFigure.renderedCoverageTracks[i]));
-            }
+            let map : CoverageTrackMap = new CoverageTrackMap();
+            await map.build(newFigure.renderedCoverageTracks[i],figure);
+            coverageTrackMaps.push(map);
         }
     }
 
@@ -183,9 +145,9 @@ export async function refreshCache(newFigure : cf.CircularFigure)
     for(let i = 0; i != newFigure.renderedSNPTracks.length; ++i)
     {
         found = false;
-        for(let k = 0; k != SNPTrackCache.length; ++k)
+        for(let k = 0; k != SNPTrackMaps.length; ++k)
         {
-            if(newFigure.renderedSNPTracks[i].uuid == SNPTrackCache[k].trackRecord.uuid)
+            if(newFigure.renderedSNPTracks[i].uuid == SNPTrackMaps[k].trackRecord.uuid)
             {
                 found = true;
                 break;
@@ -193,19 +155,12 @@ export async function refreshCache(newFigure : cf.CircularFigure)
         }
         if(!found)
         {
-            try
-            {
-                SNPTrackCache.push(new CachedSNPTrackSVG(newFigure.renderedSNPTracks[i]));
-            }
-            catch(err)
-            {
-                await compileSNPTrack(newFigure.renderedSNPTracks[i],newFigure);
-                SNPTrackCache.push(new CachedSNPTrackSVG(newFigure.renderedSNPTracks[i]));
-            }
+            let map : SNPTrackMap = new SNPTrackMap();
+            await map.build(newFigure.renderedSNPTracks[i],figure);
+            SNPTrackMaps.push(map);
         }
     }
 }
-
 
 /**
  * Retrieve an (already loaded) SVG for the specified coverage track
@@ -214,12 +169,15 @@ export async function refreshCache(newFigure : cf.CircularFigure)
  * @param {cf.RenderedCoverageTrackRecord} trackRecord 
  * @returns {string} 
  */
-export function getCachedCoverageTrack(trackRecord : cf.RenderedCoverageTrackRecord) : string
+export function getCoverageTrackSVG(trackRecord : cf.RenderedCoverageTrackRecord) : string
 {
-    for(let i = 0; i != coverageTrackCache.length; ++i)
+    for(let i = 0; i != coverageTrackMaps.length; ++i)
     {
-        if(coverageTrackCache[i].trackRecord.uuid == trackRecord.uuid)
-            return coverageTrackCache[i].svg;
+        if(coverageTrackMaps[i].trackRecord.uuid == trackRecord.uuid)
+        {
+            coverageTrackMaps[i].map.$scope = {genome : figure};
+            return coverageTrackMaps[i].map.renderStart()+coverageTrackMaps[i].map.renderEnd();
+        }
     }
     throw new Error(`Could not fetch ${trackRecord.uuid} from cache`);
 }
@@ -231,15 +189,19 @@ export function getCachedCoverageTrack(trackRecord : cf.RenderedCoverageTrackRec
  * @param {cf.RenderedSNPTrackRecord} trackRecord 
  * @returns {string} 
  */
-export function getCachedSNPTrack(trackRecord : cf.RenderedSNPTrackRecord) : string
+export function getSNPTrackSVG(trackRecord : cf.RenderedSNPTrackRecord) : string
 {
-    for(let i = 0; i != SNPTrackCache.length; ++i)
+    for(let i = 0; i != SNPTrackMaps.length; ++i)
     {
-        if(SNPTrackCache[i].trackRecord.uuid == trackRecord.uuid)
-            return SNPTrackCache[i].svg;
+        if(SNPTrackMaps[i].trackRecord.uuid == trackRecord.uuid)
+        {
+            SNPTrackMaps[i].map.$scope = {genome : figure}
+            return SNPTrackMaps[i].map.renderStart()+SNPTrackMaps[i].map.renderEnd();
+        }
     }
     throw new Error(`Could not fetch ${trackRecord.uuid} from cache`);
 }
+
 
 /**
  * Deletes the track specified by uuid from the in-memory cache
@@ -250,40 +212,5 @@ export function getCachedSNPTrack(trackRecord : cf.RenderedSNPTrackRecord) : str
  */
 export function removeTrack(uuid : string) : void
 {
-    for(let i = 0; i != SNPTrackCache.length; ++i)
-    {
-        if(SNPTrackCache[i].trackRecord.uuid == uuid)
-        {
-            SNPTrackCache.splice(i,1);
-            console.log("removed "+uuid);
-            return;
-        }
-    }
-}
-
-
-/**
- * Triggers a compile for each compononent of newFigure (including non-visible data tracks) regardless of cache status.
- * Will only trigger a compile for the base figure if the figure is non-interactive
- * 
- * @export
- * @param {cf.CircularFigure} newFigure 
- * @returns 
- */
-export async function triggerReCompileForWholeFigure(newFigure : cf.CircularFigure)
-{
-    if(!newFigure)
-        return;
-    if(!newFigure.isInteractive)
-    {
-        baseFigureSVG = await compileBaseFigure(newFigure);
-    }
-    for(let i = 0; i != coverageTrackCache.length; ++i)
-    {
-        coverageTrackCache[i].svg = await compileCoverageTrack(coverageTrackCache[i].trackRecord,newFigure);
-    }
-    for(let i = 0; i != SNPTrackCache.length; ++i)
-    {
-        SNPTrackCache[i].svg = await compileSNPTrack(SNPTrackCache[i].trackRecord,newFigure);
-    }
+    
 }

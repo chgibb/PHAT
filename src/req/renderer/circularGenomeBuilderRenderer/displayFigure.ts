@@ -165,7 +165,7 @@ export function getSelectedDataTrackSVGsFromCache(self : GenomeView) : string
             try
             {
                 res += `<div style="position:absolute;z-index:-99;">`;
-                res += tc.getCachedCoverageTrack(self.genome.renderedCoverageTracks[i]);
+                res += tc.getCoverageTrackSVG(self.genome.renderedCoverageTracks[i]);
                 res += `</div>`;
             }
             catch(err){}
@@ -178,7 +178,7 @@ export function getSelectedDataTrackSVGsFromCache(self : GenomeView) : string
             try
             {
                 res += `<div style="position:absolute;z-index:-99;">`;
-                res += tc.getCachedSNPTrack(self.genome.renderedSNPTracks[i]);
+                res += tc.getSNPTrackSVG(self.genome.renderedSNPTracks[i]);
                 res += `</div>`;
             }
             catch(err){}
