@@ -1055,7 +1055,41 @@ export function assembleCompilableSNPTrack(figure : CircularFigure,trackRecord :
         ).toString()
     );
 }
-
+/**
+ * Renders the given svg using the given canvas rendering context
+ * 
+ * @export
+ * @param {string} svg 
+ * @param {CanvasRenderingContext2D} ctx 
+ * @returns {Promise<void>} 
+ */
+export function renderSVGToCanvas(svg : string, ctx : CanvasRenderingContext2D) : Promise<void>
+{
+    return new Promise<void>((resolve,reject) => {
+        let img : HTMLImageElement = new Image();
+        let url : string = window.URL.createObjectURL(
+            new Blob(
+                [svg],
+                <BlobPropertyBag>{
+                    type : `image/svg+xml`
+                }
+            )
+        );
+        img.onload = function(){
+            ctx.drawImage(img,0,0);
+            window.URL.revokeObjectURL(url);
+        };
+        img.src = url;
+    });
+}
+/**
+ * Renders the given coverage track using the given figure and canvas rendering context
+ * 
+ * @export
+ * @param {CoverageTrackMap} map 
+ * @param {CircularFigure} figure 
+ * @param {CanvasRenderingContext2D} ctx 
+ */
 export function renderCoverageTrackToCanvas(
     map : CoverageTrackMap,
     figure : CircularFigure,

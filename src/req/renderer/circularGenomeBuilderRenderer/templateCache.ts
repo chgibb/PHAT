@@ -207,9 +207,12 @@ export function getSNPTrackSVG(trackRecord : cf.RenderedSNPTrackRecord) : string
     throw new Error(`Could not fetch ${trackRecord.uuid} from cache`);
 }
 
-export function renderToCanvas(ctx : CanvasRenderingContext2D) : void
+export function renderToCanvas(ctx : CanvasRenderingContext2D) : Promise<void>
 {
-    cf.renderCoverageTrackToCanvas(coverageTrackMaps[0].map,figure,ctx);
+    return new Promise<void>(async (resolve,reject) => {
+        cf.renderCoverageTrackToCanvas(coverageTrackMaps[0].map,figure,ctx);
+        await cf.renderSVGToCanvas(baseFigureSVG,ctx);
+    });
 }
 
 
