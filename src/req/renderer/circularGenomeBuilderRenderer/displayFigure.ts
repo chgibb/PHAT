@@ -184,26 +184,22 @@ export function getSelectedDataTrackSVGsFromCache(self : GenomeView) : string
     {
         if(self.genome.renderedCoverageTracks[i].checked)
         {
-            try
-            {
-                res += `<div style="position:absolute;z-index:-99;">`;
-                res += tc.getCoverageTrackSVG(self.genome.renderedCoverageTracks[i]);
-                res += `</div>`;
-            }
-            catch(err){}
+            let map = tc.getCoverageTrack(self.genome.renderedCoverageTracks[i]);
+            map.$scope = {genome : self.genome};
+            res += `<div style="position:absolute;z-index:-99;">`;
+            res += map.renderStart() + map.renderEnd();
+            res += `</div>`;
         }
     }
     for(let i = 0; i != self.genome.renderedSNPTracks.length; ++i)
     {
         if(self.genome.renderedSNPTracks[i].checked)
         {
-            try
-            {
-                res += `<div style="position:absolute;z-index:-99;">`;
-                res += tc.getSNPTrackSVG(self.genome.renderedSNPTracks[i]);
-                res += `</div>`;
-            }
-            catch(err){}
+            let map = tc.getSNPTrack(self.genome.renderedSNPTracks[i]);
+            map.$scope = {genome : self.genome};
+            res += `<div style="position:absolute;z-index:-99;">`;
+            res += map.renderStart() + map.renderEnd();
+            res += `</div>`;
         }
     }
     return res;

@@ -166,42 +166,39 @@ export async function refreshCache(newFigure : cf.CircularFigure)
         }
     }
 }
-
 /**
- * Retrieve an (already loaded) SVG for the specified coverage track
+ * Retrieve an (already loaded) map for the specified coverage track
  * 
  * @export
  * @param {cf.RenderedCoverageTrackRecord} trackRecord 
- * @returns {string} 
+ * @returns {cf.CoverageTrackMap} 
  */
-export function getCoverageTrackSVG(trackRecord : cf.RenderedCoverageTrackRecord) : string
+export function getCoverageTrack(trackRecord : cf.RenderedCoverageTrackRecord) : cf.CoverageTrackMap
 {
     for(let i = 0; i != coverageTrackMaps.length; ++i)
     {
         if(coverageTrackMaps[i].trackRecord.uuid == trackRecord.uuid)
         {
-            coverageTrackMaps[i].map.$scope = {genome : figure};
-            return coverageTrackMaps[i].map.renderStart()+coverageTrackMaps[i].map.renderEnd();
+            return coverageTrackMaps[i].map;
         }
     }
     throw new Error(`Could not fetch ${trackRecord.uuid} from cache`);
 }
 
 /**
- * Retrieve an (already loaded) SVG for the specified SNP track
+ * Retrieve an (already loaded) map for the specified SNP track
  * 
  * @export
  * @param {cf.RenderedSNPTrackRecord} trackRecord 
- * @returns {string} 
+ * @returns {cf.SNPTrackMap} 
  */
-export function getSNPTrackSVG(trackRecord : cf.RenderedSNPTrackRecord) : string
+export function getSNPTrack(trackRecord : cf.RenderedSNPTrackRecord) : cf.SNPTrackMap
 {
     for(let i = 0; i != SNPTrackMaps.length; ++i)
     {
         if(SNPTrackMaps[i].trackRecord.uuid == trackRecord.uuid)
         {
-            SNPTrackMaps[i].map.$scope = {genome : figure}
-            return SNPTrackMaps[i].map.renderStart()+SNPTrackMaps[i].map.renderEnd();
+            return SNPTrackMaps[i].map;
         }
     }
     throw new Error(`Could not fetch ${trackRecord.uuid} from cache`);
@@ -210,7 +207,11 @@ export function getSNPTrackSVG(trackRecord : cf.RenderedSNPTrackRecord) : string
 export function renderToCanvas(ctx : CanvasRenderingContext2D) : Promise<void>
 {
     return new Promise<void>(async (resolve,reject) => {
-        cf.renderCoverageTrackToCanvas(coverageTrackMaps[0].map,figure,ctx);
+        //cf.renderCoverageTrackToCanvas(coverageTrackMaps[0].map,figure,ctx);
+        for(let i = 0; i != figure.renderedCoverageTracks.length; ++i)
+        {
+            cf.renderCoverageTrackToCanvas(getCoverageTrack(figure.renderedCoverageTracks[i]),figure,ctx);
+        }
         await cf.renderSVGToCanvas(baseFigureSVG,ctx);
     });
 }
