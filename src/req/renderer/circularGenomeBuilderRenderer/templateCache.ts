@@ -210,9 +210,11 @@ export function renderToCanvas(ctx : CanvasRenderingContext2D) : Promise<void>
         //cf.renderCoverageTrackToCanvas(coverageTrackMaps[0].map,figure,ctx);
         for(let i = 0; i != figure.renderedCoverageTracks.length; ++i)
         {
-            cf.renderCoverageTrackToCanvas(getCoverageTrack(figure.renderedCoverageTracks[i]),figure,ctx);
+            if(figure.renderedCoverageTracks[i].checked)
+                cf.renderCoverageTrackToCanvas(getCoverageTrack(figure.renderedCoverageTracks[i]),figure,ctx);
         }
         await cf.renderSVGToCanvas(baseFigureSVG,ctx);
+        resolve();
     });
 }
 
