@@ -207,7 +207,6 @@ export function getSNPTrack(trackRecord : cf.RenderedSNPTrackRecord) : cf.SNPTra
 export function renderToCanvas(ctx : CanvasRenderingContext2D) : Promise<void>
 {
     return new Promise<void>(async (resolve,reject) => {
-        //cf.renderCoverageTrackToCanvas(coverageTrackMaps[0].map,figure,ctx);
         for(let i = 0; i != figure.renderedCoverageTracks.length; ++i)
         {
             if(figure.renderedCoverageTracks[i].checked)
