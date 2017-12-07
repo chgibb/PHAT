@@ -1078,6 +1078,7 @@ export function renderSVGToCanvas(svg : string, ctx : CanvasRenderingContext2D) 
         img.onload = function(){
             ctx.drawImage(img,0,0);
             window.URL.revokeObjectURL(url);
+            resolve();
         };
         img.src = url;
     });
@@ -1095,8 +1096,11 @@ export function renderCoverageTrackToCanvas(
     figure : CircularFigure,
     ctx : CanvasRenderingContext2D
 ) : void {
+    //We assume a lot of things about coverage tracks in this method to save time
+    //If coverage tracks change at some point in the future, this will have to be updated
     map.$scope = {genome : figure};
     map.interpolateAttributes();
+    ctx.lineWidth = 0.1;
     for(let i = 0; i != map.tracks.length; ++i)
     {
         map.tracks[i].interpolateAttributes();
@@ -1108,6 +1112,7 @@ export function renderCoverageTrackToCanvas(
                     (<any>map.tracks[i].children[k].getSVGPath())
                 )
             );
+
         }
     }
 }
