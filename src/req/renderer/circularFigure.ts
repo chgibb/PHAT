@@ -29,6 +29,7 @@ import * as plasmid from "./circularGenome/plasmid";
 
 import {AlignData,getSNPsJSON} from "./../alignData";
 import {VCF2JSONRow} from "./../varScanMPileup2SNPVCF2JSON";
+import {parseCSS} from "./../parseCSS";
 
 /**
  * Represents a single contig in a circular figure
@@ -1055,6 +1056,7 @@ export function assembleCompilableSNPTrack(figure : CircularFigure,trackRecord :
         ).toString()
     );
 }
+
 /**
  * Renders the given svg using the given canvas rendering context
  * 
@@ -1098,9 +1100,21 @@ export function renderCoverageTrackToCanvas(
 ) : void {
     //We assume a lot of things about coverage tracks in this method to save time
     //If coverage tracks change at some point in the future, this will have to be updated
+
+    //We assume coverage tracks are made of <plasmidtrack>s and <trackmarker>s only
+    
     map.$scope = {genome : figure};
     map.interpolateAttributes();
+
+    //Assume linewidth is constant and uniform
     ctx.lineWidth = 0.1;
+    
+    //Assume fill is constant and uniform
+    ctx.strokeStyle = parseCSS(
+        (<ngDirectives.TrackMarker>map.tracks[0].children[0]).markerstyle,
+        "fill",
+        ";"
+    );
     for(let i = 0; i != map.tracks.length; ++i)
     {
         map.tracks[i].interpolateAttributes();
