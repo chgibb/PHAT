@@ -6,7 +6,7 @@ import * as plasmid from "./../circularGenome/plasmid";
 import * as viewMgr from "./../viewMgr";
 import * as masterView from "./masterView";
 import {GenomeView} from "./genomeView";
-import {centreFigure} from "./centreFigure";
+import {centreInteractiveFigure,centreNonInteractiveFigure} from "./centreFigure";
 
 /**
  * Displays the currently set figure
@@ -49,10 +49,11 @@ export async function displayNonInteractiveFigure(self : GenomeView) : Promise<v
                 </div>
             `;
             document.body.insertAdjacentHTML("beforeend",$div);
+            canvas = <HTMLCanvasElement>document.getElementById("nonInteractiveFigureCanvas");
         }
-        canvas = <HTMLCanvasElement>document.getElementById("nonInteractiveFigureCanvas");
-        canvas.setAttribute("width",`${document.documentElement.clientHeight}px`);
-        canvas.setAttribute("height",`${document.documentElement.clientWidth}px`);
+        canvas.setAttribute("width",`${document.documentElement.clientWidth}`);
+        canvas.setAttribute("height",`${document.documentElement.clientHeight}`);
+        centreNonInteractiveFigure(self.genome);
         await tc.renderToCanvas(canvas.getContext("2d"));
         resolve();
     });
@@ -104,7 +105,7 @@ export async function displayInteractiveFigure(self : GenomeView) : Promise<void
                 </div>
         `;
         document.body.insertAdjacentHTML("beforeend",$div);
-        centreFigure(document.getElementById(self.div),self.genome);
+        centreInteractiveFigure(document.getElementById(self.div),self.genome);
         console.log("appended div");
 
         let divToCompile : HTMLElement = document.getElementById("toCompile");

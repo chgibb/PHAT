@@ -13,7 +13,7 @@ import * as masterView from "./masterView";
 import {AlignData} from "./../../alignData";
 import * as cf from "./../circularFigure";
 import {displayFigure} from "./displayFigure";
-import {centreFigure} from "./centreFigure";
+import {centreInteractiveFigure,centreNonInteractiveFigure} from "./centreFigure";
 import {changeWindowTitle} from "./../changeWindowTitle";
 import {showGenericLoadingSpinnerInNavBar,hideSpinnerInNavBar} from "./loadingSpinner";
 import {setSelectedContigByUUID} from "./writeContigEditorModal";
@@ -127,8 +127,11 @@ export class GenomeView extends viewMgr.View implements cf.FigureCanvas
                     showGenericLoadingSpinnerInNavBar();
                     setTimeout(function(){
                         renderSVG(self).then(() => {
-                            centreFigure(document.getElementById(self.div),self.genome);
-                            serializeFigure(self).then((svg : string) => {
+                            if(self.genome.isInteractive)
+                                centreInteractiveFigure(document.getElementById(self.div),self.genome);
+                            else
+                                centreNonInteractiveFigure(self.genome);
+                                serializeFigure(self).then((svg : string) => {
                                 writeSVG(self,fileName,svg).then(() => {
                                     masterView.dismissModal();
                                     self.firstRender = true;
@@ -250,7 +253,10 @@ export class GenomeView extends viewMgr.View implements cf.FigureCanvas
     {
         if(this.genome !== undefined)
         {
-            centreFigure(document.getElementById(this.div),this.genome);
+            if(this.genome.isInteractive)
+                centreInteractiveFigure(document.getElementById(this.div),this.genome);
+            else
+                centreNonInteractiveFigure(this.genome);
         }
 
         /*
