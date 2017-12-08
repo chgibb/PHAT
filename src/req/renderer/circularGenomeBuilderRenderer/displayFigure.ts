@@ -25,6 +25,7 @@ export async function displayFigure(self : GenomeView) : Promise<void>
     (<any>global).gc();
 
 }
+
 /**
  * Renders a figure as a non-interactive SVG using the specified canvas
  * 
@@ -38,22 +39,6 @@ export async function displayNonInteractiveFigure(self : GenomeView) : Promise<v
         await tc.refreshCache(self.genome);
         
         cleanCanvas(self);
-        /*
-        let $div  = `
-            <div id="${self.div}">
-                ${getSelectedDataTrackSVGsFromCache(self)}
-                ${tc.baseFigureSVG ? tc.baseFigureSVG : ""}
-            </div>
-        `;
-
-        document.body.insertAdjacentHTML("beforeend",$div);
-        let svgs = document.getElementsByTagName("svg");
-        for(let i = 0; i != svgs.length; ++i)
-        {
-            (<any>svgs[i].style).shapeRendering = "optimizeSpeed";
-        }
-        centreFigure(document.getElementById(self.div),self.genome);
-        resolve();*/
 
         let canvas : HTMLCanvasElement = <HTMLCanvasElement>document.getElementById("nonInteractiveFigureCanvas");
         if(!canvas)
@@ -72,6 +57,7 @@ export async function displayNonInteractiveFigure(self : GenomeView) : Promise<v
         resolve();
     });
 }
+
 /**
  * Renders a figure as interactive using Angular bindings using the specified canvas
  * 
