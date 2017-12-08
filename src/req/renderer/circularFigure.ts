@@ -1130,3 +1130,16 @@ export function renderCoverageTrackToCanvas(
         }
     }
 }
+
+export function renderSNPTrackToCanvas(
+    map : SNPTrackMap,
+    figure : CircularFigure,
+    ctx : CanvasRenderingContext2D
+) : Promise<void> {
+    return new Promise<void>(async (resolve,reject) => {
+        map.$scope = {genome : figure};
+
+        await renderSVGToCanvas(map.renderStart()+map.renderEnd(),ctx);
+        resolve();
+    });
+}
