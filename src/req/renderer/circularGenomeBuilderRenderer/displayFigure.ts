@@ -86,8 +86,6 @@ export async function displayInteractiveFigure(self : GenomeView) : Promise<void
     //We remove the div this view is bound to, recreate it and re render the angular template into it
     //Then we pass the div into angular to compile the templates and then finally inject it all back into
     //the page.
-    //The promise and setImmediate wrapping around each step is to ensure that the event loop has a chance to process
-    //DOM updates, so we can signal our progress to the user in the loading modal.
     return new Promise<void>(async (resolve,reject) => {
 
         let masterView = <masterView.View>viewMgr.getViewByName("masterView");
