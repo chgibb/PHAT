@@ -149,7 +149,7 @@ export async function displayInteractiveFigure(self : GenomeView) : Promise<void
 }
 
 /**
- * Delete the div used by self for rendering and GC
+ * Delete the div used by self for rendering
  * 
  * @export
  * @param {GenomeView} self 
