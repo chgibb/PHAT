@@ -18,9 +18,11 @@ import {centreFigure} from "./centreFigure";
 export async function displayFigure(self : GenomeView) : Promise<void>
 {
     if(!self.genome.isInteractive)
-        return await displayNonInteractiveFigure(self);
+        await displayNonInteractiveFigure(self);
     else
-        return await displayInteractiveFigure(self);
+        await displayInteractiveFigure(self);
+    //force a GC pass
+    (<any>global).gc();
 
 }
 /**
@@ -166,8 +168,6 @@ export function cleanCanvas(self : GenomeView) : void
         }
         document.body.removeChild(div);
     }
-    //force a GC pass
-    (<any>global).gc();
 }
 
 /**
