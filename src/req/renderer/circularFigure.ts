@@ -613,9 +613,9 @@ export async function cacheCoverageTrackTemplate(
     align : AlignData,
     colour : string = "rgb(64,64,64)",
     scaleFactor : number = 1
-) : Promise<string>
+) : Promise<void>
 {
-    return new Promise<string>(async (resolve,reject) => {
+    return new Promise<void>(async (resolve,reject) => {
         try
         {
             mkdirp.sync(getReadableAndWritable(`rt/circularFigures/${figure.uuid}/coverage/${align.uuid}/${contiguuid}`));
@@ -626,7 +626,7 @@ export async function cacheCoverageTrackTemplate(
         let trackRecord = new RenderedCoverageTrackRecord(align.uuid,contiguuid,figure.uuid,colour,scaleFactor);
         fs.writeFileSync(getCachedCoverageTrackTemplatePath(trackRecord),coverageTracks);
         figure.renderedCoverageTracks.push(trackRecord);
-        resolve(coverageTracks);
+        resolve();
     });
 }
 
