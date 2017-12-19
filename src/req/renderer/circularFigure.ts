@@ -3,6 +3,7 @@
 /// <reference path="../../../node_modules/@chgibb/ngplasmid/lib/services" />
 /// <reference path="../../../node_modules/@chgibb/ngplasmid/lib/interpolate" />
 /// <reference path="../../../node_modules/@chgibb/ngplasmid/lib/directiveToPB" />
+/// <reference path="../../../node_modules/@chgibb/ngplasmid/lib/pb/node" />
 
 import * as fs from "fs";
 import * as readline from "readline";
