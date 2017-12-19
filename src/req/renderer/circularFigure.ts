@@ -660,7 +660,7 @@ export function getCachedCoverageTrackSVGPath(trackRecord : RenderedCoverageTrac
  * @param {RenderedCoverageTrackRecord} trackRecord 
  * @param {string} svg 
  */
-export function cachCoverageTrackSVG(trackRecord : RenderedCoverageTrackRecord,svg : string) : void
+export function cacheCoverageTrackSVG(trackRecord : RenderedCoverageTrackRecord,svg : string) : void
 {
     fs.writeFileSync(getCachedCoverageTrackSVGPath(trackRecord),svg);
 }
