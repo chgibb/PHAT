@@ -2,6 +2,9 @@
 /// <reference path="../../../node_modules/@chgibb/ngplasmid/lib/directives" />
 /// <reference path="../../../node_modules/@chgibb/ngplasmid/lib/services" />
 /// <reference path="../../../node_modules/@chgibb/ngplasmid/lib/interpolate" />
+/// <reference path="../../../node_modules/@chgibb/ngplasmid/lib/directiveToPB" />
+/// <reference path="../../../node_modules/@chgibb/ngplasmid/lib/pb/node.d.ts" />
+
 
 import * as fs from "fs";
 import * as readline from "readline";
@@ -10,7 +13,9 @@ const jsonFile = require("jsonfile");
 const uuidv4 : () => string = require("uuid/v4");
 const mkdirp = require("mkdirp");
 import * as html from "@chgibb/ngplasmid/lib/html";
-import * as directives from "@chgibb/ngplasmid/lib/directives";
+import * as ngDirectives from "@chgibb/ngplasmid/lib/directives";
+import * as pbDirectives from "@chgibb/ngplasmid/lib/pb/node";
+import {plasmidToPB} from "@chgibb/ngplasmid/lib/directiveToPB";
 
 import {getReadableAndWritable} from "./../getAppPath";
 import * as fastaContigLoader from "./../fastaContigLoader";
@@ -24,6 +29,7 @@ import * as plasmid from "./circularGenome/plasmid";
 
 import {AlignData,getSNPsJSON} from "./../alignData";
 import {VCF2JSONRow} from "./../varScanMPileup2SNPVCF2JSON";
+
 /**
  * Represents a single contig in a circular figure
  * 
@@ -388,7 +394,7 @@ export function getBaseFigureFromCache(figure : CircularFigure) : string
  */
 export function getBaseFigureSVGFromCache(figure : CircularFigure) : string
 {
-    return (<any>fs.readFileSync(getReadableAndWritable(`rt/circularFigures/${figure.uuid}/baseFigure.svg`)));
+    return fs.readFileSync(getReadableAndWritable(`rt/circularFigures/${figure.uuid}/baseFigure.svg`)).toString();
 }
 
 /**
@@ -404,6 +410,43 @@ export function deleteBaseFigureSVGFromCache(figure : CircularFigure) : void
         fs.unlinkSync(getReadableAndWritable(`rt/circularFigures/${figure.uuid}/baseFigure.svg`));
     }
     catch(err){}
+}
+/**
+ * Compile base figure. Returns the resulting SVG
+ * 
+ * @export
+ * @param {CircularFigure} figure 
+ * @returns {Promise<string>} 
+ */
+export function compileBaseFigureSVG(figure : CircularFigure) : Promise<string>
+{
+    return new Promise<string>(async (resolve,reject) => {
+
+        let nodes : Array<html.Node> = await html.loadFromString(
+            assembleCompilableBaseFigureTemplates(figure)
+        );
+
+        let plasmid : ngDirectives.Plasmid = new ngDirectives.Plasmid();
+        plasmid.$scope = {
+            genome : figure
+        };
+
+        for(let i = 0; i != nodes.length; ++i)
+        {
+            if(nodes[i].name == "div")
+            {
+                for(let k = 0; k != nodes[i].children.length; ++k)
+                {
+                    if(nodes[i].children[k].name == "plasmid")
+                    {
+                        plasmid.fromNode<html.Node>(nodes[i].children[k]);
+                        break;
+                    }
+                }
+            }
+        }
+        resolve(plasmid.renderStart()+plasmid.renderEnd());
+    });
 }
 
 /**
@@ -617,7 +660,40 @@ export function getCoverageTrackSVGFromCache(trackRecord : RenderedCoverageTrack
 {
     return fs.readFileSync(getCachedCoverageTrackSVGPath(trackRecord)).toString();
 }
-
+/**
+ * Returns the path to the protocol buffer cache for the specified coverage track
+ * 
+ * @export
+ * @param {RenderedCoverageTrackRecord} trackRecord 
+ * @returns {string} 
+ */
+export function getCoverageTrackPBPath(trackRecord : RenderedCoverageTrackRecord) : string
+{
+    return getReadableAndWritable(`rt/circularFigures/${trackRecord.uuidFigure}/coverage/${trackRecord.uuidAlign}/${trackRecord.uuidContig}/${trackRecord.uuid}.pb`);
+}
+/**
+ * Returns the disk protocol buffer cache for the specified coverage track
+ * 
+ * @export
+ * @param {RenderedCoverageTrackRecord} trackRecord 
+ * @returns {Buffer} 
+ */
+export function getCoverageTrackPBFromCache(trackRecord : RenderedCoverageTrackRecord) : Buffer
+{
+    return fs.readFileSync(getCoverageTrackPBPath(trackRecord));
+}
+/**
+ * Overwrites the disk protocol buffer cache for the specified coverage track
+ * 
+ * @export
+ * @param {RenderedCoverageTrackRecord} trackRecord 
+ * @param {ngDirectives.Plasmid} plasmid 
+ */
+export function cacheCoverageTrackPB(trackRecord : RenderedCoverageTrackRecord,plasmid : ngDirectives.Plasmid) : void
+{
+    let pb = pbDirectives.Node.create(plasmidToPB(plasmid));
+    fs.writeFileSync(getCoverageTrackPBPath(trackRecord),pbDirectives.Node.encode(pb).finish());
+}
 
 /**
  * Holds information relevant to display for a given SNP
@@ -808,16 +884,77 @@ export function getSNPTrackSVGFromCache(trackRecord : RenderedSNPTrackRecord) : 
  */
 export function compileCoverageTrackSVG(trackRecord : RenderedCoverageTrackRecord,figure : CircularFigure) : Promise<string>
 {
-    let template = fs.readFileSync(getCachedCoverageTrackPath(trackRecord)).toString();
+
     return new Promise<string>(async (resolve,reject) => {
+
+        if(fs.existsSync(getCoverageTrackPBPath(trackRecord)))
+        {
+            let plasmid : ngDirectives.Plasmid = new ngDirectives.Plasmid();
+            plasmid.$scope = {
+                genome : figure
+            };
+
+            //build from protocol buffer
+            plasmid.fromNode<any>(
+                pbDirectives.Node.decode(
+                    fs.readFileSync(
+                        getCoverageTrackPBPath(trackRecord)
+                    )
+                )
+            );
+            resolve(plasmid.renderStart()+plasmid.renderEnd());
+        }
+
+        //first time compiling this track
+        else
+        {
+            //construct map from html
+            let nodes : Array<html.Node> = await html.loadFromString(
+                assembleCompilableCoverageTrack(figure,trackRecord)
+            );
+
+            let plasmid : ngDirectives.Plasmid = new ngDirectives.Plasmid();
+            plasmid.$scope = {
+                genome : figure
+            };
+        
+            for(let i = 0; i != nodes.length; ++i)
+            {
+                if(nodes[i].name == "div")
+                {
+                    for(let k = 0; k != nodes[i].children.length; ++k)
+                    {
+                        if(nodes[i].children[k].name == "plasmid")
+                        {
+                            plasmid.fromNode<html.Node>(nodes[i].children[k]);
+                            break;
+                        }
+                    }
+                }
+            }
+            //write optimized protocol buffer version for future compiles
+            cacheCoverageTrackPB(trackRecord,plasmid);
+            //since the map is already ready, compile and resolve the result
+            resolve(plasmid.renderStart()+plasmid.renderEnd());
+        }
+    });
+
+}
+
+export function compileSNPTrackSVG(trackRecord : RenderedSNPTrackRecord,figure : CircularFigure) : Promise<string>
+{
+
+    return new Promise<string>(async (resolve,reject) => {
+
         let nodes : Array<html.Node> = await html.loadFromString(
-            assembleCompilableCoverageTrack(figure,trackRecord)
+            assembleCompilableSNPTrack(figure,trackRecord)
         );
-        let plasmid : directives.Plasmid = new directives.Plasmid();
+
+        let plasmid : ngDirectives.Plasmid = new ngDirectives.Plasmid();
         plasmid.$scope = {
             genome : figure
         };
-        
+
         for(let i = 0; i != nodes.length; ++i)
         {
             if(nodes[i].name == "div")
@@ -826,7 +963,7 @@ export function compileCoverageTrackSVG(trackRecord : RenderedCoverageTrackRecor
                 {
                     if(nodes[i].children[k].name == "plasmid")
                     {
-                        plasmid.fromNode(nodes[i].children[k]);
+                        plasmid.fromNode<html.Node>(nodes[i].children[k]);
                         break;
                     }
                 }
@@ -835,7 +972,6 @@ export function compileCoverageTrackSVG(trackRecord : RenderedCoverageTrackRecor
 
         resolve(plasmid.renderStart()+plasmid.renderEnd());
     });
-
 }
 
 /**
