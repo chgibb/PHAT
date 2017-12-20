@@ -51,6 +51,8 @@ export async function displayNonInteractiveFigure(self : GenomeView) : Promise<v
             document.body.insertAdjacentHTML("beforeend",$div);
             canvas = <HTMLCanvasElement>document.getElementById("nonInteractiveFigureCanvas");
         }
+        console.log(`canvas width ${document.documentElement.clientWidth*2}`);
+        console.log(`canvas height ${document.documentElement.clientHeight*2}`);
         canvas.setAttribute("width",`${document.documentElement.clientWidth*2}`);
         canvas.setAttribute("height",`${document.documentElement.clientHeight*2}`);
         centreNonInteractiveFigure(self.genome);
