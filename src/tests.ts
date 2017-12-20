@@ -29,7 +29,7 @@ import {testL6R1HPV18Alignment} from "./req/tests/testL6R1HPV18Alignment"
 import {testL6R1HPV16CoverageTrackRenderer} from "./req/tests/testL6R1HPV16CoverageTrackRender";
 import {testL6R1HPV16SNPTrackRenderer} from "./req/tests/testL6R1HPV16SNPTrackRender";
 import {testL6R1HPV16CoverageTrackCompilation} from "./req/tests/testL6R1HPV16CoverageTrackCompilation";
-import {testL6R1HPV16SNPrackCompilation} from "./req/tests/testL6R1HPV16SNPrackCompilation";
+import {testL6R1HPV16SNPrackCompilation} from "./req/tests/testL6R1HPV16SNPTrackCompilation";
 import {testL6R1HPV18CoverageTrackRenderer} from "./req/tests/testL6R1HPV18CoverageTrackRender";
 import {testL6R1HPV18SNPTrackRenderer} from "./req/tests/testL6R1HPV18SNPTrackRender";
 
