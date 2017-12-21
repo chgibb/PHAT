@@ -1,5 +1,16 @@
 import * as winMgr from "./winMgr";
 import {getReadable} from "./../getAppPath";
+import {add} from "./afterProjectLoad";
+
+add(function(){
+	winMgr.initWindowOptions(
+		"Operation Viewer",
+		"operationViewer",
+		1000,800,
+		false,
+		500,300
+	);
+});
 
 winMgr.windowCreators["operationViewer"] = 
 {
@@ -7,13 +18,10 @@ winMgr.windowCreators["operationViewer"] =
 	{
 		winMgr.pushWindow(
 			"operationViewer",
-			winMgr.createWithDefault(
-				"Operation Viewer",
+			winMgr.createFromOptions(
 				"operationViewer",
-				1000,800,
 				"file://"+getReadable("OperationViewer.html"),
-				false,false,
-				500,300
+				false
 			)
 		);
 	}

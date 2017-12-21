@@ -13,6 +13,7 @@ import {CircularFigure} from "./../circularFigure";
 import {reCacheBaseFigure} from "./reCacheBaseFigure";
 import {Fasta} from "./../../fasta";
 import {AlignData} from "./../../alignData";
+import {changeWindowTitle} from "./../changeWindowTitle";
 
 import * as GenomeView from "./genomeView";
 import * as tc from "./templateCache";
@@ -22,7 +23,7 @@ import {writeAvailableTracksModal} from "./writeAvailableTracksModal";
 import {writeContigEditorModal} from "./writeContigEditorModal";
 import {writeContigCreatorModal} from "./writeContigCreatorModal";
 import {writeEditContigsModal} from "./writeEditContigsModal";
-import {writeLoadingModal} from "./writeLoadingModal";
+import {showGenericLoadingSpinnerInNavBar} from "./loadingSpinner";
 
 
 const $ = require("jquery");
@@ -52,7 +53,6 @@ export class View extends viewMgr.View
     public contigEditorModalOpen : boolean;
     public contigCreatorModalOpen : boolean;
     public editContigsModalOpen : boolean;
-    public loadingModal : boolean;
     public constructor(div : string)
     {
         super("masterView",div);
@@ -64,7 +64,6 @@ export class View extends viewMgr.View
         this.contigEditorModalOpen = false;
         this.contigCreatorModalOpen = false;
         this.editContigsModalOpen = false;
-        this.loadingModal = false;
     }
     /**
      * Retrieve all the alignments run for the currently open figure
@@ -217,6 +216,7 @@ export class View extends viewMgr.View
                     ));
                     self.saveFigureChanges();
                     genomeView.genome = self.circularFigures[self.circularFigures.length - 1];
+                    changeWindowTitle(genomeView.genome.name);
                     genomeView.firstRender = true;
                     viewMgr.render();
                     self.setSelectedFigureInDropDown();
@@ -228,6 +228,7 @@ export class View extends viewMgr.View
                 if((<any>ev.target).id == `${self.circularFigures[i].uuid}Open`)
                 {
                     genomeView.genome = self.circularFigures[i];
+                    changeWindowTitle(genomeView.genome.name);
                     genomeView.firstRender = true;
                     viewMgr.render();
                     self.setSelectedFigureInDropDown();
@@ -235,20 +236,16 @@ export class View extends viewMgr.View
                 }
             }
         }
-        document.getElementById("figureOptions").onclick = function(this : HTMLElement,ev : MouseEvent){
+        document.getElementById("figureOptions").onclick = async function(this : HTMLElement,ev : MouseEvent){
             if((<any>event.target).id == `${genomeView.genome.uuid}ToggleInteractivity`)
             {
                 genomeView.genome.isInteractive = !genomeView.genome.isInteractive;
                 self.saveFigureChanges();
-                genomeView.firstRender = true;
-                viewMgr.render();
             }
             if((<any>event.target).id == `${genomeView.genome.uuid}ToggleContigNames`)
             {
                 genomeView.genome.showContigNames = !genomeView.genome.showContigNames;
                 self.saveFigureChanges();
-                genomeView.firstRender = true;
-                viewMgr.render();
             }
             if((<any>event.target).id == `EditFigureName`)
             {
@@ -318,7 +315,7 @@ export class View extends viewMgr.View
             );
         }
 
-        document.getElementById("updateNavBarButton").onclick = function(this : HTMLElement,ev : MouseEvent){
+        document.getElementById("updateNavBarButton").onclick = async function(this : HTMLElement,ev : MouseEvent){
             let radiusHasChanged = false;
             let trackIntervalChanged = false;
             let showIntervalChanged = false;
@@ -353,11 +350,9 @@ export class View extends viewMgr.View
             if(radiusHasChanged || trackIntervalChanged || showIntervalChanged)
             {
                 genomeView.firstRender = true;
-                tc.triggerReCompileForWholeFigure(genomeView.genome);
                 self.saveFigureChanges();
             }
             genomeView.updateScope();
-            viewMgr.render();
         }
 
         //on modal dismissal
@@ -429,8 +424,6 @@ export class View extends viewMgr.View
         if(this.contigCreatorModalOpen)
             writeContigCreatorModal();
 
-        if(this.loadingModal)
-            writeLoadingModal();
         //viewMgr will not call postRender for a view that does no rendering so we'll do it explicitly
         this.postRender();
         return undefined;
@@ -474,7 +467,7 @@ export class View extends viewMgr.View
         this.dataChanged();
         if(genomeView.genome)
         {
-            tc.resetCaches();
+            tc.resetBaseFigureCache();
             reCacheBaseFigure(genomeView.genome);
         }
     }

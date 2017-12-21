@@ -5,6 +5,7 @@ import {GetKeyEvent,KeySubEvent} from "./req/ipcEvents";
 import  {AtomicOperation} from "./req/operations/atomicOperations"
 import  {GenerateQCReport} from "./req/operations/GenerateQCReport"
 import * as viewMgr from "./req/renderer/viewMgr";
+import {makeWindowDockable} from "./req/renderer/dock";
 
 import * as summary from "./req/renderer/QCRenderer/summaryView";
 import * as report from "./req/renderer/QCRenderer/reportView";
@@ -17,6 +18,8 @@ $
 (
     function()
     {
+        makeWindowDockable("QC");
+        
         summary.addView(viewMgr.views,'reports');
         report.addView(viewMgr.views,'reports');
 
@@ -76,44 +79,50 @@ $
                             viewMgr.render();
                         }
                     }
-                    if(arg.key == "operations")
+                    //occasionally when docking, we can recieve the deleted window docking operation
+                    try
                     {
-                        //On update from running jobs
-                        let operations : Array<AtomicOperation> = arg.val;
-                        for(let i : number = 0; i != operations.length; ++i)
+                        if(arg.key == "operations")
                         {
-                            //look for only report generation jobs
-                            if(operations[i].name == "generateFastQCReport")
+                            //On update from running jobs
+                            let operations : Array<AtomicOperation> = arg.val;
+                            for(let i : number = 0; i != operations.length; ++i)
                             {
-                                let op : GenerateQCReport = (<any>operations[i]);
-                                //Check for stdout from FastQC
-                                if(op.progressMessage)
+                                //look for only report generation jobs
+                                if(operations[i].name == "generateFastQCReport")
                                 {
-                                    //if its not garbled
-                                    if(validFastQCOut.test(op.progressMessage))
+                                    let op : GenerateQCReport = (<any>operations[i]);
+                                    //Check for stdout from FastQC
+                                    if(op.progressMessage)
                                     {
-                                        //extract percentage
-                                        let regResult = trimOutFastQCPercentage.exec(op.progressMessage);
-                                        if(regResult && regResult[0])
+                                        //if its not garbled
+                                        if(validFastQCOut.test(op.progressMessage))
                                         {
-                                            //find the fastq in the table corresponding to the one being processed and
-                                            //put the percentage next to it
-                                            let fastqInputs = (<summary.SummaryView>viewMgr.getViewByName("summary")).fastqInputs;
-                                            for(let i : number = 0; i != fastqInputs.length; ++i)
+                                            //extract percentage
+                                            let regResult = trimOutFastQCPercentage.exec(op.progressMessage);
+                                            if(regResult && regResult[0])
                                             {
-                                                if(fastqInputs[i].uuid == op.fastq.uuid)
+                                                //find the fastq in the table corresponding to the one being processed and
+                                                //put the percentage next to it
+                                                let fastqInputs = (<summary.SummaryView>viewMgr.getViewByName("summary")).fastqInputs;
+                                                for(let i : number = 0; i != fastqInputs.length; ++i)
                                                 {
-                                                    $(`#${op.fastq.uuid}`).text(regResult[0]);
-                                                    return;
+                                                    if(fastqInputs[i].uuid == op.fastq.uuid)
+                                                    {
+                                                        $(`#${op.fastq.uuid}`).text(regResult[0]);
+                                                        return;
+                                                    }
                                                 }
                                             }
                                         }
+                                        return;
                                     }
-                                    return;
                                 }
                             }
                         }
+                       
                     }
+                    catch(err){}
                 }
                 viewMgr.render();
             }

@@ -5,7 +5,9 @@ import * as masterView from "./req/renderer/circularGenomeBuilderRenderer/master
 import * as genomeView from "./req/renderer/circularGenomeBuilderRenderer/genomeView";
 import {CircularFigure,} from "./req/renderer/circularFigure";
 import {GetKeyEvent,KeySubEvent} from "./req/ipcEvents";
+import {makeWindowDockable} from "./req/renderer/dock";
 import {CompileTemplates} from "./req/operations/CompileTemplates";
+import {showGenericLoadingSpinnerInNavBar,hideSpinnerInNavBar} from "./req/renderer/circularGenomeBuilderRenderer/loadingSpinner";
 import * as tc from "./req/renderer/circularGenomeBuilderRenderer/templateCache";
 import "./req/renderer/commonBehaviour";
 
@@ -15,6 +17,7 @@ $
 (
     function()
     {
+        makeWindowDockable("circularGenomeBuilder");
         masterView.addView(viewMgr.views,"view");
         viewMgr.changeView("masterView");
         viewMgr.render();
@@ -84,7 +87,7 @@ $
         );
         ipc.on
         (
-            'circularGenomeBuilder',function(event : Electron.IpcMessageEvent,arg : any)
+            'circularGenomeBuilder',async function(event : Electron.IpcMessageEvent,arg : any)
             {
                 if(arg.action == "getKey" || arg.action == "keyChange")
                 {
@@ -127,6 +130,8 @@ $
                                     {
                                         found = true;
                                         genomeView.genome = masterView.circularFigures[i];
+                                        await tc.triggerReCompileForWholeFigure(genomeView.genome);
+                                        genomeView.firstRender = true;
                                         break;
                                     }
                                 }
@@ -173,15 +178,16 @@ $
                                 }
                             }
                             if(totalTracks > 0)
-                                document.getElementById("navBarLoadingText").innerHTML = `Recalculating ${totalTracks} tracks`;
+                                showGenericLoadingSpinnerInNavBar();
+                                
                             if(totalTracks == 0)
                             {
-                                document.getElementById("navBarLoadingText").innerHTML = ``;
+                                hideSpinnerInNavBar();
                             }
                         }
                         else if(arg.val === undefined)
                         {
-                            document.getElementById("navBarLoadingText").innerHTML = ``;
+                            hideSpinnerInNavBar();
                         }
                     }
                 }

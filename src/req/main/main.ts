@@ -13,10 +13,6 @@ app.commandLine.appendSwitch("js-flags","--expose_gc --nolazy --serialize_eager 
 if(require('electron-squirrel-startup')) app.quit();
 
 import {getReadable,getWritable,getReadableAndWritable} from "./../getAppPath";
-getReadable("");
-getWritable("");
-getReadableAndWritable("");
-
 import {getEdition} from "./../getEdition";
 import {appMenu} from "./appMenu";
 
@@ -33,6 +29,7 @@ import {CheckForUpdate} from "./../operations/CheckForUpdate";
 import {DownloadAndInstallUpdate} from "./../operations/DownloadAndInstallUpdate";
 import {OpenPileupViewer} from "./../operations/OpenPileupViewer";
 import {OpenLogViewer} from "./../operations/OpenLogViewer";
+import {OpenNoSamHeaderPrompt} from "./../operations/OpenNoSamHeaderPrompt";
 
 import {InputFastqFile} from "./../operations/inputFastqFile";
 import {InputFastaFile} from "./../operations/inputFastaFile";
@@ -52,6 +49,11 @@ import {OpenProject} from "./../operations/OpenProject";
 import {SaveCurrentProject} from "./../operations/SaveCurrentProject";
 import {LoadCurrentlyOpenProject} from "./../operations/LoadCurrentlyOpenProject";
 
+import {DockWindow} from "./../operations/DockWindow";
+import {UnDockWindow} from "./../operations/UnDockWindow";
+
+import {ChangeTitle} from "./../operations/ChangeTitle";
+
 import * as winMgr from "./winMgr";
 
 import {File,getPath} from "./../file";
@@ -62,12 +64,11 @@ import {CircularFigure} from "./../renderer/circularFigure";
 import {PIDInfo} from "./../PIDInfo";
 import {finishLoadingProject} from "./finishLoadingProject";
 
+
+
 import {GetKeyEvent,SaveKeyEvent,KeySubEvent} from "./../ipcEvents";
 
 var pjson = require('./package.json');
-
-
-(<any>global).state = {};
 
 import "./ProjectSelection";
 import "./toolBar";
@@ -80,6 +81,7 @@ import "./circularGenomeBuilder";
 import "./OperationViewer";
 import "./logViewer";
 import "./procMgr";
+import "./noSamHeaderPrompt";
 
 
 app.on
@@ -108,7 +110,8 @@ app.on
 		atomicOp.register("loadCurrentlyOpenProject",LoadCurrentlyOpenProject);
 
 		atomicOp.register("openPileupViewer",OpenPileupViewer);
-		atomicOp.register("openLogViewer",OpenLogViewer)
+		atomicOp.register("openLogViewer",OpenLogViewer);
+		atomicOp.register("openNoSamHeaderPrompt",OpenNoSamHeaderPrompt);
 		atomicOp.register("inputFastqFile",InputFastqFile);
 		atomicOp.register("inputFastaFile",InputFastaFile);
 		atomicOp.register("inputBamFile",InputBamFile);
@@ -118,6 +121,11 @@ app.on
 		atomicOp.register("copyCircularFigure",CopyCircularFigure);
 		atomicOp.register("deleteCircularFigure",DeleteCircularFigure);
 		atomicOp.register("compileTemplates",CompileTemplates);
+
+		atomicOp.register("dockWindow",DockWindow);
+		atomicOp.register("unDockWindow",UnDockWindow);
+
+		atomicOp.register("changeTitle",ChangeTitle);
 
 		//on completion of any operation, wait and then broadcast the queue to listening windows
 		atomicOp.setOnComplete(
@@ -199,9 +207,21 @@ ipc.on
 				isPHATRenderer : true,
 				pid : windows[i].window.webContents.getOSProcessId(),
 				url : windows[i].window.webContents.getURL()
-			}
+			};
 			res.push(curr);
 		}
+		let webContents = winMgr.getFreeWebContents();
+		for(let i = 0; i != webContents.length; ++i)
+		{
+			let curr = <PIDInfo>{
+				isPHAT : true,
+				isPHATRenderer : true,
+				pid : webContents[i].getOSProcessId(),
+				url : webContents[i].getURL()
+			};
+			res.push(curr);
+		}
+
 		for(let i = 0; i != atomicOp.operationsQueue.length; ++i)
 		{
 			if(atomicOp.operationsQueue[i].running == true)
@@ -340,7 +360,8 @@ ipc.on(
 						circularFigure : circularFigure,
 						contiguuid : arg.uuid,
 						alignData : alignData,
-						colour : arg.colour
+						colour : arg.colour,
+						scaleFactor : arg.scaleFactor
 					}
 				);
 			}
@@ -443,6 +464,10 @@ ipc.on(
 		{
 			atomicOp.addOperation("openLogViewer",arg.logRecord);
 		}
+		else if(arg.opName == "openNoSamHeaderPrompt")
+		{
+			atomicOp.addOperation("openNoSamHeaderPrompt",{});
+		}
 		else if(arg.opName == "inputFastqFile")
 		{
 			let fastqs : Array<Fastq> = dataMgr.getKey("input","fastqInputs");
@@ -475,7 +500,10 @@ ipc.on(
 		}
 		else if(arg.opName == "inputBamFile")
 		{
-			atomicOp.addOperation("inputBamFile",arg.filePath);
+			atomicOp.addOperation("inputBamFile",{
+				bamPath : arg.filePath,
+				fasta : arg.fasta
+			});
 		}
 		else if(arg.opName == "linkRefSeqToAlignment")
 		{
@@ -556,6 +584,27 @@ ipc.on(
 				figure : arg.figure,
 				uuid : arg.uuid,
 				compileBase : arg.compileBase
+			});
+		}
+		else if(arg.opName == "dockWindow")
+		{
+			atomicOp.addOperation("dockWindow",{
+				toDock : arg.toDock,
+				dockTarget : arg.dockTarget
+			});
+		}
+		else if(arg.opName == "unDockWindow")
+		{
+			atomicOp.addOperation("unDockWindow",{
+				refName : arg.refName,
+				guestinstance : arg.guestinstance
+			});
+		}
+		else if(arg.opName == "changeTitle")
+		{
+			atomicOp.addOperation("changeTitle",{
+				id : arg.id,
+				newTitle : arg.newTitle
 			});
 		}
 		dataMgr.setKey("application","operations",atomicOp.operationsQueue);
@@ -742,6 +791,10 @@ atomicOp.updates.on(
 			dataMgr.setKey("align","aligns",aligns);
 			winMgr.publishChangeForKey("align","aligns");
 		}
+		else if(op.flags.failure)
+		{
+			atomicOp.addOperation("openNoSamHeaderPrompt",op);
+		}
 	}
 );
 
@@ -922,3 +975,19 @@ atomicOp.updates.on(
 		winMgr.publishChangeForKey("application","operations");
 	}
 );
+
+atomicOp.updates.on(
+	"unDockWindow",function(op : UnDockWindow)
+	{
+		dataMgr.setKey("application","operations",atomicOp.operationsQueue);
+		winMgr.publishChangeForKey("application","operations");
+	}
+);
+
+atomicOp.updates.on(
+	"changeTitle",function(op : ChangeTitle)
+	{
+		dataMgr.setKey("application","operations",atomicOp.operationsQueue);
+		winMgr.publishChangeForKey("application","operations");
+	}
+)

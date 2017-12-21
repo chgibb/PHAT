@@ -7,6 +7,7 @@ let align : AlignData;
 let contiguuid : string;
 let circularFigure : cf.CircularFigure;
 let colour : string;
+let scaleFactor : number;
 
 let flags : CompletionFlags = new CompletionFlags();
 process.on
@@ -19,13 +20,14 @@ process.on
             contiguuid = ev.data.contiguuid;
             circularFigure = ev.data.circularFigure;
             colour = ev.data.colour;
+            scaleFactor = ev.data.scaleFactor;
             process.send(<AtomicOperationForkEvent>{finishedSettingData : true});
             return;
         }
 
         if(ev.run == true)
         {
-            cf.cacheCoverageTrack(circularFigure,contiguuid,align,colour).then((coverageTracks : string) => {
+            cf.cacheCoverageTrack(circularFigure,contiguuid,align,colour,scaleFactor).then((coverageTracks : string) => {
                 flags.done = true;
                 flags.success = true;
                 process.send(

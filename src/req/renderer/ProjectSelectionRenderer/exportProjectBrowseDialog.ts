@@ -1,4 +1,4 @@
-import * as fse from "fs-extra";
+const fse = require("fs-extra");
 import * as electron from "electron";
 const dialog = electron.remote.dialog;
 
