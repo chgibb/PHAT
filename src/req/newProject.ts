@@ -1,10 +1,10 @@
-const jsonFile = require("jsonfile");
-const uuidv4 : () => string = require("uuid/v4");
-
 import {ProjectManifest,getProjectManifests} from "./projectManifest";
 
 export function newProject(name : string) : Promise<{}>
 {
+    const jsonFile = require("jsonfile");
+    const uuidv4 : () => string = require("uuid/v4");
+    
     return new Promise((resolve,reject) => {
         let projects : Array<ProjectManifest>;
         try

@@ -1,9 +1,6 @@
 import * as fs from "fs";
 import * as path from "path";
 
-const uuidv4 : () => string = require("uuid/v4");
-const fse = require("fs-extra");
-
 import {getReadableAndWritable} from "./getAppPath";
 import trimPath from "./trimPath";
 import formatByteString from "./renderer/formatByteString";
@@ -18,6 +15,8 @@ export class File
     public sizeString : string;
     public constructor(path : string)
     {
+        const uuidv4 : () => string = require("uuid/v4");
+
         this.path = path;
         this.alias = trimPath(path);
         this.uuid = uuidv4();
@@ -31,6 +30,8 @@ export class File
 
 export function importIntoProject(file : File) : Promise<Error> | undefined
 {
+    const fse = require("fs-extra");
+    
     return new Promise<Error>((resolve,reject) => {
         if(file.imported)
             return reject(new Error(`${file.alias} has already been imported`));

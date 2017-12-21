@@ -1,6 +1,3 @@
-let GitHubAPI = require("github-api");
-const pjson = require("./package.json");
-
 import {versionIsGreaterThan,isBeta,sepBaseAndBeta} from "./versionIsGreaterThan";
 import {getAppSettings,writeAppSettings} from "./appSettings";
 
@@ -28,6 +25,9 @@ export interface Status
 //returns 2 if there is no release available whose version is greater than the version in package.json
 export function getLatestUpdate(userName : string,repo : string) : Promise<{}>
 {
+    let GitHubAPI = require("github-api");
+    const pjson = require("./package.json");
+    
     return new Promise((resolve,reject) => {
         let ghapi = new GitHubAPI();
         ghapi.getRepo(userName,repo).listReleases(
