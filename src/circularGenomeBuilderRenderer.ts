@@ -6,7 +6,6 @@ import * as genomeView from "./req/renderer/circularGenomeBuilderRenderer/genome
 import {CircularFigure,} from "./req/renderer/circularFigure";
 import {GetKeyEvent,KeySubEvent} from "./req/ipcEvents";
 import {makeWindowDockable} from "./req/renderer/dock";
-import {CompileTemplates} from "./req/operations/CompileTemplates";
 import {showGenericLoadingSpinnerInNavBar,hideSpinnerInNavBar} from "./req/renderer/circularGenomeBuilderRenderer/loadingSpinner";
 import * as tc from "./req/renderer/circularGenomeBuilderRenderer/templateCache";
 import "./req/renderer/commonBehaviour";
@@ -130,7 +129,6 @@ $
                                     {
                                         found = true;
                                         genomeView.genome = masterView.circularFigures[i];
-                                        await tc.triggerReCompileForWholeFigure(genomeView.genome);
                                         genomeView.firstRender = true;
                                         break;
                                     }
@@ -144,52 +142,7 @@ $
                             
                         }
                     }
-                    if(arg.key == "operations")
-                    {
-                        if(arg.val !== undefined)
-                        {
-                            let masterView = <masterView.View>viewMgr.getViewByName("masterView");
-                            let genomeView = <genomeView.GenomeView>viewMgr.getViewByName("genomeView",masterView.views);
-                            let ops : Array<CompileTemplates> = arg.val;
-                            let totalTracks = 0;
-                            for(let i = 0; i != ops.length; ++i)
-                            {
-                                if(ops[i].name == "compileTemplates")
-                                {
-                                    if(genomeView.genome && ops[i].figure.uuid == genomeView.genome.uuid)
-                                    {
-                                        totalTracks++;
-                                        if(ops[i].flags.done && ops[i].flags.success)
-                                        {
-                                            if(ops[i].uuid)
-                                            {
-                                                console.log("compiled "+ops[i].uuid);
-                                                tc.removeTrack(ops[i].uuid);
-                                                genomeView.firstRender = true;
-                                            }
-                                            else if(ops[i].compileBase)
-                                            {
-                                                console.log("compiled base figure");
-                                                tc.resetBaseFigureSVG();
-                                                genomeView.firstRender = true;
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                            if(totalTracks > 0)
-                                showGenericLoadingSpinnerInNavBar();
-                                
-                            if(totalTracks == 0)
-                            {
-                                hideSpinnerInNavBar();
-                            }
-                        }
-                        else if(arg.val === undefined)
-                        {
-                            hideSpinnerInNavBar();
-                        }
-                    }
+                    
                 }
                 viewMgr.render();
             }
