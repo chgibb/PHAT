@@ -5,11 +5,6 @@ function cleanTSArtifacts {
 		artifact=$(echo $f | awk '{gsub("\\.ts",".js");print}')
 		rm $artifact
 	done
-	for f in $(find scripts -name '*.ts'); 
-	do
-		artifact=$(echo $f | awk '{gsub("\\.ts",".js");print}')
-		rm $artifact
-	done
 }
 cp src/pileup.js/style/pileup.css dist/styles/pileup.css
 
@@ -32,7 +27,7 @@ if [[ "$1" == "opt" ]]; then
 		printf "Shaking "
 		printf $f
 		printf "\n"
-		./node_modules/.bin/rollup $f --o $f --f cjs
+		node scripts/rollup $f
 		if [ $? != 0 ]; then
 			cleanTSArtifacts
 			exit 1

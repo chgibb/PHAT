@@ -10,6 +10,8 @@ const ipc = electron.ipcRenderer;
 const Dialogs = require("dialogs");
 const dialogs = Dialogs();
 
+import {dockThisWindow} from "./dock";
+
 /*
  Adapted from answer by Fizer Khan
  http://stackoverflow.com/questions/205688/javascript-exception-handling
@@ -45,7 +47,7 @@ document.addEventListener
 );
 
 //Enable experimental feature on press of "1" key
-window.onkeypress = function(e : KeyboardEvent){
+window.addEventListener("keypress",function(this : Window,e : KeyboardEvent){
     if(e.key == "1" && e.ctrlKey)
     {
         dialogs.confirm(
@@ -60,4 +62,8 @@ window.onkeypress = function(e : KeyboardEvent){
             }
         );
     }
-}
+    else if(e.key == "2" && e.ctrlKey)
+    {
+        dockThisWindow();
+    }
+});

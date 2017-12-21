@@ -1,5 +1,17 @@
 import * as winMgr from "./winMgr";
 import {getReadable} from "./../getAppPath";
+import {add} from "./afterProjectLoad";
+
+add(function(){
+	winMgr.initWindowOptions(
+		"Fastq QC",
+		"QC",
+		1000,
+		800,
+		false,
+		550,150
+	);
+});
 
 winMgr.windowCreators["QC"] = 
 {
@@ -7,15 +19,12 @@ winMgr.windowCreators["QC"] =
 	{
 		winMgr.pushWindow(
 			"QC",
-			winMgr.createWithDefault(
-				"Fastq QC",
+			winMgr.createFromOptions(
 				"QC",
-				1000,
-				800,
 				"file://"+getReadable("QC.html"),
-				false,false,
-				550,150
+				false
 			)
 		);
 	}
 };
+

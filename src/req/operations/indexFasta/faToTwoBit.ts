@@ -4,6 +4,13 @@ import {SpawnRequestParams} from "./../../JobIPC";
 import {Job,JobCallBackObject} from "./../../main/Job";
 import {getPath} from "./../../file";
 
+/**
+ * Builds a 2bit archive 
+ * 
+ * @export
+ * @param {IndexFastaForVisualization} op 
+ * @returns {Promise<{}>} 
+ */
 export function faToTwoBit(op : IndexFastaForVisualization) : Promise<{}>
 {
     return new Promise((resolve,reject) => {

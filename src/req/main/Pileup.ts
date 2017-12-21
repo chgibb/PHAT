@@ -1,5 +1,16 @@
 import * as winMgr from "./winMgr";
 import {getReadable} from "./../getAppPath";
+import {add} from "./afterProjectLoad";
+
+add(function(){
+	winMgr.initWindowOptions(
+		"Pileup",
+		"pileup",
+		1000,800,
+		false,
+		500,300
+	);
+});
 
 winMgr.windowCreators["pileup"] = 
 {
@@ -7,13 +18,10 @@ winMgr.windowCreators["pileup"] =
 	{
 		winMgr.pushWindow(
 			"pileup",
-			winMgr.createWithDefault(
-				"Pileup",
+			winMgr.createFromOptions(
 				"pileup",
-				1000,800,
 				"file://"+getReadable("Pileup.html"),
-				false,false,
-				500,300
+				false
 			)
 		);
 	}

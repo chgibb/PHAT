@@ -1,5 +1,5 @@
 (set -o igncr) 2>/dev/null && set -o igncr; # For Cygwin on Windows compaibility
-bash scripts/build.bash
+bash scripts/build.bash opt
 
 rm -rf tests
 mkdir tests
