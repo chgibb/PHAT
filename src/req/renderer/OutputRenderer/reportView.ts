@@ -110,7 +110,12 @@ export class View extends viewMgr.View
             }
             if(event.target.id == masterView.alignData[i].uuid+"ViewAlignment")
             {
-                if(masterView.alignData[i].summary && !masterView.alignData[i].summary.overallAlignmentRate)
+                if(
+                    masterView.alignData[i].isExternalAlignment ?
+                    (masterView.alignData[i].flagStatReport && !masterView.alignData[i].flagStatReport.overallAlignmentRate):
+                    (masterView.alignData[i].summary && !masterView.alignData[i].summary.overallAlignmentRate) 
+                    
+                )
                 {
                     alert(`Can't view an alignment with 0% alignment rate`);
                     return;
@@ -153,7 +158,12 @@ export class View extends viewMgr.View
             }
             if(event.target.id == masterView.alignData[i].uuid+"AlignmentRate")
             {
-                if(masterView.alignData[i].summary && !masterView.alignData[i].summary.overallAlignmentRate)
+                if(
+                    masterView.alignData[i].isExternalAlignment ?
+                    (masterView.alignData[i].flagStatReport && !masterView.alignData[i].flagStatReport.overallAlignmentRate):
+                    (masterView.alignData[i].summary && !masterView.alignData[i].summary.overallAlignmentRate) 
+                    
+                )
                 {
                     alert(`Can't view an alignment with 0% alignment rate`);
                     return;
