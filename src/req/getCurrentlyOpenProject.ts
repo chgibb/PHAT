@@ -1,9 +1,9 @@
-const jsonFile = require("jsonfile");
-
 import {getReadableAndWritable} from "./getAppPath";
 import {ProjectManifest} from "./projectManifest";
 export function getCurrentlyOpenProject() : ProjectManifest | undefined
 {
+    const jsonFile = require("jsonfile");
+    
     let rt : any;
     try
     {
