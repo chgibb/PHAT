@@ -25,7 +25,7 @@ process.on
 
         if(ev.run == true)
         {
-            cf.cacheSNPTrack(circularFigure,contiguuid,align,colour).then((SNPTracks : string) => {
+            cf.cacheSNPTrackTemplate(circularFigure,contiguuid,align,colour).then((SNPTracks : string) => {
                 flags.done = true;
                 flags.success = true;
                 process.send(

@@ -40,7 +40,6 @@ import {ImportFileIntoProject} from "./../operations/ImportFileIntoProject";
 import {CopyCircularFigure} from "./../operations/CopyCircularFigure";
 import {DeleteCircularFigure} from "./../operations/DeleteCircularFigure";
 
-import {CompileTemplates} from "./../operations/CompileTemplates";
 
 import {ProjectManifest} from "./../projectManifest";
 
@@ -120,7 +119,6 @@ app.on
 
 		atomicOp.register("copyCircularFigure",CopyCircularFigure);
 		atomicOp.register("deleteCircularFigure",DeleteCircularFigure);
-		atomicOp.register("compileTemplates",CompileTemplates);
 
 		atomicOp.register("dockWindow",DockWindow);
 		atomicOp.register("unDockWindow",UnDockWindow);
@@ -130,11 +128,7 @@ app.on
 		//on completion of any operation, wait and then broadcast the queue to listening windows
 		atomicOp.setOnComplete(
 			function(op : atomicOp.AtomicOperation){
-				//upon success of any operation except compiling templates to SVGs
-				if(op.flags.success && op.name != "compileTemplates")
-				{
-					dataMgr.saveData();
-				}
+				dataMgr.saveData();
 				setTimeout(function(){
 					setImmediate(function(){
 						dataMgr.setKey("application","operations",atomicOp.operationsQueue);
@@ -578,14 +572,6 @@ ipc.on(
 				atomicOp.addOperation("deleteCircularFigure",circularFigure);
 			}
 		}
-		else if(arg.opName == "compileTemplates")
-		{
-			atomicOp.addOperation("compileTemplates",{
-				figure : arg.figure,
-				uuid : arg.uuid,
-				compileBase : arg.compileBase
-			});
-		}
 		else if(arg.opName == "dockWindow")
 		{
 			atomicOp.addOperation("dockWindow",{
@@ -962,14 +948,6 @@ atomicOp.updates.on(
 
 atomicOp.updates.on(
 	"loadCurrentlyOpenProject",function(op : LoadCurrentlyOpenProject)
-	{
-		dataMgr.setKey("application","operations",atomicOp.operationsQueue);
-		winMgr.publishChangeForKey("application","operations");
-	}
-);
-
-atomicOp.updates.on(
-	"compileTemplates",function(op : CompileTemplates)
 	{
 		dataMgr.setKey("application","operations",atomicOp.operationsQueue);
 		winMgr.publishChangeForKey("application","operations");

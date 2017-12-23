@@ -100,7 +100,7 @@ export async function renderSVG(self : GenomeView) : Promise<void>
                                         {
                                             try
                                             {
-                                                res += fs.readFileSync(cf.getCachedCoverageTrackPath(self.genome.renderedCoverageTracks[i])).toString();
+                                                res += fs.readFileSync(cf.getCachedCoverageTrackTemplatePath(self.genome.renderedCoverageTracks[i])).toString();
                                             }
                                             catch(err){}
                                         }
@@ -111,14 +111,14 @@ export async function renderSVG(self : GenomeView) : Promise<void>
                                         {
                                             try
                                             {
-                                                res += fs.readFileSync(cf.getCachedSNPTrackPath(self.genome.renderedSNPTracks[i])).toString();
+                                                res += fs.readFileSync(cf.getCachedSNPTrackTemplatePath(self.genome.renderedSNPTracks[i])).toString();
                                             }
                                             catch(err){}
                                         }
                                     }
                                     return res;
                                 })()}
-                                ${cf.getBaseFigureFromCache(self.genome)}
+                                ${cf.getBaseFigureTemplateFromCache(self.genome)}
                                 `,self.div
                             );
                             let $div = $(templates);

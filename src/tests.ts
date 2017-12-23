@@ -29,6 +29,7 @@ import {testL6R1HPV18Alignment} from "./req/tests/testL6R1HPV18Alignment"
 import {testL6R1HPV16CoverageTrackRenderer} from "./req/tests/testL6R1HPV16CoverageTrackRender";
 import {testL6R1HPV16SNPTrackRenderer} from "./req/tests/testL6R1HPV16SNPTrackRender";
 import {testL6R1HPV16CoverageTrackCompilation} from "./req/tests/testL6R1HPV16CoverageTrackCompilation";
+import {testL6R1HPV16SNPTrackCompilation} from "./req/tests/testL6R1HPV16SNPTrackCompilation";
 import {testL6R1HPV18CoverageTrackRenderer} from "./req/tests/testL6R1HPV18CoverageTrackRender";
 import {testL6R1HPV18SNPTrackRenderer} from "./req/tests/testL6R1HPV18SNPTrackRender";
 
@@ -190,12 +191,10 @@ async function runTests() : Promise<void>
 			return reject();
 		}
 
-		let firstSVG = "";
-		let secondSVG = "";
 		console.log("Compiling coverage track for L6R1 alignment against HPV16");
 		try
 		{
-			firstSVG = await testL6R1HPV16CoverageTrackCompilation();
+			await testL6R1HPV16CoverageTrackCompilation();
 		}
 		catch(err)
 		{
@@ -203,24 +202,14 @@ async function runTests() : Promise<void>
 			return reject();
 		}
 
-
-		console.log("Compiling coverage track for L6R1 alignment against HPV16");
+		console.log("Compiling SNP track for L6R1 alignment against HPV16");
 		try
 		{
-			let tmp = hpv16Figure.get();
-			tmp.radius = 600;
-			hpv16Figure.set(tmp);
-			secondSVG = await testL6R1HPV16CoverageTrackCompilation();
-			if(firstSVG == secondSVG)
-			{
-				console.log("Failed to recompile coverage track for L6R1 with new radius");
-				return reject();
-			}
-			console.log("Successfully recompiled coverage track with new radius");
+			await testL6R1HPV16SNPTrackCompilation();
 		}
 		catch(err)
 		{
-			console.log("Coverage track compilation threw exception");
+			console.log("SNP track compilation threw exception");
 			return reject();
 		}
 
