@@ -10,6 +10,7 @@ export async function inputHPV16Ref() : Promise<void>
             console.log("inputting hpv16 ref");
             let fastas = new Array<Fasta>();
             fastas.push(new Fasta(path.resolve(path.normalize("../testData/HPV16ref_genomes.fasta"))));
+            fastas[0].checked = true;
             dataMgr.setKey("input","fastaInputs",fastas);
             winMgr.publishChangeForKey("input","fastaInputs");
             resolve();

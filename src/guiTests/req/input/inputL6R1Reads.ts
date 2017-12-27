@@ -11,6 +11,8 @@ export async function inputL6R1Reads() : Promise<void>
             let fastqs = new Array<Fastq>();
             fastqs.push(new Fastq(path.resolve(path.normalize("../testData/L6R1.R1.fastq"))));
             fastqs.push(new Fastq(path.resolve(path.normalize("../testData/L6R1.R2.fastq"))));
+            fastqs[0].checked = true;
+            fastqs[1].checked = true;
             dataMgr.setKey("input","fastqInputs",fastqs);
             winMgr.publishChangeForKey("input","fastqInputs");
             resolve();
