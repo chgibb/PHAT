@@ -1,5 +1,3 @@
-import { setTimeout } from "timers";
-
 console.log("Started GUI test for fastq inputting");
 require("./../req/main/main");
 
