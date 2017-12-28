@@ -7,6 +7,9 @@ import {openOutputWindow} from "./req/output/openOutputWindow";
 import {toggleOptionsPanel} from "./req/output/toggleOptionsPanel";
 import {toggleMinimumCoverageCheckBox} from "./req/output/toggleMinimumCoverageCheckBox";
 import {toggleMinimumVariableFrequencyCheckBox} from "./req/output/toggleMinimumVariableFrequencyCheckBox";
+import {toggleMinimumAverageQualityCheckBox} from "./req/output/toggleMinimumAverageQualityCheckBox";
+import {togglePValueThresholdCheckBox} from "./req/output/togglePValueThresholdCheckBox";
+import {toggleDateRanCheckBox} from "./req/output/toggleDateRanCheckBox";
 
 import {closeToolBar} from "./req/closeToolBar";
 
@@ -18,6 +21,10 @@ async function runTest() : Promise<void>
     await toggleOptionsPanel();
     await toggleMinimumCoverageCheckBox();
     await toggleMinimumVariableFrequencyCheckBox();
+    await toggleMinimumAverageQualityCheckBox();
+    await togglePValueThresholdCheckBox();
+    await toggleDateRanCheckBox();
+    await toggleOptionsPanel();
 
     await closeToolBar();
 }
