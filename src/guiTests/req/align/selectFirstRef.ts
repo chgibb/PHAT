@@ -1,6 +1,13 @@
 import * as winMgr from "./../../../req/main/winMgr";
 import * as dataMgr from "./../../../req/main/dataMgr";
 import {Fasta} from "./../../../req/fasta";
+
+/**
+ * Selects the first ref seq for alignment in the first align window
+ * 
+ * @export
+ * @returns {Promise<void>} 
+ */
 export async function selectFirstRef() : Promise<void>
 {
     return new Promise<void>((resolve,reject) => {

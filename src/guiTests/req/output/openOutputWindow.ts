@@ -1,5 +1,11 @@
 import * as winMgr from "./../../../req/main/winMgr";
 
+/**
+ * Opens an output window
+ * 
+ * @export
+ * @returns {Promise<void>} 
+ */
 export async function openOutputWindow() : Promise<void>
 {
     return new Promise<void>((resolve,reject) => {

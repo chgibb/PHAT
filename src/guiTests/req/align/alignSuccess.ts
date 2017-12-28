@@ -1,5 +1,13 @@
 import * as atomicOp from "./../../../req/operations/atomicOperations";
 import {RunAlignment} from "./../../../req/operations/RunAlignment";
+
+/**
+ * Resolves when runAlignment completes successfully, crashes the process 
+ * with code 1 on failure
+ * 
+ * @export
+ * @returns {Promise<void>} 
+ */
 export async function alignSuccess() : Promise<void>
 {
     return new Promise<void>((resolve,reject) => {

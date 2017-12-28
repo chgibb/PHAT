@@ -1,5 +1,13 @@
 import * as atomicOp from "./../../../req/operations/atomicOperations";
 import {IndexFastaForAlignment} from "./../../../req/operations/indexFastaForAlignment";
+
+/**
+ * Resolves when indexFastaAlignment completes successfully, crashes the process
+ * with code 1 on failure
+ * 
+ * @export
+ * @returns {Promise<void>} 
+ */
 export async function indexSuccess() : Promise<void>
 {
     return new Promise<void>((resolve,reject) => {

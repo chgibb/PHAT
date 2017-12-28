@@ -1,4 +1,11 @@
 import * as winMgr from "./../../../req/main/winMgr";
+
+/**
+ * Opens the options slide out panel in the first output window
+ * 
+ * @export
+ * @returns {Promise<void>} 
+ */
 export async function openOptionsPanel() : Promise<void>
 {
     return new Promise<void>((resolve,reject) => {

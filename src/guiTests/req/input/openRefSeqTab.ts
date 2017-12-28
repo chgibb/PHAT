@@ -1,4 +1,11 @@
 import * as winMgr from "./../../../req/main/winMgr";
+
+/**
+ * Switches to the ref seq tab in the first input window
+ * 
+ * @export
+ * @returns {Promise<void>} 
+ */
 export async function openRefSeqTab() : Promise<void>
 {
     return new Promise<void>((resolve,reject) => {

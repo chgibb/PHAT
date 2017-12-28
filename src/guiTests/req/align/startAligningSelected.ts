@@ -1,4 +1,11 @@
 import * as winMgr from "./../../../req/main/winMgr";
+
+/**
+ * Triggers alignment in the first align window
+ * 
+ * @export
+ * @returns {Promise<void>} 
+ */
 export async function startAligningSelected() : Promise<void>
 {
     return new Promise<void>((resolve,reject) => {

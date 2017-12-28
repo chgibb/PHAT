@@ -1,6 +1,13 @@
 import * as winMgr from "./../../../req/main/winMgr";
 import * as dataMgr from "./../../../req/main/dataMgr";
 import Fastq from "./../../../req/fastq";
+
+/**
+ * Selects the first two reads for alignment in the first align window
+ * 
+ * @export
+ * @returns {Promise<void>} 
+ */
 export async function selectFirstTwoReads() : Promise<void>
 {
     return new Promise<void>((resolve,reject) => {

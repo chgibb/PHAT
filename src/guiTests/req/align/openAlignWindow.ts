@@ -1,6 +1,11 @@
 import * as winMgr from "./../../../req/main/winMgr";
-import { setTimeout } from "timers";
 
+/**
+ * Opens an align window
+ * 
+ * @export
+ * @returns {Promise<void>} 
+ */
 export async function openAlignWindow() : Promise<void>
 {
     return new Promise<void>((resolve,reject) => {
