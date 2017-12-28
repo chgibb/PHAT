@@ -1,16 +1,16 @@
 import * as winMgr from "./../../../req/main/winMgr";
 
 /**
- * Opens the options slide out panel in the first output window
+ * Toggles the Minimum Coverage checkbox in the first output window
  * 
  * @export
  * @returns {Promise<void>} 
  */
-export async function openOptionsPanel() : Promise<void>
+export async function toggleMinimumCoverageCheckBox() : Promise<void>
 {
     return new Promise<void>((resolve,reject) => {
         setTimeout(function(){
-            console.log("opening options panel");
+            console.log("toggling minimum coverage checkbox")
             let output = winMgr.getFreeWebContents();
             if(!output || output.length == 0)
             {
@@ -18,7 +18,7 @@ export async function openOptionsPanel() : Promise<void>
                 process.exit(1);
             }
             output[0].executeJavaScript(`
-                document.getElementById("rightPanel").click();
+                document.getElementById("minimumCoverage").click();
             `);
             resolve();
         },500);
