@@ -1,5 +1,4 @@
 import * as winMgr from "./../../../req/main/winMgr";
-import { setTimeout } from "timers";
 
 export async function openOutputWindow() : Promise<void>
 {
