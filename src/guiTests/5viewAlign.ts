@@ -10,6 +10,7 @@ import {toggleMinimumVariableFrequencyCheckBox} from "./req/output/toggleMinimum
 import {toggleMinimumAverageQualityCheckBox} from "./req/output/toggleMinimumAverageQualityCheckBox";
 import {togglePValueThresholdCheckBox} from "./req/output/togglePValueThresholdCheckBox";
 import {toggleDateRanCheckBox} from "./req/output/toggleDateRanCheckBox";
+import {openSNPTableForFirstAlignment} from "./req/output/openSNPTableForFirstAlignment";
 
 import {closeToolBar} from "./req/closeToolBar";
 
@@ -25,6 +26,7 @@ async function runTest() : Promise<void>
     await togglePValueThresholdCheckBox();
     await toggleDateRanCheckBox();
     await toggleOptionsPanel();
+    await openSNPTableForFirstAlignment();
 
     await closeToolBar();
 }
