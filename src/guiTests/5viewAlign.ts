@@ -12,6 +12,12 @@ import {togglePValueThresholdCheckBox} from "./req/output/togglePValueThresholdC
 import {toggleDateRanCheckBox} from "./req/output/toggleDateRanCheckBox";
 import {openSNPTableForFirstAlignment} from "./req/output/openSNPTableForFirstAlignment";
 
+import {openInputWindow} from "./req/input/openInputWindow";
+import {openRefSeqTab} from "./req/input/openRefSeqTab";
+import {indexRefsForVisualization} from "./req/input/indexRefsForVisualization";
+import {indexForVisualizationSuccess} from "./req/input/indexForVisualizationSuccess"
+
+import {closeAllTabs} from "./req/closeAllTabs";
 import {closeToolBar} from "./req/closeToolBar";
 
 async function runTest() : Promise<void>
@@ -27,6 +33,13 @@ async function runTest() : Promise<void>
     await toggleDateRanCheckBox();
     await toggleOptionsPanel();
     await openSNPTableForFirstAlignment();
+
+    await closeAllTabs();
+
+    await openInputWindow();
+    await openRefSeqTab();
+    await indexRefsForVisualization();
+    await indexForVisualizationSuccess();
 
     await closeToolBar();
 }
