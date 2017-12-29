@@ -13,6 +13,7 @@ import {toggleDateRanCheckBox} from "./req/output/toggleDateRanCheckBox";
 import {openSNPTableForFirstAlignment} from "./req/output/openSNPTableForFirstAlignment";
 import {viewSNP} from "./req/output/viewSNP";
 import {openPileupViewerSucess} from "./req/output/openPileupViewerSuccess";
+import {closeAllPileupWindows} from "./req/pileup/closeAllPileupWindows";
 
 import {openInputWindow} from "./req/input/openInputWindow";
 import {openRefSeqTab} from "./req/input/openRefSeqTab";
@@ -57,6 +58,15 @@ async function runTest() : Promise<void>
     await openSNPTableForFirstAlignment();
     await viewSNP(0);
     await viewSNP(1);
+    await closeAllPileupWindows();
+    await viewSNP(2);
+    await viewSNP(3);
+    await closeAllPileupWindows();
+    await viewSNP(4);
+    await viewSNP(5);
+    await closeAllPileupWindows();
+    await viewSNP(6);
+    await viewSNP(7);
 
     await closeToolBar();
 }
