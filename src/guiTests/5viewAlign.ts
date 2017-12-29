@@ -11,6 +11,8 @@ import {toggleMinimumAverageQualityCheckBox} from "./req/output/toggleMinimumAve
 import {togglePValueThresholdCheckBox} from "./req/output/togglePValueThresholdCheckBox";
 import {toggleDateRanCheckBox} from "./req/output/toggleDateRanCheckBox";
 import {openSNPTableForFirstAlignment} from "./req/output/openSNPTableForFirstAlignment";
+import {viewSNP} from "./req/output/viewSNP";
+import {openPileupViewerSucess} from "./req/output/openPileupViewerSuccess";
 
 import {openInputWindow} from "./req/input/openInputWindow";
 import {openRefSeqTab} from "./req/input/openRefSeqTab";
@@ -53,6 +55,8 @@ async function runTest() : Promise<void>
     await toggleDateRanCheckBox();
     await toggleOptionsPanel();
     await openSNPTableForFirstAlignment();
+    await viewSNP(0);
+    await viewSNP(1);
 
     await closeToolBar();
 }
