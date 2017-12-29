@@ -19,11 +19,13 @@ export async function openSNPTableForFirstAlignment() : Promise<void>
                 console.log("failed to open output window");
                 process.exit(1);
             }
-            let firstAlign : AlignData = dataMgr.getKey("align","aligns")[0];
-            output[0].executeJavaScript(`
-                document.getElementById("${firstAlign.uuid}ViewSNPs").click();
-            `);
-            resolve();
+            setTimeout(function(){
+                let firstAlign : AlignData = dataMgr.getKey("align","aligns")[0];
+                output[0].executeJavaScript(`
+                    document.getElementById("${firstAlign.uuid}ViewSNPs").click();
+                `);
+                resolve();
+            },500);
         },500);
     });
 }
