@@ -24,6 +24,7 @@ async function runTest() : Promise<void>
 {
     await openProjectsView();
     await openFirstProject();
+
     await openOutputWindow();
     await toggleOptionsPanel();
     await toggleMinimumCoverageCheckBox();
@@ -40,6 +41,18 @@ async function runTest() : Promise<void>
     await openRefSeqTab();
     await indexRefsForVisualization();
     await indexForVisualizationSuccess();
+
+    await closeAllTabs();
+
+    await openOutputWindow();
+    await toggleOptionsPanel();
+    await toggleMinimumCoverageCheckBox();
+    await toggleMinimumVariableFrequencyCheckBox();
+    await toggleMinimumAverageQualityCheckBox();
+    await togglePValueThresholdCheckBox();
+    await toggleDateRanCheckBox();
+    await toggleOptionsPanel();
+    await openSNPTableForFirstAlignment();
 
     await closeToolBar();
 }
