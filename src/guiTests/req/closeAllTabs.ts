@@ -18,11 +18,13 @@ export async function closeAllTabs() : Promise<void>
                 process.exit(1);
             }
             toolBar[0].webContents.executeJavaScript(`
-                let closeButtons = document.getElementsByClassName("etabs-tab-button-close");
-                while(closeButtons.length > 0)
-                {
-                    closeButtons[closeButtons.length-1].click();
-                }
+                (function(){
+                    let closeButtons = document.getElementsByClassName("etabs-tab-button-close");
+                    while(closeButtons.length > 0)
+                    {
+                        closeButtons[closeButtons.length-1].click();
+                    }
+                })();
             `);
             resolve();
         },500);
