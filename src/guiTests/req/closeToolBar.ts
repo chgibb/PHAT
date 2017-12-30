@@ -1,5 +1,11 @@
 import * as winMgr from "./../../req/main/winMgr"
 
+/**
+ * Triggers close event on the PHAT tool bar
+ * 
+ * @export
+ * @returns {Promise<void>} 
+ */
 export async function closeToolBar() : Promise<void>
 {
     return new Promise<void>((resolve,reject) => {
