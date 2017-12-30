@@ -8,7 +8,7 @@ let flags : CompletionFlags = new CompletionFlags();
 atomic.handleForkFailures();
 process.on
 (
-    "message",function(ev : AtomicOperationForkEvent)
+    "message",async function(ev : AtomicOperationForkEvent)
     {
         if(ev.setData == true)
         {
@@ -19,7 +19,11 @@ process.on
 
         if(ev.run == true)
         {
-            saveCurrentProject(proj).then(() => {
+            try
+            {
+                await saveCurrentProject(proj,function(totalBytesToSave : number,bytesSaved : number){
+                    
+                });
                 flags.done = true;
                 flags.failure = false;
                 flags.success = true;
@@ -30,7 +34,9 @@ process.on
                     }
                 );
                 atomic.exitFork(0);
-            }).catch((err) => {
+            }
+            catch(err)
+            {
                 flags.done = true;
                 flags.failure = true;
                 flags.success = false;
@@ -42,7 +48,7 @@ process.on
                     }
                 );
                 atomic.exitFork(1);
-            });
+            }
         }
     }  
 );
