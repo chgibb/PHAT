@@ -6,7 +6,10 @@ const tarfs = require("tar-fs");
 import {getReadableAndWritable} from "./getAppPath";
 import {ProjectManifest,getTarBallPath} from "./projectManifest";
 
-export function saveCurrentProject(proj : ProjectManifest) : Promise<void>
+export function saveCurrentProject(
+    proj : ProjectManifest,
+    cb : (totalBytesToSave : number, bytesSaved : number) => void
+) : Promise<void>
 {
     return new Promise<void>((resolve,reject) => {
         mkdirp.sync(getReadableAndWritable("projects"));
