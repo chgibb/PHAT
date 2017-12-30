@@ -1,11 +1,11 @@
 import {ProjectManifest,getProjectManifests} from "./projectManifest";
 
-export function newProject(name : string) : Promise<{}>
+export function newProject(name : string) : Promise<void>
 {
     const jsonFile = require("jsonfile");
     const uuidv4 : () => string = require("uuid/v4");
     
-    return new Promise((resolve,reject) => {
+    return new Promise<void>((resolve,reject) => {
         let projects : Array<ProjectManifest>;
         try
         {

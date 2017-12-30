@@ -6,9 +6,9 @@ const tarfs = require("tar-fs");
 import {getReadableAndWritable} from "./getAppPath";
 import {ProjectManifest,getTarBallPath} from "./projectManifest";
 
-export function saveCurrentProject(proj : ProjectManifest) : Promise<{}>
+export function saveCurrentProject(proj : ProjectManifest) : Promise<void>
 {
-    return new Promise((resolve,reject) => {
+    return new Promise<void>((resolve,reject) => {
         mkdirp.sync(getReadableAndWritable("projects"));
         let projectTarBall = getTarBallPath(proj);
         const ostream = fs.createWriteStream(projectTarBall);
