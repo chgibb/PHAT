@@ -1,5 +1,12 @@
 import {ProjectManifest,getProjectManifests} from "./projectManifest";
 
+/**
+ * Creates a new project in the project manifest with name name
+ * 
+ * @export
+ * @param {string} name 
+ * @returns {Promise<void>} 
+ */
 export function newProject(name : string) : Promise<void>
 {
     const jsonFile = require("jsonfile");
