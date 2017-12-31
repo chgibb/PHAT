@@ -1,7 +1,7 @@
 import * as atomic from "./req/operations/atomicOperations";
 import {AtomicOperationForkEvent,CompletionFlags} from "./req/atomicOperationsIPC";
 import {ProjectManifest} from "./req/projectManifest";
-import {saveProject} from "./req//saveCurrentProject";
+import {saveProject} from "./req/saveProject";
 
 let proj : ProjectManifest;
 let flags : CompletionFlags = new CompletionFlags();
