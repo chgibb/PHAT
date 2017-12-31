@@ -1,7 +1,7 @@
 import * as atomic from "./req/operations/atomicOperations";
 import {AtomicOperationForkEvent,CompletionFlags} from "./req/atomicOperationsIPC";
 import {ProjectManifest} from "./req/projectManifest";
-import {saveCurrentProject} from "./req//saveCurrentProject";
+import {saveProject} from "./req//saveCurrentProject";
 
 let proj : ProjectManifest;
 let flags : CompletionFlags = new CompletionFlags();
@@ -21,7 +21,7 @@ process.on
         {
             try
             {
-                await saveCurrentProject(proj,function(totalBytesToSave : number,bytesSaved : number){
+                await saveProject(proj,function(totalBytesToSave : number,bytesSaved : number){
                     process.send(
                         <AtomicOperationForkEvent>{
                             update : true,

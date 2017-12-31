@@ -5,7 +5,7 @@ import {AtomicOperationForkEvent} from "./../atomicOperationsIPC";
 import {getReadable} from "./../getAppPath";
 
 import {ProjectManifest} from "./../projectManifest";
-export class SaveCurrentProject extends atomic.AtomicOperation
+export class SaveProject extends atomic.AtomicOperation
 {
     public proj : ProjectManifest;
     public saveCurrentProjectProcess : cp.ChildProcess;

@@ -7,7 +7,15 @@ import {getReadableAndWritable} from "./getAppPath";
 import {ProjectManifest,getTarBallPath} from "./projectManifest";
 import {getFolderSize} from "./getFolderSize";
 
-export function saveCurrentProject(
+/**
+ * Begins saving the project represented by proj. Incrementally calls cb with progress updates
+ * 
+ * @export
+ * @param {ProjectManifest} proj 
+ * @param {(totalBytesToSave : number, bytesSaved : number) => void} cb 
+ * @returns {Promise<void>} 
+ */
+export function saveProject(
     proj : ProjectManifest,
     cb : (totalBytesToSave : number, bytesSaved : number) => void
 ) : Promise<void>

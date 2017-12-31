@@ -61,7 +61,7 @@ $
                                     removeZombieTabs();
 
                             }
-                            if(ops[i].name == "saveCurrentProject")
+                            if(ops[i].name == "saveProject")
                             {
                                 let savingMessage = `
                                     <h1>Saving Project</h1>
@@ -75,7 +75,7 @@ $
                                 document.body.innerHTML = savingMessage;
                             }
                             if(ops[i].flags.done && (ops[i].name == "indexFasta" ||
-                                ops[i].name == "runAlignment" || ops[i].name == "saveCurrentProject" ||
+                                ops[i].name == "runAlignment" || ops[i].name == "saveProject" ||
                                 ops[i].name == "renderCoverageTrackForContig" || ops[i].name == "renderSNPTrackForContig"
                             ))
                             {
