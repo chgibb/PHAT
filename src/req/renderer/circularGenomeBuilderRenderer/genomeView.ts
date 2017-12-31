@@ -124,23 +124,6 @@ export class GenomeView extends viewMgr.View implements cf.FigureCanvas
                 {
                     let masterView = <masterView.View>viewMgr.getViewByName("masterView");
                     
-                    showGenericLoadingSpinnerInNavBar();
-                    setTimeout(function(){
-                        renderSVG(self).then(() => {
-                            if(self.genome.isInteractive)
-                                centreInteractiveFigure(document.getElementById(self.div),self.genome);
-                            else
-                                centreNonInteractiveFigure(self.genome);
-                                serializeFigure(self).then((svg : string) => {
-                                writeSVG(self,fileName,svg).then(() => {
-                                    masterView.dismissModal();
-                                    self.firstRender = true;
-                                    hideSpinnerInNavBar();
-                                    viewMgr.render();
-                                });
-                            });
-                        });
-                    },10);
                 }
             }
         );
