@@ -20,8 +20,6 @@ import {setSelectedContigByUUID} from "./writeContigEditorModal";
 import {reCacheBaseFigure} from "./reCacheBaseFigure";
 import * as tc from "./templateCache";
 
-import {writeSVG,serializeFigure,renderSVG} from "./exportToSVG";
-
 require("angular");
 require("@chgibb/angularplasmid");
 let app : any = angular.module('myApp',['angularplasmid']);
