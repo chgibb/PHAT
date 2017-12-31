@@ -5,6 +5,7 @@ const tarfs = require("tar-fs");
 
 import {getReadableAndWritable} from "./getAppPath";
 import {ProjectManifest,getTarBallPath} from "./projectManifest";
+import {getFolderSize} from "./getFolderSize";
 
 export function saveCurrentProject(
     proj : ProjectManifest,
@@ -16,11 +17,16 @@ export function saveCurrentProject(
         let projectTarBall = getTarBallPath(proj);
 
         const ostream = fs.createWriteStream(projectTarBall);
-
+        let totalBytesToSave = getFolderSize(getReadableAndWritable("rt"));
         let cbInterval : NodeJS.Timer = setInterval(function(){
-            cb(0,ostream.bytesWritten);
-        },1000);
-        
+            //slight differences between size on disk and actual files sizes
+            //results in bytesWritten occasionally being greater than totalBytestoSave
+            if(ostream.bytesWritten <= totalBytesToSave)
+                cb(totalBytesToSave,ostream.bytesWritten);
+            else
+                cb(totalBytesToSave,totalBytesToSave);
+        },100);
+
         ostream.on("error",(error : string) => {
             clearInterval(cbInterval);
             reject(error);

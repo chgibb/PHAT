@@ -22,7 +22,13 @@ process.on
             try
             {
                 await saveCurrentProject(proj,function(totalBytesToSave : number,bytesSaved : number){
-                    
+                    process.send(
+                        <AtomicOperationForkEvent>{
+                            update : true,
+                            flags : flags,
+                            data : {totalBytesToSave : totalBytesToSave,bytesSaved : bytesSaved}
+                        }
+                    );
                 });
                 flags.done = true;
                 flags.failure = false;
