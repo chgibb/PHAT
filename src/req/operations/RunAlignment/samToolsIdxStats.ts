@@ -13,11 +13,11 @@ import {samToolsIdxStatsReportParser} from "./../../samToolsIdxStatsReport";
  * @export
  * @param {AlignData} alignData 
  * @param {atomic.AtomicOperation} logger 
- * @returns {Promise<{}>} 
+ * @returns {Promise<void>} 
  */
-export function samToolsIdxStats(alignData : AlignData,logger : atomic.AtomicOperation) : Promise<{}>
+export function samToolsIdxStats(alignData : AlignData,logger : atomic.AtomicOperation) : Promise<void>
 {
-    return new Promise((resolve,reject) => {
+    return new Promise<void>((resolve,reject) => {
         let samToolsExe = getReadable('samtools');
 
         let samToolsIdxStatsStream : fs.WriteStream = fs.createWriteStream(getIdxStats(alignData));

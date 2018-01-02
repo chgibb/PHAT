@@ -13,11 +13,11 @@ import {Job,JobCallBackObject} from "./../../main/Job";
  * @export
  * @param {Fasta} fasta 
  * @param {atomic.AtomicOperation} logger 
- * @returns {Promise<{}>} 
+ * @returns {Promise<void>} 
  */
-export function samToolsFaidx(fasta : Fasta,logger : atomic.AtomicOperation) : Promise<{}>
+export function samToolsFaidx(fasta : Fasta,logger : atomic.AtomicOperation) : Promise<void>
 {
-    return new Promise((resolve,reject) => {
+    return new Promise<void>((resolve,reject) => {
         let samToolsExe = getReadable('samtools');
 
         let jobCallBack : JobCallBackObject = {
