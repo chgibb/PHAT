@@ -42,6 +42,7 @@ export class GenomeView extends viewMgr.View implements cf.FigureCanvas
      * @memberof GenomeView
      */
     public genome : cf.CircularFigure;
+
     /**
      * Reconstruct the figure using cached data
      * 
@@ -49,6 +50,7 @@ export class GenomeView extends viewMgr.View implements cf.FigureCanvas
      * @memberof GenomeView
      */
     public firstRender : boolean;
+
     /**
      * Aligns for this figure
      * 
@@ -56,6 +58,7 @@ export class GenomeView extends viewMgr.View implements cf.FigureCanvas
      * @memberof GenomeView
      */
     public alignData : Array<AlignData>;
+
     /**
      * Bound Angular scope for genome
      * 
@@ -63,6 +66,11 @@ export class GenomeView extends viewMgr.View implements cf.FigureCanvas
      * @memberof GenomeView
      */
     public scope : any;
+
+    public seqSelectionLeftArm : cf.SeqSelectionDisplayArm;
+    public seqSelectionRightArm : cf.SeqSelectionDisplayArm;
+    public seqSelectionArrow : cf.SeqSelectionDisplayArrow;
+    
     public constructor(name : string,div : string)
     {
         super(name,div);
