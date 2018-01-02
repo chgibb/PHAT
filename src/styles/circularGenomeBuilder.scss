@@ -5,39 +5,7 @@
 @import "common/tableCell";
 @import "common/activeHover";
 @import "common/selected";
-div.rightSlideOutPanel
-{
-    margin-right: -50%;
-	margin-top : +5%; 
-	border : 1px solid $border-color;
-    border-collapse : collapse;
-	background-color : $bg-color;
-	width : 45%;
-	height : 90%;
-    right : 0px;
-	position : fixed;
-	overflow-y : scroll;
-	overflow-x : scroll;
-}
-button.rightSlideOutPanel
-{
-    float : right;
-}
 
-div.leftSlideOutPanel
-{
-	margin-left : -50%;
-	margin-top : +5%; 
-	border : 1px solid $border-color;
-    border-collapse : collapse;
-	background-color : $bg-color;
-	width : 45%;
-	height : 90%;
-    left : 0%;
-	position : fixed;
-	overflow-y : scroll;
-	overflow-x : scroll;
-}
 .trackMarkerHover:hover
 {
 	stroke : #f00;
