@@ -45,7 +45,7 @@ import {ProjectManifest} from "./../projectManifest";
 
 import {NewProject} from "./../operations/NewProject";
 import {OpenProject} from "./../operations/OpenProject";
-import {SaveCurrentProject} from "./../operations/SaveCurrentProject";
+import {SaveProject} from "./../operations/SaveProject";
 import {LoadCurrentlyOpenProject} from "./../operations/LoadCurrentlyOpenProject";
 
 import {DockWindow} from "./../operations/DockWindow";
@@ -105,7 +105,7 @@ app.on
 
 		atomicOp.register("newProject",NewProject);
 		atomicOp.register("openProject",OpenProject);
-		atomicOp.register("saveCurrentProject",SaveCurrentProject);
+		atomicOp.register("saveProject",SaveProject);
 		atomicOp.register("loadCurrentlyOpenProject",LoadCurrentlyOpenProject);
 
 		atomicOp.register("openPileupViewer",OpenPileupViewer);
@@ -906,7 +906,7 @@ atomicOp.updates.on(
 			dataMgr.setKey("application","downloadedUpdate",true);
 			//dataMgr.saveData();
 			app.quit();
-			//atomicOp.addOperation("saveCurrentProject",dataMgr.getKey("application","project"));
+			//atomicOp.addOperation("saveProject",dataMgr.getKey("application","project"));
 		}
 	}
 );
@@ -931,7 +931,7 @@ atomicOp.updates.on(
 	}
 );
 atomicOp.updates.on(
-	"saveCurrentProject",function(op : SaveCurrentProject)
+	"saveProject",function(op : SaveProject)
 	{
 		dataMgr.setKey("application","operations",atomicOp.operationsQueue);
 		winMgr.publishChangeForKey("application","operations");

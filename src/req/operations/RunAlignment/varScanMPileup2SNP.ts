@@ -14,11 +14,11 @@ import {varScanMPileup2SNPVCF2JSON} from "./../../varScanMPileup2SNPVCF2JSON";
  * @export
  * @param {AlignData} alignData 
  * @param {atomic.AtomicOperation} logger 
- * @returns {Promise<{}>} 
+ * @returns {Promise<void>} 
  */
-export function varScanMPileup2SNP(alignData : AlignData,logger : atomic.AtomicOperation) : Promise<{}>
+export function varScanMPileup2SNP(alignData : AlignData,logger : atomic.AtomicOperation) : Promise<void>
 {
-    return new Promise((resolve,reject) => {
+    return new Promise<void>((resolve,reject) => {
         let varScanExe = getReadable("varscan.jar");
 
         let varScanMPileup2SNPStdOutStream : fs.WriteStream = fs.createWriteStream(getSNPsVCF(alignData));

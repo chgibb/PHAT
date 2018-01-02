@@ -1,14 +1,14 @@
 import * as atomic from "./req/operations/atomicOperations";
 import {AtomicOperationForkEvent,CompletionFlags} from "./req/atomicOperationsIPC";
 import {ProjectManifest} from "./req/projectManifest";
-import {saveCurrentProject} from "./req//saveCurrentProject";
+import {saveProject} from "./req/saveProject";
 
 let proj : ProjectManifest;
 let flags : CompletionFlags = new CompletionFlags();
 atomic.handleForkFailures();
 process.on
 (
-    "message",function(ev : AtomicOperationForkEvent)
+    "message",async function(ev : AtomicOperationForkEvent)
     {
         if(ev.setData == true)
         {
@@ -19,7 +19,17 @@ process.on
 
         if(ev.run == true)
         {
-            saveCurrentProject(proj).then(() => {
+            try
+            {
+                await saveProject(proj,function(totalBytesToSave : number,bytesSaved : number){
+                    process.send(
+                        <AtomicOperationForkEvent>{
+                            update : true,
+                            flags : flags,
+                            data : {totalBytesToSave : totalBytesToSave,bytesSaved : bytesSaved}
+                        }
+                    );
+                });
                 flags.done = true;
                 flags.failure = false;
                 flags.success = true;
@@ -30,7 +40,9 @@ process.on
                     }
                 );
                 atomic.exitFork(0);
-            }).catch((err) => {
+            }
+            catch(err)
+            {
                 flags.done = true;
                 flags.failure = true;
                 flags.success = false;
@@ -42,7 +54,7 @@ process.on
                     }
                 );
                 atomic.exitFork(1);
-            });
+            }
         }
     }  
 );
