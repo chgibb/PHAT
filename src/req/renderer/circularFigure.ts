@@ -174,7 +174,7 @@ export class RenderedSNPTrackRecord extends RenderedTrackRecord
     }
 }
 
-export class CoverageTrackMap extends ngDirectives.Plasmid
+export class TrackMap extends ngDirectives.Plasmid
 {
     public constructor()
     {
@@ -182,7 +182,15 @@ export class CoverageTrackMap extends ngDirectives.Plasmid
     }
 }
 
-export class SNPTrackMap extends ngDirectives.Plasmid
+export class CoverageTrackMap extends TrackMap
+{
+    public constructor()
+    {
+        super();
+    }
+}
+
+export class SNPTrackMap extends TrackMap
 {
     public constructor()
     {
