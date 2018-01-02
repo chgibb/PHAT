@@ -1055,6 +1055,60 @@ export function assembleCompilableSNPTrack(figure : CircularFigure,trackRecord :
         ).toString()
     );
 }
+/**
+ * Compiles a single SVG for figure consisting of its baseFigure and all its selected tracks
+ * 
+ * @export
+ * @param {CircularFigure} figure 
+ * @returns {Promise<string>} 
+ */
+export function buildSingleSVG(figure : CircularFigure) : Promise<string>
+{
+    return new Promise<string>(async (resolve,reject) => {
+        let template = "";
+        
+        for(let i = 0; i != figure.renderedCoverageTracks.length; ++i)
+        {
+            if(figure.renderedCoverageTracks[i].checked)
+            {
+                template += fs.readFileSync(getCachedCoverageTrackTemplatePath(figure.renderedCoverageTracks[i])).toString();
+            }
+        }
+
+        for(let i = 0; i != figure.renderedSNPTracks.length; ++i)
+        {
+            if(figure.renderedSNPTracks[i].checked)
+            {
+                template += fs.readFileSync(getCachedSNPTrackTemplatePath(figure.renderedSNPTracks[i])).toString();
+            }
+        }
+
+        template += getBaseFigureTemplateFromCache(figure);
+
+        let nodes : Array<html.Node> = await html.loadFromString(assembleCompilableTemplates(figure,template));
+        let plasmid : ngDirectives.Plasmid = new ngDirectives.Plasmid();
+        plasmid.$scope = {
+            genome : figure
+        };
+
+        for(let i = 0; i != nodes.length; ++i)
+        {
+            if(nodes[i].name == "div")
+            {
+                for(let k = 0; k != nodes[i].children.length; ++k)
+                {
+                    if(nodes[i].children[k].name == "plasmid")
+                    {
+                        plasmid.fromNode<html.Node>(nodes[i].children[k]);
+                        break;
+                    }
+                }
+            }
+        }
+        resolve(plasmid.renderStart()+plasmid.renderEnd());
+
+    });
+}
 
 /**
  * Renders the given svg using the given canvas rendering context
