@@ -174,8 +174,21 @@ export class RenderedSNPTrackRecord extends RenderedTrackRecord
     }
 }
 
+export interface MapScope
+{
+    genome : CircularFigure;
+}
+
+export function makeMapScope(cf : CircularFigure) : MapScope
+{
+    return <MapScope>{
+        genome : cf
+    }
+}
+
 export class TrackMap extends ngDirectives.Plasmid
 {
+    public $scope : MapScope;
     public constructor()
     {
         super();
