@@ -172,7 +172,7 @@ export function getSelectedDataTrackSVGsFromCache(self : GenomeView) : string
         if(self.genome.renderedCoverageTracks[i].checked)
         {
             let map = tc.getCoverageTrack(self.genome.renderedCoverageTracks[i]);
-            map.$scope = {genome : self.genome};
+            map.$scope = cf.makeMapScope(self.genome);
             res += `<div style="position:absolute;z-index:-99;">`;
             res += map.renderStart() + map.renderEnd();
             res += `</div>`;
@@ -183,7 +183,7 @@ export function getSelectedDataTrackSVGsFromCache(self : GenomeView) : string
         if(self.genome.renderedSNPTracks[i].checked)
         {
             let map = tc.getSNPTrack(self.genome.renderedSNPTracks[i]);
-            map.$scope = {genome : self.genome};
+            map.$scope = cf.makeMapScope(self.genome);
             res += `<div style="position:absolute;z-index:-99;">`;
             res += map.renderStart() + map.renderEnd();
             res += `</div>`;

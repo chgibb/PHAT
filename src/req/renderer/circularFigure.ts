@@ -252,9 +252,9 @@ export interface MapScope
     seqSelectionArrow : SeqSelectionDisplayArrow;
 }
 
-export function makeMapScope(cf : CircularFigure, seqSelectOptions : {
-    start? : number,
-    end? : number
+export function makeMapScope(cf : CircularFigure, seqSelectOptions? : {
+    start : number,
+    end : number
 
 }) : MapScope
 {
@@ -263,16 +263,16 @@ export function makeMapScope(cf : CircularFigure, seqSelectOptions : {
         seqSelectionLeftArm : new SeqSelectionDisplayArm(
             "left",
             cf.radius,
-            seqSelectOptions.start ? seqSelectOptions.start : 0
+            seqSelectOptions ? seqSelectOptions.start : 0
         ),
         seqSelectionRightArm : new SeqSelectionDisplayArm(
             "right",
             cf.radius,
-            seqSelectOptions.start ? seqSelectOptions.start : 100
+            seqSelectOptions ? seqSelectOptions.start : 100
         ),
         seqSelectionArrow : new SeqSelectionDisplayArrow(
-            seqSelectOptions.start ? seqSelectOptions.start : 0,
-            seqSelectOptions.end ? seqSelectOptions.end : 100,
+            seqSelectOptions ? seqSelectOptions.start : 0,
+            seqSelectOptions ? seqSelectOptions.end : 100,
             cf.radius
         )
     }
@@ -559,9 +559,7 @@ export function compileBaseFigureSVG(figure : CircularFigure) : Promise<string>
         );
 
         let plasmid : ngDirectives.Plasmid = new ngDirectives.Plasmid();
-        plasmid.$scope = {
-            genome : figure
-        };
+        plasmid.$scope = makeMapScope(figure);
 
         for(let i = 0; i != nodes.length; ++i)
         {
@@ -1012,9 +1010,7 @@ export function buildCoverageTrackMap(trackRecord : RenderedCoverageTrackRecord,
     return new Promise<CoverageTrackMap>(async (resolve,reject) => {
 
         let map : CoverageTrackMap = new CoverageTrackMap();
-        map.$scope = {
-            genome : figure
-        };
+        map.$scope = makeMapScope(figure);
 
         //try to build from protocol buffer
         if(fs.existsSync(getCoverageTrackPBPath(trackRecord)))
@@ -1070,9 +1066,7 @@ export function buildSNPTrackMap(trackRecord : RenderedSNPTrackRecord,figure : C
         );
 
         let map : SNPTrackMap = new SNPTrackMap();
-        map.$scope = {
-            genome : figure
-        };
+        map.$scope = makeMapScope(figure);
 
         for(let i = 0; i != nodes.length; ++i)
         {
@@ -1218,7 +1212,7 @@ export function renderCoverageTrackToCanvas(
 
     //We assume coverage tracks are made of <plasmidtrack>s and <trackmarker>s only
     
-    map.$scope = {genome : figure};
+    map.$scope = makeMapScope(figure);
     map.interpolateAttributes();
 
     //Assume linewidth is constant and uniform
@@ -1252,7 +1246,7 @@ export function renderSNPTrackToCanvas(
     ctx : CanvasRenderingContext2D
 ) : Promise<void> {
     return new Promise<void>(async (resolve,reject) => {
-        map.$scope = {genome : figure};
+        map.$scope = makeMapScope(figure);
 
         await renderSVGToCanvas(map.renderStart()+map.renderEnd(),ctx);
         resolve();
