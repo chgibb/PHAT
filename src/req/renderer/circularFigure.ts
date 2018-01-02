@@ -174,15 +174,107 @@ export class RenderedSNPTrackRecord extends RenderedTrackRecord
     }
 }
 
+/**
+ * Properties used by sequence selector to display selection arms
+ * 
+ * @export
+ * @class SeqSelectionDisplayArm
+ */
+export class SeqSelectionDisplayArm
+{
+    public armWidth : number;
+    public armTrackStyle : string;
+    public armRadius : number;
+    public armStart : number;
+    public armWadjust : number;
+    public armMarkerClick : string;
+    public armLineClass : string;
+    public armLineStyle : string;
+    public armShowLine : 0 | 1;
+    public armVadjust : number;
+    public armLabelClick : string;
+
+    public constructor(side : "left" | "right",radius : number,armStart : number)
+    {
+        this.armWidth = 20;
+        this.armTrackStyle = "fill:#f0f0f0;stroke:#ccc";
+        this.armRadius = radius;
+        this.armStart = armStart;
+        this.armWadjust = 12;
+        this.armMarkerClick = `seqSelectionArmOnClick($event,$handler,'${side}')`;
+        this.armLineClass = "seqSelectionArm";
+        this.armShowLine = 1;
+        this.armVadjust = 1200;
+        this.armLabelClick = this.armMarkerClick;
+    }
+
+}
+
+/**
+ * Properties used by sequence selector to display selection arrow
+ * 
+ * @export
+ * @class SeqSelectionDisplayArrow
+ */
+export class SeqSelectionDisplayArrow
+{
+    public arrowTrackStyle : string;
+    public arrowTrackRadius : number;
+    public arrowStart : number;
+    public arrowEnd : number;
+    public arrowMarkerStyle : string;
+    public arrowEndLength : number;
+    public arrowEndWidth : number;
+    public arrowType : string;
+    public arrowClass : string;
+    public arrowText : string;
+
+    public constructor(start : number,end : number,radius : number)
+    {
+        this.arrowTrackStyle = "fill:#f0f0f0;stroke:#ccc";
+        this.arrowTrackRadius = radius;
+        this.arrowStart = start;
+        this.arrowEnd = end;
+        this.arrowMarkerStyle = "fill:rgba(0,0,0)";
+        this.arrowEndLength = 10;
+        this.arrowEndWidth = 5;
+        this.arrowType = "path";
+        this.arrowClass = "";
+        this.arrowText = `${start}-${end}`;
+    }
+}
+
 export interface MapScope
 {
     genome : CircularFigure;
+    seqSelectionLeftArm : SeqSelectionDisplayArm;
+    seqSelectionRightArm : SeqSelectionDisplayArm;
+    seqSelectionArrow : SeqSelectionDisplayArrow;
 }
 
-export function makeMapScope(cf : CircularFigure) : MapScope
+export function makeMapScope(cf : CircularFigure, seqSelectOptions : {
+    start? : number,
+    end? : number
+
+}) : MapScope
 {
     return <MapScope>{
-        genome : cf
+        genome : cf,
+        seqSelectionLeftArm : new SeqSelectionDisplayArm(
+            "left",
+            cf.radius,
+            seqSelectOptions.start ? seqSelectOptions.start : 0
+        ),
+        seqSelectionRightArm : new SeqSelectionDisplayArm(
+            "right",
+            cf.radius,
+            seqSelectOptions.start ? seqSelectOptions.start : 100
+        ),
+        seqSelectionArrow : new SeqSelectionDisplayArrow(
+            seqSelectOptions.start ? seqSelectOptions.start : 0,
+            seqSelectOptions.end ? seqSelectOptions.end : 100,
+            cf.radius
+        )
     }
 }
 
@@ -283,9 +375,12 @@ export class CircularFigure
  * @abstract
  * @class FigureCanvas
  */
-export abstract class FigureCanvas
+export abstract class FigureCanvas implements MapScope
 {
     public genome : CircularFigure;
+    public seqSelectionLeftArm : SeqSelectionDisplayArm;
+    public seqSelectionRightArm : SeqSelectionDisplayArm;
+    public seqSelectionArrow : SeqSelectionDisplayArrow;
     public scope : FigureCanvas;
     public abstract markerOnClick($event : any,$marker : any,uuid : string) : void;
     public abstract figureNameOnClick() : void;
