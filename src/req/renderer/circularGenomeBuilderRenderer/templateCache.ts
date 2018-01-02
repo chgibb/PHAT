@@ -221,16 +221,3 @@ export function renderToCanvas(ctx : CanvasRenderingContext2D) : Promise<void>
         resolve();
     });
 }
-
-
-/**
- * Deletes the track specified by uuid from the in-memory cache
- * 
- * @export
- * @param {string} uuid 
- * @returns {void} 
- */
-export function removeTrack(uuid : string) : void
-{
-    
-}
