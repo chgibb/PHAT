@@ -7,6 +7,14 @@ import {SpawnRequestParams} from "./../../JobIPC";
 import {Job,JobCallBackObject} from "./../../main/Job";
 import {samToolsIdxStatsReportParser} from "./../../samToolsIdxStatsReport";
 
+/**
+ * Populate the idxStatsReport property on alignData from its sorted bam
+ * 
+ * @export
+ * @param {AlignData} alignData 
+ * @param {atomic.AtomicOperation} logger 
+ * @returns {Promise<{}>} 
+ */
 export function samToolsIdxStats(alignData : AlignData,logger : atomic.AtomicOperation) : Promise<{}>
 {
     return new Promise((resolve,reject) => {

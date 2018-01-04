@@ -2,11 +2,13 @@ import * as atomic from "./req/operations/atomicOperations";
 import {AtomicOperationForkEvent,CompletionFlags} from "./req/atomicOperationsIPC";
 import {AlignData} from "./req/alignData"
 import * as cf from "./req/renderer/circularFigure";
+import { buildCoverageTrackMap } from "./req/renderer/circularFigure";
 
 let align : AlignData;
 let contiguuid : string;
 let circularFigure : cf.CircularFigure;
 let colour : string;
+let scaleFactor : number;
 
 let flags : CompletionFlags = new CompletionFlags();
 process.on
@@ -19,29 +21,32 @@ process.on
             contiguuid = ev.data.contiguuid;
             circularFigure = ev.data.circularFigure;
             colour = ev.data.colour;
+            scaleFactor = ev.data.scaleFactor;
             process.send(<AtomicOperationForkEvent>{finishedSettingData : true});
             return;
         }
 
         if(ev.run == true)
         {
-            cf.cacheCoverageTrack(circularFigure,contiguuid,align,colour).then((coverageTracks : string) => {
-                flags.done = true;
-                flags.success = true;
-                process.send(
-                    <AtomicOperationForkEvent>{
-                        update : true,
-                        flags : flags,
-                        data : {
-                            alignData : align,
-                            contiguuid : contiguuid,
-                            circularFigure : circularFigure,
-                            colour : colour
-                        }
+            await cf.cacheCoverageTrackTemplate(circularFigure,contiguuid,align,colour,scaleFactor);
+            let trackRecord : cf.RenderedCoverageTrackRecord = circularFigure.renderedCoverageTracks[circularFigure.renderedCoverageTracks.length - 1];
+            let map : cf.CoverageTrackMap = await buildCoverageTrackMap(trackRecord,circularFigure);
+            cf.cacheCoverageTrackPB(trackRecord,map);
+            flags.done = true;
+            flags.success = true;
+            process.send(
+                <AtomicOperationForkEvent>{
+                    update : true,
+                    flags : flags,
+                    data : {
+                        alignData : align,
+                        contiguuid : contiguuid,
+                        circularFigure : circularFigure,
+                        colour : colour
                     }
-                );
-                atomic.exitFork(0);
-            });
+                }
+            );
+            atomic.exitFork(0);
         }
     }  
 );

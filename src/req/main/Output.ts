@@ -1,5 +1,16 @@
 import * as winMgr from "./winMgr";
 import {getReadable} from "./../getAppPath";
+import {add} from "./afterProjectLoad";
+
+add(function(){
+	winMgr.initWindowOptions(
+		"Output",
+		"output",
+		1379,649,
+		false,
+		650,420
+	);
+});
 
 winMgr.windowCreators["output"] = 
 {
@@ -7,13 +18,10 @@ winMgr.windowCreators["output"] =
 	{
 		winMgr.pushWindow(
 			"output",
-			winMgr.createWithDefault(
-				"Output",
+			winMgr.createFromOptions(
 				"output",
-				1379,649,
 				"file://"+getReadable("Output.html"),
-				false,false,
-				650,420
+				false
 			)
 		);
 	}

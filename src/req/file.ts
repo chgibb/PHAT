@@ -2,7 +2,7 @@ import * as fs from "fs";
 import * as path from "path";
 
 const uuidv4 : () => string = require("uuid/v4");
-import * as fse from "fs-extra";
+const fse = require("fs-extra");
 
 import {getReadableAndWritable} from "./getAppPath";
 import trimPath from "./trimPath";

@@ -3,6 +3,8 @@ import * as winMgr from "./winMgr";
 import * as atomicOp from "./../operations/atomicOperations";
 import {getReadableAndWritable} from "./../getAppPath";
 import {ProjectManifest} from "./../projectManifest";
+import * as afterProjectLoad from "./afterProjectLoad";
+
 //final steps to load project after OpenProject operation has unpacked the project tarball
 export function finishLoadingProject(proj : ProjectManifest) : void
 {
@@ -10,6 +12,7 @@ export function finishLoadingProject(proj : ProjectManifest) : void
 
 	dataMgr.clearData();
 	dataMgr.loadData(getReadableAndWritable("rt/rt.json"));
+	afterProjectLoad.run();
 	
 	//If we're loading an internal project, set the project object in the runtime manifest accordingly
 	//If we're loading externally, openProjectProcess will detect and patch it in appropriately

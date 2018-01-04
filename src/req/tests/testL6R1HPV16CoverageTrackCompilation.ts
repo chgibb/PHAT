@@ -1,26 +1,19 @@
+import * as fs from "fs";
+
 import * as atomic from "./../operations/atomicOperations";
-import {CompileTemplates} from "./../operations/./CompileTemplates";
 import * as cf from "./../renderer/circularFigure";
 import * as hpv16Figure from "./hpv16Figure";
-export async function testL6R1HPV16CoverageTrackCompilation() : Promise<string>
+export async function testL6R1HPV16CoverageTrackCompilation() : Promise<void>
 {
-    return new Promise<string>((resolve,reject) => {
-        atomic.addOperation("compileTemplates",{
-            figure : hpv16Figure.get(),
-            uuid : hpv16Figure.get().renderedCoverageTracks[0].uuid,
-            compileBase : false
-        });
-        atomic.updates.removeAllListeners().on("compileTemplates",function(op : CompileTemplates){
-            if(op.flags.success)
-            {
-                console.log(`SVG compilation for ${op.uuid} on ${op.figure.name} succeeded`);
-                return resolve(cf.getCoverageTrackSVGFromCache(hpv16Figure.get().renderedCoverageTracks[0]));
-            }
-            else if(op.flags.failure)
-            {
-                console.log(`SVG compilation for ${op.uuid} on ${op.figure.name} failed`);
-                return reject();
-            }
-        });
+    return new Promise<void>(async (resolve,reject) => {
+
+        let figure : cf.CircularFigure = hpv16Figure.get();
+        let trackRecord : cf.RenderedCoverageTrackRecord = figure.renderedCoverageTracks[figure.renderedCoverageTracks.length - 1];
+        fs.accessSync(cf.getCachedCoverageTrackTemplatePath(trackRecord));
+        let map : cf.CoverageTrackMap = await cf.buildCoverageTrackMap(trackRecord,figure);
+        fs.accessSync(cf.getCoverageTrackPBPath(trackRecord));
+        cf.cacheCoverageTrackSVG(trackRecord,map.renderStart()+map.renderEnd());
+        fs.accessSync(cf.getCachedCoverageTrackSVGPath(trackRecord));
+        return resolve();
     });
 }

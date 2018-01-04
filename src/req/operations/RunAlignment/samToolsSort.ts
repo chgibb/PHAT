@@ -4,6 +4,14 @@ import {AlignData,getUnSortedBam,getSortedBam} from "./../../alignData";
 import {SpawnRequestParams} from "./../../JobIPC";
 import {Job,JobCallBackObject} from "./../../main/Job";
 
+/**
+ * Produce a sorted bam from the unsorted bam managed by alignData
+ * 
+ * @export
+ * @param {AlignData} alignData 
+ * @param {atomic.AtomicOperation} logger 
+ * @returns {Promise<{}>} 
+ */
 export function samToolsSort(alignData : AlignData,logger : atomic.AtomicOperation) : Promise<{}>
 {
     return new Promise((resolve,reject) => {

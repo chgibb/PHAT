@@ -1,5 +1,16 @@
 import * as winMgr from "./winMgr";
 import {getReadable} from "./../getAppPath";
+import {add} from "./afterProjectLoad";
+
+add(function(){
+	winMgr.initWindowOptions(
+		"Circular Genome Builder",
+		"circularGenomeBuilder",
+		928,300,
+		false,
+		500,150	
+	);
+});
 
 winMgr.windowCreators["circularGenomeBuilder"] = 
 {
@@ -7,13 +18,10 @@ winMgr.windowCreators["circularGenomeBuilder"] =
 	{
 		winMgr.pushWindow(
 			"circularGenomeBuilder",
-			winMgr.createWithDefault(
+			winMgr.createFromOptions(
 				"circularGenomeBuilder",
-				"circularGenomeBuilder",
-				928,300,
 				"file://"+getReadable("circularGenomeBuilder.html"),
-				false,false,
-				500,150	
+				false
 			)
 		);
 	}

@@ -3,6 +3,7 @@ const ipc = electron.ipcRenderer;
 
 import {GetKeyEvent,KeySubEvent} from "./req/ipcEvents";
 import * as viewMgr from "./req/renderer/viewMgr";
+import {makeWindowDockable} from "./req/renderer/dock";
 
 import * as masterView from "./req/renderer/OutputRenderer/masterView";
 
@@ -13,6 +14,7 @@ $
 (
     function()
     {
+        makeWindowDockable("output");
         masterView.addView(viewMgr.views,"masterView");
         viewMgr.changeView("masterView");
 
@@ -24,9 +26,6 @@ $
             {
                 if(arg.action === "getKey" || arg.action === "keyChange")
                 {
-                    //if(arg.key == "fastqInputs" && arg.val !== undefined)
-                     //   (<reportView.ReportView>viewMgr.getViewByName("report",(<masterView.MasterView>viewMgr.getViewByName("masterReportView")).views)).fastqInputs = arg.val;
-                
                      let masterView = <masterView.View>viewMgr.getViewByName("masterView");
                      if(arg.key == "fastqInputs" && arg.val !== undefined)
                      {

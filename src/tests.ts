@@ -29,6 +29,7 @@ import {testL6R1HPV18Alignment} from "./req/tests/testL6R1HPV18Alignment"
 import {testL6R1HPV16CoverageTrackRenderer} from "./req/tests/testL6R1HPV16CoverageTrackRender";
 import {testL6R1HPV16SNPTrackRenderer} from "./req/tests/testL6R1HPV16SNPTrackRender";
 import {testL6R1HPV16CoverageTrackCompilation} from "./req/tests/testL6R1HPV16CoverageTrackCompilation";
+import {testL6R1HPV16SNPTrackCompilation} from "./req/tests/testL6R1HPV16SNPTrackCompilation";
 import {testL6R1HPV18CoverageTrackRenderer} from "./req/tests/testL6R1HPV18CoverageTrackRender";
 import {testL6R1HPV18SNPTrackRenderer} from "./req/tests/testL6R1HPV18SNPTrackRender";
 
@@ -190,12 +191,10 @@ async function runTests() : Promise<void>
 			return reject();
 		}
 
-		let firstSVG = "";
-		let secondSVG = "";
 		console.log("Compiling coverage track for L6R1 alignment against HPV16");
 		try
 		{
-			firstSVG = await testL6R1HPV16CoverageTrackCompilation();
+			await testL6R1HPV16CoverageTrackCompilation();
 		}
 		catch(err)
 		{
@@ -203,24 +202,14 @@ async function runTests() : Promise<void>
 			return reject();
 		}
 
-
-		console.log("Compiling coverage track for L6R1 alignment against HPV16");
+		console.log("Compiling SNP track for L6R1 alignment against HPV16");
 		try
 		{
-			let tmp = hpv16Figure.get();
-			tmp.radius = 600;
-			hpv16Figure.set(tmp);
-			secondSVG = await testL6R1HPV16CoverageTrackCompilation();
-			if(firstSVG == secondSVG)
-			{
-				console.log("Failed to recompile coverage track for L6R1 with new radius");
-				return reject();
-			}
-			console.log("Successfully recompiled coverage track with new radius");
+			await testL6R1HPV16SNPTrackCompilation();
 		}
 		catch(err)
 		{
-			console.log("Coverage track compilation threw exception");
+			console.log("SNP track compilation threw exception");
 			return reject();
 		}
 
@@ -247,7 +236,8 @@ async function runTests() : Promise<void>
 		}
 
 		console.log("Importing binary alignment map from L6R1 HPV16 alignment");
-		atomic.addOperation("inputBamFile",getUnSortedBam(L6R1HPV16Align.get()));
+		atomic.addOperation("inputBamFile",{
+			bamPath : getUnSortedBam(L6R1HPV16Align.get())});
 		try
 		{
 			await testL6R1HPV16AlignImportedImporting();
@@ -274,7 +264,9 @@ async function runTests() : Promise<void>
 		}
 
 		console.log("Importing binary alignment map from L6R1 HPV18 alignment");
-		atomic.addOperation("inputBamFile",getUnSortedBam(L6R1HPV18Align.get()));
+		atomic.addOperation("inputBamFile",{
+			bamPath : getUnSortedBam(L6R1HPV18Align.get())
+		});
 		try
 		{
 			await testL6R1HPV18AlignImportedImporting();
@@ -301,7 +293,9 @@ async function runTests() : Promise<void>
 		}
 
 		console.log("Importing sequence alignment map from L6R1 HPV16 alignment");
-		atomic.addOperation("inputBamFile",getSam(L6R1HPV16Align.get()));
+		atomic.addOperation("inputBamFile",{
+			bamPath : getSam(L6R1HPV16Align.get())
+		});
 		try
 		{
 			await testL6R1HPV16AlignImportedImporting();
@@ -328,7 +322,9 @@ async function runTests() : Promise<void>
 		}
 
 		console.log("Importing sequence alignment map from L6R1 HPV18 alignment");
-		atomic.addOperation("inputBamFile",getSam(L6R1HPV18Align.get()));
+		atomic.addOperation("inputBamFile",{
+			bamPath : getSam(L6R1HPV18Align.get())
+		});
 		try
 		{
 			await testL6R1HPV18AlignImportedImporting();
@@ -351,6 +347,34 @@ async function runTests() : Promise<void>
 		catch(err)
 		{
 			console.log("sam linking threw exception");
+			return reject();
+		}
+
+		console.log("Importing headerless sequence alignment map");
+		atomic.addOperation("inputBamFile",{
+			bamPath : "data/L6R1HPV16NoHeader.sam"
+		});
+		try
+		{
+			await testL6R1HPV16AlignImportedImporting();
+		}
+		catch(err)
+		{
+			console.log("importing headerless sam threw (expected) exception "+err);
+		}
+
+		console.log("Importing headerless sequence aligment map with ref seq")
+		atomic.addOperation("inputBamFile",{
+			bamPath : "data/L6R1HPV16NoHeader.sam",
+			fasta : hpv16Ref.get()
+		});
+		try
+		{
+			await testL6R1HPV16AlignImportedImporting();
+		}
+		catch(err)
+		{
+			console.log("importing headerless sam with ref seq threw exception "+err);
 			return reject();
 		}
 

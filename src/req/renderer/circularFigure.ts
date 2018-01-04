@@ -1,9 +1,20 @@
+/// <reference path="../../../node_modules/@chgibb/ngplasmid/lib/html" />
+/// <reference path="../../../node_modules/@chgibb/ngplasmid/lib/directives" />
+/// <reference path="../../../node_modules/@chgibb/ngplasmid/lib/services" />
+/// <reference path="../../../node_modules/@chgibb/ngplasmid/lib/interpolate" />
+/// <reference path="../../../node_modules/@chgibb/ngplasmid/lib/directiveToPB" />
+/// <reference path="../../../node_modules/@chgibb/ngplasmid/lib/pb/node" />
+
 import * as fs from "fs";
 import * as readline from "readline";
 
 const jsonFile = require("jsonfile");
 const uuidv4 : () => string = require("uuid/v4");
-import * as mkdirp from "mkdirp";
+const mkdirp = require("mkdirp");
+import * as html from "@chgibb/ngplasmid/lib/html";
+import * as ngDirectives from "@chgibb/ngplasmid/lib/directives";
+import * as pbDirectives from "@chgibb/ngplasmid/lib/pb/node";
+import {plasmidToPB} from "@chgibb/ngplasmid/lib/directiveToPB";
 
 import {getReadableAndWritable} from "./../getAppPath";
 import * as fastaContigLoader from "./../fastaContigLoader";
@@ -17,6 +28,8 @@ import * as plasmid from "./circularGenome/plasmid";
 
 import {AlignData,getSNPsJSON} from "./../alignData";
 import {VCF2JSONRow} from "./../varScanMPileup2SNPVCF2JSON";
+import {parseCSS} from "./../parseCSS";
+
 /**
  * Represents a single contig in a circular figure
  * 
@@ -121,7 +134,7 @@ export class RenderedTrackRecord
 }
 
 /**
- * Contains a record to retrieve/manipulate a coverage track which has been rendered
+ * Contains a record to retrieve/manipulate a coverage track which has been built
  * 
  * @export
  * @class RenderedCoverageTrackRecord
@@ -129,18 +142,21 @@ export class RenderedTrackRecord
  */
 export class RenderedCoverageTrackRecord extends RenderedTrackRecord
 {
+    scaleFactor : number;
     public constructor(
         uuidAlign : string,
         uuidContig : string,
         uuidFigure : string,
-        colour : string)
+        colour : string,
+        scaleFactor : number)
     {
         super(uuidAlign,uuidContig,uuidFigure,colour);
+        this.scaleFactor = scaleFactor;
     }
 }
 
 /**
- * Contains a record to retrieve/manipulate a SNP track which has been rendered
+ * Contains a record to retrieve/manipulate a SNP track which has been built
  * 
  * @export
  * @class RenderedSNPTrackRecord
@@ -158,8 +174,24 @@ export class RenderedSNPTrackRecord extends RenderedTrackRecord
     }
 }
 
+export class CoverageTrackMap extends ngDirectives.Plasmid
+{
+    public constructor()
+    {
+        super();
+    }
+}
+
+export class SNPTrackMap extends ngDirectives.Plasmid
+{
+    public constructor()
+    {
+        super();
+    }
+}
+
 /**
- * Contains all structures needed to render a circular figure
+ * Contains all structures needed to manipulate a circular figure
  * 
  * @export
  * @class CircularFigure
@@ -174,6 +206,7 @@ export class CircularFigure
     public radius : number;
     public height : number;
     public width : number;
+    public zoomFactor : number;
     public isInteractive : boolean;
     public showContigNames : boolean;
     public circularFigureBPTrackOptions : CircularFigureBPTrackOptions;
@@ -188,6 +221,7 @@ export class CircularFigure
         this.radius = 120;
         this.height = this.radius*10;
         this.width = this.radius*10;
+        this.zoomFactor = 1;
         this.circularFigureBPTrackOptions = new CircularFigureBPTrackOptions();
         this.renderedCoverageTracks = new Array<RenderedCoverageTrackRecord>();
         this.renderedSNPTracks = new Array<RenderedSNPTrackRecord>();
@@ -217,7 +251,7 @@ export class CircularFigure
             this.isInteractive = false;
             this.showContigNames = false;
         }
-        cacheBaseFigure(this);
+        cacheBaseFigureTemplate(this);
     }
 }
 
@@ -246,7 +280,7 @@ export abstract class FigureCanvas
  * @param {number} [end=-1] 
  * @returns {string} 
  */
-export function renderContig(figure : CircularFigure,contig : Contig,start : number = -1,end : number = -1) : string
+export function buildContigTemplate(figure : CircularFigure,contig : Contig,start : number = -1,end : number = -1) : string
 {
     if(start == -1)
         start = contig.start;
@@ -283,7 +317,7 @@ export function renderContig(figure : CircularFigure,contig : Contig,start : num
  * @param {CircularFigure} figure 
  * @returns {string} 
  */
-export function renderBaseFigure(figure : CircularFigure) : string
+export function buildBaseFigureTemplate(figure : CircularFigure) : string
 {
     return `
         ${plasmidTrack.add(
@@ -305,12 +339,12 @@ export function renderBaseFigure(figure : CircularFigure) : string
                 let lastLocation = 0;
                 for(let i = 0; i != figure.contigs.length; ++i)
                 {
-                    res += renderContig(figure,figure.contigs[i],lastLocation,lastLocation+figure.contigs[i].bp);
+                    res += buildContigTemplate(figure,figure.contigs[i],lastLocation,lastLocation+figure.contigs[i].bp);
                     lastLocation = lastLocation + figure.contigs[i].bp;
                 }
                 for(let i = 0; i != figure.customContigs.length; ++i)
                 {
-                    res += renderContig(figure,figure.customContigs[i],figure.customContigs[i].start,figure.customContigs[i].end);
+                    res += buildContigTemplate(figure,figure.customContigs[i],figure.customContigs[i].start,figure.customContigs[i].end);
                 }
                 return res; 
             })()}
@@ -333,14 +367,14 @@ export function renderBaseFigure(figure : CircularFigure) : string
  * @export
  * @param {CircularFigure} figure 
  */
-export function cacheBaseFigure(figure : CircularFigure) : void
+export function cacheBaseFigureTemplate(figure : CircularFigure) : void
 {
     try
     {
         fs.mkdirSync(getReadableAndWritable(`rt/circularFigures/${figure.uuid}`));
     }
     catch(err){}
-    fs.writeFileSync(getReadableAndWritable(`rt/circularFigures/${figure.uuid}/baseFigure`),renderBaseFigure(figure));
+    fs.writeFileSync(getReadableAndWritable(`rt/circularFigures/${figure.uuid}/baseFigure`),buildBaseFigureTemplate(figure));
 }
 
 /**
@@ -362,7 +396,7 @@ export function cacheBaseFigureSVG(figure : CircularFigure,svg : string) : void
  * @param {CircularFigure} figure 
  * @returns {string} 
  */
-export function getBaseFigureFromCache(figure : CircularFigure) : string
+export function getBaseFigureTemplateFromCache(figure : CircularFigure) : string
 {
     return (<any>fs.readFileSync(getReadableAndWritable(`rt/circularFigures/${figure.uuid}/baseFigure`)));
 }
@@ -376,7 +410,7 @@ export function getBaseFigureFromCache(figure : CircularFigure) : string
  */
 export function getBaseFigureSVGFromCache(figure : CircularFigure) : string
 {
-    return (<any>fs.readFileSync(getReadableAndWritable(`rt/circularFigures/${figure.uuid}/baseFigure.svg`)));
+    return fs.readFileSync(getReadableAndWritable(`rt/circularFigures/${figure.uuid}/baseFigure.svg`)).toString();
 }
 
 /**
@@ -392,6 +426,43 @@ export function deleteBaseFigureSVGFromCache(figure : CircularFigure) : void
         fs.unlinkSync(getReadableAndWritable(`rt/circularFigures/${figure.uuid}/baseFigure.svg`));
     }
     catch(err){}
+}
+/**
+ * Compile base figure. Returns the resulting SVG
+ * 
+ * @export
+ * @param {CircularFigure} figure 
+ * @returns {Promise<string>} 
+ */
+export function compileBaseFigureSVG(figure : CircularFigure) : Promise<string>
+{
+    return new Promise<string>(async (resolve,reject) => {
+
+        let nodes : Array<html.Node> = await html.loadFromString(
+            assembleCompilableBaseFigureTemplates(figure)
+        );
+
+        let plasmid : ngDirectives.Plasmid = new ngDirectives.Plasmid();
+        plasmid.$scope = {
+            genome : figure
+        };
+
+        for(let i = 0; i != nodes.length; ++i)
+        {
+            if(nodes[i].name == "div")
+            {
+                for(let k = 0; k != nodes[i].children.length; ++k)
+                {
+                    if(nodes[i].children[k].name == "plasmid")
+                    {
+                        plasmid.fromNode<html.Node>(nodes[i].children[k]);
+                        break;
+                    }
+                }
+            }
+        }
+        resolve(plasmid.renderStart()+plasmid.renderEnd());
+    });
 }
 
 /**
@@ -426,6 +497,7 @@ interface PositionsWithDepths
     positions : Array<number>;
 }
 
+
 /**
  * Returns the templates for a coverage track of align for the contig specified by contiguuid on figure in the specified colour
  * 
@@ -434,13 +506,15 @@ interface PositionsWithDepths
  * @param {string} contiguuid 
  * @param {AlignData} align 
  * @param {string} [colour="rgb(64,64,64)"] 
+ * @param {number} [scaleFactor=1] 
  * @returns {Promise<string>} 
  */
-export async function renderCoverageTrack(
+export async function buildCoverageTrackTemplate(
     figure : CircularFigure,
     contiguuid : string,
     align : AlignData,
-    colour : string = "rgb(64,64,64)"
+    colour : string = "rgb(64,64,64)",
+    scaleFactor : number = 1
 ) : Promise<string>
 {
     return new Promise<string>((resolve,reject) => {
@@ -494,7 +568,7 @@ export async function renderCoverageTrack(
                 depths[i].positions.sort(function(a : number,b : number){return a - b});
                 let res = "";
                 //render the start of the current track
-                res += `<plasmidtrack trackstyle="fill-opacity:0.0;fill:${colour}" width="10" radius="{{genome.radius+${100+depths[i].depth}}}" >`;
+                res += `<plasmidtrack trackstyle="fill-opacity:0.0;fill:${colour}" width="10" radius="{{genome.radius+${100+(depths[i].depth*scaleFactor)}}}" >`;
                 //try to find a group of sequential positions
                 for(let k = 0; k != depths[i].positions.length; ++k)
                 {
@@ -519,6 +593,7 @@ export async function renderCoverageTrack(
     });
 }
 
+
 /**
  * Returns the templates for a coverage track of align for the contig specified by contiguuid on figure in the specified colour. Creates and saves a trackrecord
  * on figure with the results
@@ -528,27 +603,29 @@ export async function renderCoverageTrack(
  * @param {string} contiguuid 
  * @param {AlignData} align 
  * @param {string} [colour="rgb(64,64,64)"] 
+ * @param {number} [scaleFactor=1] 
  * @returns {Promise<string>} 
  */
-export async function cacheCoverageTrack(
+export async function cacheCoverageTrackTemplate(
     figure : CircularFigure,
     contiguuid : string,
     align : AlignData,
-    colour : string = "rgb(64,64,64)"
-) : Promise<string>
+    colour : string = "rgb(64,64,64)",
+    scaleFactor : number = 1
+) : Promise<void>
 {
-    return new Promise<string>(async (resolve,reject) => {
+    return new Promise<void>(async (resolve,reject) => {
         try
         {
             mkdirp.sync(getReadableAndWritable(`rt/circularFigures/${figure.uuid}/coverage/${align.uuid}/${contiguuid}`));
         }
         catch(err){}
     
-        let coverageTracks = await renderCoverageTrack(figure,contiguuid,align,colour);
-        let trackRecord = new RenderedCoverageTrackRecord(align.uuid,contiguuid,figure.uuid,colour);
-        fs.writeFileSync(getCachedCoverageTrackPath(trackRecord),coverageTracks);
+        let coverageTracks = await buildCoverageTrackTemplate(figure,contiguuid,align,colour,scaleFactor);
+        let trackRecord = new RenderedCoverageTrackRecord(align.uuid,contiguuid,figure.uuid,colour,scaleFactor);
+        fs.writeFileSync(getCachedCoverageTrackTemplatePath(trackRecord),coverageTracks);
         figure.renderedCoverageTracks.push(trackRecord);
-        resolve(coverageTracks);
+        resolve();
     });
 }
 
@@ -559,7 +636,7 @@ export async function cacheCoverageTrack(
  * @param {RenderedCoverageTrackRecord} trackRecord 
  * @returns {string} 
  */
-export function getCachedCoverageTrackPath(trackRecord : RenderedCoverageTrackRecord) : string
+export function getCachedCoverageTrackTemplatePath(trackRecord : RenderedCoverageTrackRecord) : string
 {
     return getReadableAndWritable(`rt/circularFigures/${trackRecord.uuidFigure}/coverage/${trackRecord.uuidAlign}/${trackRecord.uuidContig}/${trackRecord.uuid}`);
 }
@@ -583,7 +660,7 @@ export function getCachedCoverageTrackSVGPath(trackRecord : RenderedCoverageTrac
  * @param {RenderedCoverageTrackRecord} trackRecord 
  * @param {string} svg 
  */
-export function cachCoverageTrackSVG(trackRecord : RenderedCoverageTrackRecord,svg : string) : void
+export function cacheCoverageTrackSVG(trackRecord : RenderedCoverageTrackRecord,svg : string) : void
 {
     fs.writeFileSync(getCachedCoverageTrackSVGPath(trackRecord),svg);
 }
@@ -599,7 +676,40 @@ export function getCoverageTrackSVGFromCache(trackRecord : RenderedCoverageTrack
 {
     return fs.readFileSync(getCachedCoverageTrackSVGPath(trackRecord)).toString();
 }
-
+/**
+ * Returns the path to the protocol buffer cache for the specified coverage track
+ * 
+ * @export
+ * @param {RenderedCoverageTrackRecord} trackRecord 
+ * @returns {string} 
+ */
+export function getCoverageTrackPBPath(trackRecord : RenderedCoverageTrackRecord) : string
+{
+    return getReadableAndWritable(`rt/circularFigures/${trackRecord.uuidFigure}/coverage/${trackRecord.uuidAlign}/${trackRecord.uuidContig}/${trackRecord.uuid}.pb`);
+}
+/**
+ * Returns the disk protocol buffer cache for the specified coverage track
+ * 
+ * @export
+ * @param {RenderedCoverageTrackRecord} trackRecord 
+ * @returns {Buffer} 
+ */
+export function getCoverageTrackPBFromCache(trackRecord : RenderedCoverageTrackRecord) : Buffer
+{
+    return fs.readFileSync(getCoverageTrackPBPath(trackRecord));
+}
+/**
+ * Overwrites the disk protocol buffer cache for the specified coverage track
+ * 
+ * @export
+ * @param {RenderedCoverageTrackRecord} trackRecord 
+ * @param {ngDirectives.Plasmid} plasmid 
+ */
+export function cacheCoverageTrackPB(trackRecord : RenderedCoverageTrackRecord,plasmid : ngDirectives.Plasmid) : void
+{
+    let pb = pbDirectives.Node.create(plasmidToPB(plasmid));
+    fs.writeFileSync(getCoverageTrackPBPath(trackRecord),pbDirectives.Node.encode(pb).finish());
+}
 
 /**
  * Holds information relevant to display for a given SNP
@@ -626,7 +736,7 @@ interface SNPPosition
  * @param {string} [colour="rgb(64,64,64)"] 
  * @returns {Promise<string>} 
  */
-export function renderSNPTrack(
+export function buildSNPTrackTemplate(
     figure : CircularFigure,
     contiguuid : string,
     align : AlignData,
@@ -711,7 +821,7 @@ export function renderSNPTrack(
  * @param {string} [colour="rgb(64,64,64)"] 
  * @returns {Promise<string>} 
  */
-export function cacheSNPTrack(
+export function cacheSNPTrackTemplate(
     figure : CircularFigure,
     contiguuid : string,
     align : AlignData,
@@ -724,9 +834,9 @@ export function cacheSNPTrack(
             mkdirp.sync(getReadableAndWritable(`rt/circularFigures/${figure.uuid}/snp/${align.uuid}/${contiguuid}`));
         }
         catch(err){}
-        let SNPTracks = await renderSNPTrack(figure,contiguuid,align,colour);
+        let SNPTracks = await buildSNPTrackTemplate(figure,contiguuid,align,colour);
         let trackRecord = new RenderedSNPTrackRecord(align.uuid,contiguuid,figure.uuid,colour);
-        fs.writeFileSync(getCachedSNPTrackPath(trackRecord),SNPTracks);
+        fs.writeFileSync(getCachedSNPTrackTemplatePath(trackRecord),SNPTracks);
         figure.renderedSNPTracks.push(trackRecord);
         resolve(SNPTracks);
     });
@@ -739,7 +849,7 @@ export function cacheSNPTrack(
  * @param {RenderedSNPTrackRecord} trackRecord 
  * @returns {string} 
  */
-export function getCachedSNPTrackPath(trackRecord : RenderedSNPTrackRecord) : string
+export function getCachedSNPTrackTemplatePath(trackRecord : RenderedSNPTrackRecord) : string
 {
     return getReadableAndWritable(`rt/circularFigures/${trackRecord.uuidFigure}/snp/${trackRecord.uuidAlign}/${trackRecord.uuidContig}/${trackRecord.uuid}`);
 }
@@ -780,6 +890,94 @@ export function getSNPTrackSVGFromCache(trackRecord : RenderedSNPTrackRecord) : 
     return fs.readFileSync(getCachedSNPTrackSVGPath(trackRecord)).toString();
 }
 
+export function buildCoverageTrackMap(trackRecord : RenderedCoverageTrackRecord,figure : CircularFigure) : Promise<CoverageTrackMap>
+{
+
+    return new Promise<CoverageTrackMap>(async (resolve,reject) => {
+
+        let map : CoverageTrackMap = new CoverageTrackMap();
+        map.$scope = {
+            genome : figure
+        };
+
+        //try to build from protocol buffer
+        if(fs.existsSync(getCoverageTrackPBPath(trackRecord)))
+        {
+            map.fromNode<any>(
+                pbDirectives.Node.decode(
+                    fs.readFileSync(
+                        getCoverageTrackPBPath(trackRecord)
+                    )
+                )
+            );
+            resolve(map);
+        }
+
+        //first time for this coverage track
+        else
+        {
+            let nodes : Array<html.Node> = await html.loadFromString(
+                assembleCompilableCoverageTrack(figure,trackRecord)
+            );
+
+            for(let i = 0; i != nodes.length; ++i)
+            {
+                if(nodes[i].name == "div")
+                {
+                    for(let k = 0; k != nodes[i].children.length; ++k)
+                    {
+                        if(nodes[i].children[k].name == "plasmid")
+                        {
+                            map.fromNode<html.Node>(nodes[i].children[k]);
+                            break;
+                        }
+                    }
+                    break;
+                }
+            }
+
+            //write optimized protocol buffer version for future use
+            cacheCoverageTrackPB(trackRecord,map);
+
+            resolve(map);
+        }
+    });
+}
+
+export function buildSNPTrackMap(trackRecord : RenderedSNPTrackRecord,figure : CircularFigure) : Promise<SNPTrackMap>
+{
+
+    return new Promise<SNPTrackMap>(async (resolve,reject) => {
+
+        let nodes : Array<html.Node> = await html.loadFromString(
+            assembleCompilableSNPTrack(figure,trackRecord)
+        );
+
+        let map : SNPTrackMap = new SNPTrackMap();
+        map.$scope = {
+            genome : figure
+        };
+
+        for(let i = 0; i != nodes.length; ++i)
+        {
+            if(nodes[i].name == "div")
+            {
+                for(let k = 0; k != nodes[i].children.length; ++k)
+                {
+                    if(nodes[i].children[k].name == "plasmid")
+                    {
+                        map.fromNode<html.Node>(nodes[i].children[k]);
+                        break;
+                    }
+                }
+                break;
+            }
+        }
+
+        resolve(map);
+    });
+}
+
 /**
  * Wraps templates with the correct markup, based on figure to make them compilable by Angular
  * 
@@ -797,7 +995,7 @@ export function assembleCompilableTemplates(figure : CircularFigure,templates : 
         totalBP += figure.contigs[i].bp;
     }
     return `
-        <div id="${id}">
+        <div ${id ? `id="${id}"` : ""}>
         ${plasmid.add(
         {
             sequenceLength : totalBP.toString(),
@@ -819,7 +1017,7 @@ export function assembleCompilableTemplates(figure : CircularFigure,templates : 
  */
 export function assembleCompilableBaseFigureTemplates(figure : CircularFigure) : string
 {
-    return assembleCompilableTemplates(figure,getBaseFigureFromCache(figure));
+    return assembleCompilableTemplates(figure,getBaseFigureTemplateFromCache(figure));
 }
 
 /**
@@ -835,7 +1033,7 @@ export function assembleCompilableCoverageTrack(figure : CircularFigure,trackRec
     return assembleCompilableTemplates(
         figure,
         fs.readFileSync(
-            getCachedCoverageTrackPath(trackRecord)
+            getCachedCoverageTrackTemplatePath(trackRecord)
         ).toString()
     );
 }
@@ -853,7 +1051,94 @@ export function assembleCompilableSNPTrack(figure : CircularFigure,trackRecord :
     return assembleCompilableTemplates(
         figure,
         fs.readFileSync(
-            getCachedSNPTrackPath(trackRecord)
+            getCachedSNPTrackTemplatePath(trackRecord)
         ).toString()
     );
+}
+
+/**
+ * Renders the given svg using the given canvas rendering context
+ * 
+ * @export
+ * @param {string} svg 
+ * @param {CanvasRenderingContext2D} ctx 
+ * @returns {Promise<void>} 
+ */
+export function renderSVGToCanvas(svg : string, ctx : CanvasRenderingContext2D) : Promise<void>
+{
+    return new Promise<void>((resolve,reject) => {
+        let img : HTMLImageElement = new Image();
+        let url : string = window.URL.createObjectURL(
+            new Blob(
+                [svg],
+                <BlobPropertyBag>{
+                    type : `image/svg+xml`
+                }
+            )
+        );
+        img.onload = function(){
+            ctx.drawImage(img,0,0);
+            window.URL.revokeObjectURL(url);
+            resolve();
+        };
+        img.src = url;
+    });
+}
+/**
+ * Renders the given coverage track using the given figure and canvas rendering context
+ * 
+ * @export
+ * @param {CoverageTrackMap} map 
+ * @param {CircularFigure} figure 
+ * @param {CanvasRenderingContext2D} ctx 
+ */
+export function renderCoverageTrackToCanvas(
+    map : CoverageTrackMap,
+    figure : CircularFigure,
+    ctx : CanvasRenderingContext2D
+) : void {
+    //We assume a lot of things about coverage tracks in this method to save time
+    //If coverage tracks change at some point in the future, this will have to be updated
+
+    //We assume coverage tracks are made of <plasmidtrack>s and <trackmarker>s only
+    
+    map.$scope = {genome : figure};
+    map.interpolateAttributes();
+
+    //Assume linewidth is constant and uniform
+    ctx.lineWidth = 0.1;
+    
+    //Assume fill is constant and uniform
+    ctx.strokeStyle = parseCSS(
+        (<ngDirectives.TrackMarker>map.tracks[0].children[0]).markerstyle,
+        "fill",
+        ";"
+    );
+    for(let i = 0; i != map.tracks.length; ++i)
+    {
+        map.tracks[i].interpolateAttributes();
+        for(let k = 0; k != map.tracks[i].children.length; ++k)
+        {
+            map.tracks[i].children[k].interpolateAttributes();
+            ctx.stroke(
+                new Path2D(
+                    (<any>map.tracks[i].children[k].getSVGPath())
+                )
+            );
+
+        }
+    }
+}
+
+export function renderSNPTrackToCanvas(
+    map : SNPTrackMap,
+    figure : CircularFigure,
+    ctx : CanvasRenderingContext2D
+) : Promise<void> {
+    return new Promise<void>(async (resolve,reject) => {
+        map.$scope = {genome : figure};
+
+        await renderSVGToCanvas(map.renderStart()+map.renderEnd(),ctx);
+        resolve();
+    });
 }

@@ -1,5 +1,16 @@
 import * as winMgr from "./winMgr";
 import {getReadable} from "./../getAppPath";
+import {add} from "./afterProjectLoad";
+
+add(function(){
+	winMgr.initWindowOptions(
+		"Log Viewer",
+		"logViewer",
+		1000,800,
+		false,
+		500,300
+	);
+});
 
 winMgr.windowCreators["logViewer"] = 
 {
@@ -7,13 +18,10 @@ winMgr.windowCreators["logViewer"] =
 	{
 		winMgr.pushWindow(
 			"logViewer",
-			winMgr.createWithDefault(
-				"Log Viewer",
+			winMgr.createFromOptions(
 				"logViewer",
-				1000,800,
 				"file://"+getReadable("logViewer.html"),
-				false,false,
-				500,300
+				false
 			)
 		);
 	}

@@ -31,9 +31,6 @@ export function appMenu() : Array<Electron.MenuItemConstructorOptions>
 				    role: 'minimize'
 			    },
 			    {
-				    role: 'close'
-			    },
-			    {
 				    role: 'resetzoom'
 			    },
 			    {
