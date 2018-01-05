@@ -1,5 +1,3 @@
-See https://chgibb.github.io/PHATDocs/ for documentation and releases.
-
 ![PHAT Input Reads Success](https://chgibb.github.io//PHATDocs/docs/releases/0.7.6-beta.1/InputReadsIn.png)
 
 ![PHAT Output Align](https://chgibb.github.io//PHATDocs/docs/releases/0.7.6-beta.1/OutputAlign.png)
