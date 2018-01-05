@@ -12,15 +12,14 @@ import * as viewMgr from "./../viewMgr";
 import * as masterView from "./masterView";
 import {AlignData} from "./../../alignData";
 import * as cf from "./../circularFigure";
-import {displayFigure} from "./displayFigure";
+import {displayFigure,cleanCanvas} from "./displayFigure";
 import {centreInteractiveFigure,centreNonInteractiveFigure} from "./centreFigure";
 import {changeWindowTitle} from "./../changeWindowTitle";
 import {showGenericLoadingSpinnerInNavBar,hideSpinnerInNavBar} from "./loadingSpinner";
 import {setSelectedContigByUUID} from "./writeContigEditorModal";
 import {reCacheBaseFigure} from "./reCacheBaseFigure";
 import * as tc from "./templateCache";
-
-import {writeSVG,serializeFigure,renderSVG} from "./exportToSVG";
+import {resetCaches} from "./templateCache";
 
 require("angular");
 require("@chgibb/angularplasmid");
@@ -118,29 +117,30 @@ export class GenomeView extends viewMgr.View implements cf.FigureCanvas
                         ]
                     }
                 ]
-            },function(fileName : string)
+            },async function(fileName : string)
             {
                 if(fileName)
                 {
                     let masterView = <masterView.View>viewMgr.getViewByName("masterView");
-                    
-                    showGenericLoadingSpinnerInNavBar();
-                    setTimeout(function(){
-                        renderSVG(self).then(() => {
-                            if(self.genome.isInteractive)
-                                centreInteractiveFigure(document.getElementById(self.div),self.genome);
-                            else
-                                centreNonInteractiveFigure(self.genome);
-                                serializeFigure(self).then((svg : string) => {
-                                writeSVG(self,fileName,svg).then(() => {
-                                    masterView.dismissModal();
-                                    self.firstRender = true;
-                                    hideSpinnerInNavBar();
-                                    viewMgr.render();
-                                });
-                            });
-                        });
-                    },10);
+
+                    //save a reference to the figure currently open in the editor
+                    let currentlyOpenFigure = self.genome;
+
+                    //completely unload the currently open figure and force a gc pass to 
+                    //lower RAM use before compiling a single SVG
+                    self.genome = undefined;
+                    cleanCanvas(self);
+                    resetCaches();
+                    (<any>global).gc();
+
+                    let svg = await cf.buildSingleSVG(currentlyOpenFigure);
+
+                    fs.writeFileSync(fileName,svg);
+
+                    //reload the open figure
+                    self.genome = currentlyOpenFigure;
+                    self.firstRender = true;
+                    viewMgr.render();
                 }
             }
         );
@@ -240,8 +240,6 @@ export class GenomeView extends viewMgr.View implements cf.FigureCanvas
                 this.firstRender = false;
             }
         }
-        else
-            return " ";
         return undefined;
     }
     /**
