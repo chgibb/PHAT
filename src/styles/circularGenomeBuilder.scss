@@ -32,6 +32,19 @@
   background-color: #f5f5f5;
 }
 
+.seqSelectionArm {
+  stroke: rgb(0, 0, 0);
+  stroke-dasharray: 5, 10;
+  stroke-width: 2px;
+  animation: moveSeqSelectionArm 3s infinite;
+}
+
+@keyframes moveSeqSelectionArm {
+  to {
+      stroke-dashoffset: 200px;
+  }
+}
+
 /*
 	This is a huge hack from the response by Birger Puschi
 	https://stackoverflow.com/questions/41256591/bootstrap-4-dropdown-not-working

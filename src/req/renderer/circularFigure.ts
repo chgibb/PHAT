@@ -197,12 +197,13 @@ export class SeqSelectionDisplayArm
     public constructor(side : "left" | "right",radius : number,armStart : number)
     {
         this.armWidth = 20;
-        this.armTrackStyle = "fill:#f0f0f0;stroke:#ccc";
+        this.armTrackStyle = "fill-opacity:0.0;";
         this.armRadius = radius;
         this.armStart = armStart;
         this.armWadjust = 12;
         this.armMarkerClick = `seqSelectionArmOnClick($event,$handler,'${side}')`;
         this.armLineClass = "seqSelectionArm";
+        this.armLineStyle = `stroke:rgb(0,0,0);stroke-dasharray:5,10;stroke-width:2px;animation: moveSeqSelectionArm 3s infinite;`;
         this.armShowLine = 1;
         this.armVadjust = 1200;
         this.armLabelClick = this.armMarkerClick;
@@ -381,6 +382,7 @@ export abstract class FigureCanvas implements MapScope
     public seqSelectionLeftArm : SeqSelectionDisplayArm;
     public seqSelectionRightArm : SeqSelectionDisplayArm;
     public seqSelectionArrow : SeqSelectionDisplayArrow;
+    public showSeqSelector : boolean;
     public scope : FigureCanvas;
     public abstract markerOnClick($event : any,$marker : any,uuid : string) : void;
     public abstract figureNameOnClick() : void;
@@ -477,6 +479,21 @@ export function buildBaseFigureTemplate(figure : CircularFigure) : string
     `;
 }
 
+export function buildSequenceSelectorTemplate(figure : CircularFigure,
+    seqSelectionLeftArm : SeqSelectionDisplayArm,
+    seqSelectionRightArm : SeqSelectionDisplayArm,
+    seqSelectionArrow : SeqSelectionDisplayArrow
+) : string {
+
+    return `
+        <plasmidtrack width="{{seqSelectionLeftArm.armWidth}}" trackstyle="{{seqSelectionLeftArm.armTrackStyle}}" radius="{{seqSelectionLeftArm.armRadius}}">
+            <trackmarker start="{{seqSelectionLeftArm.armStart}}" wadjust="{{seqSelectionLeftArm.armWadjust}}" markerclick="${seqSelectionLeftArm.armMarkerClick}">
+                <markerlabel lineclass="{{seqSelectionLeftArm.armLineClass}}" linestyle="${seqSelectionLeftArm.armLineStyle}" showline="{{seqSelectionLeftArm.armShowLine}}" text="" vadjust="{{seqSelectionLeftArm.armVadjust}}" labelclick="${seqSelectionLeftArm .armLabelClick}"></markerlabel>
+            </trackmarker>
+        </plasmidtrack>
+    `;
+}
+
 /**
  * Overwrites the current disk template cache for the base figure of figure
  * 
@@ -514,7 +531,7 @@ export function cacheBaseFigureSVG(figure : CircularFigure,svg : string) : void
  */
 export function getBaseFigureTemplateFromCache(figure : CircularFigure) : string
 {
-    return (<any>fs.readFileSync(getReadableAndWritable(`rt/circularFigures/${figure.uuid}/baseFigure`)));
+    return fs.readFileSync(getReadableAndWritable(`rt/circularFigures/${figure.uuid}/baseFigure`)).toString();
 }
 
 /**
@@ -1086,6 +1103,41 @@ export function buildSNPTrackMap(trackRecord : RenderedSNPTrackRecord,figure : C
 
         resolve(map);
     });
+}
+
+/**
+ * Compiles templates to SVG using $scope. 
+ * 
+ * @export
+ * @param {string} templates 
+ * @param {MapScope} $scope 
+ * @returns {Promise<string>} 
+ */
+export function compileTemplatesToSVG(templates : string,$scope : MapScope) : Promise<string>
+{
+    return new Promise<string>(async (resolve,reject) => {
+        let nodes : Array<html.Node> = await html.loadFromString(templates);
+
+        let plasmid : ngDirectives.Plasmid = new ngDirectives.Plasmid();
+        plasmid.$scope = $scope;
+
+        for(let i = 0; i != nodes.length; ++i)
+        {
+            if(nodes[i].name == "div")
+            {
+                for(let k = 0; k != nodes[i].children.length; ++k)
+                {
+                    if(nodes[i].children[k].name == "plasmid")
+                    {
+                        plasmid.fromNode<html.Node>(nodes[i].children[k]);
+                        break;
+                    }
+                }
+            }
+        }
+        resolve(plasmid.renderStart()+plasmid.renderEnd());
+
+    }); 
 }
 
 /**
