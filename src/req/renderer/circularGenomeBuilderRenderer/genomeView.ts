@@ -237,7 +237,7 @@ export class GenomeView extends viewMgr.View implements cf.FigureCanvas
         {
             let scope = cf.makeMapScope(this.genome,{
                 start : 0,
-                end : 100
+                end : 500
             });
             this.seqSelectionLeftArm = scope.seqSelectionLeftArm;
             this.seqSelectionRightArm = scope.seqSelectionRightArm;

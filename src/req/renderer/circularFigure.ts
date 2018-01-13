@@ -269,7 +269,7 @@ export function makeMapScope(cf : CircularFigure, seqSelectOptions? : {
         seqSelectionRightArm : new SeqSelectionDisplayArm(
             "right",
             cf.radius,
-            seqSelectOptions ? seqSelectOptions.start : 100
+            seqSelectOptions ? seqSelectOptions.end : 100
         ),
         seqSelectionArrow : new SeqSelectionDisplayArrow(
             seqSelectOptions ? seqSelectOptions.start : 0,
@@ -485,13 +485,23 @@ export function buildSequenceSelectorTemplate(figure : CircularFigure,
     seqSelectionArrow : SeqSelectionDisplayArrow
 ) : string {
 
-    return `
+    let template = `
         <plasmidtrack width="{{seqSelectionLeftArm.armWidth}}" trackstyle="{{seqSelectionLeftArm.armTrackStyle}}" radius="{{seqSelectionLeftArm.armRadius}}">
             <trackmarker start="{{seqSelectionLeftArm.armStart}}" wadjust="{{seqSelectionLeftArm.armWadjust}}" markerclick="${seqSelectionLeftArm.armMarkerClick}">
                 <markerlabel lineclass="{{seqSelectionLeftArm.armLineClass}}" linestyle="${seqSelectionLeftArm.armLineStyle}" showline="{{seqSelectionLeftArm.armShowLine}}" text="" vadjust="{{seqSelectionLeftArm.armVadjust}}" labelclick="${seqSelectionLeftArm .armLabelClick}"></markerlabel>
             </trackmarker>
         </plasmidtrack>
     `;
+
+    template += `
+        <plasmidtrack width="{{seqSelectionRightArm.armWidth}}" trackstyle="{{seqSelectionRightArm.armTrackStyle}}" radius="{{seqSelectionRightArm.armRadius}}">
+            <trackmarker start="{{seqSelectionRightArm.armStart}}" wadjust="{{seqSelectionRightArm.armWadjust}}" markerclick="${seqSelectionRightArm.armMarkerClick}">
+                <markerlabel lineclass="{{seqSelectionRightArm.armLineClass}}" linestyle="${seqSelectionRightArm.armLineStyle}" showline="{{seqSelectionRightArm.armShowLine}}" text="" vadjust="{{seqSelectionRightArm.armVadjust}}" labelclick="${seqSelectionRightArm .armLabelClick}"></markerlabel>
+            </trackmarker>
+        </plasmidtrack>
+    `;
+
+    return template;
 }
 
 /**

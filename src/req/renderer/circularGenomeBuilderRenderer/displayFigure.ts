@@ -102,6 +102,7 @@ export async function displayInteractiveFigure(self : GenomeView) : Promise<void
                 ${cf.getBaseFigureTemplateFromCache(self.genome)}
             `
         );
+
         //instead of forcing angular to walk through all the svgs as well as the actual angular templates
         //in the base figure we actually want compiled, separate them into separate divs
         $div = `
