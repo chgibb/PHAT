@@ -1236,6 +1236,7 @@ export function assembleCompilableSNPTrack(figure : CircularFigure,trackRecord :
         ).toString()
     );
 }
+
 /**
  * Compiles a single SVG for figure consisting of its baseFigure and all its selected tracks
  * 
