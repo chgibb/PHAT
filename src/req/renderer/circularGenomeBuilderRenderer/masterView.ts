@@ -276,13 +276,17 @@ export class View extends viewMgr.View
             self.showModal();
         }
 
-        document.getElementById("selectSequence").onclick = function(this : HTMLElement,ev : MouseEvent){
-            if(genomeView.showSeqSelector)
-                genomeView.showSeqSelector = false;
-            else
-                genomeView.showSeqSelector = true;
-            genomeView.showSeqSelectorOnChange();
-        }
+        //document.getElementById("selectSequence").onclick = function(this : HTMLElement,ev : MouseEvent){
+        window.addEventListener("keypress",function(this : Window,e : KeyboardEvent){
+            if(e.key == "2")
+            {
+                if(genomeView.showSeqSelector)
+                    genomeView.showSeqSelector = false;
+                else
+                    genomeView.showSeqSelector = true;
+                genomeView.showSeqSelectorOnChange();
+            }
+        });
 
         document.getElementById("exportToSVG").onclick = function(this : HTMLElement,ev : MouseEvent){
             if(!genomeView.genome)
