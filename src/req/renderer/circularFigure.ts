@@ -174,7 +174,121 @@ export class RenderedSNPTrackRecord extends RenderedTrackRecord
     }
 }
 
-export class CoverageTrackMap extends ngDirectives.Plasmid
+/**
+ * Properties used by sequence selector to display selection arms
+ * 
+ * @export
+ * @class SeqSelectionDisplayArm
+ */
+export class SeqSelectionDisplayArm
+{
+    public armWidth : number;
+    public armTrackStyle : string;
+    public armRadius : number;
+    public armStart : number;
+    public armWadjust : number;
+    public armMarkerClick : string;
+    public armLineClass : string;
+    public armLineStyle : string;
+    public armShowLine : 0 | 1;
+    public armVadjust : number;
+    public armLabelClick : string;
+
+    public constructor(side : "left" | "right",radius : number,armStart : number)
+    {
+        this.armWidth = 20;
+        this.armTrackStyle = "fill-opacity:0.0;";
+        this.armRadius = radius;
+        this.armStart = armStart;
+        this.armWadjust = 12;
+        this.armMarkerClick = `seqSelectionArmOnClick($event,$handler,'${side}')`;
+        this.armLineClass = "seqSelectionArm";
+        this.armLineStyle = `stroke:rgb(0,0,0);stroke-dasharray:5,10;stroke-width:2px;animation: moveSeqSelectionArm 3s infinite;`;
+        this.armShowLine = 1;
+        this.armVadjust = 1200;
+        this.armLabelClick = this.armMarkerClick;
+    }
+
+}
+
+/**
+ * Properties used by sequence selector to display selection arrow
+ * 
+ * @export
+ * @class SeqSelectionDisplayArrow
+ */
+export class SeqSelectionDisplayArrow
+{
+    public arrowTrackStyle : string;
+    public arrowTrackRadius : number;
+    public arrowStart : number;
+    public arrowEnd : number;
+    public arrowMarkerStyle : string;
+    public arrowEndLength : number;
+    public arrowEndWidth : number;
+    public arrowType : string;
+    public arrowClass : string;
+    public arrowText : string;
+
+    public constructor(start : number,end : number,radius : number)
+    {
+        this.arrowTrackStyle = "fill-opacity:0.0;";
+        this.arrowTrackRadius = radius;
+        this.arrowStart = start;
+        this.arrowEnd = end;
+        this.arrowMarkerStyle = "fill:rgba(0,0,0)";
+        this.arrowEndLength = 10;
+        this.arrowEndWidth = 5;
+        this.arrowType = "path";
+        this.arrowClass = "";
+        this.arrowText = `${start}-${end}`;
+    }
+}
+
+export interface MapScope
+{
+    genome : CircularFigure;
+    seqSelectionLeftArm : SeqSelectionDisplayArm;
+    seqSelectionRightArm : SeqSelectionDisplayArm;
+    seqSelectionArrow : SeqSelectionDisplayArrow;
+}
+
+export function makeMapScope(cf : CircularFigure, seqSelectOptions? : {
+    start : number,
+    end : number
+
+}) : MapScope
+{
+    return <MapScope>{
+        genome : cf,
+        seqSelectionLeftArm : new SeqSelectionDisplayArm(
+            "left",
+            cf.radius,
+            seqSelectOptions ? seqSelectOptions.start : 0
+        ),
+        seqSelectionRightArm : new SeqSelectionDisplayArm(
+            "right",
+            cf.radius,
+            seqSelectOptions ? seqSelectOptions.end : 100
+        ),
+        seqSelectionArrow : new SeqSelectionDisplayArrow(
+            seqSelectOptions ? seqSelectOptions.start : 0,
+            seqSelectOptions ? seqSelectOptions.end : 100,
+            cf.radius
+        )
+    }
+}
+
+export class TrackMap extends ngDirectives.Plasmid
+{
+    public $scope : MapScope;
+    public constructor()
+    {
+        super();
+    }
+}
+
+export class CoverageTrackMap extends TrackMap
 {
     public constructor()
     {
@@ -182,7 +296,7 @@ export class CoverageTrackMap extends ngDirectives.Plasmid
     }
 }
 
-export class SNPTrackMap extends ngDirectives.Plasmid
+export class SNPTrackMap extends TrackMap
 {
     public constructor()
     {
@@ -262,13 +376,18 @@ export class CircularFigure
  * @abstract
  * @class FigureCanvas
  */
-export abstract class FigureCanvas
+export abstract class FigureCanvas implements MapScope
 {
     public genome : CircularFigure;
+    public seqSelectionLeftArm : SeqSelectionDisplayArm;
+    public seqSelectionRightArm : SeqSelectionDisplayArm;
+    public seqSelectionArrow : SeqSelectionDisplayArrow;
+    public showSeqSelector : boolean;
     public scope : FigureCanvas;
     public abstract markerOnClick($event : any,$marker : any,uuid : string) : void;
     public abstract figureNameOnClick() : void;
-    public abstract updateScope(scope? : FigureCanvas) : void
+    public abstract updateScope(scope? : FigureCanvas) : void;
+    public abstract loadFigure(figure : CircularFigure) : void;
 }
 
 /**
@@ -361,6 +480,39 @@ export function buildBaseFigureTemplate(figure : CircularFigure) : string
     `;
 }
 
+export function buildSequenceSelectorTemplate(figure : CircularFigure,
+    seqSelectionLeftArm : SeqSelectionDisplayArm,
+    seqSelectionRightArm : SeqSelectionDisplayArm,
+    seqSelectionArrow : SeqSelectionDisplayArrow
+) : string {
+
+    let template = `
+        <plasmidtrack width="{{seqSelectionLeftArm.armWidth}}" trackstyle="{{seqSelectionLeftArm.armTrackStyle}}" radius="{{seqSelectionLeftArm.armRadius}}">
+            <trackmarker start="{{seqSelectionLeftArm.armStart}}" wadjust="{{seqSelectionLeftArm.armWadjust}}" markerclick="${seqSelectionLeftArm.armMarkerClick}">
+                <markerlabel lineclass="{{seqSelectionLeftArm.armLineClass}}" linestyle="${seqSelectionLeftArm.armLineStyle}" showline="{{seqSelectionLeftArm.armShowLine}}" text="" vadjust="{{seqSelectionLeftArm.armVadjust}}" labelclick="${seqSelectionLeftArm .armLabelClick}"></markerlabel>
+            </trackmarker>
+        </plasmidtrack>
+    `;
+
+    template += `
+        <plasmidtrack width="{{seqSelectionRightArm.armWidth}}" trackstyle="{{seqSelectionRightArm.armTrackStyle}}" radius="{{seqSelectionRightArm.armRadius}}">
+            <trackmarker start="{{seqSelectionRightArm.armStart}}" wadjust="{{seqSelectionRightArm.armWadjust}}" markerclick="${seqSelectionRightArm.armMarkerClick}">
+                <markerlabel lineclass="{{seqSelectionRightArm.armLineClass}}" linestyle="${seqSelectionRightArm.armLineStyle}" showline="{{seqSelectionRightArm.armShowLine}}" text="" vadjust="{{seqSelectionRightArm.armVadjust}}" labelclick="${seqSelectionRightArm .armLabelClick}"></markerlabel>
+            </trackmarker>
+        </plasmidtrack>
+    `;
+
+    template += `
+        <plasmidtrack trackstyle="{{seqSelectionArrow.arrowTrackStyle}}" radius="{{seqSelectionArrow.arrowTrackRadius}}">
+            <trackmarker start="{{seqSelectionArrow.arrowStart}}" end="{{seqSelectionArrow.arrowEnd}}" markerstyle="{{seqSelectionArrow.arrowMarkerStyle}}" arrowendlength="${seqSelectionArrow.arrowEndLength}" arrowendwidth="${seqSelectionArrow.arrowEndWidth}">
+                <markerlabel type="path" class="" text="{{seqSelectionArrow.arrowText}}"></markerlabel>
+            </trackmarker>
+        </plasmidtrack>
+    `;
+
+    return template;
+}
+
 /**
  * Overwrites the current disk template cache for the base figure of figure
  * 
@@ -398,7 +550,7 @@ export function cacheBaseFigureSVG(figure : CircularFigure,svg : string) : void
  */
 export function getBaseFigureTemplateFromCache(figure : CircularFigure) : string
 {
-    return (<any>fs.readFileSync(getReadableAndWritable(`rt/circularFigures/${figure.uuid}/baseFigure`)));
+    return fs.readFileSync(getReadableAndWritable(`rt/circularFigures/${figure.uuid}/baseFigure`)).toString();
 }
 
 /**
@@ -443,9 +595,7 @@ export function compileBaseFigureSVG(figure : CircularFigure) : Promise<string>
         );
 
         let plasmid : ngDirectives.Plasmid = new ngDirectives.Plasmid();
-        plasmid.$scope = {
-            genome : figure
-        };
+        plasmid.$scope = makeMapScope(figure);
 
         for(let i = 0; i != nodes.length; ++i)
         {
@@ -896,9 +1046,7 @@ export function buildCoverageTrackMap(trackRecord : RenderedCoverageTrackRecord,
     return new Promise<CoverageTrackMap>(async (resolve,reject) => {
 
         let map : CoverageTrackMap = new CoverageTrackMap();
-        map.$scope = {
-            genome : figure
-        };
+        map.$scope = makeMapScope(figure);
 
         //try to build from protocol buffer
         if(fs.existsSync(getCoverageTrackPBPath(trackRecord)))
@@ -954,9 +1102,7 @@ export function buildSNPTrackMap(trackRecord : RenderedSNPTrackRecord,figure : C
         );
 
         let map : SNPTrackMap = new SNPTrackMap();
-        map.$scope = {
-            genome : figure
-        };
+        map.$scope = makeMapScope(figure);
 
         for(let i = 0; i != nodes.length; ++i)
         {
@@ -976,6 +1122,41 @@ export function buildSNPTrackMap(trackRecord : RenderedSNPTrackRecord,figure : C
 
         resolve(map);
     });
+}
+
+/**
+ * Compiles templates to SVG using $scope. 
+ * 
+ * @export
+ * @param {string} templates 
+ * @param {MapScope} $scope 
+ * @returns {Promise<string>} 
+ */
+export function compileTemplatesToSVG(templates : string,$scope : MapScope) : Promise<string>
+{
+    return new Promise<string>(async (resolve,reject) => {
+        let nodes : Array<html.Node> = await html.loadFromString(templates);
+
+        let plasmid : ngDirectives.Plasmid = new ngDirectives.Plasmid();
+        plasmid.$scope = $scope;
+
+        for(let i = 0; i != nodes.length; ++i)
+        {
+            if(nodes[i].name == "div")
+            {
+                for(let k = 0; k != nodes[i].children.length; ++k)
+                {
+                    if(nodes[i].children[k].name == "plasmid")
+                    {
+                        plasmid.fromNode<html.Node>(nodes[i].children[k]);
+                        break;
+                    }
+                }
+            }
+        }
+        resolve(plasmid.renderStart()+plasmid.renderEnd());
+
+    }); 
 }
 
 /**
@@ -1156,7 +1337,7 @@ export function renderCoverageTrackToCanvas(
 
     //We assume coverage tracks are made of <plasmidtrack>s and <trackmarker>s only
     
-    map.$scope = {genome : figure};
+    map.$scope = makeMapScope(figure);
     map.interpolateAttributes();
 
     //Assume linewidth is constant and uniform
@@ -1190,7 +1371,7 @@ export function renderSNPTrackToCanvas(
     ctx : CanvasRenderingContext2D
 ) : Promise<void> {
     return new Promise<void>(async (resolve,reject) => {
-        map.$scope = {genome : figure};
+        map.$scope = makeMapScope(figure);
 
         await renderSVGToCanvas(map.renderStart()+map.renderEnd(),ctx);
         resolve();
