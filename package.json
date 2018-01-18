@@ -1,6 +1,6 @@
 {
     "name": "phat",
-    "version": "0.7.5-beta.1",
+    "version": "0.7.6-beta.1",
     "description": "Pathogen Host Analysis Tool",
     "main": "main.js",
     "scripts": {
@@ -71,7 +71,6 @@
         "gunzip-maybe": "^1.4.0",
         "htmlparser2": "^3.9.2",
         "jquery": "^3.1.1",
-        "jsdoc": "^3.4.3",
         "jsonfile": "^2.4.0",
         "minimist": "^1.2.0",
         "mkdirp": "^0.5.1",
