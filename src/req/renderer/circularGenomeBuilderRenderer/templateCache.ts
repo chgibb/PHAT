@@ -170,6 +170,7 @@ export function renderToCanvas(ctx : CanvasRenderingContext2D,canv : cf.FigureCa
                 cf.assembleCompilableTemplates(
                     canv.genome,
                     `
+                        ${cf.getBaseFigureTemplateFromCache(canv.genome)}
                         ${canv.showSeqSelector ? 
                             cf.buildSequenceSelectorTemplate(
                                 figure,
@@ -178,7 +179,6 @@ export function renderToCanvas(ctx : CanvasRenderingContext2D,canv : cf.FigureCa
                                 canv.seqSelectionArrow
                             )
                         : ""}
-                        ${cf.getBaseFigureTemplateFromCache(canv.genome)}
                     `,
                 ),
                 canv

@@ -51,10 +51,10 @@ export async function displayNonInteractiveFigure(self : GenomeView) : Promise<v
             document.body.insertAdjacentHTML("beforeend",$div);
             canvas = <HTMLCanvasElement>document.getElementById("nonInteractiveFigureCanvas");
         }
-        console.log(`canvas width ${document.documentElement.clientWidth*2}`);
-        console.log(`canvas height ${document.documentElement.clientHeight*2}`);
-        canvas.setAttribute("width",`${document.documentElement.clientWidth*2}`);
-        canvas.setAttribute("height",`${document.documentElement.clientHeight*2}`);
+        console.log(`canvas width ${self.genome.width}`);
+        console.log(`canvas height ${self.genome.height}`);
+        canvas.setAttribute("width",`${self.genome.width}`);
+        canvas.setAttribute("height",`${self.genome.height}`);
         centreNonInteractiveFigure(self.genome);
         await tc.renderToCanvas(canvas.getContext("2d"),self);
         resolve();
@@ -93,13 +93,13 @@ export async function displayInteractiveFigure(self : GenomeView) : Promise<void
         let templates = cf.assembleCompilableTemplates(
             self.genome,
             `
+                ${cf.getBaseFigureTemplateFromCache(self.genome)}
                 ${self.showSeqSelector ? cf.buildSequenceSelectorTemplate(
                     self.genome,
                     self.seqSelectionLeftArm,
                     self.seqSelectionRightArm,
                     self.seqSelectionArrow
                 ) : ""}
-                ${cf.getBaseFigureTemplateFromCache(self.genome)}
             `
         );
 
