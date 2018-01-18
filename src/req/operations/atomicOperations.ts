@@ -3,9 +3,7 @@ import * as fs from "fs";
 import * as readline from "readline";
 import * as cp from "child_process";
 
-const uuidv4 : () => string = require("uuid/v4");
 import * as rimraf from "rimraf";
-const mkdirp = require("mkdirp");
 
 import {AtomicOperationForkEvent} from "./../atomicOperationsIPC";
 import {SpawnRequestParams} from "./../JobIPC";
@@ -714,6 +712,9 @@ export function getLogFile(logRecord : LogRecord) : string
  */
 export function openLog(name : string,description : string) : LogRecord
 {
+    const mkdirp = require("mkdirp");
+    const uuidv4 : () => string = require("uuid/v4");
+
     let uuid = uuidv4();
     
 
@@ -757,6 +758,8 @@ export function closeLog(logRecord : LogRecord,status : string) : void
  */
 export function recordLogRecord(record : LogRecord) : void
 {
+    const mkdirp = require("mkdirp");
+    
     if(record === undefined)
         throw new Error(`Cannot close log with record which does not exist`);
     mkdirp.sync(getReadableAndWritable(`logs`));

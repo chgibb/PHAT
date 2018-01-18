@@ -1,11 +1,5 @@
 import * as fs from "fs";
 
-const rimraf = require("rimraf");
-const tarfs = require("tar-fs");
-const tarStream = require("tar-stream");
-const gunzip = require("gunzip-maybe");
-const jsonFile = require("jsonfile");
-
 import {getReadableAndWritable} from "./getAppPath";
 import {ProjectManifest,getTarBallPath} from "./projectManifest";
 import {rebuildRTDirectory} from "./main/rebuildRTDirectory"
@@ -17,6 +11,12 @@ export function openProject(
     externalProjectPath? : string
 ) : Promise<undefined>
 {
+    const rimraf = require("rimraf");
+    const tarfs = require("tar-fs");
+    const tarStream = require("tar-stream");
+    const gunzip = require("gunzip-maybe");
+    const jsonFile = require("jsonfile");
+    
     return new Promise((resolve,reject) => {
         dataMgr.clearData();
         rimraf.sync(getReadableAndWritable("rt"));

@@ -10,7 +10,7 @@ import {CheckForUpdate} from "./../operations/CheckForUpdate";
 import {DownloadAndInstallUpdate} from "./../operations/DownloadAndInstallUpdate";
 import {NewProject} from "./../operations/NewProject";
 import {OpenProject} from "./../operations/OpenProject";
-import {SaveCurrentProject} from "./../operations//SaveCurrentProject";
+import {SaveProject} from "./../operations/SaveProject";
 import {InputBamFile} from "./../operations/InputBamFile";
 import {LinkRefSeqToAlignment} from "./../operations/LinkRefSeqToAlignment";
 
@@ -30,5 +30,5 @@ export function registerOperations() : void
 
     atomic.register("newProject",NewProject);
     atomic.register("openProject",OpenProject);
-    atomic.register("saveCurrentProject",SaveCurrentProject);
+    atomic.register("saveProject",SaveProject);
 }
