@@ -232,7 +232,7 @@ export class SeqSelectionDisplayArrow
 
     public constructor(start : number,end : number,radius : number)
     {
-        this.arrowTrackStyle = "fill:#f0f0f0;stroke:#ccc";
+        this.arrowTrackStyle = "fill-opacity:0.0;";
         this.arrowTrackRadius = radius;
         this.arrowStart = start;
         this.arrowEnd = end;
@@ -386,7 +386,8 @@ export abstract class FigureCanvas implements MapScope
     public scope : FigureCanvas;
     public abstract markerOnClick($event : any,$marker : any,uuid : string) : void;
     public abstract figureNameOnClick() : void;
-    public abstract updateScope(scope? : FigureCanvas) : void
+    public abstract updateScope(scope? : FigureCanvas) : void;
+    public abstract loadFigure(figure : CircularFigure) : void;
 }
 
 /**
@@ -497,6 +498,14 @@ export function buildSequenceSelectorTemplate(figure : CircularFigure,
         <plasmidtrack width="{{seqSelectionRightArm.armWidth}}" trackstyle="{{seqSelectionRightArm.armTrackStyle}}" radius="{{seqSelectionRightArm.armRadius}}">
             <trackmarker start="{{seqSelectionRightArm.armStart}}" wadjust="{{seqSelectionRightArm.armWadjust}}" markerclick="${seqSelectionRightArm.armMarkerClick}">
                 <markerlabel lineclass="{{seqSelectionRightArm.armLineClass}}" linestyle="${seqSelectionRightArm.armLineStyle}" showline="{{seqSelectionRightArm.armShowLine}}" text="" vadjust="{{seqSelectionRightArm.armVadjust}}" labelclick="${seqSelectionRightArm .armLabelClick}"></markerlabel>
+            </trackmarker>
+        </plasmidtrack>
+    `;
+
+    template += `
+        <plasmidtrack trackstyle="{{seqSelectionArrow.arrowTrackStyle}}" radius="{{seqSelectionArrow.arrowTrackRadius}}">
+            <trackmarker start="{{seqSelectionArrow.arrowStart}}" end="{{seqSelectionArrow.arrowEnd}}" markerstyle="{{seqSelectionArrow.arrowMarkerStyle}}" arrowendlength="${seqSelectionArrow.arrowEndLength}" arrowendwidth="${seqSelectionArrow.arrowEndWidth}">
+                <markerlabel type="path" class="" text="{{seqSelectionArrow.arrowText}}"></markerlabel>
             </trackmarker>
         </plasmidtrack>
     `;
