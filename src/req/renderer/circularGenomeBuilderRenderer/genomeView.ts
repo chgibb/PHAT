@@ -81,6 +81,19 @@ export class GenomeView extends viewMgr.View implements cf.FigureCanvas
     public onMount() : void{}
     public onUnMount() : void{}
 
+    public loadFigure(figure : cf.CircularFigure) : void
+    {
+        this.genome = figure;
+        let scope = cf.makeMapScope(this.genome,{
+            start : 0,
+            end : 500
+        });
+        this.seqSelectionLeftArm = scope.seqSelectionLeftArm;
+        this.seqSelectionRightArm = scope.seqSelectionRightArm;
+        this.seqSelectionArrow = scope.seqSelectionArrow;
+        this.inputRadiusOnChange();
+    }
+
     /**
      * Update the Angular scope for genome
      * 
@@ -209,13 +222,12 @@ export class GenomeView extends viewMgr.View implements cf.FigureCanvas
      */
     public inputRadiusOnChange() : void
     {
-        this.genome.height = this.genome.radius*10;
-        this.genome.width =this.genome.radius*10;
+        this.genome.height = 1200+this.genome.radius*10;
+        this.genome.width = 1200+this.genome.radius*10;
         this.seqSelectionLeftArm.armRadius = this.genome.radius;
         this.seqSelectionRightArm.armRadius = this.genome.radius;
         this.seqSelectionArrow.arrowTrackRadius = this.genome.radius;
-        //Re center figure
-        this.postRender();
+       
     }
     /**
      * Should be called when the track interval changes
