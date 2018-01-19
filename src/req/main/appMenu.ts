@@ -3,9 +3,10 @@
 import * as electron from "electron";
 
 import * as winMgr from "./winMgr";
-const pjson = require("./package.json");
 export function appMenu() : Array<Electron.MenuItemConstructorOptions>
 {
+	const pjson = require("./package.json");
+	
     return <Array<Electron.MenuItemConstructorOptions>>[
 		{
 			label: 'View',

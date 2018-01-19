@@ -4,6 +4,7 @@ const ipc = electron.ipcRenderer;
 import {AtomicOperation} from "./req/operations/atomicOperations"
 import {KeySubEvent} from "./req/ipcEvents";
 import {initializeWindowDock,dockWindow,removeZombieTabs} from "./req/renderer/dock";
+import formatByteString from "./req/renderer/formatByteString";
 
 const $ = require("jquery");
 (<any>window).$ = $;
@@ -60,12 +61,21 @@ $
                                     removeZombieTabs();
 
                             }
-                            if(ops[i].name == "saveCurrentProject")
+                            if(ops[i].name == "saveProject")
                             {
-                                document.body.innerHTML = `<h1>Saving Project</h1>`;
+                                let savingMessage = `
+                                    <h1>Saving Project</h1>
+                                `;
+                                if(ops[i].extraData !== undefined)
+                                {
+                                    savingMessage += `
+                                        <h3>Saved ${formatByteString(ops[i].extraData.bytesSaved)} of ${formatByteString(ops[i].extraData.totalBytesToSave)}</h3>
+                                    `;
+                                }
+                                document.body.innerHTML = savingMessage;
                             }
                             if(ops[i].flags.done && (ops[i].name == "indexFasta" ||
-                                ops[i].name == "runAlignment" || ops[i].name == "saveCurrentProject" ||
+                                ops[i].name == "runAlignment" || ops[i].name == "saveProject" ||
                                 ops[i].name == "renderCoverageTrackForContig" || ops[i].name == "renderSNPTrackForContig"
                             ))
                             {

@@ -1,4 +1,11 @@
 import * as winMgr from "./../../../req/main/winMgr";
+
+/**
+ * Triggers indexing for every ref seq in the first input window
+ * 
+ * @export
+ * @returns {Promise<void>} 
+ */
 export async function indexRefs() : Promise<void>
 {
     return new Promise<void>((resolve,reject) => {

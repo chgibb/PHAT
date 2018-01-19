@@ -1,10 +1,9 @@
-const jsonFile = require("jsonfile");
-
 let data : any = {};
 let dataPath : string = "";
 
 export function loadData(path : string) : boolean
 {
+    const jsonFile = require("jsonfile");
     try
     {
         dataPath = path;
@@ -19,6 +18,8 @@ export function loadData(path : string) : boolean
 
 export function saveData() : void
 {
+    const jsonFile = require("jsonfile");
+    
     console.log("Called save"+dataPath);
     try
     {
