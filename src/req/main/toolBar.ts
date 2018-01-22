@@ -36,7 +36,7 @@ winMgr.windowCreators["toolBar"] =
 					if(!dataMgr.getKey("application","downloadedUpdate") && !dataMgr.getKey("application","finishedSavingProject"))
 					{
 						dataMgr.saveData();
-						atomicOp.addOperation("saveCurrentProject",dataMgr.getKey("application","project"));
+						atomicOp.addOperation("saveProject",dataMgr.getKey("application","project"));
 						dataMgr.setKey("application","operations",atomicOp.operationsQueue);
 						winMgr.publishChangeForKey("application","operations");
 						winMgr.closeAllExcept("toolBar");

@@ -13,11 +13,11 @@ import {getPath} from "./../../file";
  * @export
  * @param {AlignData} alignData 
  * @param {atomic.AtomicOperation} logger 
- * @returns {Promise<{}>} 
+ * @returns {Promise<void>} 
  */
-export function bowTie2Align(alignData : AlignData,logger : atomic.AtomicOperation) : Promise<{}>
+export function bowTie2Align(alignData : AlignData,logger : atomic.AtomicOperation) : Promise<void>
 {
-    return new Promise((resolve,reject) => {
+    return new Promise<void>((resolve,reject) => {
         let bowtie2Exe = "";
         if(process.platform == "linux")
             bowtie2Exe = getReadable('bowtie2');

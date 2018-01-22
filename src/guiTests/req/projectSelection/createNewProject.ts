@@ -1,5 +1,11 @@
 import * as winMgr from "./../../../req/main/winMgr"
-
+/**
+ * Sends an ipc message from the projectSelection window to create a new project
+ * named "New Project Test"
+ * 
+ * @export
+ * @returns {Promise<void>} 
+ */
 export async function createNewProject() : Promise<void>
 {
     return new Promise<void>((resolve,reject) => {

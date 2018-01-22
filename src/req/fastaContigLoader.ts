@@ -1,7 +1,7 @@
 import * as fs from "fs";
 import * as readline from "readline";
 import {EventEmitter} from "events";
-const uuidv4 : () => string = require("uuid/v4");
+
 export class Contig
 {
     public bp : number;
@@ -11,6 +11,8 @@ export class Contig
     public uuid : string;
     public constructor()
     {
+        const uuidv4 : () => string = require("uuid/v4");
+        
         this.bp = 0;
         this.name = "";
         this.alias = "";

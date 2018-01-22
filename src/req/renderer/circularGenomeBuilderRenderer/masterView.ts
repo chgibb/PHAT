@@ -215,7 +215,7 @@ export class View extends viewMgr.View
                         self.fastaInputs[i].contigs
                     ));
                     self.saveFigureChanges();
-                    genomeView.genome = self.circularFigures[self.circularFigures.length - 1];
+                    genomeView.loadFigure(self.circularFigures[self.circularFigures.length - 1]);
                     changeWindowTitle(genomeView.genome.name);
                     genomeView.firstRender = true;
                     viewMgr.render();
@@ -227,7 +227,7 @@ export class View extends viewMgr.View
             {
                 if((<any>ev.target).id == `${self.circularFigures[i].uuid}Open`)
                 {
-                    genomeView.genome = self.circularFigures[i];
+                    genomeView.loadFigure(self.circularFigures[i]);
                     changeWindowTitle(genomeView.genome.name);
                     genomeView.firstRender = true;
                     viewMgr.render();
@@ -275,6 +275,18 @@ export class View extends viewMgr.View
             writeContigCreatorModal();
             self.showModal();
         }
+
+        //document.getElementById("selectSequence").onclick = function(this : HTMLElement,ev : MouseEvent){
+        window.addEventListener("keypress",function(this : Window,e : KeyboardEvent){
+            if(e.key == "2")
+            {
+                if(genomeView.showSeqSelector)
+                    genomeView.showSeqSelector = false;
+                else
+                    genomeView.showSeqSelector = true;
+                genomeView.showSeqSelectorOnChange();
+            }
+        });
 
         document.getElementById("exportToSVG").onclick = function(this : HTMLElement,ev : MouseEvent){
             if(!genomeView.genome)
@@ -349,6 +361,7 @@ export class View extends viewMgr.View
             }
             if(radiusHasChanged || trackIntervalChanged || showIntervalChanged)
             {
+                genomeView.inputRadiusOnChange();
                 genomeView.firstRender = true;
                 self.saveFigureChanges();
             }
@@ -467,7 +480,6 @@ export class View extends viewMgr.View
         this.dataChanged();
         if(genomeView.genome)
         {
-            tc.resetBaseFigureCache();
             reCacheBaseFigure(genomeView.genome);
         }
     }

@@ -13,11 +13,11 @@ import {parseBowTie2AlignmentReport} from "./../../bowTie2AlignmentReportParser"
  * @param {AlignData} alignData 
  * @param {atomic.AtomicOperation} logger 
  * @param {string} [fastaPath] 
- * @returns {Promise<{}>} 
+ * @returns {Promise<void>} 
  */
-export function samToolsView(alignData : AlignData,logger : atomic.AtomicOperation,fastaPath? : string) : Promise<{}>
+export function samToolsView(alignData : AlignData,logger : atomic.AtomicOperation,fastaPath? : string) : Promise<void>
 {
-    return new Promise((resolve,reject) => {
+    return new Promise<void>((resolve,reject) => {
         let samToolsExe = getReadable('samtools');
 
         let jobCallBack : JobCallBackObject = {
