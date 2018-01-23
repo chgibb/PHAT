@@ -18,12 +18,8 @@ async function runTest() : Promise<void>
     await openRefSeqTab();
     await inputHPV16Ref();
     await indexRefs();
-    await indexSuccess().then(async (val) => {
-        if(val === true)
-        {
-            await closeToolBar();
-        }
-    });
+    await indexSuccess();
+    await closeToolBar();
 }
 setTimeout(function(){
     runTest();

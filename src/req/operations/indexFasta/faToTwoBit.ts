@@ -9,11 +9,11 @@ import {getPath} from "./../../file";
  * 
  * @export
  * @param {IndexFastaForVisualization} op 
- * @returns {Promise<{}>} 
+ * @returns {Promise<void>} 
  */
-export function faToTwoBit(op : IndexFastaForVisualization) : Promise<{}>
+export function faToTwoBit(op : IndexFastaForVisualization) : Promise<void>
 {
-    return new Promise((resolve,reject) => {
+    return new Promise<void>((resolve,reject) => {
         let jobCallBack : JobCallBackObject = {
             send(channel : string,params : SpawnRequestParams)
             {

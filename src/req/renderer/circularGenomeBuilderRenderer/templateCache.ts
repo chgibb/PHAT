@@ -37,36 +37,8 @@ class SNPTrackMap
     }
 }
 
-export let baseFigureSVG : string = undefined;
-
 let coverageTrackMaps = new Array<CoverageTrackMap>();
 let SNPTrackMaps = new Array<SNPTrackMap>();
-
-/**
- * Compile and overwrite disk cache for figure's base figure SVG
- * 
- * @export
- * @param {cf.CircularFigure} figure 
- * @returns {Promise<string>} 
- */
-export function compileBaseFigure(figure : cf.CircularFigure) : Promise<string>
-{
-    return new Promise<string>(async (resolve,reject) => {
-        let svg = await cf.compileBaseFigureSVG(figure);
-        cf.cacheBaseFigureSVG(figure,svg);
-        resolve(svg);
-    });
-}
-
-/**
- * Clear the in-memory cache of the SVG for the base figure
- * 
- * @export
- */
-export function resetBaseFigureSVG() : void
-{
-    baseFigureSVG = undefined;
-}
 
 /**
  * Clear all in-memory caches
@@ -77,18 +49,8 @@ export function resetCaches() : void
 {
     coverageTrackMaps = new Array<CoverageTrackMap>();
     SNPTrackMaps = new Array<SNPTrackMap>();
-    baseFigureSVG = undefined
 }
 
-/**
- * Reset just the base figure cache
- * 
- * @export
- */
-export function resetBaseFigureCache() : void
-{
-    baseFigureSVG = undefined;
-}
 
 /**
  * Update caches for newFigure with new data (if changes are detected).
@@ -110,20 +72,6 @@ export async function refreshCache(newFigure : cf.CircularFigure)
     //it's the same figure, update to reflect changes when maps are compiled
     else
         figure = newFigure;
-    if(!newFigure.isInteractive)
-    {
-        if(!baseFigureSVG)
-        {
-            try
-            {
-                baseFigureSVG = cf.getBaseFigureSVGFromCache(figure);
-            }
-            catch(err)
-            {
-                baseFigureSVG = await compileBaseFigure(figure);
-            }
-        }
-    }
 
     //load tracks which had not been loaded previously
     let found = false;
@@ -204,7 +152,7 @@ export function getSNPTrack(trackRecord : cf.RenderedSNPTrackRecord) : cf.SNPTra
     throw new Error(`Could not fetch ${trackRecord.uuid} from cache`);
 }
 
-export function renderToCanvas(ctx : CanvasRenderingContext2D) : Promise<void>
+export function renderToCanvas(ctx : CanvasRenderingContext2D,canv : cf.FigureCanvas) : Promise<void>
 {
     return new Promise<void>(async (resolve,reject) => {
         for(let i = 0; i != figure.renderedCoverageTracks.length; ++i)
@@ -217,20 +165,26 @@ export function renderToCanvas(ctx : CanvasRenderingContext2D) : Promise<void>
             if(figure.renderedSNPTracks[i].checked)
                 await cf.renderSNPTrackToCanvas(getSNPTrack(figure.renderedSNPTracks[i]),figure,ctx);
         }
-        await cf.renderSVGToCanvas(baseFigureSVG,ctx);
+        await cf.renderSVGToCanvas(
+            await cf.compileTemplatesToSVG(
+                cf.assembleCompilableTemplates(
+                    canv.genome,
+                    `
+                        ${cf.getBaseFigureTemplateFromCache(canv.genome)}
+                        ${canv.showSeqSelector ? 
+                            cf.buildSequenceSelectorTemplate(
+                                figure,
+                                canv.seqSelectionLeftArm,
+                                canv.seqSelectionRightArm,
+                                canv.seqSelectionArrow
+                            )
+                        : ""}
+                    `,
+                ),
+                canv
+            ),
+            ctx
+        );
         resolve();
     });
-}
-
-
-/**
- * Deletes the track specified by uuid from the in-memory cache
- * 
- * @export
- * @param {string} uuid 
- * @returns {void} 
- */
-export function removeTrack(uuid : string) : void
-{
-    
 }

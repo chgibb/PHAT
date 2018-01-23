@@ -1,6 +1,6 @@
 {
     "name": "phat",
-    "version": "0.7.7",
+    "version": "0.7.9-beta.1",
     "description": "Pathogen Host Analysis Tool",
     "main": "main.js",
     "scripts": {
@@ -43,7 +43,7 @@
         "@chgibb/css-spinners": "^2.2.1",
         "@chgibb/electron-tabs": "^0.8.0",
         "@chgibb/ng-node-compile": "^1.0.6",
-        "@chgibb/ngplasmid": "^0.0.17",
+        "@chgibb/ngplasmid": "^0.0.19",
         "@claviska/jquery-minicolors": "^2.2.6",
         "@types/fs-extra": "0.0.37",
         "@types/jquery": "^2.0.40",
@@ -71,7 +71,6 @@
         "gunzip-maybe": "^1.4.0",
         "htmlparser2": "^3.9.2",
         "jquery": "^3.1.1",
-        "jsdoc": "^3.4.3",
         "jsonfile": "^2.4.0",
         "minimist": "^1.2.0",
         "mkdirp": "^0.5.1",

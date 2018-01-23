@@ -1,5 +1,3 @@
-const uuidv4 : () => string = require("uuid/v4");
-
 import * as dFormat from "./dateFormat";
 import {getReadableAndWritable} from "./getAppPath";
 import Fastq from "./fastq";
@@ -28,6 +26,8 @@ export class AlignData
     public isExternalAlignment : boolean; 
     public constructor()
     {
+        const uuidv4 : () => string = require("uuid/v4");
+        
         this.fastqs = new Array();
         this.dateStampString = "";
         this.dateStamp = "";

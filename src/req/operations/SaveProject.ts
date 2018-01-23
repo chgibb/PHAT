@@ -5,10 +5,10 @@ import {AtomicOperationForkEvent} from "./../atomicOperationsIPC";
 import {getReadable} from "./../getAppPath";
 
 import {ProjectManifest} from "./../projectManifest";
-export class SaveCurrentProject extends atomic.AtomicOperation
+export class SaveProject extends atomic.AtomicOperation
 {
     public proj : ProjectManifest;
-    public saveCurrentProjectProcess : cp.ChildProcess;
+    public saveProjectProcess : cp.ChildProcess;
     constructor()
     {
         super();
@@ -19,16 +19,16 @@ export class SaveCurrentProject extends atomic.AtomicOperation
     }
     public run() : void
     {
-        this.logRecord = atomic.openLog(this.name,"Save Current Project");
+        this.logRecord = atomic.openLog(this.name,"Save Project");
         let self = this;
-        this.saveCurrentProjectProcess = atomic.makeFork("SaveCurrentProject.js",<AtomicOperationForkEvent>{
+        this.saveProjectProcess = atomic.makeFork("SaveProject.js",<AtomicOperationForkEvent>{
             setData : true,
             data : self.proj
         },function(ev : AtomicOperationForkEvent){
             self.logObject(ev);
             if(ev.finishedSettingData == true)
             {
-                self.saveCurrentProjectProcess.send(
+                self.saveProjectProcess.send(
                     <AtomicOperationForkEvent>{
                         run : true
                     }
@@ -45,6 +45,6 @@ export class SaveCurrentProject extends atomic.AtomicOperation
                 self.update();
             }
         });
-        this.addPID(this.saveCurrentProjectProcess.pid);
+        this.addPID(this.saveProjectProcess.pid);
     }
 }
