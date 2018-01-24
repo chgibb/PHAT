@@ -1,6 +1,6 @@
 {
     "name": "phat",
-    "version": "0.7.9-beta.1",
+    "version": "0.7.10-beta.1",
     "description": "Pathogen Host Analysis Tool",
     "main": "main.js",
     "scripts": {
@@ -57,7 +57,7 @@
         "delete-empty": "^1.0.1",
         "dialogs": "^1.1.19",
         "dragula": "^3.7.2",
-        "electron": "1.7.5",
+        "electron": "1.7.11",
         "electron-builder": "^19.8.0",
         "electron-ipc-stream": "^0.2.0",
         "electron-packager": "8.7.2",
