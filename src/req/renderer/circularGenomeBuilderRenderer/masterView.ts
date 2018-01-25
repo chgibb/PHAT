@@ -372,6 +372,22 @@ export class View extends viewMgr.View
         $("#modal").on('hidden.bs.modal',function(){
             self.resetModalStates();
         });
+
+        //adapted from https://jsfiddle.net/tovic/mkUJf/
+        $(".modal-content").on("mousedown",function(this : any,e : any){
+            $(this).addClass('draggable').parents().on('mousemove',function(e : any){
+                $('.draggable').offset({
+                    top: e.pageY - $('.draggable').outerHeight() / 2,
+                    left: e.pageX - $('.draggable').outerWidth() / 2
+                }).on('mouseup',function(this : any){
+                    $(this).removeClass('draggable');
+                });
+            });
+            e.preventDefault();
+        }).on('mouseup',function(){
+            $('.draggable').removeClass('draggable');
+        });
+
     }
     public onUnMount() : void
     {
