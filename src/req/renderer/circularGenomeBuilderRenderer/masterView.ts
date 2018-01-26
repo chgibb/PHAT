@@ -389,8 +389,8 @@ export class View extends viewMgr.View
         });
 
         //adapted from https://jsfiddle.net/tovic/mkUJf/
-        $(".modal-content").on("mousedown",function(this : any,e : any){
-            $(this).addClass('draggable').parents().on('mousemove',function(e : any){
+        $(".modal-header").on("mousedown",function(this : any,e : any){
+            $(".modal-content").addClass('draggable').parents().on('mousemove',function(e : any){
                 $('.draggable').offset({
                     top: e.pageY - $('.draggable').outerHeight() / 2,
                     left: e.pageX - $('.draggable').outerWidth() / 2
@@ -398,7 +398,7 @@ export class View extends viewMgr.View
                     $(this).removeClass('draggable');
                 });
             });
-            e.preventDefault();
+            //e.preventDefault();
         }).on('mouseup',function(){
             $('.draggable').removeClass('draggable');
         });
