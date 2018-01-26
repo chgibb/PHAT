@@ -97,6 +97,9 @@ export class View extends viewMgr.View
     {
         try
         {
+            let modalContent = (<HTMLElement>document.getElementsByClassName("modal-content").item(0));
+            modalContent.style.left = "0px";
+            modalContent.style.top = "0px";
             (<any>$(".modal")).modal("show");
             document.getElementsByClassName("modal-backdrop")[0].classList.remove("modal-backdrop");
         }
