@@ -23,6 +23,7 @@ import {writeAvailableTracksModal} from "./writeAvailableTracksModal";
 import {writeContigEditorModal} from "./writeContigEditorModal";
 import {writeContigCreatorModal} from "./writeContigCreatorModal";
 import {writeEditContigsModal} from "./writeEditContigsModal";
+import {writeSequenceSelectionModal} from "./writeSequenceSelectionModal";
 import {showGenericLoadingSpinnerInNavBar} from "./loadingSpinner";
 
 const $ = require("jquery");
@@ -467,6 +468,8 @@ export class View extends viewMgr.View
             writeContigEditorModal();
         if(this.contigCreatorModalOpen)
             writeContigCreatorModal();
+        if(this.seqSelectionModalOpen)
+            writeSequenceSelectionModal();
 
         //viewMgr will not call postRender for a view that does no rendering so we'll do it explicitly
         this.postRender();
@@ -517,7 +520,7 @@ export class View extends viewMgr.View
             reCacheBaseFigure(genomeView.genome);
         }
     }
-    
+
     public divClickEvents(event : JQueryEventObject) : void
     {
         let genomeView = <GenomeView.GenomeView>viewMgr.getViewByName("genomeView",this.views);        

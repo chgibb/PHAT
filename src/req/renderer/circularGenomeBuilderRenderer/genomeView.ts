@@ -244,6 +244,8 @@ export class GenomeView extends viewMgr.View implements cf.FigureCanvas
 
     public showSeqSelectorOnChange() : void
     {
+        let masterView = <masterView.View>viewMgr.getViewByName("masterView");
+        let genomeView = <GenomeView>viewMgr.getViewByName("genomeView",masterView.views);
 
         if(this.showSeqSelector)
         {
@@ -254,10 +256,17 @@ export class GenomeView extends viewMgr.View implements cf.FigureCanvas
             this.seqSelectionLeftArm = scope.seqSelectionLeftArm;
             this.seqSelectionRightArm = scope.seqSelectionRightArm;
             this.seqSelectionArrow = scope.seqSelectionArrow;
+
+            masterView.seqSelectionModalOpen = true;
+            masterView.showModal();
+            viewMgr.render();
+        }
+        else
+        {
+            masterView.dismissModal();
         }
 
-        let masterView = <masterView.View>viewMgr.getViewByName("masterView");
-        let genomeView = <GenomeView>viewMgr.getViewByName("genomeView",masterView.views);
+        
         genomeView.firstRender = true;
         viewMgr.render();
     }
