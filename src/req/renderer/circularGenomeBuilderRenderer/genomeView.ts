@@ -259,7 +259,6 @@ export class GenomeView extends viewMgr.View implements cf.FigureCanvas
 
             masterView.seqSelectionModalOpen = true;
             masterView.showModal();
-            viewMgr.render();
         }
         else
         {

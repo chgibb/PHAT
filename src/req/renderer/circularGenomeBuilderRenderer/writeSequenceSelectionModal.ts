@@ -14,7 +14,13 @@ export function writeSequenceSelectionModal() : void
 
     let title = `Select Genomic Sequence`;
 
-    let body = ``;
+    let body = `
+        <h5>Start</h5>
+        <input type="number" id="" value="${genomeView.seqSelectionLeftArm.armStart}" />
+        <br />
+        <h5>End</h5>
+        <input type="number" id="" value="${genomeView.seqSelectionRightArm.armStart}" />
+    `;
 
     let footer = ``;
 

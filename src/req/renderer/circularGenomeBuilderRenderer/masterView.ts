@@ -398,7 +398,6 @@ export class View extends viewMgr.View
                     $(this).removeClass('draggable');
                 });
             });
-            //e.preventDefault();
         }).on('mouseup',function(){
             $('.draggable').removeClass('draggable');
         });
