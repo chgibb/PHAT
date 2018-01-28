@@ -22,9 +22,12 @@ export function writeSequenceSelectionModal() : void
         <input type="number" id="" value="${genomeView.seqSelectionRightArm.armStart}" />
     `;
 
-    let footer = ``;
+    let footer = `
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" id="footerClose">Cancel</button>
+    `;
 
     document.getElementById("modalTitle").innerHTML = title;
     document.getElementById("modalBody").innerHTML = body;
     document.getElementById("modalFooter").innerHTML = footer;
+
 }
