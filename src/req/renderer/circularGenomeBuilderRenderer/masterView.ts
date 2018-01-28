@@ -122,12 +122,22 @@ export class View extends viewMgr.View
 
     public resetModalStates() : void
     {
+        let genomeView = <GenomeView.GenomeView>viewMgr.getViewByName("genomeView",this.views);
+
         this.alignsModalOpen = false;
         this.availableTracksModalOpen = false;
         this.contigCreatorModalOpen = false;
         this.contigEditorModalOpen = false;
         this.editContigsModalOpen = false;
+
+        let triggerOnChange = false;
+        if(this.seqSelectionModalOpen && genomeView.showSeqSelector)
+            triggerOnChange = true;
         this.seqSelectionModalOpen = false;
+        genomeView.showSeqSelector = false;
+        if(triggerOnChange)
+            genomeView.showSeqSelectorOnChange();
+
     }
 
     /**
