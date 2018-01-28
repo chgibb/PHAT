@@ -46,6 +46,15 @@ export function writeSequenceSelectionModal() : void
             updateSeqSelectionOnFigure(undefined,parseInt((<HTMLInputElement>document.getElementById("seqSelectionEnd")).value));
         }
     }
+    if(!genomeView.genome.isInteractive)
+    {
+        document.getElementById("updateSeqSelection").onclick = function(this : HTMLElement,ev : MouseEvent){
+            updateSeqSelectionOnFigure(
+                parseInt((<HTMLInputElement>document.getElementById("seqSelectionStart")).value),
+                parseInt((<HTMLInputElement>document.getElementById("seqSelectionEnd")).value)
+            );
+        }
+    }
 
 }
 
@@ -54,26 +63,25 @@ function updateSeqSelectionOnFigure(start : number,end : number)
     let masterView = <masterView.View>viewMgr.getViewByName("masterView");
     let genomeView = <genomeView.GenomeView>viewMgr.getViewByName("genomeView",masterView.views);
 
-
-    if(start !== undefined)
-    {
-        if(start < 0)
-            return;
-        if(start > genomeView.seqSelectionRightArm.armStart)
-            return;
-        genomeView.seqSelectionLeftArm.armStart = start;
-        genomeView.seqSelectionArrow.arrowStart = start;
-    }
-    if(end !== undefined)
-    {
-        if(end < genomeView.seqSelectionLeftArm.armStart)
-            return;
-        genomeView.seqSelectionRightArm.armStart = end;
-        genomeView.seqSelectionArrow.arrowEnd = end;
-    }
-    
     if(genomeView.genome.isInteractive)
     {
+        if(start !== undefined)
+        {
+            if(start < 0)
+                return;
+            if(start > genomeView.seqSelectionRightArm.armStart)
+                return;
+            genomeView.seqSelectionLeftArm.armStart = start;
+            genomeView.seqSelectionArrow.arrowStart = start;
+        }
+        if(end !== undefined)
+        {
+            if(end < genomeView.seqSelectionLeftArm.armStart)
+                return;
+            genomeView.seqSelectionRightArm.armStart = end;
+            genomeView.seqSelectionArrow.arrowEnd = end;
+        }
+   
         //get div controlled by Angular
         let divToCompile : HTMLElement = document.getElementById("toCompile");
         let scope = angular.element(divToCompile).scope();
@@ -83,6 +91,14 @@ function updateSeqSelectionOnFigure(start : number,end : number)
 
     if(!genomeView.genome.isInteractive)
     {
+        if(start > end)
+            return;
+
+        genomeView.seqSelectionLeftArm.armStart = start;
+        genomeView.seqSelectionArrow.arrowStart = start;
+        genomeView.seqSelectionRightArm.armStart = end;
+        genomeView.seqSelectionArrow.arrowEnd = end;
+
         genomeView.firstRender = true;
         viewMgr.render();
     }
