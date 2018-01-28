@@ -241,7 +241,12 @@ export class SeqSelectionDisplayArrow
         this.arrowEndWidth = 5;
         this.arrowType = "path";
         this.arrowClass = "";
-        this.arrowText = `${start}-${end}`;
+        this.updateText();
+    }
+
+    public updateText()
+    {
+        this.arrowText = `${this.arrowStart}-${this.arrowEnd}`;   
     }
 }
 

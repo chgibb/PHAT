@@ -81,6 +81,8 @@ function updateSeqSelectionOnFigure(start : number,end : number)
             genomeView.seqSelectionRightArm.armStart = end;
             genomeView.seqSelectionArrow.arrowEnd = end;
         }
+
+        genomeView.seqSelectionArrow.updateText();
    
         //get div controlled by Angular
         let divToCompile : HTMLElement = document.getElementById("toCompile");
@@ -99,6 +101,8 @@ function updateSeqSelectionOnFigure(start : number,end : number)
         genomeView.seqSelectionRightArm.armStart = end;
         genomeView.seqSelectionArrow.arrowEnd = end;
 
+        genomeView.seqSelectionArrow.updateText();
+        
         genomeView.firstRender = true;
         viewMgr.render();
     }
