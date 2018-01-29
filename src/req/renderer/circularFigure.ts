@@ -660,9 +660,10 @@ interface PositionsWithDepths
  * @param {CircularFigure} figure 
  * @param {string} contiguuid 
  * @param {AlignData} align 
+ * @param {fs.WriteStream} ostream 
  * @param {string} [colour="rgb(64,64,64)"] 
  * @param {number} [scaleFactor=1] 
- * @returns {Promise<string>} 
+ * @returns {Promise<void>} 
  */
 export async function buildCoverageTrackTemplate(
     figure : CircularFigure,
@@ -759,7 +760,7 @@ export async function buildCoverageTrackTemplate(
  * @param {AlignData} align 
  * @param {string} [colour="rgb(64,64,64)"] 
  * @param {number} [scaleFactor=1] 
- * @returns {Promise<string>} 
+ * @returns {Promise<void>} 
  */
 export async function cacheCoverageTrackTemplate(
     figure : CircularFigure,
@@ -778,19 +779,25 @@ export async function cacheCoverageTrackTemplate(
         
         let trackRecord = new RenderedCoverageTrackRecord(align.uuid,contiguuid,figure.uuid,colour,scaleFactor);
 
+        let ostream : fs.WriteStream = fs.createWriteStream(
+            getCachedCoverageTrackTemplatePath(trackRecord)
+        );
+
         let coverageTracks = await buildCoverageTrackTemplate(
             figure,
             contiguuid,
             align,
-            fs.createWriteStream(
-                getCachedCoverageTrackTemplatePath(trackRecord)
-            ),
+            ostream,
             colour,
             scaleFactor
         );
-        
-        figure.renderedCoverageTracks.push(trackRecord);
-        resolve();
+
+        ostream.on("finish",function(){
+            figure.renderedCoverageTracks.push(trackRecord);
+            resolve();
+        });
+
+        ostream.end();
     });
 }
 
