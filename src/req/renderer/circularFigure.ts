@@ -668,12 +668,12 @@ export async function buildCoverageTrackTemplate(
     figure : CircularFigure,
     contiguuid : string,
     align : AlignData,
+    ostream : fs.WriteStream,
     colour : string = "rgb(64,64,64)",
     scaleFactor : number = 1
-) : Promise<string>
+) : Promise<void>
 {
-    return new Promise<string>((resolve,reject) => {
-        let coverageTracks : string = "";
+    return new Promise<void>((resolve,reject) => {
         //Stream the distilled samtools depth data from the specified alignment for the specified contig
         let rl : readline.ReadLine = readline.createInterface(<readline.ReadLineOptions>{
             input : fs.createReadStream(getReadableAndWritable(`rt/AlignmentArtifacts/${align.uuid}/contigCoverage/${contiguuid}`))
@@ -741,9 +741,9 @@ export async function buildCoverageTrackTemplate(
                 }
             
                 res += `</plasmidtrack>`;
-                coverageTracks += res;
+                ostream.write(res);
             }
-            resolve(coverageTracks);
+            resolve();
         });
     });
 }
@@ -775,10 +775,20 @@ export async function cacheCoverageTrackTemplate(
             mkdirp.sync(getReadableAndWritable(`rt/circularFigures/${figure.uuid}/coverage/${align.uuid}/${contiguuid}`));
         }
         catch(err){}
-    
-        let coverageTracks = await buildCoverageTrackTemplate(figure,contiguuid,align,colour,scaleFactor);
+        
         let trackRecord = new RenderedCoverageTrackRecord(align.uuid,contiguuid,figure.uuid,colour,scaleFactor);
-        fs.writeFileSync(getCachedCoverageTrackTemplatePath(trackRecord),coverageTracks);
+
+        let coverageTracks = await buildCoverageTrackTemplate(
+            figure,
+            contiguuid,
+            align,
+            fs.createWriteStream(
+                getCachedCoverageTrackTemplatePath(trackRecord)
+            ),
+            colour,
+            scaleFactor
+        );
+        
         figure.renderedCoverageTracks.push(trackRecord);
         resolve();
     });
