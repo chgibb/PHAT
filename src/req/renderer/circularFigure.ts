@@ -49,6 +49,7 @@ export class Contig extends fastaContigLoader.Contig
     public end? : number;
     public vAdjust? : number;
 }
+
 /**
  * Hydrates contig with the appropriate properties for display
  * 
@@ -250,6 +251,12 @@ export class SeqSelectionDisplayArrow
     }
 }
 
+/**
+ * The properties expected to exist in the Angular scope at runtime
+ * 
+ * @export
+ * @interface MapScope
+ */
 export interface MapScope
 {
     genome : CircularFigure;
@@ -258,6 +265,18 @@ export interface MapScope
     seqSelectionArrow : SeqSelectionDisplayArrow;
 }
 
+/**
+ * Creates a MapScope for the figure using the specified options
+ * 
+ * @export
+ * @param {CircularFigure} cf 
+ * @param {{
+ *     start : number,
+ *     end : number
+ * 
+ * }} [seqSelectOptions] 
+ * @returns {MapScope} 
+ */
 export function makeMapScope(cf : CircularFigure, seqSelectOptions? : {
     start : number,
     end : number
@@ -284,6 +303,13 @@ export function makeMapScope(cf : CircularFigure, seqSelectOptions? : {
     }
 }
 
+/**
+ * Generic data track map
+ * 
+ * @export
+ * @class TrackMap
+ * @extends {ngDirectives.Plasmid}
+ */
 export class TrackMap extends ngDirectives.Plasmid
 {
     public $scope : MapScope;
@@ -485,6 +511,16 @@ export function buildBaseFigureTemplate(figure : CircularFigure) : string
     `;
 }
 
+/**
+ * Build templates for the genomic sequence selection UI
+ * 
+ * @export
+ * @param {CircularFigure} figure 
+ * @param {SeqSelectionDisplayArm} seqSelectionLeftArm 
+ * @param {SeqSelectionDisplayArm} seqSelectionRightArm 
+ * @param {SeqSelectionDisplayArrow} seqSelectionArrow 
+ * @returns {string} 
+ */
 export function buildSequenceSelectorTemplate(figure : CircularFigure,
     seqSelectionLeftArm : SeqSelectionDisplayArm,
     seqSelectionRightArm : SeqSelectionDisplayArm,
@@ -584,6 +620,7 @@ export function deleteBaseFigureSVGFromCache(figure : CircularFigure) : void
     }
     catch(err){}
 }
+
 /**
  * Compile base figure. Returns the resulting SVG
  * 
@@ -651,7 +688,6 @@ interface PositionsWithDepths
     depth : number;
     positions : Array<number>;
 }
-
 
 /**
  * Returns the templates for a coverage track of align for the contig specified by contiguuid on figure in the specified colour
@@ -848,6 +884,7 @@ export function getCoverageTrackSVGFromCache(trackRecord : RenderedCoverageTrack
 {
     return fs.readFileSync(getCachedCoverageTrackSVGPath(trackRecord)).toString();
 }
+
 /**
  * Returns the path to the protocol buffer cache for the specified coverage track
  * 
@@ -859,6 +896,7 @@ export function getCoverageTrackPBPath(trackRecord : RenderedCoverageTrackRecord
 {
     return getReadableAndWritable(`rt/circularFigures/${trackRecord.uuidFigure}/coverage/${trackRecord.uuidAlign}/${trackRecord.uuidContig}/${trackRecord.uuid}.pb`);
 }
+
 /**
  * Returns the disk protocol buffer cache for the specified coverage track
  * 
@@ -870,6 +908,7 @@ export function getCoverageTrackPBFromCache(trackRecord : RenderedCoverageTrackR
 {
     return fs.readFileSync(getCoverageTrackPBPath(trackRecord));
 }
+
 /**
  * Overwrites the disk protocol buffer cache for the specified coverage track
  * 
@@ -1342,6 +1381,7 @@ export function renderSVGToCanvas(svg : string, ctx : CanvasRenderingContext2D) 
         img.src = url;
     });
 }
+
 /**
  * Renders the given coverage track using the given figure and canvas rendering context
  * 
