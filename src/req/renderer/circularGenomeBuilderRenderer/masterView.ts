@@ -303,7 +303,7 @@ export class View extends viewMgr.View
 
         //document.getElementById("selectSequence").onclick = function(this : HTMLElement,ev : MouseEvent){
         window.addEventListener("keypress",function(this : Window,e : KeyboardEvent){
-            if(e.key == "2")
+            if(e.ctrlKey && e.shiftKey)
             {
                 if(genomeView.showSeqSelector)
                     genomeView.showSeqSelector = false;
