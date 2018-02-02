@@ -9,6 +9,7 @@ import {reCacheBaseFigure} from "./reCacheBaseFigure";
 import {showGenericLoadingSpinnerInNavBar,hideSpinnerInNavBar} from "./loadingSpinner";
 let contig : cf.Contig;
 let editedAlias = "";
+
 /**
  * Set the contig to edit by uuid
  * 
