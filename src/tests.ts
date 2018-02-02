@@ -73,7 +73,11 @@ async function runTests() : Promise<void>
 		{
 			await testFastQCReportGeneration();
 		}
-		catch(err){}
+		catch(err)
+		{
+			console.log("failed to generate FastQC report for L6R1R1");
+			return reject();
+		}
 
 		console.log("Generating FastQC report for L6R1R2");
     	atomic.addOperation("generateFastQCReport",L6R1R2.get());
@@ -81,7 +85,11 @@ async function runTests() : Promise<void>
 		{
 			await testFastQCReportGeneration();
 		}
-		catch(err){}
+		catch(err)
+		{
+			console.log("failed to generate FastQC report for L6R1R2");
+			return reject();
+		}
 
 		console.log("Starting to index hpv16");
 		atomic.addOperation("indexFastaForAlignment",hpv16Ref.get());

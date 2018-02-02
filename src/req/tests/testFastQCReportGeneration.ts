@@ -12,13 +12,12 @@ export async function testFastQCReportGeneration() : Promise<void>
             {
                 if(op.flags.failure)
                 {
-                    console.log(`Failed to generate FastQC report for ${op.fastq.alias}`);
-                    reject();
+                    return reject();
                 }
                 else if(op.flags.success)
                 {
                     console.log(`Generated FastQC report for ${op.fastq.alias}`);
-                    resolve();
+                    return resolve();
                 }
             }
         );
