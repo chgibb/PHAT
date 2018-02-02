@@ -17,6 +17,11 @@ export async function testFastQCReportGeneration() : Promise<void>
                 else if(op.flags.success)
                 {
                     console.log(`Generated FastQC report for ${op.fastq.alias}`);
+                    if(op.fastq.seqLength != 151)
+                    {
+                        console.log(`Seq length for ${op.fastq.alias} should not be ${op.fastq.seqLength}`);
+                        return reject();
+                    }
                     return resolve();
                 }
             }
