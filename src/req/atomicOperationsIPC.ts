@@ -1,6 +1,6 @@
 import {ProjectManifest} from "./projectManifest"
 import {Fasta} from "./fasta";
-import Fastq from "./fastq";
+import {Fastq} from "./fastq";
 import {AlignData} from "./alignData";
 import {CircularFigure} from "./renderer/circularFigure";
 import {CompletionFlags,LogRecord} from "./operations/atomicOperations";

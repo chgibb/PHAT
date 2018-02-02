@@ -3,7 +3,7 @@ import * as electron from "electron";
 const ipc = electron.ipcRenderer;
 
 import * as viewMgr from "./../viewMgr";
-import Fastq from "./../../fastq";
+import {Fastq} from "./../../fastq";
 import {Fasta} from "./../../fasta";
 import {AtomicOperationIPC} from "./../../atomicOperationsIPC";
 import {AtomicOperation} from "./../../operations/atomicOperations";

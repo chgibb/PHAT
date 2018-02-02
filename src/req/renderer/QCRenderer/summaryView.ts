@@ -4,7 +4,7 @@ const ipc = electron.ipcRenderer;
 
 import * as viewMgr from "./../viewMgr";
 import {ReportView} from "./reportView";
-import Fastq from "./../../fastq";
+import {Fastq} from "./../../fastq";
 import {getQCSummaryByNameOfReportByIndex} from "./../../QCData"
 import {AtomicOperationIPC} from "./../../atomicOperationsIPC";
 export class SummaryView extends viewMgr.View

@@ -1,4 +1,4 @@
-import Fastq from "./../fastq";
+import {Fastq} from "./../fastq";
 import {importIntoProject} from "./../file";
 
 let L6R1R1 : Fastq;

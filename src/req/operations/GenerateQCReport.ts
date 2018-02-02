@@ -1,7 +1,7 @@
 const fse = require("fs-extra");
 
 import * as atomic from "./atomicOperations";
-import Fastq from "./../fastq";
+import {Fastq} from "./../fastq";
 import {getQCReportSummaries} from "./../QCReportSummary";
 import trimPath from "./../trimPath";
 import {SpawnRequestParams} from "./../JobIPC";

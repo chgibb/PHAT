@@ -4,7 +4,7 @@ import * as readline from "readline";
 import {File} from "./file";
 import {QCData,getQCReportData} from "./QCData";
 import {makeValidID} from "./MakeValidID";
-export default class Fastq extends File
+export class Fastq extends File
 {
     public sizeString : string;
     public sequences : number;

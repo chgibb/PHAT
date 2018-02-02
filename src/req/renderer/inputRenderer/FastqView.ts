@@ -1,6 +1,6 @@
 import * as viewMgr from "./../viewMgr";
 import {getReadable} from "./../../getAppPath";
-import Fastq from "./../../fastq";
+import {Fastq} from "./../../fastq";
 export class View extends viewMgr.View
 {
     public fastqInputs : Array<Fastq>;

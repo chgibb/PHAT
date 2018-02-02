@@ -14,7 +14,7 @@ import {inputFastqDialog} from "./inputFastqDialog";
 import {inputFastaDialog} from "./inputFastaDialog";
 import {inputAlignDialog} from "./inputAlignDialog";
 
-import Fastq from "./../../fastq";
+import {Fastq} from "./../../fastq";
 import {Fasta} from "./../../fasta";
 import {AlignData} from "./../../alignData";
 import {getLinkableRefSeqs,LinkableRefSeq} from "./../../getLinkableRefSeqs";

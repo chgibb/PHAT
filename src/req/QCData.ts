@@ -1,4 +1,4 @@
-import Fastq from "./fastq";
+import {Fastq} from "./fastq";
 import {getReadableAndWritable} from "./getAppPath";
 export class QCData
 {
