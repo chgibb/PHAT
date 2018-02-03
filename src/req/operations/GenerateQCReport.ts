@@ -127,7 +127,7 @@ export class GenerateQCReport extends atomic.AtomicOperation
 									${err}`);
 								return;
 							}
-							parseSeqLengthFromQCReport(self.fastq);
+							await parseSeqLengthFromQCReport(self.fastq);
 							self.setSuccess(self.flags);
 							self.update();
 						},1000
