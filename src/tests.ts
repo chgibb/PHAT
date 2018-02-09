@@ -402,7 +402,7 @@ setTimeout(function(){
 
 		try
 		{
-			await runTests();
+			//await runTests();
 		}
 		catch(err)
 		{
@@ -418,7 +418,7 @@ setTimeout(function(){
 
 		try
 		{
-			await runTests();
+			//await runTests();
 		}
 		catch(err)
 		{
