@@ -76,8 +76,7 @@ async function runTests() : Promise<void>
 		catch(err)
 		{
 			console.log("failed to generate FastQC report for L6R1R1");
-			if(process.env.APPVEYOR || process.env.TRAVIS)
-				return reject();
+			return reject();
 		}
 
 		console.log("Generating FastQC report for L6R1R2");
@@ -89,8 +88,7 @@ async function runTests() : Promise<void>
 		catch(err)
 		{
 			console.log("failed to generate FastQC report for L6R1R2");
-			if(process.env.APPVEYOR || process.env.TRAVIS)
-				return reject();
+			return reject();
 		}
 
 		console.log("Starting to index hpv16");
