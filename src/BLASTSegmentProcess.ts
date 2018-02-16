@@ -11,7 +11,7 @@ process.on("message",async function(ev : AtomicOperationForkEvent){
     if(ev.setData == true)
     {
         logger.logRecord = atomic.openLog(ev.name,ev.description);
-
+        logger.logObject(ev);
         process.send(<AtomicOperationForkEvent>{finishedSettingData : true});
         return;
     }
@@ -20,9 +20,11 @@ process.on("message",async function(ev : AtomicOperationForkEvent){
     {
         flags.done = true;
         flags.success = true;
+        atomic.closeLog(logger.logRecord,"success");
         process.send(<AtomicOperationForkEvent>{
             update : true,
-            flags : flags
+            flags : flags,
+            logRecord : logger.logRecord
         });
         atomic.exitFork(0);
     }

@@ -19,6 +19,9 @@ export class BLASTSegment extends atomic.AtomicOperation
 
     public run() : void
     {
+        this.closeLogOnFailure = false;
+        this.closeLogOnSuccess = false;
+        
         let self = this;
         this.blastSegment = atomic.makeFork("BLASTSegment.js",<AtomicOperationForkEvent>{
             setData : true,
@@ -26,8 +29,6 @@ export class BLASTSegment extends atomic.AtomicOperation
             name : self.name,
             description : "BLAST Segment"
         },function(ev : AtomicOperationForkEvent){
-
-            self.logObject(ev);
 
             if(ev.finishedSettingData == true)
             {
@@ -42,6 +43,11 @@ export class BLASTSegment extends atomic.AtomicOperation
             {
                 self.extraData = ev.data;
                 self.flags = ev.flags;
+                if(ev.flags.done)
+                {
+                    self.logRecord = ev.logRecord;
+                    atomic.recordLogRecord(ev.logRecord);
+                }
                 self.update();
             }
         });
