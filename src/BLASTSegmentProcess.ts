@@ -2,10 +2,36 @@ import {AtomicOperationForkEvent,CompletionFlags} from "./req/atomicOperationsIP
 import * as atomic from "./req/operations/atomicOperations";
 
 let flags : CompletionFlags = new CompletionFlags();
+let progressMessage = "";
 
 let logger : atomic.ForkLogger = new atomic.ForkLogger();
 atomic.handleForkFailures(logger);
 
+function update() : void
+{
+    let update = <AtomicOperationForkEvent>{
+        update : true,
+        flags : flags,
+        progressMessage : progressMessage
+    };
+
+    if(flags.done)
+    {
+        if(flags.success)
+        {
+            atomic.closeLog(logger.logRecord,"success");
+            update.logRecord = logger.logRecord;
+        }
+        else if(flags.failure)
+        {   
+            atomic.closeLog(logger.logRecord,"failure");
+            update.logRecord = logger.logRecord;
+        }
+    }
+
+    logger.logObject(update);
+    process.send(update);
+}
 
 process.on("message",async function(ev : AtomicOperationForkEvent){
     if(ev.setData == true)
@@ -20,12 +46,7 @@ process.on("message",async function(ev : AtomicOperationForkEvent){
     {
         flags.done = true;
         flags.success = true;
-        atomic.closeLog(logger.logRecord,"success");
-        process.send(<AtomicOperationForkEvent>{
-            update : true,
-            flags : flags,
-            logRecord : logger.logRecord
-        });
+        update();
         atomic.exitFork(0);
     }
 });
