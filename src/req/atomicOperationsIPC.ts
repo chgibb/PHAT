@@ -2,6 +2,7 @@ import {ProjectManifest} from "./projectManifest"
 import {Fasta} from "./fasta";
 import {Fastq} from "./fastq";
 import {AlignData} from "./alignData";
+import {BLASTSegmentResult} from "./BLASTSegmentResult";
 import {CircularFigure} from "./renderer/circularFigure";
 import {CompletionFlags,LogRecord} from "./operations/atomicOperations";
 export {CompletionFlags} from "./operations/atomicOperations";
@@ -22,7 +23,7 @@ export interface AtomicOperationIPC
 
     fasta? : Fasta;
     align? : AlignData;
-
+    blastSegmentResult? : BLASTSegmentResult;
     alignuuid? : string;
     figureuuid? : string;
     colour? : string;
