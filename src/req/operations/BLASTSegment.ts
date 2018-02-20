@@ -28,6 +28,7 @@ export class BLASTSegment extends atomic.AtomicOperation
         this.blastSegmentResult.stop = data.stop;
         this.blastSegmentResult.alignUUID = data.align.uuid;
         this.blastSegmentResult.contigUUID = data.contigUUID;
+        this.alignData = data.align;
         this.destinationArtifactsDirectories.push(getArtifactDir(this.blastSegmentResult));
     }
 

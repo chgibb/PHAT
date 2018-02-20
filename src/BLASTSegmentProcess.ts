@@ -2,6 +2,7 @@ import {AtomicOperationForkEvent,CompletionFlags} from "./req/atomicOperationsIP
 import * as atomic from "./req/operations/atomicOperations";
 import {AlignData} from "./req/alignData";
 import {BLASTSegmentResult,getArtifactDir} from "./req/BLASTSegmentResult";
+import {generateSamForSegment} from "./req/operations/BLASTSegment/generateSamForSegment";
 
 const mkdirp = require("mkdirp");
 
@@ -56,6 +57,15 @@ process.on("message",async function(ev : AtomicOperationForkEvent){
 
     if(ev.run == true)
     {
+        await generateSamForSegment(
+            blastSegmentResult,
+            align,
+            logger,
+            function(read : number){
+                console.log(read);
+            }
+        );
+
         flags.done = true;
         flags.success = true;
         update();
