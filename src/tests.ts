@@ -402,7 +402,14 @@ setTimeout(function(){
 
 		try
 		{
-			//await runTests();
+			await runTests();
+			atomic.addOperation("BLASTSegment",{
+				align : L6R1HPV16Align.get(),
+				contigUUID : L6R1HPV16Align.get().fasta.contigs[0].uuid,
+				start : 0,
+				stop : 1000
+			});
+			await new Promise((resolve)=>{setTimeout(()=>{resolve()},2000)});
 		}
 		catch(err)
 		{
@@ -418,7 +425,7 @@ setTimeout(function(){
 
 		try
 		{
-			//await runTests();
+			await runTests();
 		}
 		catch(err)
 		{

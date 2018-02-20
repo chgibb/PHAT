@@ -1,7 +1,13 @@
 import {AtomicOperationForkEvent,CompletionFlags} from "./req/atomicOperationsIPC";
 import * as atomic from "./req/operations/atomicOperations";
+import {AlignData} from "./req/alignData";
+import {BLASTSegmentResult,getArtifactDir} from "./req/BLASTSegmentResult";
+
+const mkdirp = require("mkdirp");
 
 let flags : CompletionFlags = new CompletionFlags();
+let align : AlignData;
+let blastSegmentResult : BLASTSegmentResult;
 let progressMessage = "";
 
 let logger : atomic.ForkLogger = new atomic.ForkLogger();
@@ -37,6 +43,12 @@ process.on("message",async function(ev : AtomicOperationForkEvent){
     if(ev.setData == true)
     {
         logger.logRecord = atomic.openLog(ev.name,ev.description);
+        
+        align = ev.data.align;
+        blastSegmentResult = ev.data.blastSegmentResult;
+
+        mkdirp.sync(getArtifactDir(blastSegmentResult));
+
         logger.logObject(ev);
         process.send(<AtomicOperationForkEvent>{finishedSettingData : true});
         return;
