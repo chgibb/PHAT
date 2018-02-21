@@ -9,6 +9,7 @@ export class BLASTSegmentResult
     public contigUUID : string
     public start : number;
     public stop : number;
+    public reads : number;
     public readonly program = "blastn";
     public readonly MEGABLAST = true;
     public readonly dataBase = "nt";
