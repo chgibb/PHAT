@@ -5,7 +5,7 @@ import {BLASTSegmentResult,getSamSegment} from "./../../BLASTSegmentResult";
 import {SpawnRequestParams} from "./../../JobIPC";
 import {Job,JobCallBackObject} from "./../../main/Job";
 import {getReadable} from "../../getAppPath";
-import {AlignData} from "../../alignData";
+import {AlignData,getSortedBam} from "../../alignData";
 
 export function generateSamForSegment(
     segmentResult : BLASTSegmentResult,
@@ -26,7 +26,13 @@ export function generateSamForSegment(
                     samStream.write(params.unBufferedData);
                     
                     let readLines = params.unBufferedData.split("\n");
-                    totalReads += readLines.length;
+
+                    for(let i = 0; i != readLines.length; ++i)
+                    {
+                        if(readLines[i])
+                            totalReads += 1;
+                    }
+
                     progress(totalReads);
 
                 }
@@ -66,6 +72,7 @@ export function generateSamForSegment(
             getReadable("samtools"),
             <Array<string>>[
                 "view",
+                getSortedBam(alignData),
                 `${contigRefName}:${segmentResult.start}-${segmentResult.stop}`
             ],"",true,jobCallBack,{}
         );
