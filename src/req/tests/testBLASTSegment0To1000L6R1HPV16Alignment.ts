@@ -22,6 +22,14 @@ export async function testBLASTSegment0To1000L6R1HPV16Alignment() : Promise<void
                     return reject();
                 }
 
+                if(op.blastSegmentResult.avgSeqLength == 151)
+                    console.log(`BLAST result has correct average sequence length`);
+                else
+                {
+                    console.log(`BLAST result has incorrect average sequence length ${op.blastSegmentResult.avgSeqLength}`);
+                    return reject();
+                }
+
                 return resolve();
             }
         });

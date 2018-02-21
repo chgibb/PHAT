@@ -3,6 +3,7 @@ import * as atomic from "./req/operations/atomicOperations";
 import {AlignData} from "./req/alignData";
 import {BLASTSegmentResult,getArtifactDir,streamSamSegmentReads} from "./req/BLASTSegmentResult";
 import {generateSamForSegment} from "./req/operations/BLASTSegment/generateSamForSegment";
+import {getAvgSeqLengthFromBam} from "./req/operations/BLASTSegment/getAvgSeqLengthFromBam";
 
 const mkdirp = require("mkdirp");
 
@@ -66,6 +67,16 @@ process.on("message",async function(ev : AtomicOperationForkEvent){
             logger,
             function(reads : number){
                 progressMessage = `Total Reads Found: ${reads}`;
+                update();
+            }
+        );
+
+        await getAvgSeqLengthFromBam(
+            blastSegmentResult,
+            align,
+            logger,
+            function(read : number){
+                progressMessage = `Calculating Average Sequence Length. Read: ${read}`;
                 update();
             }
         );
