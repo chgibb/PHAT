@@ -17,7 +17,10 @@ export async function testBLASTSegment0To1000L6R1HPV16Alignment() : Promise<void
                 if(op.blastSegmentResult.reads == 70)
                     console.log(`BLAST result has correct number of reads`);
                 else
+                {
+                    console.log(`BLAST result has incorrect number of reads ${op.blastSegmentResult.reads}`);
                     return reject();
+                }
 
                 return resolve();
             }
