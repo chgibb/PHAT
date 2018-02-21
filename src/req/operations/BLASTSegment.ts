@@ -65,6 +65,10 @@ export class BLASTSegment extends atomic.AtomicOperation
                 {
                     self.logRecord = ev.logRecord;
                     atomic.recordLogRecord(ev.logRecord);
+                    if(ev.flags.success === true)
+                    {
+                        self.blastSegmentResult = ev.data.blastSegmentResult;
+                    }
                 }
                 self.update();
             }

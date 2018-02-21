@@ -19,7 +19,10 @@ function update() : void
     let update = <AtomicOperationForkEvent>{
         update : true,
         flags : flags,
-        progressMessage : progressMessage
+        progressMessage : progressMessage,
+        data : {
+            blastSegmentResult : blastSegmentResult
+        }
     };
 
     if(flags.done)
