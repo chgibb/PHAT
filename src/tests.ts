@@ -38,6 +38,8 @@ import {testL6R1HPV16AlignImportedLinking} from "./req/tests/testL6R1HPV16AlignI
 import {testL6R1HPV18AlignImportedImporting} from "./req/tests/testL6R1HPV18AlignImportedImporting";
 import {testL6R1HPV18AlignImportedLinking} from "./req/tests/testL6R1HPV18AlignImportedLinking";
 
+import {testBLASTSegment0To1000L6R1HPV16Alignment} from "./req/tests/testBLASTSegment0To1000L6R1HPV16Alignment";
+
 const pjson = require("./resources/app/package.json");
 import {isBeta,versionIsGreaterThan} from "./req/versionIsGreaterThan";
 
@@ -386,6 +388,23 @@ async function runTests() : Promise<void>
 			return reject();
 		}
 
+		console.log("BLASTing segment 0-1000 of L6R1 alignment on HPV16");
+		atomic.addOperation("BLASTSegment",{
+			align : L6R1HPV16Align.get(),
+			contigUUID : L6R1HPV16Align.get().fasta.contigs[0].uuid,
+			start : 0,
+			stop : 1000
+		});
+		try
+		{
+			await testBLASTSegment0To1000L6R1HPV16Alignment();
+		}
+		catch(err)
+		{
+			console.log("BLASTing segment threw exception");
+			return reject();
+		}
+
 		resolve();
 	});
 
@@ -403,13 +422,6 @@ setTimeout(function(){
 		try
 		{
 			await runTests();
-			atomic.addOperation("BLASTSegment",{
-				align : L6R1HPV16Align.get(),
-				contigUUID : L6R1HPV16Align.get().fasta.contigs[0].uuid,
-				start : 0,
-				stop : 1000
-			});
-			await new Promise((resolve)=>{setTimeout(()=>{resolve()},2000)});
 		}
 		catch(err)
 		{
