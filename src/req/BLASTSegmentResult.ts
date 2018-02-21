@@ -13,7 +13,6 @@ export class BLASTSegmentResult
     public start : number;
     public stop : number;
     public totalReads : number;
-    public avgSeqLength : number;
     public readonly program = "blastn";
     public readonly MEGABLAST = true;
     public readonly dataBase = "nt";

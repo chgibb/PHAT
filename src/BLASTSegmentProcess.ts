@@ -70,18 +70,6 @@ process.on("message",async function(ev : AtomicOperationForkEvent){
             }
         );
 
-        await new Promise<void>(async (resolve,reject) => {
-            let countedReads = 0;
-            let sumLength = 0;
-            await streamSamSegmentReads(blastSegmentResult,async function(read : string){
-                progressMessage = `Determining Average Sequence Length. Read ${countedReads}/${blastSegmentResult.totalReads}`;
-                update();
-                let tokens = read.split(/\s/g);
-                sumLength += tokens[9].length;
-            });
-            blastSegmentResult.avgSeqLength = sumLength/blastSegmentResult.totalReads;
-            return resolve();
-        });
 
         flags.done = true;
         flags.success = true;
