@@ -14,11 +14,19 @@ export async function testBLASTSegment0To1000L6R1HPV16Alignment() : Promise<void
 
             else if(op.flags.success)
             {
-                if(op.blastSegmentResult.reads == 70)
+                if(op.blastSegmentResult.totalReads == 70)
                     console.log(`BLAST result has correct number of reads`);
                 else
                 {
-                    console.log(`BLAST result has incorrect number of reads ${op.blastSegmentResult.reads}`);
+                    console.log(`BLAST result has incorrect number of reads ${op.blastSegmentResult.totalReads}`);
+                    return reject();
+                }
+
+                if(op.blastSegmentResult.avgSeqLength == 151)
+                    console.log(`BLAST result has correct average sequence length`);
+                else
+                {
+                    console.log(`BLAST result has incorrect average sequence length ${op.blastSegmentResult.avgSeqLength}`);
                     return reject();
                 }
 

@@ -1,7 +1,7 @@
 import {AtomicOperationForkEvent,CompletionFlags} from "./req/atomicOperationsIPC";
 import * as atomic from "./req/operations/atomicOperations";
 import {AlignData} from "./req/alignData";
-import {BLASTSegmentResult,getArtifactDir} from "./req/BLASTSegmentResult";
+import {BLASTSegmentResult,getArtifactDir,streamSamSegmentReads} from "./req/BLASTSegmentResult";
 import {generateSamForSegment} from "./req/operations/BLASTSegment/generateSamForSegment";
 
 const mkdirp = require("mkdirp");
@@ -69,6 +69,19 @@ process.on("message",async function(ev : AtomicOperationForkEvent){
                 update();
             }
         );
+
+        await new Promise<void>(async (resolve,reject) => {
+            let countedReads = 0;
+            let sumLength = 0;
+            await streamSamSegmentReads(blastSegmentResult,async function(read : string){
+                progressMessage = `Determining Average Sequence Length. Read ${countedReads}/${blastSegmentResult.totalReads}`;
+                update();
+                let tokens = read.split(/\s/g);
+                sumLength += tokens[9].length;
+            });
+            blastSegmentResult.avgSeqLength = sumLength/blastSegmentResult.totalReads;
+            return resolve();
+        });
 
         flags.done = true;
         flags.success = true;

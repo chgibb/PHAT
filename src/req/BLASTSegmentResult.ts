@@ -1,3 +1,6 @@
+import * as fs from "fs";
+import * as readline from "readline";
+
 import * as dFormat from "./dateFormat";
 import {Contig} from "./fastaContigLoader";
 import {getReadableAndWritable} from "./getAppPath";
@@ -9,7 +12,8 @@ export class BLASTSegmentResult
     public contigUUID : string
     public start : number;
     public stop : number;
-    public reads : number;
+    public totalReads : number;
+    public avgSeqLength : number;
     public readonly program = "blastn";
     public readonly MEGABLAST = true;
     public readonly dataBase = "nt";
@@ -36,4 +40,21 @@ export function getSamSegment(blastResult : BLASTSegmentResult) : string
 export function getBLASTReadResultsDir(blastResult : BLASTSegmentResult) : string
 {
     return getReadableAndWritable(`rt/BLASTSegmentResults/${blastResult.uuid}/readResults`);
+}
+
+export function streamSamSegmentReads(blastResult : BLASTSegmentResult,cb : (read : string) => void) : Promise<void>
+{
+    return new Promise<void>((resolve,reject) => {
+        let rl : readline.ReadLine = readline.createInterface(<readline.ReadLineOptions>{
+            input : fs.createReadStream(getSamSegment(blastResult))
+        }); 
+
+        rl.on("line",function(line : string){
+            cb(line);
+        });
+
+        rl.on("close",function(){
+            return resolve();
+        });
+    });
 }
