@@ -44,6 +44,7 @@ export function generateSamForSegment(
                         setTimeout(
                             function(){
                                 samStream.end();
+                                segmentResult.reads = totalReads;
                                 resolve(totalReads);
                             },
                             500
