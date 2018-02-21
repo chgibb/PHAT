@@ -3,7 +3,7 @@ import * as cp from "child_process";
 import * as atomic from "./atomicOperations";
 import {AtomicOperationForkEvent,AtomicOperationIPC} from "../atomicOperationsIPC";
 import {BLASTSegmentResult,getArtifactDir} from "./../BLASTSegmentResult";
-import { AlignData } from "../alignData";
+import {AlignData} from "../alignData";
 
 export class BLASTSegment extends atomic.AtomicOperation
 {
