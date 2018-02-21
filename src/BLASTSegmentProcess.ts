@@ -61,8 +61,9 @@ process.on("message",async function(ev : AtomicOperationForkEvent){
             blastSegmentResult,
             align,
             logger,
-            function(read : number){
-                console.log(read);
+            function(reads : number){
+                progressMessage = `Total Reads Found: ${reads}`;
+                update();
             }
         );
 
