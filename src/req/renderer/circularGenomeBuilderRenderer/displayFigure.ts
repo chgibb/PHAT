@@ -110,7 +110,7 @@ export async function displayInteractiveFigure(self : GenomeView) : Promise<void
                                     
                 ${getSelectedDataTrackSVGsFromCache(self)}
 
-                <div id="toCompile">
+                <div id="toCompile" ng-app>
                     ${templates}
                     </div>
                 </div>
