@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "node node_modules/.bin/tsc && node node_modules/.bin/jest"
+    "test": "bash scripts/tests.bash"
   },
   "author": "",
   "license": "ISC",
