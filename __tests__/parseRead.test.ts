@@ -33,10 +33,26 @@ it(`should parse read 1`,() => {
 
 });
 
-it(`should extract all reads starting at 7`,async () => {
+it(`should extract all reads at nt7`,async () => {
     let total = await getUnMappedReads("__tests__/data/L6R1HPV16.sam",7,7,function(read : SAMRead,unMappedFragments : Array<string>){
 
     });
 
     expect(total).toBe(2);
+});
+
+it(`should extract all reads at nt5`,async () => {
+    let total = await getUnMappedReads("__tests__/data/L6R1HPV16.sam",5,5,function(read : SAMRead,unMappedFragments : Array<string>){
+
+    });
+
+    expect(total).toBe(3);
+});
+
+it(`should extract all reads from nt5 to nt7`,async () => {
+    let total = await getUnMappedReads("__tests__/data/L6R1HPV16.sam",5,7,function(read : SAMRead,unMappedFragments : Array<string>){
+
+    });
+
+    expect(total).toBe(5);
 });
