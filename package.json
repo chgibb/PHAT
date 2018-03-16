@@ -1,0 +1,16 @@
+{
+  "name": "unmappedcigar",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "node node_modules/.bin/tsc && node node_modules/.bin/jest"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^9.4.7",
+    "jest": "^22.4.2",
+    "typescript": "^2.7.2"
+  }
+}
