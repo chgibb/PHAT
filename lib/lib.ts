@@ -46,7 +46,7 @@ export function parseRead(line : string) : SAMRead | undefined
     return res;
 }
 
-export function getUnMappedReads(
+export function getReads(
     file : string,
     start : number,
     end : number,
