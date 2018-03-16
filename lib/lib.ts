@@ -29,20 +29,51 @@ export function parseRead(line : string) : SAMRead | undefined
         return undefined;
     let res : SAMRead = new SAMRead();
 
+    let cols = line.split(/\s/);
+
+    res.QNAME = cols[0];
+    res.FLAG = parseInt(cols[1]);
+    res.RNAME = cols[2];
+    res.POS = parseInt(cols[3]);
+    res.MAPQ = parseInt(cols[4]);
+    res.CIGAR = cols[5];
+    res.RNEXT = cols[6];
+    res.PNEXT = parseInt(cols[7]);
+    res.TLEN = parseInt(cols[8]);
+    res.SEQ = cols[9];
+    res.QUAL = cols[10];
+
     return res;
 }
 
 export function getUnMappedReads(
     file : string,
     start : number,
-    stop : number,
-    cb : (read : SAMRead,unMappedReads : Array<string>) => void
+    end : number,
+    cb : (read : SAMRead,unMappedFragments : Array<string>) => void
 ) : Promise<number> {
     return new Promise<number>(async (resolve) => {
+        let retrieved = 0;
         let rl : readline.ReadLine = readline.createInterface(
             <readline.ReadLineOptions>{
                 input : fs.createReadStream(file)
             }
         );
+
+        rl.on("line",function(line : string){
+            let read = parseRead(line);
+            if(read)
+            {
+                if(read.POS >= start && read.POS <= end)
+                {
+                    retrieved++;
+                    cb(read,[]);
+                }
+            }
+        });
+
+        rl.on("close",function(){
+            resolve(retrieved);
+        })
     });
 }
