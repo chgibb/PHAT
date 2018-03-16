@@ -7,5 +7,5 @@ if [ $? != 0 ]; then
 	exit 1
 fi
 
-node scripts/test
+./node_modules/.bin/jest
 exit $?
