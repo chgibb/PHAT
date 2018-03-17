@@ -108,10 +108,16 @@ export function evaluateCIGAR(seq : string,cigar : string) : Array<string> | und
                 res.push(seq.substring(refPos,refPos+sections[i].val));
                 refPos += sections[i].val;
             }
+
+            if(refPos > seq.length)
+                throw new Error("Stepped off end of query sequence");
         }
     }
 
-    return res;
+    if(res.length == 0)
+        return undefined;
+    else
+        return res;
 }
 
 export function getReads(
