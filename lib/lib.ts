@@ -22,6 +22,13 @@ export class SAMRead
     public QUAL : string;
 }
 
+/**
+ * Parses a SAM read string into a SAMRead object
+ * 
+ * @export
+ * @param {string} line 
+ * @returns {(SAMRead | undefined)} 
+ */
 export function parseRead(line : string) : SAMRead | undefined
 {
     //don't try to parse header lines
@@ -46,6 +53,12 @@ export function parseRead(line : string) : SAMRead | undefined
     return res;
 }
 
+/**
+ * Represents a single section of a CIGAR string
+ * 
+ * @export
+ * @interface CIGARSection
+ */
 export interface CIGARSection
 {
     op : "M" | "I" | "D" | "N" | "S" | "H" | "P" | "=" | "X" | "*"
@@ -55,10 +68,19 @@ export interface CIGARSection
 
 //Taken from https://samtools.github.io/hts-specs/SAMv1.pdf
 let CIGARRegex : RegExp = /\*|([0-9]+[MIDNSHPX=])+/;
+
+/**
+ * Parse the sections of the given CIGAR string into an array
+ * 
+ * @export
+ * @param {string} cigar 
+ * @returns {(Array<CIGARSection> | undefined)} 
+ */
 export function parseCIGARSections(cigar : string) : Array<CIGARSection> | undefined
 {
     if(!cigar || cigar == "*" || !CIGARRegex.test(cigar))
         return undefined;
+
     let res : Array<CIGARSection> = new Array<CIGARSection>();
 
     let str = "";
@@ -82,6 +104,15 @@ export function parseCIGARSections(cigar : string) : Array<CIGARSection> | undef
     return res;
 }
 
+/**
+ * Evaluates the given CIGAR string against the given query sequence. Returns
+ * identified unmapped fragments
+ * 
+ * @export
+ * @param {string} seq 
+ * @param {string} cigar 
+ * @returns {(Array<string> | undefined)} 
+ */
 export function evaluateCIGAR(seq : string,cigar : string) : Array<string> | undefined
 {
     let res : Array<string> = new Array<string>();
@@ -120,6 +151,17 @@ export function evaluateCIGAR(seq : string,cigar : string) : Array<string> | und
         return res;
 }
 
+/**
+ * For each SAM read from (reference position) start to end in file, calls cb with the read object
+ * as well as any unmapped fragments identified by evaluating the read's CIGAR string
+ * 
+ * @export
+ * @param {string} file 
+ * @param {number} start 
+ * @param {number} end 
+ * @param {((read : SAMRead,unMappedFragments : Array<string> | undefined) => void)} cb 
+ * @returns {Promise<number>} 
+ */
 export function getReads(
     file : string,
     start : number,
