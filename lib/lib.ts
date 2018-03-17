@@ -46,6 +46,50 @@ export function parseRead(line : string) : SAMRead | undefined
     return res;
 }
 
+export interface CIGARSection
+{
+    op : "M" | "I" | "D" | "N" | "S" | "H" | "P" | "=" | "X" | "*"
+    val : number;
+}
+
+
+
+let CIGARRegex : RegExp = /\*|([0-9]+[MIDNSHPX=])+/;
+export function parseCIGARSections(cigar : string) : Array<CIGARSection> | undefined
+{
+    if(!cigar || cigar == "*" || !CIGARRegex.test(cigar))
+        return undefined;
+    let res : Array<CIGARSection> = new Array<CIGARSection>();
+
+    let str = "";
+    for(let i = 0; i != cigar.length; ++i)
+    {
+        if(cigar[i] != "M" && cigar[i] != "I" && cigar[i] != "D" && cigar[i] != "N" && cigar[i] != "S" && cigar[i] != "H" && cigar[i] != "P" && cigar[i] != "=" && cigar[i] != "X")
+        {
+            str += cigar[i];
+        }
+        
+        else
+        {
+            res.push(<CIGARSection>{
+                op : cigar[i],
+                val : parseInt(str)
+            });
+            str = "";
+        }
+    }
+
+    return res;
+}
+
+export function evaluateCIGAR(seq : string,cigar : string) : Array<string>
+{
+    let res : Array<string> = new Array<string>();
+
+
+    return res;
+}
+
 export function getReads(
     file : string,
     start : number,
