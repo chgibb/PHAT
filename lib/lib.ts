@@ -124,7 +124,7 @@ export function getReads(
     file : string,
     start : number,
     end : number,
-    cb : (read : SAMRead,unMappedFragments : Array<string>) => void
+    cb : (read : SAMRead,unMappedFragments : Array<string> | undefined) => void
 ) : Promise<number> {
     return new Promise<number>(async (resolve) => {
         let retrieved = 0;
@@ -141,7 +141,7 @@ export function getReads(
                 if(read.POS >= start && read.POS <= end)
                 {
                     retrieved++;
-                    cb(read,[]);
+                    cb(read,evaluateCIGAR(read.SEQ,read.CIGAR));
                 }
             }
         });
