@@ -82,10 +82,34 @@ export function parseCIGARSections(cigar : string) : Array<CIGARSection> | undef
     return res;
 }
 
-export function evaluateCIGAR(seq : string,cigar : string) : Array<string>
+export function evaluateCIGAR(seq : string,cigar : string) : Array<string> | undefined
 {
     let res : Array<string> = new Array<string>();
 
+    let sections : Array<CIGARSection> | undefined = parseCIGARSections(cigar);
+
+    if(!sections)
+        return undefined;
+    
+    else
+    {
+        let str = "";
+        let refPos = 0;
+        //From the spec, https://samtools.github.io/hts-specs/SAMv1.pdf only M, I, S, = and X will step the query sequence so that's all we care about
+        for(let i = 0; i != sections.length; ++i)
+        {
+            if(sections[i].op == "M")
+            {
+                refPos += sections[i].val;
+            }
+
+            else if(sections[i].op == "I" || sections[i].op == "S" || sections[i].op == "=" || sections[i].op == "X")
+            {
+                res.push(seq.substring(refPos,refPos+sections[i].val));
+                refPos += sections[i].val;
+            }
+        }
+    }
 
     return res;
 }
