@@ -53,7 +53,7 @@ export interface CIGARSection
 }
 
 
-
+//Taken from https://samtools.github.io/hts-specs/SAMv1.pdf
 let CIGARRegex : RegExp = /\*|([0-9]+[MIDNSHPX=])+/;
 export function parseCIGARSections(cigar : string) : Array<CIGARSection> | undefined
 {
@@ -68,7 +68,7 @@ export function parseCIGARSections(cigar : string) : Array<CIGARSection> | undef
         {
             str += cigar[i];
         }
-        
+
         else
         {
             res.push(<CIGARSection>{
