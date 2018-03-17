@@ -17,7 +17,7 @@ getReads(
     }
 ).then((total : number) => {
     //total will be number of reads from 0-10,000 and total number of times callback was called
-}).error(() => {
+}).catch(() => {
     //Failed. Likely I/O error
 });
 
