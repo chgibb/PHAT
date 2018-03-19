@@ -1,16 +1,23 @@
 import * as winMgr from "./../../../req/main/winMgr";
+
+/**
+ * Triggers indexing for every ref seq in the first input window
+ * 
+ * @export
+ * @returns {Promise<void>} 
+ */
 export async function indexRefs() : Promise<void>
 {
     return new Promise<void>((resolve,reject) => {
         setTimeout(function(){
             console.log("indexing ref seqs");
-            let input = winMgr.getWindowsByName("input");
+            let input = winMgr.getFreeWebContents();
             if(!input || input.length == 0)
             {
                 console.log("Failed to open input window");
                 process.exit(1);
             }
-            input[0].webContents.executeJavaScript(`
+            input[0].executeJavaScript(`
                 let els = document.getElementsByTagName("td");
                 let isIndex = /Index/;
                 for(let i = 0; i != els.length; ++i)

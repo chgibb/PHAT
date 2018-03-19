@@ -1,5 +1,11 @@
 import * as winMgr from "./../../../req/main/winMgr";
 
+/**
+ * Opens an input window
+ * 
+ * @export
+ * @returns {Promise<void>} 
+ */
 export async function openInputWindow() : Promise<void>
 {
     return new Promise<void>((resolve,reject) => {

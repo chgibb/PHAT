@@ -40,14 +40,18 @@ import {ImportFileIntoProject} from "./../operations/ImportFileIntoProject";
 import {CopyCircularFigure} from "./../operations/CopyCircularFigure";
 import {DeleteCircularFigure} from "./../operations/DeleteCircularFigure";
 
-import {CompileTemplates} from "./../operations/CompileTemplates";
 
 import {ProjectManifest} from "./../projectManifest";
 
 import {NewProject} from "./../operations/NewProject";
 import {OpenProject} from "./../operations/OpenProject";
-import {SaveCurrentProject} from "./../operations/SaveCurrentProject";
+import {SaveProject} from "./../operations/SaveProject";
 import {LoadCurrentlyOpenProject} from "./../operations/LoadCurrentlyOpenProject";
+
+import {DockWindow} from "./../operations/DockWindow";
+import {UnDockWindow} from "./../operations/UnDockWindow";
+
+import {ChangeTitle} from "./../operations/ChangeTitle";
 
 import * as winMgr from "./winMgr";
 
@@ -58,6 +62,8 @@ import {AlignData} from "./../alignData";
 import {CircularFigure} from "./../renderer/circularFigure";
 import {PIDInfo} from "./../PIDInfo";
 import {finishLoadingProject} from "./finishLoadingProject";
+
+
 
 import {GetKeyEvent,SaveKeyEvent,KeySubEvent} from "./../ipcEvents";
 
@@ -99,7 +105,7 @@ app.on
 
 		atomicOp.register("newProject",NewProject);
 		atomicOp.register("openProject",OpenProject);
-		atomicOp.register("saveCurrentProject",SaveCurrentProject);
+		atomicOp.register("saveProject",SaveProject);
 		atomicOp.register("loadCurrentlyOpenProject",LoadCurrentlyOpenProject);
 
 		atomicOp.register("openPileupViewer",OpenPileupViewer);
@@ -113,16 +119,16 @@ app.on
 
 		atomicOp.register("copyCircularFigure",CopyCircularFigure);
 		atomicOp.register("deleteCircularFigure",DeleteCircularFigure);
-		atomicOp.register("compileTemplates",CompileTemplates);
+
+		atomicOp.register("dockWindow",DockWindow);
+		atomicOp.register("unDockWindow",UnDockWindow);
+
+		atomicOp.register("changeTitle",ChangeTitle);
 
 		//on completion of any operation, wait and then broadcast the queue to listening windows
 		atomicOp.setOnComplete(
 			function(op : atomicOp.AtomicOperation){
-				//upon success of any operation except compiling templates to SVGs
-				if(op.flags.success && op.name != "compileTemplates")
-				{
-					dataMgr.saveData();
-				}
+				dataMgr.saveData();
 				setTimeout(function(){
 					setImmediate(function(){
 						dataMgr.setKey("application","operations",atomicOp.operationsQueue);
@@ -195,9 +201,21 @@ ipc.on
 				isPHATRenderer : true,
 				pid : windows[i].window.webContents.getOSProcessId(),
 				url : windows[i].window.webContents.getURL()
-			}
+			};
 			res.push(curr);
 		}
+		let webContents = winMgr.getFreeWebContents();
+		for(let i = 0; i != webContents.length; ++i)
+		{
+			let curr = <PIDInfo>{
+				isPHAT : true,
+				isPHATRenderer : true,
+				pid : webContents[i].getOSProcessId(),
+				url : webContents[i].getURL()
+			};
+			res.push(curr);
+		}
+
 		for(let i = 0; i != atomicOp.operationsQueue.length; ++i)
 		{
 			if(atomicOp.operationsQueue[i].running == true)
@@ -554,12 +572,25 @@ ipc.on(
 				atomicOp.addOperation("deleteCircularFigure",circularFigure);
 			}
 		}
-		else if(arg.opName == "compileTemplates")
+		else if(arg.opName == "dockWindow")
 		{
-			atomicOp.addOperation("compileTemplates",{
-				figure : arg.figure,
-				uuid : arg.uuid,
-				compileBase : arg.compileBase
+			atomicOp.addOperation("dockWindow",{
+				toDock : arg.toDock,
+				dockTarget : arg.dockTarget
+			});
+		}
+		else if(arg.opName == "unDockWindow")
+		{
+			atomicOp.addOperation("unDockWindow",{
+				refName : arg.refName,
+				guestinstance : arg.guestinstance
+			});
+		}
+		else if(arg.opName == "changeTitle")
+		{
+			atomicOp.addOperation("changeTitle",{
+				id : arg.id,
+				newTitle : arg.newTitle
 			});
 		}
 		dataMgr.setKey("application","operations",atomicOp.operationsQueue);
@@ -875,7 +906,7 @@ atomicOp.updates.on(
 			dataMgr.setKey("application","downloadedUpdate",true);
 			//dataMgr.saveData();
 			app.quit();
-			//atomicOp.addOperation("saveCurrentProject",dataMgr.getKey("application","project"));
+			//atomicOp.addOperation("saveProject",dataMgr.getKey("application","project"));
 		}
 	}
 );
@@ -900,7 +931,7 @@ atomicOp.updates.on(
 	}
 );
 atomicOp.updates.on(
-	"saveCurrentProject",function(op : SaveCurrentProject)
+	"saveProject",function(op : SaveProject)
 	{
 		dataMgr.setKey("application","operations",atomicOp.operationsQueue);
 		winMgr.publishChangeForKey("application","operations");
@@ -924,9 +955,17 @@ atomicOp.updates.on(
 );
 
 atomicOp.updates.on(
-	"compileTemplates",function(op : CompileTemplates)
+	"unDockWindow",function(op : UnDockWindow)
 	{
 		dataMgr.setKey("application","operations",atomicOp.operationsQueue);
 		winMgr.publishChangeForKey("application","operations");
 	}
 );
+
+atomicOp.updates.on(
+	"changeTitle",function(op : ChangeTitle)
+	{
+		dataMgr.setKey("application","operations",atomicOp.operationsQueue);
+		winMgr.publishChangeForKey("application","operations");
+	}
+)

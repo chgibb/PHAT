@@ -5,7 +5,7 @@ import * as masterView from "./req/renderer/circularGenomeBuilderRenderer/master
 import * as genomeView from "./req/renderer/circularGenomeBuilderRenderer/genomeView";
 import {CircularFigure,} from "./req/renderer/circularFigure";
 import {GetKeyEvent,KeySubEvent} from "./req/ipcEvents";
-import {CompileTemplates} from "./req/operations/CompileTemplates";
+import {makeWindowDockable} from "./req/renderer/dock";
 import {showGenericLoadingSpinnerInNavBar,hideSpinnerInNavBar} from "./req/renderer/circularGenomeBuilderRenderer/loadingSpinner";
 import * as tc from "./req/renderer/circularGenomeBuilderRenderer/templateCache";
 import "./req/renderer/commonBehaviour";
@@ -16,6 +16,7 @@ $
 (
     function()
     {
+        makeWindowDockable("circularGenomeBuilder");
         masterView.addView(viewMgr.views,"view");
         viewMgr.changeView("masterView");
         viewMgr.render();
@@ -85,7 +86,7 @@ $
         );
         ipc.on
         (
-            'circularGenomeBuilder',function(event : Electron.IpcMessageEvent,arg : any)
+            'circularGenomeBuilder',async function(event : Electron.IpcMessageEvent,arg : any)
             {
                 if(arg.action == "getKey" || arg.action == "keyChange")
                 {
@@ -128,6 +129,7 @@ $
                                     {
                                         found = true;
                                         genomeView.genome = masterView.circularFigures[i];
+                                        genomeView.firstRender = true;
                                         break;
                                     }
                                 }
@@ -140,52 +142,7 @@ $
                             
                         }
                     }
-                    if(arg.key == "operations")
-                    {
-                        if(arg.val !== undefined)
-                        {
-                            let masterView = <masterView.View>viewMgr.getViewByName("masterView");
-                            let genomeView = <genomeView.GenomeView>viewMgr.getViewByName("genomeView",masterView.views);
-                            let ops : Array<CompileTemplates> = arg.val;
-                            let totalTracks = 0;
-                            for(let i = 0; i != ops.length; ++i)
-                            {
-                                if(ops[i].name == "compileTemplates")
-                                {
-                                    if(genomeView.genome && ops[i].figure.uuid == genomeView.genome.uuid)
-                                    {
-                                        totalTracks++;
-                                        if(ops[i].flags.done && ops[i].flags.success)
-                                        {
-                                            if(ops[i].uuid)
-                                            {
-                                                console.log("compiled "+ops[i].uuid);
-                                                tc.removeTrack(ops[i].uuid);
-                                                genomeView.firstRender = true;
-                                            }
-                                            else if(ops[i].compileBase)
-                                            {
-                                                console.log("compiled base figure");
-                                                tc.resetBaseFigureSVG();
-                                                genomeView.firstRender = true;
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                            if(totalTracks > 0)
-                                showGenericLoadingSpinnerInNavBar();
-                                
-                            if(totalTracks == 0)
-                            {
-                                hideSpinnerInNavBar();
-                            }
-                        }
-                        else if(arg.val === undefined)
-                        {
-                            hideSpinnerInNavBar();
-                        }
-                    }
+                    
                 }
                 viewMgr.render();
             }

@@ -13,6 +13,7 @@ import {CircularFigure} from "./../circularFigure";
 import {reCacheBaseFigure} from "./reCacheBaseFigure";
 import {Fasta} from "./../../fasta";
 import {AlignData} from "./../../alignData";
+import {changeWindowTitle} from "./../changeWindowTitle";
 
 import * as GenomeView from "./genomeView";
 import * as tc from "./templateCache";
@@ -22,8 +23,8 @@ import {writeAvailableTracksModal} from "./writeAvailableTracksModal";
 import {writeContigEditorModal} from "./writeContigEditorModal";
 import {writeContigCreatorModal} from "./writeContigCreatorModal";
 import {writeEditContigsModal} from "./writeEditContigsModal";
+import {writeSequenceSelectionModal} from "./writeSequenceSelectionModal";
 import {showGenericLoadingSpinnerInNavBar} from "./loadingSpinner";
-
 
 const $ = require("jquery");
 (<any>window).$ = $;
@@ -52,6 +53,7 @@ export class View extends viewMgr.View
     public contigEditorModalOpen : boolean;
     public contigCreatorModalOpen : boolean;
     public editContigsModalOpen : boolean;
+    public seqSelectionModalOpen : boolean;
     public constructor(div : string)
     {
         super("masterView",div);
@@ -63,7 +65,9 @@ export class View extends viewMgr.View
         this.contigEditorModalOpen = false;
         this.contigCreatorModalOpen = false;
         this.editContigsModalOpen = false;
+        this.seqSelectionModalOpen = false;
     }
+
     /**
      * Retrieve all the alignments run for the currently open figure
      * 
@@ -87,6 +91,7 @@ export class View extends viewMgr.View
             return undefined;
         return res;
     }
+
     /**
      * Show the modal, with whatever happens to be on it. Bootstrap only allows a single modal
      * 
@@ -96,11 +101,15 @@ export class View extends viewMgr.View
     {
         try
         {
+            let modalContent = (<HTMLElement>document.getElementsByClassName("modal-content").item(0));
+            modalContent.style.left = "0px";
+            modalContent.style.top = "0px";
             (<any>$(".modal")).modal("show");
             document.getElementsByClassName("modal-backdrop")[0].classList.remove("modal-backdrop");
         }
         catch(err){}
     }
+
     /**
      * Dismiss the modal
      * 
@@ -110,14 +119,27 @@ export class View extends viewMgr.View
     {
         (<any>$(".modal")).modal("hide");
     }
+
     public resetModalStates() : void
     {
+        let genomeView = <GenomeView.GenomeView>viewMgr.getViewByName("genomeView",this.views);
+
         this.alignsModalOpen = false;
         this.availableTracksModalOpen = false;
         this.contigCreatorModalOpen = false;
         this.contigEditorModalOpen = false;
         this.editContigsModalOpen = false;
+
+        let triggerOnChange = false;
+        if(this.seqSelectionModalOpen && genomeView.showSeqSelector)
+            triggerOnChange = true;
+        this.seqSelectionModalOpen = false;
+        genomeView.showSeqSelector = false;
+        if(triggerOnChange)
+            genomeView.showSeqSelectorOnChange();
+
     }
+
     /**
      * Highlight the currently open figure in the "Figures" dropdown
      * 
@@ -141,6 +163,7 @@ export class View extends viewMgr.View
             }
         }
     }
+
     /**
      * Update the textbox in the navbar with the radius of the open figure
      * 
@@ -155,6 +178,7 @@ export class View extends viewMgr.View
         else
             el.value = genomeView.genome.radius.toString();
     }
+
     /**
      * Update the textbox in the navbar with the track interval of the open figure
      * 
@@ -169,6 +193,7 @@ export class View extends viewMgr.View
         else
             el.value = genomeView.genome.circularFigureBPTrackOptions.interval.toString();
     }
+
     /**
      * Update the checkbox in the navbar with the interval status of the open figure
      * 
@@ -186,6 +211,7 @@ export class View extends viewMgr.View
         else if(genomeView.genome.circularFigureBPTrackOptions.showLabels == 1)
             checkbox.checked = true;
     }
+
     /**
      * On startup. Apply behaviour to static dropdowns and controls
      * 
@@ -214,7 +240,8 @@ export class View extends viewMgr.View
                         self.fastaInputs[i].contigs
                     ));
                     self.saveFigureChanges();
-                    genomeView.genome = self.circularFigures[self.circularFigures.length - 1];
+                    genomeView.loadFigure(self.circularFigures[self.circularFigures.length - 1]);
+                    changeWindowTitle(genomeView.genome.name);
                     genomeView.firstRender = true;
                     viewMgr.render();
                     self.setSelectedFigureInDropDown();
@@ -225,7 +252,8 @@ export class View extends viewMgr.View
             {
                 if((<any>ev.target).id == `${self.circularFigures[i].uuid}Open`)
                 {
-                    genomeView.genome = self.circularFigures[i];
+                    genomeView.loadFigure(self.circularFigures[i]);
+                    changeWindowTitle(genomeView.genome.name);
                     genomeView.firstRender = true;
                     viewMgr.render();
                     self.setSelectedFigureInDropDown();
@@ -233,20 +261,16 @@ export class View extends viewMgr.View
                 }
             }
         }
-        document.getElementById("figureOptions").onclick = function(this : HTMLElement,ev : MouseEvent){
+        document.getElementById("figureOptions").onclick = async function(this : HTMLElement,ev : MouseEvent){
             if((<any>event.target).id == `${genomeView.genome.uuid}ToggleInteractivity`)
             {
                 genomeView.genome.isInteractive = !genomeView.genome.isInteractive;
                 self.saveFigureChanges();
-                genomeView.firstRender = true;
-                viewMgr.render();
             }
             if((<any>event.target).id == `${genomeView.genome.uuid}ToggleContigNames`)
             {
                 genomeView.genome.showContigNames = !genomeView.genome.showContigNames;
                 self.saveFigureChanges();
-                genomeView.firstRender = true;
-                viewMgr.render();
             }
             if((<any>event.target).id == `EditFigureName`)
             {
@@ -276,6 +300,18 @@ export class View extends viewMgr.View
             writeContigCreatorModal();
             self.showModal();
         }
+
+        //document.getElementById("selectSequence").onclick = function(this : HTMLElement,ev : MouseEvent){
+        window.addEventListener("keypress",function(this : Window,e : KeyboardEvent){
+            if(e.ctrlKey && e.shiftKey)
+            {
+                if(genomeView.showSeqSelector)
+                    genomeView.showSeqSelector = false;
+                else
+                    genomeView.showSeqSelector = true;
+                genomeView.showSeqSelectorOnChange();
+            }
+        });
 
         document.getElementById("exportToSVG").onclick = function(this : HTMLElement,ev : MouseEvent){
             if(!genomeView.genome)
@@ -316,7 +352,7 @@ export class View extends viewMgr.View
             );
         }
 
-        document.getElementById("updateNavBarButton").onclick = function(this : HTMLElement,ev : MouseEvent){
+        document.getElementById("updateNavBarButton").onclick = async function(this : HTMLElement,ev : MouseEvent){
             let radiusHasChanged = false;
             let trackIntervalChanged = false;
             let showIntervalChanged = false;
@@ -350,18 +386,32 @@ export class View extends viewMgr.View
             }
             if(radiusHasChanged || trackIntervalChanged || showIntervalChanged)
             {
+                genomeView.inputRadiusOnChange();
                 genomeView.firstRender = true;
-                tc.triggerReCompileForWholeFigure(genomeView.genome);
                 self.saveFigureChanges();
             }
             genomeView.updateScope();
-            viewMgr.render();
         }
 
         //on modal dismissal
         $("#modal").on('hidden.bs.modal',function(){
             self.resetModalStates();
         });
+
+        //adapted from https://jsfiddle.net/tovic/mkUJf/
+        $(".modal-header").on("mousedown",function(this : any,e : any){
+            $(".modal-content").addClass('draggable').parents().on('mousemove',function(e : any){
+                $('.draggable').offset({
+                    top: e.pageY - $('.draggable').outerHeight() / 2,
+                    left: e.pageX - $('.draggable').outerWidth() / 2
+                }).on('mouseup',function(this : any){
+                    $(this).removeClass('draggable');
+                });
+            });
+        }).on('mouseup',function(){
+            $('.draggable').removeClass('draggable');
+        });
+
     }
     public onUnMount() : void
     {
@@ -370,6 +420,7 @@ export class View extends viewMgr.View
             this.views[i].onUnMount();
         }
     }
+
     /**
      * Update dynamic dropdowns and controls. Call render on GenomeView
      * 
@@ -426,11 +477,14 @@ export class View extends viewMgr.View
             writeContigEditorModal();
         if(this.contigCreatorModalOpen)
             writeContigCreatorModal();
+        if(this.seqSelectionModalOpen)
+            writeSequenceSelectionModal();
 
         //viewMgr will not call postRender for a view that does no rendering so we'll do it explicitly
         this.postRender();
         return undefined;
     }
+
     public postRender() : void
     {
         for(let i = 0; i != this.views.length; ++i)
@@ -442,6 +496,7 @@ export class View extends viewMgr.View
         this.setFigureBPIntervalInput();
         this.setShowBPIntervalCheckBox();
     }
+
     /**
      * Save circular figures for the open project
      * 
@@ -459,6 +514,7 @@ export class View extends viewMgr.View
             }
         );
     }
+
     /**
      * Save changes to the open figure. Resets SVG caches to force figure updating
      * 
@@ -470,10 +526,10 @@ export class View extends viewMgr.View
         this.dataChanged();
         if(genomeView.genome)
         {
-            tc.resetBaseFigureCache();
             reCacheBaseFigure(genomeView.genome);
         }
     }
+
     public divClickEvents(event : JQueryEventObject) : void
     {
         let genomeView = <GenomeView.GenomeView>viewMgr.getViewByName("genomeView",this.views);        

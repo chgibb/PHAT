@@ -3,31 +3,33 @@ const ipc = electron.ipcRenderer;
 
 import {AtomicOperation} from "./req/operations/atomicOperations"
 import {KeySubEvent} from "./req/ipcEvents";
+import {initializeWindowDock,dockWindow,removeZombieTabs} from "./req/renderer/dock";
+import formatByteString from "./req/renderer/formatByteString";
 
 const $ = require("jquery");
 (<any>window).$ = $;
 import "./req/renderer/commonBehaviour";
 
+
 $
 (
     function()
     {
-
-        
+        initializeWindowDock();
         document.getElementById("input").onclick = function(this : HTMLElement,ev : MouseEvent){
-            ipc.send("openWindow",{refName : "input"});
+            dockWindow("input","toolBar");
         }
         document.getElementById("QC").onclick = function(this : HTMLElement,ev : MouseEvent){
-            ipc.send("openWindow",{refName : "QC"});
+            dockWindow("QC","toolBar");
         }
         document.getElementById("align").onclick = function(this : HTMLElement,ev : MouseEvent){
-            ipc.send("openWindow",{refName : "align"});
+            dockWindow("align","toolBar");
         }
         document.getElementById("output").onclick = function(this : HTMLElement,ev : MouseEvent){
-            ipc.send("openWindow",{refName : "output"});
+            dockWindow("output","toolBar");
         }
         document.getElementById("circularGenomeBuilder").onclick = function(this : HTMLElement,ev : MouseEvent){
-            ipc.send("openWindow",{refName : "circularGenomeBuilder"});
+            dockWindow("circularGenomeBuilder","toolBar");
         }
 
         ipc.send(
@@ -51,12 +53,29 @@ $
                         let ops : Array<AtomicOperation> = <Array<AtomicOperation>>arg.val;
                         for(let i = 0; i != ops.length; ++i)
                         {
-                            if(ops[i].name == "saveCurrentProject")
+                            if(ops[i].name == "unDockWindow")
                             {
-                                document.body.innerHTML = `<h1>Saving Project</h1>`;
+                                //when undocking has completed, clean up the tab left behind in the dock
+                                //We have to do this manually as <webview>s "destroy" event is broken https://github.com/electron/electron/issues/9675
+                                if(ops[i].flags.done && ops[i].flags.success)
+                                    removeZombieTabs();
+
+                            }
+                            if(ops[i].name == "saveProject")
+                            {
+                                let savingMessage = `
+                                    <h1>Saving Project</h1>
+                                `;
+                                if(ops[i].extraData !== undefined)
+                                {
+                                    savingMessage += `
+                                        <h3>Saved ${formatByteString(ops[i].extraData.bytesSaved)} of ${formatByteString(ops[i].extraData.totalBytesToSave)}</h3>
+                                    `;
+                                }
+                                document.body.innerHTML = savingMessage;
                             }
                             if(ops[i].flags.done && (ops[i].name == "indexFasta" ||
-                                ops[i].name == "runAlignment" || ops[i].name == "saveCurrentProject" ||
+                                ops[i].name == "runAlignment" || ops[i].name == "saveProject" ||
                                 ops[i].name == "renderCoverageTrackForContig" || ops[i].name == "renderSNPTrackForContig"
                             ))
                             {

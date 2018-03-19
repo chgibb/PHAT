@@ -6,7 +6,8 @@ import * as plasmid from "./../circularGenome/plasmid";
 import * as viewMgr from "./../viewMgr";
 import * as masterView from "./masterView";
 import {GenomeView} from "./genomeView";
-import {centreFigure} from "./centreFigure";
+import {centreInteractiveFigure,centreNonInteractiveFigure} from "./centreFigure";
+
 /**
  * Displays the currently set figure
  * 
@@ -17,11 +18,14 @@ import {centreFigure} from "./centreFigure";
 export async function displayFigure(self : GenomeView) : Promise<void>
 {
     if(!self.genome.isInteractive)
-        return await displayNonInteractiveFigure(self);
+        await displayNonInteractiveFigure(self);
     else
-        return await displayInteractiveFigure(self);
+        await displayInteractiveFigure(self);
+    //force a GC pass
+    (<any>global).gc();
 
 }
+
 /**
  * Renders a figure as a non-interactive SVG using the specified canvas
  * 
@@ -33,20 +37,30 @@ export async function displayNonInteractiveFigure(self : GenomeView) : Promise<v
 {
     return new Promise<void>(async (resolve,reject) => {
         await tc.refreshCache(self.genome);
+        
         cleanCanvas(self);
 
-        let $div : any = $(`
-            <div id="${self.div}">
-                ${getSelectedDataTrackSVGsFromCache(self)}
-                ${tc.baseFigureSVG ? tc.baseFigureSVG : ""}
-            </div>
-        `);
-
-        $(document.body).append($div);
-        centreFigure(document.getElementById(self.div),self.genome);
+        let canvas : HTMLCanvasElement = <HTMLCanvasElement>document.getElementById("nonInteractiveFigureCanvas");
+        if(!canvas)
+        {
+            let $div = `
+                <div id="canvasWrapper">
+                    <canvas id="nonInteractiveFigureCanvas" style="position:absolute;left:0px;top:0px;"></canvas>
+                </div>
+            `;
+            document.body.insertAdjacentHTML("beforeend",$div);
+            canvas = <HTMLCanvasElement>document.getElementById("nonInteractiveFigureCanvas");
+        }
+        console.log(`canvas width ${self.genome.width}`);
+        console.log(`canvas height ${self.genome.height}`);
+        canvas.setAttribute("width",`${self.genome.width}`);
+        canvas.setAttribute("height",`${self.genome.height}`);
+        centreNonInteractiveFigure(self.genome);
+        await tc.renderToCanvas(canvas.getContext("2d"),self);
         resolve();
     });
 }
+
 /**
  * Renders a figure as interactive using Angular bindings using the specified canvas
  * 
@@ -61,8 +75,6 @@ export async function displayInteractiveFigure(self : GenomeView) : Promise<void
     //We remove the div this view is bound to, recreate it and re render the angular template into it
     //Then we pass the div into angular to compile the templates and then finally inject it all back into
     //the page.
-    //The promise and setImmediate wrapping around each step is to ensure that the event loop has a chance to process
-    //DOM updates, so we can signal our progress to the user in the loading modal.
     return new Promise<void>(async (resolve,reject) => {
 
         let masterView = <masterView.View>viewMgr.getViewByName("masterView");
@@ -70,31 +82,41 @@ export async function displayInteractiveFigure(self : GenomeView) : Promise<void
         let $div : any;
 
         cleanCanvas(self);
+        if(document.getElementById("canvasWrapper"))
+            document.getElementById("canvasWrapper").outerHTML = "";
         
         for(let i = 0; i != self.genome.contigs.length; ++i)
         {
             totalBP += self.genome.contigs[i].bp;
         }
-
         await tc.refreshCache(self.genome);
         let templates = cf.assembleCompilableTemplates(
             self.genome,
-            `${cf.getBaseFigureFromCache(self.genome)}`
+            `
+                ${cf.getBaseFigureTemplateFromCache(self.genome)}
+                ${self.showSeqSelector ? cf.buildSequenceSelectorTemplate(
+                    self.genome,
+                    self.seqSelectionLeftArm,
+                    self.seqSelectionRightArm,
+                    self.seqSelectionArrow
+                ) : ""}
+            `
         );
+
         //instead of forcing angular to walk through all the svgs as well as the actual angular templates
         //in the base figure we actually want compiled, separate them into separate divs
-        $div = $(`
+        $div = `
             <div id="${self.div}">
                                     
                 ${getSelectedDataTrackSVGsFromCache(self)}
 
-                <div id="toCompile">
+                <div id="toCompile" ng-app>
                     ${templates}
                     </div>
                 </div>
-        `);
-        $(document.body).append($div);
-        centreFigure(document.getElementById(self.div),self.genome);
+        `;
+        document.body.insertAdjacentHTML("beforeend",$div);
+        centreInteractiveFigure(document.getElementById(self.div),self.genome);
         console.log("appended div");
 
         let divToCompile : HTMLElement = document.getElementById("toCompile");
@@ -125,7 +147,7 @@ export async function displayInteractiveFigure(self : GenomeView) : Promise<void
 }
 
 /**
- * Delete the div used by self for rendering and GC
+ * Delete the div used by self for rendering
  * 
  * @export
  * @param {GenomeView} self 
@@ -133,14 +155,15 @@ export async function displayInteractiveFigure(self : GenomeView) : Promise<void
 export function cleanCanvas(self : GenomeView) : void
 {
     let div = document.getElementById(self.div);
-    //explicitly remove children to prevent creating detached DOM nodes
-    while(div.firstChild)
+    if(div)
     {
-        div.removeChild(div.firstChild);
+        //explicitly remove children to prevent creating detached DOM nodes
+        while(div.firstChild)
+        {
+            div.removeChild(div.firstChild);
+        }
+        document.body.removeChild(div);
     }
-    document.body.removeChild(div);
-    //force a GC pass
-    (<any>global).gc();
 }
 
 /**
@@ -157,26 +180,22 @@ export function getSelectedDataTrackSVGsFromCache(self : GenomeView) : string
     {
         if(self.genome.renderedCoverageTracks[i].checked)
         {
-            try
-            {
-                res += `<div style="position:absolute;z-index:-99;">`;
-                res += tc.getCachedCoverageTrack(self.genome.renderedCoverageTracks[i]);
-                res += `</div>`;
-            }
-            catch(err){}
+            let map = tc.getCoverageTrack(self.genome.renderedCoverageTracks[i]);
+            map.$scope = cf.makeMapScope(self.genome);
+            res += `<div style="position:absolute;z-index:-99;">`;
+            res += map.renderStart() + map.renderEnd();
+            res += `</div>`;
         }
     }
     for(let i = 0; i != self.genome.renderedSNPTracks.length; ++i)
     {
         if(self.genome.renderedSNPTracks[i].checked)
         {
-            try
-            {
-                res += `<div style="position:absolute;z-index:-99;">`;
-                res += tc.getCachedSNPTrack(self.genome.renderedSNPTracks[i]);
-                res += `</div>`;
-            }
-            catch(err){}
+            let map = tc.getSNPTrack(self.genome.renderedSNPTracks[i]);
+            map.$scope = cf.makeMapScope(self.genome);
+            res += `<div style="position:absolute;z-index:-99;">`;
+            res += map.renderStart() + map.renderEnd();
+            res += `</div>`;
         }
     }
     return res;

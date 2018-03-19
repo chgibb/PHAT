@@ -30,7 +30,7 @@ export function renderMappedReadsPerContigTable() : string
                     
                     if(masterView.alignData[i].uuid == masterView.inspectingUUID)
                     {
-                        for(let k = 0; k != masterView.alignData[i].idxStatsReport.length; ++k)
+                        for(let k = 0; k != masterView.alignData[i].idxStatsReport.length-1; ++k)
                         {
                                 res += "<tr>";
                                 if(rightPanel.mapppedReadsPerContigInfoSelection.refSeqName)

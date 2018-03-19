@@ -8,16 +8,22 @@ winMgr.windowCreators["projectSelection"] =
 {
 	Create : function() 
 	{
+		winMgr.initWindowOptions(
+			"ProjectSelection",
+			"projectSelection",
+			400,800,
+			false, 10, 10
+		);
+		
 		winMgr.pushWindow(
 			"projectSelection",
-			winMgr.createWithDefault(
-				"ProjectSelection",
+			winMgr.createFromOptions(
 				"projectSelection",
-				400,800,
 				"file://"+getReadable("ProjectSelection.html"),
-				false,false, 10, 10
+				false
 			)
 		);
+		
 		//If the toolbar is not open then the user has closed PHAT without opening a project.
 		//Make sure we don't hang around in the background.
 		let projectSelectWindow : Array<Electron.BrowserWindow> = winMgr.getWindowsByName("projectSelection");

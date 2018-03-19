@@ -12,14 +12,14 @@ import * as viewMgr from "./../viewMgr";
 import * as masterView from "./masterView";
 import {AlignData} from "./../../alignData";
 import * as cf from "./../circularFigure";
-import {displayFigure} from "./displayFigure";
-import {centreFigure} from "./centreFigure";
+import {displayFigure,cleanCanvas} from "./displayFigure";
+import {centreInteractiveFigure,centreNonInteractiveFigure} from "./centreFigure";
+import {changeWindowTitle} from "./../changeWindowTitle";
 import {showGenericLoadingSpinnerInNavBar,hideSpinnerInNavBar} from "./loadingSpinner";
 import {setSelectedContigByUUID} from "./writeContigEditorModal";
 import {reCacheBaseFigure} from "./reCacheBaseFigure";
 import * as tc from "./templateCache";
-
-import {writeSVG,serializeFigure,renderSVG} from "./exportToSVG";
+import {resetCaches} from "./templateCache";
 
 require("angular");
 require("@chgibb/angularplasmid");
@@ -41,6 +41,7 @@ export class GenomeView extends viewMgr.View implements cf.FigureCanvas
      * @memberof GenomeView
      */
     public genome : cf.CircularFigure;
+
     /**
      * Reconstruct the figure using cached data
      * 
@@ -48,6 +49,7 @@ export class GenomeView extends viewMgr.View implements cf.FigureCanvas
      * @memberof GenomeView
      */
     public firstRender : boolean;
+
     /**
      * Aligns for this figure
      * 
@@ -55,6 +57,7 @@ export class GenomeView extends viewMgr.View implements cf.FigureCanvas
      * @memberof GenomeView
      */
     public alignData : Array<AlignData>;
+
     /**
      * Bound Angular scope for genome
      * 
@@ -62,13 +65,34 @@ export class GenomeView extends viewMgr.View implements cf.FigureCanvas
      * @memberof GenomeView
      */
     public scope : any;
+
+    public showSeqSelector : boolean;
+    public seqSelectionLeftArm : cf.SeqSelectionDisplayArm;
+    public seqSelectionRightArm : cf.SeqSelectionDisplayArm;
+    public seqSelectionArrow : cf.SeqSelectionDisplayArrow;
+
     public constructor(name : string,div : string)
     {
         super(name,div);
         this.firstRender = true;
+        this.showSeqSelector = false;
     }
     public onMount() : void{}
     public onUnMount() : void{}
+
+    public loadFigure(figure : cf.CircularFigure) : void
+    {
+        this.genome = figure;
+        let scope = cf.makeMapScope(this.genome,{
+            start : 0,
+            end : 500
+        });
+        this.seqSelectionLeftArm = scope.seqSelectionLeftArm;
+        this.seqSelectionRightArm = scope.seqSelectionRightArm;
+        this.seqSelectionArrow = scope.seqSelectionArrow;
+        this.inputRadiusOnChange();
+    }
+
     /**
      * Update the Angular scope for genome
      * 
@@ -83,6 +107,10 @@ export class GenomeView extends viewMgr.View implements cf.FigureCanvas
         if(scope)
             this.scope = scope;
         this.scope.genome = this.genome;
+        this.scope.seqSelectionLeftArm = this.seqSelectionLeftArm;
+        this.scope.seqSelectionRightArm = this.seqSelectionRightArm;
+        this.scope.seqSelectionArrow = this.seqSelectionArrow;
+        this.scope.showSeqSelector = this.showSeqSelector;
         this.scope.alignData = this.alignData;
         this.scope.markerOnClick = this.markerOnClick;
         this.scope.figureNameOnClick = this.figureNameOnClick;
@@ -117,26 +145,30 @@ export class GenomeView extends viewMgr.View implements cf.FigureCanvas
                         ]
                     }
                 ]
-            },function(fileName : string)
+            },async function(fileName : string)
             {
                 if(fileName)
                 {
                     let masterView = <masterView.View>viewMgr.getViewByName("masterView");
-                    
-                    showGenericLoadingSpinnerInNavBar();
-                    setTimeout(function(){
-                        renderSVG(self).then(() => {
-                            centreFigure(document.getElementById(self.div),self.genome);
-                            serializeFigure(self).then((svg : string) => {
-                                writeSVG(self,fileName,svg).then(() => {
-                                    masterView.dismissModal();
-                                    self.firstRender = true;
-                                    hideSpinnerInNavBar();
-                                    viewMgr.render();
-                                });
-                            });
-                        });
-                    },10);
+
+                    //save a reference to the figure currently open in the editor
+                    let currentlyOpenFigure = self.genome;
+
+                    //completely unload the currently open figure and force a gc pass to 
+                    //lower RAM use before compiling a single SVG
+                    self.genome = undefined;
+                    cleanCanvas(self);
+                    resetCaches();
+                    (<any>global).gc();
+
+                    let svg = await cf.buildSingleSVG(currentlyOpenFigure);
+
+                    fs.writeFileSync(fileName,svg);
+
+                    //reload the open figure
+                    self.genome = currentlyOpenFigure;
+                    self.firstRender = true;
+                    viewMgr.render();
                 }
             }
         );
@@ -170,13 +202,13 @@ export class GenomeView extends viewMgr.View implements cf.FigureCanvas
             {
                 self.genome.name = text;
                 //Overwrite old template cache for figure
-                cf.cacheBaseFigure(self.genome);
+                cf.cacheBaseFigureTemplate(self.genome);
                 let masterView = <masterView.View>viewMgr.getViewByName("masterView");
                 let genomeView = <GenomeView>viewMgr.getViewByName("genomeView",masterView.views);
-
                 
                 //Save changes
                 masterView.saveFigureChanges();
+                changeWindowTitle(self.genome.name);
                 //Re render
                 genomeView.firstRender = true;
                 viewMgr.render();
@@ -188,25 +220,43 @@ export class GenomeView extends viewMgr.View implements cf.FigureCanvas
      * 
      * @memberof GenomeView
      */
-    public inputRadiusOnChange()
+    public inputRadiusOnChange() : void
     {
-        this.genome.height = this.genome.radius*10;
-        this.genome.width =this.genome.radius*10;
-        //Re center figure
-        this.postRender();
+        this.genome.height = 1200+this.genome.radius*10;
+        this.genome.width = 1200+this.genome.radius*10;
+        this.seqSelectionLeftArm.armRadius = this.genome.radius;
+        this.seqSelectionRightArm.armRadius = this.genome.radius;
+        this.seqSelectionArrow.arrowTrackRadius = this.genome.radius;
+       
     }
     /**
      * Should be called when the track interval changes
      * 
      * @memberof GenomeView
      */
-    public showBPTrackOnChange()
+    public showBPTrackOnChange() : void
     {
         let masterView = <masterView.View>viewMgr.getViewByName("masterView");
         let genomeView = <GenomeView>viewMgr.getViewByName("genomeView",masterView.views);
         genomeView.firstRender = true;
         viewMgr.render();
     }
+
+    public showSeqSelectorOnChange() : void
+    {
+        let masterView = <masterView.View>viewMgr.getViewByName("masterView");
+        let genomeView = <GenomeView>viewMgr.getViewByName("genomeView",masterView.views);
+
+        if(this.showSeqSelector)
+        {
+            masterView.seqSelectionModalOpen = true;
+            masterView.showModal();
+        }
+        
+        genomeView.firstRender = true;
+        viewMgr.render();
+    }
+
     public renderView() : string
     {
         let masterView = <masterView.View>viewMgr.getViewByName("masterView");
@@ -219,6 +269,7 @@ export class GenomeView extends viewMgr.View implements cf.FigureCanvas
             //All figure updates are handled through angular bindings
             if(this.firstRender)
             {
+                let startUp = performance.now();
                 showGenericLoadingSpinnerInNavBar();
                 
                 let self = this;
@@ -227,6 +278,7 @@ export class GenomeView extends viewMgr.View implements cf.FigureCanvas
                         hideSpinnerInNavBar();
                         setTimeout(function(){
                             window.dispatchEvent(new Event("resize"));
+                            console.log(`re-rendering figure took ${(performance.now()-startUp)}`);
                         },10);
                     });
                 },10);
@@ -234,8 +286,6 @@ export class GenomeView extends viewMgr.View implements cf.FigureCanvas
                 this.firstRender = false;
             }
         }
-        else
-            return " ";
         return undefined;
     }
     /**
@@ -247,7 +297,10 @@ export class GenomeView extends viewMgr.View implements cf.FigureCanvas
     {
         if(this.genome !== undefined)
         {
-            centreFigure(document.getElementById(this.div),this.genome);
+            if(this.genome.isInteractive)
+                centreInteractiveFigure(document.getElementById(this.div),this.genome);
+            else
+                centreNonInteractiveFigure(this.genome);
         }
 
         /*

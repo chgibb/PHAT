@@ -6,12 +6,11 @@ import {IndexFastaForVisualization} from "./../operations/indexFastaForVisualiza
 import {RunAlignment} from "./../operations/RunAlignment";
 import {RenderCoverageTrackForContig} from "./../operations/RenderCoverageTrack";
 import {RenderSNPTrackForContig} from "./../operations/RenderSNPTrack";
-import {CompileTemplates} from "./../operations/CompileTemplates";
 import {CheckForUpdate} from "./../operations/CheckForUpdate";
 import {DownloadAndInstallUpdate} from "./../operations/DownloadAndInstallUpdate";
 import {NewProject} from "./../operations/NewProject";
 import {OpenProject} from "./../operations/OpenProject";
-import {SaveCurrentProject} from "./../operations//SaveCurrentProject";
+import {SaveProject} from "./../operations/SaveProject";
 import {InputBamFile} from "./../operations/InputBamFile";
 import {LinkRefSeqToAlignment} from "./../operations/LinkRefSeqToAlignment";
 
@@ -23,7 +22,6 @@ export function registerOperations() : void
     atomic.register("runAlignment",RunAlignment);
     atomic.register("renderCoverageTrackForContig",RenderCoverageTrackForContig);
     atomic.register("renderSNPTrackForContig",RenderSNPTrackForContig);
-    atomic.register("compileTemplates",CompileTemplates);
     atomic.register("inputBamFile",InputBamFile);
     atomic.register("linkRefSeqToAlignment",LinkRefSeqToAlignment);
 
@@ -32,5 +30,5 @@ export function registerOperations() : void
 
     atomic.register("newProject",NewProject);
     atomic.register("openProject",OpenProject);
-    atomic.register("saveCurrentProject",SaveCurrentProject);
+    atomic.register("saveProject",SaveProject);
 }
