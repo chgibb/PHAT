@@ -12,6 +12,8 @@
 
 ### [Latest Stable Release: PHAT@0.7.10](https://chgibb.github.io/PHATDocs/releases/0.7.10/index)
 ## Documentation Quicklinks
+
+[![Greenkeeper badge](https://badges.greenkeeper.io/chgibb/PHAT.svg)](https://greenkeeper.io/)
 1. [How to Get PHAT](https://chgibb.github.io/PHATDocs/docs/releases/0.7.10/howToGetPHAT)
 2. [Working With PHAT Projects](https://chgibb.github.io/PHATDocs/docs/releases/0.7.10/projects)
 3. [Inputting Files](https://chgibb.github.io/PHATDocs/docs/releases/0.7.10/inputtingFiles)
