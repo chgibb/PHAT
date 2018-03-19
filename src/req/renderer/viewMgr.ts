@@ -43,7 +43,7 @@ export abstract class View
         (
             function(event)
             {
-                obj.divClickEvents(event);
+                obj.divClickEvents(event as any);
             }
         );
         //this.onMount();
