@@ -18,7 +18,6 @@ install:
 - export DISPLAY=':99.0'
 - Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
 - bash scripts/install.bash
-- bash scripts/buildtests.bash
 before_script:
 - greenkeeper-lockfile-update
 after_script:

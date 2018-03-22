@@ -4,7 +4,7 @@
     "description": "Pathogen Host Analysis Tool",
     "main": "main.js",
     "scripts": {
-        "test": "bash scripts/runtests.bash"
+        "test": "bash scripts/prepareIntegrationTest.bash && bash scripts/integrationTest.bash && bash scripts/prepareSmokeTest.bash && bash scripts/smokeTest.bash"
     },
     "author": {
         "name": "Chris Gibb",

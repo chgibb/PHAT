@@ -13,10 +13,8 @@ install:
   - bash scripts/install.bash >nul
 
 build_script:
-  - bash scripts/build.bash
 
 test_script:
- - bash scripts/buildtests.bash
  - npm test
  - bash scripts/cleanTests.bash
  - bash scripts/prepareWindowsRelease.bash
