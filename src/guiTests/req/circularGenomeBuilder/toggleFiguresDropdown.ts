@@ -22,7 +22,7 @@ export async function toggleFiguresDropdown() : Promise<void>
            genomeBuilder[0].executeJavaScript(`
                document.getElementById("figuresDropdownToggle").click();
            `);
-
+           resolve();
        },500); 
     });
 }
