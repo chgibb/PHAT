@@ -30,11 +30,10 @@ export async function createHPV16Figure() : Promise<void>
                     genomeBuilder[0].executeJavaScript(`
                         document.getElementById("${fastas[i].uuid}NewFigure").click();
                     `);
-                    setTimeout(function(){
-                        resolve();
-                    },100);
+                    return resolve();
                 }
             }
+            return reject()
         },100);
     });
 }
