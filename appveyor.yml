@@ -13,7 +13,7 @@ install:
   - bash scripts/install.bash >nul
 
 build_script:
-
+ - bash scripts/build.bash
 test_script:
  - npm test
  - bash scripts/cleanTests.bash
