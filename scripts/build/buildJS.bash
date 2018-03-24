@@ -10,15 +10,17 @@ cp src/pileup.js/style/pileup.css dist/styles/pileup.css
 
 if [[ "$1" != "prod" ]]; then
 	./node_modules/.bin/tsc
+	if [ $? != 0 ]; then
+		exit 1
+	fi
 fi
 if [[ "$1" == "opt" ]]; then
 	./node_modules/.bin/tsc -p tsconfigProd.json
+	if [ $? != 0 ]; then
+		exit 1
+	fi
 fi
-#Compilation failed somewhere
-if [ $? != 0 ]; then
-    cleanTSArtifacts
-	exit 1
-fi
+
 
 if [[ "$1" == "opt" ]]; then
 	for f in src/*.js
@@ -56,5 +58,4 @@ do
 done
 
 cleanTSArtifacts
-
 
