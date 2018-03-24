@@ -7,18 +7,9 @@
  * @param {number} bytes - Number of bytes 
  * @returns {string} - Formatted byte string
  */
-//Adapted from https://jsfiddle.net/oy02axhh/
+//Adapted from https://stackoverflow.com/questions/10420352/converting-file-size-in-bytes-to-human-readable-string
 export default function formatByteString(bytes : number) : string
 {
-    let kb = 1000;
-    let ndx = Math.floor(Math.log(bytes) / Math.log(kb));
-    let fileSizeTypes = ["bytes", "kb", "mb", "gb", "tb", "pb", "eb", "zb", "yb"];
-
-    let res = "";
-    //more than a megabyte
-    if(bytes >= 1000000)
-        res += +(bytes/kb/kb).toFixed(2)+fileSizeTypes[ndx];
-    else
-        res += +(bytes/kb).toFixed(2)+fileSizeTypes[ndx];
-    return res;
+    let i = Math.floor( Math.log(bytes) / Math.log(1024) );
+    return (bytes / parseFloat(Math.pow(1024, i).toFixed(2)) * 1 + ['B', 'kB', 'MB', 'GB', 'TB'][i]);
 }
