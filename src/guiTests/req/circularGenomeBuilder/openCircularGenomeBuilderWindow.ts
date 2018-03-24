@@ -16,8 +16,10 @@ export async function openCircularGenomeBuilderWindow() : Promise<void>
                 toolBar[0].webContents.executeJavaScript(`
                     document.getElementById("circularGenomeBuilder").click();
                 `);
-                resolve();
-            },3500);
+                setTimeout(function(){
+                    resolve();
+                },1500);
+            },500);
         },500);
     });
 }
