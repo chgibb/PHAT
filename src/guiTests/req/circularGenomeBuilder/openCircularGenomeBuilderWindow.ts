@@ -17,7 +17,7 @@ export async function openCircularGenomeBuilderWindow() : Promise<void>
                     document.getElementById("circularGenomeBuilder").click();
                 `);
                 resolve();
-            },1500);
+            },3500);
         },500);
     });
 }
