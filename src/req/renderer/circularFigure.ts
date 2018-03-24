@@ -241,7 +241,12 @@ export class SeqSelectionDisplayArrow
         this.arrowEndWidth = 5;
         this.arrowType = "path";
         this.arrowClass = "";
-        this.arrowText = `${start}-${end}`;
+        this.updateText();
+    }
+
+    public updateText()
+    {
+        this.arrowText = `${this.arrowStart}-${this.arrowEnd}`;   
     }
 }
 
@@ -505,7 +510,7 @@ export function buildSequenceSelectorTemplate(figure : CircularFigure,
     template += `
         <plasmidtrack trackstyle="{{seqSelectionArrow.arrowTrackStyle}}" radius="{{seqSelectionArrow.arrowTrackRadius}}">
             <trackmarker start="{{seqSelectionArrow.arrowStart}}" end="{{seqSelectionArrow.arrowEnd}}" markerstyle="{{seqSelectionArrow.arrowMarkerStyle}}" arrowendlength="${seqSelectionArrow.arrowEndLength}" arrowendwidth="${seqSelectionArrow.arrowEndWidth}">
-                <markerlabel type="path" class="" text="{{seqSelectionArrow.arrowText}}"></markerlabel>
+                <markerlabel type="path" class="seqSelectionArrowText" text="{{seqSelectionArrow.arrowText}}"></markerlabel>
             </trackmarker>
         </plasmidtrack>
     `;

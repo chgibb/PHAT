@@ -9,6 +9,8 @@
  */
 export function parseCSS(style : string,targetProp : string,delim = ";") : string
 {
+    if(!style)
+        return "";
     let str = "";
     let res = "";
     let gettingValue = false;
