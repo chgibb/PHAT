@@ -1,6 +1,6 @@
 {
   "name": "unmappedcigarfragments",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -14,6 +14,5 @@
     "jest": "^22.4.2",
     "typescript": "^2.7.2"
   },
-  "dependencies": {
-  }
+  "dependencies": {}
 }
