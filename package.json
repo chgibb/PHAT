@@ -4,7 +4,7 @@
     "description": "Pathogen Host Analysis Tool",
     "main": "main.js",
     "scripts": {
-        "test": "bash scripts/runtests.bash"
+        "test": "bash scripts/unitTest.bash && bash scripts/prepareIntegrationTest.bash && bash scripts/integrationTest.bash && bash scripts/prepareSmokeTest.bash && bash scripts/smokeTest.bash"
     },
     "author": {
         "name": "Chris Gibb",
@@ -46,6 +46,7 @@
         "@chgibb/ngplasmid": "^0.0.20",
         "@claviska/jquery-minicolors": "^2.2.6",
         "@types/fs-extra": "0.0.37",
+        "@types/jest": "^22.2.2",
         "@types/jquery": "^2.0.40",
         "@types/mkdirp": "^0.3.29",
         "@types/node": "8.0.17",
@@ -70,6 +71,7 @@
         "grunt": "^1.0.1",
         "gunzip-maybe": "^1.4.0",
         "htmlparser2": "^3.9.2",
+        "jest": "^22.4.3",
         "jquery": "^3.1.1",
         "jsonfile": "^2.4.0",
         "minimist": "^1.2.0",

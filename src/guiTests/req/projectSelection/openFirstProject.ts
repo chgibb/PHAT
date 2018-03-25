@@ -15,7 +15,7 @@ export async function openFirstProject() : Promise<void>
             setImmediate(function(){
                 setTimeout(function(){
                     resolve();
-                },10000);
+                },5500);
             });
 
             console.log("opening first project");
