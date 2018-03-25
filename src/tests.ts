@@ -39,6 +39,7 @@ import {testL6R1HPV18AlignImportedImporting} from "./req/tests/testL6R1HPV18Alig
 import {testL6R1HPV18AlignImportedLinking} from "./req/tests/testL6R1HPV18AlignImportedLinking";
 
 import {testBLASTSegment0To1000L6R1HPV16Alignment} from "./req/tests/testBLASTSegment0To1000L6R1HPV16Alignment";
+import {testBLASTSegment3500To4500L6R1HPV16Alignment} from "./req/tests/testBLASTSegment3500To4500L6R1HPV16Alignment";
 
 const pjson = require("./resources/app/package.json");
 import {isBeta,versionIsGreaterThan} from "./req/versionIsGreaterThan";
@@ -388,7 +389,7 @@ async function runTests() : Promise<void>
 			return reject();
 		}
 
-		console.log("BLASTing segment 0-1000 of L6R1 alignment on HPV16");
+		/*console.log("BLASTing segment 0-1000 of L6R1 alignment on HPV16");
 		atomic.addOperation("BLASTSegment",{
 			align : L6R1HPV16Align.get(),
 			contigUUID : L6R1HPV16Align.get().fasta.contigs[0].uuid,
@@ -398,6 +399,23 @@ async function runTests() : Promise<void>
 		try
 		{
 			await testBLASTSegment0To1000L6R1HPV16Alignment();
+		}
+		catch(err)
+		{
+			console.log("BLASTing segment threw exception");
+			return reject();
+		}*/
+
+		console.log("BLASTing segment 3500-4500 of L6R1 alignment on HPV16");
+		atomic.addOperation("BLASTSegment",{
+			align : L6R1HPV16Align.get(),
+			contigUUID : L6R1HPV16Align.get().fasta.contigs[0].uuid,
+			start : 3500,
+			stop : 4500
+		});
+		try
+		{
+			await testBLASTSegment3500To4500L6R1HPV16Alignment();
 		}
 		catch(err)
 		{

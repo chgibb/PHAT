@@ -81,6 +81,14 @@ process.on("message",async function(ev : AtomicOperationForkEvent){
             }
         );
 
+        await streamSamSegmentReads(blastSegmentResult,function(read : string){
+            console.log("read: "+read.split(/\s/g)[9]);
+            console.log("size "+read.split(/\s/g)[9].length);
+            console.log("trimmed "+read.split(/\s/g)[9].slice(blastSegmentResult.avgSeqLength));
+            console.log("size "+read.split(/\s/g)[9].slice(blastSegmentResult.avgSeqLength));
+            console.log("avg seq length "+blastSegmentResult.avgSeqLength);
+        });
+
 
         flags.done = true;
         flags.success = true;
