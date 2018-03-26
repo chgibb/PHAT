@@ -48,7 +48,7 @@ environment:
   OSTYPE: 'cygwin'
   APPVEYOR: true
   APPVEYOR_RDP_PASSWORD:
-    secure: wjz28qk+atf+a6iJYcVlG9NFjWEi5Bl29xBxEXXCqMs=
+    secure: m1pBiUOi5s8yPKqBtJrprMU3dHcNkTK8c86w3JDcWG8=
   GH_TOKEN_APPVEYOR:
     secure: V1YRM+jKAfr0DIpI8p2fKBarTpEbAFx6VuFznHtIyaLpnBg5nieoP//BxqkWZ4SK
 
