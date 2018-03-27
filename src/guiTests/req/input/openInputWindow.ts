@@ -8,12 +8,12 @@ import * as winMgr from "./../../../req/main/winMgr";
  */
 export async function openInputWindow() : Promise<void>
 {
-    return new Promise<void>((resolve,reject) => {
-        setTimeout(function(){
+    return new Promise<void>(async (resolve,reject) => {
+        setTimeout(async function(){
             console.log("opening input window");
-            setTimeout(function(){
+            setTimeout(async function(){
                 let toolBar = winMgr.getWindowsByName("toolBar");
-                toolBar[0].webContents.executeJavaScript(`
+                await toolBar[0].webContents.executeJavaScript(`
                     document.getElementById("input").click();
                 `);
                 resolve();
