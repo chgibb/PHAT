@@ -29,7 +29,9 @@ export async function selectFirstTwoReads() : Promise<void>
                 document.getElementById("${fastqs[0].uuid}").click();
                 document.getElementById("${fastqs[1].uuid}").click();
             `);
-            resolve();
+            setTimeout(async function(){
+                resolve();
+            });
         },500);
     });
 }
