@@ -20,7 +20,9 @@ export async function inputHPV16Ref() : Promise<void>
             fastas[0].checked = true;
             dataMgr.setKey("input","fastaInputs",fastas);
             winMgr.publishChangeForKey("input","fastaInputs");
-            resolve();
+            setTimeout(async function(){
+                resolve();
+            },500);
         },500);
     });
 }
