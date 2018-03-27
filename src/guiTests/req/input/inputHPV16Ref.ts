@@ -12,8 +12,8 @@ import {Fasta} from "./../../../req/fasta";
  */
 export async function inputHPV16Ref() : Promise<void>
 {
-    return new Promise<void>((resolve,reject) => {
-        setTimeout(function(){
+    return new Promise<void>(async (resolve,reject) => {
+        setTimeout(async function(){
             console.log("inputting hpv16 ref");
             let fastas = new Array<Fasta>();
             fastas.push(new Fasta(path.resolve(path.normalize("../testData/HPV16ref_genomes.fasta"))));
