@@ -20,7 +20,7 @@ export async function closeToolBar() : Promise<void>
                 }
                 toolBar[0].close();
                 resolve();
-            },5000);
-        },5000);
+            },2500);
+        },2500);
     });
 }

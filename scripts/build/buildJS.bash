@@ -10,15 +10,17 @@ cp src/pileup.js/style/pileup.css dist/styles/pileup.css
 
 if [[ "$1" != "prod" ]]; then
 	./node_modules/.bin/tsc
+	if [ $? != 0 ]; then
+		exit 1
+	fi
 fi
 if [[ "$1" == "opt" ]]; then
 	./node_modules/.bin/tsc -p tsconfigProd.json
+	if [ $? != 0 ]; then
+		exit 1
+	fi
 fi
-#Compilation failed somewhere
-if [ $? != 0 ]; then
-    cleanTSArtifacts
-	exit 1
-fi
+
 
 if [[ "$1" == "opt" ]]; then
 	for f in src/*.js
@@ -34,9 +36,10 @@ if [[ "$1" == "opt" ]]; then
 		fi
 	done
 fi
+
+i=0
 for f in src/*.js
 do
-	
 	destination=$(echo $f | awk '{gsub("src/","dist/");print}')
 
 	printf "Bundling "
@@ -44,17 +47,23 @@ do
 	printf "\n"
 
 	if [[ "$f" != "src/compileTemplatesProcess.js" ]]; then
-		./node_modules/.bin/browserify $f --node --debug -o $destination  --exclude electron --ignore-missing --noparse=jquery
+		./node_modules/.bin/browserify $f --node --debug -o $destination  --exclude electron --ignore-missing --noparse=jquery &
 	fi
 	if [[ "$f" == "src/compileTemplatesProcess.js" ]]; then
-		./node_modules/.bin/browserify $f --node --debug -o $destination --exclude electron --ignore-missing  --require @chgibb/angularplasmid --noparse=jquery
+		./node_modules/.bin/browserify $f --node --debug -o $destination --exclude electron --ignore-missing  --require @chgibb/angularplasmid --noparse=jquery &
 	fi
 	if [ $? != 0 ]; then
 	cleanTSArtifacts
 		exit 1
 	fi
+
+	i=$i+1
+	if [[ $(($i%2)) == 0 ]]; then
+		wait ${!}
+	fi
 done
 
-cleanTSArtifacts
+wait 
 
+cleanTSArtifacts
 
