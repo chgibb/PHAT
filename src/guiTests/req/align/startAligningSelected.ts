@@ -8,8 +8,8 @@ import * as winMgr from "./../../../req/main/winMgr";
  */
 export async function startAligningSelected() : Promise<void>
 {
-    return new Promise<void>((resolve,reject) => {
-        setTimeout(function(){
+    return new Promise<void>(async (resolve,reject) => {
+        setTimeout(async function(){
             console.log("starting to align selected reads against selected ref seq");
             let align = winMgr.getFreeWebContents();
             if(!align || align.length == 0)
@@ -17,7 +17,7 @@ export async function startAligningSelected() : Promise<void>
                 console.log("Failed to open align window");
                 process.exit(1);
             }
-            align[0].executeJavaScript(`
+            await align[0].executeJavaScript(`
                 document.getElementById("alignButton").click();
             `);
             resolve();

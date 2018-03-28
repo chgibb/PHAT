@@ -17,6 +17,17 @@ import * as fs from "fs";
 if(!(<any>global).require)
 	(<any>global).require = require;
 
+/**
+ * Load the cached data at cdata, using the js source file at jsFile as the reference source.
+ * Returns 0 on success.
+ * Returns 1 if the cached data at cdata does not exist.
+ * Returns 2 if the js source file at jsFile does not exist.
+ * Returns 3 if the cached data was rejected by V8.
+ * 
+ * @param {string} jsFile 
+ * @param {string} cdata 
+ * @returns {number} 
+ */
 function loadFromCache(jsFile : string,cdata : string) : number
 {
 	let cache : Buffer;
@@ -59,6 +70,18 @@ function loadFromCache(jsFile : string,cdata : string) : number
 		return 3;
 	}
 }
+
+/**
+ * Compile cached data for the js source file at jsFile, saves to the path given by cdata.
+ * Returns 0 on success.
+ * Returns 1 if the js source file at jsFile failed to compile.
+ * Returns 2 if the js source file at jsFile does not exist.
+ * Returns 3 if the compiled cached data for the js source file at jsFile could not be written to the path given by cdata.
+ * 
+ * @param {string} jsFile 
+ * @param {string} cdata 
+ * @returns {number} 
+ */
 function compileCache(jsFile : string,cdata : string) : number
 {
 	let jsFileCode : string;
@@ -102,12 +125,19 @@ function compileCache(jsFile : string,cdata : string) : number
 		return 1;
 	}
 }
-/*
-    Trys to load cached code from cdata.
-    On failure, will try to compile jsFile and write it to cdata, then load from cdata.
-    On failure to compile jsFile, failure to write cdata or failure to load cdata,
-    falls back on calling require(jsModule)
-*/
+
+/**
+ * Bootstraps a code cache for the js source file at jsFile.
+ * Trys to first load the cached data at cdata using the js source file at jsFile as the reference source.
+ * On failure, will try to compile the js source at jsFile, save it to cdata and then load it.
+ * On failure to compile, failure to write or failure to load compiled cached data, will fall back to requiring jsModule.
+ * 
+ * @export
+ * @param {string} jsFile 
+ * @param {string} jsModule 
+ * @param {string} cdata 
+ * @returns {void} 
+ */
 export function bootStrapCodeCache(jsFile : string,jsModule : string,cdata : string) : void
 {
 	let cacheStatus : number = loadFromCache(jsFile,cdata);

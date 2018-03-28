@@ -8,8 +8,8 @@ import * as winMgr from "./../../../req/main/winMgr";
  */
 export async function indexRefs() : Promise<void>
 {
-    return new Promise<void>((resolve,reject) => {
-        setTimeout(function(){
+    return new Promise<void>(async (resolve,reject) => {
+        setTimeout(async function(){
             console.log("indexing ref seqs");
             let input = winMgr.getFreeWebContents();
             if(!input || input.length == 0)
@@ -17,7 +17,7 @@ export async function indexRefs() : Promise<void>
                 console.log("Failed to open input window");
                 process.exit(1);
             }
-            input[0].executeJavaScript(`
+            await input[0].executeJavaScript(`
                 let els = document.getElementsByTagName("td");
                 let isIndex = /Index/;
                 for(let i = 0; i != els.length; ++i)

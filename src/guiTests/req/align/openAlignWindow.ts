@@ -8,15 +8,17 @@ import * as winMgr from "./../../../req/main/winMgr";
  */
 export async function openAlignWindow() : Promise<void>
 {
-    return new Promise<void>((resolve,reject) => {
-        setTimeout(function(){
+    return new Promise<void>(async (resolve,reject) => {
+        setTimeout(async function(){
             console.log("opening align window");
-            setTimeout(function(){
+            setTimeout(async function(){
                 let toolBar = winMgr.getWindowsByName("toolBar");
-                toolBar[0].webContents.executeJavaScript(`
+                await toolBar[0].webContents.executeJavaScript(`
                     document.getElementById("align").click();
                 `);
-                resolve();
+                setTimeout(async function(){
+                    resolve();
+                },500);
             },500);
         },500);
     });

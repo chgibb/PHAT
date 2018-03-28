@@ -1,4 +1,6 @@
+ #!/bin/bash
 (set -o igncr) 2>/dev/null && set -o igncr; # For Cygwin on Windows compaibility
+
 bash scripts/build.bash opt
 if [ $? != 0 ]; then
 	exit 1
@@ -24,21 +26,3 @@ if [[ "$OSTYPE" == "cygwin" ]]; then
 fi
 cp -r testData/* tests/data
 cp -r testData/* "tests/data with spaces"
-
-mkdir guiTests
-./node_modules/.bin/tsc
-for f in src/guiTests/*.js
-do
-	printf "Bundling "
-	printf $f
-	printf "\n"
-	destination=$(echo $f | awk '{gsub("src/","guiTests/"); gsub("guiTests/guiTests/","guiTests/");print}')
-	printf $destination
-	./node_modules/.bin/browserify $f --node --debug -o $destination --ignore-missing --exclude electron
-done
-
-for f in $(find src -name '*.ts'); 
-do
-	artifact=$(echo $f | awk '{gsub("\\.ts",".js");print}')
-	rm $artifact
-done
