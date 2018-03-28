@@ -7,6 +7,7 @@
     const inOpts = {
         input : args[0],
         external : ["electron"],
+        onwarn : function(){},
         plugins : [
             resolve()
         ]
