@@ -22,7 +22,7 @@ export async function inputHPV16Ref() : Promise<void>
             winMgr.publishChangeForKey("input","fastaInputs");
             setTimeout(async function(){
                 resolve();
-            },500);
+            },1500);
         },500);
     });
 }
