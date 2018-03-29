@@ -1,6 +1,6 @@
 import {AtomicOperationForkEvent,CompletionFlags} from "./req/atomicOperationsIPC";
 import * as atomic from "./req/operations/atomicOperations";
-import {AlignData} from "./req/alignData";
+import {AlignData, getSam} from "./req/alignData";
 import {BLASTSegmentResult,getArtifactDir,getSamSegment} from "./req/BLASTSegmentResult";
 import {getReadsWithLargeUnMappedFragments} from "./req/operations/BLASTSegment/getReadsWithLargeUnMappedFragments";
 
@@ -62,7 +62,7 @@ process.on("message",async function(ev : AtomicOperationForkEvent){
     {
 
         let readsWithFragments : Array<string> = await getReadsWithLargeUnMappedFragments(
-            getSamSegment(blastSegmentResult),
+            getSam(align),
             blastSegmentResult.start,
             blastSegmentResult.stop
         );
