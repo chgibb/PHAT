@@ -10,8 +10,8 @@ import {Fasta} from "./../../../req/fasta";
  */
 export async function selectFirstRef() : Promise<void>
 {
-    return new Promise<void>((resolve,reject) => {
-        setTimeout(function(){
+    return new Promise<void>(async (resolve,reject) => {
+        setTimeout(async function(){
             console.log("selecting first ref seq");
             let align = winMgr.getFreeWebContents();
             if(!align || align.length == 0)
@@ -25,7 +25,7 @@ export async function selectFirstRef() : Promise<void>
                 console.log("failed to input ref seq");
                 process.exit(1);
             }
-            align[0].executeJavaScript(`
+            await align[0].executeJavaScript(`
                 document.getElementById("${fasta.uuid}").click();
             `);
             resolve();
