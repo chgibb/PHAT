@@ -1,8 +1,8 @@
 import {AtomicOperationForkEvent,CompletionFlags} from "./req/atomicOperationsIPC";
 import * as atomic from "./req/operations/atomicOperations";
 import {AlignData} from "./req/alignData";
-import {BLASTSegmentResult,getArtifactDir} from "./req/BLASTSegmentResult";
-import {generateSamForSegment} from "./req/operations/BLASTSegment/generateSamForSegment";
+import {BLASTSegmentResult,getArtifactDir,getSamSegment} from "./req/BLASTSegmentResult";
+import {getReadsWithLargeUnMappedFragments} from "./req/operations/BLASTSegment/getReadsWithLargeUnMappedFragments";
 
 const mkdirp = require("mkdirp");
 
@@ -60,16 +60,14 @@ process.on("message",async function(ev : AtomicOperationForkEvent){
 
     if(ev.run == true)
     {
-        await generateSamForSegment(
-            blastSegmentResult,
-            align,
-            logger,
-            function(reads : number){
-                progressMessage = `Total Reads Found: ${reads}`;
-                update();
-            }
+
+        let readsWithFragments : Array<string> = await getReadsWithLargeUnMappedFragments(
+            getSamSegment(blastSegmentResult),
+            blastSegmentResult.start,
+            blastSegmentResult.stop
         );
 
+        console.log(readsWithFragments);
 
         flags.done = true;
         flags.success = true;
