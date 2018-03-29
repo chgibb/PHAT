@@ -41,20 +41,3 @@ export function getBLASTReadResultsDir(blastResult : BLASTSegmentResult) : strin
 {
     return getReadableAndWritable(`rt/BLASTSegmentResults/${blastResult.uuid}/readResults`);
 }
-
-export function streamSamSegmentReads(blastResult : BLASTSegmentResult,cb : (read : string) => void) : Promise<void>
-{
-    return new Promise<void>((resolve,reject) => {
-        let rl : readline.ReadLine = readline.createInterface(<readline.ReadLineOptions>{
-            input : fs.createReadStream(getSamSegment(blastResult))
-        }); 
-
-        rl.on("line",function(line : string){
-            cb(line);
-        });
-
-        rl.on("close",function(){
-            return resolve();
-        });
-    });
-}

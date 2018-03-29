@@ -1,9 +1,8 @@
 import {AtomicOperationForkEvent,CompletionFlags} from "./req/atomicOperationsIPC";
 import * as atomic from "./req/operations/atomicOperations";
 import {AlignData} from "./req/alignData";
-import {BLASTSegmentResult,getArtifactDir,streamSamSegmentReads} from "./req/BLASTSegmentResult";
+import {BLASTSegmentResult,getArtifactDir} from "./req/BLASTSegmentResult";
 import {generateSamForSegment} from "./req/operations/BLASTSegment/generateSamForSegment";
-import {getAvgSeqLengthFromBam} from "./req/operations/BLASTSegment/getAvgSeqLengthFromBam";
 
 const mkdirp = require("mkdirp");
 
@@ -70,24 +69,6 @@ process.on("message",async function(ev : AtomicOperationForkEvent){
                 update();
             }
         );
-
-        await getAvgSeqLengthFromBam(
-            blastSegmentResult,
-            align,
-            logger,
-            function(read : number){
-                progressMessage = `Calculating Average Sequence Length. Read: ${read}`;
-                update();
-            }
-        );
-
-        await streamSamSegmentReads(blastSegmentResult,function(read : string){
-            console.log("read: "+read.split(/\s/g)[9]);
-            console.log("size "+read.split(/\s/g)[9].length);
-            console.log("trimmed "+read.split(/\s/g)[9].slice(blastSegmentResult.avgSeqLength));
-            console.log("size "+read.split(/\s/g)[9].slice(blastSegmentResult.avgSeqLength));
-            console.log("avg seq length "+blastSegmentResult.avgSeqLength);
-        });
 
 
         flags.done = true;
