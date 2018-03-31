@@ -7,6 +7,8 @@ export function getReadsWithLargeUnMappedFragments(file : string,start : number,
     return new Promise<Array<string>>(async (resolve,reject) => {
         let res : Array<string> = new Array<string>();
         await getReads(file,start,stop,function(read : SAMRead,unMappedFragments : Array<string>){
+            if(!unMappedFragments || unMappedFragments.length == 0)
+                return;
             for(let i = 0; i != unMappedFragments.length; ++i)
             {
                 if(unMappedFragments[i].length >= 30)
