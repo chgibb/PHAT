@@ -11,7 +11,7 @@ export function getReadsWithLargeUnMappedFragments(file : string,start : number,
                 return;
             for(let i = 0; i != unMappedFragments.length; ++i)
             {
-                if(unMappedFragments[i].length >= 30)
+                if(unMappedFragments[i].length >= 15)
                 {
                     res.push(read.SEQ);
                     break;
