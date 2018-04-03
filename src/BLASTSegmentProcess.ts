@@ -1,8 +1,12 @@
+/// <reference path="./../node_modules/@chgibb/unmappedcigarfragments/lib/lib" />
+import {SAMRead} from "./../node_modules/@chgibb/unmappedcigarfragments/lib/lib";
 import {AtomicOperationForkEvent,CompletionFlags} from "./req/atomicOperationsIPC";
 import * as atomic from "./req/operations/atomicOperations";
 import {AlignData, getSam} from "./req/alignData";
-import {BLASTSegmentResult,getArtifactDir,getSamSegment} from "./req/BLASTSegmentResult";
+import {BLASTSegmentResult,getArtifactDir,getSamSegment,getBLASTReadResultsDir} from "./req/BLASTSegmentResult";
 import {getReadsWithLargeUnMappedFragments} from "./req/operations/BLASTSegment/getReadsWithLargeUnMappedFragments";
+import {BlastOutputRawJSON} from "./req/operations/BLASTSegment/BLASTOutput";
+import {performQuery} from "./req/operations/BLASTSegment/BLASTRequest";
 
 const mkdirp = require("mkdirp");
 
@@ -52,6 +56,7 @@ process.on("message",async function(ev : AtomicOperationForkEvent){
         blastSegmentResult = ev.data.blastSegmentResult;
 
         mkdirp.sync(getArtifactDir(blastSegmentResult));
+        mkdirp.sync(getBLASTReadResultsDir(blastSegmentResult));
 
         logger.logObject(ev);
         process.send(<AtomicOperationForkEvent>{finishedSettingData : true});
@@ -61,13 +66,14 @@ process.on("message",async function(ev : AtomicOperationForkEvent){
     if(ev.run == true)
     {
 
-        let readsWithFragments : Array<string> = await getReadsWithLargeUnMappedFragments(
+        let readsWithFragments : Array<SAMRead> = await getReadsWithLargeUnMappedFragments(
             getSam(align),
             blastSegmentResult.start,
             blastSegmentResult.stop
         );
 
-        console.log(readsWithFragments);
+        let res = await performQuery(readsWithFragments[0]);
+        console.log(res);
 
         flags.done = true;
         flags.success = true;
