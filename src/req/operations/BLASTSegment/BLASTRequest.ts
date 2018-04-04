@@ -105,7 +105,7 @@ export function retrieveQuery(rid : RID,delay : number,progressCB : (status : Qu
     });
 }
 
-export function performQuery(read : SAMRead) : Promise<BlastOutputRawJSON>
+export function performQuery(read : SAMRead,progressCB : (status : QueryStatus) => void) : Promise<BlastOutputRawJSON>
 {
     const xml = require("xml2js");
     return new Promise<BlastOutputRawJSON>(async (resolve,reject) => {
@@ -113,6 +113,7 @@ export function performQuery(read : SAMRead) : Promise<BlastOutputRawJSON>
 
         setTimeout(async function(){
             let result = await retrieveQuery(rid,5,function(status : QueryStatus){
+                progressCB(status);
                 if(status == "failed")
                     return reject(status);
             });
