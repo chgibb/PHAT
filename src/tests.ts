@@ -501,8 +501,8 @@ async function runTests() : Promise<void>
 		atomic.addOperation("BLASTSegment",{
 			align : L6R7HPV16Align.get(),
 			contigUUID : L6R7HPV16Align.get().fasta.contigs[0].uuid,
-			start : 0,
-			stop : 8000
+			start : 5,
+			stop : 10
 		});
 		try
 		{

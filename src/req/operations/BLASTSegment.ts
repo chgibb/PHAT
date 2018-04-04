@@ -59,6 +59,7 @@ export class BLASTSegment extends atomic.AtomicOperation
 
             if(ev.update == true)
             {
+                self.progressMessage = ev.progressMessage;
                 self.extraData = ev.data;
                 self.flags = ev.flags;
                 if(ev.flags.done)

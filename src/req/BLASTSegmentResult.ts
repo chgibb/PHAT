@@ -37,7 +37,7 @@ export function getSamSegment(blastResult : BLASTSegmentResult) : string
     return getReadableAndWritable(`rt/BLASTSegmentResults/${blastResult.uuid}/segment.sam`);
 }
 
-export function getBLASTReadResultsDir(blastResult : BLASTSegmentResult) : string
+export function getBLASTReadResults(blastResult : BLASTSegmentResult) : string
 {
-    return getReadableAndWritable(`rt/BLASTSegmentResults/${blastResult.uuid}/readResults`);
+    return getReadableAndWritable(`rt/BLASTSegmentResults/${blastResult.uuid}/readResults.nldjson`);
 }

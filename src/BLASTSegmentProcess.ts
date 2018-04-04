@@ -1,12 +1,15 @@
 /// <reference path="./../node_modules/@chgibb/unmappedcigarfragments/lib/lib" />
+
+import * as fs from "fs";
+
 import {SAMRead} from "./../node_modules/@chgibb/unmappedcigarfragments/lib/lib";
 import {AtomicOperationForkEvent,CompletionFlags} from "./req/atomicOperationsIPC";
 import * as atomic from "./req/operations/atomicOperations";
 import {AlignData, getSam} from "./req/alignData";
-import {BLASTSegmentResult,getArtifactDir,getSamSegment,getBLASTReadResultsDir} from "./req/BLASTSegmentResult";
+import {BLASTSegmentResult,getArtifactDir,getSamSegment,getBLASTReadResults} from "./req/BLASTSegmentResult";
 import {getReadsWithLargeUnMappedFragments} from "./req/operations/BLASTSegment/getReadsWithLargeUnMappedFragments";
 import {BlastOutputRawJSON} from "./req/operations/BLASTSegment/BLASTOutput";
-import {performQuery} from "./req/operations/BLASTSegment/BLASTRequest";
+import {performQuery,QueryStatus} from "./req/operations/BLASTSegment/BLASTRequest";
 
 const mkdirp = require("mkdirp");
 
@@ -56,7 +59,6 @@ process.on("message",async function(ev : AtomicOperationForkEvent){
         blastSegmentResult = ev.data.blastSegmentResult;
 
         mkdirp.sync(getArtifactDir(blastSegmentResult));
-        mkdirp.sync(getBLASTReadResultsDir(blastSegmentResult));
 
         logger.logObject(ev);
         process.send(<AtomicOperationForkEvent>{finishedSettingData : true});
@@ -69,11 +71,26 @@ process.on("message",async function(ev : AtomicOperationForkEvent){
         let readsWithFragments : Array<SAMRead> = await getReadsWithLargeUnMappedFragments(
             getSam(align),
             blastSegmentResult.start,
-            blastSegmentResult.stop
+            blastSegmentResult.stop,
+            function(parsedReads : number){
+                progressMessage = `Searching for fragments in read ${parsedReads} that aligned starting between ${blastSegmentResult.start} and ${blastSegmentResult.stop}`;
+                update();
+            }
         );
 
-        let res = await performQuery(readsWithFragments[0]);
-        console.log(res);
+        for(let i = 0; i != readsWithFragments.length; ++i)
+        {
+            let repeatedSearching = 0;
+            let res = await performQuery(readsWithFragments[i],function(status : QueryStatus){
+                if(status == "searching")
+                    repeatedSearching++;
+                progressMessage = `BLASTing suspicious read ${i+1} of ${readsWithFragments.length}: ${status} ${status == "searching" ? `x${repeatedSearching}` : ``}`;
+                update();
+            });
+            progressMessage = `BLASTing suspicious read ${i} of ${readsWithFragments.length-1}: writing result`;
+            update();
+            fs.appendFileSync(getBLASTReadResults(blastSegmentResult),JSON.stringify(res));
+        }
 
         flags.done = true;
         flags.success = true;

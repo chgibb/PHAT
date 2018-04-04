@@ -6,6 +6,9 @@ export async function testBLASTSegment0To8000L6R7HPV16Alignment() : Promise<void
 {
     return new Promise<void>((resolve,reject) => {
         atomic.updates.on("BLASTSegment",function(op : BLASTSegment){
+            if(op.progressMessage)
+                console.log(op.progressMessage);
+
             if(op.flags.failure)
             {
                 console.log("failed to BLAST segment");
