@@ -1,3 +1,7 @@
+/*
+    This module was adapted from https://ncbi.nlm.nih.gov/blast/docs/web_blast.pl
+*/
+
 /// <reference path="./../../node_modules/@chgibb/unmappedcigarfragments/lib/lib" />
 
 import {SAMRead} from "./../../node_modules/@chgibb/unmappedcigarfragments/lib/lib";
