@@ -50,7 +50,7 @@ import {testL6R7HPV16SNPTrackCompilation} from "./req/tests/testL6R7HPV16SNPTrac
 
 import {testBLASTSegment0To1000L6R1HPV16Alignment} from "./req/tests/testBLASTSegment0To1000L6R1HPV16Alignment";
 import {testBLASTSegment3500To4500L6R1HPV16Alignment} from "./req/tests/testBLASTSegment3500To4500L6R1HPV16Alignment";
-import {testBLASTSegment5To10L6R7HPV16Alignment} from "./req/tests/testBLASTSegment0To8000L6R7HPV16Alignment";
+import {testBLASTSegment5To10L6R7HPV16Alignment} from "./req/tests/testBLASTSegment5To10L6R7HPV16Alignment";
 
 const pjson = require("./resources/app/package.json");
 import {isBeta,versionIsGreaterThan} from "./req/versionIsGreaterThan";
