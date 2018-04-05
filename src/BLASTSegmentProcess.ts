@@ -3,6 +3,7 @@
 import * as fs from "fs";
 
 import {SAMRead} from "./../node_modules/@chgibb/unmappedcigarfragments/lib/lib";
+
 import {AtomicOperationForkEvent,CompletionFlags} from "./req/atomicOperationsIPC";
 import * as atomic from "./req/operations/atomicOperations";
 import {AlignData, getSam} from "./req/alignData";
