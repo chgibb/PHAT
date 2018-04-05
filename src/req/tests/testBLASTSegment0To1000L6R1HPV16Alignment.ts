@@ -8,7 +8,12 @@ export async function testBLASTSegment0To1000L6R1HPV16Alignment() : Promise<void
     return new Promise<void>((resolve,reject) => {
         atomic.updates.on("BLASTSegment",async function(op : BLASTSegment){
             if(op.progressMessage)
-                console.log(op.progressMessage);
+            {
+                if(!/Searching for fragments in read/g.test(op.progressMessage))
+                {
+                    console.log(op.progressMessage);
+                }
+            }
 
             if(op.flags.failure)
             {
