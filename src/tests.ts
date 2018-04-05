@@ -497,7 +497,7 @@ async function runTests() : Promise<void>
 			return reject();
 		}*/
 
-		console.log("BLASTing segment 2500-6000 of L6R7 alignment on HPV16");
+		console.log("BLASTing segment 5-10 of L6R7 alignment on HPV16");
 		atomic.addOperation("BLASTSegment",{
 			align : L6R7HPV16Align.get(),
 			contigUUID : L6R7HPV16Align.get().fasta.contigs[0].uuid,

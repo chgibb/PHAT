@@ -7,7 +7,7 @@ import {SAMRead} from "./../node_modules/@chgibb/unmappedcigarfragments/lib/lib"
 import {AtomicOperationForkEvent,CompletionFlags} from "./req/atomicOperationsIPC";
 import * as atomic from "./req/operations/atomicOperations";
 import {AlignData, getSam} from "./req/alignData";
-import {BLASTSegmentResult,getArtifactDir,getSamSegment,getBLASTReadResults} from "./req/BLASTSegmentResult";
+import {BLASTSegmentResult,getArtifactDir,getSamSegment,getBLASTResultsStore} from "./req/BLASTSegmentResult";
 import {getReadsWithLargeUnMappedFragments} from "./req/operations/BLASTSegment/getReadsWithLargeUnMappedFragments";
 import {BlastOutputRawJSON} from "./req/BLASTOutput";
 import {performQuery,QueryStatus} from "./req/BLASTRequest";
@@ -82,6 +82,8 @@ process.on("message",async function(ev : AtomicOperationForkEvent){
         for(let i = 0; i != readsWithFragments.length; ++i)
         {
             let repeatedSearching = 0;
+            progressMessage = `BLASTing suspicious read ${i+1} of ${readsWithFragments.length}: submitting query`;
+            update();
             let res = await performQuery(readsWithFragments[i],function(status : QueryStatus){
                 if(status == "searching")
                     repeatedSearching++;
@@ -90,7 +92,7 @@ process.on("message",async function(ev : AtomicOperationForkEvent){
             });
             progressMessage = `BLASTing suspicious read ${i+1} of ${readsWithFragments.length}: writing result`;
             update();
-            fs.appendFileSync(getBLASTReadResults(blastSegmentResult),JSON.stringify(res));
+            fs.appendFileSync(getBLASTResultsStore(blastSegmentResult),JSON.stringify(res));
         }
 
         flags.done = true;
