@@ -8,8 +8,8 @@ import * as atomic from "./req/operations/atomicOperations";
 import {AlignData, getSam} from "./req/alignData";
 import {BLASTSegmentResult,getArtifactDir,getSamSegment,getBLASTReadResults} from "./req/BLASTSegmentResult";
 import {getReadsWithLargeUnMappedFragments} from "./req/operations/BLASTSegment/getReadsWithLargeUnMappedFragments";
-import {BlastOutputRawJSON} from "./req/operations/BLASTSegment/BLASTOutput";
-import {performQuery,QueryStatus} from "./req/operations/BLASTSegment/BLASTRequest";
+import {BlastOutputRawJSON} from "./req/BLASTOutput";
+import {performQuery,QueryStatus} from "./req/BLASTRequest";
 
 const mkdirp = require("mkdirp");
 

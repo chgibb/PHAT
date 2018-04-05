@@ -1,8 +1,11 @@
-/// <reference path="./../../../../node_modules/@chgibb/unmappedcigarfragments/lib/lib" />
-import {SAMRead} from "./../../../../node_modules/@chgibb/unmappedcigarfragments/lib/lib";
+/// <reference path="./../../node_modules/@chgibb/unmappedcigarfragments/lib/lib" />
+
+import {SAMRead} from "./../../node_modules/@chgibb/unmappedcigarfragments/lib/lib";
 
 import {BlastOutputRawJSON,cleanBLASTXML,validateRawBlastOutput} from "./BLASTOutput";
+
 export type RID = string;
+
 export type QueryStatus = "searching" | "failed" | "unknown" | "ready";
 
 export function getRID(src : string) : RID

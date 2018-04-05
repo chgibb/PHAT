@@ -1,5 +1,5 @@
-/// <reference path="./../../../../node_modules/@chgibb/unmappedcigarfragments/lib/lib" />
-import {SAMRead} from "./../../../../node_modules/@chgibb/unmappedcigarfragments/lib/lib";
+/// <reference path="./../../node_modules/@chgibb/unmappedcigarfragments/lib/lib" />
+import {SAMRead} from "./../../node_modules/@chgibb/unmappedcigarfragments/lib/lib";
 
 function replaceAll(target : string,search : RegExp,replace : string) : string
 {
