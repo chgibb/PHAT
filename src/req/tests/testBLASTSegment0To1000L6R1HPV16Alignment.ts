@@ -1,11 +1,15 @@
 import * as atomic from "./../operations/atomicOperations";
 import {BLASTSegment} from "./../operations/BLASTSegment";
+import {getBLASTResults} from "./../BLASTSegmentResult";
 import * as L6R1HPV16Align from "./L6R1HPV16Align";
 
 export async function testBLASTSegment0To1000L6R1HPV16Alignment() : Promise<void>
 {
     return new Promise<void>((resolve,reject) => {
-        atomic.updates.on("BLASTSegment",function(op : BLASTSegment){
+        atomic.updates.on("BLASTSegment",async function(op : BLASTSegment){
+            if(op.progressMessage)
+                console.log(op.progressMessage);
+
             if(op.flags.failure)
             {
                 console.log("failed to BLAST segment");
@@ -14,21 +18,23 @@ export async function testBLASTSegment0To1000L6R1HPV16Alignment() : Promise<void
 
             else if(op.flags.success)
             {
-                if(op.blastSegmentResult.totalReads == 70)
-                    console.log(`BLAST result has correct number of reads`);
+                let results = await getBLASTResults(op.blastSegmentResult,0,0);
+                if(results.length == 2)
+                    console.log(`BLAST segment has correct number of results in whole file`);
                 else
-                {
-                    console.log(`BLAST result has incorrect number of reads ${op.blastSegmentResult.totalReads}`);
                     return reject();
-                }
-
-                if(op.blastSegmentResult.avgSeqLength == 151)
-                    console.log(`BLAST result has correct average sequence length`);
+                
+                results = await getBLASTResults(op.blastSegmentResult,0,1000);
+                if(results.length == 2)
+                    console.log(`BLAST segment has correct number of results in range`);
                 else
-                {
-                    console.log(`BLAST result has incorrect average sequence length ${op.blastSegmentResult.avgSeqLength}`);
                     return reject();
-                }
+                
+                results = await getBLASTResults(op.blastSegmentResult,1001,3000);
+                if(results.length == 0)
+                    console.log(`BLAST segment has correct number of results in range`);
+                else
+                    return reject();
 
                 return resolve();
             }
