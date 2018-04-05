@@ -12,6 +12,13 @@ export type RID = string;
 
 export type QueryStatus = "searching" | "failed" | "unknown" | "ready";
 
+/**
+ * Parses a BLAST request identifier (RID) out of src. src should be returnned from BLAST proper
+ * 
+ * @export
+ * @param {string} src 
+ * @returns {RID} 
+ */
 export function getRID(src : string) : RID
 {   
     let line : RegExpExecArray | null = /^    RID = (.*$)/m.exec(src);
@@ -19,6 +26,13 @@ export function getRID(src : string) : RID
     return split[split.length - 1];
 }
 
+/**
+ * Parses a BLAST request time of execution (RTOE) out of src. src should be returned from BLAST proper
+ * 
+ * @export
+ * @param {string} src 
+ * @returns {number} 
+ */
 export function getRTOE(src : string) : number
 {
     let line : RegExpExecArray | null = /^    RTOE = (.*$)/m.exec(src);
@@ -26,12 +40,26 @@ export function getRTOE(src : string) : number
     return parseInt(split[split.length - 1]);
 }
 
+/**
+ * Sleeps the current process for the given number of seconds
+ * 
+ * @export
+ * @param {number} seconds 
+ */
 export function sleep(seconds : number) : void
 {
 	let stop = new Date(new Date().getTime() + seconds * 1000);
 	while(stop > new Date()){}
 }
 
+/**
+ * Submit a query for nucleotide sequence seq to BLAST using MegaBLAST against nt database.
+ * Returns the RID and RTOE for the request.
+ * 
+ * @export
+ * @param {string} seq 
+ * @returns {Promise<{rid : RID,rtoe : number}>} 
+ */
 export function makeQuery(seq : string) : Promise<{rid : RID,rtoe : number}>
 {
     const request = require("request");
@@ -52,6 +80,13 @@ export function makeQuery(seq : string) : Promise<{rid : RID,rtoe : number}>
     });
 }
 
+/**
+ * Retrieve status for the given RID
+ * 
+ * @export
+ * @param {RID} rid 
+ * @returns {Promise<QueryStatus>} 
+ */
 export function getQueryStatus(rid : RID) : Promise<QueryStatus>
 {
     const request = require("request");
@@ -85,6 +120,16 @@ export function getQueryStatus(rid : RID) : Promise<QueryStatus>
     });
 }
 
+/**
+ * Will (eventually) retrieve the results for the given RID once BLAST has completed the query.
+ * Will poll based on delay and give progress using progressCB
+ * 
+ * @export
+ * @param {RID} rid 
+ * @param {number} delay 
+ * @param {(status : QueryStatus) => void} progressCB 
+ * @returns {Promise<string>} 
+ */
 export function retrieveQuery(rid : RID,delay : number,progressCB : (status : QueryStatus) => void) : Promise<string>
 {
     const request = require("request");
@@ -112,6 +157,15 @@ export function retrieveQuery(rid : RID,delay : number,progressCB : (status : Qu
     });
 }
 
+/**
+ * Will submit and retrieve a MegaBLAST query for the given SAM read. Returns raw BLAST XML 
+ * transformed to JSON with the original SAM read object attached.
+ * 
+ * @export
+ * @param {SAMRead} read 
+ * @param {(status : QueryStatus) => void} progressCB 
+ * @returns {Promise<BlastOutputRawJSON>} 
+ */
 export function performQuery(read : SAMRead,progressCB : (status : QueryStatus) => void) : Promise<BlastOutputRawJSON>
 {
     const xml = require("xml2js");
