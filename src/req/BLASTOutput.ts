@@ -6,6 +6,13 @@ function replaceAll(target : string,search : RegExp,replace : string) : string
     return target.replace(search,replace);
 }
 
+/**
+ * Transforms JSON-invalid identifiers in BLAST XML given in xml into JSON-valid identifiers.
+ * 
+ * @export
+ * @param {string} xml 
+ * @returns {string} 
+ */
 export function cleanBLASTXML(xml : string) : string
 {
     let res = xml;
@@ -41,6 +48,12 @@ export function cleanBLASTXML(xml : string) : string
     return res;
 }
 
+/**
+ * The expected shape of BLAST XML response transformed to JSON, with an attached SAM read
+ * 
+ * @export
+ * @interface BlastOutputRawJSON
+ */
 export interface BlastOutputRawJSON
 {
     read : SAMRead,
@@ -132,6 +145,13 @@ function throwOnUndefined(obj : any) : void
     }
 }
 
+/**
+ * Validate the given BLAST output. Returns true if valid, false otherwise.
+ * 
+ * @export
+ * @param {BlastOutputRawJSON} obj 
+ * @returns {boolean} 
+ */
 export function validateRawBlastOutput(obj : BlastOutputRawJSON) : boolean
 {
     try
