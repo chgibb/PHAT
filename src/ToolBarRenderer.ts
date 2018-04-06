@@ -48,11 +48,27 @@ $
             {
                 if(arg.action == "getKey" || arg.action == "keyChange")
                 {
-                    if(arg.key == "operations" && arg.val !== undefined && arg.val.length)
+                    if(arg.key == "operations")
                     {
                         let ops : Array<AtomicOperation> = <Array<AtomicOperation>>arg.val;
+                        let runningOpNotification : HTMLElement = document.getElementById("runningOpNotification");
+                        let foundRunning = false;
                         for(let i = 0; i != ops.length; ++i)
                         {
+                            if(ops[i].running)
+                            {
+                                foundRunning = true;
+                                if(runningOpNotification)
+                                {
+                                    let text = ops[i].name;
+                                    if(ops[i].progressMessage)
+                                    {
+                                        text += `: ${ops[i].progressMessage}`;
+                                    }
+                                    runningOpNotification.innerHTML = text;
+                                }
+                            }
+
                             if(ops[i].name == "unDockWindow")
                             {
                                 //when undocking has completed, clean up the tab left behind in the dock
@@ -98,6 +114,13 @@ $
                                         })()}
                                     `
                                 });
+                            }
+                        }
+                        if(!foundRunning)
+                        {
+                            if(runningOpNotification)
+                            {
+                                runningOpNotification.innerHTML = "";
                             }
                         }
                     }
