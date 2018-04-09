@@ -309,7 +309,7 @@ ipc.on(
 					let tmp = {};
 					Object.assign(tmp,list[i]);
 					atomicOp.addOperation(arg.opName,tmp);
-					return;
+					break;
 				}
 			}
 		}

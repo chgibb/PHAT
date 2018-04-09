@@ -11,6 +11,7 @@ import {getReadable} from "./../../getAppPath";
 
 require("@claviska/jquery-minicolors");
 let selectedAlign : AlignData;
+
 /**
  * Set the selected alignment to view track options for
  * 
@@ -21,6 +22,7 @@ export function setSelectedAlign(align : AlignData) : void
 {
     selectedAlign = align;
 }
+
 /**
  * Writes the data track selection menu into the modal
  * 
@@ -112,8 +114,22 @@ export function writeAvailableTracksModal() : void
             body += `
                 <div>
                     <p style="display:inline-block;">${genomeView.genome.contigs[i].name}</p>
-                    <img src="${getReadable("img/generateCoverageTrack.png")}" style="display:inline-block;" class="activeHover activeHoverButton" id="${genomeView.genome.contigs[i].uuid}GenCoverage" />
-                    <img src="${getReadable("img/generateSNPTrack.png")}" style="display:inline-block;" class="activeHover activeHoverButton" id="${genomeView.genome.contigs[i].uuid}GenSNPs" />
+                    ${(()=>{
+                        if(genomeView.shouldAllowTriggeringOps)
+                        {
+                            return `
+                                <img src="${getReadable("img/generateCoverageTrack.png")}" style="display:inline-block;" class="activeHover activeHoverButton" id="${genomeView.genome.contigs[i].uuid}GenCoverage" />
+                                <img src="${getReadable("img/generateSNPTrack.png")}" style="display:inline-block;" class="activeHover activeHoverButton" id="${genomeView.genome.contigs[i].uuid}GenSNPs" />
+                            `;
+                        }
+                        else
+                        {
+                            return `
+                                <div class="three-quarters-loader"></div>
+                                <div class="three-quarters-loader"></div>
+                            `;
+                        }
+                    })()}
                 </div>
             `;
         }

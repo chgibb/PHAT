@@ -60,10 +60,10 @@ $
                                 foundRunning = true;
                                 if(runningOpNotification)
                                 {
-                                    let text = ops[i].name;
+                                    let text = "";
                                     if(ops[i].progressMessage)
                                     {
-                                        text += `: ${ops[i].progressMessage}`;
+                                        text += `${ops[i].progressMessage}`;
                                     }
                                     runningOpNotification.innerHTML = text;
                                 }
