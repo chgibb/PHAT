@@ -6,6 +6,7 @@
  * @module req/main/Job
  */
 import * as spawn from "child_process";
+import * as stream from "stream";
 
 import {SpawnRequestParams} from "./../JobIPC";
 export interface JobCallBackObject
@@ -35,6 +36,8 @@ export class Job
 	public running : boolean;
 	public extraData : any;
 	public retCode : number | undefined;
+	public stdout : stream.Readable;
+	public stderr : stream.Readable;
 	public constructor(
 		processName : string,
 		args : Array<string>,
@@ -140,6 +143,8 @@ export class Job
 		this.process = spawn.spawn(this.processName,this.args);
 		this.pid = this.process.pid;
 		this.running = true;
+		this.stdout = this.process.stdout;
+		this.stderr = this.process.stderr;
 		var obj = this;
 		this.process.stderr.on
 		(

@@ -56,7 +56,7 @@ import {ChangeTitle} from "./../operations/ChangeTitle";
 import * as winMgr from "./winMgr";
 
 import {File,getPath} from "./../file";
-import Fastq from "./../fastq";
+import {Fastq} from "./../fastq";
 import {Fasta} from "./../fasta";
 import {AlignData} from "./../alignData";
 import {CircularFigure} from "./../renderer/circularFigure";
@@ -309,7 +309,7 @@ ipc.on(
 					let tmp = {};
 					Object.assign(tmp,list[i]);
 					atomicOp.addOperation(arg.opName,tmp);
-					return;
+					break;
 				}
 			}
 		}

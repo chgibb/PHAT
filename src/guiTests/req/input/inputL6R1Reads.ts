@@ -2,7 +2,7 @@ import * as path from "path";
 
 import * as winMgr from "./../../../req/main/winMgr";
 import * as dataMgr from "./../../../req/main/dataMgr";
-import Fastq from "./../../../req/fastq";
+import {Fastq} from "./../../../req/fastq";
 
 /**
  * Inputs L6R1 reads from test data directly by overwriting fastqInputs

@@ -1,4 +1,4 @@
-import Fastq from "./fastq";
+import {Fastq} from "./fastq";
 import {getReadableAndWritable} from "./getAppPath";
 export class QCData
 {
@@ -15,6 +15,11 @@ export class QCData
 export function getQCReportHTML(fastq : Fastq) : string
 {
     return getReadableAndWritable(`rt/QCReports/${fastq.uuid}/fastqc_report.html`);
+}
+
+export function getQCReportData(fastq : Fastq) : string
+{
+    return getReadableAndWritable(`rt/QCReports/${fastq.uuid}/fastqc_data.txt`);
 }
 
 export class QCSummary
