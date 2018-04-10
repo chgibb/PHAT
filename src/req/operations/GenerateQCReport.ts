@@ -1,7 +1,7 @@
 const fse = require("fs-extra");
 
 import * as atomic from "./atomicOperations";
-import Fastq from "./../fastq";
+import {Fastq,parseSeqLengthFromQCReport} from "./../fastq";
 import {getQCReportSummaries} from "./../QCReportSummary";
 import trimPath from "./../trimPath";
 import {SpawnRequestParams} from "./../JobIPC";
@@ -103,7 +103,7 @@ export class GenerateQCReport extends atomic.AtomicOperation
 				{
 					//Wait a second before attempting to copy out what we need
 					setTimeout(
-						function()
+						async function()
 						{
 							try
 							{
@@ -127,6 +127,7 @@ export class GenerateQCReport extends atomic.AtomicOperation
 									${err}`);
 								return;
 							}
+							await parseSeqLengthFromQCReport(self.fastq);
 							self.setSuccess(self.flags);
 							self.update();
 						},1000

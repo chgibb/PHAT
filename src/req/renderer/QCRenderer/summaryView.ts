@@ -4,16 +4,18 @@ const ipc = electron.ipcRenderer;
 
 import * as viewMgr from "./../viewMgr";
 import {ReportView} from "./reportView";
-import Fastq from "./../../fastq";
+import {Fastq} from "./../../fastq";
 import {getQCSummaryByNameOfReportByIndex} from "./../../QCData"
 import {AtomicOperationIPC} from "./../../atomicOperationsIPC";
 export class SummaryView extends viewMgr.View
 {
 	public fastqInputs : Array<Fastq>;
+	public shouldAllowTriggeringOps : boolean;
 	public constructor(div : string)
     {
     	super('summary',div);
-        this.fastqInputs = new Array<Fastq>();
+		this.fastqInputs = new Array<Fastq>();
+		this.shouldAllowTriggeringOps = true;
     }
 	onMount(){}
 	onUnMount(){}
@@ -43,7 +45,14 @@ export class SummaryView extends viewMgr.View
 							res += `<tr>`;
 							if(!this.fastqInputs[i].QCData.reportRun)
 							{
-								res += `<td  class="cellHover" style='text-align:center;'><b id='${this.fastqInputs[i].uuid}'>click to analyze</b></td>`;
+								if(this.shouldAllowTriggeringOps)
+								{
+									res += `<td class="cellHover" style='text-align:center;'><b id='${this.fastqInputs[i].uuid}'>Click to Analyze</b></td>`;
+								}
+								else
+								{
+									res += `<td><div class="three-quarters-loader"></div></td>`;
+								}
 							}
 							else
 							{

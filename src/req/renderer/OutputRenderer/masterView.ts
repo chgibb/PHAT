@@ -2,7 +2,7 @@ import * as viewMgr from "./../viewMgr";
 import * as rightPanel from "./rightPanel";
 import * as reportView from "./reportView";
 
-import Fastq from "./../../fastq"
+import {Fastq} from "./../../fastq"
 import {Fasta} from "./../../fasta";
 import {AlignData} from "./../../alignData";
 

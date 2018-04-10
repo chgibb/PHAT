@@ -15,12 +15,12 @@ export async function indexSuccess() : Promise<void>
             if(op.flags.done && op.flags.failure)
             {
                 console.log("Failed to index");
-                process.exit(1);
+                return reject();
             }
             if(op.flags.done && op.flags.success)
             {
                 console.log("succeeded indexing");
-                resolve();
+                return resolve();
             }
         });
     });

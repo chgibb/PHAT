@@ -4,7 +4,7 @@ import * as atomic from "./atomicOperations";
 import {AtomicOperationForkEvent} from "./../atomicOperationsIPC";
 import {getReadable} from "./../getAppPath";
 import {Fasta,getFaiPath} from "./../fasta";
-import Fastq from "./../fastq";
+import {Fastq} from "./../fastq";
 import {getPath} from "./../file";
 import {AlignData,getArtifactDir} from "./../alignData"
 

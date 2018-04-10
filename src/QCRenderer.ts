@@ -86,11 +86,14 @@ $
                         {
                             //On update from running jobs
                             let operations : Array<AtomicOperation> = arg.val;
+                            let found = false;
                             for(let i : number = 0; i != operations.length; ++i)
                             {
                                 //look for only report generation jobs
                                 if(operations[i].name == "generateFastQCReport")
                                 {
+                                    found = true;
+                                    (<summary.SummaryView>viewMgr.getViewByName("summary")).shouldAllowTriggeringOps = false;
                                     let op : GenerateQCReport = (<any>operations[i]);
                                     //Check for stdout from FastQC
                                     if(op.progressMessage)
@@ -110,15 +113,17 @@ $
                                                     if(fastqInputs[i].uuid == op.fastq.uuid)
                                                     {
                                                         $(`#${op.fastq.uuid}`).text(regResult[0]);
-                                                        return;
+                                                        break;;
                                                     }
                                                 }
                                             }
                                         }
-                                        return;
+                                        break;;
                                     }
                                 }
                             }
+                            if(!found)
+                                (<summary.SummaryView>viewMgr.getViewByName("summary")).shouldAllowTriggeringOps = true;
                         }
                        
                     }
