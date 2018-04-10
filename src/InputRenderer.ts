@@ -165,15 +165,13 @@ $
                             {
                                 for(let i = 0; i != ops.length; ++i)
                                 {
-                                    if(ops[i].running)
+                                    if(ops[i].name == "inputBamFile" || ops[i].name == "linkRefSeqToAlignment" ||
+                                    ops[i].name == "indexFastaForVisualization" || ops[i].name == "indexFastaForAlignment" ||
+                                    ops[i].name == "linkRefSeqToAlignment" || ops[i].name == "importFileIntoProject")
                                     {
-                                        if(ops[i].name == "inputBamFile" || ops[i].name == "linkRefSeqToAlignment" ||
-                                        ops[i].name == "indexFastaForVisualization" || ops[i].name == "indexFastaForAlignment")
-                                        {
-                                            masterView.progressMessage = ops[i].progressMessage;
-                                            found = true;
-                                            break;
-                                        }
+                                        masterView.shouldAllowTriggeringOps = false;
+                                        found = true;
+                                        break;
                                     }
                                 }
                             }
@@ -181,8 +179,11 @@ $
                         }
                     }
                     if(!found)
-                        masterView.progressMessage = "";
-                    masterView.dataChanged();
+                        masterView.shouldAllowTriggeringOps = true;
+                    setTimeout(function(){
+                        masterView.dataChanged();
+                        viewMgr.render();
+                    },100);
                 }
                 viewMgr.render();
 

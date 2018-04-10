@@ -1,10 +1,9 @@
 import * as viewMgr from "./../viewMgr";
 import {getReadable} from "./../../getAppPath";
-import Fastq from "./../../fastq";
+import {Fastq} from "./../../fastq";
 export class View extends viewMgr.View
 {
     public fastqInputs : Array<Fastq>;
-    public progressMessage : string;
     public constructor(div : string)
     {
         super("fastqView",div);
@@ -16,7 +15,6 @@ export class View extends viewMgr.View
     {
         return `
             <img class="topButton activeHover activeHoverButton" id="browseFastqFiles" src="${getReadable("img/browseButton.png")}"><br />
-            <p id="loadingText">${this.progressMessage}</p>
             <div id="fastqTableDiv" style="width:100%;">
                 <table style="width:100%;">
                     <tr>

@@ -14,7 +14,7 @@ import {inputFastqDialog} from "./inputFastqDialog";
 import {inputFastaDialog} from "./inputFastaDialog";
 import {inputAlignDialog} from "./inputAlignDialog";
 
-import Fastq from "./../../fastq";
+import {Fastq} from "./../../fastq";
 import {Fasta} from "./../../fasta";
 import {AlignData} from "./../../alignData";
 import {getLinkableRefSeqs,LinkableRefSeq} from "./../../getLinkableRefSeqs";
@@ -26,7 +26,7 @@ export class View extends viewMgr.View
     public fastaInputs : Array<Fasta>;
     public aligns : Array<AlignData>;
     public currentView : "fastqView" | "fastaView" | "alignView" | "linkRefView";
-    public progressMessage : string;
+    public shouldAllowTriggeringOps : boolean;
     public constructor(div : string)
     {
         super("masterView",div);
@@ -36,7 +36,7 @@ export class View extends viewMgr.View
         this.fastaInputs = new Array<Fasta>();
         this.aligns = new Array<AlignData>();
         this.currentView = "fastqView";
-        this.progressMessage = "";
+        this.shouldAllowTriggeringOps = true;
     }
     public onMount() : void
     {
@@ -286,19 +286,19 @@ export class View extends viewMgr.View
     {
         let fastqView = <fastqView.View>viewMgr.getViewByName("fastqView",this.views);
         fastqView.fastqInputs = this.fastqInputs;
-        fastqView.progressMessage = this.progressMessage;
+        
 
         let fastaView = <fastaView.View>viewMgr.getViewByName("fastaView",this.views);
         fastaView.fastaInputs = this.fastaInputs;
-        fastaView.progressMessage = this.progressMessage;
+        fastaView.shouldAllowTriggeringOps = this.shouldAllowTriggeringOps;
 
         let alignView = <alignView.View>viewMgr.getViewByName("alignView",this.views);
         alignView.aligns = this.aligns;
-        alignView.progressMessage = this.progressMessage;
 
         let linkRefView = <linkRefView.View>viewMgr.getViewByName("linkRefView",this.views);
         linkRefView.fastaInputs = this.fastaInputs;
-        linkRefView.progressMessage = this.progressMessage;
+        linkRefView.shouldAllowTriggeringOps = this.shouldAllowTriggeringOps;
+
         if(linkRefView.inspectingAlign && this.currentView == "linkRefView")
         {
             for(let i = 0; i != this.aligns.length; ++i)

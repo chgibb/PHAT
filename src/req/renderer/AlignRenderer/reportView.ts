@@ -3,7 +3,7 @@ import * as electron from "electron";
 const ipc = electron.ipcRenderer;
 
 import * as viewMgr from "./../viewMgr";
-import Fastq from "./../../fastq";
+import {Fastq} from "./../../fastq";
 import {Fasta} from "./../../fasta";
 import {AtomicOperationIPC} from "./../../atomicOperationsIPC";
 import {AtomicOperation} from "./../../operations/atomicOperations";
@@ -16,12 +16,13 @@ export class ReportView extends viewMgr.View
     public selectedFastq1 : Fastq;
     public selectedFastq2 : Fastq;
     public selectedFasta : Fasta;
-    public operations : Array<AtomicOperation>;
+    public shouldAllowTriggeringOps : boolean;
     public constructor(div : string)
     {
         super('report',div);
         this.fastqInputs = new Array<Fastq>();
         this.fastaInputs = new Array<Fasta>();
+        this.shouldAllowTriggeringOps = true;
     }
     public onMount() : void{}
     public onUnMount() : void{}
@@ -106,11 +107,15 @@ export class ReportView extends viewMgr.View
                             <h3> Align ${this.selectedFastq1.alias}(forward), ${this.selectedFastq2.alias}(reverse), against ${this.selectedFasta.alias}</h3>
                         `;
                     }
-                    if(validSelection)
+                    if(validSelection && this.shouldAllowTriggeringOps)
                     {
                         res += `
                             <img id="alignButton" src="${getReadable("img/alignButton.png")}" class="activeHover activeHoverButton">
                         `;
+                    }
+                    else if(validSelection && !this.shouldAllowTriggeringOps)
+                    {
+                        res += `<div class="three-quarters-loader"></div>`;
                     }
                     res += `
                         <br />
@@ -118,28 +123,6 @@ export class ReportView extends viewMgr.View
                         <br />
                         <br />
                     `;
-                    if(this.operations !== undefined && this.operations.length)
-                    {
-                        for(let i = 0; i != this.operations.length; ++i)
-                        {
-                            if(this.operations[i].name == "runAlignment" && this.operations[i].running)
-                            {
-                                let op : RunAlignment = <RunAlignment>this.operations[i];
-                                if(op.fastq1 && !op.fastq2)
-                                {
-                                    res += `
-                                        <h4>Aligning ${op.fastq1.alias}(unpaired), against ${op.fasta.alias}. Step: ${op.step}., ${op.progressMessage}</h4>
-                                    `;
-                                }
-                                else if(op.fastq1 && op.fastq2)
-                                {
-                                    res += `
-                                        <h4>Aligning ${op.fastq1.alias}(forward), ${op.fastq2.alias}(reverse), against ${op.fasta.alias}. Step: ${op.step}., ${op.progressMessage}</h4>
-                                    `;
-                                }
-                            }
-                        }
-                    }
                     return res;
                 })()}
             </div>

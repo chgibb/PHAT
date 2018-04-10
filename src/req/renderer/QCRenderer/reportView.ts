@@ -2,7 +2,7 @@
 import * as fs from "fs";
 
 import * as viewMgr from "./../viewMgr";
-import Fastq from "./../../fastq";
+import {Fastq} from "./../../fastq";
 import {getQCReportHTML} from "./../../QCData";
 
 export class ReportView extends viewMgr.View
