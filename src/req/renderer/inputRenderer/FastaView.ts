@@ -35,24 +35,33 @@ export class View extends viewMgr.View
                                     <td class="${this.fastaInputs[i].uuid}Class">${this.fastaInputs[i].alias}</td>
                                     <td class="${this.fastaInputs[i].uuid}Class">${this.fastaInputs[i].imported ? "In Project" : this.fastaInputs[i].path}</td>
                                     <td class="${this.fastaInputs[i].uuid}Class">${this.fastaInputs[i].sizeString}</td>
-                                    ${(()=>{
-                                        if(this.shouldAllowTriggeringOps)
-                                        {
-                                            return `
-                                                <td class="cellHover ${this.fastaInputs[i].uuid}Class" id="${this.fastaInputs[i].uuid}Index">${this.fastaInputs[i].indexed != false ? `<img src="${getReadable("img/pass.png")}">` : "Not Ready"}</td>
-                                                <td class="cellHover ${this.fastaInputs[i].uuid}Class" id="${this.fastaInputs[i].uuid}IndexForVisualization">${this.fastaInputs[i].indexedForVisualization ? `<img src="${getReadable("img/pass.png")}">` : "Not Ready"}</td>
-                                            `;
-                                        }
-                                        else
-                                        {
-                                            return `
-                                                <td><div class="three-quarters-loader"></div></td>
-                                                <td><div class="three-quarters-loader"></div></td>
-                                            `;
-                                        }
-                                    })()}
-                                </tr>
-                            `;
+                                `;
+                            if(this.fastaInputs[i].indexed)
+                            {
+                                res += `<td class="cellHover ${this.fastaInputs[i].uuid}Class" id="${this.fastaInputs[i].uuid}Index"><img src="${getReadable("img/pass.png")}"></td>`;
+                            }
+                            else if(this.shouldAllowTriggeringOps)
+                            {
+                                res += `<td class="cellHover ${this.fastaInputs[i].uuid}Class" id="${this.fastaInputs[i].uuid}Index">Not Ready</td>`;
+                            }
+                            else if(!this.shouldAllowTriggeringOps)
+                            {
+                                res += `<td><div class="three-quarters-loader"></div></td>`;
+                            }
+
+                            if(this.fastaInputs[i].indexedForVisualization)
+                            {
+                                res += `<td class="cellHover ${this.fastaInputs[i].uuid}Class" id="${this.fastaInputs[i].uuid}IndexForVisualization"><img src="${getReadable("img/pass.png")}"></td>`;
+                            }
+                            else if(this.shouldAllowTriggeringOps)
+                            {
+                                res += `<td class="cellHover ${this.fastaInputs[i].uuid}Class" id="${this.fastaInputs[i].uuid}IndexForVisualization">Not Ready</td>`;
+                            }
+                            else if(!this.shouldAllowTriggeringOps)
+                            {
+                                res += `<td><div class="three-quarters-loader"></div></td>`;
+                            }
+                            res += `</tr>`;
                         }
                         return res;
                     })()}
