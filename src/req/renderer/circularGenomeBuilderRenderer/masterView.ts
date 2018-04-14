@@ -24,6 +24,7 @@ import {writeContigEditorModal} from "./writeContigEditorModal";
 import {writeContigCreatorModal} from "./writeContigCreatorModal";
 import {writeEditContigsModal} from "./writeEditContigsModal";
 import {writeSequenceSelectionModal} from "./writeSequenceSelectionModal";
+import {writeSeqSelectionActionModal} from "./writeSequenceSelectionActionModal";
 import {showGenericLoadingSpinnerInNavBar} from "./loadingSpinner";
 
 const $ = require("jquery");
@@ -54,6 +55,7 @@ export class View extends viewMgr.View
     public contigCreatorModalOpen : boolean;
     public editContigsModalOpen : boolean;
     public seqSelectionModalOpen : boolean;
+    public seqSelectionActionModalOpen : boolean;
     public constructor(div : string)
     {
         super("masterView",div);
@@ -66,6 +68,7 @@ export class View extends viewMgr.View
         this.contigCreatorModalOpen = false;
         this.editContigsModalOpen = false;
         this.seqSelectionModalOpen = false;
+        this.seqSelectionActionModalOpen = false;
     }
 
     /**
@@ -131,8 +134,9 @@ export class View extends viewMgr.View
         this.editContigsModalOpen = false;
 
         let triggerOnChange = false;
-        if(this.seqSelectionModalOpen && genomeView.showSeqSelector)
+        if((this.seqSelectionModalOpen || this.seqSelectionActionModalOpen) && genomeView.showSeqSelector)
             triggerOnChange = true;
+        this.seqSelectionActionModalOpen =false;
         this.seqSelectionModalOpen = false;
         genomeView.showSeqSelector = false;
         if(triggerOnChange)
@@ -479,6 +483,8 @@ export class View extends viewMgr.View
             writeContigCreatorModal();
         if(this.seqSelectionModalOpen)
             writeSequenceSelectionModal();
+        if(this.seqSelectionActionModalOpen)
+            writeSeqSelectionActionModal();
 
         //viewMgr will not call postRender for a view that does no rendering so we'll do it explicitly
         this.postRender();
