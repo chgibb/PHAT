@@ -3,7 +3,7 @@ init:
   - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
 
 install:
-  - ps: Install-Product node ''
+  - ps: Install-Product node 9
   - ps: wget "https://github.com/icsharpcode/SharpZipLib/releases/download/0.86.0.518/ICSharpCode.SharpZipLib.dll" -OutFile "src/installUpdateProcess/ICSharpCode.SharpZipLib.dll"
   - ps: wget "https://github.com/chgibb/FastQC0.11.5/releases/download/v0.11.5/FastQC.tar.gz" -OutFile "FastQC.tar.gz"
   - ps: wget "https://github.com/chgibb/pileup.js/releases/download/v0.6.9/pileup.js" -OutFile "forDist/pileup.js"
