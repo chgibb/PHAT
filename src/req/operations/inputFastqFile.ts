@@ -1,5 +1,5 @@
 import * as atomic from "./atomicOperations";
-import Fastq from "./../fastq";
+import {Fastq} from "./../fastq";
 export class InputFastqFile extends atomic.AtomicOperation
 {
     public filePath : string;

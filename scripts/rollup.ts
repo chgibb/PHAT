@@ -9,7 +9,9 @@
         external : ["electron"],
         onwarn : function(){},
         plugins : [
-            resolve()
+            resolve({
+                preferBuiltins : true
+            })
         ]
     };
 
