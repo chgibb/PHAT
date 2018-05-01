@@ -10,21 +10,21 @@
 
 ![PHAT Action Shot 1](https://chgibb.github.io//PHATDocs/docs/latest/actionShot1.png)
 
-### [Latest Stable Release: PHAT@0.7.13](https://chgibb.github.io/PHATDocs/releases/0.7.13/index)
+### [Latest Stable Release: PHAT@0.8.0](https://chgibb.github.io/PHATDocs/releases/0.8.0/index)
 ## Documentation Quicklinks
-1. [How to Get PHAT](https://chgibb.github.io/PHATDocs/docs/releases/0.7.13/howToGetPHAT)
-2. [Working With PHAT Projects](https://chgibb.github.io/PHATDocs/docs/releases/0.7.13/projects)
-3. [Inputting Files](https://chgibb.github.io/PHATDocs/docs/releases/0.7.13/inputtingFiles)
-4. [Running Quality Control (QC) Reports](https://chgibb.github.io/PHATDocs/docs/releases/0.7.13/QCReports)
-5. [Running Alignments](https://chgibb.github.io/PHATDocs/docs/releases/0.7.13/runningAlignments)
-6. [Reports and Analyses](https://chgibb.github.io/PHATDocs/docs/releases/0.7.13/reportsAndAnalyses)
-7. [Circular Visualization](https://chgibb.github.io/PHATDocs/docs/releases/0.7.13/circularVisualization)
+1. [How to Get PHAT](https://chgibb.github.io/PHATDocs/docs/releases/0.8.0/howToGetPHAT)
+2. [Working With PHAT Projects](https://chgibb.github.io/PHATDocs/docs/releases/0.8.0/projects)
+3. [Inputting Files](https://chgibb.github.io/PHATDocs/docs/releases/0.8.0/inputtingFiles)
+4. [Running Quality Control (QC) Reports](https://chgibb.github.io/PHATDocs/docs/releases/0.8.0/QCReports)
+5. [Running Alignments](https://chgibb.github.io/PHATDocs/docs/releases/0.8.0/runningAlignments)
+6. [Reports and Analyses](https://chgibb.github.io/PHATDocs/docs/releases/0.8.0/reportsAndAnalyses)
+7. [Circular Visualization](https://chgibb.github.io/PHATDocs/docs/releases/0.8.0/circularVisualization)
 
 ### Application Architecture
-1. [Overview](https://chgibb.github.io/PHATDocs/docs/releases/0.7.13/archOverview)
-2. [Contributing](https://chgibb.github.io/PHATDocs/docs/releases/0.7.13/contributingGuide)
-3. [Repository Structure](https://chgibb.github.io/PHATDocs/docs/releases/0.7.13/repoStructure)
-4. [Performance](https://chgibb.github.io/PHATDocs/docs/releases/0.7.13/performance)
+1. [Overview](https://chgibb.github.io/PHATDocs/docs/releases/0.8.0/archOverview)
+2. [Contributing](https://chgibb.github.io/PHATDocs/docs/releases/0.8.0/contributingGuide)
+3. [Repository Structure](https://chgibb.github.io/PHATDocs/docs/releases/0.8.0/repoStructure)
+4. [Performance](https://chgibb.github.io/PHATDocs/docs/releases/0.8.0/performance)
 
 The Pathogen-Host Analysis Tool (PHAT) is an application for processing and analyzing next-generation sequencing (NGS) data as it relates to relationships between pathogen and host organisms. PHAT provides quality control (QC) reporting on sequence files, alignment of sequence files against reference files, single-nucleotide polymorphism (SNP) prediction, linear and circular alignment viewing, and Excel and comma separated values (CSV) output.
 
