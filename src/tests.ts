@@ -13,6 +13,10 @@ import * as hpv16Figure from "./req/tests/hpv16Figure";
 import * as L6R1HPV16Align from "./req/tests/L6R1HPV16Align";
 import * as L6R1HPV18Align from "./req/tests/L6R1HPV18Align";
 
+import * as L6R7R1 from "./req/tests/L6R7R1";
+import * as L6R7R2 from "./req/tests/L6R7R2";
+import * as L6R7HPV16Align from "./req/tests/L6R7HPV16Align";
+
 import * as L6R1HPV16AlignImported from "./req/tests/L6R1HPV16AlignImported";
 import * as L6R1HPV18AlignImported from "./req/tests/L6R1HPV18AlignImported";
 
@@ -37,6 +41,16 @@ import {testL6R1HPV16AlignImportedImporting} from "./req/tests/testL6R1HPV16Alig
 import {testL6R1HPV16AlignImportedLinking} from "./req/tests/testL6R1HPV16AlignImportedLinking";
 import {testL6R1HPV18AlignImportedImporting} from "./req/tests/testL6R1HPV18AlignImportedImporting";
 import {testL6R1HPV18AlignImportedLinking} from "./req/tests/testL6R1HPV18AlignImportedLinking";
+
+import {testL6R7HPV16Alignment} from "./req/tests/testL6R7HPV16Alignment";
+import {testL6R7HPV16CoverageTrackRenderer} from "./req/tests/testL6R7HPV16CoverageTrackRenderer";
+import {testL6R7HPV16SNPTrackRenderer} from "./req/tests/testL6R7HPV16SNPTrackRender";
+import {testL6R7HPV16CoverageTrackCompilation} from "./req/tests/testL6R7HPV16CoverageTrackCompilation";
+import {testL6R7HPV16SNPTrackCompilation} from "./req/tests/testL6R7HPV16SNPTrackCompilation";
+
+import {testBLASTSegment0To1000L6R1HPV16Alignment} from "./req/tests/testBLASTSegment0To1000L6R1HPV16Alignment";
+import {testBLASTSegment3500To4500L6R1HPV16Alignment} from "./req/tests/testBLASTSegment3500To4500L6R1HPV16Alignment";
+import {testBLASTSegment5To10L6R7HPV16Alignment} from "./req/tests/testBLASTSegment5To10L6R7HPV16Alignment";
 
 const pjson = require("./resources/app/package.json");
 import {isBeta,versionIsGreaterThan} from "./req/versionIsGreaterThan";
@@ -73,7 +87,11 @@ async function runTests() : Promise<void>
 		{
 			await testFastQCReportGeneration();
 		}
-		catch(err){}
+		catch(err)
+		{
+			console.log("failed to generate FastQC report for L6R1R1");
+			return reject();
+		}
 
 		console.log("Generating FastQC report for L6R1R2");
     	atomic.addOperation("generateFastQCReport",L6R1R2.get());
@@ -81,7 +99,11 @@ async function runTests() : Promise<void>
 		{
 			await testFastQCReportGeneration();
 		}
-		catch(err){}
+		catch(err)
+		{
+			console.log("failed to generate FastQC report for L6R1R2");
+			return reject();
+		}
 
 		console.log("Starting to index hpv16");
 		atomic.addOperation("indexFastaForAlignment",hpv16Ref.get());
@@ -378,6 +400,120 @@ async function runTests() : Promise<void>
 			return reject();
 		}
 
+		console.log("Starting to align L6R7R1, L6R7R2 against hpv16");
+		atomic.addOperation(
+			"runAlignment",
+			{
+				fasta : hpv16Ref.get(),
+				fastq1 : L6R7R1.get(),
+				fastq2 : L6R7R2.get()
+			}
+		);
+		try
+		{
+			await testL6R7HPV16Alignment();
+		}
+		catch(err)
+		{
+			console.log("test alignment threw exception");
+			return reject();
+		}
+
+		console.log("Rendering coverage track for L6R7 alignment against HPV16")
+		try
+		{
+			await testL6R7HPV16CoverageTrackRenderer();
+		}
+		catch(err)
+		{
+			console.log("coverage track rendering threw exception");
+			return reject();
+		}
+
+		console.log("Rendering SNP track for L6R7 alignment against HPV16")
+		try
+		{
+			await testL6R7HPV16SNPTrackRenderer();
+		}
+		catch(err)
+		{
+			console.log("SNP track rendering threw exception");
+			return reject();
+		}
+
+		console.log("Compiling coverage track for L6R7 alignment against HPV16");
+		try
+		{
+			await testL6R7HPV16CoverageTrackCompilation();
+		}
+		catch(err)
+		{
+			console.log("Coverage track compilation threw exception");
+			return reject();
+		}
+
+		console.log("Compiling SNP track for L6R7 alignment against HPV16");
+		try
+		{
+			await testL6R7HPV16SNPTrackCompilation();
+		}
+		catch(err)
+		{
+			console.log("SNP track compilation threw exception");
+			return reject();
+		}
+
+		console.log("BLASTing segment 0-1000 of L6R1 alignment on HPV16");
+		atomic.addOperation("BLASTSegment",{
+			align : L6R1HPV16Align.get(),
+			contigUUID : L6R1HPV16Align.get().fasta.contigs[0].uuid,
+			start : 0,
+			stop : 1000
+		});
+		try
+		{
+			await testBLASTSegment0To1000L6R1HPV16Alignment();
+		}
+		catch(err)
+		{
+			console.log("BLASTing segment threw exception");
+			return reject();
+		}
+
+		console.log("BLASTing segment 3500-4500 of L6R1 alignment on HPV16");
+		atomic.addOperation("BLASTSegment",{
+			align : L6R1HPV16Align.get(),
+			contigUUID : L6R1HPV16Align.get().fasta.contigs[0].uuid,
+			start : 3500,
+			stop : 4500
+		});
+		try
+		{
+			await testBLASTSegment3500To4500L6R1HPV16Alignment();
+		}
+		catch(err)
+		{
+			console.log("BLASTing segment threw exception");
+			return reject();
+		}
+
+		console.log("BLASTing segment 5-10 of L6R7 alignment on HPV16");
+		atomic.addOperation("BLASTSegment",{
+			align : L6R7HPV16Align.get(),
+			contigUUID : L6R7HPV16Align.get().fasta.contigs[0].uuid,
+			start : 5,
+			stop : 10
+		});
+		try
+		{
+			await testBLASTSegment5To10L6R7HPV16Alignment();
+		}
+		catch(err)
+		{
+			console.log("BLASTing segment threw exception");
+			return reject();
+		}
+
 		resolve();
 	});
 
@@ -391,6 +527,9 @@ setTimeout(function(){
 		L6R1R2.loadNoSpaces();
 		hpv16Ref.loadNoSpaces();
 		hpv18Ref.loadNoSpaces();
+
+		L6R7R1.loadNoSpaces();
+		L6R7R2.loadNoSpaces();
 
 		try
 		{
@@ -407,6 +546,9 @@ setTimeout(function(){
 		L6R1R2.loadSpaces();
 		hpv16Ref.loadNoSpaces();
 		hpv18Ref.loadNoSpaces();
+
+		L6R7R1.loadSpaces();
+		L6R7R2.loadSpaces();
 
 		try
 		{

@@ -66,6 +66,7 @@ export class GenomeView extends viewMgr.View implements cf.FigureCanvas
      */
     public scope : any;
 
+    public shouldAllowTriggeringOps : boolean;
     public showSeqSelector : boolean;
     public seqSelectionLeftArm : cf.SeqSelectionDisplayArm;
     public seqSelectionRightArm : cf.SeqSelectionDisplayArm;
@@ -76,6 +77,7 @@ export class GenomeView extends viewMgr.View implements cf.FigureCanvas
         super(name,div);
         this.firstRender = true;
         this.showSeqSelector = false;
+        this.shouldAllowTriggeringOps = true;
     }
     public onMount() : void{}
     public onUnMount() : void{}

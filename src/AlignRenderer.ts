@@ -9,6 +9,7 @@ import * as reportView from "./req/renderer/AlignRenderer/reportView"
 const $ = require("jquery");
 (<any>window).$ = $;
 import "./req/renderer/commonBehaviour";
+import {AtomicOperation} from "./req/operations/atomicOperations";
 
 $
 (
@@ -94,10 +95,29 @@ $
                             (<reportView.ReportView>viewMgr.getViewByName("report")).fastaInputs = arg.val;
                         }
                     }
+                    let found = false;
                     if(arg.key == "operations")
                     {
-                        (<reportView.ReportView>viewMgr.getViewByName("report")).operations = arg.val;
+                        if(arg.val !== undefined)
+                        {
+                            let ops : Array<AtomicOperation> = arg.val;
+                            try
+                            {
+                                for(let i = 0; i != ops.length; ++i)
+                                {
+                                    if(ops[i].name == "runAlignment")
+                                    {
+                                        (<reportView.ReportView>viewMgr.getViewByName("report")).shouldAllowTriggeringOps = false;
+                                        found = true;
+                                        break;
+                                    }
+                                }
+                            }
+                            catch(err){}
+                        }
                     }
+                    if(!found)
+                        (<reportView.ReportView>viewMgr.getViewByName("report")).shouldAllowTriggeringOps = true;
                 }
                 viewMgr.render();
             }

@@ -9,6 +9,7 @@ import {makeWindowDockable} from "./req/renderer/dock";
 import {showGenericLoadingSpinnerInNavBar,hideSpinnerInNavBar} from "./req/renderer/circularGenomeBuilderRenderer/loadingSpinner";
 import * as tc from "./req/renderer/circularGenomeBuilderRenderer/templateCache";
 import "./req/renderer/commonBehaviour";
+import {AtomicOperation} from "./req/operations/atomicOperations";
 
 const $ = require("jquery");
 (<any>window).$ = $;
@@ -88,13 +89,14 @@ $
         (
             'circularGenomeBuilder',async function(event : Electron.IpcMessageEvent,arg : any)
             {
+                let masterView = <masterView.View>viewMgr.getViewByName("masterView");
+                let genomeView = <genomeView.GenomeView>viewMgr.getViewByName("genomeView",masterView.views);
                 if(arg.action == "getKey" || arg.action == "keyChange")
                 {
                     if(arg.key == "fastaInputs")
                     {
                         if(arg.val !== undefined)
                         {
-                            let masterView = <masterView.View>viewMgr.getViewByName("masterView");
                             masterView.fastaInputs = arg.val;
                         }
                     }
@@ -102,7 +104,6 @@ $
                     {
                         if(arg.val !== undefined)
                         {
-                            let masterView = <masterView.View>viewMgr.getViewByName("masterView");
                             masterView.alignData = arg.val;
                         }
                     }
@@ -110,8 +111,6 @@ $
                     {
                         if(arg.val !== undefined)
                         {
-                            let masterView = <masterView.View>viewMgr.getViewByName("masterView");
-                            let genomeView = <genomeView.GenomeView>viewMgr.getViewByName("genomeView",masterView.views);
                             let currentFigure = "";
 
                             //If there's currently a figure being edited then save its id
@@ -142,7 +141,29 @@ $
                             
                         }
                     }
-                    
+                    let found = false;
+                    if(arg.key == "operations")
+                    {
+                        if(arg.val !== undefined)
+                        {
+                            let ops : Array<AtomicOperation> = arg.val;
+                            try
+                            {
+                                for(let i = 0; i != ops.length; ++i)
+                                {
+                                    if(ops[i].name == "renderCoverageTrackForContig" || ops[i].name == "renderSNPTrackForContig")
+                                    {
+                                        genomeView.shouldAllowTriggeringOps = false;
+                                        found = true;
+                                        break;
+                                    }
+                                }
+                            }
+                            catch(err){}
+                        }
+                    }
+                    if(!found)
+                        genomeView.shouldAllowTriggeringOps = true;
                 }
                 viewMgr.render();
             }

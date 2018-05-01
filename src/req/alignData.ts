@@ -1,6 +1,6 @@
 import * as dFormat from "./dateFormat";
 import {getReadableAndWritable} from "./getAppPath";
-import Fastq from "./fastq";
+import {Fastq} from "./fastq";
 import {Fasta} from "./fasta";
 import {Bowtie2Report} from "./bowTie2AlignmentReportParser";
 import {varScanMPileup2SNPReport} from "./varScanMPileup2SNPReportParser";

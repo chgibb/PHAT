@@ -13,6 +13,7 @@ import {OpenProject} from "./../operations/OpenProject";
 import {SaveProject} from "./../operations/SaveProject";
 import {InputBamFile} from "./../operations/InputBamFile";
 import {LinkRefSeqToAlignment} from "./../operations/LinkRefSeqToAlignment";
+import {BLASTSegment} from "./../operations//BLASTSegment";
 
 export function registerOperations() : void
 {
@@ -24,6 +25,7 @@ export function registerOperations() : void
     atomic.register("renderSNPTrackForContig",RenderSNPTrackForContig);
     atomic.register("inputBamFile",InputBamFile);
     atomic.register("linkRefSeqToAlignment",LinkRefSeqToAlignment);
+    atomic.register("BLASTSegment",BLASTSegment);
 
     atomic.register("checkForUpdate",CheckForUpdate);
     atomic.register("downloadAndInstallUpdate",DownloadAndInstallUpdate);
