@@ -2,7 +2,7 @@ export default function tokenizedHTMLArrayToCSV(html : Array<string>) : string
 {
     let isTableRowEnd = new RegExp("(</tr>)","i");
 
-    let isTableData = new RegExp("(<td>)","i");
+    let isTableData = new RegExp("(<td>)|(<td class=\\\"cellHover\\\")","i");
     let isTableDataEnd = new RegExp("(</td>)","i");
 
     let isTableHeader = new RegExp("(<th>)","i");
