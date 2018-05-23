@@ -46,12 +46,8 @@ do
 	printf $f
 	printf "\n"
 
-	if [[ "$f" != "src/compileTemplatesProcess.js" ]]; then
-		./node_modules/.bin/browserify $f --node --debug -o $destination  --exclude electron --ignore-missing --noparse=jquery 
-	fi
-	if [[ "$f" == "src/compileTemplatesProcess.js" ]]; then
-		./node_modules/.bin/browserify $f --node --debug -o $destination --exclude electron --ignore-missing  --require @chgibb/angularplasmid --noparse=jquery 
-	fi
+	./node_modules/.bin/browserify $f --node --debug -o $destination  --exclude electron --ignore-missing --noparse=jquery 
+	
 	if [ $? != 0 ]; then
 	cleanTSArtifacts
 		exit 1
