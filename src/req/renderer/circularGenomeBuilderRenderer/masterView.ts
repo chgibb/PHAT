@@ -143,7 +143,7 @@ export class View extends viewMgr.View
         let triggerOnChange = false;
         if((this.seqSelectionModalOpen || this.seqSelectionActionModalOpen) && genomeView.showSeqSelector)
             triggerOnChange = true;
-        this.seqSelectionActionModalOpen =false;
+        this.seqSelectionActionModalOpen = false;
         this.seqSelectionModalOpen = false;
         genomeView.showSeqSelector = false;
         if(triggerOnChange)
