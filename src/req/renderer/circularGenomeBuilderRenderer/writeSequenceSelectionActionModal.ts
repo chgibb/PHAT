@@ -1,6 +1,7 @@
 import * as viewMgr from "./../viewMgr";
 import * as masterView from "./masterView";
 import * as genomeView from "./genomeView";
+import {writeAlignsModal} from "./writeAlignsModal";
 
 /**
  * writes the sequence selection action interface into the modal
@@ -26,4 +27,12 @@ export function writeSeqSelectionActionModal() : void
     document.getElementById("modalTitle").innerHTML = title;
     document.getElementById("modalBody").innerHTML = body;
     document.getElementById("modalFooter").innerHTML = footer;
+
+    document.getElementById("BLASTAlignment").onclick = function(this : HTMLElement,ev : Event){
+        masterView.seqSelectionActionModalOpen = false;
+        masterView.willBLASTAlignment = true;
+        masterView.alignsModalOpen = true;
+
+        writeAlignsModal();
+    }
 }
