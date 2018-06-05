@@ -126,6 +126,7 @@ export class View extends viewMgr.View
     public dismissModal() : void
     {
         (<any>$(".modal")).modal("hide");
+        this.resetModalStates();
     }
 
     public resetModalStates() : void
@@ -141,14 +142,15 @@ export class View extends viewMgr.View
         this.willBLASTAlignment = false;
 
         let triggerOnChange = false;
-        if((this.seqSelectionModalOpen || this.seqSelectionActionModalOpen) && genomeView.showSeqSelector)
+        if(genomeView.showSeqSelector)
             triggerOnChange = true;
         this.seqSelectionActionModalOpen = false;
         this.seqSelectionModalOpen = false;
         genomeView.showSeqSelector = false;
         if(triggerOnChange)
             genomeView.showSeqSelectorOnChange();
-
+        
+        viewMgr.render();
     }
 
     /**
