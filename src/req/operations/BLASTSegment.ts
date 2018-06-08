@@ -69,8 +69,8 @@ export class BLASTSegment extends atomic.AtomicOperation
                         self.blastSegmentResult = ev.data.blastSegmentResult;
                     }
                 }
-                self.update();
             }
+            self.update();
         });
 
         this.addPID(this.blastSegment.pid);                                                
