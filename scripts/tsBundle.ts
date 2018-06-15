@@ -102,16 +102,20 @@ for(let i = 0; i != currentBuild.entryPoints.length; ++i)
 
     for(let k = 0; k != sources.length; ++k)
     {
+        //only stat each file once
         if(!currentBuild.files[sources[k].fileName])
         {
             currentBuild.files[sources[k].fileName] = fs.statSync(sources[k].fileName).mtimeMs;
         }
+
+        //file has been modified since the last build
         if(oldBuild && oldBuild.files[sources[k].fileName] != currentBuild.files[sources[k].fileName])
         {
             rebuildEntryPoint = true;
         }
     }
 
+    //one or more source files comprising entryPoints[i] have been modified since the last build
     if(rebuildEntryPoint)
     {
         changedTargets++;
@@ -120,6 +124,7 @@ for(let i = 0; i != currentBuild.entryPoints.length; ++i)
 
     else if(mode == "debug")
     {
+        //nothing has changed since last build, but there is also no cached build
         if(!fs.existsSync(`.buildCache/debug/${path.parse(getJSFileExtension(currentBuild.entryPoints[i])).base}`))
         {
             runningBuilds.push(build(getJSFileExtension(currentBuild.entryPoints[i])));
