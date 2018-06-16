@@ -6,10 +6,25 @@ if [[ "$OSTYPE" == "cygwin" ]]; then
     target="phat-win32-x64/resources/app"
 fi
 
-for f in $target/*.js
-do
-    if [[ "$f" != "$target/pileup.js" ]]; then
-        printf "Running semi-colon insertion on $f\n"
-        ./node_modules/.bin/semi add $f --silent
-    fi
-done
+cd "$target"
+
+mv main.js realMain.js
+
+mv AOTCompileCodeCaches.js main.js
+
+cd ../
+
+cd ../
+
+./phat
+
+cd resources
+
+cd app
+
+mv realMain.js main.js
+
+rm -rf rt
+rm -rf projects
+rm -rf projectManifests.json
+rm -rf logs
