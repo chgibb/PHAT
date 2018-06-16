@@ -1,8 +1,8 @@
-const fs = require("fs");
-const cp = require("child_process");
-const path = require("path");
+import * as fs from "fs";
+import * as cp from "child_process";
+import * as path from "path";
 
-const ts = require("typescript");
+import * as ts from "typescript";
 const arg = require("minimist")(process.argv.slice(2));
 
 let mode : "debug" | "release";
@@ -105,7 +105,7 @@ for(let i = 0; i != currentBuild.entryPoints.length; ++i)
         //only stat each file once
         if(!currentBuild.files[sources[k].fileName])
         {
-            currentBuild.files[sources[k].fileName] = fs.statSync(sources[k].fileName).mtimeMs;
+            currentBuild.files[sources[k].fileName] = fs.statSync(sources[k].fileName).mtime.toString();
         }
 
         //file has been modified since the last build

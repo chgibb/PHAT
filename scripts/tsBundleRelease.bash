@@ -25,4 +25,4 @@ if [ "$1" != "src/PileupRenderer.js" ]; then
     mv $1.tmp $1
 fi
 
-mv $1 .buildCache/release/$destination
+cp $1 .buildCache/release/$destination
