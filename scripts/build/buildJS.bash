@@ -17,6 +17,7 @@ if [[ "$1" != "opt" ]]; then
 	node scripts/tsBundle src/*.ts --debug --buildCmd="scripts/tsBundleDebug.bash"
 	cp .buildCache/debug/*.js dist
 fi
+
 if [[ "$1" == "opt" ]]; then
 	./node_modules/.bin/tsc -p tsconfigProd.json
 	if [ $? != 0 ]; then
