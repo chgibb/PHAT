@@ -36,6 +36,7 @@ import {InputFastaFile} from "./../operations/inputFastaFile";
 import {InputBamFile} from "./../operations/InputBamFile";
 import {LinkRefSeqToAlignment} from "./../operations/LinkRefSeqToAlignment";
 import {ImportFileIntoProject} from "./../operations/ImportFileIntoProject";
+import {BLASTSegment} from "./../operations/BLASTSegment";
 
 import {CopyCircularFigure} from "./../operations/CopyCircularFigure";
 import {DeleteCircularFigure} from "./../operations/DeleteCircularFigure";
@@ -116,6 +117,7 @@ app.on
 		atomicOp.register("inputBamFile",InputBamFile);
 		atomicOp.register("linkRefSeqToAlignment",LinkRefSeqToAlignment);
 		atomicOp.register("importFileIntoProject",ImportFileIntoProject);
+		atomicOp.register("BLASTSegment",BLASTSegment);
 
 		atomicOp.register("copyCircularFigure",CopyCircularFigure);
 		atomicOp.register("deleteCircularFigure",DeleteCircularFigure);
@@ -593,6 +595,14 @@ ipc.on(
 				newTitle : arg.newTitle
 			});
 		}
+		else if(arg.opName == "BLASTSegment")
+		{
+			atomicOp.addOperation("BLASTSegment",{
+				align : arg.align,
+				start : arg.start,
+				stop : arg.stop
+			});
+		}
 		dataMgr.setKey("application","operations",atomicOp.operationsQueue);
 		winMgr.publishChangeForKey("application","operations");
 	}
@@ -964,6 +974,14 @@ atomicOp.updates.on(
 
 atomicOp.updates.on(
 	"changeTitle",function(op : ChangeTitle)
+	{
+		dataMgr.setKey("application","operations",atomicOp.operationsQueue);
+		winMgr.publishChangeForKey("application","operations");
+	}
+)
+
+atomicOp.updates.on(
+	"BLASTSegment",function(op : ChangeTitle)
 	{
 		dataMgr.setKey("application","operations",atomicOp.operationsQueue);
 		winMgr.publishChangeForKey("application","operations");
