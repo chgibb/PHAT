@@ -47,8 +47,8 @@ function update() : void
         }
     }
 
-    logger.logObject(update);
     process.send(update);
+    logger.logObject(update);
 }
 
 process.on("message",async function(ev : AtomicOperationForkEvent){

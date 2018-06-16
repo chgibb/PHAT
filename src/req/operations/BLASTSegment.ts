@@ -19,7 +19,6 @@ export class BLASTSegment extends atomic.AtomicOperation
 
     public setData(data : {
         align : AlignData,
-        contigUUID : string,
         start : number,
         stop : number
     }) : void {
@@ -27,7 +26,6 @@ export class BLASTSegment extends atomic.AtomicOperation
         this.blastSegmentResult.start = data.start;
         this.blastSegmentResult.stop = data.stop;
         this.blastSegmentResult.alignUUID = data.align.uuid;
-        this.blastSegmentResult.contigUUID = data.contigUUID;
         this.alignData = data.align;
         this.destinationArtifactsDirectories.push(getArtifactDir(this.blastSegmentResult));
     }
@@ -71,8 +69,8 @@ export class BLASTSegment extends atomic.AtomicOperation
                         self.blastSegmentResult = ev.data.blastSegmentResult;
                     }
                 }
-                self.update();
             }
+            self.update();
         });
 
         this.addPID(this.blastSegment.pid);                                                

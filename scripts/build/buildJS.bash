@@ -6,6 +6,7 @@ function cleanTSArtifacts {
 		rm $artifact
 	done
 }
+
 cp src/pileup.js/style/pileup.css dist/styles/pileup.css
 
 if [[ "$1" != "prod" ]]; then
@@ -51,6 +52,32 @@ do
 	if [ $? != 0 ]; then
 	cleanTSArtifacts
 		exit 1
+	fi
+
+	if [[ "$1" == "opt" ]]; then
+		if [[ "$destination" != "dist/PileupRenderer.js" ]]; then
+        	printf "Collapsing bundle "
+			printf $f
+			printf "\n"
+        	./node_modules/.bin/bundle-collapser $destination > tmp
+        	if [ $? != 0 ]; then
+            	rm tmp
+        	fi
+        	if [ $? == 0 ]; then
+            	mv tmp $destination
+        	fi
+    	fi
+		printf "Mangling "
+		printf $f
+		printf "\n"
+		./node_modules/.bin/babel --plugins minify-mangle-names $destination > tmp
+		if [ $? != 0 ]; then
+            rm tmp
+			exit $?
+        fi
+        if [ $? == 0 ]; then
+            mv tmp $destination
+        fi
 	fi
 
 	i=$i+1
