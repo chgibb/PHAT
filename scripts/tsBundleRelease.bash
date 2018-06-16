@@ -25,4 +25,27 @@ if [ "$1" != "src/PileupRenderer.js" ]; then
     mv $1.tmp $1
 fi
 
+./node_modules/.bin/babel --plugins minify-mangle-names $1 > $1.tmp
+if [ $? != 0 ]; then
+    rm $1.tmp
+    exit $?
+fi
+mv $1.tmp $1
+
+if [ "$1" != "src/PileupRenderer.js" ]; then
+    ./node_modules/uglify-es/bin/uglifyjs --compress -- $1 > $1.tmp
+    if [ $? != 0 ]; then
+        rm $1.tmp
+        exit $?
+    fi
+    mv $1.tmp $1
+fi
+
+./node_modules/.bin/optimize-js $1 > $1.tmp
+if [ $? != 0 ]; then
+    rm $1.tmp
+    exit $?
+fi
+mv $1.tmp $1
+
 cp $1 .buildCache/release/$destination
