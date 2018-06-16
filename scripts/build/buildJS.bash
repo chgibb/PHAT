@@ -14,7 +14,7 @@ if [[ "$1" != "opt" ]]; then
 	if [ $? != 0 ]; then
 		exit 1
 	fi
-	node scripts/tsBundle src/*.ts --debug --buildCmd="scripts/tsBundleDebug.bash"
+	node scripts/tsBundle src/*.ts --debug --buildCmd="bash scripts/tsBundleDebug.bash"
 	cp .buildCache/debug/*.js dist
 fi
 
@@ -33,7 +33,7 @@ if [[ "$1" == "opt" ]]; then
 
 	cd ../
 	
-	node scripts/tsBundle src/*.ts --release --buildCmd="scripts/tsBundleRelease.bash"
+	node scripts/tsBundle src/*.ts --release --buildCmd="bash scripts/tsBundleRelease.bash"
 	cp .buildCache/release/*.js dist
 fi
 

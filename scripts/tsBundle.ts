@@ -32,7 +32,7 @@ if(!mode)
     console.error("No build mode given");
     process.exit(1);
 }
-if(!arg.buildCmd || !fs.existsSync(arg.buildCmd))
+if(!arg.buildCmd)
 {
     console.error("No build command given");
     process.exit(1);
@@ -53,7 +53,7 @@ function getJSFileExtension(fileName : string) : string
 function build(file : string) : Promise<void>
 {
     return new Promise<void>((resolve,reject) => {
-        let job = cp.execFile(`${arg.buildCmd}`,[file],{},(error : Error, stdout : string, stderr : string) => {
+        let job = cp.exec(`${arg.buildCmd} ${file}`,{},(error : Error, stdout : string, stderr : string) => {
             if(error)
             {
                 return reject(error);
