@@ -1,6 +1,7 @@
 import * as fs from "fs";
 import * as cp from "child_process";
 import * as path from "path";
+import * as readline from "readline";
 
 import * as ts from "typescript";
 const arg = require("minimist")(process.argv.slice(2));
@@ -95,8 +96,8 @@ if(mode == "release")
 
 function updateProgress() : void
 {
-    (<any>process.stdout).clearLine();
-    (<any>process.stdout).cursorTo(0);
+    readline.clearLine(process.stdout,0);
+    readline.cursorTo(process.stdout,0,null);
     process.stdout.write(`${changedTargets} changed targets, ${upToDate} up-to-date targets, ${newlyBuiltTargets} newly built targets`);
 }
 
