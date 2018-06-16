@@ -93,6 +93,13 @@ if(mode == "debug")
 if(mode == "release")
     console.log(`${currentBuild.entryPoints.length} Release Targets`);
 
+function updateProgress() : void
+{
+    (<any>process.stdout).clearLine();
+    (<any>process.stdout).cursorTo(0);
+    process.stdout.write(`${changedTargets} changed targets, ${upToDate} up-to-date targets, ${newlyBuiltTargets} newly built targets`);
+}
+
 for(let i = 0; i != currentBuild.entryPoints.length; ++i)
 {
     let rebuildEntryPoint = false;
@@ -120,6 +127,7 @@ for(let i = 0; i != currentBuild.entryPoints.length; ++i)
     {
         changedTargets++;
         runningBuilds.push(build(getJSFileExtension(currentBuild.entryPoints[i])));
+        updateProgress();
     }
 
     else if(mode == "debug")
@@ -129,10 +137,12 @@ for(let i = 0; i != currentBuild.entryPoints.length; ++i)
         {
             runningBuilds.push(build(getJSFileExtension(currentBuild.entryPoints[i])));
             newlyBuiltTargets++;
+            updateProgress();
         }
         else
         {
             upToDate++;
+            updateProgress();
         }
     }
 
@@ -142,18 +152,19 @@ for(let i = 0; i != currentBuild.entryPoints.length; ++i)
         {
             runningBuilds.push(build(getJSFileExtension(currentBuild.entryPoints[i])));
             newlyBuiltTargets++;
+            updateProgress();
         }
         else
         {
             upToDate++;
+            updateProgress();
         }
     }
 }
 
-console.log(`${changedTargets} changed targets`);
-console.log(`${newlyBuiltTargets} newly built targets`);
-console.log(`${upToDate} up-to-date targets`);
 
 fs.writeFileSync(".buildCache/oldBuild.json",JSON.stringify(currentBuild,undefined,4));
 
 Promise.all(runningBuilds);
+
+process.stdout.write("\n");
