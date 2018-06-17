@@ -60,6 +60,7 @@ import {File,getPath} from "./../file";
 import {Fastq} from "./../fastq";
 import {Fasta} from "./../fasta";
 import {AlignData} from "./../alignData";
+import {BLASTSegmentResult} from "../BLASTSegmentResult";
 import {CircularFigure} from "./../renderer/circularFigure";
 import {PIDInfo} from "./../PIDInfo";
 import {finishLoadingProject} from "./finishLoadingProject";
@@ -985,5 +986,22 @@ atomicOp.updates.on(
 	{
 		dataMgr.setKey("application","operations",atomicOp.operationsQueue);
 		winMgr.publishChangeForKey("application","operations");
+
+		if(op.flags.success)
+		{
+			let aligns : Array<AlignData> = dataMgr.getKey("align","aligns");
+			for(let i = 0; i != aligns.length; ++i)
+			{
+				if(aligns[i].uuid == op.alignData.uuid)
+				{
+					if(!aligns[i].BLASTSegmentResults)
+						aligns[i].BLASTSegmentResults = new Array<BLASTSegmentResult>();
+					aligns[i].BLASTSegmentResults.push(op.blastSegmentResult);
+					dataMgr.setKey("align","aligns",aligns);
+					winMgr.publishChangeForKey("align","aligns");
+					return;
+				}
+			}
+		}
 	}
 )
