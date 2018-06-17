@@ -24,6 +24,7 @@ import {writeContigEditorModal} from "./writeContigEditorModal";
 import {writeContigCreatorModal} from "./writeContigCreatorModal";
 import {writeEditContigsModal} from "./writeEditContigsModal";
 import {writeSequenceSelectionModal} from "./writeSequenceSelectionModal";
+import {writeSeqSelectionActionModal} from "./writeSequenceSelectionActionModal";
 import {showGenericLoadingSpinnerInNavBar} from "./loadingSpinner";
 
 const $ = require("jquery");
@@ -35,6 +36,7 @@ export function addView(arr : Array<viewMgr.View>,div : string)
 {
     arr.push(new View(div));
 }
+
 /**
  * Manages the display and the behaviour of the figure editor
  * 
@@ -54,6 +56,9 @@ export class View extends viewMgr.View
     public contigCreatorModalOpen : boolean;
     public editContigsModalOpen : boolean;
     public seqSelectionModalOpen : boolean;
+    public seqSelectionActionModalOpen : boolean;
+
+    public willBLASTAlignment : boolean;
     public constructor(div : string)
     {
         super("masterView",div);
@@ -66,6 +71,9 @@ export class View extends viewMgr.View
         this.contigCreatorModalOpen = false;
         this.editContigsModalOpen = false;
         this.seqSelectionModalOpen = false;
+        this.seqSelectionActionModalOpen = false;
+
+        this.willBLASTAlignment = false;
     }
 
     /**
@@ -118,6 +126,7 @@ export class View extends viewMgr.View
     public dismissModal() : void
     {
         (<any>$(".modal")).modal("hide");
+        this.resetModalStates();
     }
 
     public resetModalStates() : void
@@ -130,14 +139,18 @@ export class View extends viewMgr.View
         this.contigEditorModalOpen = false;
         this.editContigsModalOpen = false;
 
+        this.willBLASTAlignment = false;
+
         let triggerOnChange = false;
-        if(this.seqSelectionModalOpen && genomeView.showSeqSelector)
+        if(genomeView.showSeqSelector)
             triggerOnChange = true;
+        this.seqSelectionActionModalOpen = false;
         this.seqSelectionModalOpen = false;
         genomeView.showSeqSelector = false;
         if(triggerOnChange)
             genomeView.showSeqSelectorOnChange();
-
+        
+        viewMgr.render();
     }
 
     /**
@@ -479,6 +492,8 @@ export class View extends viewMgr.View
             writeContigCreatorModal();
         if(this.seqSelectionModalOpen)
             writeSequenceSelectionModal();
+        if(this.seqSelectionActionModalOpen)
+            writeSeqSelectionActionModal();
 
         //viewMgr will not call postRender for a view that does no rendering so we'll do it explicitly
         this.postRender();

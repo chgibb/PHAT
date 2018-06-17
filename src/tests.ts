@@ -466,7 +466,6 @@ async function runTests() : Promise<void>
 		console.log("BLASTing segment 0-1000 of L6R1 alignment on HPV16");
 		atomic.addOperation("BLASTSegment",{
 			align : L6R1HPV16Align.get(),
-			contigUUID : L6R1HPV16Align.get().fasta.contigs[0].uuid,
 			start : 0,
 			stop : 1000
 		});
@@ -483,7 +482,6 @@ async function runTests() : Promise<void>
 		console.log("BLASTing segment 3500-4500 of L6R1 alignment on HPV16");
 		atomic.addOperation("BLASTSegment",{
 			align : L6R1HPV16Align.get(),
-			contigUUID : L6R1HPV16Align.get().fasta.contigs[0].uuid,
 			start : 3500,
 			stop : 4500
 		});
@@ -500,7 +498,6 @@ async function runTests() : Promise<void>
 		console.log("BLASTing segment 5-10 of L6R7 alignment on HPV16");
 		atomic.addOperation("BLASTSegment",{
 			align : L6R7HPV16Align.get(),
-			contigUUID : L6R7HPV16Align.get().fasta.contigs[0].uuid,
 			start : 5,
 			stop : 10
 		});
