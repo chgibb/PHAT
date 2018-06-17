@@ -13,8 +13,6 @@ import {getReadableAndWritable} from "./getAppPath";
 export class BLASTSegmentResult
 {
     public uuid : string;
-    public alignUUID : string;
-    public contigUUID : string
     public start : number;
     public stop : number;
     public avgSeqLength : number;
