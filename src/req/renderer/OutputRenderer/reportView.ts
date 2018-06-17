@@ -17,6 +17,7 @@ import {renderQCReportTable} from "./reportView/renderQCReportTable";
 import {renderAlignmentReportTable} from "./reportView/renderAlignmentReportTable";
 import {renderSNPPositionsTable} from "./reportView/renderSNPPositionsTable";
 import {renderMappedReadsPerContigTable} from "./reportView/renderMappedReadsPerContigTable";
+import {renderBLASTRunsTable} from "./reportView/renderBLASTRunsTable";
 
 import {getReadable} from "./../../getAppPath";
 
@@ -86,6 +87,7 @@ export class View extends viewMgr.View
             ${renderAlignmentReportTable()}
             ${renderSNPPositionsTable(this.vcfRows)}
             ${renderMappedReadsPerContigTable()}
+            ${renderBLASTRunsTable()}
             <br/><button id="exportXLS">Export Excel</button>
             <br/><button id="exportCSV">Export CSV</button>
         `;
@@ -101,6 +103,14 @@ export class View extends viewMgr.View
 
         for(let i = 0; i != masterView.alignData.length; ++i)
         {
+            if(event.target.id == masterView.alignData[i].uuid+"ViewBLASTRuns")
+            {
+                masterView.inspectingUUID = masterView.alignData[i].uuid;
+                masterView.displayInfo = "BLASTRuns";
+                viewMgr.render();
+                return;
+            }
+
             if(event.target.id == masterView.alignData[i].uuid+"ViewSNPs")
             {
                 masterView.inspectingUUID = masterView.alignData[i].uuid;

@@ -122,6 +122,23 @@ export class MappedReadsPerContigInfoSelection
     }
 }
 
+export class BLASTRunsInfoSelection
+{
+    public start : boolean;
+    public stop : boolean;
+    public program : boolean;
+    public dataBase : boolean;
+    public ran : boolean;
+    [index : string] : boolean;
+    public constructor()
+    {
+        this.start = true;
+        this.stop = true;
+        this.program = true;
+        this.dataBase = true;
+    }
+}
+
 export class View extends viewMgr.View
 {
     public fastQInfoSelection : FastQInfoSelection;
