@@ -981,7 +981,7 @@ atomicOp.updates.on(
 )
 
 atomicOp.updates.on(
-	"BLASTSegment",function(op : ChangeTitle)
+	"BLASTSegment",function(op : BLASTSegment)
 	{
 		dataMgr.setKey("application","operations",atomicOp.operationsQueue);
 		winMgr.publishChangeForKey("application","operations");
