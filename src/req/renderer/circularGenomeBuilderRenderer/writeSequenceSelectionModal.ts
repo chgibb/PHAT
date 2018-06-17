@@ -3,6 +3,24 @@ import * as masterView from "./masterView";
 import * as genomeView from "./genomeView";
 import {writeSeqSelectionActionModal} from "./writeSequenceSelectionActionModal";
 
+function valSelectionStartAndEnd() : void
+{
+    let startInput : HTMLInputElement = (<HTMLInputElement>document.getElementById("seqSelectionStart"));
+    let endInput : HTMLInputElement = (<HTMLInputElement>document.getElementById("seqSelectionEnd"));
+
+    let startInputValue = parseInt(startInput.value);
+    let endInputValue = parseInt(endInput.value);
+
+    if(startInputValue <= 0 || !startInputValue)
+        startInput.value = "1";
+    
+    if(endInputValue <= 1 || !endInputValue)
+        endInput.value = "2";
+    
+    if(startInputValue >= endInputValue)
+        startInput.value = (endInputValue - 1).toString();
+}
+
 /**
  * Writes the sequence selection interface into the modal
  * 
@@ -47,16 +65,19 @@ export function writeSequenceSelectionModal() : void
     if(genomeView.genome.isInteractive)
     {
         document.getElementById("seqSelectionStart").oninput = function(this : HTMLElement,ev : Event){
+            valSelectionStartAndEnd();
             updateSeqSelectionOnFigure(parseInt((<HTMLInputElement>document.getElementById("seqSelectionStart")).value),undefined);
         }
 
         document.getElementById("seqSelectionEnd").oninput = function(this : HTMLElement,ev : Event){
+            valSelectionStartAndEnd();
             updateSeqSelectionOnFigure(undefined,parseInt((<HTMLInputElement>document.getElementById("seqSelectionEnd")).value));
         }
     }
     if(!genomeView.genome.isInteractive)
     {
         document.getElementById("updateSeqSelection").onclick = function(this : HTMLElement,ev : MouseEvent){
+            valSelectionStartAndEnd();
             updateSeqSelectionOnFigure(
                 parseInt((<HTMLInputElement>document.getElementById("seqSelectionStart")).value),
                 parseInt((<HTMLInputElement>document.getElementById("seqSelectionEnd")).value)
