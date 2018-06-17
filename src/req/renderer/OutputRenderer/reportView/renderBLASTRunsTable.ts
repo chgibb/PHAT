@@ -12,7 +12,47 @@ export function renderBLASTRunsTable() : string
     return `
         <img class="activeHover activeHoverButton" id="goBackToAlignments" src="${getReadable("img/GoBack.png")}">
         <table style="width:100%">
-
+            ${(()=>{
+                let res = "";
+                res += `
+                    <tr>
+                        ${rightPanel.BLASTRunsInfoSelection.start != false ? "<th>Start</th>" : ""}
+                        ${rightPanel.BLASTRunsInfoSelection.stop != false ? "<th>Stop</th>" : ""}
+                        ${rightPanel.BLASTRunsInfoSelection.readsBLASTed != false ? "<th>Reads BLASTed</th>" : ""}
+                        ${rightPanel.BLASTRunsInfoSelection.program != false ? "<th>Program</th>" : ""}
+                        ${rightPanel.BLASTRunsInfoSelection.dataBase != false ? "<th>Database</th>" : ""}
+                        ${rightPanel.BLASTRunsInfoSelection.ran != false ? "<th>Date Ran</th>" : ""}
+                    </tr>
+                `;
+                return res;
+            })()}
+            ${(()=>{
+                let res = "";
+                for(let i = 0; i != masterView.alignData.length; ++i)
+                {
+                    if(masterView.alignData[i].uuid == masterView.inspectingUUID)
+                    {
+                        for(let k = 0; k != masterView.alignData[i].BLASTSegmentResults.length; ++k)
+                        {
+                            res += `<tr class="activeHover">`;
+                            if(rightPanel.BLASTRunsInfoSelection.start)
+                                res += `<td>${masterView.alignData[i].BLASTSegmentResults[k].start}</td>`;
+                            if(rightPanel.BLASTRunsInfoSelection.stop)
+                                res += `<td>${masterView.alignData[i].BLASTSegmentResults[k].stop}</td>`;
+                            if(rightPanel.BLASTRunsInfoSelection.readsBLASTed)
+                                res += `<td>${masterView.alignData[i].BLASTSegmentResults[k].readsBLASTed}</td>`;
+                            if(rightPanel.BLASTRunsInfoSelection.program)
+                                res += `<td>${masterView.alignData[i].BLASTSegmentResults[k].program}</td>`;
+                            if(rightPanel.BLASTRunsInfoSelection.dataBase)
+                                res += `<td>${masterView.alignData[i].BLASTSegmentResults[k].dataBase}</td>`;
+                            if(rightPanel.BLASTRunsInfoSelection.ran)
+                                res += `<td>${masterView.alignData[i].BLASTSegmentResults[k].dateStampString}</td>`;
+                            res += "</tr>"
+                        }
+                    }
+                }
+                return res;
+            })()}
         </table>
     `;
 }

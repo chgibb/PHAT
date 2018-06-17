@@ -126,6 +126,7 @@ export class BLASTRunsInfoSelection
 {
     public start : boolean;
     public stop : boolean;
+    public readsBLASTed : boolean;
     public program : boolean;
     public dataBase : boolean;
     public ran : boolean;
@@ -134,8 +135,10 @@ export class BLASTRunsInfoSelection
     {
         this.start = true;
         this.stop = true;
+        this.readsBLASTed = true;
         this.program = true;
         this.dataBase = true;
+        this.ran = false;
     }
 }
 
@@ -146,6 +149,7 @@ export class View extends viewMgr.View
     public alignmentInfoSelection : AlignmentInfoSelection;
     public snpPositionsInfoSelection : SNPPositionsInfoSelection;
     public mapppedReadsPerContigInfoSelection : MappedReadsPerContigInfoSelection;
+    public BLASTRunsInfoSelection : BLASTRunsInfoSelection;
     public constructor(name : string,div : string)
     {
         super(name,div);
@@ -154,6 +158,7 @@ export class View extends viewMgr.View
         this.alignmentInfoSelection = new AlignmentInfoSelection();
         this.snpPositionsInfoSelection = new SNPPositionsInfoSelection();
         this.mapppedReadsPerContigInfoSelection = new MappedReadsPerContigInfoSelection();
+        this.BLASTRunsInfoSelection = new BLASTRunsInfoSelection();
     }
 
     public onMount() : void{}
@@ -236,6 +241,29 @@ export class View extends viewMgr.View
                         <br />
 
                         <input type="checkbox" id="dateRan">Date Ran</input>
+                        <br />
+                    `;
+                }
+
+                if(masterView.displayInfo == "BLASTRuns")
+                {
+                    res += `
+                        <input type="checkbox" id="start">Start</input>
+                        <br />
+
+                        <input type="checkbox" id="stop">Stop</input>
+                        <br />
+
+                        <input type="checkbox" id="readsBLASTed">Reads Blasted</input>
+                        <br />
+
+                        <input type="checkbox" id="program">Program</input>
+                        <br />
+
+                        <input type="checkbox" id="dataBase">Database</input>
+                        <br />
+
+                        <input type="checkbox" id="ran">Date Ran</input>
                         <br />
                     `;
                 }
@@ -404,6 +432,20 @@ export class View extends viewMgr.View
                     }
                 }
             }
+            if(masterView.displayInfo == "BLASTRuns")
+            {
+                for(let i in this.BLASTRunsInfoSelection)
+                {
+                    if(this.BLASTRunsInfoSelection.hasOwnProperty(i))
+                    {
+                        try
+                        {
+                            (<HTMLInputElement>document.getElementById(i)).checked = this.BLASTRunsInfoSelection[i];
+                        }
+                        catch(err){console.log(err)}
+                    }
+                }
+            }
         }
         catch(err){}
     }
@@ -466,6 +508,12 @@ export class View extends viewMgr.View
             else if(masterView.displayInfo == "MappedReadsPerContigInfo")
             {
                 this.mapppedReadsPerContigInfoSelection[event.target.id] = checked;
+                viewMgr.render();
+                return;
+            }
+            else if(masterView.displayInfo == "BLASTRuns")
+            {
+                this.BLASTRunsInfoSelection[event.target.id] = checked;
                 viewMgr.render();
                 return;
             }

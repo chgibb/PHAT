@@ -95,6 +95,8 @@ process.on("message",async function(ev : AtomicOperationForkEvent){
             fs.appendFileSync(getBLASTResultsStore(blastSegmentResult),JSON.stringify(res)+"\n");
         }
 
+        blastSegmentResult.readsBLASTed = readsWithFragments.length;
+
         flags.done = true;
         flags.success = true;
         update();

@@ -4,6 +4,7 @@ import * as atomic from "./atomicOperations";
 import {AtomicOperationForkEvent,AtomicOperationIPC} from "../atomicOperationsIPC";
 import {BLASTSegmentResult,getArtifactDir} from "./../BLASTSegmentResult";
 import {AlignData} from "../alignData";
+import * as dFormat from "./../dateFormat";
 
 export class BLASTSegment extends atomic.AtomicOperation
 {
@@ -31,6 +32,9 @@ export class BLASTSegment extends atomic.AtomicOperation
 
     public run() : void
     {
+        this.blastSegmentResult.dateStamp = dFormat.generateFixedSizeDateStamp();
+        this.blastSegmentResult.dateStampString = dFormat.formatDateStamp(this.blastSegmentResult.dateStamp);
+        
         this.closeLogOnFailure = false;
         this.closeLogOnSuccess = false;
         

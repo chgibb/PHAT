@@ -15,6 +15,7 @@ export class BLASTSegmentResult
     public uuid : string;
     public start : number;
     public stop : number;
+    public readsBLASTed : number;
     public avgSeqLength : number;
     public readonly program = "blastn";
     public readonly MEGABLAST = true;
