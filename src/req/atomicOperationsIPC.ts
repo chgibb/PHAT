@@ -58,6 +58,10 @@ export interface AtomicOperationIPC
     id? : number;
 
     newTitle? : string;
+
+    start? : number;
+
+    stop? : number;
 }
 
 /**

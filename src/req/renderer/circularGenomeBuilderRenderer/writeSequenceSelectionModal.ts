@@ -1,6 +1,7 @@
 import * as viewMgr from "./../viewMgr";
 import * as masterView from "./masterView";
 import * as genomeView from "./genomeView";
+import {writeSeqSelectionActionModal} from "./writeSequenceSelectionActionModal";
 
 /**
  * Writes the sequence selection interface into the modal
@@ -24,6 +25,7 @@ export function writeSequenceSelectionModal() : void
 
     let footer = `
         <button type="button" class="btn btn-secondary" data-dismiss="modal" id="footerClose">Cancel</button>
+        <button type="button" class="btn btn-primary" id="selectSequence">Select Sequence</button>
     `;
     if(!genomeView.genome.isInteractive)
     {
@@ -35,6 +37,12 @@ export function writeSequenceSelectionModal() : void
     document.getElementById("modalTitle").innerHTML = title;
     document.getElementById("modalBody").innerHTML = body;
     document.getElementById("modalFooter").innerHTML = footer;
+
+    document.getElementById("selectSequence").onclick = function(this : HTMLElement,ev : MouseEvent){
+        masterView.seqSelectionModalOpen = false;
+        masterView.seqSelectionActionModalOpen = true;
+        writeSeqSelectionActionModal();
+    }
 
     if(genomeView.genome.isInteractive)
     {
