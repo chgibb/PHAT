@@ -52,6 +52,7 @@ export class AlignmentInfoSelection
     public pValueThreshold : boolean;
     public SNPsPredicted : boolean;
     public indelsPredicted : boolean;
+    public BLASTRuns : boolean;
     public dateRan : boolean;
     [index : string] : boolean;
     public constructor()
@@ -71,6 +72,7 @@ export class AlignmentInfoSelection
         this.indelsPredicted = true;
         this.dateRan = false;
         this.SNPPositions = false;
+        this.BLASTRuns = true;
     }
 }
 
@@ -211,6 +213,9 @@ export class View extends viewMgr.View
                         <br />
 
                         <input type="checkbox" id="indelsPredicted">Indels Predicted</input>
+                        <br />
+
+                        <input type="checkbox" id="BLASTRuns">BLAST Runs</input>
                         <br />
 
                         <input type="checkbox" id="dateRan">Date Ran</input>
