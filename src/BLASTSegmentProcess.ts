@@ -98,6 +98,8 @@ process.on("message",async function(ev : AtomicOperationForkEvent){
         flags.done = true;
         flags.success = true;
         update();
-        atomic.exitFork(0);
+        setTimeout(function(){
+            atomic.exitFork(0);
+        },1000);
     }
 });
