@@ -2,6 +2,7 @@ import * as viewMgr from "./../../viewMgr";
 import * as masterView from "./../masterView";
 import * as rightPanel from "./../rightPanel";
 import {getReadable} from "./../../../getAppPath";
+
 export function renderMappedReadsPerContigTable() : string
 {
     let masterView = <masterView.View>viewMgr.getViewByName("masterView");
