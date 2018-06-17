@@ -17,7 +17,7 @@ export function writeSequenceSelectionModal() : void
 
     let body = `
         <h5>Start</h5>
-        <input type="number" id="seqSelectionStart" value="${genomeView.seqSelectionLeftArm.armStart}" />
+        <input type="number" id="seqSelectionStart" value="1" />
         <br />
         <h5>End</h5>
         <input type="number" id="seqSelectionEnd" value="${genomeView.seqSelectionRightArm.armStart}" />
