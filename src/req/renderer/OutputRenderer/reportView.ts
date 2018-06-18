@@ -96,6 +96,8 @@ export class View extends viewMgr.View
     public dataChanged() : void{}
     public divClickEvents(event : JQueryEventObject) : void
     {
+        if(event.target.classList.contains("propogateParent"))
+            event.target = event.target.parentElement;
         if(!event.target.id)
             return;
         let masterView = <masterView.View>viewMgr.getViewByName("masterView");
@@ -103,6 +105,16 @@ export class View extends viewMgr.View
 
         for(let i = 0; i != masterView.alignData.length; ++i)
         {
+            if(masterView.alignData[i].BLASTSegmentResults)
+            {
+                for(let k = 0; k != masterView.alignData[i].BLASTSegmentResults.length; ++k)
+                {
+                    if(event.target.id == masterView.alignData[i].BLASTSegmentResults[k].uuid+"ViewReads")
+                    {
+                        alert("clicked");
+                    }
+                }
+            }
             if(event.target.id == masterView.alignData[i].uuid+"ViewBLASTRuns")
             {
                 masterView.inspectingUUID = masterView.alignData[i].uuid;

@@ -34,19 +34,19 @@ export function renderBLASTRunsTable() : string
                     {
                         for(let k = 0; k != masterView.alignData[i].BLASTSegmentResults.length; ++k)
                         {
-                            res += `<tr class="activeHover">`;
+                            res += `<tr class="activeHover" id="${masterView.alignData[i].BLASTSegmentResults[k].uuid}ViewReads">`;
                             if(rightPanel.BLASTRunsInfoSelection.start)
-                                res += `<td>${masterView.alignData[i].BLASTSegmentResults[k].start}</td>`;
+                                res += `<td class="propogateParent">${masterView.alignData[i].BLASTSegmentResults[k].start}</td>`;
                             if(rightPanel.BLASTRunsInfoSelection.stop)
-                                res += `<td>${masterView.alignData[i].BLASTSegmentResults[k].stop}</td>`;
+                                res += `<td class="propogateParent">${masterView.alignData[i].BLASTSegmentResults[k].stop}</td>`;
                             if(rightPanel.BLASTRunsInfoSelection.readsBLASTed)
-                                res += `<td>${masterView.alignData[i].BLASTSegmentResults[k].readsBLASTed}</td>`;
+                                res += `<td class="propogateParent">${masterView.alignData[i].BLASTSegmentResults[k].readsBLASTed}</td>`;
                             if(rightPanel.BLASTRunsInfoSelection.program)
-                                res += `<td>${masterView.alignData[i].BLASTSegmentResults[k].program}</td>`;
+                                res += `<td class="propogateParent">${masterView.alignData[i].BLASTSegmentResults[k].program}</td>`;
                             if(rightPanel.BLASTRunsInfoSelection.dataBase)
-                                res += `<td>${masterView.alignData[i].BLASTSegmentResults[k].dataBase}</td>`;
+                                res += `<td class="propogateParent">${masterView.alignData[i].BLASTSegmentResults[k].dataBase}</td>`;
                             if(rightPanel.BLASTRunsInfoSelection.ran)
-                                res += `<td>${masterView.alignData[i].BLASTSegmentResults[k].dateStampString}</td>`;
+                                res += `<td class="propogateParent">${masterView.alignData[i].BLASTSegmentResults[k].dateStampString}</td>`;
                             res += "</tr>"
                         }
                     }
