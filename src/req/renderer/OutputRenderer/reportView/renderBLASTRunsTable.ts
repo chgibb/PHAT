@@ -30,8 +30,10 @@ export function renderBLASTRunsTable() : string
                 let res = "";
                 for(let i = 0; i != masterView.alignData.length; ++i)
                 {
-                    if(masterView.alignData[i].uuid == masterView.inspectingUUID)
+                    if(masterView.alignData[i].uuid == masterView.inspectingAlignUUID)
                     {
+                        if(!masterView.alignData[i].BLASTSegmentResults)
+                            continue;
                         for(let k = 0; k != masterView.alignData[i].BLASTSegmentResults.length; ++k)
                         {
                             res += `<tr class="activeHover" id="${masterView.alignData[i].BLASTSegmentResults[k].uuid}ViewReads">`;

@@ -18,6 +18,7 @@ import {renderAlignmentReportTable} from "./reportView/renderAlignmentReportTabl
 import {renderSNPPositionsTable} from "./reportView/renderSNPPositionsTable";
 import {renderMappedReadsPerContigTable} from "./reportView/renderMappedReadsPerContigTable";
 import {renderBLASTRunsTable} from "./reportView/renderBLASTRunsTable";
+import {renderBLASTSingleRunTable} from "./reportView/renderBLASTSingleRunTable";
 
 import {getReadable} from "./../../getAppPath";
 
@@ -71,13 +72,13 @@ export class View extends viewMgr.View
         //if we're looking at SNP position, refresh table information if the alignment being inspected has changed
         if(masterView.displayInfo == "SNPPositions")
         {
-            if(this.inspectingUUID != masterView.inspectingUUID)
+            if(this.inspectingUUID != masterView.inspectingAlignUUID)
             {
                 this.vcfRows = JSON.parse(
-                            fs.readFileSync(getReadableAndWritable(`rt/AlignmentArtifacts/${masterView.inspectingUUID}/snps.json`)
+                            fs.readFileSync(getReadableAndWritable(`rt/AlignmentArtifacts/${masterView.inspectingAlignUUID}/snps.json`)
                     ).toString()
                 );
-                this.inspectingUUID = masterView.inspectingUUID;
+                this.inspectingUUID = masterView.inspectingAlignUUID;
             }
         }
         return `
@@ -88,6 +89,7 @@ export class View extends viewMgr.View
             ${renderSNPPositionsTable(this.vcfRows)}
             ${renderMappedReadsPerContigTable()}
             ${renderBLASTRunsTable()}
+            ${renderBLASTSingleRunTable()}
             <br/><button id="exportXLS">Export Excel</button>
             <br/><button id="exportCSV">Export CSV</button>
         `;
@@ -111,13 +113,17 @@ export class View extends viewMgr.View
                 {
                     if(event.target.id == masterView.alignData[i].BLASTSegmentResults[k].uuid+"ViewReads")
                     {
-                        alert("clicked");
+                        masterView.inspectingAlignUUID = masterView.alignData[i].uuid;
+                        masterView.inspectingBLASTRunUUID = masterView.alignData[i].BLASTSegmentResults[k].uuid;
+                        masterView.displayInfo = "BLASTSingleRun";
+                        viewMgr.render();
+                        return;
                     }
                 }
             }
             if(event.target.id == masterView.alignData[i].uuid+"ViewBLASTRuns")
             {
-                masterView.inspectingUUID = masterView.alignData[i].uuid;
+                masterView.inspectingAlignUUID = masterView.alignData[i].uuid;
                 masterView.displayInfo = "BLASTRuns";
                 viewMgr.render();
                 return;
@@ -125,7 +131,7 @@ export class View extends viewMgr.View
 
             if(event.target.id == masterView.alignData[i].uuid+"ViewSNPs")
             {
-                masterView.inspectingUUID = masterView.alignData[i].uuid;
+                masterView.inspectingAlignUUID = masterView.alignData[i].uuid;
                 masterView.displayInfo = "SNPPositions";
                 viewMgr.render();
                 return;
@@ -190,12 +196,12 @@ export class View extends viewMgr.View
                     alert(`Can't view an alignment with 0% alignment rate`);
                     return;
                 }
-                masterView.inspectingUUID = masterView.alignData[i].uuid;
+                masterView.inspectingAlignUUID = masterView.alignData[i].uuid;
                 masterView.displayInfo = "MappedReadsPerContigInfo";
                 viewMgr.render();
                 return;
             }
-            if(masterView.alignData[i].uuid == masterView.inspectingUUID)
+            if(masterView.alignData[i].uuid == masterView.inspectingAlignUUID)
             {
                 for(let k = 0; k != this.vcfRows.length; ++k)
                 {
@@ -247,6 +253,13 @@ export class View extends viewMgr.View
         if(event.target.id == "goBackToAlignments")
         {
             masterView.displayInfo = "AlignmentInfo";
+            viewMgr.render();
+            return;
+        }
+
+        if(event.target.id == "goBackToBLASTRuns")
+        {
+            masterView.displayInfo = "BLASTRuns";
             viewMgr.render();
             return;
         }

@@ -142,6 +142,20 @@ export class BLASTRunsInfoSelection
     }
 }
 
+export class BLASTSingleRunInfoSelection
+{
+    public position : boolean;
+    public seq : boolean;
+    public Hit_def : boolean;
+    [index : string] : boolean;
+    public constructor()
+    {
+        this.position = true;
+        this.seq = true;
+        this.Hit_def = true;
+    }
+}
+
 export class View extends viewMgr.View
 {
     public fastQInfoSelection : FastQInfoSelection;
@@ -150,6 +164,7 @@ export class View extends viewMgr.View
     public snpPositionsInfoSelection : SNPPositionsInfoSelection;
     public mapppedReadsPerContigInfoSelection : MappedReadsPerContigInfoSelection;
     public BLASTRunsInfoSelection : BLASTRunsInfoSelection;
+    public BLASTSingleRunInfoSelection : BLASTSingleRunInfoSelection;
     public constructor(name : string,div : string)
     {
         super(name,div);
@@ -159,6 +174,7 @@ export class View extends viewMgr.View
         this.snpPositionsInfoSelection = new SNPPositionsInfoSelection();
         this.mapppedReadsPerContigInfoSelection = new MappedReadsPerContigInfoSelection();
         this.BLASTRunsInfoSelection = new BLASTRunsInfoSelection();
+        this.BLASTSingleRunInfoSelection = new BLASTSingleRunInfoSelection();
     }
 
     public onMount() : void{}
@@ -268,6 +284,20 @@ export class View extends viewMgr.View
                     `;
                 }
 
+                if(masterView.displayInfo == "BLASTSingleRun")
+                {
+                    res += `
+                        <input type="checkbox" id="position">Position</input>
+                        <br />
+
+                        <input type="checkbox" id="seq">Sequence</input>
+                        <br />
+
+                        <input type="checkbox" id="Hit_def">Hit Name</input>
+                        <br />
+                    `;
+                }
+
                 if(masterView.displayInfo == "SNPPositions")
                 {
                     res += `
@@ -277,7 +307,7 @@ export class View extends viewMgr.View
                             let inspectingAlignMarkup = "";
                             for(let i = 0; i != masterView.alignData.length; ++i)
                             {
-                                if(masterView.inspectingUUID == masterView.alignData[i].uuid)
+                                if(masterView.inspectingAlignUUID == masterView.alignData[i].uuid)
                                 {
                                     inspectingAlignMarkup += `
                                         <h5>SNP Reporting for ${masterView.alignData[i].alias}</h5>
@@ -341,7 +371,7 @@ export class View extends viewMgr.View
                     let found = false;
                     for(let i = 0; i != masterView.alignData.length; ++i)
                     {
-                        if(masterView.inspectingUUID == masterView.alignData[i].uuid)
+                        if(masterView.inspectingAlignUUID == masterView.alignData[i].uuid)
                         {
                             res += `
                                 <h5>Mapped reads per contig for ${masterView.alignData[i].alias}</h5>
@@ -446,6 +476,20 @@ export class View extends viewMgr.View
                     }
                 }
             }
+            if(masterView.displayInfo == "BLASTSingleRun")
+            {
+                for(let i in this.BLASTSingleRunInfoSelection)
+                {
+                    if(this.BLASTSingleRunInfoSelection.hasOwnProperty(i))
+                    {
+                        try
+                        {
+                            (<HTMLInputElement>document.getElementById(i)).checked = this.BLASTSingleRunInfoSelection[i];
+                        }
+                        catch(err){console.log(err)}
+                    }
+                }
+            }
         }
         catch(err){}
     }
@@ -514,6 +558,12 @@ export class View extends viewMgr.View
             else if(masterView.displayInfo == "BLASTRuns")
             {
                 this.BLASTRunsInfoSelection[event.target.id] = checked;
+                viewMgr.render();
+                return;
+            }
+            else if(masterView.displayInfo == "BLASTSingleRun")
+            {
+                this.BLASTSingleRunInfoSelection[event.target.id] = checked;
                 viewMgr.render();
                 return;
             }

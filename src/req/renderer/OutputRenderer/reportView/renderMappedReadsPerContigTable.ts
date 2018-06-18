@@ -29,7 +29,7 @@ export function renderMappedReadsPerContigTable() : string
                 for(let i = 0; i != masterView.alignData.length; ++i)
                 {
                     
-                    if(masterView.alignData[i].uuid == masterView.inspectingUUID)
+                    if(masterView.alignData[i].uuid == masterView.inspectingAlignUUID)
                     {
                         for(let k = 0; k != masterView.alignData[i].idxStatsReport.length-1; ++k)
                         {
