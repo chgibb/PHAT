@@ -69,7 +69,7 @@ export function getBLASTResults(
                     res.push(result);
                     return;
                 }
-                else if(result.read.POS >= start && result.read.POS <= end)
+                else if(result.readWithFragments.read.POS >= start && result.readWithFragments.read.POS <= end)
                 {
                     res.push(result);
                     return;

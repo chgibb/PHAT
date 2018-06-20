@@ -1,5 +1,7 @@
 /// <reference path="./../../node_modules/@chgibb/unmappedcigarfragments/lib/lib" />
-import {SAMRead} from "./../../node_modules/@chgibb/unmappedcigarfragments/lib/lib";
+import {SAMRead} from "@chgibb/unmappedcigarfragments/lib/lib";
+
+import {ReadWithFragments} from "./readWithFragments";
 
 function replaceAll(target : string,search : RegExp,replace : string) : string
 {
@@ -56,7 +58,7 @@ export function cleanBLASTXML(xml : string) : string
  */
 export interface BlastOutputRawJSON
 {
-    read : SAMRead,
+    readWithFragments : ReadWithFragments,
     BlastOutput : {
         BlastOutput_program : Array<string>;
         BlastOutput_version : Array<string>;

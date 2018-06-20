@@ -1,11 +1,18 @@
 /// <reference path="./../../../../node_modules/@chgibb/unmappedcigarfragments/lib/lib.ts" />
 
-import {getReads,SAMRead,ReadFragment} from "./../../../../node_modules/@chgibb/unmappedcigarfragments/lib/lib";
+import {getReads,SAMRead,ReadFragment} from "@chgibb/unmappedcigarfragments/lib/lib";
 
-export function getReadsWithLargeUnMappedFragments(file : string,start : number,stop : number,progress : (parsedReads : number) => void) : Promise<Array<SAMRead>>
+import {ReadWithFragments} from "./../../readWithFragments";
+
+export function getReadsWithLargeUnMappedFragments(
+    file : string,
+    start : number,
+    stop : number,
+    progress : (parsedReads : number) => void
+) : Promise<Array<ReadWithFragments>>
 {
-    return new Promise<Array<SAMRead>>(async (resolve,reject) => {
-        let res : Array<SAMRead> = new Array<SAMRead>();
+    return new Promise<Array<ReadWithFragments>>(async (resolve,reject) => {
+        let res : Array<ReadWithFragments> = new Array<ReadWithFragments>();
         let parsedReads = 0;
         await getReads(file,start,stop,function(read : SAMRead,fragments : Array<ReadFragment>){
             parsedReads++;
@@ -16,7 +23,10 @@ export function getReadsWithLargeUnMappedFragments(file : string,start : number,
             {
                 if(fragments[i].type == "unmapped" && fragments[i].seq.length >= 15)
                 {
-                    res.push(read);
+                    res.push({
+                        read : read,
+                        fragments : fragments
+                    });
                     break;
                 }
             }

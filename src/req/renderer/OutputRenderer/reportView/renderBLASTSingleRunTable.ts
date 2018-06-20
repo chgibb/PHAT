@@ -67,9 +67,9 @@ export function renderBLASTSingleRunTable() : string
                 {
                     res += `<tr>`;
                     if(rightPanel.BLASTSingleRunInfoSelection.position)
-                        res += `<td>${lastViewedResults[i].read.POS}</td>`;
+                        res += `<td>${lastViewedResults[i].readWithFragments.read.POS}</td>`;
                     if(rightPanel.BLASTSingleRunInfoSelection.seq)
-                        res += `<td>${lastViewedResults[i].read.SEQ}</td>`;
+                        res += `<td>${lastViewedResults[i].readWithFragments.read.SEQ}</td>`;
                     if(rightPanel.BLASTSingleRunInfoSelection.Hit_def)
                     {
                         let hitDef = lastViewedResults[i].BlastOutput.BlastOutput_iterations[0].Iteration[0].Iteration_hits[0].Hit[0].Hit_def[0];

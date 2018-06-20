@@ -191,7 +191,8 @@ export function performQuery(read : SAMRead,progressCB : (status : QueryStatus) 
                     }
                     else
                     {
-                        result.read = read;
+                        result.readWithFragments = <any>{};
+                        result.readWithFragments.read = read;
                         resolve(result);
                     }
                 }
