@@ -104,6 +104,12 @@ export function parseCIGARSections(cigar : string) : Array<CIGARSection> | undef
     return res;
 }
 
+export interface ReadFragment
+{
+    seq : string;
+    type : "mapped" | "unmapped" | "remainder"; 
+}
+
 /**
  * Evaluates the given CIGAR string against the given query sequence. Returns
  * identified unmapped fragments
@@ -113,9 +119,9 @@ export function parseCIGARSections(cigar : string) : Array<CIGARSection> | undef
  * @param {string} cigar 
  * @returns {(Array<string> | undefined)} 
  */
-export function evaluateCIGAR(seq : string,cigar : string) : Array<string> | undefined
+export function evaluateCIGAR(seq : string,cigar : string) : Array<ReadFragment> | undefined
 {
-    let res : Array<string> = new Array<string>();
+    let res : Array<ReadFragment> = new Array<ReadFragment>();
 
     let sections : Array<CIGARSection> | undefined = parseCIGARSections(cigar);
 
@@ -131,17 +137,32 @@ export function evaluateCIGAR(seq : string,cigar : string) : Array<string> | und
         {
             if(sections[i].op == "M")
             {
+                res.push({
+                    seq : seq.substring(refPos,refPos+sections[i].val),
+                    type : "mapped"
+                });
                 refPos += sections[i].val;
             }
 
             else if(sections[i].op == "I" || sections[i].op == "S" || sections[i].op == "=" || sections[i].op == "X")
             {
-                res.push(seq.substring(refPos,refPos+sections[i].val));
+                res.push({
+                    seq : seq.substring(refPos,refPos+sections[i].val),
+                    type : "unmapped"
+                });
                 refPos += sections[i].val;
             }
 
             if(refPos > seq.length)
                 throw new Error("Stepped off end of query sequence");
+        }
+
+        if(refPos < seq.length)
+        {
+            res.push({
+                seq : seq.substring(refPos,seq.length),
+                type : "remainder"
+            });
         }
     }
 
@@ -166,7 +187,7 @@ export function getReads(
     file : string,
     start : number,
     end : number,
-    cb : (read : SAMRead,unMappedFragments : Array<string> | undefined) => void
+    cb : (read : SAMRead,fragments : Array<ReadFragment> | undefined) => void
 ) : Promise<number> {
     return new Promise<number>(async (resolve) => {
         let retrieved = 0;
@@ -190,6 +211,6 @@ export function getReads(
 
         rl.on("close",function(){
             resolve(retrieved);
-        })
+        });
     });
 }
