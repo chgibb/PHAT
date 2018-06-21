@@ -7,8 +7,43 @@ import {SAMRead} from "./../../node_modules/@chgibb/unmappedcigarfragments/lib/l
 
 import * as dFormat from "./dateFormat";
 import {Contig} from "./fastaContigLoader";
-import {BlastOutputRawJSON} from "./BLASTOutput";
+import {ReadWithFragments} from "./readWithFragments";
+import {BLASTOutputRawJSON} from "./BLASTOutput";
 import {getReadableAndWritable} from "./getAppPath";
+
+export class BLASTReadResult
+{
+    public readonly resultType : string = "read";
+    public readonly uuid : string;
+    public readonly readWithFragments : ReadWithFragments;
+    public readonly results : BLASTOutputRawJSON;
+    public constructor(results : BLASTOutputRawJSON,readWithFragments : ReadWithFragments)
+    {
+        const uuidv4 : () => string = require("uuid/v4");
+
+        this.results = results;
+        this.readWithFragments = readWithFragments;
+        this.uuid = uuidv4();
+    }
+}
+
+export class BLASTFragmentResult
+{
+    public readonly resultType : string = "fragment";
+    public readonly uuid : string;
+    public readonly readuuid : string;
+    public readonly seq : string;
+    public readonly results : BLASTOutputRawJSON;
+    public constructor(results : BLASTOutputRawJSON,seq : string,readuuid : string)
+    {
+        const uuidv4 : () => string = require("uuid/v4");
+
+        this.results = results;
+        this.seq = seq;
+        this.readuuid = readuuid;
+        this.uuid = uuidv4();
+    }
+}
 
 export class BLASTSegmentResult
 {
@@ -40,27 +75,27 @@ export function getSamSegment(blastResult : BLASTSegmentResult) : string
     return getReadableAndWritable(`rt/BLASTSegmentResults/${blastResult.uuid}/segment.sam`);
 }
 
-export function getBLASTResultsStore(blastResult : BLASTSegmentResult) : string
+export function getBLASTReadResultsStore(blastResult : BLASTSegmentResult) : string
 {
     return getReadableAndWritable(`rt/BLASTSegmentResults/${blastResult.uuid}/readResults.nldjson`);
 }
 
-export function getBLASTResults(
+export function getBLASTReadResults(
     blastResult : BLASTSegmentResult,
     start : number,
     end : number
-) : Promise<Array<BlastOutputRawJSON>> {
-    return new Promise<Array<BlastOutputRawJSON>>(async (resolve,reject) => {
-        let res = new Array<BlastOutputRawJSON>();
+) : Promise<Array<BLASTReadResult>> {
+    return new Promise<Array<BLASTReadResult>>(async (resolve : (value : Array<BLASTReadResult>) => void,reject) => {
+        let res = new Array<BLASTReadResult>();
 
         let rl : readline.ReadLine = readline.createInterface(
             <readline.ReadLineOptions>{
-                input : fs.createReadStream(getBLASTResultsStore(blastResult))
+                input : fs.createReadStream(getBLASTReadResultsStore(blastResult))
             }
         );
 
         rl.on("line",function(line : string){
-            let result : BlastOutputRawJSON = JSON.parse(line);
+            let result : BLASTReadResult = JSON.parse(line);
 
             if(result)
             {
@@ -78,7 +113,7 @@ export function getBLASTResults(
         });
 
         rl.on("close",function(){
-            resolve(res);
+            return resolve(res);
         })
     });
 }

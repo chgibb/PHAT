@@ -56,9 +56,8 @@ export function cleanBLASTXML(xml : string) : string
  * @export
  * @interface BlastOutputRawJSON
  */
-export interface BlastOutputRawJSON
+export interface BLASTOutputRawJSON
 {
-    readWithFragments : ReadWithFragments,
     BlastOutput : {
         BlastOutput_program : Array<string>;
         BlastOutput_version : Array<string>;
@@ -151,10 +150,10 @@ function throwOnUndefined(obj : any) : void
  * Validate the given BLAST output. Returns true if valid, false otherwise.
  * 
  * @export
- * @param {BlastOutputRawJSON} obj 
+ * @param {BLASTOutputRawJSON} obj 
  * @returns {boolean} 
  */
-export function validateRawBlastOutput(obj : BlastOutputRawJSON) : boolean
+export function validateRawBlastOutput(obj : BLASTOutputRawJSON) : boolean
 {
     try
     {

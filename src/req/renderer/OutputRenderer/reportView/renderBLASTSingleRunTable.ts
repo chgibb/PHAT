@@ -3,12 +3,12 @@ import * as masterView from "./../masterView";
 import * as rightPanel from "./../rightPanel";
 import {getReadable} from "./../../../getAppPath";
 
-import {getBLASTResults,BLASTSegmentResult} from "./../../../BLASTSegmentResult";
-import {BlastOutputRawJSON} from "../../../BLASTOutput";
+import {getBLASTReadResults,BLASTSegmentResult,BLASTReadResult} from "./../../../BLASTSegmentResult";
+import {BLASTOutputRawJSON} from "../../../BLASTOutput";
 
 let lastBLASTUUID = "";
 
-let lastViewedResults : Array<BlastOutputRawJSON>;
+let lastViewedResults : Array<BLASTReadResult>;
 
 function refreshResults(resultsHandle : BLASTSegmentResult) : Promise<void>
 {
@@ -16,7 +16,7 @@ function refreshResults(resultsHandle : BLASTSegmentResult) : Promise<void>
         if(lastBLASTUUID != resultsHandle.uuid)
         {
             lastBLASTUUID = resultsHandle.uuid;
-            lastViewedResults = await getBLASTResults(resultsHandle,0,0);
+            lastViewedResults = await getBLASTReadResults(resultsHandle,0,0);
         }
         return resolve();
     });
@@ -72,7 +72,7 @@ export function renderBLASTSingleRunTable() : string
                         res += `<td>${lastViewedResults[i].readWithFragments.read.SEQ}</td>`;
                     if(rightPanel.BLASTSingleRunInfoSelection.Hit_def)
                     {
-                        let hitDef = lastViewedResults[i].BlastOutput.BlastOutput_iterations[0].Iteration[0].Iteration_hits[0].Hit[0].Hit_def[0];
+                        let hitDef = lastViewedResults[i].results.BlastOutput.BlastOutput_iterations[0].Iteration[0].Iteration_hits[0].Hit[0].Hit_def[0];
                         res += `<td>${hitDef}</td>`;
                     }
                     res += `</tr>`;

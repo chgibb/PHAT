@@ -7,10 +7,10 @@ import {SAMRead} from "@chgibb/unmappedcigarfragments/lib/lib";
 import {AtomicOperationForkEvent,CompletionFlags} from "./req/atomicOperationsIPC";
 import * as atomic from "./req/operations/atomicOperations";
 import {AlignData, getSam} from "./req/alignData";
-import {BLASTSegmentResult,getArtifactDir,getSamSegment,getBLASTResultsStore} from "./req/BLASTSegmentResult";
+import {BLASTSegmentResult,getArtifactDir,getSamSegment,getBLASTReadResultsStore,BLASTReadResult} from "./req/BLASTSegmentResult";
 import {getReadsWithLargeUnMappedFragments} from "./req/operations/BLASTSegment/getReadsWithLargeUnMappedFragments";
 import {ReadWithFragments} from "./req/readWithFragments";
-import {BlastOutputRawJSON} from "./req/BLASTOutput";
+import {BLASTOutputRawJSON} from "./req/BLASTOutput";
 import {performQuery,QueryStatus} from "./req/BLASTRequest";
 
 const mkdirp = require("mkdirp");
@@ -85,16 +85,17 @@ process.on("message",async function(ev : AtomicOperationForkEvent){
             let repeatedSearching = 0;
             progressMessage = `BLASTing suspicious read ${i+1} of ${readsWithFragments.length}: submitting query`;
             update();
-            let res = await performQuery(readsWithFragments[i].read,function(status : QueryStatus){
+            let res : BLASTOutputRawJSON = await performQuery(readsWithFragments[i].read,function(status : QueryStatus){
                 if(status == "searching")
                     repeatedSearching++;
                 progressMessage = `BLASTing suspicious read ${i+1} of ${readsWithFragments.length}: ${status} ${status == "searching" ? `x${repeatedSearching}` : ``}`;
                 update();
             });
-            res.readWithFragments.fragments = readsWithFragments[i].fragments;
+
+            let result : BLASTReadResult = new BLASTReadResult(res,readsWithFragments[i]);
             progressMessage = `BLASTing suspicious read ${i+1} of ${readsWithFragments.length}: writing result`;
             update();
-            fs.appendFileSync(getBLASTResultsStore(blastSegmentResult),JSON.stringify(res)+"\n");
+            fs.appendFileSync(getBLASTReadResultsStore(blastSegmentResult),JSON.stringify(result)+"\n");
         }
 
         blastSegmentResult.readsBLASTed = readsWithFragments.length;

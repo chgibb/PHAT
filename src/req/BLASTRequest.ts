@@ -6,7 +6,7 @@
 
 import {SAMRead} from "./../../node_modules/@chgibb/unmappedcigarfragments/lib/lib";
 
-import {BlastOutputRawJSON,cleanBLASTXML,validateRawBlastOutput} from "./BLASTOutput";
+import {BLASTOutputRawJSON,cleanBLASTXML,validateRawBlastOutput} from "./BLASTOutput";
 
 export type RID = string;
 
@@ -130,11 +130,17 @@ export function getQueryStatus(rid : RID) : Promise<QueryStatus>
  * @param {(status : QueryStatus) => void} progressCB 
  * @returns {Promise<string>} 
  */
-export function retrieveQuery(rid : RID,delay : number,progressCB : (status : QueryStatus) => void) : Promise<string>
-{
+export function retrieveQuery(
+    rid : RID,
+    delay : number,
+    progressCB : (status : QueryStatus) => void
+) : Promise<string> {
     const request = require("request");
 
-    return new Promise<string>(async (resolve,reject) => {
+    return new Promise<string>(async (
+        resolve : (value : string) => void,
+        reject
+    ) => {
         let status = await getQueryStatus(rid);
         while(status == "searching")
         {
@@ -159,17 +165,17 @@ export function retrieveQuery(rid : RID,delay : number,progressCB : (status : Qu
 
 /**
  * Will submit and retrieve a MegaBLAST query for the given SAM read. Returns raw BLAST XML 
- * transformed to JSON with the original SAM read object attached.
+ * transformed to JSON
  * 
  * @export
  * @param {SAMRead} read 
  * @param {(status : QueryStatus) => void} progressCB 
- * @returns {Promise<BlastOutputRawJSON>} 
+ * @returns {Promise<BLASTOutputRawJSON>} 
  */
-export function performQuery(read : SAMRead,progressCB : (status : QueryStatus) => void) : Promise<BlastOutputRawJSON>
+export function performQuery(read : SAMRead,progressCB : (status : QueryStatus) => void) : Promise<BLASTOutputRawJSON>
 {
     const xml = require("xml2js");
-    return new Promise<BlastOutputRawJSON>(async (resolve,reject) => {
+    return new Promise<BLASTOutputRawJSON>(async (resolve : (value : BLASTOutputRawJSON) => void,reject) => {
         let {rid,rtoe} = await makeQuery(read.SEQ);
 
         setTimeout(async function(){
@@ -179,7 +185,7 @@ export function performQuery(read : SAMRead,progressCB : (status : QueryStatus) 
                     return reject(status);
             });
 
-            xml.parseString(cleanBLASTXML(result),function(err : Error,result : BlastOutputRawJSON){
+            xml.parseString(cleanBLASTXML(result),function(err : Error,result : BLASTOutputRawJSON){
                 if(err)
                     return reject(err);
                 
@@ -191,8 +197,6 @@ export function performQuery(read : SAMRead,progressCB : (status : QueryStatus) 
                     }
                     else
                     {
-                        result.readWithFragments = <any>{};
-                        result.readWithFragments.read = read;
                         resolve(result);
                     }
                 }
