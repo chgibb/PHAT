@@ -91,6 +91,7 @@ process.on("message",async function(ev : AtomicOperationForkEvent){
                 progressMessage = `BLASTing suspicious read ${i+1} of ${readsWithFragments.length}: ${status} ${status == "searching" ? `x${repeatedSearching}` : ``}`;
                 update();
             });
+            res.readWithFragments.fragments = readsWithFragments[i].fragments;
             progressMessage = `BLASTing suspicious read ${i+1} of ${readsWithFragments.length}: writing result`;
             update();
             fs.appendFileSync(getBLASTResultsStore(blastSegmentResult),JSON.stringify(res)+"\n");
