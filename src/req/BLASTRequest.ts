@@ -10,7 +10,7 @@ import {BLASTOutputRawJSON,cleanBLASTXML,validateRawBlastOutput} from "./BLASTOu
 
 export type RID = string;
 
-export type QueryStatus = "searching" | "failed" | "unknown" | "ready";
+export type QueryStatus = "searching" | "failed" | "unknown" | "ready" | "nohits";
 
 /**
  * Parses a BLAST request identifier (RID) out of src. src should be returnned from BLAST proper
@@ -91,7 +91,10 @@ export function getQueryStatus(rid : RID) : Promise<QueryStatus>
 {
     const request = require("request");
 
-    return new Promise<QueryStatus>(async (resolve,reject) => {
+    return new Promise<QueryStatus>(async (
+        resolve : (value : QueryStatus) => void,
+        reject : (error : string) => void
+    ) => {
         let url : string = `https://blast.ncbi.nlm.nih.gov/blast/Blast.cgi?CMD=Get&FORMAT_OBJECT=SearchInfo&RID=${rid}`;
         request.get({
             url : url
@@ -114,8 +117,12 @@ export function getQueryStatus(rid : RID) : Promise<QueryStatus>
                 {
                     return resolve("ready");
                 }
+                else if(/\s+ThereAreHits=no/m.exec(response.body))
+                {
+                    return resolve("nohits");
+                }
             }
-            return reject();
+            return reject("Unexpected status returned by BLAST");
         });
     });
 }
@@ -134,11 +141,11 @@ export function retrieveQuery(
     rid : RID,
     delay : number,
     progressCB : (status : QueryStatus) => void
-) : Promise<string> {
+) : Promise<string | undefined> {
     const request = require("request");
 
-    return new Promise<string>(async (
-        resolve : (value : string) => void,
+    return new Promise<string | undefined>(async (
+        resolve : (value : string | undefined) => void,
         reject
     ) => {
         let status = await getQueryStatus(rid);
@@ -158,6 +165,8 @@ export function retrieveQuery(
                 resolve(body);
             });
         }
+        else if(status == "nohits")
+            return resolve(undefined);
         else
             return reject(status);
     });
@@ -168,15 +177,15 @@ export function retrieveQuery(
  * transformed to JSON
  * 
  * @export
- * @param {SAMRead} read 
+ * @param {string} read 
  * @param {(status : QueryStatus) => void} progressCB 
  * @returns {Promise<BLASTOutputRawJSON>} 
  */
-export function performQuery(read : SAMRead,progressCB : (status : QueryStatus) => void) : Promise<BLASTOutputRawJSON>
+export function performQuery(read : string,progressCB : (status : QueryStatus) => void) : Promise<BLASTOutputRawJSON>
 {
     const xml = require("xml2js");
     return new Promise<BLASTOutputRawJSON>(async (resolve : (value : BLASTOutputRawJSON) => void,reject) => {
-        let {rid,rtoe} = await makeQuery(read.SEQ);
+        let {rid,rtoe} = await makeQuery(read);
 
         setTimeout(async function(){
             let result = await retrieveQuery(rid,5,function(status : QueryStatus){
@@ -185,12 +194,21 @@ export function performQuery(read : SAMRead,progressCB : (status : QueryStatus) 
                     return reject(status);
             });
 
+            if(!result)
+            {
+                return resolve(<BLASTOutputRawJSON>{
+                    noHits : true
+                });
+            }
+            
             xml.parseString(cleanBLASTXML(result),function(err : Error,result : BLASTOutputRawJSON){
+                console.log(err);
                 if(err)
                     return reject(err);
                 
                 else
                 {
+                    console.log(result);
                     if(!validateRawBlastOutput(result))
                     {
                         return reject("Invalid output from BLAST");

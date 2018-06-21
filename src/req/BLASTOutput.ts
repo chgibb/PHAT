@@ -58,6 +58,7 @@ export function cleanBLASTXML(xml : string) : string
  */
 export interface BLASTOutputRawJSON
 {
+    noHits : boolean;
     BlastOutput : {
         BlastOutput_program : Array<string>;
         BlastOutput_version : Array<string>;

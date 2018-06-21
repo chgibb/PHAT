@@ -80,6 +80,11 @@ export function getBLASTReadResultsStore(blastResult : BLASTSegmentResult) : str
     return getReadableAndWritable(`rt/BLASTSegmentResults/${blastResult.uuid}/readResults.nldjson`);
 }
 
+export function getBLASTFragmentResultsStore(blastResult : BLASTSegmentResult) : string
+{
+    return getReadableAndWritable(`rt/BLASTSegmentResults/${blastResult.uuid}/fragmentResults.nldjson`);
+}
+
 export function getBLASTReadResults(
     blastResult : BLASTSegmentResult,
     start : number,
