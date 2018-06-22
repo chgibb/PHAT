@@ -116,6 +116,7 @@ process.on("message",async function(ev : AtomicOperationForkEvent){
 
                 if(res.noHits == true)
                 {
+                    repeatedSearching = 1;
                     res = await performQuery(readsWithFragments[i].fragments[k].seq,BLASTDatabase.Human,function(status : QueryStatus){
                         if(status == "searching")
                             repeatedSearching++;
