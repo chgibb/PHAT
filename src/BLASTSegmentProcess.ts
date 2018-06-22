@@ -11,7 +11,7 @@ import {BLASTSegmentResult,getArtifactDir,getBLASTReadResultsStore,BLASTReadResu
 import {getReadsWithLargeUnMappedFragments} from "./req/operations/BLASTSegment/getReadsWithLargeUnMappedFragments";
 import {ReadWithFragments} from "./req/readWithFragments";
 import {BLASTOutputRawJSON} from "./req/BLASTOutput";
-import {performQuery,QueryStatus} from "./req/BLASTRequest";
+import {performQuery,QueryStatus,BLASTDatabase} from "./req/BLASTRequest";
 
 const mkdirp = require("mkdirp");
 
@@ -86,7 +86,7 @@ process.on("message",async function(ev : AtomicOperationForkEvent){
             let repeatedSearching = 0;
             progressMessage = `BLASTing suspicious read ${i+1} of ${readsWithFragments.length}: submitting query`;
             update();
-            let res : BLASTOutputRawJSON = await performQuery(readsWithFragments[i].read.SEQ,function(status : QueryStatus){
+            let res : BLASTOutputRawJSON = await performQuery(readsWithFragments[i].read.SEQ,BLASTDatabase.nt,function(status : QueryStatus){
                 if(status == "searching")
                     repeatedSearching++;
                 progressMessage = `BLASTing suspicious read ${i+1} of ${readsWithFragments.length}: ${status} ${status == "searching" ? `x${repeatedSearching}` : ``}`;
@@ -107,12 +107,22 @@ process.on("message",async function(ev : AtomicOperationForkEvent){
                 progressMessage = `BLASTING suspicious fragment ${k+1} of read ${i+1}: submitting query`;
                 update();
 
-                let res : BLASTOutputRawJSON = await performQuery(readsWithFragments[i].fragments[k].seq,function(status : QueryStatus){
+                let res : BLASTOutputRawJSON = await performQuery(readsWithFragments[i].fragments[k].seq,BLASTDatabase.nt,function(status : QueryStatus){
                     if(status == "searching")
                         repeatedSearching++;
                     progressMessage = `BLASTING suspicious fragment ${k+1} of read ${i+1}: ${status} ${status == "searching" ? `x${repeatedSearching}` : ``}`;
                     update();
                 });
+
+                if(res.noHits == true)
+                {
+                    res = await performQuery(readsWithFragments[i].fragments[k].seq,BLASTDatabase.Human,function(status : QueryStatus){
+                        if(status == "searching")
+                            repeatedSearching++;
+                        progressMessage = `Re-BLASTING suspicious fragment ${k+1} of read ${i+1} against human genomic + transcript: ${status} ${status == "searching" ? `x${repeatedSearching}` : ``}`;
+                        update();
+                    });
+                }
 
                 progressMessage = `BLASTING suspicious fragment ${k+1} of read ${i+1}: writing result`;
                 let fragmentResults : BLASTFragmentResult = new BLASTFragmentResult(res,readsWithFragments[i].fragments[k].seq,readResult.uuid);

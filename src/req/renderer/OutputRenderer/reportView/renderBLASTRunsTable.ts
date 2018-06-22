@@ -20,7 +20,6 @@ export function renderBLASTRunsTable() : string
                         ${rightPanel.BLASTRunsInfoSelection.stop != false ? "<th>Stop</th>" : ""}
                         ${rightPanel.BLASTRunsInfoSelection.readsBLASTed != false ? "<th>Reads BLASTed</th>" : ""}
                         ${rightPanel.BLASTRunsInfoSelection.program != false ? "<th>Program</th>" : ""}
-                        ${rightPanel.BLASTRunsInfoSelection.dataBase != false ? "<th>Database</th>" : ""}
                         ${rightPanel.BLASTRunsInfoSelection.ran != false ? "<th>Date Ran</th>" : ""}
                     </tr>
                 `;
@@ -45,8 +44,6 @@ export function renderBLASTRunsTable() : string
                                 res += `<td class="propogateParent">${masterView.alignData[i].BLASTSegmentResults[k].readsBLASTed}</td>`;
                             if(rightPanel.BLASTRunsInfoSelection.program)
                                 res += `<td class="propogateParent">${masterView.alignData[i].BLASTSegmentResults[k].program}</td>`;
-                            if(rightPanel.BLASTRunsInfoSelection.dataBase)
-                                res += `<td class="propogateParent">${masterView.alignData[i].BLASTSegmentResults[k].dataBase}</td>`;
                             if(rightPanel.BLASTRunsInfoSelection.ran)
                                 res += `<td class="propogateParent">${masterView.alignData[i].BLASTSegmentResults[k].dateStampString}</td>`;
                             res += "</tr>"

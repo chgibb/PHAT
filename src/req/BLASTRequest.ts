@@ -1,11 +1,6 @@
 /*
     This module was adapted from https://ncbi.nlm.nih.gov/blast/docs/web_blast.pl
 */
-
-/// <reference path="./../../node_modules/@chgibb/unmappedcigarfragments/lib/lib" />
-
-import {SAMRead} from "./../../node_modules/@chgibb/unmappedcigarfragments/lib/lib";
-
 import {BLASTOutputRawJSON,cleanBLASTXML,validateRawBlastOutput} from "./BLASTOutput";
 
 export type RID = string;
@@ -52,6 +47,12 @@ export function sleep(seconds : number) : void
 	while(stop > new Date()){}
 }
 
+export enum BLASTDatabase
+{
+    nt = "nt",
+    Human = "Human%20G%2BT"
+}
+
 /**
  * Submit a query for nucleotide sequence seq to BLAST using MegaBLAST against nt database.
  * Returns the RID and RTOE for the request.
@@ -60,21 +61,24 @@ export function sleep(seconds : number) : void
  * @param {string} seq 
  * @returns {Promise<{rid : RID,rtoe : number}>} 
  */
-export function makeQuery(seq : string) : Promise<{rid : RID,rtoe : number}>
+export function makeQuery(seq : string,dataBase : BLASTDatabase) : Promise<{rid : RID,rtoe : number}>
 {
     const request = require("request");
 
     return new Promise<{rid : RID,rtoe : number}>(async (
-        resolve : (value : {rid : RID,rtoe : number}) => void
+        resolve : (value : {rid : RID,rtoe : number}) => void,
+        reject : (reason : any) => void
     ) => {
         let url : string = `https://blast.ncbi.nlm.nih.gov/blast/Blast.cgi?`;
         request.post({
-            url : url+`CMD=Put&PROGRAM=blastn&MEGABLAST=on&DATABASE=nt&QUERY=${seq}`,
+            url : url+`CMD=Put&PROGRAM=blastn&MEGABLAST=on&DATABASE=${dataBase}&QUERY=${seq}`,
             headers : {
                 "Content-Type" : "application/x-www-form-urlencoded"
             }
         },function(error : any,response : any,body : any){
-            resolve({
+            if(error)
+                return reject(error);
+            return resolve({
                 rid : getRID(response.body),
                 rtoe : getRTOE(response.body)
             });
@@ -183,14 +187,17 @@ export function retrieveQuery(
  * @param {(status : QueryStatus) => void} progressCB 
  * @returns {Promise<BLASTOutputRawJSON>} 
  */
-export function performQuery(read : string,progressCB : (status : QueryStatus) => void) : Promise<BLASTOutputRawJSON>
-{
+export function performQuery(
+    read : string,
+    dataBase : BLASTDatabase,
+    progressCB : (status : QueryStatus) => void
+) : Promise<BLASTOutputRawJSON> {
     const xml = require("xml2js");
     return new Promise<BLASTOutputRawJSON>(async (
         resolve : (value : BLASTOutputRawJSON) => void,
         reject : (reason : any) => void
     ) => {
-        let {rid,rtoe} = await makeQuery(read);
+        let {rid,rtoe} = await makeQuery(read,dataBase);
 
         setTimeout(async function(){
             let result = await retrieveQuery(rid,5,function(status : QueryStatus){

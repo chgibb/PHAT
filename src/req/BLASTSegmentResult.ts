@@ -3,10 +3,6 @@
 import * as fs from "fs";
 import * as readline from "readline";
 
-import {SAMRead} from "./../../node_modules/@chgibb/unmappedcigarfragments/lib/lib";
-
-import * as dFormat from "./dateFormat";
-import {Contig} from "./fastaContigLoader";
 import {ReadWithFragments} from "./readWithFragments";
 import {BLASTOutputRawJSON} from "./BLASTOutput";
 import {getReadableAndWritable} from "./getAppPath";
@@ -54,7 +50,6 @@ export class BLASTSegmentResult
     public avgSeqLength : number;
     public readonly program = "blastn";
     public readonly MEGABLAST = true;
-    public readonly dataBase = "nt";
     public dateStampString : string;
     public dateStamp : string;
 

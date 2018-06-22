@@ -51,7 +51,7 @@ export function cleanBLASTXML(xml : string) : string
 }
 
 /**
- * The expected shape of BLAST XML response transformed to JSON, with an attached SAM read
+ * The expected shape of BLAST XML response transformed to JSON
  * 
  * @export
  * @interface BlastOutputRawJSON

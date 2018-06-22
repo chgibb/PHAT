@@ -128,7 +128,6 @@ export class BLASTRunsInfoSelection
     public stop : boolean;
     public readsBLASTed : boolean;
     public program : boolean;
-    public dataBase : boolean;
     public ran : boolean;
     [index : string] : boolean;
     public constructor()
@@ -137,7 +136,6 @@ export class BLASTRunsInfoSelection
         this.stop = true;
         this.readsBLASTed = true;
         this.program = true;
-        this.dataBase = true;
         this.ran = false;
     }
 }
@@ -274,9 +272,6 @@ export class View extends viewMgr.View
                         <br />
 
                         <input type="checkbox" id="program">Program</input>
-                        <br />
-
-                        <input type="checkbox" id="dataBase">Database</input>
                         <br />
 
                         <input type="checkbox" id="ran">Date Ran</input>
