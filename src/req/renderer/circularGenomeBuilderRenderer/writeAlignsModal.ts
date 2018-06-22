@@ -53,8 +53,15 @@ export function writeAlignsModal() : void
             {
                 body += `
                     <tr>
-                        <td><img src="${getReadable("img/viewAvailableTracks.png")}" id="${aligns[i].uuid}View" class="activeHover activeHoverButton" /><br />
-                        </td>
+                        ${(()=>{
+                            if(masterView.willBLASTAlignment)
+                            {
+                                return `<td id="${aligns[i].uuid}View" class="cellHover">BLAST</td>`;
+                            }
+                            return `<td><img src="${getReadable("img/viewAvailableTracks.png")}" id="${aligns[i].uuid}View" class="activeHover activeHoverButton" /><br />
+                            </td>`;
+
+                        })()}
                         <td>${aligns[i].alias}</td>
                         <td>${!aligns[i].isExternalAlignment ? aligns[i].summary.reads : aligns[i].flagStatReport.reads}</td>
                         <td>${!aligns[i].isExternalAlignment ? aligns[i].summary.mates : "Unknown"}</td>
