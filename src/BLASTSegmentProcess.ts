@@ -106,7 +106,7 @@ process.on("message",async function(ev : AtomicOperationForkEvent){
                 let repeatedSearching = 0;
                 progressMessage = `BLASTING suspicious fragment ${k+1} of read ${i+1}: submitting query`;
                 update();
-                console.log(readsWithFragments[i].fragments[k].seq)
+
                 let res : BLASTOutputRawJSON = await performQuery(readsWithFragments[i].fragments[k].seq,function(status : QueryStatus){
                     if(status == "searching")
                         repeatedSearching++;

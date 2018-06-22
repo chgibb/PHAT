@@ -122,3 +122,29 @@ export function getBLASTReadResults(
         })
     });
 }
+
+export function getBLASTFragmentResults(blastResult : BLASTSegmentResult) : Promise<Array<BLASTFragmentResult>> 
+{
+    return new Promise<Array<BLASTFragmentResult>>(async (resolve : (value : Array<BLASTFragmentResult>) => void) => {
+        let res = new Array<BLASTFragmentResult>();
+
+        let rl : readline.ReadLine = readline.createInterface(
+            <readline.ReadLineOptions>{
+                input : fs.createReadStream(getBLASTFragmentResultsStore(blastResult))
+            }
+        );
+
+        rl.on("line",function(line : string){
+            let result : BLASTFragmentResult = JSON.parse(line);
+
+            if(result)
+            {
+                res.push(result);
+            }
+        });
+
+        rl.on("close",function(){
+            return resolve(res);
+        })
+    });
+}

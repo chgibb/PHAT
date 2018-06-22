@@ -3,12 +3,13 @@ import * as masterView from "./../masterView";
 import * as rightPanel from "./../rightPanel";
 import {getReadable} from "./../../../getAppPath";
 
-import {getBLASTReadResults,BLASTSegmentResult,BLASTReadResult} from "./../../../BLASTSegmentResult";
-import {BLASTOutputRawJSON} from "../../../BLASTOutput";
+import {getBLASTReadResults,getBLASTFragmentResults,BLASTSegmentResult,BLASTReadResult,BLASTFragmentResult} from "./../../../BLASTSegmentResult";
+
 
 let lastBLASTUUID = "";
 
-let lastViewedResults : Array<BLASTReadResult>;
+let lastViewedReadResults : Array<BLASTReadResult>;
+let lastViewedFragmentResults : Array<BLASTFragmentResult>;
 
 function refreshResults(resultsHandle : BLASTSegmentResult) : Promise<void>
 {
@@ -16,7 +17,8 @@ function refreshResults(resultsHandle : BLASTSegmentResult) : Promise<void>
         if(lastBLASTUUID != resultsHandle.uuid)
         {
             lastBLASTUUID = resultsHandle.uuid;
-            lastViewedResults = await getBLASTReadResults(resultsHandle,0,0);
+            lastViewedReadResults = await getBLASTReadResults(resultsHandle,0,0);
+            lastViewedFragmentResults = await getBLASTFragmentResults(resultsHandle);
         }
         return resolve();
     });
@@ -63,16 +65,48 @@ export function renderBLASTSingleRunTable() : string
                         }
                     }
                 }
-                for(let i = 0; i != lastViewedResults.length; ++i)
+                for(let i = 0; i != lastViewedReadResults.length; ++i)
                 {
                     res += `<tr>`;
                     if(rightPanel.BLASTSingleRunInfoSelection.position)
-                        res += `<td>${lastViewedResults[i].readWithFragments.read.POS}</td>`;
+                        res += `<td>${lastViewedReadResults[i].readWithFragments.read.POS}</td>`;
                     if(rightPanel.BLASTSingleRunInfoSelection.seq)
-                        res += `<td>${lastViewedResults[i].readWithFragments.read.SEQ}</td>`;
+                    {    
+                        //res += `<td>${lastViewedReadResults[i].readWithFragments.read.SEQ}</td>`;
+                        res += `<td>`;
+                        for(let k = 0; k != lastViewedReadResults[i].readWithFragments.fragments.length; ++k)
+                        {
+                            if(lastViewedReadResults[i].readWithFragments.fragments[k].type == "mapped" || lastViewedReadResults[i].readWithFragments.fragments[k].type == "remainder")
+                            {
+                                res += `<span>${lastViewedReadResults[i].readWithFragments.fragments[k].seq}</span>`;
+                            }
+                            else if(lastViewedReadResults[i].readWithFragments.fragments[k].type == "unmapped")
+                            {
+                                let hoverText = "";
+                                for(let j = 0; j != lastViewedFragmentResults.length; ++j)
+                                {
+                                    if(lastViewedFragmentResults[j].readuuid == lastViewedReadResults[i].uuid)
+                                    {
+                                        if(lastViewedFragmentResults[j].results.noHits)
+                                        {
+                                            hoverText = "No Hits";
+                                            break;
+                                        }
+                                        else
+                                        {
+                                            hoverText = lastViewedFragmentResults[j].results.BlastOutput.BlastOutput_iterations[0].Iteration[0].Iteration_hits[0].Hit[0].Hit_def[0];
+                                            break;
+                                        }
+                                    }
+                                }
+                                res += `<span class="activeHover" style="color:red;" title="${hoverText}">${lastViewedReadResults[i].readWithFragments.fragments[k].seq}</span>`;
+                            }
+                        }
+                        res += `</td>`;
+                    }
                     if(rightPanel.BLASTSingleRunInfoSelection.Hit_def)
                     {
-                        let hitDef = lastViewedResults[i].results.BlastOutput.BlastOutput_iterations[0].Iteration[0].Iteration_hits[0].Hit[0].Hit_def[0];
+                        let hitDef = lastViewedReadResults[i].results.BlastOutput.BlastOutput_iterations[0].Iteration[0].Iteration_hits[0].Hit[0].Hit_def[0];
                         res += `<td>${hitDef}</td>`;
                     }
                     res += `</tr>`;

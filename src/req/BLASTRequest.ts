@@ -64,7 +64,9 @@ export function makeQuery(seq : string) : Promise<{rid : RID,rtoe : number}>
 {
     const request = require("request");
 
-    return new Promise<{rid : RID,rtoe : number}>(async (resolve,reject) => {
+    return new Promise<{rid : RID,rtoe : number}>(async (
+        resolve : (value : {rid : RID,rtoe : number}) => void
+    ) => {
         let url : string = `https://blast.ncbi.nlm.nih.gov/blast/Blast.cgi?`;
         request.post({
             url : url+`CMD=Put&PROGRAM=blastn&MEGABLAST=on&DATABASE=nt&QUERY=${seq}`,
@@ -93,7 +95,7 @@ export function getQueryStatus(rid : RID) : Promise<QueryStatus>
 
     return new Promise<QueryStatus>(async (
         resolve : (value : QueryStatus) => void,
-        reject : (error : string) => void
+        reject : (reason : string) => void
     ) => {
         let url : string = `https://blast.ncbi.nlm.nih.gov/blast/Blast.cgi?CMD=Get&FORMAT_OBJECT=SearchInfo&RID=${rid}`;
         request.get({
@@ -146,7 +148,7 @@ export function retrieveQuery(
 
     return new Promise<string | undefined>(async (
         resolve : (value : string | undefined) => void,
-        reject
+        reject : (reason : any) => void
     ) => {
         let status = await getQueryStatus(rid);
         while(status == "searching")
@@ -184,7 +186,10 @@ export function retrieveQuery(
 export function performQuery(read : string,progressCB : (status : QueryStatus) => void) : Promise<BLASTOutputRawJSON>
 {
     const xml = require("xml2js");
-    return new Promise<BLASTOutputRawJSON>(async (resolve : (value : BLASTOutputRawJSON) => void,reject) => {
+    return new Promise<BLASTOutputRawJSON>(async (
+        resolve : (value : BLASTOutputRawJSON) => void,
+        reject : (reason : any) => void
+    ) => {
         let {rid,rtoe} = await makeQuery(read);
 
         setTimeout(async function(){
@@ -202,13 +207,11 @@ export function performQuery(read : string,progressCB : (status : QueryStatus) =
             }
             
             xml.parseString(cleanBLASTXML(result),function(err : Error,result : BLASTOutputRawJSON){
-                console.log(err);
                 if(err)
                     return reject(err);
                 
                 else
                 {
-                    console.log(result);
                     if(!validateRawBlastOutput(result))
                     {
                         return reject("Invalid output from BLAST");
