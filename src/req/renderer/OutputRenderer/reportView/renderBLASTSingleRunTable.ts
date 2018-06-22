@@ -40,6 +40,7 @@ export function renderBLASTSingleRunTable() : string
                         ${rightPanel.BLASTSingleRunInfoSelection.position != false ? "<th>Position</th>" : ""}
                         ${rightPanel.BLASTSingleRunInfoSelection.seq != false ? "<th>Sequence</th>" : ""}
                         ${rightPanel.BLASTSingleRunInfoSelection.Hit_def != false ? "<th>Hit Definition</th>" : ""}
+                        ${rightPanel.BLASTSingleRunInfoSelection.eValue != false ? "<th>E-Value</th>" : ""}
                     </tr>
                 `;
                 return res;
@@ -72,7 +73,6 @@ export function renderBLASTSingleRunTable() : string
                         res += `<td>${lastViewedReadResults[i].readWithFragments.read.POS}</td>`;
                     if(rightPanel.BLASTSingleRunInfoSelection.seq)
                     {    
-                        //res += `<td>${lastViewedReadResults[i].readWithFragments.read.SEQ}</td>`;
                         res += `<td>`;
                         for(let k = 0; k != lastViewedReadResults[i].readWithFragments.fragments.length; ++k)
                         {
@@ -108,6 +108,12 @@ export function renderBLASTSingleRunTable() : string
                     {
                         let hitDef = lastViewedReadResults[i].results.BlastOutput.BlastOutput_iterations[0].Iteration[0].Iteration_hits[0].Hit[0].Hit_def[0];
                         res += `<td>${hitDef}</td>`;
+                    }
+
+                    if(rightPanel.BLASTSingleRunInfoSelection.eValue)
+                    {
+                        let eValue = lastViewedReadResults[i].results.BlastOutput.BlastOutput_iterations[0].Iteration[0].Iteration_hits[0].Hit[0].Hit_hsps[0].Hsp[0].Hsp_evalue[0];
+                        res += `<td>${eValue}</td>`;
                     }
                     res += `</tr>`;
                 }

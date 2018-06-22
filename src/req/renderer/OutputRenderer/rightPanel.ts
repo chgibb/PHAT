@@ -145,12 +145,14 @@ export class BLASTSingleRunInfoSelection
     public position : boolean;
     public seq : boolean;
     public Hit_def : boolean;
+    public eValue : boolean;
     [index : string] : boolean;
     public constructor()
     {
         this.position = true;
         this.seq = true;
         this.Hit_def = true;
+        this.eValue = true;
     }
 }
 
@@ -289,6 +291,9 @@ export class View extends viewMgr.View
                         <br />
 
                         <input type="checkbox" id="Hit_def">Hit Name</input>
+                        <br />
+
+                        <input type="checkbox" id="eValue">E-Value</input>
                         <br />
                     `;
                 }
