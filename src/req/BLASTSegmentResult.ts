@@ -88,6 +88,9 @@ export function getBLASTReadResults(
     return new Promise<Array<BLASTReadResult>>(async (resolve : (value : Array<BLASTReadResult>) => void,reject) => {
         let res = new Array<BLASTReadResult>();
 
+        if(blastResult.readsBLASTed == 0)
+            return resolve(res);
+
         let rl : readline.ReadLine = readline.createInterface(
             <readline.ReadLineOptions>{
                 input : fs.createReadStream(getBLASTReadResultsStore(blastResult))
@@ -122,6 +125,9 @@ export function getBLASTFragmentResults(blastResult : BLASTSegmentResult) : Prom
 {
     return new Promise<Array<BLASTFragmentResult>>(async (resolve : (value : Array<BLASTFragmentResult>) => void) => {
         let res = new Array<BLASTFragmentResult>();
+
+        if(blastResult.readsBLASTed == 0)
+            return resolve(res);
 
         let rl : readline.ReadLine = readline.createInterface(
             <readline.ReadLineOptions>{
