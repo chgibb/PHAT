@@ -23,7 +23,7 @@ let progressMessage = "";
 let logger : atomic.ForkLogger = new atomic.ForkLogger();
 atomic.handleForkFailures(logger);
 
-function update() : void
+function update(updateLog = true) : void
 {
     let update = <AtomicOperationForkEvent>{
         update : true,
@@ -49,7 +49,8 @@ function update() : void
     }
 
     process.send(update);
-    logger.logObject(update);
+    if(updateLog)
+        logger.logObject(update);
 }
 
 process.on("message",async function(ev : AtomicOperationForkEvent){
@@ -69,15 +70,13 @@ process.on("message",async function(ev : AtomicOperationForkEvent){
 
     if(ev.run == true)
     {
-
+        progressMessage = `Searching for fragments in reads that aligned starting between ${blastSegmentResult.start} and ${blastSegmentResult.stop}`;
+        update();
         let readsWithFragments : Array<ReadWithFragments> = await getReadsWithLargeUnMappedFragments(
             getSam(align),
             blastSegmentResult.start,
             blastSegmentResult.stop,
-            function(parsedReads : number){
-                progressMessage = `Searching for fragments in read ${parsedReads} that aligned starting between ${blastSegmentResult.start} and ${blastSegmentResult.stop}`;
-                update();
-            }
+            function(){}
         );
 
         for(let i = 0; i != readsWithFragments.length; ++i)
