@@ -85,7 +85,7 @@ export function writeAlignsModal() : void
     {
         footer += `
             <button type="button" class="btn btn-secondary" data-dismiss="modal" id="footerClose">Cancel</button>
-            <button type="button" class="btn btn-primary" id="footerSave">Save changes</button>
+            ${masterView.willBLASTAlignment == false ? `<button type="button" class="btn btn-primary" id="footerSave">Save changes</button>` : ""}
         `;
     }
 
@@ -97,9 +97,12 @@ export function writeAlignsModal() : void
     }
     if(genomeView.genome)
     {
-        document.getElementById("footerSave").onclick = function(this : HTMLElement,ev : MouseEvent){
-            masterView.alignsModalOpen = false;
-            masterView.dismissModal();
+        if(!masterView.willBLASTAlignment)
+        {
+            document.getElementById("footerSave").onclick = function(this : HTMLElement,ev : MouseEvent){
+                masterView.alignsModalOpen = false;
+                masterView.dismissModal();
+            }
         }
     }
     if(aligns)
