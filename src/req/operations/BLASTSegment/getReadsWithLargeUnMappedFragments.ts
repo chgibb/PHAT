@@ -9,9 +9,10 @@ export function getReadsWithLargeUnMappedFragments(
     start : number,
     stop : number,
     progress : (parsedReads : number) => void
-) : Promise<Array<ReadWithFragments>>
-{
-    return new Promise<Array<ReadWithFragments>>(async (resolve,reject) => {
+) : Promise<Array<ReadWithFragments>> {
+    return new Promise<Array<ReadWithFragments>>(async (
+        resolve : (value : Array<ReadWithFragments>) => void
+    ) => {
         let res : Array<ReadWithFragments> = new Array<ReadWithFragments>();
         let parsedReads = 0;
         await getReads(file,start,stop,function(read : SAMRead,fragments : Array<ReadFragment>){
@@ -21,7 +22,7 @@ export function getReadsWithLargeUnMappedFragments(
                 return;
             for(let i = 0; i != fragments.length; ++i)
             {
-                if(fragments[i].type == "unmapped" && fragments[i].seq.length >= 15)
+                if(fragments[i].type == "unmapped" && fragments[i].seq.length >= 30)
                 {
                     res.push({
                         read : read,
