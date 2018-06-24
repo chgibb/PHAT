@@ -52,6 +52,7 @@ export function bowTie2Align(alignData : AlignData,logger : atomic.AtomicOperati
 
         if(process.platform == "win32")
             args.push(getReadable("bowtie2"));
+        args.push("--sensitive-local");
         args.push("-x");
         args.push("\""+getReadableAndWritable(`rt/indexes/${alignData.fasta.uuid}`)+"\"");
         if(alignData.fastqs[1])
