@@ -22,15 +22,15 @@ export async function testL6R1HPV16AlignImportedImporting() : Promise<void>
                 fs.accessSync(getSortedBam(op.alignData));
                 fs.accessSync(getSortBamIndex(op.alignData));
 
-                if(op.alignData.flagStatReport.overallAlignmentRate == 12.96)
+                if(op.alignData.flagStatReport.overallAlignmentRate == 15.15)
                     console.log(`${op.alignData.alias} has correct overall alignment rate`);
                 else
                     return reject();
-                if(op.alignData.idxStatsReport[0].mappedReads == 697)
+                if(op.alignData.idxStatsReport[0].mappedReads == 815)
                     console.log(`${op.alignData.alias} has correct number of mapped reads`);
                 else
                     return reject();
-                if(op.alignData.idxStatsReport[0].unMappedReads == 15)
+                if(op.alignData.idxStatsReport[0].unMappedReads == 1)
                     console.log(`${op.alignData.alias} has correct number of unmapped reads`);
                 else
                     return reject();
