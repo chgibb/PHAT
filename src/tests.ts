@@ -42,6 +42,8 @@ import {testL6R1HPV16AlignImportedLinking} from "./req/tests/testL6R1HPV16AlignI
 import {testL6R1HPV18AlignImportedImporting} from "./req/tests/testL6R1HPV18AlignImportedImporting";
 import {testL6R1HPV18AlignImportedLinking} from "./req/tests/testL6R1HPV18AlignImportedLinking";
 
+import {testL6R1HPV16NoHeaderSAMImporting} from "./req/tests/testL6R1HPV16NoHeaderSAMImporting";
+
 import {testL6R7HPV16Alignment} from "./req/tests/testL6R7HPV16Alignment";
 import {testL6R7HPV16CoverageTrackRenderer} from "./req/tests/testL6R7HPV16CoverageTrackRenderer";
 import {testL6R7HPV16SNPTrackRenderer} from "./req/tests/testL6R7HPV16SNPTrackRender";
@@ -392,7 +394,7 @@ async function runTests() : Promise<void>
 		});
 		try
 		{
-			await testL6R1HPV16AlignImportedImporting();
+			await testL6R1HPV16NoHeaderSAMImporting();
 		}
 		catch(err)
 		{
