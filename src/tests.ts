@@ -50,7 +50,7 @@ import {testL6R7HPV16SNPTrackRenderer} from "./req/tests/testL6R7HPV16SNPTrackRe
 import {testL6R7HPV16CoverageTrackCompilation} from "./req/tests/testL6R7HPV16CoverageTrackCompilation";
 import {testL6R7HPV16SNPTrackCompilation} from "./req/tests/testL6R7HPV16SNPTrackCompilation";
 
-import {testBLASTSegment0To1000L6R1HPV16Alignment} from "./req/tests/testBLASTSegment0To1000L6R1HPV16Alignment";
+import {testBLASTSegment1To100L6R1HPV16Alignment} from "./req/tests/testBLASTSegment1To100L6R1HPV16Alignment";
 import {testBLASTSegment3500To4500L6R1HPV16Alignment} from "./req/tests/testBLASTSegment3500To4500L6R1HPV16Alignment";
 import {testBLASTSegment5To10L6R7HPV16Alignment} from "./req/tests/testBLASTSegment5To10L6R7HPV16Alignment";
 
@@ -473,7 +473,7 @@ async function runTests() : Promise<void>
 		});
 		try
 		{
-			await testBLASTSegment0To1000L6R1HPV16Alignment();
+			await testBLASTSegment1To100L6R1HPV16Alignment();
 		}
 		catch(err)
 		{

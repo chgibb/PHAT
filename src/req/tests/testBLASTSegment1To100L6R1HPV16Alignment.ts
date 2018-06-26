@@ -2,7 +2,7 @@ import * as atomic from "./../operations/atomicOperations";
 import {BLASTSegment} from "./../operations/BLASTSegment";
 import {getBLASTReadResults,getBLASTFragmentResults} from "./../BLASTSegmentResult";
 
-export async function testBLASTSegment0To1000L6R1HPV16Alignment() : Promise<void>
+export async function testBLASTSegment1To100L6R1HPV16Alignment() : Promise<void>
 {
     return new Promise<void>((resolve,reject) => {
         atomic.updates.on("BLASTSegment",async function(op : BLASTSegment){

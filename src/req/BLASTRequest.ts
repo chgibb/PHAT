@@ -2,6 +2,7 @@
     This module was adapted from https://ncbi.nlm.nih.gov/blast/docs/web_blast.pl
 */
 import {BLASTOutputRawJSON,cleanBLASTXML,validateRawBlastOutput} from "./BLASTOutput";
+import {BLASTLENGTHCUTOFF} from "./BLASTLengthCutoff";
 
 export type RID = string;
 
@@ -62,13 +63,16 @@ export enum BLASTDatabase
  * @returns {Promise<{rid : RID,rtoe : number}>} 
  */
 export function makeQuery(seq : string,dataBase : BLASTDatabase) : Promise<{rid : RID,rtoe : number}>
-{
+{   
     const request = require("request");
 
     return new Promise<{rid : RID,rtoe : number}>(async (
         resolve : (value : {rid : RID,rtoe : number}) => void,
         reject : (reason : any) => void
     ) => {
+        if(seq.length < BLASTLENGTHCUTOFF)
+            reject(`Attempting to BLAST sequence smaller than ${BLASTLENGTHCUTOFF}`);
+
         let url : string = `https://blast.ncbi.nlm.nih.gov/blast/Blast.cgi?`;
         request.post({
             url : url+`CMD=Put&PROGRAM=blastn&MEGABLAST=on&DATABASE=${dataBase}&QUERY=${seq}`,

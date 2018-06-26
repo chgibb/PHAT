@@ -1,0 +1,1 @@
+export let BLASTLENGTHCUTOFF = 30;

@@ -1,10 +1,10 @@
-/// <reference path="./../../../../node_modules/@chgibb/unmappedcigarfragments/lib/lib.ts" />
+/// <reference path="./../../node_modules/@chgibb/unmappedcigarfragments/lib/lib.ts" />
 
 import {getReads,SAMRead,ReadFragment} from "@chgibb/unmappedcigarfragments/lib/lib";
 
-import {ReadWithFragments} from "./../../readWithFragments";
+import {ReadWithFragments} from "./readWithFragments";
 
-export function getReadsWithLargeUnMappedFragments(
+export function getReadWithFragments(
     file : string,
     start : number,
     stop : number,
@@ -22,14 +22,10 @@ export function getReadsWithLargeUnMappedFragments(
                 return;
             for(let i = 0; i != fragments.length; ++i)
             {
-                if(fragments[i].type == "unmapped" && fragments[i].seq.length >= 30)
-                {
-                    res.push({
-                        read : read,
-                        fragments : fragments
-                    });
-                    break;
-                }
+                res.push({
+                    read : read,
+                    fragments : fragments
+                });
             }
         });
         return resolve(res);

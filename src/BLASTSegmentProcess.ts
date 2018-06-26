@@ -8,10 +8,11 @@ import {AtomicOperationForkEvent,CompletionFlags} from "./req/atomicOperationsIP
 import * as atomic from "./req/operations/atomicOperations";
 import {AlignData, getSam} from "./req/alignData";
 import {BLASTSegmentResult,getArtifactDir,getBLASTReadResultsStore,BLASTReadResult,BLASTFragmentResult,getBLASTFragmentResultsStore} from "./req/BLASTSegmentResult";
-import {getReadsWithLargeUnMappedFragments} from "./req/operations/BLASTSegment/getReadsWithLargeUnMappedFragments";
+import {getReadWithFragments} from "./req/getReadWithFragments";
 import {ReadWithFragments} from "./req/readWithFragments";
 import {BLASTOutputRawJSON} from "./req/BLASTOutput";
 import {performQuery,QueryStatus,BLASTDatabase} from "./req/BLASTRequest";
+import {BLASTLENGTHCUTOFF} from "./req/BLASTLengthCutoff";
 
 const mkdirp = require("mkdirp");
 
@@ -72,7 +73,7 @@ process.on("message",async function(ev : AtomicOperationForkEvent){
     {
         progressMessage = `Searching for fragments in reads that aligned starting between ${blastSegmentResult.start} and ${blastSegmentResult.stop}`;
         update();
-        let readsWithFragments : Array<ReadWithFragments> = await getReadsWithLargeUnMappedFragments(
+        let readsWithFragments : Array<ReadWithFragments> = await getReadWithFragments(
             getSam(align),
             blastSegmentResult.start,
             blastSegmentResult.stop,
@@ -81,6 +82,9 @@ process.on("message",async function(ev : AtomicOperationForkEvent){
 
         for(let i = 0; i != readsWithFragments.length; ++i)
         {
+            if(readsWithFragments[i].read.SEQ.length < BLASTLENGTHCUTOFF)
+                continue;
+
             //BLAST identified reads
             let repeatedSearching = 0;
             progressMessage = `BLASTing suspicious read ${i+1} of ${readsWithFragments.length}: submitting query`;
@@ -100,7 +104,7 @@ process.on("message",async function(ev : AtomicOperationForkEvent){
             //BLAST identified large, unmapped fragments in each read
             for(let k = 0; k != readsWithFragments[i].fragments.length; ++k)
             {
-                if(readsWithFragments[i].fragments[k].type != "unmapped")
+                if(readsWithFragments[i].fragments[k].type != "unmapped" || readsWithFragments[i].fragments[k].seq.length < BLASTLENGTHCUTOFF)
                     continue;
                 let repeatedSearching = 0;
                 progressMessage = `BLASTING suspicious fragment ${k+1} of read ${i+1}: submitting query`;
