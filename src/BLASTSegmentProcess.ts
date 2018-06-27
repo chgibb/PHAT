@@ -80,9 +80,23 @@ process.on("message",async function(ev : AtomicOperationForkEvent){
             function(){}
         );
 
+        let readsBLASTed = 0;
+
         for(let i = 0; i != readsWithFragments.length; ++i)
         {
             if(readsWithFragments[i].read.SEQ.length < BLASTLENGTHCUTOFF)
+                continue;
+
+            let hasLargeFragment = false;
+            for(let j = 0; j != readsWithFragments[i].fragments.length; ++ j)
+            {
+                if(readsWithFragments[i].fragments[j].type == "unmapped" && readsWithFragments[i].fragments[j].seq.length >= BLASTLENGTHCUTOFF)
+                {
+                    hasLargeFragment = true;
+                    break;
+                }
+            }
+            if(!hasLargeFragment)
                 continue;
 
             //BLAST identified reads
@@ -95,6 +109,8 @@ process.on("message",async function(ev : AtomicOperationForkEvent){
                 progressMessage = `BLASTing suspicious read ${i+1} of ${readsWithFragments.length}: ${status} ${status == "searching" ? `x${repeatedSearching}` : ``}`;
                 update();
             });
+
+            readsBLASTed++;
 
             let readResult : BLASTReadResult = new BLASTReadResult(res,readsWithFragments[i]);
             progressMessage = `BLASTing suspicious read ${i+1} of ${readsWithFragments.length}: writing result`;
@@ -135,7 +151,7 @@ process.on("message",async function(ev : AtomicOperationForkEvent){
             }
         }
 
-        blastSegmentResult.readsBLASTed = readsWithFragments.length;
+        blastSegmentResult.readsBLASTed = readsBLASTed;
 
         flags.done = true;
         flags.success = true;

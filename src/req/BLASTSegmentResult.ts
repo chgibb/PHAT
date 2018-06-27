@@ -129,6 +129,9 @@ export function getBLASTFragmentResults(blastResult : BLASTSegmentResult) : Prom
         if(blastResult.readsBLASTed == 0)
             return resolve(res);
 
+        if(!fs.existsSync(getBLASTFragmentResultsStore(blastResult)))
+            return resolve(res);
+
         let rl : readline.ReadLine = readline.createInterface(
             <readline.ReadLineOptions>{
                 input : fs.createReadStream(getBLASTFragmentResultsStore(blastResult))
