@@ -20,13 +20,10 @@ export function getReadWithFragments(
             progress(parsedReads);
             if(!fragments || fragments.length == 0)
                 return;
-            for(let i = 0; i != fragments.length; ++i)
-            {
-                res.push({
+            res.push({
                     read : read,
                     fragments : fragments
-                });
-            }
+            });
         });
         return resolve(res);
     });
