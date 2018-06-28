@@ -1,8 +1,3 @@
-/// <reference path="./../../node_modules/@chgibb/unmappedcigarfragments/lib/lib" />
-import {SAMRead} from "@chgibb/unmappedcigarfragments/lib/lib";
-
-import {ReadWithFragments} from "./readWithFragments";
-
 function replaceAll(target : string,search : RegExp,replace : string) : string
 {
     return target.replace(search,replace);

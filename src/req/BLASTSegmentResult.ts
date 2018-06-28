@@ -1,5 +1,3 @@
-/// <reference path="./../../node_modules/@chgibb/unmappedcigarfragments/lib/lib" />
-
 import * as fs from "fs";
 import * as readline from "readline";
 
@@ -7,6 +5,12 @@ import {ReadWithFragments} from "./readWithFragments";
 import {BLASTOutputRawJSON} from "./BLASTOutput";
 import {getReadableAndWritable} from "./getAppPath";
 
+/**
+ * The results of all SAM reads BLASTed in a given run
+ *
+ * @export
+ * @class BLASTReadResult
+ */
 export class BLASTReadResult
 {
     public readonly resultType : string = "read";
@@ -23,6 +27,12 @@ export class BLASTReadResult
     }
 }
 
+/**
+ * The results of all SAM read fragments BLASTed in a given run
+ *
+ * @export
+ * @class BLASTFragmentResult
+ */
 export class BLASTFragmentResult
 {
     public readonly resultType : string = "fragment";
@@ -41,6 +51,13 @@ export class BLASTFragmentResult
     }
 }
 
+
+/**
+ * Control structure for retrieving results from a BLAST run
+ *
+ * @export
+ * @class BLASTSegmentResult
+ */
 export class BLASTSegmentResult
 {
     public uuid : string;
@@ -65,11 +82,6 @@ export function getArtifactDir(blastResult : BLASTSegmentResult) : string
     return getReadableAndWritable(`rt/BLASTSegmentResults/${blastResult.uuid}`);
 }
 
-export function getSamSegment(blastResult : BLASTSegmentResult) : string
-{
-    return getReadableAndWritable(`rt/BLASTSegmentResults/${blastResult.uuid}/segment.sam`);
-}
-
 export function getBLASTReadResultsStore(blastResult : BLASTSegmentResult) : string
 {
     return getReadableAndWritable(`rt/BLASTSegmentResults/${blastResult.uuid}/readResults.nldjson`);
@@ -80,11 +92,15 @@ export function getBLASTFragmentResultsStore(blastResult : BLASTSegmentResult) :
     return getReadableAndWritable(`rt/BLASTSegmentResults/${blastResult.uuid}/fragmentResults.nldjson`);
 }
 
-export function getBLASTReadResults(
-    blastResult : BLASTSegmentResult,
-    start : number,
-    end : number
-) : Promise<Array<BLASTReadResult>> {
+/**
+ * Retrieve all SAM reads BLASTed in a given run
+ *
+ * @export
+ * @param {BLASTSegmentResult} blastResult
+ * @returns {Promise<Array<BLASTReadResult>>}
+ */
+export function getBLASTReadResults(blastResult : BLASTSegmentResult) : Promise<Array<BLASTReadResult>> 
+{
     return new Promise<Array<BLASTReadResult>>(async (resolve : (value : Array<BLASTReadResult>) => void,reject) => {
         let res = new Array<BLASTReadResult>();
 
@@ -102,16 +118,8 @@ export function getBLASTReadResults(
 
             if(result)
             {
-                if(start == 0 && end == 0)
-                {
-                    res.push(result);
-                    return;
-                }
-                else if(result.readWithFragments.read.POS >= start && result.readWithFragments.read.POS <= end)
-                {
-                    res.push(result);
-                    return;
-                }
+                res.push(result);
+                return;
             }
         });
 
@@ -121,6 +129,13 @@ export function getBLASTReadResults(
     });
 }
 
+/**
+ * Retrieve all SAM read fragments BLASTed in a given run
+ *
+ * @export
+ * @param {BLASTSegmentResult} blastResult
+ * @returns {Promise<Array<BLASTFragmentResult>>}
+ */
 export function getBLASTFragmentResults(blastResult : BLASTSegmentResult) : Promise<Array<BLASTFragmentResult>> 
 {
     return new Promise<Array<BLASTFragmentResult>>(async (resolve : (value : Array<BLASTFragmentResult>) => void) => {

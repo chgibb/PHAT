@@ -48,6 +48,14 @@ export function sleep(seconds : number) : void
 	while(stop > new Date()){}
 }
 
+
+/**
+ * URL safe strings for BLAST's nucleotide collection (nt) and human genomic + transcript (human)
+ * databases
+ *
+ * @export
+ * @enum {number}
+ */
 export enum BLASTDatabase
 {
     nt = "nt",
@@ -55,7 +63,7 @@ export enum BLASTDatabase
 }
 
 /**
- * Submit a query for nucleotide sequence seq to BLAST using MegaBLAST against nt database.
+ * Submit a query for nucleotide sequence seq to BLAST using MegaBLAST against the specified database.
  * Returns the RID and RTOE for the request.
  * 
  * @export
@@ -183,16 +191,16 @@ export function retrieveQuery(
 }
 
 /**
- * Will submit and retrieve a MegaBLAST query for the given SAM read. Returns raw BLAST XML 
+ * Will submit and retrieve a MegaBLAST query for the given sequence. Returns raw BLAST XML 
  * transformed to JSON
  * 
  * @export
- * @param {string} read 
+ * @param {string} seq 
  * @param {(status : QueryStatus) => void} progressCB 
  * @returns {Promise<BLASTOutputRawJSON>} 
  */
 export function performQuery(
-    read : string,
+    seq : string,
     dataBase : BLASTDatabase,
     progressCB : (status : QueryStatus) => void
 ) : Promise<BLASTOutputRawJSON> {
@@ -201,7 +209,7 @@ export function performQuery(
         resolve : (value : BLASTOutputRawJSON) => void,
         reject : (reason : any) => void
     ) => {
-        let {rid,rtoe} = await makeQuery(read,dataBase);
+        let {rid,rtoe} = await makeQuery(seq,dataBase);
 
         setTimeout(async function(){
             let result = await retrieveQuery(rid,5,function(status : QueryStatus){
