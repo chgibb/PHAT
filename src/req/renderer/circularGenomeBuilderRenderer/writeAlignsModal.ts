@@ -124,6 +124,8 @@ export function writeAlignsModal() : void
                             stop : genomeView.seqSelectionArrow.arrowEnd
                         }
                     );
+                    masterView.alignsModalOpen = false;
+                    masterView.dismissModal();
                     return;
                 }
                 masterView.alignsModalOpen = false;
