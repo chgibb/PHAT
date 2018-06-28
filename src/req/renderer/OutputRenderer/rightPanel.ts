@@ -52,6 +52,7 @@ export class AlignmentInfoSelection
     public pValueThreshold : boolean;
     public SNPsPredicted : boolean;
     public indelsPredicted : boolean;
+    public BLASTRuns : boolean;
     public dateRan : boolean;
     [index : string] : boolean;
     public constructor()
@@ -71,6 +72,7 @@ export class AlignmentInfoSelection
         this.indelsPredicted = true;
         this.dateRan = false;
         this.SNPPositions = false;
+        this.BLASTRuns = true;
     }
 }
 
@@ -120,6 +122,40 @@ export class MappedReadsPerContigInfoSelection
     }
 }
 
+export class BLASTRunsInfoSelection
+{
+    public start : boolean;
+    public stop : boolean;
+    public readsBLASTed : boolean;
+    public program : boolean;
+    public ran : boolean;
+    [index : string] : boolean;
+    public constructor()
+    {
+        this.start = true;
+        this.stop = true;
+        this.readsBLASTed = true;
+        this.program = true;
+        this.ran = false;
+    }
+}
+
+export class BLASTSingleRunInfoSelection
+{
+    public position : boolean;
+    public seq : boolean;
+    public Hit_def : boolean;
+    public eValue : boolean;
+    [index : string] : boolean;
+    public constructor()
+    {
+        this.position = true;
+        this.seq = true;
+        this.Hit_def = true;
+        this.eValue = true;
+    }
+}
+
 export class View extends viewMgr.View
 {
     public fastQInfoSelection : FastQInfoSelection;
@@ -127,6 +163,8 @@ export class View extends viewMgr.View
     public alignmentInfoSelection : AlignmentInfoSelection;
     public snpPositionsInfoSelection : SNPPositionsInfoSelection;
     public mapppedReadsPerContigInfoSelection : MappedReadsPerContigInfoSelection;
+    public BLASTRunsInfoSelection : BLASTRunsInfoSelection;
+    public BLASTSingleRunInfoSelection : BLASTSingleRunInfoSelection;
     public constructor(name : string,div : string)
     {
         super(name,div);
@@ -135,6 +173,8 @@ export class View extends viewMgr.View
         this.alignmentInfoSelection = new AlignmentInfoSelection();
         this.snpPositionsInfoSelection = new SNPPositionsInfoSelection();
         this.mapppedReadsPerContigInfoSelection = new MappedReadsPerContigInfoSelection();
+        this.BLASTRunsInfoSelection = new BLASTRunsInfoSelection();
+        this.BLASTSingleRunInfoSelection = new BLASTSingleRunInfoSelection();
     }
 
     public onMount() : void{}
@@ -213,7 +253,47 @@ export class View extends viewMgr.View
                         <input type="checkbox" id="indelsPredicted">Indels Predicted</input>
                         <br />
 
+                        <input type="checkbox" id="BLASTRuns">BLAST Runs</input>
+                        <br />
+
                         <input type="checkbox" id="dateRan">Date Ran</input>
+                        <br />
+                    `;
+                }
+
+                if(masterView.displayInfo == "BLASTRuns")
+                {
+                    res += `
+                        <input type="checkbox" id="start">Start</input>
+                        <br />
+
+                        <input type="checkbox" id="stop">Stop</input>
+                        <br />
+
+                        <input type="checkbox" id="readsBLASTed">Reads Blasted</input>
+                        <br />
+
+                        <input type="checkbox" id="program">Program</input>
+                        <br />
+
+                        <input type="checkbox" id="ran">Date Ran</input>
+                        <br />
+                    `;
+                }
+
+                if(masterView.displayInfo == "BLASTSingleRun")
+                {
+                    res += `
+                        <input type="checkbox" id="position">Position</input>
+                        <br />
+
+                        <input type="checkbox" id="seq">Sequence</input>
+                        <br />
+
+                        <input type="checkbox" id="Hit_def">Hit Name</input>
+                        <br />
+
+                        <input type="checkbox" id="eValue">E-Value</input>
                         <br />
                     `;
                 }
@@ -227,7 +307,7 @@ export class View extends viewMgr.View
                             let inspectingAlignMarkup = "";
                             for(let i = 0; i != masterView.alignData.length; ++i)
                             {
-                                if(masterView.inspectingUUID == masterView.alignData[i].uuid)
+                                if(masterView.inspectingAlignUUID == masterView.alignData[i].uuid)
                                 {
                                     inspectingAlignMarkup += `
                                         <h5>SNP Reporting for ${masterView.alignData[i].alias}</h5>
@@ -291,7 +371,7 @@ export class View extends viewMgr.View
                     let found = false;
                     for(let i = 0; i != masterView.alignData.length; ++i)
                     {
-                        if(masterView.inspectingUUID == masterView.alignData[i].uuid)
+                        if(masterView.inspectingAlignUUID == masterView.alignData[i].uuid)
                         {
                             res += `
                                 <h5>Mapped reads per contig for ${masterView.alignData[i].alias}</h5>
@@ -382,6 +462,34 @@ export class View extends viewMgr.View
                     }
                 }
             }
+            if(masterView.displayInfo == "BLASTRuns")
+            {
+                for(let i in this.BLASTRunsInfoSelection)
+                {
+                    if(this.BLASTRunsInfoSelection.hasOwnProperty(i))
+                    {
+                        try
+                        {
+                            (<HTMLInputElement>document.getElementById(i)).checked = this.BLASTRunsInfoSelection[i];
+                        }
+                        catch(err){console.log(err)}
+                    }
+                }
+            }
+            if(masterView.displayInfo == "BLASTSingleRun")
+            {
+                for(let i in this.BLASTSingleRunInfoSelection)
+                {
+                    if(this.BLASTSingleRunInfoSelection.hasOwnProperty(i))
+                    {
+                        try
+                        {
+                            (<HTMLInputElement>document.getElementById(i)).checked = this.BLASTSingleRunInfoSelection[i];
+                        }
+                        catch(err){console.log(err)}
+                    }
+                }
+            }
         }
         catch(err){}
     }
@@ -444,6 +552,18 @@ export class View extends viewMgr.View
             else if(masterView.displayInfo == "MappedReadsPerContigInfo")
             {
                 this.mapppedReadsPerContigInfoSelection[event.target.id] = checked;
+                viewMgr.render();
+                return;
+            }
+            else if(masterView.displayInfo == "BLASTRuns")
+            {
+                this.BLASTRunsInfoSelection[event.target.id] = checked;
+                viewMgr.render();
+                return;
+            }
+            else if(masterView.displayInfo == "BLASTSingleRun")
+            {
+                this.BLASTSingleRunInfoSelection[event.target.id] = checked;
                 viewMgr.render();
                 return;
             }

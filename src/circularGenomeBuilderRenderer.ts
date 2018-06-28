@@ -151,7 +151,7 @@ $
                             {
                                 for(let i = 0; i != ops.length; ++i)
                                 {
-                                    if(ops[i].name == "renderCoverageTrackForContig" || ops[i].name == "renderSNPTrackForContig")
+                                    if(ops[i].name == "renderCoverageTrackForContig" || ops[i].name == "renderSNPTrackForContig" || ops[i].name == "BLASTSegment")
                                     {
                                         genomeView.shouldAllowTriggeringOps = false;
                                         found = true;

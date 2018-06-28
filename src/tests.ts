@@ -42,15 +42,17 @@ import {testL6R1HPV16AlignImportedLinking} from "./req/tests/testL6R1HPV16AlignI
 import {testL6R1HPV18AlignImportedImporting} from "./req/tests/testL6R1HPV18AlignImportedImporting";
 import {testL6R1HPV18AlignImportedLinking} from "./req/tests/testL6R1HPV18AlignImportedLinking";
 
+import {testL6R1HPV16NoHeaderSAMImporting} from "./req/tests/testL6R1HPV16NoHeaderSAMImporting";
+
 import {testL6R7HPV16Alignment} from "./req/tests/testL6R7HPV16Alignment";
 import {testL6R7HPV16CoverageTrackRenderer} from "./req/tests/testL6R7HPV16CoverageTrackRenderer";
 import {testL6R7HPV16SNPTrackRenderer} from "./req/tests/testL6R7HPV16SNPTrackRender";
 import {testL6R7HPV16CoverageTrackCompilation} from "./req/tests/testL6R7HPV16CoverageTrackCompilation";
 import {testL6R7HPV16SNPTrackCompilation} from "./req/tests/testL6R7HPV16SNPTrackCompilation";
 
-import {testBLASTSegment0To1000L6R1HPV16Alignment} from "./req/tests/testBLASTSegment0To1000L6R1HPV16Alignment";
-import {testBLASTSegment3500To4500L6R1HPV16Alignment} from "./req/tests/testBLASTSegment3500To4500L6R1HPV16Alignment";
-import {testBLASTSegment5To10L6R7HPV16Alignment} from "./req/tests/testBLASTSegment5To10L6R7HPV16Alignment";
+import {testBLASTSegment5To10L6R1HPV16Alignment} from "./req/tests/testBLASTSegment5To10L6R1HPV16Alignment";
+import {testBLASTSegment6420To6534L6R1HPV16Alignment} from "./req/tests/testBLASTSegment6420To6534L6R1HPV16Alignment";
+import {testBLASTSegment5795To5805L6R7HPV16Alignment} from "./req/tests/testBLASTSegment5795To5805L6R7HPV16Alignment";
 
 const pjson = require("./resources/app/package.json");
 import {isBeta,versionIsGreaterThan} from "./req/versionIsGreaterThan";
@@ -392,7 +394,7 @@ async function runTests() : Promise<void>
 		});
 		try
 		{
-			await testL6R1HPV16AlignImportedImporting();
+			await testL6R1HPV16NoHeaderSAMImporting();
 		}
 		catch(err)
 		{
@@ -463,47 +465,47 @@ async function runTests() : Promise<void>
 			return reject();
 		}
 
-		console.log("BLASTing segment 0-1000 of L6R1 alignment on HPV16");
+		console.log("BLASTing segment 5-10 of L6R1 alignment on HPV16");
 		atomic.addOperation("BLASTSegment",{
 			align : L6R1HPV16Align.get(),
-			start : 0,
-			stop : 1000
-		});
-		try
-		{
-			await testBLASTSegment0To1000L6R1HPV16Alignment();
-		}
-		catch(err)
-		{
-			console.log("BLASTing segment threw exception");
-			return reject();
-		}
-
-		console.log("BLASTing segment 3500-4500 of L6R1 alignment on HPV16");
-		atomic.addOperation("BLASTSegment",{
-			align : L6R1HPV16Align.get(),
-			start : 3500,
-			stop : 4500
-		});
-		try
-		{
-			await testBLASTSegment3500To4500L6R1HPV16Alignment();
-		}
-		catch(err)
-		{
-			console.log("BLASTing segment threw exception");
-			return reject();
-		}
-
-		console.log("BLASTing segment 5-10 of L6R7 alignment on HPV16");
-		atomic.addOperation("BLASTSegment",{
-			align : L6R7HPV16Align.get(),
 			start : 5,
 			stop : 10
 		});
 		try
 		{
-			await testBLASTSegment5To10L6R7HPV16Alignment();
+			await testBLASTSegment5To10L6R1HPV16Alignment();
+		}
+		catch(err)
+		{
+			console.log("BLASTing segment threw exception");
+			return reject();
+		}
+
+		console.log("BLASTing segment 6420-6534 of L6R1 alignment on HPV16");
+		atomic.addOperation("BLASTSegment",{
+			align : L6R1HPV16Align.get(),
+			start : 6420,
+			stop : 6534
+		});
+		try
+		{
+			await testBLASTSegment6420To6534L6R1HPV16Alignment();
+		}
+		catch(err)
+		{
+			console.log("BLASTing segment threw exception");
+			return reject();
+		}
+
+		console.log("BLASTing segment 5795-5805 of L6R7 alignment on HPV16");
+		atomic.addOperation("BLASTSegment",{
+			align : L6R7HPV16Align.get(),
+			start : 5795,
+			stop : 5805
+		});
+		try
+		{
+			await testBLASTSegment5795To5805L6R7HPV16Alignment();
 		}
 		catch(err)
 		{

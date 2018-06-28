@@ -19,12 +19,12 @@ export async function testL6R1HPV18Alignment() : Promise<void>
                 else
                     return reject();
 
-                if(op.alignData.summary.mates == 5378)
+                if(op.alignData.summary.mates == 5376)
                     console.log(`${op.alignData.alias} has correct number of mates`);
                 else
                     return reject();
                 
-                if(op.alignData.summary.overallAlignmentRate == 0)
+                if(op.alignData.summary.overallAlignmentRate == 0.04)
                     console.log(`${op.alignData.alias} has correct overall alignment rate`);
                 else
                     return reject();
@@ -59,7 +59,7 @@ export async function testL6R1HPV18Alignment() : Promise<void>
                 else
                     return reject();
 
-                if(op.alignData.idxStatsReport[0].mappedReads == 0)
+                if(op.alignData.idxStatsReport[0].mappedReads == 2)
                     console.log(`${op.alignData.alias} has correct number of mapped reads`);
                 else
                     return reject();

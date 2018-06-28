@@ -19,8 +19,9 @@ export class View extends viewMgr.View
     public fastqInputs : Array<Fastq>;
     public fastaInputs : Array<Fasta>;
 
-    public displayInfo : "QCInfo" | "RefSeqInfo" | "AlignmentInfo" | "SNPPositions" | "MappedReadsPerContigInfo";
-    public inspectingUUID : string;
+    public displayInfo : "QCInfo" | "RefSeqInfo" | "AlignmentInfo" | "SNPPositions" | "MappedReadsPerContigInfo" | "BLASTRuns" | "BLASTSingleRun";
+    public inspectingAlignUUID : string;
+    public inspectingBLASTRunUUID : string;
     public constructor(div : string)
     {
         super("masterView",div);
