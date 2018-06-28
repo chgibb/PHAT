@@ -4,6 +4,17 @@ import {getReads,SAMRead,ReadFragment} from "@chgibb/unmappedcigarfragments/lib/
 
 import {ReadWithFragments} from "./readWithFragments";
 
+/**
+ * Returns all reads which aligned starting between start and stop and which contain one or more 
+ * mapped or unmapped fragment
+ *
+ * @export
+ * @param {string} file
+ * @param {number} start
+ * @param {number} stop
+ * @param {(parsedReads : number) => void} progress
+ * @returns {Promise<Array<ReadWithFragments>>}
+ */
 export function getReadWithFragments(
     file : string,
     start : number,
