@@ -56,7 +56,10 @@ export function writeAlignsModal() : void
                         ${(()=>{
                             if(masterView.willBLASTAlignment)
                             {
-                                return `<td id="${aligns[i].uuid}View" class="cellHover">BLAST</td>`;
+                                if(genomeView.shouldAllowTriggeringOps)
+                                    return `<td id="${aligns[i].uuid}View" class="cellHover">BLAST</td>`;
+                                else
+                                    return `<td><div class="three-quarters-loader"></div></td>`
                             }
                             return `<td><img src="${getReadable("img/viewAvailableTracks.png")}" id="${aligns[i].uuid}View" class="activeHover activeHoverButton" /><br />
                             </td>`;
