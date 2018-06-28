@@ -17,7 +17,7 @@ function refreshResults(resultsHandle : BLASTSegmentResult) : Promise<void>
         if(lastBLASTUUID != resultsHandle.uuid)
         {
             lastBLASTUUID = resultsHandle.uuid;
-            lastViewedReadResults = await getBLASTReadResults(resultsHandle,0,0);
+            lastViewedReadResults = await getBLASTReadResults(resultsHandle);
             lastViewedFragmentResults = await getBLASTFragmentResults(resultsHandle);
         }
         return resolve();
