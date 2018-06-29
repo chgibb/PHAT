@@ -1,5 +1,5 @@
 console.log("Started GUI test for New Project");
-import("./../req/main/main");
+require("./../req/main/main");
 
 import {logMainProcessErrors} from "./req/logMainProcessErrors";
 logMainProcessErrors();
