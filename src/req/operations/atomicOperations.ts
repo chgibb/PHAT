@@ -403,7 +403,8 @@ export function handleForkFailures(logger? : ForkLogger,progressMessage? : strin
 
     };
     (process as NodeJS.EventEmitter).on("uncaughtException",function(err : Error){
-        console.log(err);
+        let errString = `Uncaught exception ${err}`;
+        console.log(errString);
         if(logger !== undefined)
         {
             logger.logObject(err);
@@ -411,8 +412,8 @@ export function handleForkFailures(logger? : ForkLogger,progressMessage? : strin
         signalFailure(`${err.toString()} ${err.stack}`);
     });
 
-    process.on("unhandledRejection",function(reason : Error,p : Promise<any>){
-        let errString = `Unhandled rejection ${p} ${reason}`;
+    process.on("unhandledRejection",function(reason : Error){
+        let errString = `Unhandled rejection ${reason}`;
         console.log(errString);
         if(logger !== undefined)
         {

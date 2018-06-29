@@ -7,7 +7,8 @@ import * as hpv16Ref from "./hpv16Ref";
 import * as L6R1HPV16AlignImported from "./L6R1HPV16AlignImported";
 import {getUnSortedBam,getSortedBam,getSortBamIndex,} from "./../alignData";
 import {getLinkableRefSeqs} from "./../getLinkableRefSeqs";
-export async function testL6R1HPV16AlignImportedImporting() : Promise<void>
+
+export function testL6R1HPV16NoHeaderSAMImporting() : Promise<void>
 {
     return new Promise<void>((resolve,reject) => {
         atomic.updates.removeAllListeners().on("inputBamFile",function(op : InputBamFile){
@@ -22,15 +23,15 @@ export async function testL6R1HPV16AlignImportedImporting() : Promise<void>
                 fs.accessSync(getSortedBam(op.alignData));
                 fs.accessSync(getSortBamIndex(op.alignData));
 
-                if(op.alignData.flagStatReport.overallAlignmentRate == 15.15)
+                if(op.alignData.flagStatReport.overallAlignmentRate == 12.96)
                     console.log(`${op.alignData.alias} has correct overall alignment rate`);
                 else
                     return reject();
-                if(op.alignData.idxStatsReport[0].mappedReads == 815)
+                if(op.alignData.idxStatsReport[0].mappedReads == 697)
                     console.log(`${op.alignData.alias} has correct number of mapped reads`);
                 else
                     return reject();
-                if(op.alignData.idxStatsReport[0].unMappedReads == 1)
+                if(op.alignData.idxStatsReport[0].unMappedReads == 15)
                     console.log(`${op.alignData.alias} has correct number of unmapped reads`);
                 else
                     return reject();

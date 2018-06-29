@@ -1,6 +1,3 @@
-/// <reference path="./../../node_modules/@chgibb/unmappedcigarfragments/lib/lib" />
-import {SAMRead} from "./../../node_modules/@chgibb/unmappedcigarfragments/lib/lib";
-
 function replaceAll(target : string,search : RegExp,replace : string) : string
 {
     return target.replace(search,replace);
@@ -49,14 +46,14 @@ export function cleanBLASTXML(xml : string) : string
 }
 
 /**
- * The expected shape of BLAST XML response transformed to JSON, with an attached SAM read
+ * The expected shape of BLAST XML response transformed to JSON
  * 
  * @export
  * @interface BlastOutputRawJSON
  */
-export interface BlastOutputRawJSON
+export interface BLASTOutputRawJSON
 {
-    read : SAMRead,
+    noHits : boolean;
     BlastOutput : {
         BlastOutput_program : Array<string>;
         BlastOutput_version : Array<string>;
@@ -149,10 +146,10 @@ function throwOnUndefined(obj : any) : void
  * Validate the given BLAST output. Returns true if valid, false otherwise.
  * 
  * @export
- * @param {BlastOutputRawJSON} obj 
+ * @param {BLASTOutputRawJSON} obj 
  * @returns {boolean} 
  */
-export function validateRawBlastOutput(obj : BlastOutputRawJSON) : boolean
+export function validateRawBlastOutput(obj : BLASTOutputRawJSON) : boolean
 {
     try
     {
