@@ -25,25 +25,12 @@ if [ "$1" != "src/PileupRenderer.js" ]; then
     mv $1.tmp $1
 fi
 
-if [ "$1" != "src/circularGenomeBuilderRenderer.js" ]; then
-    ./node_modules/.bin/babel --plugins minify-mangle-names $1 > $1.tmp
-    if [ $? != 0 ]; then
-        rm $1.tmp
-        exit $?
-    fi
-    mv $1.tmp $1
+node scripts/babelMinify $1 > $1.tmp
+if [ $? != 0 ]; then
+    rm $1.tmp
+    exit $?
 fi
-
-#AngularJS depends on parameter names where the parameter is passed as a service. For instance "$compile".
-#We preserve a list of used services when mangling the genome builder
-if [ "$1" == "src/circularGenomeBuilderRenderer.js" ]; then
-    node scripts/genomeBuilderMangle $1 > $1.tmp
-    if [ $? != 0 ]; then
-        rm $1.tmp
-        exit $?
-    fi
-    mv $1.tmp $1
-fi
+mv $1.tmp $1
 
 if [ "$1" != "src/PileupRenderer.js" ]; then
     ./node_modules/uglify-es/bin/uglifyjs --compress -- $1 > $1.tmp
