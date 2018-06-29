@@ -1,5 +1,8 @@
 console.log("Started GUI test for New Project");
-require("./../req/main/main");
+import("./../req/main/main");
+
+import {logMainProcessErrors} from "./req/logMainProcessErrors";
+logMainProcessErrors();
 
 import {createNewProject} from "./req/projectSelection/createNewProject";
 import {openFirstProject} from "./req/projectSelection/openFirstProject";
