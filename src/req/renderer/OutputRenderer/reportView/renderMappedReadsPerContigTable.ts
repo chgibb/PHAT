@@ -2,6 +2,7 @@ import * as viewMgr from "./../../viewMgr";
 import * as masterView from "./../masterView";
 import * as rightPanel from "./../rightPanel";
 import {getReadable} from "./../../../getAppPath";
+
 export function renderMappedReadsPerContigTable() : string
 {
     let masterView = <masterView.View>viewMgr.getViewByName("masterView");
@@ -28,7 +29,7 @@ export function renderMappedReadsPerContigTable() : string
                 for(let i = 0; i != masterView.alignData.length; ++i)
                 {
                     
-                    if(masterView.alignData[i].uuid == masterView.inspectingUUID)
+                    if(masterView.alignData[i].uuid == masterView.inspectingAlignUUID)
                     {
                         for(let k = 0; k != masterView.alignData[i].idxStatsReport.length-1; ++k)
                         {

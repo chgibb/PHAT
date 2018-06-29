@@ -1,16 +1,14 @@
-/// <reference path="./../node_modules/@chgibb/unmappedcigarfragments/lib/lib" />
-
 import * as fs from "fs";
-
-import {SAMRead} from "./../node_modules/@chgibb/unmappedcigarfragments/lib/lib";
 
 import {AtomicOperationForkEvent,CompletionFlags} from "./req/atomicOperationsIPC";
 import * as atomic from "./req/operations/atomicOperations";
 import {AlignData, getSam} from "./req/alignData";
-import {BLASTSegmentResult,getArtifactDir,getSamSegment,getBLASTResultsStore} from "./req/BLASTSegmentResult";
-import {getReadsWithLargeUnMappedFragments} from "./req/operations/BLASTSegment/getReadsWithLargeUnMappedFragments";
-import {BlastOutputRawJSON} from "./req/BLASTOutput";
-import {performQuery,QueryStatus} from "./req/BLASTRequest";
+import {BLASTSegmentResult,getArtifactDir,getBLASTReadResultsStore,BLASTReadResult,BLASTFragmentResult,getBLASTFragmentResultsStore} from "./req/BLASTSegmentResult";
+import {getReadWithFragments} from "./req/getReadWithFragments";
+import {ReadWithFragments} from "./req/readWithFragments";
+import {BLASTOutputRawJSON} from "./req/BLASTOutput";
+import {performQuery,QueryStatus,BLASTDatabase} from "./req/BLASTRequest";
+import {BLASTLENGTHCUTOFF} from "./req/BLASTLengthCutoff";
 
 const mkdirp = require("mkdirp");
 
@@ -22,7 +20,7 @@ let progressMessage = "";
 let logger : atomic.ForkLogger = new atomic.ForkLogger();
 atomic.handleForkFailures(logger);
 
-function update() : void
+function update(updateLog = true) : void
 {
     let update = <AtomicOperationForkEvent>{
         update : true,
@@ -48,7 +46,8 @@ function update() : void
     }
 
     process.send(update);
-    logger.logObject(update);
+    if(updateLog)
+        logger.logObject(update);
 }
 
 process.on("message",async function(ev : AtomicOperationForkEvent){
@@ -68,36 +67,93 @@ process.on("message",async function(ev : AtomicOperationForkEvent){
 
     if(ev.run == true)
     {
-
-        let readsWithFragments : Array<SAMRead> = await getReadsWithLargeUnMappedFragments(
+        progressMessage = `Searching for fragments in reads that aligned starting between ${blastSegmentResult.start} and ${blastSegmentResult.stop}`;
+        update();
+        let readsWithFragments : Array<ReadWithFragments> = await getReadWithFragments(
             getSam(align),
             blastSegmentResult.start,
             blastSegmentResult.stop,
-            function(parsedReads : number){
-                progressMessage = `Searching for fragments in read ${parsedReads} that aligned starting between ${blastSegmentResult.start} and ${blastSegmentResult.stop}`;
-                update();
-            }
+            function(){}
         );
+
+        let readsBLASTed = 0;
 
         for(let i = 0; i != readsWithFragments.length; ++i)
         {
+            if(readsWithFragments[i].read.SEQ.length < BLASTLENGTHCUTOFF)
+                continue;
+
+            let hasLargeFragment = false;
+            for(let j = 0; j != readsWithFragments[i].fragments.length; ++ j)
+            {
+                if(readsWithFragments[i].fragments[j].type == "unmapped" && readsWithFragments[i].fragments[j].seq.length >= BLASTLENGTHCUTOFF)
+                {
+                    hasLargeFragment = true;
+                    break;
+                }
+            }
+            if(!hasLargeFragment)
+                continue;
+
+            //BLAST identified reads
             let repeatedSearching = 0;
             progressMessage = `BLASTing suspicious read ${i+1} of ${readsWithFragments.length}: submitting query`;
             update();
-            let res = await performQuery(readsWithFragments[i],function(status : QueryStatus){
+            let res : BLASTOutputRawJSON = await performQuery(readsWithFragments[i].read.SEQ,BLASTDatabase.nt,function(status : QueryStatus){
                 if(status == "searching")
                     repeatedSearching++;
                 progressMessage = `BLASTing suspicious read ${i+1} of ${readsWithFragments.length}: ${status} ${status == "searching" ? `x${repeatedSearching}` : ``}`;
                 update();
             });
+
+            readsBLASTed++;
+
+            let readResult : BLASTReadResult = new BLASTReadResult(res,readsWithFragments[i]);
             progressMessage = `BLASTing suspicious read ${i+1} of ${readsWithFragments.length}: writing result`;
             update();
-            fs.appendFileSync(getBLASTResultsStore(blastSegmentResult),JSON.stringify(res)+"\n");
+            fs.appendFileSync(getBLASTReadResultsStore(blastSegmentResult),JSON.stringify(readResult)+"\n");
+
+            //BLAST identified large, unmapped fragments in each read
+            for(let k = 0; k != readsWithFragments[i].fragments.length; ++k)
+            {
+                if(readsWithFragments[i].fragments[k].type != "unmapped" || readsWithFragments[i].fragments[k].seq.length < BLASTLENGTHCUTOFF)
+                    continue;
+                let repeatedSearching = 0;
+                progressMessage = `BLASTING suspicious fragment ${k+1} of read ${i+1}: submitting query`;
+                update();
+
+                let res : BLASTOutputRawJSON = await performQuery(readsWithFragments[i].fragments[k].seq,BLASTDatabase.nt,function(status : QueryStatus){
+                    if(status == "searching")
+                        repeatedSearching++;
+                    progressMessage = `BLASTING suspicious fragment ${k+1} of read ${i+1}: ${status} ${status == "searching" ? `x${repeatedSearching}` : ``}`;
+                    update();
+                });
+
+                if(res.noHits == true)
+                {
+                    repeatedSearching = 1;
+                    res = await performQuery(readsWithFragments[i].fragments[k].seq,BLASTDatabase.Human,function(status : QueryStatus){
+                        if(status == "searching")
+                            repeatedSearching++;
+                        progressMessage = `Re-BLASTING suspicious fragment ${k+1} of read ${i+1} against human genomic + transcript: ${status} ${status == "searching" ? `x${repeatedSearching}` : ``}`;
+                        update();
+                    });
+                }
+
+                progressMessage = `BLASTING suspicious fragment ${k+1} of read ${i+1}: writing result`;
+                let fragmentResults : BLASTFragmentResult = new BLASTFragmentResult(res,readsWithFragments[i].fragments[k].seq,readResult.uuid);
+                update();
+                fs.appendFileSync(getBLASTFragmentResultsStore(blastSegmentResult),JSON.stringify(fragmentResults)+"\n");
+            }
         }
+
+        blastSegmentResult.readsBLASTed = readsBLASTed;
 
         flags.done = true;
         flags.success = true;
         update();
-        atomic.exitFork(0);
+        setTimeout(function(){
+            atomic.exitFork(0);
+        },1000);
     }
 });

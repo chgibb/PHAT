@@ -26,6 +26,7 @@ export function renderAlignmentReportTable() : string
                     ${rightPanel.alignmentInfoSelection.pValueThreshold != false ? "<th>P-Value Threshold</th>" : ""}
                     ${rightPanel.alignmentInfoSelection.SNPsPredicted != false ? "<th>SNPs Predicted</th>" : ""}
                     ${rightPanel.alignmentInfoSelection.indelsPredicted != false ? "<th>Indels Predicted</th>" : ""}
+                    ${rightPanel.alignmentInfoSelection.BLASTRuns != false ? "<th>BLAST Runs</th>" : ""}
                     ${rightPanel.alignmentInfoSelection.dateRan != false ? "<th>Date Ran</th>" : ""}
                 </tr>
             `;
@@ -184,6 +185,11 @@ export function renderAlignmentReportTable() : string
                             res += `<td>Unknown</td>`;
     
                         }
+                    }
+
+                    if(rightPanel.alignmentInfoSelection.BLASTRuns)
+                    {
+                        res += `<td class="cellHover" id="${masterView.alignData[i].uuid}ViewBLASTRuns">${masterView.alignData[i].BLASTSegmentResults ? masterView.alignData[i].BLASTSegmentResults.length : 0}</td>`;
                     }
 
                     if(rightPanel.alignmentInfoSelection.dateRan)

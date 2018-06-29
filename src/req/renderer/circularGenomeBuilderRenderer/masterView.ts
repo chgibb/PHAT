@@ -314,17 +314,19 @@ export class View extends viewMgr.View
             self.showModal();
         }
 
-        //document.getElementById("selectSequence").onclick = function(this : HTMLElement,ev : MouseEvent){
-        window.addEventListener("keypress",function(this : Window,e : KeyboardEvent){
-            if(e.ctrlKey && e.shiftKey)
+        document.getElementById("selectSequence").onclick = function(this : HTMLElement,ev : MouseEvent){
+            if(!genomeView.genome)
             {
-                if(genomeView.showSeqSelector)
-                    genomeView.showSeqSelector = false;
-                else
-                    genomeView.showSeqSelector = true;
-                genomeView.showSeqSelectorOnChange();
+                dialogs.alert("You must open a figure before you can select a sequence on it");
+                return;
             }
-        });
+
+            if(genomeView.showSeqSelector)
+                genomeView.showSeqSelector = false;
+            else
+                genomeView.showSeqSelector = true;
+            genomeView.showSeqSelectorOnChange();
+        };
 
         document.getElementById("exportToSVG").onclick = function(this : HTMLElement,ev : MouseEvent){
             if(!genomeView.genome)

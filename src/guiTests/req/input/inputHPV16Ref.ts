@@ -23,6 +23,6 @@ export async function inputHPV16Ref() : Promise<void>
             setTimeout(async function(){
                 resolve();
             },1500);
-        },500);
+        },1500);
     });
 }
