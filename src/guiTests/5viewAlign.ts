@@ -1,6 +1,9 @@
 console.log("Started GUI test for alignment viewing");
 require("./../req/main/main");
 
+import {logMainProcessErrors} from "./req/logMainProcessErrors";
+logMainProcessErrors();
+
 import {openProjectsView} from "./req/projectSelection/openProjectsView";
 import {openFirstProject} from "./req/projectSelection/openFirstProject";
 import {openOutputWindow} from "./req/output/openOutputWindow";

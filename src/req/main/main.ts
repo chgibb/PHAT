@@ -41,9 +41,6 @@ import {BLASTSegment} from "./../operations/BLASTSegment";
 import {CopyCircularFigure} from "./../operations/CopyCircularFigure";
 import {DeleteCircularFigure} from "./../operations/DeleteCircularFigure";
 
-
-import {ProjectManifest} from "./../projectManifest";
-
 import {NewProject} from "./../operations/NewProject";
 import {OpenProject} from "./../operations/OpenProject";
 import {SaveProject} from "./../operations/SaveProject";

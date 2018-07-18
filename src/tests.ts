@@ -15,7 +15,6 @@ import * as L6R1HPV18Align from "./req/tests/L6R1HPV18Align";
 
 import * as L6R7R1 from "./req/tests/L6R7R1";
 import * as L6R7R2 from "./req/tests/L6R7R2";
-import * as L6R7HPV16Align from "./req/tests/L6R7HPV16Align";
 
 import * as L6R1HPV16AlignImported from "./req/tests/L6R1HPV16AlignImported";
 import * as L6R1HPV18AlignImported from "./req/tests/L6R1HPV18AlignImported";
@@ -50,9 +49,7 @@ import {testL6R7HPV16SNPTrackRenderer} from "./req/tests/testL6R7HPV16SNPTrackRe
 import {testL6R7HPV16CoverageTrackCompilation} from "./req/tests/testL6R7HPV16CoverageTrackCompilation";
 import {testL6R7HPV16SNPTrackCompilation} from "./req/tests/testL6R7HPV16SNPTrackCompilation";
 
-import {testBLASTSegment5To10L6R1HPV16Alignment} from "./req/tests/testBLASTSegment5To10L6R1HPV16Alignment";
-import {testBLASTSegment6420To6534L6R1HPV16Alignment} from "./req/tests/testBLASTSegment6420To6534L6R1HPV16Alignment";
-import {testBLASTSegment5795To5805L6R7HPV16Alignment} from "./req/tests/testBLASTSegment5795To5805L6R7HPV16Alignment";
+import {runBLASTSegmentTests} from "./req/tests/runBLASTSegmentTests";
 
 const pjson = require("./resources/app/package.json");
 import {isBeta,versionIsGreaterThan} from "./req/versionIsGreaterThan";
@@ -465,54 +462,6 @@ async function runTests() : Promise<void>
 			return reject();
 		}
 
-		console.log("BLASTing segment 5-10 of L6R1 alignment on HPV16");
-		atomic.addOperation("BLASTSegment",{
-			align : L6R1HPV16Align.get(),
-			start : 5,
-			stop : 10
-		});
-		try
-		{
-			await testBLASTSegment5To10L6R1HPV16Alignment();
-		}
-		catch(err)
-		{
-			console.log("BLASTing segment threw exception");
-			return reject();
-		}
-
-		console.log("BLASTing segment 6420-6534 of L6R1 alignment on HPV16");
-		atomic.addOperation("BLASTSegment",{
-			align : L6R1HPV16Align.get(),
-			start : 6420,
-			stop : 6534
-		});
-		try
-		{
-			await testBLASTSegment6420To6534L6R1HPV16Alignment();
-		}
-		catch(err)
-		{
-			console.log("BLASTing segment threw exception");
-			return reject();
-		}
-
-		console.log("BLASTing segment 5795-5805 of L6R7 alignment on HPV16");
-		atomic.addOperation("BLASTSegment",{
-			align : L6R7HPV16Align.get(),
-			start : 5795,
-			stop : 5805
-		});
-		try
-		{
-			await testBLASTSegment5795To5805L6R7HPV16Alignment();
-		}
-		catch(err)
-		{
-			console.log("BLASTing segment threw exception");
-			return reject();
-		}
-
 		resolve();
 	});
 
@@ -533,6 +482,12 @@ setTimeout(function(){
 		try
 		{
 			await runTests();
+			//BLAST tests rely on NCBI BLAST actually being online and usuable.
+			//It's a full end-to-end integration test, actually making requests to NCBI.
+			//If NCBI is experiencing high-traffic or is having issues, it will be reflected in issues with these tests.
+			//We separate these tests out and ensure they only run once instead of once with and without spaces being present
+			//in resource paths.
+			await runBLASTSegmentTests();
 		}
 		catch(err)
 		{

@@ -9,7 +9,8 @@
         "noImplicitThis": true,
         "removeComments": true,
         "sourceMap" : false,
-	    "listFiles" : false
+        "listFiles" : false,
+        "importHelpers" : true
     },
     "exclude": 
     [
