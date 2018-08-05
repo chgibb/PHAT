@@ -4,6 +4,7 @@ import * as path from "path";
 import * as readline from "readline";
 
 import * as ts from "typescript";
+
 const arg = require("minimist")(process.argv.slice(2));
 
 let mode : "debug" | "release";
@@ -71,9 +72,14 @@ let runningBuilds = new Array<Promise<void>>();
 
 let oldBuild : BuildState;
 
-if(fs.existsSync(".buildCache/oldBuild.json"))
+if(mode == "debug" && fs.existsSync(".buildCache/debug/oldBuild.json"))
 {
-    oldBuild = JSON.parse(fs.readFileSync(".buildCache/oldBuild.json").toString());
+    oldBuild = JSON.parse(fs.readFileSync(".buildCache/debug/oldBuild.json").toString());
+}
+
+else if(mode == "release" && fs.existsSync(".buildCache/release/oldBuild.json"))
+{
+    oldBuild = JSON.parse(fs.readFileSync(".buildCache/release/oldBuild.json").toString());
 }
 
 
@@ -163,8 +169,10 @@ for(let i = 0; i != currentBuild.entryPoints.length; ++i)
     }
 }
 
-
-fs.writeFileSync(".buildCache/oldBuild.json",JSON.stringify(currentBuild,undefined,4));
+if(mode == "debug")
+    fs.writeFileSync(".buildCache/debug/oldBuild.json",JSON.stringify(currentBuild,undefined,4));
+else if(mode == "release")
+    fs.writeFileSync(".buildCache/release/oldBuild.json",JSON.stringify(currentBuild,undefined,4));
 
 Promise.all(runningBuilds);
 

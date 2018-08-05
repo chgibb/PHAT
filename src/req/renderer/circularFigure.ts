@@ -269,7 +269,7 @@ export function makeMapScope(cf : CircularFigure, seqSelectOptions? : {
         seqSelectionLeftArm : new SeqSelectionDisplayArm(
             "left",
             cf.radius,
-            seqSelectOptions ? seqSelectOptions.start : 0
+            seqSelectOptions ? seqSelectOptions.start : 1
         ),
         seqSelectionRightArm : new SeqSelectionDisplayArm(
             "right",
@@ -277,7 +277,7 @@ export function makeMapScope(cf : CircularFigure, seqSelectOptions? : {
             seqSelectOptions ? seqSelectOptions.end : 100
         ),
         seqSelectionArrow : new SeqSelectionDisplayArrow(
-            seqSelectOptions ? seqSelectOptions.start : 0,
+            seqSelectOptions ? seqSelectOptions.start : 1,
             seqSelectOptions ? seqSelectOptions.end : 100,
             cf.radius
         )

@@ -19,12 +19,12 @@ export async function testL6R7HPV16Alignment() : Promise<void>
                 else
                     return reject();
 
-                if(op.alignData.summary.mates == 3326)
+                if(op.alignData.summary.mates == 1954)
                     console.log(`${op.alignData.alias} has correct number of mates`);
                 else
                     return reject();
                 
-                if(op.alignData.summary.overallAlignmentRate == 63.42)
+                if(op.alignData.summary.overallAlignmentRate == 77.62)
                     console.log(`${op.alignData.alias} has correct overall alignment rate`);
                 else
                     return reject();
@@ -49,7 +49,7 @@ export async function testL6R7HPV16Alignment() : Promise<void>
                 else
                     return reject();
                 
-                if(op.alignData.varScanSNPSummary.SNPsReported == 12)
+                if(op.alignData.varScanSNPSummary.SNPsReported == 13)
                     console.log(`${op.alignData.alias} has correct predicted SNPs`);
                 else
                     return reject();
@@ -59,12 +59,12 @@ export async function testL6R7HPV16Alignment() : Promise<void>
                 else
                     return reject();
 
-                if(op.alignData.idxStatsReport[0].mappedReads == 5488)
+                if(op.alignData.idxStatsReport[0].mappedReads == 6717)
                     console.log(`${op.alignData.alias} has correct number of mapped reads`);
                 else
                     return reject();
                 
-                if(op.alignData.idxStatsReport[0].unMappedReads == 160)
+                if(op.alignData.idxStatsReport[0].unMappedReads == 15)
                     console.log(`${op.alignData.alias} has correct number of unmapped reads`);
                 else
                     return reject();

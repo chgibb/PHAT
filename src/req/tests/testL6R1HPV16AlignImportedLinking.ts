@@ -44,7 +44,7 @@ export async function testL6R1HPV16AlignImportedLinking() : Promise<void>
                 else
                     return reject();
                 
-                if(op.alignData.varScanSNPSummary.SNPsReported == 8)
+                if(op.alignData.varScanSNPSummary.SNPsReported == 11)
                     console.log(`${op.alignData.alias} has correct predicted SNPs`);
                 else
                     return reject();

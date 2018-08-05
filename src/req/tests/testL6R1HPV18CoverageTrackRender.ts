@@ -17,12 +17,12 @@ export async function testL6R1HPV18CoverageTrackRenderer() : Promise<void>
             {
                 console.log(`Successfully rendered coverage track for ${op.circularFigure.name}`);
                 hpv18Figure.set(op.circularFigure);
-                return reject();
+                return resolve();
             }
             else if(op.flags.failure)
             {
                 console.log(`Failed to render coverage track for ${op.circularFigure.name}`);
-                return resolve();
+                return reject();
             }
         });
     });

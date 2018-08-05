@@ -17,7 +17,6 @@ export function writeSeqSelectionActionModal() : void
 
     let body = `
         <button type="button" class="btn btn-primary" id="BLASTAlignment">BLAST an Alignment from ${genomeView.seqSelectionLeftArm.armStart} to ${genomeView.seqSelectionRightArm.armStart}</button>
-        <button type="button" class="btn btn-primary" id="ViewAlignment">View an Alignment from ${genomeView.seqSelectionLeftArm.armStart} to ${genomeView.seqSelectionRightArm.armStart}</button>
     `;
 
     let footer = `

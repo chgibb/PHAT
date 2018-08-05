@@ -31,4 +31,5 @@ scripts/downloadFullUpdateFromSecondLastTag.js
 scripts/getReleaseTypeFromPackage.js
 scripts/rollup.js
 scripts/tsBundle.js
+scripts/babelMinify.js
 .buildCache
