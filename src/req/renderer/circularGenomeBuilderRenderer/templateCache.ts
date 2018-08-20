@@ -158,13 +158,17 @@ export function renderToCanvas(ctx : CanvasRenderingContext2D,canv : cf.FigureCa
         for(let i = 0; i != figure.renderedCoverageTracks.length; ++i)
         {
             if(figure.renderedCoverageTracks[i].checked)
+            {
                 cf.renderCoverageTrackToCanvas(getCoverageTrack(figure.renderedCoverageTracks[i]),figure,ctx);
+            }
         }
+
         for(let i = 0; i != figure.renderedSNPTracks.length; ++i)
         {
             if(figure.renderedSNPTracks[i].checked)
                 await cf.renderSNPTrackToCanvas(getSNPTrack(figure.renderedSNPTracks[i]),figure,ctx);
         }
+        
         await cf.renderSVGToCanvas(
             await cf.compileTemplatesToSVG(
                 cf.assembleCompilableTemplates(
