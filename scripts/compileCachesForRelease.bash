@@ -6,14 +6,6 @@ if [[ "$OSTYPE" == "cygwin" ]]; then
     target="phat-win32-x64/resources/app"
 fi
 
-bash scripts/build.bash opt
-
-bash scripts/opt/collapseBundle.bash
-
-#bash scripts/opt/asi.bash
-bash scripts/opt/minify.bash
-bash scripts/opt/optIIFE.bash
-
 cd "$target"
 
 mv main.js realMain.js

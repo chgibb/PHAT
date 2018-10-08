@@ -269,7 +269,7 @@ export function makeMapScope(cf : CircularFigure, seqSelectOptions? : {
         seqSelectionLeftArm : new SeqSelectionDisplayArm(
             "left",
             cf.radius,
-            seqSelectOptions ? seqSelectOptions.start : 0
+            seqSelectOptions ? seqSelectOptions.start : 1
         ),
         seqSelectionRightArm : new SeqSelectionDisplayArm(
             "right",
@@ -277,7 +277,7 @@ export function makeMapScope(cf : CircularFigure, seqSelectOptions? : {
             seqSelectOptions ? seqSelectOptions.end : 100
         ),
         seqSelectionArrow : new SeqSelectionDisplayArrow(
-            seqSelectOptions ? seqSelectOptions.start : 0,
+            seqSelectOptions ? seqSelectOptions.start : 1,
             seqSelectOptions ? seqSelectOptions.end : 100,
             cf.radius
         )
@@ -1325,6 +1325,7 @@ export function renderSVGToCanvas(svg : string, ctx : CanvasRenderingContext2D) 
         img.src = url;
     });
 }
+
 /**
  * Renders the given coverage track using the given figure and canvas rendering context
  * 
@@ -1340,7 +1341,6 @@ export function renderCoverageTrackToCanvas(
 ) : void {
     //We assume a lot of things about coverage tracks in this method to save time
     //If coverage tracks change at some point in the future, this will have to be updated
-
     //We assume coverage tracks are made of <plasmidtrack>s and <trackmarker>s only
     
     map.$scope = makeMapScope(figure);
@@ -1358,16 +1358,26 @@ export function renderCoverageTrackToCanvas(
     for(let i = 0; i != map.tracks.length; ++i)
     {
         map.tracks[i].interpolateAttributes();
+        let path = new Path2D();
+
         for(let k = 0; k != map.tracks[i].children.length; ++k)
         {
             map.tracks[i].children[k].interpolateAttributes();
-            ctx.stroke(
-                new Path2D(
-                    (<any>map.tracks[i].children[k].getSVGPath())
-                )
-            );
 
+            let d = map.tracks[i].children[k].generateSVGPathNumeric();
+
+            path.moveTo(d[1],d[2]);
+            path.lineTo(d[12],d[13]);
+            path.lineTo(d[15],d[16]);
+            path.lineTo(d[18],d[19]);
+            path.lineTo(d[21],d[22]);
+            path.lineTo(d[32],d[33]);
+            path.lineTo(d[35],d[36]);
+            path.lineTo(d[38],d[39]);
+            path.lineTo(d[41],d[42]);
         }
+
+        ctx.stroke(path);
     }
 }
 

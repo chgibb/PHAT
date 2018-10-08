@@ -1,6 +1,7 @@
 bash scripts/cleanTests.bash
-bash scripts/build.bash
-bash scripts/optPackage.bash
+bash scripts/build.bash opt
+bash scripts/compileCachesForRelease.bash
+
 ls
 cd phat-linux-x64
 

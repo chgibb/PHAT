@@ -4,6 +4,7 @@ import * as atomic from "./atomicOperations";
 import {AtomicOperationForkEvent,AtomicOperationIPC} from "../atomicOperationsIPC";
 import {BLASTSegmentResult,getArtifactDir} from "./../BLASTSegmentResult";
 import {AlignData} from "../alignData";
+import * as dFormat from "./../dateFormat";
 
 export class BLASTSegment extends atomic.AtomicOperation
 {
@@ -19,21 +20,21 @@ export class BLASTSegment extends atomic.AtomicOperation
 
     public setData(data : {
         align : AlignData,
-        contigUUID : string,
         start : number,
         stop : number
     }) : void {
         this.blastSegmentResult = new BLASTSegmentResult();
         this.blastSegmentResult.start = data.start;
         this.blastSegmentResult.stop = data.stop;
-        this.blastSegmentResult.alignUUID = data.align.uuid;
-        this.blastSegmentResult.contigUUID = data.contigUUID;
         this.alignData = data.align;
         this.destinationArtifactsDirectories.push(getArtifactDir(this.blastSegmentResult));
     }
 
     public run() : void
     {
+        this.blastSegmentResult.dateStamp = dFormat.generateFixedSizeDateStamp();
+        this.blastSegmentResult.dateStampString = dFormat.formatDateStamp(this.blastSegmentResult.dateStamp);
+        
         this.closeLogOnFailure = false;
         this.closeLogOnSuccess = false;
         
@@ -71,8 +72,8 @@ export class BLASTSegment extends atomic.AtomicOperation
                         self.blastSegmentResult = ev.data.blastSegmentResult;
                     }
                 }
-                self.update();
             }
+            self.update();
         });
 
         this.addPID(this.blastSegment.pid);                                                

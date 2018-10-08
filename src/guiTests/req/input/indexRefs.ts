@@ -32,6 +32,6 @@ export async function indexRefs() : Promise<void>
                 }
             `);
             resolve();
-        },500);
+        },1500);
     });
 }
