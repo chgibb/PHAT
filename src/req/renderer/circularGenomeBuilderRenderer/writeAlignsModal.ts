@@ -1,6 +1,10 @@
+import * as electron from "electron";
+const ipc = electron.ipcRenderer;
+
 import * as viewMgr from "./../viewMgr";
 import * as masterView from "./masterView";
 import * as genomeView from "./genomeView";
+import {AtomicOperationIPC} from "./../../atomicOperationsIPC";
 import {writeAvailableTracksModal,setSelectedAlign} from "./writeAvailableTracksModal";
 import {getReadable} from "./../../getAppPath";
 /**
@@ -49,8 +53,18 @@ export function writeAlignsModal() : void
             {
                 body += `
                     <tr>
-                        <td><img src="${getReadable("img/viewAvailableTracks.png")}" id="${aligns[i].uuid}View" class="activeHover activeHoverButton" /><br />
-                        </td>
+                        ${(()=>{
+                            if(masterView.willBLASTAlignment)
+                            {
+                                if(genomeView.shouldAllowTriggeringOps)
+                                    return `<td id="${aligns[i].uuid}View" class="cellHover">BLAST</td>`;
+                                else
+                                    return `<td><div class="three-quarters-loader"></div></td>`
+                            }
+                            return `<td><img src="${getReadable("img/viewAvailableTracks.png")}" id="${aligns[i].uuid}View" class="activeHover activeHoverButton" /><br />
+                            </td>`;
+
+                        })()}
                         <td>${aligns[i].alias}</td>
                         <td>${!aligns[i].isExternalAlignment ? aligns[i].summary.reads : aligns[i].flagStatReport.reads}</td>
                         <td>${!aligns[i].isExternalAlignment ? aligns[i].summary.mates : "Unknown"}</td>
@@ -74,7 +88,7 @@ export function writeAlignsModal() : void
     {
         footer += `
             <button type="button" class="btn btn-secondary" data-dismiss="modal" id="footerClose">Cancel</button>
-            <button type="button" class="btn btn-primary" id="footerSave">Save changes</button>
+            ${masterView.willBLASTAlignment == false ? `<button type="button" class="btn btn-primary" id="footerSave">Save changes</button>` : ""}
         `;
     }
 
@@ -86,9 +100,12 @@ export function writeAlignsModal() : void
     }
     if(genomeView.genome)
     {
-        document.getElementById("footerSave").onclick = function(this : HTMLElement,ev : MouseEvent){
-            masterView.alignsModalOpen = false;
-            masterView.dismissModal();
+        if(!masterView.willBLASTAlignment)
+        {
+            document.getElementById("footerSave").onclick = function(this : HTMLElement,ev : MouseEvent){
+                masterView.alignsModalOpen = false;
+                masterView.dismissModal();
+            }
         }
     }
     if(aligns)
@@ -96,6 +113,21 @@ export function writeAlignsModal() : void
         for(let i = 0; i != aligns.length; ++i)
         {
             document.getElementById(`${aligns[i].uuid}View`).onclick = function(this : HTMLElement,ev : MouseEvent){
+                if(masterView.willBLASTAlignment)
+                {
+                    ipc.send(
+                        "runOperation",
+                        <AtomicOperationIPC>{
+                            opName : "BLASTSegment",
+                            align : aligns[i],
+                            start : genomeView.seqSelectionArrow.arrowStart,
+                            stop : genomeView.seqSelectionArrow.arrowEnd
+                        }
+                    );
+                    masterView.alignsModalOpen = false;
+                    masterView.dismissModal();
+                    return;
+                }
                 masterView.alignsModalOpen = false;
                 masterView.availableTracksModalOpen = true;
                 setSelectedAlign(aligns[i]);

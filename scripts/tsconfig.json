@@ -1,16 +1,16 @@
 {
     "compilerOptions" : 
     {
-        "module" : "es2015",
+        "module" : "commonjs",
         "moduleResolution": "node",
         "target" : "es6",
+        "noEmitOnError": true,
         "noImplicitAny" : true,
         "noImplicitReturns" : true,
         "noImplicitThis": true,
         "removeComments": true,
         "sourceMap" : false,
-        "listFiles" : false,
-        "importHelpers" : true
+	    "listFiles" : false
     },
     "exclude": 
     [
