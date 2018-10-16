@@ -2,29 +2,30 @@
 
 ![PHAT Output Align](https://chgibb.github.io//PHATDocs/docs/releases/0.7.6-beta.1/OutputAlign.png)
 
-![PHAT Output SNP pileup](https://chgibb.github.io//PHATDocs/docs/releases/0.7.6-beta.1/OutputSNPpileup.png)
-
 ![PHAT Edited Contig](https://chgibb.github.io//PHATDocs/docs/releases/0.7.6-beta.1/EditedContig.png)![PHAT Add Contig](https://chgibb.github.io//PHATDocs/docs/releases/0.7.6-beta.1/AddContig.png)
 
 ![PHAT Tool Bar](https://chgibb.github.io//PHATDocs/docs/releases/0.1.0-beta.1/covHPV16white.png)
 
+![PHAT BLAST Run](https://chgibb.github.io/PHATDocs/docs/latest/alignBLASTRuns4.png)
+
 ![PHAT Action Shot 1](https://chgibb.github.io//PHATDocs/docs/latest/actionShot1.png)
 
-### [Latest Stable Release: PHAT@0.8.1](https://chgibb.github.io/PHATDocs/releases/0.8.1/index)
+### [Latest Stable Release: PHAT@0.9.1](https://chgibb.github.io/PHATDocs/releases/0.9.1/index)
 ## Documentation Quicklinks
-1. [How to Get PHAT](https://chgibb.github.io/PHATDocs/docs/releases/0.8.1/howToGetPHAT)
-2. [Working With PHAT Projects](https://chgibb.github.io/PHATDocs/docs/releases/0.8.1/projects)
-3. [Inputting Files](https://chgibb.github.io/PHATDocs/docs/releases/0.8.1/inputtingFiles)
-4. [Running Quality Control (QC) Reports](https://chgibb.github.io/PHATDocs/docs/releases/0.8.1/QCReports)
-5. [Running Alignments](https://chgibb.github.io/PHATDocs/docs/releases/0.8.1/runningAlignments)
-6. [Reports and Analyses](https://chgibb.github.io/PHATDocs/docs/releases/0.8.1/reportsAndAnalyses)
-7. [Circular Visualization](https://chgibb.github.io/PHATDocs/docs/releases/0.8.1/circularVisualization)
+1. [How to Get PHAT](https://chgibb.github.io/PHATDocs/docs/releases/0.9.1/howToGetPHAT)
+2. [Working With PHAT Projects](https://chgibb.github.io/PHATDocs/docs/releases/0.9.1/projects)
+3. [Inputting Files](https://chgibb.github.io/PHATDocs/docs/releases/0.9.1/inputtingFiles)
+4. [Running Quality Control (QC) Reports](https://chgibb.github.io/PHATDocs/docs/releases/0.9.1/QCReports)
+5. [Running Alignments](https://chgibb.github.io/PHATDocs/docs/releases/0.9.1/runningAlignments)
+6. [Reports and Analyses](https://chgibb.github.io/PHATDocs/docs/releases/0.9.1/reportsAndAnalyses)
+7. [Circular Visualization](https://chgibb.github.io/PHATDocs/docs/releases/0.9.1/circularVisualization)
+8. [BLASTing Alignments](https://chgibb.github.io/PHATDocs/docs/releases/0.9.1/blastingAlignments)
 
 ### Application Architecture
-1. [Overview](https://chgibb.github.io/PHATDocs/docs/releases/0.8.1/archOverview)
-2. [Contributing](https://chgibb.github.io/PHATDocs/docs/releases/0.8.1/contributingGuide)
-3. [Repository Structure](https://chgibb.github.io/PHATDocs/docs/releases/0.8.1/repoStructure)
-4. [Performance](https://chgibb.github.io/PHATDocs/docs/releases/0.8.1/performance)
+1. [Overview](https://chgibb.github.io/PHATDocs/docs/releases/0.9.1/archOverview)
+2. [Contributing](https://chgibb.github.io/PHATDocs/docs/releases/0.9.1/contributingGuide)
+3. [Repository Structure](https://chgibb.github.io/PHATDocs/docs/releases/0.9.1/repoStructure)
+4. [Performance](https://chgibb.github.io/PHATDocs/docs/releases/0.9.1/performance)
 
 The Pathogen-Host Analysis Tool (PHAT) is an application for processing and analyzing next-generation sequencing (NGS) data as it relates to relationships between pathogen and host organisms. PHAT provides quality control (QC) reporting on sequence files, alignment of sequence files against reference files, single-nucleotide polymorphism (SNP) prediction, linear and circular alignment viewing, and Excel and comma separated values (CSV) output.
 
@@ -39,9 +40,11 @@ PHAT is under development in the Zehbe Lab ([http://zehbelab.weebly.com/](http:/
 
 Gibb CM, Jackson R, Mohammed S, Fiaidhi J, Zehbe I. Pathogen-Host Analysis Tool (PHAT): an Integrative Platform to Analyze Pathogen-Host Relationships in Next-Generation Sequencing Data. bioRxiv. https://doi.org/10.1101/178327
 
-### [Latest Beta Release: PHAT@0.9.0-beta.3](https://chgibb.github.io/PHATDocs/releases/0.9.0-beta.3/index)
+### [Latest Beta Release: PHAT@0.9.1-beta.1](https://chgibb.github.io/PHATDocs/releases/0.9.1-beta.1/index)
 
 ### [Release History](https://chgibb.github.io/PHATDocs/allReleases)
+
+![Github All Releases](https://img.shields.io/github/downloads/chgibb/PHAT/total.svg)
 
 [![](https://tokei.rs/b1/github/chgibb/PHAT?category=files)](https://github.com/Aaronepower/tokei) [![](https://tokei.rs/b1/github/chgibb/PHAT?category=lines)](https://github.com/Aaronepower/tokei)  
 
