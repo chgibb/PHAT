@@ -26,8 +26,7 @@ export abstract class AtomicOperation
      * @type {Array<string>}
      * @memberof AtomicOperation
      */
-    @Mangle 
-    public  generatedArtifacts : Array<string>;
+    public generatedArtifacts : Array<string>;
 
 	/**
      * Those files which will generated as final output by the operation. They will be deleted ONLY on failure
@@ -35,7 +34,7 @@ export abstract class AtomicOperation
      * @type {Array<string>}
      * @memberof AtomicOperation
      */
-    @Mangle public  destinationArtifacts : Array<string>;
+    public destinationArtifacts : Array<string>;
 
 
     /**
@@ -44,7 +43,7 @@ export abstract class AtomicOperation
      * @type {Array<string>}
      * @memberof AtomicOperation
      */
-    @Mangle public  generatedArtifactsDirectories : Array<string>;
+    public generatedArtifactsDirectories : Array<string>;
 
 
 	/**
@@ -53,7 +52,7 @@ export abstract class AtomicOperation
      * @type {Array<string>}
      * @memberof AtomicOperation
      */
-    @Mangle public  destinationArtifactsDirectories : Array<string>;
+    public destinationArtifactsDirectories : Array<string>;
 
     /**
      * Holds data allowing the operation to manage its log
@@ -61,7 +60,7 @@ export abstract class AtomicOperation
      * @type {LogRecord}
      * @memberof AtomicOperation
      */
-    @Mangle public  logRecord : LogRecord;
+    public logRecord : LogRecord;
 
     /**
      * Whether the operation's log should be automatically closed upon failure
@@ -69,7 +68,7 @@ export abstract class AtomicOperation
      * @type {boolean}
      * @memberof AtomicOperation
      */
-    @Mangle public  closeLogOnFailure : boolean;
+    public closeLogOnFailure : boolean;
 
 
     /**
@@ -78,7 +77,7 @@ export abstract class AtomicOperation
      * @type {boolean}
      * @memberof AtomicOperation
      */
-    @Mangle public  closeLogOnSuccess : boolean;
+    public closeLogOnSuccess : boolean;
 
 
     /**
@@ -87,7 +86,7 @@ export abstract class AtomicOperation
      * @type {string}
      * @memberof AtomicOperation
      */
-    public  name : string;
+    public name : string;
     
 
     /**
@@ -96,15 +95,15 @@ export abstract class AtomicOperation
      * @type {CompletionFlags}
      * @memberof AtomicOperation
      */
-    @Mangle public  flags : CompletionFlags;
+    public flags : CompletionFlags;
 
-    @Mangle public  update : () => void;
+    public update : () => void;
     
-    @Mangle public  spawnUpdate : SpawnRequestParams;
-    @Mangle public  progressMessage : string;
-    @Mangle public  step : number;
-    @Mangle public  totalSteps : number;
-    @Mangle public  extraData : any;
+    public spawnUpdate : SpawnRequestParams;
+    public progressMessage : string;
+    public step : number;
+    public totalSteps : number;
+    public extraData : any;
 
     /**
      * PIDs managed by the operation
@@ -122,7 +121,7 @@ export abstract class AtomicOperation
      * @type {boolean}
      * @memberof AtomicOperation
      */
-    @Mangle public  running : boolean;
+    public running : boolean;
 
 
     /**
@@ -131,10 +130,10 @@ export abstract class AtomicOperation
      * @type {boolean}
      * @memberof AtomicOperation
      */
-    @Mangle public  ignoreScheduler : boolean;
+    public ignoreScheduler : boolean;
 
 
-    public  constructor()
+    public constructor()
     {
         this.generatedArtifacts = new Array<string>();
         this.destinationArtifacts = new Array<string>();
@@ -152,35 +151,35 @@ export abstract class AtomicOperation
 
         this.pids = new Array<number>();
     }
-    @Mangle public  getGeneratedArtifacts() : Array<string>
+    public getGeneratedArtifacts() : Array<string>
     {
         return this.generatedArtifacts;
     }
-    @Mangle public  setGeneratedArtifacts(artifacts : Array<string>) : void
+    public setGeneratedArtifacts(artifacts : Array<string>) : void
     {
         this.generatedArtifacts = artifacts;
     }
-    @Mangle public  getDestinationArtifacts() : Array<string>
+    public getDestinationArtifacts() : Array<string>
     {
         return this.destinationArtifacts;
     }
-    @Mangle public  setDestinationArtifacts(artifacts : Array<string>) : void
+    public setDestinationArtifacts(artifacts : Array<string>) : void
     {
         this.destinationArtifacts = artifacts;
     }
-    @Mangle public  getGeneratedArtifactsDirectories() : Array<string>
+    public getGeneratedArtifactsDirectories() : Array<string>
     {
         return this.generatedArtifactsDirectories;
     }
-    @Mangle public  setGeneratedArtifactsDirectories(artifacts : Array<string>) : void
+    public setGeneratedArtifactsDirectories(artifacts : Array<string>) : void
     {
         this.generatedArtifactsDirectories = artifacts;
     }
-    @Mangle public  getDestinationArtifactsDirectories() : Array<string>
+    public getDestinationArtifactsDirectories() : Array<string>
     {
         return this.destinationArtifactsDirectories;
     }
-    @Mangle public  setDestinationArtifactsDirectories(artifacts : Array<string>) : void
+    public setDestinationArtifactsDirectories(artifacts : Array<string>) : void
     {
         this.destinationArtifactsDirectories = artifacts;
     }
@@ -193,7 +192,7 @@ export abstract class AtomicOperation
      * @param {CompletionFlags} flags 
      * @memberof AtomicOperation
      */
-    @Mangle public  setFailure(flags : CompletionFlags) : void
+    public setFailure(flags : CompletionFlags) : void
     {
         flags.done = true;
         flags.success = false;
@@ -206,7 +205,7 @@ export abstract class AtomicOperation
      * @param {CompletionFlags} flags 
      * @memberof AtomicOperation
      */
-    @Mangle public  setSuccess(flags : CompletionFlags) : void
+    public setSuccess(flags : CompletionFlags) : void
     {
         flags.done = true;
         flags.success = true;
@@ -220,7 +219,7 @@ export abstract class AtomicOperation
      * @param {number} pid 
      * @memberof AtomicOperation
      */
-    @Mangle public  addPID(pid : number) : void
+    public addPID(pid : number) : void
     {
         this.pids.push(pid);
     }    
@@ -232,7 +231,7 @@ export abstract class AtomicOperation
      * @param {number} pid 
      * @memberof AtomicOperation
      */
-    @Mangle public  addPIDFromFork(pid : number) : void
+    public addPIDFromFork(pid : number) : void
     {
         //running forked
         if(process.send)
@@ -253,7 +252,7 @@ export abstract class AtomicOperation
      * @returns {Array<number>} 
      * @memberof AtomicOperation
      */
-    @Mangle public  getPIDs() : Array<number>
+    public getPIDs() : Array<number>
     {
         return this.pids;
     }
@@ -264,7 +263,7 @@ export abstract class AtomicOperation
      * @abstract
      * @memberof AtomicOperation
      */
-    public  abstract run() : void;
+    public abstract run() : void;
 
     /**
      * Method called by the scheduler immediately before run is called
@@ -273,7 +272,7 @@ export abstract class AtomicOperation
      * @param {*} data 
      * @memberof AtomicOperation
      */
-    public  abstract setData(data : any) : void;
+    public abstract setData(data : any) : void;
 
     /**
      * Abort the operation an error message
@@ -281,7 +280,7 @@ export abstract class AtomicOperation
      * @param {string} msg 
      * @memberof AtomicOperation
      */
-    @Mangle public  abortOperationWithMessage(msg : string) : void
+    public abortOperationWithMessage(msg : string) : void
     {
         this.setFailure(this.flags);
         this.extraData = msg;
@@ -294,7 +293,7 @@ export abstract class AtomicOperation
      * @param {*} obj 
      * @memberof AtomicOperation
      */
-    @Mangle public  logObject(obj : any) : void
+    public logObject(obj : any) : void
     {
         logString(this.logRecord,JSON.stringify(obj,undefined,4));
     }
@@ -309,12 +308,12 @@ export abstract class AtomicOperation
  */
 export class ForkLogger extends AtomicOperation
 {
-    public  constructor()
+    public constructor()
     {
         super();
     }
-    @Mangle public  setData(data : any){}
-    @Mangle public  run(){}
+    public setData(data : any){}
+    public run(){}
 }
 
 
@@ -434,10 +433,10 @@ export function handleForkFailures(logger? : ForkLogger,progressMessage? : strin
  */
 export class CompletionFlags
 {
-    @Mangle public  done : boolean;
-    @Mangle public  success : boolean;
-    @Mangle public  failure : boolean;
-    public  constructor()
+    public done : boolean;
+    public success : boolean;
+    public failure : boolean;
+    public constructor()
     {
         this.done = false;
         this.success = false;

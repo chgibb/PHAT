@@ -7,18 +7,18 @@ import {getReadableAndWritable} from "./../getAppPath";
 import { Mangle } from '../mangle';
 export class CopyCircularFigure extends atomic.AtomicOperation
 {
-    @Mangle public  origFigure : cf.CircularFigure;
-    @Mangle public  newFigure : cf.CircularFigure;
+    public origFigure : cf.CircularFigure;
+    public newFigure : cf.CircularFigure;
     public  constructor()
     {
         super();
         this.newFigure = <any>{};
     }
-    @Mangle public  setData(data : cf.CircularFigure) : void
+    public setData(data : cf.CircularFigure) : void
     {
         this.origFigure = data;
     }
-    @Mangle public  run() : void
+    public run() : void
     {
         this.logRecord = atomic.openLog(this.name,"Copy Circular Figure");
         try

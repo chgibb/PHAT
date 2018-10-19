@@ -12,19 +12,19 @@ import {Job,JobCallBackObject} from "./../main/Job";
 import { Mangle } from '../mangle';
 export class GenerateQCReport extends atomic.AtomicOperation
 {
-	@Mangle public  hasJVMCrashed : boolean = false;
-	@Mangle public  fastQCPath : string;
-	@Mangle public  fastQCJob : Job;
-	@Mangle public  fastQCFlags : atomic.CompletionFlags;
-	@Mangle public  fastq : Fastq;
-	@Mangle public  destDir : string;
-	@Mangle public  srcDir : string;
+	public hasJVMCrashed : boolean = false;
+	public fastQCPath : string;
+	public fastQCJob : Job;
+	public fastQCFlags : atomic.CompletionFlags;
+	public fastq : Fastq;
+	public destDir : string;
+	public srcDir : string;
 	constructor()
 	{
 		super();
 		this.fastQCFlags = new atomic.CompletionFlags();
 	}
-	@Mangle public  setData(data : Fastq) : void
+	public setData(data : Fastq) : void
 	{
 		this.fastq = data;
 
@@ -42,7 +42,7 @@ export class GenerateQCReport extends atomic.AtomicOperation
 
 		this.destinationArtifactsDirectories.push(this.destDir);
 	}
-	@Mangle public  run() : void
+	public run() : void
 	{
 		this.logRecord = atomic.openLog(this.name,"FastQC Report Generation");
 		//Set path to fastqc entry file

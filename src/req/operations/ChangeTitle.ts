@@ -6,7 +6,7 @@ import { Mangle } from '../mangle';
 export class ChangeTitle extends atomic.AtomicOperation
 {
     public  id : number;
-    @Mangle public  newTitle : string;
+    public newTitle : string;
 
     public  constructor()
     {
@@ -14,7 +14,7 @@ export class ChangeTitle extends atomic.AtomicOperation
         this.ignoreScheduler = true;
     }
 
-    @Mangle public  setData(data : {
+    public setData(data : {
         id : number,
         newTitle : string
     }) : void {
@@ -22,7 +22,7 @@ export class ChangeTitle extends atomic.AtomicOperation
         this.newTitle = data.newTitle;
     }
 
-    @Mangle public  run() : void
+    public run() : void
     {
         this.logRecord = atomic.openLog(this.name,"Change Title");
 

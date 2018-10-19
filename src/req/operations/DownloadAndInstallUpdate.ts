@@ -6,17 +6,17 @@ import {getReadable} from "./../getAppPath";
 import { Mangle } from '../mangle';
 export class DownloadAndInstallUpdate extends atomic.AtomicOperation
 {
-    @Mangle public  asset : any;
-    @Mangle public  downloadAndInstallUpdateProcess : cp.ChildProcess;
+    public asset : any;
+    public downloadAndInstallUpdateProcess : cp.ChildProcess;
     constructor()
     {
         super();
     }
-    @Mangle public  setData(data : any) : void
+    public  setData(data : any) : void
     {
         this.asset = data.asset;
     }
-    @Mangle public  run() : void
+    public  run() : void
     {
         this.logRecord = atomic.openLog(this.name,"Download and Install Update");
         let self = this;

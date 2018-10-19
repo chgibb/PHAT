@@ -6,16 +6,16 @@ import {getReadableAndWritable} from "./../getAppPath";
 import { Mangle } from '../mangle';
 export class DeleteCircularFigure extends atomic.AtomicOperation
 {
-    @Mangle public  figure : cf.CircularFigure;
+    public figure : cf.CircularFigure;
     public  constructor()
     {
         super();
     }
-    @Mangle public  setData(data : cf.CircularFigure) : void
+    public setData(data : cf.CircularFigure) : void
     {
         this.figure = data;
     }
-    @Mangle public  run() : void
+    public run() : void
     {
         this.logRecord = atomic.openLog(this.name,"Delete Circular Figure");
         try

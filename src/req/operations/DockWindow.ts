@@ -5,15 +5,15 @@ import {DockIpc} from "./../renderer/dock";
 import { Mangle } from '../mangle';
 export class DockWindow extends atomic.AtomicOperation
 {
-    @Mangle public  toDock : string;
-    @Mangle public  dockTarget : string;
+    public toDock : string;
+    public dockTarget : string;
 
     public  constructor()
     {
         super();
         this.ignoreScheduler = true;
     }
-    @Mangle public  setData(data : {
+    public setData(data : {
         toDock : string,
         dockTarget : string
     }) : void {
@@ -21,7 +21,7 @@ export class DockWindow extends atomic.AtomicOperation
         this.dockTarget = data.dockTarget;
     }
 
-    @Mangle public  run() : void
+    public run() : void
     {
         this.logRecord = atomic.openLog(this.name,"Dock Window");
 
