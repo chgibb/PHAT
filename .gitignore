@@ -32,4 +32,6 @@ scripts/getReleaseTypeFromPackage.js
 scripts/rollup.js
 scripts/tsBundle.js
 scripts/babelMinify.js
+scripts/mangleSymbols.js
+scripts/mangleSymbolsInFile.js
 .buildCache

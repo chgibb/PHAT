@@ -7,6 +7,9 @@ import * as ts from "typescript";
 
 const arg = require("minimist")(process.argv.slice(2));
 
+import {buildSymbolList,symbolsToMangle} from "./mangleSymbols";
+import {mangleSymbolsInFile} from "./mangleSymbolsInFile";
+
 let mode : "debug" | "release";
 
 if(!fs.existsSync(".buildCache"))
@@ -95,85 +98,156 @@ let changedTargets = 0;
 let newlyBuiltTargets = 0;
 let upToDate = 0;
 
+let mangledSymbols = 0;
+
 if(mode == "debug")
     console.log(`${currentBuild.entryPoints.length} Debug Targets`);
 if(mode == "release")
     console.log(`${currentBuild.entryPoints.length} Release Targets`);
 
-function updateProgress() : void
+function updateBuildProgress() : void
 {
     readline.clearLine(process.stdout,0);
     readline.cursorTo(process.stdout,0,null);
     process.stdout.write(`${changedTargets} changed targets, ${upToDate} up-to-date targets, ${newlyBuiltTargets} newly built targets`);
 }
 
-for(let i = 0; i != currentBuild.entryPoints.length; ++i)
+function updateMangleProgress() : void
 {
-    let rebuildEntryPoint = false;
-
-    const program = ts.createProgram([currentBuild.entryPoints[i]],tsconfig);
-    const sources = program.getSourceFiles();
-
-    for(let k = 0; k != sources.length; ++k)
-    {
-        //only stat each file once
-        if(!currentBuild.files[sources[k].fileName])
-        {
-            currentBuild.files[sources[k].fileName] = fs.statSync(sources[k].fileName).mtime.toString();
-        }
-
-        //file has been modified since the last build
-        if(oldBuild && oldBuild.files[sources[k].fileName] != currentBuild.files[sources[k].fileName])
-        {
-            rebuildEntryPoint = true;
-        }
-    }
-
-    //one or more source files comprising entryPoints[i] have been modified since the last build
-    if(rebuildEntryPoint)
-    {
-        changedTargets++;
-        runningBuilds.push(build(getJSFileExtension(currentBuild.entryPoints[i])));
-        updateProgress();
-    }
-
-    else if(mode == "debug")
-    {
-        //nothing has changed since last build, but there is also no cached build
-        if(!fs.existsSync(`.buildCache/debug/${path.parse(getJSFileExtension(currentBuild.entryPoints[i])).base}`))
-        {
-            runningBuilds.push(build(getJSFileExtension(currentBuild.entryPoints[i])));
-            newlyBuiltTargets++;
-            updateProgress();
-        }
-        else
-        {
-            upToDate++;
-            updateProgress();
-        }
-    }
-
-    else if(mode == "release")
-    {
-        if(!fs.existsSync(`.buildCache/release/${path.parse(getJSFileExtension(currentBuild.entryPoints[i])).base}`))
-        {
-            runningBuilds.push(build(getJSFileExtension(currentBuild.entryPoints[i])));
-            newlyBuiltTargets++;
-            updateProgress();
-        }
-        else
-        {
-            upToDate++;
-            updateProgress();
-        }
-    }
+    readline.clearLine(process.stdout,0);
+    readline.cursorTo(process.stdout,0,null);
+    process.stdout.write(`${symbolsToMangle.length} symbols with mangleable linkage, ${mangledSymbols} mangled references`);
 }
 
-if(mode == "debug")
-    fs.writeFileSync(".buildCache/debug/oldBuild.json",JSON.stringify(currentBuild,undefined,4));
-else if(mode == "release")
-    fs.writeFileSync(".buildCache/release/oldBuild.json",JSON.stringify(currentBuild,undefined,4));
+function gatherSymbolsToMangle() : Promise<void>
+{
+    return new Promise<void>(async (resolve : () => void) => {
+        for(let i = 0; i != currentBuild.entryPoints.length; ++i)
+        {
+            updateMangleProgress();
+            const sources = ts.createProgram([currentBuild.entryPoints[i]],tsconfig).getSourceFiles();
+            updateMangleProgress();
+            for(let k = 0; k != sources.length; ++k)
+            {
+                await buildSymbolList(sources[k]);
+                updateMangleProgress();
+            }
+        }
+        return resolve();
+    });
+}
 
-Promise.all(runningBuilds);
+function mangleReferences() : Promise<void>
+{
+    return new Promise<void>(async (resolve : () => void) => {
+        for(let i = 0; i != currentBuild.entryPoints.length; ++i)
+        {
+            updateMangleProgress();
+            const sources = ts.createProgram([currentBuild.entryPoints[i]],tsconfig).getSourceFiles();
+            for(let k = 0; k != sources.length; ++k)
+            {
+                if(fs.existsSync(getJSFileExtension(sources[k].fileName)))
+                {
+                    let res = await mangleSymbolsInFile(fs.readFileSync(getJSFileExtension(sources[k].fileName)).toString());
+                    fs.writeFileSync(getJSFileExtension(sources[k].fileName),res.res);
+                    mangledSymbols += res.num;
+                    updateMangleProgress();
+                }
+            }
+        }
+        return resolve();
+    });
+}
 
-process.stdout.write("\n");
+(async function(){
+    await gatherSymbolsToMangle();
+    await mangleReferences();
+    console.log();
+    //console.log(`${symbolsToMangle.length} mangleable symbols`);
+
+    let newSymbols = false;
+
+    let oldSymbols = new Array();
+    if(fs.existsSync(".buildCache/symbolsToMangle.json"))
+        oldSymbols = JSON.parse(fs.readFileSync(".buildCache/symbolsToMangle.json").toString());
+    
+    if(oldSymbols.length != symbolsToMangle.length)
+        newSymbols = true;
+
+    for(let i = 0; i != currentBuild.entryPoints.length; ++i)
+    {
+        let rebuildEntryPoint = false;
+        if(newSymbols)
+            rebuildEntryPoint = true;
+
+        const program = ts.createProgram([currentBuild.entryPoints[i]],tsconfig);
+        const sources = program.getSourceFiles();
+
+        for(let k = 0; k != sources.length; ++k)
+        {
+            //only stat each file once
+            if(!currentBuild.files[sources[k].fileName])
+            {
+                currentBuild.files[sources[k].fileName] = fs.statSync(sources[k].fileName).mtime.toString();
+            }
+
+            //file has been modified since the last build
+            if(oldBuild && oldBuild.files[sources[k].fileName] != currentBuild.files[sources[k].fileName])
+            {
+                rebuildEntryPoint = true;
+            }
+        }
+
+        //one or more source files comprising entryPoints[i] have been modified since the last build
+        if(rebuildEntryPoint)
+        {
+            changedTargets++;
+            runningBuilds.push(build(getJSFileExtension(currentBuild.entryPoints[i])));
+            updateBuildProgress();
+        }
+
+        else if(mode == "debug")
+        {
+            //nothing has changed since last build, but there is also no cached build
+            if(!fs.existsSync(`.buildCache/debug/${path.parse(getJSFileExtension(currentBuild.entryPoints[i])).base}`))
+            {
+                runningBuilds.push(build(getJSFileExtension(currentBuild.entryPoints[i])));
+                newlyBuiltTargets++;
+                updateBuildProgress();
+            }
+            else
+            {
+                upToDate++;
+                updateBuildProgress();
+            }
+        }
+
+        else if(mode == "release")
+        {
+            if(!fs.existsSync(`.buildCache/release/${path.parse(getJSFileExtension(currentBuild.entryPoints[i])).base}`))
+            {
+                runningBuilds.push(build(getJSFileExtension(currentBuild.entryPoints[i])));
+                newlyBuiltTargets++;
+                updateBuildProgress();
+            }
+            else
+            {
+                upToDate++;
+                updateBuildProgress();
+            }
+        }
+    }
+
+    if(mode == "debug")
+        fs.writeFileSync(".buildCache/debug/oldBuild.json",JSON.stringify(currentBuild,undefined,4));
+    else if(mode == "release")
+        fs.writeFileSync(".buildCache/release/oldBuild.json",JSON.stringify(currentBuild,undefined,4));
+
+    await Promise.all(runningBuilds);
+
+    fs.writeFileSync(".buildCache/symbolsToMangle.json",JSON.stringify(symbolsToMangle,undefined,4));
+
+    process.stdout.write("\n");
+})().catch((err) => {
+    console.log(err);
+});
