@@ -2,18 +2,19 @@ import * as electron from "electron";
 const webContents = electron.webContents;
 
 import * as atomic from "./atomicOperations";
+import { Mangle } from '../mangle';
 export class ChangeTitle extends atomic.AtomicOperation
 {
-    public id : number;
-    public newTitle : string;
+    public  id : number;
+    @Mangle public  newTitle : string;
 
-    public constructor()
+    public  constructor()
     {
         super();
         this.ignoreScheduler = true;
     }
 
-    public setData(data : {
+    @Mangle public  setData(data : {
         id : number,
         newTitle : string
     }) : void {
@@ -21,7 +22,7 @@ export class ChangeTitle extends atomic.AtomicOperation
         this.newTitle = data.newTitle;
     }
 
-    public run() : void
+    @Mangle public  run() : void
     {
         this.logRecord = atomic.openLog(this.name,"Change Title");
 

@@ -3,19 +3,20 @@ import * as cp from "child_process";
 import * as atomic from "./atomicOperations";
 import {AtomicOperationForkEvent,AtomicOperationIPC} from "./../atomicOperationsIPC";
 import {getReadable} from "./../getAppPath";
+import { Mangle } from '../mangle';
 export class DownloadAndInstallUpdate extends atomic.AtomicOperation
 {
-    public asset : any;
-    public downloadAndInstallUpdateProcess : cp.ChildProcess;
+    @Mangle public  asset : any;
+    @Mangle public  downloadAndInstallUpdateProcess : cp.ChildProcess;
     constructor()
     {
         super();
     }
-    public setData(data : any) : void
+    @Mangle public  setData(data : any) : void
     {
         this.asset = data.asset;
     }
-    public run() : void
+    @Mangle public  run() : void
     {
         this.logRecord = atomic.openLog(this.name,"Download and Install Update");
         let self = this;

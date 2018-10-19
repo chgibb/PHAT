@@ -5,20 +5,21 @@ import {AtomicOperationForkEvent,AtomicOperationIPC} from "../atomicOperationsIP
 import {BLASTSegmentResult,getArtifactDir} from "./../BLASTSegmentResult";
 import {AlignData} from "../alignData";
 import * as dFormat from "./../dateFormat";
+import {Mangle} from '../mangle';
 
 export class BLASTSegment extends atomic.AtomicOperation
 {
-    public blastSegmentResult : BLASTSegmentResult;
-    public alignData : AlignData;
+    @Mangle public  blastSegmentResult : BLASTSegmentResult;
+    @Mangle public  alignData : AlignData;
 
-    public blastSegment : cp.ChildProcess;
+    @Mangle public  blastSegment : cp.ChildProcess;
 
-    public constructor()
+    public  constructor()
     {
         super();
     }
 
-    public setData(data : {
+    @Mangle public  setData(data : {
         align : AlignData,
         start : number,
         stop : number
@@ -30,7 +31,7 @@ export class BLASTSegment extends atomic.AtomicOperation
         this.destinationArtifactsDirectories.push(getArtifactDir(this.blastSegmentResult));
     }
 
-    public run() : void
+    @Mangle public  run() : void
     {
         this.blastSegmentResult.dateStamp = dFormat.generateFixedSizeDateStamp();
         this.blastSegmentResult.dateStampString = dFormat.formatDateStamp(this.blastSegmentResult.dateStamp);

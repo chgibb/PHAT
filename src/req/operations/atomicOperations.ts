@@ -9,6 +9,8 @@ import {AtomicOperationForkEvent} from "./../atomicOperationsIPC";
 import {SpawnRequestParams} from "./../JobIPC";
 import {getReadableAndWritable,getReadable} from "./../getAppPath";
 
+import {Mangle} from "./../mangle";
+
 /**
  * Class representing some operation which should be run atomically
  * 
@@ -24,7 +26,8 @@ export abstract class AtomicOperation
      * @type {Array<string>}
      * @memberof AtomicOperation
      */
-    public generatedArtifacts : Array<string>;
+    @Mangle 
+    public  generatedArtifacts : Array<string>;
 
 	/**
      * Those files which will generated as final output by the operation. They will be deleted ONLY on failure
@@ -32,7 +35,7 @@ export abstract class AtomicOperation
      * @type {Array<string>}
      * @memberof AtomicOperation
      */
-    public destinationArtifacts : Array<string>;
+    @Mangle public  destinationArtifacts : Array<string>;
 
 
     /**
@@ -41,7 +44,7 @@ export abstract class AtomicOperation
      * @type {Array<string>}
      * @memberof AtomicOperation
      */
-    public generatedArtifactsDirectories : Array<string>;
+    @Mangle public  generatedArtifactsDirectories : Array<string>;
 
 
 	/**
@@ -50,7 +53,7 @@ export abstract class AtomicOperation
      * @type {Array<string>}
      * @memberof AtomicOperation
      */
-    public destinationArtifactsDirectories : Array<string>;
+    @Mangle public  destinationArtifactsDirectories : Array<string>;
 
     /**
      * Holds data allowing the operation to manage its log
@@ -58,7 +61,7 @@ export abstract class AtomicOperation
      * @type {LogRecord}
      * @memberof AtomicOperation
      */
-    public logRecord : LogRecord;
+    @Mangle public  logRecord : LogRecord;
 
     /**
      * Whether the operation's log should be automatically closed upon failure
@@ -66,7 +69,7 @@ export abstract class AtomicOperation
      * @type {boolean}
      * @memberof AtomicOperation
      */
-    public closeLogOnFailure : boolean;
+    @Mangle public  closeLogOnFailure : boolean;
 
 
     /**
@@ -75,7 +78,7 @@ export abstract class AtomicOperation
      * @type {boolean}
      * @memberof AtomicOperation
      */
-    public closeLogOnSuccess : boolean;
+    @Mangle public  closeLogOnSuccess : boolean;
 
 
     /**
@@ -84,7 +87,7 @@ export abstract class AtomicOperation
      * @type {string}
      * @memberof AtomicOperation
      */
-    public name : string;
+    public  name : string;
     
 
     /**
@@ -93,15 +96,15 @@ export abstract class AtomicOperation
      * @type {CompletionFlags}
      * @memberof AtomicOperation
      */
-    public flags : CompletionFlags;
+    @Mangle public  flags : CompletionFlags;
 
-    public update : () => void;
+    @Mangle public  update : () => void;
     
-    public spawnUpdate : SpawnRequestParams;
-    public progressMessage : string;
-    public step : number;
-    public totalSteps : number;
-    public extraData : any;
+    @Mangle public  spawnUpdate : SpawnRequestParams;
+    @Mangle public  progressMessage : string;
+    @Mangle public  step : number;
+    @Mangle public  totalSteps : number;
+    @Mangle public  extraData : any;
 
     /**
      * PIDs managed by the operation
@@ -119,7 +122,7 @@ export abstract class AtomicOperation
      * @type {boolean}
      * @memberof AtomicOperation
      */
-    public running : boolean;
+    @Mangle public  running : boolean;
 
 
     /**
@@ -128,10 +131,10 @@ export abstract class AtomicOperation
      * @type {boolean}
      * @memberof AtomicOperation
      */
-    public ignoreScheduler : boolean;
+    @Mangle public  ignoreScheduler : boolean;
 
 
-    public constructor()
+    public  constructor()
     {
         this.generatedArtifacts = new Array<string>();
         this.destinationArtifacts = new Array<string>();
@@ -149,35 +152,35 @@ export abstract class AtomicOperation
 
         this.pids = new Array<number>();
     }
-    public getGeneratedArtifacts() : Array<string>
+    @Mangle public  getGeneratedArtifacts() : Array<string>
     {
         return this.generatedArtifacts;
     }
-    public setGeneratedArtifacts(artifacts : Array<string>) : void
+    @Mangle public  setGeneratedArtifacts(artifacts : Array<string>) : void
     {
         this.generatedArtifacts = artifacts;
     }
-    public getDestinationArtifacts() : Array<string>
+    @Mangle public  getDestinationArtifacts() : Array<string>
     {
         return this.destinationArtifacts;
     }
-    public setDestinationArtifacts(artifacts : Array<string>) : void
+    @Mangle public  setDestinationArtifacts(artifacts : Array<string>) : void
     {
         this.destinationArtifacts = artifacts;
     }
-    public getGeneratedArtifactsDirectories() : Array<string>
+    @Mangle public  getGeneratedArtifactsDirectories() : Array<string>
     {
         return this.generatedArtifactsDirectories;
     }
-    public setGeneratedArtifactsDirectories(artifacts : Array<string>) : void
+    @Mangle public  setGeneratedArtifactsDirectories(artifacts : Array<string>) : void
     {
         this.generatedArtifactsDirectories = artifacts;
     }
-    public getDestinationArtifactsDirectories() : Array<string>
+    @Mangle public  getDestinationArtifactsDirectories() : Array<string>
     {
         return this.destinationArtifactsDirectories;
     }
-    public setDestinationArtifactsDirectories(artifacts : Array<string>) : void
+    @Mangle public  setDestinationArtifactsDirectories(artifacts : Array<string>) : void
     {
         this.destinationArtifactsDirectories = artifacts;
     }
@@ -190,7 +193,7 @@ export abstract class AtomicOperation
      * @param {CompletionFlags} flags 
      * @memberof AtomicOperation
      */
-    public setFailure(flags : CompletionFlags) : void
+    @Mangle public  setFailure(flags : CompletionFlags) : void
     {
         flags.done = true;
         flags.success = false;
@@ -203,7 +206,7 @@ export abstract class AtomicOperation
      * @param {CompletionFlags} flags 
      * @memberof AtomicOperation
      */
-    public setSuccess(flags : CompletionFlags) : void
+    @Mangle public  setSuccess(flags : CompletionFlags) : void
     {
         flags.done = true;
         flags.success = true;
@@ -217,7 +220,7 @@ export abstract class AtomicOperation
      * @param {number} pid 
      * @memberof AtomicOperation
      */
-    public addPID(pid : number) : void
+    @Mangle public  addPID(pid : number) : void
     {
         this.pids.push(pid);
     }    
@@ -229,7 +232,7 @@ export abstract class AtomicOperation
      * @param {number} pid 
      * @memberof AtomicOperation
      */
-    public addPIDFromFork(pid : number) : void
+    @Mangle public  addPIDFromFork(pid : number) : void
     {
         //running forked
         if(process.send)
@@ -250,7 +253,7 @@ export abstract class AtomicOperation
      * @returns {Array<number>} 
      * @memberof AtomicOperation
      */
-    public getPIDs() : Array<number>
+    @Mangle public  getPIDs() : Array<number>
     {
         return this.pids;
     }
@@ -261,7 +264,7 @@ export abstract class AtomicOperation
      * @abstract
      * @memberof AtomicOperation
      */
-    public abstract run() : void;
+    public  abstract run() : void;
 
     /**
      * Method called by the scheduler immediately before run is called
@@ -270,7 +273,7 @@ export abstract class AtomicOperation
      * @param {*} data 
      * @memberof AtomicOperation
      */
-    public abstract setData(data : any) : void;
+    public  abstract setData(data : any) : void;
 
     /**
      * Abort the operation an error message
@@ -278,7 +281,7 @@ export abstract class AtomicOperation
      * @param {string} msg 
      * @memberof AtomicOperation
      */
-    public abortOperationWithMessage(msg : string) : void
+    @Mangle public  abortOperationWithMessage(msg : string) : void
     {
         this.setFailure(this.flags);
         this.extraData = msg;
@@ -291,7 +294,7 @@ export abstract class AtomicOperation
      * @param {*} obj 
      * @memberof AtomicOperation
      */
-    public logObject(obj : any) : void
+    @Mangle public  logObject(obj : any) : void
     {
         logString(this.logRecord,JSON.stringify(obj,undefined,4));
     }
@@ -306,12 +309,12 @@ export abstract class AtomicOperation
  */
 export class ForkLogger extends AtomicOperation
 {
-    public constructor()
+    public  constructor()
     {
         super();
     }
-    public setData(data : any){}
-    public run(){}
+    @Mangle public  setData(data : any){}
+    @Mangle public  run(){}
 }
 
 
@@ -431,10 +434,10 @@ export function handleForkFailures(logger? : ForkLogger,progressMessage? : strin
  */
 export class CompletionFlags
 {
-    public done : boolean;
-    public success : boolean;
-    public failure : boolean;
-    public constructor()
+    @Mangle public  done : boolean;
+    @Mangle public  success : boolean;
+    @Mangle public  failure : boolean;
+    public  constructor()
     {
         this.done = false;
         this.success = false;

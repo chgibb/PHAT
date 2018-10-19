@@ -4,20 +4,21 @@ const uuidv4 : () => string = require("uuid/v4");
 import * as atomic from "./atomicOperations";
 import * as cf from "./../renderer/circularFigure";
 import {getReadableAndWritable} from "./../getAppPath";
+import { Mangle } from '../mangle';
 export class CopyCircularFigure extends atomic.AtomicOperation
 {
-    public origFigure : cf.CircularFigure;
-    public newFigure : cf.CircularFigure;
-    public constructor()
+    @Mangle public  origFigure : cf.CircularFigure;
+    @Mangle public  newFigure : cf.CircularFigure;
+    public  constructor()
     {
         super();
         this.newFigure = <any>{};
     }
-    public setData(data : cf.CircularFigure) : void
+    @Mangle public  setData(data : cf.CircularFigure) : void
     {
         this.origFigure = data;
     }
-    public run() : void
+    @Mangle public  run() : void
     {
         this.logRecord = atomic.openLog(this.name,"Copy Circular Figure");
         try

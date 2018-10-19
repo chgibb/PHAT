@@ -3,18 +3,19 @@ const fse = require("fs-extra");
 import * as atomic from "./atomicOperations";
 import * as cf from "./../renderer/circularFigure";
 import {getReadableAndWritable} from "./../getAppPath";
+import { Mangle } from '../mangle';
 export class DeleteCircularFigure extends atomic.AtomicOperation
 {
-    public figure : cf.CircularFigure;
-    public constructor()
+    @Mangle public  figure : cf.CircularFigure;
+    public  constructor()
     {
         super();
     }
-    public setData(data : cf.CircularFigure) : void
+    @Mangle public  setData(data : cf.CircularFigure) : void
     {
         this.figure = data;
     }
-    public run() : void
+    @Mangle public  run() : void
     {
         this.logRecord = atomic.openLog(this.name,"Delete Circular Figure");
         try

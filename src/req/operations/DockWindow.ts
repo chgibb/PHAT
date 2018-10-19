@@ -2,17 +2,18 @@ import * as atomic from "./atomicOperations";
 import * as winMgr from "./../main/winMgr";
 import * as dataMgr from "./../main/dataMgr";
 import {DockIpc} from "./../renderer/dock";
+import { Mangle } from '../mangle';
 export class DockWindow extends atomic.AtomicOperation
 {
-    public toDock : string;
-    public dockTarget : string;
+    @Mangle public  toDock : string;
+    @Mangle public  dockTarget : string;
 
-    public constructor()
+    public  constructor()
     {
         super();
         this.ignoreScheduler = true;
     }
-    public setData(data : {
+    @Mangle public  setData(data : {
         toDock : string,
         dockTarget : string
     }) : void {
@@ -20,7 +21,7 @@ export class DockWindow extends atomic.AtomicOperation
         this.dockTarget = data.dockTarget;
     }
 
-    public run() : void
+    @Mangle public  run() : void
     {
         this.logRecord = atomic.openLog(this.name,"Dock Window");
 
