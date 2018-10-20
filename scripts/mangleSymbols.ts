@@ -1,9 +1,13 @@
 import * as ts from "typescript";
 
+export type SymbolType = "ClassProperty" | "ClassMethod";
+
 export interface MangledSymbol
 {
     symbol : string;
     mangled : string;
+    type : SymbolType;
+    fileName : string
 }
 
 export let symbolsToMangle = new Array<MangledSymbol>();
@@ -26,38 +30,46 @@ export function getNextMangledSymbol()
     return res;
 }
 
-export function symbolExists(symbol : string) : boolean
+export function addSymbolWithMangleableLinkage(symbol : string,type : SymbolType,fileName : string) : void
 {
-    for(let i = 0; i != symbolsToMangle.length; ++i)
+    let exists = symbolWithMangleableLinkageExists(symbol,type);
+    
+    if(exists)
     {
-        if(symbolsToMangle[i].symbol == symbol)
-            return true;
+        if(exists.fileName != fileName)
+            throw new Error(`Symbol "${symbol}" (${type}) was declared in ${exists.fileName} cannot redefine in ${fileName}`);
+        else
+            return;
     }
-    return false;
+
+    else
+    {
+        symbolsToMangle.push({symbol : symbol,type : type,mangled : getNextMangledSymbol(),fileName : fileName});
+    }
 }
 
-export function getMangledSymbol(symbol : string) : string
+export function symbolWithMangleableLinkageExists(symbol : string,type : SymbolType) : MangledSymbol | undefined
 {
     for(let i = 0; i != symbolsToMangle.length; ++i)
     {
-        if(symbolsToMangle[i].symbol == symbol)
+        if(symbolsToMangle[i].symbol == symbol && symbolsToMangle[i].type == type)
+        {
+            return symbolsToMangle[i]
+        }
+    }
+    return undefined;
+}
+
+export function getSymbolWithMangleableLinkage(symbol : string,type : SymbolType) : string
+{
+    for(let i = 0; i != symbolsToMangle.length; ++i)
+    {
+        if(symbolsToMangle[i].symbol == symbol && symbolsToMangle[i].type == type)
         {
             return symbolsToMangle[i].mangled;
         }
     }
     return "";
-}
-
-export function mangleProp(propName : string,src : string) : string
-{
-    let regex = new RegExp(`\.(${propName})`,"");
-    return src.replace(regex,`.${getMangledSymbol(propName)}`);
-}
-
-export function mangleMethodDefinition(methodName : string,src : string) : string
-{
-    let regex = new RegExp(`\(${methodName})`,"");
-    return src.replace(regex,`${getMangledSymbol(methodName)}`);
 }
 
 export function buildSymbolList(sourceFile : ts.SourceFile) : Promise<number>
@@ -78,11 +90,14 @@ export function buildSymbolList(sourceFile : ts.SourceFile) : Promise<number>
                                 {
                                     if((node as any).members[i].decorators[k].expression.escapedText == "Mangle")
                                     {
-                                        if(!symbolExists((node as any).members[i].name.escapedText))
-                                        {
-                                            found++;
-                                            symbolsToMangle.push({symbol : (node as any).members[i].name.escapedText,mangled : getNextMangledSymbol()});
-                                        }
+                                        let type : SymbolType;
+                                        if((node as any).members[i].kind == ts.SyntaxKind.PropertyDeclaration)
+                                            type = "ClassProperty";
+                                        else if((node as any).members[i].kind == ts.SyntaxKind.MethodDeclaration)
+                                            type = "ClassMethod";
+
+                                            
+                                        addSymbolWithMangleableLinkage((node as any).members[i].name.escapedText,type,sourceFile.fileName);
                                     }
                                 }
                             }

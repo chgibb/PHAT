@@ -1,18 +1,18 @@
 const acorn = require("acorn");
 const falafel = require("falafel");
 
-import {getMangledSymbol,symbolExists} from "./mangleSymbols";
+import {symbolWithMangleableLinkageExists,getSymbolWithMangleableLinkage} from "./mangleSymbols";
 
 function mangleProp(propName : string,src : string) : string
 {
     let regex = new RegExp(`\.(${propName})`,"");
-    return src.replace(regex,`.${getMangledSymbol(propName)}`);
+    return src.replace(regex,`.${getSymbolWithMangleableLinkage(propName,"ClassProperty")}`);
 }
 
 function mangleMethodDefinition(methodName : string,src : string) : string
 {
     let regex = new RegExp(`\(${methodName})`,"");
-    return src.replace(regex,`${getMangledSymbol(methodName)}`);
+    return src.replace(regex,`${getSymbolWithMangleableLinkage(methodName,"ClassMethod")}`);
 }
 
 function mangleObjectExpressionKey(keyName : string,src : string) : string
@@ -20,10 +20,10 @@ function mangleObjectExpressionKey(keyName : string,src : string) : string
     //{key :value}
     let regex = new RegExp(`\(${keyName}.:)`,"");
     if(regex.test(src))
-        return src.replace(regex,`${getMangledSymbol(keyName)}:`);
+        return src.replace(regex,`${getSymbolWithMangleableLinkage(keyName,"ClassProperty")}:`);
     //{key:value}
     regex = new RegExp(`\(${keyName}:)`,"");
-    return src.replace(regex,`${getMangledSymbol(keyName)}:`);
+    return src.replace(regex,`${getSymbolWithMangleableLinkage(keyName,"ClassProperty")}:`);
 }
 
 export function mangleSymbolsInFile(fileContents : string) : Promise<{res : string,num : number}>
@@ -33,7 +33,7 @@ export function mangleSymbolsInFile(fileContents : string) : Promise<{res : stri
         let res = falafel(fileContents,{parser : acorn,sourceType : "module"},(node : any) => {
             if(node.type == "MemberExpression")
             {
-                if(symbolExists(node.property.name))
+                if(symbolWithMangleableLinkageExists(node.property.name,"ClassProperty"))
                 {
                     let src = mangleProp(node.property.name,node.parent.source())
                     node.update(mangleProp(node.property.name,node.source()));
@@ -44,7 +44,7 @@ export function mangleSymbolsInFile(fileContents : string) : Promise<{res : stri
     
             else if(node.type == "MethodDefinition")
             {
-                if(symbolExists(node.key.name))
+                if(symbolWithMangleableLinkageExists(node.key.name,"ClassMethod"))
                 {
                     let src = mangleMethodDefinition(node.key.name,node.parent.source());
                     node.update(mangleMethodDefinition(node.key.name,node.source()));
@@ -59,11 +59,23 @@ export function mangleSymbolsInFile(fileContents : string) : Promise<{res : stri
                 {
                     for(let i = 0; i != node.properties.length; ++i)
                     {
-                        if(symbolExists(node.properties[i].key.name))
+                        if(symbolWithMangleableLinkageExists(node.properties[i].key.name,"ClassProperty"))
                         {
                             node.update(mangleObjectExpressionKey(node.properties[i].key.name,node.source()));
                             num++;
                         }
+                    }
+                }
+            }
+
+            else if(node.type == "CallExpression")
+            {
+                if(node.callee && node.callee.type == "MemberExpression")
+                {
+                    if(symbolWithMangleableLinkageExists(node.callee.property.name,"ClassMethod"))
+                    {
+                        node.update(mangleMethodDefinition(node.callee.property.name,node.source()));
+                        num++;
                     }
                 }
             }
