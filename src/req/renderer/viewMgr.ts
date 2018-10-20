@@ -6,6 +6,7 @@
 /// <reference types="jquery" />
 
 import {DataModelMgr} from "./model";
+
 export abstract class View
 {
     public name : string;

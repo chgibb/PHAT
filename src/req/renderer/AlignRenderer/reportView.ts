@@ -9,6 +9,7 @@ import {AtomicOperationIPC} from "./../../atomicOperationsIPC";
 import {AtomicOperation} from "./../../operations/atomicOperations";
 import {RunAlignment} from "./../../operations/RunAlignment";
 import {getReadable} from "./../../getAppPath";
+import {Mangle} from '../../mangle';
 export class ReportView extends viewMgr.View
 {
     public fastqInputs : Array<Fastq>;
@@ -24,10 +25,10 @@ export class ReportView extends viewMgr.View
         this.fastaInputs = new Array<Fasta>();
         this.shouldAllowTriggeringOps = true;
     }
-    public onMount() : void{}
-    public onUnMount() : void{}
-    public dataChanged() : void{}
-    public renderView() : string | undefined
+    @Mangle public onMount() : void{}
+    @Mangle public onUnMount() : void{}
+    @Mangle public dataChanged() : void{}
+    @Mangle public renderView() : string | undefined
     {
         return `
         <div class="outerCenteredDiv">
@@ -130,11 +131,11 @@ export class ReportView extends viewMgr.View
         </div>
         `;
     }
-    public postRender() : void
+    @Mangle public postRender() : void
     {
 
     }
-    public divClickEvents(event : JQueryEventObject) : void
+    @Mangle public divClickEvents(event : JQueryEventObject) : void
     {
         if(event.target.id == "alignButton")
         {
