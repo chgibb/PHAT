@@ -14,6 +14,16 @@ if [[ "$1" != "opt" ]]; then
 	if [ $? != 0 ]; then
 		exit 1
 	fi
+
+	cd scripts
+
+	./../node_modules/.bin/tsc -p tsconfig.json
+	if [ $? != 0 ]; then
+		exit 1
+	fi
+
+	cd ../
+
 	node scripts/tsBundle src/*.ts --debug --buildCmd="bash scripts/tsBundleDebug.bash"
 	cp .buildCache/debug/*.js dist
 fi
@@ -37,5 +47,5 @@ if [[ "$1" == "opt" ]]; then
 	cp .buildCache/release/*.js dist
 fi
 
-cleanTSArtifacts
+#cleanTSArtifacts
 
