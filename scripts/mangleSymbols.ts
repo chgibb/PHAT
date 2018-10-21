@@ -37,7 +37,7 @@ export function addSymbolWithMangleableLinkage(symbol : string,type : SymbolType
     if(exists)
     {
         if(exists.fileName != fileName)
-            throw new Error(`Symbol "${symbol}" (${type}) was declared in ${exists.fileName} cannot redefine in ${fileName}`);
+            throw new Error(`${"\n"}Symbol "${symbol}" (${type}) was declared in ${exists.fileName} as having mangleable linkage. ${"\n"}Cannot redeclare linkage in ${fileName}`);
         else
             return;
     }
