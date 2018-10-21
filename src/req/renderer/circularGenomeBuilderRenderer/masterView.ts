@@ -27,6 +27,8 @@ import {writeSequenceSelectionModal} from "./writeSequenceSelectionModal";
 import {writeSeqSelectionActionModal} from "./writeSequenceSelectionActionModal";
 import {showGenericLoadingSpinnerInNavBar} from "./loadingSpinner";
 
+import {Mangle} from '../../mangle';
+
 const $ = require("jquery");
 (<any>window).$ = $;
 (<any>window).jQuery = $;
@@ -47,18 +49,18 @@ export function addView(arr : Array<viewMgr.View>,div : string)
 export class View extends viewMgr.View
 {
     public views : Array<viewMgr.View>;
-    public circularFigures : Array<CircularFigure>;
-    public alignData : Array<AlignData>;
-    public fastaInputs : Array<Fasta>;
-    public alignsModalOpen : boolean;
-    public availableTracksModalOpen : boolean;
-    public contigEditorModalOpen : boolean;
-    public contigCreatorModalOpen : boolean;
-    public editContigsModalOpen : boolean;
-    public seqSelectionModalOpen : boolean;
-    public seqSelectionActionModalOpen : boolean;
+    @Mangle public circularFigures : Array<CircularFigure>;
+    @Mangle public alignData : Array<AlignData>;
+    @Mangle public fastaInputs : Array<Fasta>;
+    @Mangle public alignsModalOpen : boolean;
+    @Mangle public availableTracksModalOpen : boolean;
+    @Mangle public contigEditorModalOpen : boolean;
+    @Mangle public contigCreatorModalOpen : boolean;
+    @Mangle public editContigsModalOpen : boolean;
+    @Mangle public seqSelectionModalOpen : boolean;
+    @Mangle public seqSelectionActionModalOpen : boolean;
+    @Mangle public willBLASTAlignment : boolean;
 
-    public willBLASTAlignment : boolean;
     public constructor(div : string)
     {
         super("masterView",div);

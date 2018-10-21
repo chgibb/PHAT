@@ -26,7 +26,7 @@ export abstract class AtomicOperation
      * @type {Array<string>}
      * @memberof AtomicOperation
      */
-    public generatedArtifacts : Array<string>;
+    @Mangle public generatedArtifacts : Array<string>;
 
 	/**
      * Those files which will generated as final output by the operation. They will be deleted ONLY on failure
@@ -34,7 +34,7 @@ export abstract class AtomicOperation
      * @type {Array<string>}
      * @memberof AtomicOperation
      */
-    public destinationArtifacts : Array<string>;
+    @Mangle public destinationArtifacts : Array<string>;
 
 
     /**
@@ -43,7 +43,7 @@ export abstract class AtomicOperation
      * @type {Array<string>}
      * @memberof AtomicOperation
      */
-    public generatedArtifactsDirectories : Array<string>;
+    @Mangle public generatedArtifactsDirectories : Array<string>;
 
 
 	/**
@@ -52,7 +52,7 @@ export abstract class AtomicOperation
      * @type {Array<string>}
      * @memberof AtomicOperation
      */
-    public destinationArtifactsDirectories : Array<string>;
+    @Mangle public destinationArtifactsDirectories : Array<string>;
 
     /**
      * Holds data allowing the operation to manage its log
@@ -60,7 +60,7 @@ export abstract class AtomicOperation
      * @type {LogRecord}
      * @memberof AtomicOperation
      */
-    public logRecord : LogRecord;
+    @Mangle public logRecord : LogRecord;
 
     /**
      * Whether the operation's log should be automatically closed upon failure
