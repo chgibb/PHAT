@@ -95,6 +95,7 @@ export function mangleSymbolsInFile(fileContents : string) : Promise<{res : stri
                 }
             }
         });
+
         return resolve({res : res,num : num});
-});
+    });
 }
