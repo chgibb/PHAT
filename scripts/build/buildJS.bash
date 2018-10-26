@@ -47,5 +47,5 @@ if [[ "$1" == "opt" ]]; then
 	cp .buildCache/release/*.js dist
 fi
 
-#cleanTSArtifacts
+cleanTSArtifacts
 
