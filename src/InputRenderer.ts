@@ -11,7 +11,7 @@ import * as fastqView from "./req/renderer/inputRenderer/FastqView";
 import * as fastaView from "./req/renderer/inputRenderer/FastaView";
 
 import {AtomicOperation} from "./req/operations/atomicOperations";
-import {IndexFastaForAlignment} from "./req/operations/indexFastaForAlignment";
+import {IndexFastaForBowTie2Alignment} from "./req/operations/indexFastaForBowTie2Alignment";
 import {IndexFastaForVisualization} from "./req/operations/indexFastaForVisualization";
 import {InputBamFile} from "./req/operations/InputBamFile";
 import {LinkRefSeqToAlignment} from "./req/operations/LinkRefSeqToAlignment";
@@ -166,7 +166,7 @@ $
                                 for(let i = 0; i != ops.length; ++i)
                                 {
                                     if(ops[i].name == "inputBamFile" || ops[i].name == "linkRefSeqToAlignment" ||
-                                    ops[i].name == "indexFastaForVisualization" || ops[i].name == "indexFastaForAlignment" ||
+                                    ops[i].name == "indexFastaForVisualization" || ops[i].name == "indexFastaForBowTie2Alignment" ||
                                     ops[i].name == "linkRefSeqToAlignment" || ops[i].name == "importFileIntoProject")
                                     {
                                         masterView.shouldAllowTriggeringOps = false;

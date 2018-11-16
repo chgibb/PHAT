@@ -20,7 +20,7 @@ import * as dataMgr from "./dataMgr";
 import * as atomicOp from "./../operations/atomicOperations";
 import {AtomicOperationIPC} from "./../atomicOperationsIPC";
 import {GenerateQCReport} from "./../operations/GenerateQCReport";
-import {IndexFastaForAlignment} from "./../operations/indexFastaForAlignment";
+import {IndexFastaForBowTie2Alignment} from "../operations/indexFastaForBowTie2Alignment";
 import {IndexFastaForVisualization} from "./../operations/indexFastaForVisualization";
 import {RunAlignment} from "./../operations/RunAlignment";
 import {RenderCoverageTrackForContig} from "./../operations/RenderCoverageTrack";
@@ -93,7 +93,7 @@ app.on
 		winMgr.windowCreators["projectSelection"].Create();
 		
 		atomicOp.register("generateFastQCReport",GenerateQCReport);
-		atomicOp.register("indexFastaForAlignment",IndexFastaForAlignment);
+		atomicOp.register("indexFastaForBowTie2Alignment",IndexFastaForBowTie2Alignment);
 		atomicOp.register("indexFastaForVisualization",IndexFastaForVisualization);
 		atomicOp.register("runAlignment",RunAlignment);
 		atomicOp.register("renderCoverageTrackForContig",RenderCoverageTrackForContig);
@@ -299,7 +299,7 @@ ipc.on(
 		console.log(arg);
 		dataMgr.setKey("application","operations",atomicOp.operationsQueue);
 		winMgr.publishChangeForKey("application","operations");
-		if(arg.opName =="indexFastaForAlignment" || arg.opName == "indexFastaForVisualization" || arg.opName == "generateFastQCReport")
+		if(arg.opName =="indexFastaForBowTie2Alignment" || arg.opName == "indexFastaForVisualization" || arg.opName == "generateFastQCReport")
 		{
 			let list : Array<File> = dataMgr.getKey(arg.channel,arg.key);
 			for(let i : number = 0; i != list.length; ++i)
@@ -606,7 +606,7 @@ ipc.on(
 	}
 );
 atomicOp.updates.on(
-	"indexFastaForAlignment",function(op : IndexFastaForAlignment)
+	"indexFastaForBowTie2Alignment",function(op : IndexFastaForBowTie2Alignment)
 	{
 		dataMgr.setKey("application","operations",atomicOp.operationsQueue);
 		winMgr.publishChangeForKey("application","operations");

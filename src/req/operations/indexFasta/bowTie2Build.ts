@@ -1,7 +1,7 @@
 import * as fs from "fs";
 
 import {getReadable} from "./../../getAppPath";
-import {IndexFastaForAlignment} from "./../indexFastaForAlignment";
+import {IndexFastaForBowTie2Alignment} from "../indexFastaForBowTie2Alignment";
 import {getPath} from "./../../file";
 
 import {SpawnRequestParams} from "./../../JobIPC";
@@ -11,10 +11,10 @@ import {Job,JobCallBackObject} from "./../../main/Job";
  * Builds a bowtie2 index
  * 
  * @export
- * @param {IndexFastaForAlignment} op 
+ * @param {IndexFastaForBowTie2Alignment} op 
  * @returns {(Promise<string | undefined>)} 
  */
-export function bowTie2Build(op : IndexFastaForAlignment) : Promise<string | undefined>
+export function bowTie2Build(op : IndexFastaForBowTie2Alignment) : Promise<string | undefined>
 {
     return new Promise((resolve,reject) => {
         let jobCallBack : JobCallBackObject = {

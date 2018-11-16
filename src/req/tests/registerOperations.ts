@@ -1,7 +1,7 @@
 import * as atomic from "./../operations/atomicOperations";
 
 import {GenerateQCReport} from "./../operations/GenerateQCReport";
-import {IndexFastaForAlignment} from "./../operations/indexFastaForAlignment";
+import {IndexFastaForBowTie2Alignment} from "../operations/indexFastaForBowTie2Alignment";
 import {IndexFastaForVisualization} from "./../operations/indexFastaForVisualization";
 import {RunAlignment} from "./../operations/RunAlignment";
 import {RenderCoverageTrackForContig} from "./../operations/RenderCoverageTrack";
@@ -18,7 +18,7 @@ import {BLASTSegment} from "./../operations//BLASTSegment";
 export function registerOperations() : void
 {
     atomic.register("generateFastQCReport",GenerateQCReport);
-    atomic.register("indexFastaForAlignment",IndexFastaForAlignment);
+    atomic.register("indexFastaForBowTie2Alignment",IndexFastaForBowTie2Alignment);
     atomic.register("indexFastaForVisualization",IndexFastaForVisualization);
     atomic.register("runAlignment",RunAlignment);
     atomic.register("renderCoverageTrackForContig",RenderCoverageTrackForContig);

@@ -105,7 +105,7 @@ async function runTests() : Promise<void>
 		}
 
 		console.log("Starting to index hpv16");
-		atomic.addOperation("indexFastaForAlignment",hpv16Ref.get());
+		atomic.addOperation("indexFastaForBowTie2Alignment",hpv16Ref.get());
 		try
 		{
 			await testHPV16Index();
@@ -117,7 +117,7 @@ async function runTests() : Promise<void>
 		}
 
 		console.log("Starting to index hpv18");
-		atomic.addOperation("indexFastaForAlignment",hpv18Ref.get());
+		atomic.addOperation("indexFastaForBowTie2Alignment",hpv18Ref.get());
 		try
 		{
 			await testHPV18Index();

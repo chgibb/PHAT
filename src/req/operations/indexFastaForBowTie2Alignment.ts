@@ -1,15 +1,15 @@
 import * as atomic from "./atomicOperations";
-import {Fasta,getFaiPath} from "./../fasta";
-import {getContigsFromFastaFile} from "./../fastaContigLoader";
-import {getPath} from "./../file";
+import {Fasta,getFaiPath} from "../fasta";
+import {getContigsFromFastaFile} from "../fastaContigLoader";
+import {getPath} from "../file";
 
-import {getReadable,getReadableAndWritable} from "./../getAppPath";
+import {getReadable,getReadableAndWritable} from "../getAppPath";
 
-import {Job} from "./../main/Job";
+import {Job} from "../main/Job";
 
 import {bowTie2Build} from "./indexFasta/bowTie2Build";
 import {samToolsFaidx} from "./indexFasta/samToolsFaidx";
-export class IndexFastaForAlignment extends atomic.AtomicOperation
+export class IndexFastaForBowTie2Alignment extends atomic.AtomicOperation
 {
     public fasta : Fasta;
 

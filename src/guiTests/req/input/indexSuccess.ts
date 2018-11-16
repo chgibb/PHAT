@@ -1,5 +1,5 @@
 import * as atomicOp from "./../../../req/operations/atomicOperations";
-import {IndexFastaForAlignment} from "./../../../req/operations/indexFastaForAlignment";
+import {IndexFastaForBowTie2Alignment} from "../../../req/operations/indexFastaForBowTie2Alignment";
 
 /**
  * Resolves when indexFastaAlignment completes successfully, crashes the process
@@ -11,7 +11,7 @@ import {IndexFastaForAlignment} from "./../../../req/operations/indexFastaForAli
 export async function indexSuccess() : Promise<void>
 {
     return new Promise<void>((resolve,reject) => {
-        atomicOp.updates.on("indexFastaForAlignment",function(op : IndexFastaForAlignment){
+        atomicOp.updates.on("indexFastaForBowTie2Alignment",function(op : IndexFastaForBowTie2Alignment){
             if(op.flags.done && op.flags.failure)
             {
                 console.log("Failed to index");
