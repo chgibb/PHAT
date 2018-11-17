@@ -10,18 +10,18 @@ import {Fasta} from "./../../../req/fasta";
  * @export
  * @returns {Promise<void>} 
  */
-export async function inputHPV16Ref() : Promise<void>
+export function inputHPV16Ref() : Promise<void>
 {
-    return new Promise<void>(async (resolve,reject) => {
-        setTimeout(async function(){
+    return new Promise<void>((resolve,reject) => {
+        setTimeout(function(){
             console.log("inputting hpv16 ref");
             let fastas = new Array<Fasta>();
             fastas.push(new Fasta(path.resolve(path.normalize("../testData/HPV16ref_genomes.fasta"))));
             fastas[0].checked = true;
             dataMgr.setKey("input","fastaInputs",fastas);
             winMgr.publishChangeForKey("input","fastaInputs");
-            setTimeout(async function(){
-                resolve();
+            setTimeout(function(){
+                return resolve();
             },1500);
         },1500);
     });
