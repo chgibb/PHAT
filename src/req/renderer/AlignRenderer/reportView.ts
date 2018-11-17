@@ -73,7 +73,7 @@ export class ReportView extends viewMgr.View
                 `;
                 for(let i = 0; i != this.fastaInputs.length; ++i)
                 {
-                    if(!this.fastaInputs[i].indexed || !this.fastaInputs[i].checked)
+                    if(!this.fastaInputs[i].checked)
                         continue;
                     res += `<tr>`;
                     if(this.selectedFasta && this.fastaInputs[i].uuid == this.selectedFasta.uuid)
@@ -138,6 +138,19 @@ export class ReportView extends viewMgr.View
     {
         if(event.target.id == "alignButton")
         {
+            if(!this.selectedFasta.indexed)
+            {
+                ipc.send(
+                    "runOperation",
+                    <AtomicOperationIPC>{
+                        opName : "indexFastaForBowTie2Alignment",
+                        channel : "input",
+                        key : "fastaInputs",
+                        uuid : this.selectedFasta.uuid
+                    }
+                );
+            }
+
             ipc.send(
                 "runOperation",
                 <AtomicOperationIPC>{
