@@ -4,7 +4,18 @@
         "**/.git/objects/**": true,
         "**/.git/subtree-cache/**": true,
         "**/node_modules/**": true,
-        "**/phat-linux-x64/**":true,
+        "**/phat-linux-x64/**": true,
+        "**/src/**.js": true,
+        "**/not_node_modules": true,
+        "**/tests/**": true,
+        "**/.buildCache/**": true
+    },
+    "files.exclude": {
+        "**/.git": true,
+        "**/.svn": true,
+        "**/.hg": true,
+        "**/CVS": true,
+        "**/.DS_Store": true,
         "**/src/**.js": true
     }
 }
