@@ -2,7 +2,7 @@ import {getReadable,getReadableAndWritable} from "./req/getAppPath";
 import {bootStrapCodeCache} from "./req/bootStrapCodeCache";
 
 bootStrapCodeCache(
-    getReadable("RunAlignmentProcess.js"),
-    "./RunAlignmentProcess",
-    getReadableAndWritable("RunAlignmentProcess.cdata")
+    getReadable("RunBowtie2AlignmentProcess.js"),
+    "./RunBowtie2AlignmentProcess",
+    getReadableAndWritable("RunBowtie2AlignmentProcess.cdata")
 );

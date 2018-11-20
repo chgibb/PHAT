@@ -1,5 +1,5 @@
-import * as atomicOp from "./../../../req/operations/atomicOperations";
-import {IndexFastaForBowTie2Alignment} from "../../../req/operations/indexFastaForBowTie2Alignment";
+import * as atomicOp from "../../../req/operations/atomicOperations";
+import {IndexFastaForBowtie2Alignment} from "../../../req/operations/indexFastaForBowtie2Alignment";
 
 /**
  * Resolves when indexFastaAlignment completes successfully, crashes the process
@@ -8,10 +8,10 @@ import {IndexFastaForBowTie2Alignment} from "../../../req/operations/indexFastaF
  * @export
  * @returns {Promise<void>} 
  */
-export async function indexSuccess() : Promise<void>
+export async function indexForBowtie2AlignmentSuccess() : Promise<void>
 {
     return new Promise<void>((resolve,reject) => {
-        atomicOp.updates.on("indexFastaForBowTie2Alignment",function(op : IndexFastaForBowTie2Alignment){
+        atomicOp.updates.on("indexFastaForBowtie2Alignment",function(op : IndexFastaForBowtie2Alignment){
             if(op.flags.done && op.flags.failure)
             {
                 console.log("Failed to index");

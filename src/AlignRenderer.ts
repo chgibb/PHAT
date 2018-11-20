@@ -105,7 +105,7 @@ $
                             {
                                 for(let i = 0; i != ops.length; ++i)
                                 {
-                                    if(ops[i].name == "runAlignment")
+                                    if(ops[i].name == "runBowtie2Alignment")
                                     {
                                         (<reportView.ReportView>viewMgr.getViewByName("report")).shouldAllowTriggeringOps = false;
                                         found = true;

@@ -4,15 +4,15 @@ import {AlignData,getArtifactDir} from "./req/alignData";
 import {getFolderSize} from "./req/getFolderSize";
 import formatByteString from "./req/renderer/formatByteString";
 
-import {bowTie2Align} from "./req/operations/RunAlignment/bowTie2Align";
-import {samToolsDepth} from "./req/operations/RunAlignment/samToolsDepth";
-import {samToolsIndex} from "./req/operations/RunAlignment/samToolsIndex";
-import {samToolsSort} from "./req/operations/RunAlignment/samToolsSort";
-import {samToolsView} from "./req/operations/RunAlignment/samToolsView";
+import {bowTie2Align} from "./req/operations/RunBowtie2Alignment/bowTie2Align";
+import {samToolsDepth} from "./req/operations/RunBowtie2Alignment/samToolsDepth";
+import {samToolsIndex} from "./req/operations/RunBowtie2Alignment/samToolsIndex";
+import {samToolsSort} from "./req/operations/RunBowtie2Alignment/samToolsSort";
+import {samToolsView} from "./req/operations/RunBowtie2Alignment/samToolsView";
 import {samToolsFaidx} from "./req/operations/indexFasta/samToolsFaidx";
-import {samToolsMPileup} from "./req/operations/RunAlignment/samToolsMPileup";
-import {samToolsIdxStats} from "./req/operations/RunAlignment/samToolsIdxStats";
-import {varScanMPileup2SNP} from "./req/operations/RunAlignment/varScanMPileup2SNP"
+import {samToolsMPileup} from "./req/operations/RunBowtie2Alignment/samToolsMPileup";
+import {samToolsIdxStats} from "./req/operations/RunBowtie2Alignment/samToolsIdxStats";
+import {varScanMPileup2SNP} from "./req/operations/RunBowtie2Alignment/varScanMPileup2SNP"
 
 let flags : CompletionFlags = new CompletionFlags();
 let align : AlignData;

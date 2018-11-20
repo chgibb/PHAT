@@ -7,40 +7,40 @@ import {getReadable,getReadableAndWritable} from "../getAppPath";
 
 import {Job} from "../main/Job";
 
-import {bowTie2Build} from "./indexFasta/bowTie2Build";
+import {hisat2Build} from "./indexFasta/hisat2Build";
 import {samToolsFaidx} from "./indexFasta/samToolsFaidx";
-export class IndexFastaForBowTie2Alignment extends atomic.AtomicOperation
+export class IndexFastaForHisat2Alignment extends atomic.AtomicOperation
 {
     public fasta : Fasta;
 
     public samToolsExe : string;
-    public bowtie2BuildExe : string;
+    public hisat2BuildExe : string;
 
     public faiPath : string;
     public faiJob : Job;
     public faiFlags : atomic.CompletionFlags;
 
-    public bowTieIndexPath : string;
-    public bowtieJob : Job;
-    public bowtieFlags : atomic.CompletionFlags;
-    public bowtieSizeThreshold : number;
-    public bowtieIndices : Array<string>;
+    public hisat2IndexPath : string;
+    public hisat2Job : Job;
+    public hisat2Flags : atomic.CompletionFlags;
+    public hisat2SizeThreshold : number;
+    public hisat2Indices : Array<string>;
     constructor()
     {
         super();
         this.faiFlags = new atomic.CompletionFlags();
-        this.bowtieFlags = new atomic.CompletionFlags();
+        this.hisat2Flags = new atomic.CompletionFlags();
 
-        this.bowtieIndices = new Array<string>();
+        this.hisat2Indices = new Array<string>();
 
         //the size threshold between being 32-bit and being 64-bit
-        this.bowtieSizeThreshold = 4294967096;
+        this.hisat2SizeThreshold = 4294967096;
 
         this.samToolsExe = getReadable('samtools');
         if(process.platform == "linux")
-            this.bowtie2BuildExe = getReadable('bowtie2-build');
+            this.hisat2BuildExe = getReadable('hisat2-build');
         else if(process.platform == "win32")
-            this.bowtie2BuildExe = getReadable('python/python.exe');
+            this.hisat2BuildExe = getReadable('python/python.exe');
     }
     public setData(data : Fasta) : void
     {
@@ -52,22 +52,22 @@ export class IndexFastaForBowTie2Alignment extends atomic.AtomicOperation
         //samtool faidx will write the .fai beside the input fasta
         this.generatedArtifacts.push(`${getPath(this.fasta)}.fai`);
 
-        this.bowTieIndexPath = getReadableAndWritable(`rt/indexes/${this.fasta.uuid}`);
+        this.hisat2IndexPath = getReadableAndWritable(`rt/indexes/${this.fasta.uuid}`);
 
         //if 64-bit, add a 1 to the file extension
-        let x64 : string = (this.fasta.size > this.bowtieSizeThreshold ? "1" : "");
+        let x64 : string = (this.fasta.size > this.hisat2SizeThreshold ? "1" : "");
 
-        this.bowtieIndices.push(`${this.bowTieIndexPath}.1.bt2${x64}`);
-        this.bowtieIndices.push(`${this.bowTieIndexPath}.2.bt2${x64}`);
-        this.bowtieIndices.push(`${this.bowTieIndexPath}.3.bt2${x64}`);
-        this.bowtieIndices.push(`${this.bowTieIndexPath}.4.bt2${x64}`);
-        this.bowtieIndices.push(`${this.bowTieIndexPath}.rev.1.bt2${x64}`);
-        this.bowtieIndices.push(`${this.bowTieIndexPath}.rev.2.bt2${x64}`);
+        this.hisat2Indices.push(`${this.hisat2IndexPath}.1.ht2${x64}`);
+        this.hisat2Indices.push(`${this.hisat2IndexPath}.2.ht2${x64}`);
+        this.hisat2Indices.push(`${this.hisat2IndexPath}.3.ht2${x64}`);
+        this.hisat2Indices.push(`${this.hisat2IndexPath}.4.ht2${x64}`);
+        this.hisat2Indices.push(`${this.hisat2IndexPath}.rev.1.ht2${x64}`);
+        this.hisat2Indices.push(`${this.hisat2IndexPath}.rev.2.ht2${x64}`);
 
-        this.destinationArtifacts.concat(this.bowtieIndices);
+        this.destinationArtifacts.concat(this.hisat2Indices);
         
     }
-    //bowTie2Build -> samTools faidx
+    //hisat2Build -> samTools faidx
     public run() : void
     {
         this.logRecord = atomic.openLog(this.name,"Index Fasta for Alignment");
@@ -77,10 +77,10 @@ export class IndexFastaForBowTie2Alignment extends atomic.AtomicOperation
             return new Promise<void>(async (resolve,reject) => {
                 try
                 {
-                    self.progressMessage = "Building bowtie2 index";
+                    self.progressMessage = "Building hisat2 index";
                     self.update();
-                    await bowTie2Build(self);
-                    self.setSuccess(self.bowtieFlags);
+                    await hisat2Build(self);
+                    self.setSuccess(self.hisat2Flags);
                     self.update();
 
                     self.progressMessage = "Building fai index";

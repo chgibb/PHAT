@@ -1,12 +1,12 @@
-import * as atomic from "./../operations/atomicOperations";
-import {RunAlignment} from "./../operations/RunAlignment";
+import * as atomic from "../operations/atomicOperations";
+import {RunBowtie2Alignment} from "../operations/RunBowtie2Alignment";
 import * as L6R1R1 from "./L6R1R1";
 import * as L6R1R2 from "./L6R1R2";
-import * as L6R1HPV16Align from "./L6R1HPV16Align";
-export async function testL6R1HPV16Alignment() : Promise<void>
+import * as L6R1HPV18Align from "./L6R1HPV18Align";
+export async function testL6R1HPV18Bowtie2Alignment() : Promise<void>
 {
     return new Promise<void>((resolve,reject) => {
-        atomic.updates.removeAllListeners().on("runAlignment",function(op : RunAlignment){
+        atomic.updates.removeAllListeners().on("runBowtie2Alignment",function(op : RunBowtie2Alignment){
             if(op.flags.failure)
             {
                 console.log(`Failed to align`);
@@ -19,12 +19,12 @@ export async function testL6R1HPV16Alignment() : Promise<void>
                 else
                     return reject();
 
-                if(op.alignData.summary.mates == 4564)
+                if(op.alignData.summary.mates == 5376)
                     console.log(`${op.alignData.alias} has correct number of mates`);
                 else
                     return reject();
                 
-                if(op.alignData.summary.overallAlignmentRate == 15.15)
+                if(op.alignData.summary.overallAlignmentRate == 0.04)
                     console.log(`${op.alignData.alias} has correct overall alignment rate`);
                 else
                     return reject();
@@ -49,7 +49,7 @@ export async function testL6R1HPV16Alignment() : Promise<void>
                 else
                     return reject();
                 
-                if(op.alignData.varScanSNPSummary.SNPsReported == 11)
+                if(op.alignData.varScanSNPSummary.SNPsReported == 0)
                     console.log(`${op.alignData.alias} has correct predicted SNPs`);
                 else
                     return reject();
@@ -59,17 +59,17 @@ export async function testL6R1HPV16Alignment() : Promise<void>
                 else
                     return reject();
 
-                if(op.alignData.idxStatsReport[0].mappedReads == 815)
+                if(op.alignData.idxStatsReport[0].mappedReads == 2)
                     console.log(`${op.alignData.alias} has correct number of mapped reads`);
                 else
                     return reject();
                 
-                if(op.alignData.idxStatsReport[0].unMappedReads == 1)
+                if(op.alignData.idxStatsReport[0].unMappedReads == 0)
                     console.log(`${op.alignData.alias} has correct number of unmapped reads`);
                 else
                     return reject();
 
-                L6R1HPV16Align.set(op.alignData);
+                L6R1HPV18Align.set(op.alignData);
 
                 return resolve();
 

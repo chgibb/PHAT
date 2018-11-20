@@ -8,7 +8,15 @@ export class Fasta extends File
     public sizeString : string;
     public sequences : number;
     public validID : string;
+
+    /**
+     * Indexed for Bowtie2
+     *
+     * @type {boolean}
+     * @memberof Fasta
+     */
     public indexed : boolean;
+    public indexedForHisat2 : boolean;
     public indexedForVisualization : boolean;
     public indexing : boolean;
     public indexingForVisualization : boolean;

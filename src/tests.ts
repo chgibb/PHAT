@@ -23,12 +23,14 @@ import * as L6R1HPV18AlignImported from "./req/tests/L6R1HPV18AlignImported";
 import {testVersionParser} from "./req/tests/testVersionParser";
 
 import {testFastQCReportGeneration} from "./req/tests/testFastQCReportGeneration";
-import {testHPV16Index} from "./req/tests/testHPV16Index";
-import {testHPV18Index} from "./req/tests/testHPV18Index";
+import {testHPV16Bowtie2Index} from "./req/tests/testHPV16Bowtie2Index";
+import {testHPV18Bowtie2Index} from "./req/tests/testHPV18Bowtie2Index";
+//import {testHPV16Hisat2Index} from "./req/tests/testHPV16Hisat2Index";
+//import {testHPV18Hisat2Index} from "./req/tests/testHPV18Hisat2Index";
 import {testHPV16IndexForVisualization} from "./req/tests/testHPV16IndexForVisualization";
 import {testHPV18IndexForVisualization} from "./req/tests/testHPV18IndexForVisualization";
-import {testL6R1HPV16Alignment} from "./req/tests/testL6R1HPV16Alignment";
-import {testL6R1HPV18Alignment} from "./req/tests/testL6R1HPV18Alignment"
+import {testL6R1HPV16Bowtie2Alignment} from "./req/tests/testL6R1HPV16Bowtie2Alignment";
+import {testL6R1HPV18Bowtie2Alignment} from "./req/tests/testL6R1HPV18Bowtie2Alignment"
 import {testL6R1HPV16CoverageTrackRenderer} from "./req/tests/testL6R1HPV16CoverageTrackRender";
 import {testL6R1HPV16SNPTrackRenderer} from "./req/tests/testL6R1HPV16SNPTrackRender";
 import {testL6R1HPV16CoverageTrackCompilation} from "./req/tests/testL6R1HPV16CoverageTrackCompilation";
@@ -43,7 +45,7 @@ import {testL6R1HPV18AlignImportedLinking} from "./req/tests/testL6R1HPV18AlignI
 
 import {testL6R1HPV16NoHeaderSAMImporting} from "./req/tests/testL6R1HPV16NoHeaderSAMImporting";
 
-import {testL6R7HPV16Alignment} from "./req/tests/testL6R7HPV16Alignment";
+import {testL6R7HPV16Bowtie2Alignment} from "./req/tests/testL6R7HPV16Bowtie2Alignment";
 import {testL6R7HPV16CoverageTrackRenderer} from "./req/tests/testL6R7HPV16CoverageTrackRenderer";
 import {testL6R7HPV16SNPTrackRenderer} from "./req/tests/testL6R7HPV16SNPTrackRender";
 import {testL6R7HPV16CoverageTrackCompilation} from "./req/tests/testL6R7HPV16CoverageTrackCompilation";
@@ -105,10 +107,10 @@ async function runTests() : Promise<void>
 		}
 
 		console.log("Starting to index hpv16");
-		atomic.addOperation("indexFastaForBowTie2Alignment",hpv16Ref.get());
+		atomic.addOperation("indexFastaForBowtie2Alignment",hpv16Ref.get());
 		try
 		{
-			await testHPV16Index();
+			await testHPV16Bowtie2Index();
 		}
 		catch(err)
 		{
@@ -117,10 +119,10 @@ async function runTests() : Promise<void>
 		}
 
 		console.log("Starting to index hpv18");
-		atomic.addOperation("indexFastaForBowTie2Alignment",hpv18Ref.get());
+		atomic.addOperation("indexFastaForBowtie2Alignment",hpv18Ref.get());
 		try
 		{
-			await testHPV18Index();
+			await testHPV18Bowtie2Index();
 		}
 		catch(err)
 		{
@@ -154,7 +156,7 @@ async function runTests() : Promise<void>
 
 		console.log("Starting to align L6R1R1, L6R1R2 against hpv16");
 		atomic.addOperation(
-			"runAlignment",
+			"runBowtie2Alignment",
 			{
 				fasta : hpv16Ref.get(),
 				fastq1 : L6R1R1.get(),
@@ -163,7 +165,7 @@ async function runTests() : Promise<void>
 		);
 		try
 		{
-			await testL6R1HPV16Alignment();
+			await testL6R1HPV16Bowtie2Alignment();
 		}
 		catch(err)
 		{
@@ -173,7 +175,7 @@ async function runTests() : Promise<void>
 
 		console.log("Starting to align L6R1R1, L6R1R2 against hpv18");
 		atomic.addOperation(
-			"runAlignment",
+			"runBowtie2Alignment",
 			{
 				fasta : hpv18Ref.get(),
 				fastq1 : L6R1R1.get(),
@@ -182,7 +184,7 @@ async function runTests() : Promise<void>
 		);
 		try
 		{
-			await testL6R1HPV18Alignment();
+			await testL6R1HPV18Bowtie2Alignment();
 		}
 		catch(err)
 		{
@@ -401,7 +403,7 @@ async function runTests() : Promise<void>
 
 		console.log("Starting to align L6R7R1, L6R7R2 against hpv16");
 		atomic.addOperation(
-			"runAlignment",
+			"runBowtie2Alignment",
 			{
 				fasta : hpv16Ref.get(),
 				fastq1 : L6R7R1.get(),
@@ -410,7 +412,7 @@ async function runTests() : Promise<void>
 		);
 		try
 		{
-			await testL6R7HPV16Alignment();
+			await testL6R7HPV16Bowtie2Alignment();
 		}
 		catch(err)
 		{

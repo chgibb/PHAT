@@ -177,7 +177,7 @@ export class View extends viewMgr.View
                      ipc.send(
                         "runOperation",
                         <AtomicOperationIPC>{
-                            opName : "indexFastaForBowTie2Alignment",
+                            opName : "indexFastaForBowtie2Alignment",
                             channel : "input",
                             key : "fastaInputs",
                             uuid : this.fastaInputs[i].uuid

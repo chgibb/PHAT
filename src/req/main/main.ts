@@ -20,9 +20,9 @@ import * as dataMgr from "./dataMgr";
 import * as atomicOp from "./../operations/atomicOperations";
 import {AtomicOperationIPC} from "./../atomicOperationsIPC";
 import {GenerateQCReport} from "./../operations/GenerateQCReport";
-import {IndexFastaForBowTie2Alignment} from "../operations/indexFastaForBowTie2Alignment";
+import {IndexFastaForBowtie2Alignment} from "../operations/indexFastaForBowtie2Alignment";
 import {IndexFastaForVisualization} from "./../operations/indexFastaForVisualization";
-import {RunAlignment} from "./../operations/RunAlignment";
+import {RunBowtie2Alignment} from "../operations/RunBowtie2Alignment";
 import {RenderCoverageTrackForContig} from "./../operations/RenderCoverageTrack";
 import {RenderSNPTrackForContig} from "./../operations/RenderSNPTrack";
 import {CheckForUpdate} from "./../operations/CheckForUpdate";
@@ -93,9 +93,9 @@ app.on
 		winMgr.windowCreators["projectSelection"].Create();
 		
 		atomicOp.register("generateFastQCReport",GenerateQCReport);
-		atomicOp.register("indexFastaForBowTie2Alignment",IndexFastaForBowTie2Alignment);
+		atomicOp.register("indexFastaForBowtie2Alignment",IndexFastaForBowtie2Alignment);
 		atomicOp.register("indexFastaForVisualization",IndexFastaForVisualization);
-		atomicOp.register("runAlignment",RunAlignment);
+		atomicOp.register("runBowtie2Alignment",RunBowtie2Alignment);
 		atomicOp.register("renderCoverageTrackForContig",RenderCoverageTrackForContig);
 		atomicOp.register("renderSNPTrackForContig",RenderSNPTrackForContig);
 
@@ -299,7 +299,7 @@ ipc.on(
 		console.log(arg);
 		dataMgr.setKey("application","operations",atomicOp.operationsQueue);
 		winMgr.publishChangeForKey("application","operations");
-		if(arg.opName =="indexFastaForBowTie2Alignment" || arg.opName == "indexFastaForVisualization" || arg.opName == "generateFastQCReport")
+		if(arg.opName =="indexFastaForBowtie2Alignment" || arg.opName == "indexFastaForVisualization" || arg.opName == "generateFastQCReport")
 		{
 			let list : Array<File> = dataMgr.getKey(arg.channel,arg.key);
 			for(let i : number = 0; i != list.length; ++i)
@@ -313,7 +313,7 @@ ipc.on(
 				}
 			}
 		}
-		else if(arg.opName == "runAlignment")
+		else if(arg.opName == "runBowtie2Alignment")
 		{
 			console.log("running alignment");
 			atomicOp.addOperation(
@@ -606,7 +606,7 @@ ipc.on(
 	}
 );
 atomicOp.updates.on(
-	"indexFastaForBowTie2Alignment",function(op : IndexFastaForBowTie2Alignment)
+	"indexFastaForBowtie2Alignment",function(op : IndexFastaForBowtie2Alignment)
 	{
 		dataMgr.setKey("application","operations",atomicOp.operationsQueue);
 		winMgr.publishChangeForKey("application","operations");
@@ -677,7 +677,7 @@ atomicOp.updates.on(
 	}
 );
 atomicOp.updates.on(
-	"runAlignment",function(op : RunAlignment)
+	"runBowtie2Alignment",function(op : RunBowtie2Alignment)
 	{
 		dataMgr.setKey("application","operations",atomicOp.operationsQueue);
 		winMgr.publishChangeForKey("application","operations");

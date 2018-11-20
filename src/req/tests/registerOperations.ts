@@ -1,9 +1,9 @@
 import * as atomic from "./../operations/atomicOperations";
 
 import {GenerateQCReport} from "./../operations/GenerateQCReport";
-import {IndexFastaForBowTie2Alignment} from "../operations/indexFastaForBowTie2Alignment";
+import {IndexFastaForBowtie2Alignment} from "../operations/indexFastaForBowtie2Alignment";
 import {IndexFastaForVisualization} from "./../operations/indexFastaForVisualization";
-import {RunAlignment} from "./../operations/RunAlignment";
+import {RunBowtie2Alignment} from "../operations/RunBowtie2Alignment";
 import {RenderCoverageTrackForContig} from "./../operations/RenderCoverageTrack";
 import {RenderSNPTrackForContig} from "./../operations/RenderSNPTrack";
 import {CheckForUpdate} from "./../operations/CheckForUpdate";
@@ -18,9 +18,9 @@ import {BLASTSegment} from "./../operations//BLASTSegment";
 export function registerOperations() : void
 {
     atomic.register("generateFastQCReport",GenerateQCReport);
-    atomic.register("indexFastaForBowTie2Alignment",IndexFastaForBowTie2Alignment);
+    atomic.register("indexFastaForBowtie2Alignment",IndexFastaForBowtie2Alignment);
     atomic.register("indexFastaForVisualization",IndexFastaForVisualization);
-    atomic.register("runAlignment",RunAlignment);
+    atomic.register("runBowtie2Alignment",RunBowtie2Alignment);
     atomic.register("renderCoverageTrackForContig",RenderCoverageTrackForContig);
     atomic.register("renderSNPTrackForContig",RenderSNPTrackForContig);
     atomic.register("inputBamFile",InputBamFile);

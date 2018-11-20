@@ -1,12 +1,12 @@
-import * as atomic from "./../operations/atomicOperations";
-import {RunAlignment} from "./../operations/RunAlignment";
+import * as atomic from "../operations/atomicOperations";
+import {RunBowtie2Alignment} from "../operations/RunBowtie2Alignment";
 import * as L6R7R1 from "./L6R7R1";
 import * as L6R7R2 from "./L6R7R2";
 import * as L6R7HPV16Align from "./L6R7HPV16Align";
-export async function testL6R7HPV16Alignment() : Promise<void>
+export async function testL6R7HPV16Bowtie2Alignment() : Promise<void>
 {
     return new Promise<void>((resolve,reject) => {
-        atomic.updates.removeAllListeners().on("runAlignment",function(op : RunAlignment){
+        atomic.updates.removeAllListeners().on("runBowtie2Alignment",function(op : RunBowtie2Alignment){
             if(op.flags.failure)
             {
                 console.log(`Failed to align`);

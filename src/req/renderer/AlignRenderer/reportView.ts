@@ -7,7 +7,7 @@ import {Fastq} from "./../../fastq";
 import {Fasta} from "./../../fasta";
 import {AtomicOperationIPC} from "./../../atomicOperationsIPC";
 import {AtomicOperation} from "./../../operations/atomicOperations";
-import {RunAlignment} from "./../../operations/RunAlignment";
+import {RunBowtie2Alignment} from "../../operations/RunBowtie2Alignment";
 import {getReadable} from "./../../getAppPath";
 export class ReportView extends viewMgr.View
 {
@@ -143,7 +143,7 @@ export class ReportView extends viewMgr.View
                 ipc.send(
                     "runOperation",
                     <AtomicOperationIPC>{
-                        opName : "indexFastaForBowTie2Alignment",
+                        opName : "indexFastaForBowtie2Alignment",
                         channel : "input",
                         key : "fastaInputs",
                         uuid : this.selectedFasta.uuid
@@ -154,7 +154,7 @@ export class ReportView extends viewMgr.View
             ipc.send(
                 "runOperation",
                 <AtomicOperationIPC>{
-                    opName : "runAlignment",
+                    opName : "runBowtie2Alignment",
                     alignParams : {
                         fasta : this.selectedFasta,
                         fastq1 : this.selectedFastq1,

@@ -7,11 +7,11 @@ import trimPath from "./req/trimPath";
 import {getFolderSize} from "./req/getFolderSize";
 import formatByteString from "./req/renderer/formatByteString";
 
-import {samToolsView} from "./req/operations/RunAlignment/samToolsView";
-import {samToolsSort} from "./req/operations/RunAlignment/samToolsSort";
+import {samToolsView} from "./req/operations/RunBowtie2Alignment/samToolsView";
+import {samToolsSort} from "./req/operations/RunBowtie2Alignment/samToolsSort";
 import {samToolsFlagStat} from "./req/operations/InputBamFile/samToolsFlagStat";
-import {samToolsIndex} from "./req/operations/RunAlignment/samToolsIndex";
-import {samToolsIdxStats} from "./req/operations/RunAlignment/samToolsIdxStats";
+import {samToolsIndex} from "./req/operations/RunBowtie2Alignment/samToolsIndex";
+import {samToolsIdxStats} from "./req/operations/RunBowtie2Alignment/samToolsIdxStats";
 
 let flags : CompletionFlags = new CompletionFlags();
 let align : AlignData;
