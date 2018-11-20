@@ -1,11 +1,11 @@
 import * as atomic from "../operations/atomicOperations";
-import {RunBowtie2Alignment} from "../operations/RunBowtie2Alignment";
+import {RunHisat2Alignment} from "../operations/RunHisat2Alignment";
 import * as L6R1HPV16Align from "./L6R1HPV16Align";
 
 export async function testL6R1HPV16Hisat2Alignment() : Promise<void>
 {
     return new Promise<void>((resolve,reject) => {
-        atomic.updates.removeAllListeners().on("runHisat2Alignment",function(op : RunBowtie2Alignment){
+        atomic.updates.removeAllListeners().on("runHisat2Alignment",function(op : RunHisat2Alignment){
             if(op.flags.failure)
             {
                 console.log(`Failed to align`);
