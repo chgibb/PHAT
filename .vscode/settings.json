@@ -4,6 +4,7 @@
         "**/.git/objects/**": true,
         "**/.git/subtree-cache/**": true,
         "**/node_modules/**": true,
-        "**/phat-linux-x64/**":true
+        "**/phat-linux-x64/**":true,
+        "**/src/**.js": true
     }
 }
