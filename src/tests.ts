@@ -32,6 +32,7 @@ import {testHPV18IndexForVisualization} from "./req/tests/testHPV18IndexForVisua
 import {testL6R1HPV16Bowtie2Alignment} from "./req/tests/testL6R1HPV16Bowtie2Alignment";
 import {testL6R1HPV18Bowtie2Alignment} from "./req/tests/testL6R1HPV18Bowtie2Alignment"
 import {testL6R1HPV16Hisat2Alignment} from "./req/tests/testL6R1HPV16Hisat2Alignment";
+import {testL6R1HPV18Hisat2Alignment} from "./req/tests/testL6R1HPV18Hisat2Alignment";
 import {testL6R1HPV16CoverageTrackRenderer} from "./req/tests/testL6R1HPV16CoverageTrackRender";
 import {testL6R1HPV16SNPTrackRenderer} from "./req/tests/testL6R1HPV16SNPTrackRender";
 import {testL6R1HPV16CoverageTrackCompilation} from "./req/tests/testL6R1HPV16CoverageTrackCompilation";
@@ -192,6 +193,25 @@ async function runTests() : Promise<void>
 		try
 		{
 			await testL6R1HPV16Hisat2Alignment();
+		}
+		catch(err)
+		{
+			console.log("test alignment threw exception");
+			return reject();
+		}
+
+		console.log("Starting to align L6R1R1, L6R1R2 against hpv18 using hisat2");
+		atomic.addOperation(
+			"runHisat2Alignment",
+			{
+				fasta : hpv18Ref.get(),
+				fastq1 : L6R1R1.get(),
+				fastq2 : L6R1R2.get()
+			}
+		);
+		try
+		{
+			await testL6R1HPV18Hisat2Alignment();
 		}
 		catch(err)
 		{

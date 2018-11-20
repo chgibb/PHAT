@@ -1,8 +1,8 @@
 import * as atomic from "../operations/atomicOperations";
 import {RunBowtie2Alignment} from "../operations/RunBowtie2Alignment";
-import * as L6R1HPV16Align from "./L6R1HPV16Align";
+import * as L6R1HPV18Align from "./L6R1HPV18Align";
 
-export async function testL6R1HPV16Hisat2Alignment() : Promise<void>
+export async function testL6R1HPV18Hisat2Alignment() : Promise<void>
 {
     return new Promise<void>((resolve,reject) => {
         atomic.updates.removeAllListeners().on("runHisat2Alignment",function(op : RunBowtie2Alignment){
@@ -18,12 +18,12 @@ export async function testL6R1HPV16Hisat2Alignment() : Promise<void>
                 else
                     return reject();
 
-                if(op.alignData.summary.mates == 4714)
+                if(op.alignData.summary.mates == 5378)
                     console.log(`${op.alignData.alias} has correct number of mates`);
                 else
                     return reject();
                 
-                if(op.alignData.summary.overallAlignmentRate == 12.61)
+                if(op.alignData.summary.overallAlignmentRate == 0)
                     console.log(`${op.alignData.alias} has correct overall alignment rate`);
                 else
                     return reject();
@@ -48,7 +48,7 @@ export async function testL6R1HPV16Hisat2Alignment() : Promise<void>
                 else
                     return reject();
                 
-                if(op.alignData.varScanSNPSummary.SNPsReported == 11)
+                if(op.alignData.varScanSNPSummary.SNPsReported == 0)
                     console.log(`${op.alignData.alias} has correct predicted SNPs`);
                 else
                     return reject();
@@ -58,17 +58,17 @@ export async function testL6R1HPV16Hisat2Alignment() : Promise<void>
                 else
                     return reject();
 
-                if(op.alignData.idxStatsReport[0].mappedReads == 678)
+                if(op.alignData.idxStatsReport[0].mappedReads == 0)
                     console.log(`${op.alignData.alias} has correct number of mapped reads`);
                 else
                     return reject();
                 
-                if(op.alignData.idxStatsReport[0].unMappedReads == 12)
+                if(op.alignData.idxStatsReport[0].unMappedReads == 0)
                     console.log(`${op.alignData.alias} has correct number of unmapped reads`);
                 else
                     return reject();
 
-                L6R1HPV16Align.set(op.alignData);
+                L6R1HPV18Align.set(op.alignData);
 
                 return resolve();
 
