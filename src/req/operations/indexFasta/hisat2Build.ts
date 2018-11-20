@@ -36,7 +36,7 @@ export function hisat2Build(op : IndexFastaForHisat2Alignment) : Promise<string 
                                 }
                                 catch(err)
                                 {
-                                    reject(`Failed to write all hisat2 indices for ${op.fasta.alias}`);
+                                    reject(`Failed to write all hisat2 indices for ${op.fasta.alias}${"\n"}${err}`);
                                 }
                                 resolve();
                             },5000
