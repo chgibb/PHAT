@@ -4,7 +4,7 @@ import {AlignData,getArtifactDir} from "./req/alignData";
 import {getFolderSize} from "./req/getFolderSize";
 import formatByteString from "./req/renderer/formatByteString";
 
-import {bowtie2Align} from "./req/operations/RunAlignment/bowtie2Align";
+import {hisat2Align} from "./req/operations/RunAlignment/hisat2Align";
 import {samToolsDepth} from "./req/operations/RunAlignment/samToolsDepth";
 import {samToolsIndex} from "./req/operations/RunAlignment/samToolsIndex";
 import {samToolsSort} from "./req/operations/RunAlignment/samToolsSort";
@@ -65,7 +65,7 @@ process.on(
         if(ev.run == true)
         {
             update();
-            bowtie2Align(align,logger).then((result) => {
+            hisat2Align(align,logger).then((result) => {
 
                 progressMessage = "Converting SAM to BAM";
                 step++;

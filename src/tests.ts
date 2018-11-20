@@ -25,7 +25,7 @@ import {testVersionParser} from "./req/tests/testVersionParser";
 import {testFastQCReportGeneration} from "./req/tests/testFastQCReportGeneration";
 import {testHPV16Bowtie2Index} from "./req/tests/testHPV16Bowtie2Index";
 import {testHPV18Bowtie2Index} from "./req/tests/testHPV18Bowtie2Index";
-//import {testHPV16Hisat2Index} from "./req/tests/testHPV16Hisat2Index";
+import {testHPV16Hisat2Index} from "./req/tests/testHPV16Hisat2Index";
 //import {testHPV18Hisat2Index} from "./req/tests/testHPV18Hisat2Index";
 import {testHPV16IndexForVisualization} from "./req/tests/testHPV16IndexForVisualization";
 import {testHPV18IndexForVisualization} from "./req/tests/testHPV18IndexForVisualization";
@@ -106,7 +106,7 @@ async function runTests() : Promise<void>
 			return reject();
 		}
 
-		console.log("Starting to index hpv16");
+		console.log("Starting to index hpv16 for bowtie2");
 		atomic.addOperation("indexFastaForBowtie2Alignment",hpv16Ref.get());
 		try
 		{
@@ -118,11 +118,24 @@ async function runTests() : Promise<void>
 			return reject();
 		}
 
-		console.log("Starting to index hpv18");
+		console.log("Starting to index hpv18 for bowtie2");
 		atomic.addOperation("indexFastaForBowtie2Alignment",hpv18Ref.get());
 		try
 		{
 			await testHPV18Bowtie2Index();
+		}
+
+		catch(err)
+		{
+			console.log("test index threw exception");
+			return reject();
+		}
+
+		console.log("Starting to index hpv16 for hisat2");
+		atomic.addOperation("indexFastaForHisat2Alignment",hpv16Ref.get());
+		try
+		{
+			await testHPV16Hisat2Index();
 		}
 		catch(err)
 		{

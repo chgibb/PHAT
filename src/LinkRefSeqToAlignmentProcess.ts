@@ -6,10 +6,10 @@ import {getFolderSize} from "./req/getFolderSize";
 import formatByteString from "./req/renderer/formatByteString";
 
 import {getLinkableRefSeqs} from "./req/getLinkableRefSeqs";
-import {samToolsDepth} from "./req/operations/RunBowtie2Alignment/samToolsDepth";
+import {samToolsDepth} from "./req/operations/RunAlignment/samToolsDepth";
 import {samToolsFaidx} from "./req/operations/indexFasta/samToolsFaidx";
-import {samToolsMPileup} from "./req/operations/RunBowtie2Alignment/samToolsMPileup";
-import {varScanMPileup2SNP} from "./req/operations/RunBowtie2Alignment/varScanMPileup2SNP"
+import {samToolsMPileup} from "./req/operations/RunAlignment/samToolsMPileup";
+import {varScanMPileup2SNP} from "./req/operations/RunAlignment/varScanMPileup2SNP"
 
 let flags : CompletionFlags = new CompletionFlags();
 let align : AlignData;

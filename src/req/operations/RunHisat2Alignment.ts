@@ -2,20 +2,19 @@ import * as cp from "child_process";
 
 import * as atomic from "./atomicOperations";
 import {AtomicOperationForkEvent} from "../atomicOperationsIPC";
-import {getReadable} from "../getAppPath";
-import {Fasta,getFaiPath} from "../fasta";
+import {Fasta} from "../fasta";
 import {Fastq} from "../fastq";
 import {getPath} from "../file";
 import {AlignData,getArtifactDir} from "../alignData"
 
-export class RunBowtie2Alignment extends atomic.AtomicOperation
+export class RunHisat2Alignment extends atomic.AtomicOperation
 {
     public alignData : AlignData;
     public fasta : Fasta;
     public fastq1 : Fastq;
     public fastq2 : Fastq;
 
-    public runBowtie2AlignmentProcess : cp.ChildProcess;
+    public runHisat2AlignmentProcess : cp.ChildProcess;
     constructor()
     {
         super();
@@ -43,17 +42,17 @@ export class RunBowtie2Alignment extends atomic.AtomicOperation
         this.closeLogOnFailure = false;
         this.closeLogOnSuccess = false;
         let self = this;
-        this.runBowtie2AlignmentProcess = atomic.makeFork("RunBowtie2Alignment.js",<AtomicOperationForkEvent>{
+        this.runHisat2AlignmentProcess = atomic.makeFork("RunHisat2Alignment.js",<AtomicOperationForkEvent>{
             setData : true,
             data : {
                 alignData : self.alignData
             },
             name : self.name,
-            description : "Run Bowtie2 Alignment"
+            description : "Run Hisat2 Alignment"
         },function(ev : AtomicOperationForkEvent){
             if(ev.finishedSettingData == true)
             {
-                self.runBowtie2AlignmentProcess.send(
+                self.runHisat2AlignmentProcess.send(
                     <AtomicOperationForkEvent>{
                         run : true
                     }
@@ -82,6 +81,6 @@ export class RunBowtie2Alignment extends atomic.AtomicOperation
                 self.update();
             }
         });
-        this.addPID(this.runBowtie2AlignmentProcess.pid);
+        this.addPID(this.runHisat2AlignmentProcess.pid);
     }
 }
