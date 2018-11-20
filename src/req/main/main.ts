@@ -21,6 +21,7 @@ import * as atomicOp from "./../operations/atomicOperations";
 import {AtomicOperationIPC} from "./../atomicOperationsIPC";
 import {GenerateQCReport} from "./../operations/GenerateQCReport";
 import {IndexFastaForBowtie2Alignment} from "../operations/indexFastaForBowtie2Alignment";
+import {IndexFastaForHisat2Alignment} from "../operations/indexFastaForHisat2Alignment";
 import {IndexFastaForVisualization} from "./../operations/indexFastaForVisualization";
 import {RunBowtie2Alignment} from "../operations/RunBowtie2Alignment";
 import {RenderCoverageTrackForContig} from "./../operations/RenderCoverageTrack";
@@ -62,8 +63,6 @@ import {CircularFigure} from "./../renderer/circularFigure";
 import {PIDInfo} from "./../PIDInfo";
 import {finishLoadingProject} from "./finishLoadingProject";
 
-
-
 import {GetKeyEvent,SaveKeyEvent,KeySubEvent} from "./../ipcEvents";
 
 var pjson = require('./package.json');
@@ -81,7 +80,6 @@ import "./logViewer";
 import "./procMgr";
 import "./noSamHeaderPrompt";
 
-
 app.on
 (
 	'ready',function()
@@ -94,6 +92,7 @@ app.on
 		
 		atomicOp.register("generateFastQCReport",GenerateQCReport);
 		atomicOp.register("indexFastaForBowtie2Alignment",IndexFastaForBowtie2Alignment);
+		atomicOp.register("indexFastaForHisat2Alignment",IndexFastaForHisat2Alignment);
 		atomicOp.register("indexFastaForVisualization",IndexFastaForVisualization);
 		atomicOp.register("runBowtie2Alignment",RunBowtie2Alignment);
 		atomicOp.register("renderCoverageTrackForContig",RenderCoverageTrackForContig);
@@ -299,7 +298,7 @@ ipc.on(
 		console.log(arg);
 		dataMgr.setKey("application","operations",atomicOp.operationsQueue);
 		winMgr.publishChangeForKey("application","operations");
-		if(arg.opName =="indexFastaForBowtie2Alignment" || arg.opName == "indexFastaForVisualization" || arg.opName == "generateFastQCReport")
+		if(arg.opName =="indexFastaForBowtie2Alignment" || arg.opName == "indexFastaForHisat2Alignment" || arg.opName == "indexFastaForVisualization" || arg.opName == "generateFastQCReport")
 		{
 			let list : Array<File> = dataMgr.getKey(arg.channel,arg.key);
 			for(let i : number = 0; i != list.length; ++i)
@@ -605,6 +604,7 @@ ipc.on(
 		winMgr.publishChangeForKey("application","operations");
 	}
 );
+
 atomicOp.updates.on(
 	"indexFastaForBowtie2Alignment",function(op : IndexFastaForBowtie2Alignment)
 	{
@@ -629,6 +629,32 @@ atomicOp.updates.on(
 		}
 	}
 );
+
+atomicOp.updates.on(
+	"indexFastaForHisat2Alignment",function(op : IndexFastaForHisat2Alignment)
+	{
+		dataMgr.setKey("application","operations",atomicOp.operationsQueue);
+		winMgr.publishChangeForKey("application","operations");
+		if(op.flags.success)
+		{
+			let fasta : Fasta = op.fasta;
+			let fastaInputs : Array<Fasta> = dataMgr.getKey("input","fastaInputs");
+			for(let i = 0; i != fastaInputs.length; ++i)
+			{
+				if(fastaInputs[i].uuid == fasta.uuid)
+				{
+					fastaInputs[i].indexed = true;
+					fastaInputs[i].contigs = fasta.contigs;
+					break;
+				}
+			}
+
+			dataMgr.setKey("input","fastaInputs",fastaInputs);
+			winMgr.publishChangeForKey("input","fastaInputs");
+		}
+	}
+);
+
 atomicOp.updates.on(
 	"indexFastaForVisualization",function(op : IndexFastaForVisualization)
 	{
@@ -653,6 +679,7 @@ atomicOp.updates.on(
 		}
 	}
 );
+
 atomicOp.updates.on(
 	"generateFastQCReport",function(op : atomicOp.AtomicOperation)
 	{
@@ -676,6 +703,7 @@ atomicOp.updates.on(
 		}
 	}
 );
+
 atomicOp.updates.on(
 	"runBowtie2Alignment",function(op : RunBowtie2Alignment)
 	{
@@ -693,6 +721,7 @@ atomicOp.updates.on(
 		}
 	}
 );
+
 atomicOp.updates.on(
 	"renderCoverageTrackForContig",function(op : RenderCoverageTrackForContig)
 	{
