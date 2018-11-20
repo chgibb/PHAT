@@ -5,6 +5,7 @@ import {IndexFastaForBowtie2Alignment} from "../operations/indexFastaForBowtie2A
 import {IndexFastaForHisat2Alignment} from "../operations/indexFastaForHisat2Alignment";
 import {IndexFastaForVisualization} from "./../operations/indexFastaForVisualization";
 import {RunBowtie2Alignment} from "../operations/RunBowtie2Alignment";
+import {RunHisat2Alignment} from "../operations/RunHisat2Alignment";
 import {RenderCoverageTrackForContig} from "./../operations/RenderCoverageTrack";
 import {RenderSNPTrackForContig} from "./../operations/RenderSNPTrack";
 import {CheckForUpdate} from "./../operations/CheckForUpdate";
@@ -23,6 +24,7 @@ export function registerOperations() : void
     atomic.register("indexFastaForBowtie2Alignment",IndexFastaForBowtie2Alignment);
     atomic.register("indexFastaForVisualization",IndexFastaForVisualization);
     atomic.register("runBowtie2Alignment",RunBowtie2Alignment);
+    atomic.register("runHisat2Alignment",RunHisat2Alignment);
     atomic.register("renderCoverageTrackForContig",RenderCoverageTrackForContig);
     atomic.register("renderSNPTrackForContig",RenderSNPTrackForContig);
     atomic.register("inputBamFile",InputBamFile);

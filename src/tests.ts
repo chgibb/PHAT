@@ -26,11 +26,12 @@ import {testFastQCReportGeneration} from "./req/tests/testFastQCReportGeneration
 import {testHPV16Bowtie2Index} from "./req/tests/testHPV16Bowtie2Index";
 import {testHPV18Bowtie2Index} from "./req/tests/testHPV18Bowtie2Index";
 import {testHPV16Hisat2Index} from "./req/tests/testHPV16Hisat2Index";
-//import {testHPV18Hisat2Index} from "./req/tests/testHPV18Hisat2Index";
+import {testHPV18Hisat2Index} from "./req/tests/testHPV18Hisat2Index";
 import {testHPV16IndexForVisualization} from "./req/tests/testHPV16IndexForVisualization";
 import {testHPV18IndexForVisualization} from "./req/tests/testHPV18IndexForVisualization";
 import {testL6R1HPV16Bowtie2Alignment} from "./req/tests/testL6R1HPV16Bowtie2Alignment";
 import {testL6R1HPV18Bowtie2Alignment} from "./req/tests/testL6R1HPV18Bowtie2Alignment"
+import {testL6R1HPV16Hisat2Alignment} from "./req/tests/testL6R1HPV16Hisat2Alignment";
 import {testL6R1HPV16CoverageTrackRenderer} from "./req/tests/testL6R1HPV16CoverageTrackRender";
 import {testL6R1HPV16SNPTrackRenderer} from "./req/tests/testL6R1HPV16SNPTrackRender";
 import {testL6R1HPV16CoverageTrackCompilation} from "./req/tests/testL6R1HPV16CoverageTrackCompilation";
@@ -143,6 +144,18 @@ async function runTests() : Promise<void>
 			return reject();
 		}
 
+		console.log("Starting to index hpv18 for hisat2");
+		atomic.addOperation("indexFastaForHisat2Alignment",hpv18Ref.get());
+		try
+		{
+			await testHPV18Hisat2Index();
+		}
+		catch(err)
+		{
+			console.log("test index threw exception");
+			return reject();
+		}
+
 		console.log("Starting to index hpv16 for visualization");
 		atomic.addOperation("indexFastaForVisualization",hpv16Ref.get());
 		try
@@ -167,7 +180,26 @@ async function runTests() : Promise<void>
 			return reject();
 		}
 
-		console.log("Starting to align L6R1R1, L6R1R2 against hpv16");
+		console.log("Starting to align L6R1R1, L6R1R2 against hpv16 using hisat2");
+		atomic.addOperation(
+			"runHisat2Alignment",
+			{
+				fasta : hpv16Ref.get(),
+				fastq1 : L6R1R1.get(),
+				fastq2 : L6R1R2.get()
+			}
+		);
+		try
+		{
+			await testL6R1HPV16Hisat2Alignment();
+		}
+		catch(err)
+		{
+			console.log("test alignment threw exception");
+			return reject();
+		}
+
+		console.log("Starting to align L6R1R1, L6R1R2 against hpv16 using bowtie2");
 		atomic.addOperation(
 			"runBowtie2Alignment",
 			{
@@ -186,7 +218,7 @@ async function runTests() : Promise<void>
 			return reject();
 		}
 
-		console.log("Starting to align L6R1R1, L6R1R2 against hpv18");
+		console.log("Starting to align L6R1R1, L6R1R2 against hpv18 using bowtie2");
 		atomic.addOperation(
 			"runBowtie2Alignment",
 			{

@@ -24,6 +24,7 @@ import {IndexFastaForBowtie2Alignment} from "../operations/indexFastaForBowtie2A
 import {IndexFastaForHisat2Alignment} from "../operations/indexFastaForHisat2Alignment";
 import {IndexFastaForVisualization} from "./../operations/indexFastaForVisualization";
 import {RunBowtie2Alignment} from "../operations/RunBowtie2Alignment";
+import {RunHisat2Alignment} from "../operations/RunHisat2Alignment";
 import {RenderCoverageTrackForContig} from "./../operations/RenderCoverageTrack";
 import {RenderSNPTrackForContig} from "./../operations/RenderSNPTrack";
 import {CheckForUpdate} from "./../operations/CheckForUpdate";
@@ -95,6 +96,7 @@ app.on
 		atomicOp.register("indexFastaForHisat2Alignment",IndexFastaForHisat2Alignment);
 		atomicOp.register("indexFastaForVisualization",IndexFastaForVisualization);
 		atomicOp.register("runBowtie2Alignment",RunBowtie2Alignment);
+		atomicOp.register("runHisat2Alignment",RunHisat2Alignment);
 		atomicOp.register("renderCoverageTrackForContig",RenderCoverageTrackForContig);
 		atomicOp.register("renderSNPTrackForContig",RenderSNPTrackForContig);
 
@@ -312,7 +314,7 @@ ipc.on(
 				}
 			}
 		}
-		else if(arg.opName == "runBowtie2Alignment")
+		else if(arg.opName == "runBowtie2Alignment" || arg.opName == "runHisat2Alignment")
 		{
 			console.log("running alignment");
 			atomicOp.addOperation(
@@ -643,7 +645,7 @@ atomicOp.updates.on(
 			{
 				if(fastaInputs[i].uuid == fasta.uuid)
 				{
-					fastaInputs[i].indexed = true;
+					fastaInputs[i].indexedForHisat2 = true;
 					fastaInputs[i].contigs = fasta.contigs;
 					break;
 				}
@@ -706,6 +708,24 @@ atomicOp.updates.on(
 
 atomicOp.updates.on(
 	"runBowtie2Alignment",function(op : RunBowtie2Alignment)
+	{
+		dataMgr.setKey("application","operations",atomicOp.operationsQueue);
+		winMgr.publishChangeForKey("application","operations");
+		if(op.flags.success)
+		{
+			let aligns : Array<AlignData> = dataMgr.getKey("align","aligns");
+			if(aligns == undefined)
+				aligns = new Array<AlignData>();
+
+			aligns.push(op.alignData);
+			dataMgr.setKey("align","aligns",aligns);
+			winMgr.publishChangeForKey("align","aligns");
+		}
+	}
+);
+
+atomicOp.updates.on(
+	"runHisat2Alignment",function(op : RunBowtie2Alignment)
 	{
 		dataMgr.setKey("application","operations",atomicOp.operationsQueue);
 		winMgr.publishChangeForKey("application","operations");

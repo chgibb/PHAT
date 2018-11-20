@@ -55,7 +55,7 @@ export function hisat2Align(alignData : AlignData,logger : atomic.AtomicOperatio
 
         if(process.platform == "win32")
             args.push(getReadable("hisat2"));
-        args.push("--sensitive-local");
+            
         args.push("-x");
         args.push("\""+getReadableAndWritable(`rt/indexes/${alignData.fasta.uuid}`)+"\"");
         if(alignData.fastqs[1])
