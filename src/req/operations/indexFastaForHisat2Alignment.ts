@@ -61,8 +61,6 @@ export class IndexFastaForHisat2Alignment extends atomic.AtomicOperation
         this.hisat2Indices.push(`${this.hisat2IndexPath}.2.ht2${x64}`);
         this.hisat2Indices.push(`${this.hisat2IndexPath}.3.ht2${x64}`);
         this.hisat2Indices.push(`${this.hisat2IndexPath}.4.ht2${x64}`);
-        this.hisat2Indices.push(`${this.hisat2IndexPath}.rev.1.ht2${x64}`);
-        this.hisat2Indices.push(`${this.hisat2IndexPath}.rev.2.ht2${x64}`);
 
         this.destinationArtifacts.concat(this.hisat2Indices);
         
