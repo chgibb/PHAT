@@ -1,6 +1,10 @@
+import * as fs from "fs";
+
 import * as atomic from "../operations/atomicOperations";
 import {RunHisat2Alignment} from "../operations/RunHisat2Alignment";
 import * as L6R1HPV16Align from "./L6R1HPV16Align";
+import * as HPV16Ref from "./hpv16Ref";
+import {getCoverageForContig} from '../alignData';
 
 export async function testL6R1HPV16Hisat2Alignment() : Promise<void>
 {
@@ -65,6 +69,11 @@ export async function testL6R1HPV16Hisat2Alignment() : Promise<void>
                 
                 if(op.alignData.idxStatsReport[0].unMappedReads == 12)
                     console.log(`${op.alignData.alias} has correct number of unmapped reads`);
+                else
+                    return reject();
+                
+                if(fs.existsSync(getCoverageForContig(op.alignData,HPV16Ref.get().contigs[0].uuid)))
+                    console.log(`${op.alignData.alias} coverage depth wrote succesffully`);
                 else
                     return reject();
 

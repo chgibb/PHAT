@@ -52,7 +52,7 @@ function update() : void
 
 
 process.on(
-    "message",function(ev : AtomicOperationForkEvent){
+    "message",async function(ev : AtomicOperationForkEvent){
         if(ev.setData == true)
         {
             logger.logRecord = atomic.openLog(ev.name,ev.description);
@@ -65,73 +65,56 @@ process.on(
         if(ev.run == true)
         {
             update();
-            bowtie2Align(align,logger).then((result) => {
 
-                progressMessage = "Converting SAM to BAM";
-                step++;
-                update();
+            await bowtie2Align(align,logger);
 
-                samToolsView(align,logger).then((result) => {
+            progressMessage = "Converting SAM to BAM";
+            step++;
+            update();
+            await samToolsView(align,logger);
 
-                    progressMessage = "Sorting BAM";
-                    step++;
-                    update();
+            progressMessage = "Sorting BAM";
+            step++;
+            update();
+            await samToolsSort(align,logger);
 
-                    samToolsSort(align,logger).then((result) => {
+            progressMessage = "Indexing BAM";
+            step++;
+            update();
+            await samToolsIndex(align,logger);
 
-                        progressMessage = "Indexing BAM";
-                        step++;
-                        update();
+            progressMessage = "Getting read depth";
+            step++;
+            update();
+            await samToolsDepth(align,logger);
 
-                        samToolsIndex(align,logger).then((result) => {
+            progressMessage = "Creating temporary reference index";
+            step++;
+            update();
+            await samToolsFaidx(align.fasta,logger);
 
-                            progressMessage = "Getting read depth";
-                            step++;
-                            update();
+            progressMessage = "Generating pileup";
+            step++;
+            update();
+            await samToolsMPileup(align,logger);
 
-                            samToolsDepth(align,logger).then((result) => {
+            progressMessage = "Predicting SNPs and indels";
+            step++;
+            update();
+            await varScanMPileup2SNP(align,logger);
 
-                                progressMessage = "Creating temporary reference index";
-                                step++;
-                                update();
+            progressMessage = "Getting mapped reads";
+            step++;
+            update();
+            await samToolsIdxStats(align,logger)
 
-                                samToolsFaidx(align.fasta,logger).then((result) => {
-
-                                    progressMessage = "Generating pileup";
-                                    step++;
-                                    update();
-
-                                    samToolsMPileup(align,logger).then((result) => {
-
-                                        progressMessage = "Predicting SNPs and indels";
-                                        step++;
-                                        update();
-
-                                        varScanMPileup2SNP(align,logger).then((result) => {
-
-                                            progressMessage = "Getting mapped reads";
-                                            step++;
-                                            update();
-
-                                            samToolsIdxStats(align,logger).then((result) => {
-
-                                                step++;
-                                                align.size = getFolderSize(getArtifactDir(align));
-                                                align.sizeString = formatByteString(align.size);
-                                                flags.done = true;
-                                                flags.success = true;
-                                                update();
-                                                atomic.exitFork(0);
-
-                                            });
-                                        });
-                                    });
-                                });
-                            });
-                        });
-                    });
-                });
-            });
+            step++;
+            align.size = getFolderSize(getArtifactDir(align));
+            align.sizeString = formatByteString(align.size);
+            flags.done = true;
+            flags.success = true;
+            update();
+            atomic.exitFork(0);
         }
     }
 );
