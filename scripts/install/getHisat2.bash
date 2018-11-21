@@ -21,4 +21,17 @@ fi
 
 if [[ "$OSTYPE" == "cygwin" ]]; then
 	wget "http://www.di.fc.ul.pt/~afalcao/hisat2.1/hisat2.1_Windows.zip"
+
+    jar xf *.zip
+
+    rm *zip
+    rm *.1
+
+    cp hisat2.1/hisat2 forDist
+    cp hisat2.1/hisat2-build-s.exe forDist
+    cp hisat2.1/hisat2-build-l.exe forDist
+    cp hisat2.1/hisat2-align-s.exe forDist
+    cp hisat2.1/hisat2-align-l.exe forDist
+    cp hisat2.1/hisat2-inspect-s.exe forDist
+    cp hisat2.1/hisat2-inspect-l.exe forDist
 fi
