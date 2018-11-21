@@ -39,7 +39,7 @@ export function writeAlignsModal() : void
         else
         {
             body = `
-                <table style="width:100;">
+                <table style="width:100%;">
                     <tr>
                         <th>Options</th>
                         <th>Name</th>
