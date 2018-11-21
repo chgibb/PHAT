@@ -61,9 +61,10 @@ export function hisat2Align(alignData : AlignData,logger : atomic.AtomicOperatio
         if(alignData.fastqs[1])
         {
             args.push("-1");
-            args.push(getPath(alignData.fastqs[0]));
+            //hisat2 cannot handle spaces in fastq paths unless they're quoted but bowtie2 can for some reason
+            args.push("\""+getPath(alignData.fastqs[0])+"\"");
             args.push("-2");
-            args.push(getPath(alignData.fastqs[1]));
+            args.push("\""+getPath(alignData.fastqs[1])+"\"");
         }
         else
         {
