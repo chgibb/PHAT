@@ -713,6 +713,7 @@ atomicOp.updates.on(
 		winMgr.publishChangeForKey("application","operations");
 		if(op.flags.success)
 		{
+			op.alignData.alignerUsed = "bowtie2";
 			let aligns : Array<AlignData> = dataMgr.getKey("align","aligns");
 			if(aligns == undefined)
 				aligns = new Array<AlignData>();
@@ -731,6 +732,7 @@ atomicOp.updates.on(
 		winMgr.publishChangeForKey("application","operations");
 		if(op.flags.success)
 		{
+			op.alignData.alignerUsed = "hisat2";
 			let aligns : Array<AlignData> = dataMgr.getKey("align","aligns");
 			if(aligns == undefined)
 				aligns = new Array<AlignData>();

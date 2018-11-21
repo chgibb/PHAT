@@ -43,6 +43,7 @@ export function writeAlignsModal() : void
                     <tr>
                         <th>Options</th>
                         <th>Name</th>
+                        <th>Aligner</th>
                         <th>Reads</th>
                         <th>Mates</th>
                         <th>Overall Alignment Rate %</th>
@@ -66,6 +67,7 @@ export function writeAlignsModal() : void
 
                         })()}
                         <td>${aligns[i].alias}</td>
+                        <td>${aligns[i].alignerUsed ? aligns[i].alignerUsed : "bowtie2"}</td>
                         <td>${!aligns[i].isExternalAlignment ? aligns[i].summary.reads : aligns[i].flagStatReport.reads}</td>
                         <td>${!aligns[i].isExternalAlignment ? aligns[i].summary.mates : "Unknown"}</td>
                         <td>${!aligns[i].isExternalAlignment ? aligns[i].summary.overallAlignmentRate : aligns[i].flagStatReport.overallAlignmentRate}</td>
