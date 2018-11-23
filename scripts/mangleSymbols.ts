@@ -10,10 +10,8 @@ export interface MangledSymbol
     fileName : string
 }
 
-export let symbolsToMangle = new Array<MangledSymbol>();
-
 //adapted from https://github.com/mishoo/UglifyJS/blob/master/lib/process.js
-export function getNextMangledSymbol()
+export function getNextMangledSymbol(symbolsToMangle : Array<MangledSymbol>)
 {
     let num = symbolsToMangle.length;
     //let digits = "etnrisouaflchpdvmgybwESxTNCkLAOM_DPHBjFIqRUzWXV$JKQGYZ0516372984";
@@ -30,9 +28,9 @@ export function getNextMangledSymbol()
     return res;
 }
 
-export function addSymbolWithMangleableLinkage(symbol : string,type : SymbolType,fileName : string) : void
+export function addSymbolWithMangleableLinkage(symbol : string,type : SymbolType,fileName : string,symbolsToMangle : Array<MangledSymbol>) : void
 {
-    let exists = symbolWithMangleableLinkageExists(symbol,type);
+    let exists = symbolWithMangleableLinkageExists(symbol,type,symbolsToMangle);
     
     if(exists)
     {
@@ -44,11 +42,11 @@ export function addSymbolWithMangleableLinkage(symbol : string,type : SymbolType
 
     else
     {
-        symbolsToMangle.push({symbol : symbol,type : type,mangled : getNextMangledSymbol(),fileName : fileName});
+        symbolsToMangle.push({symbol : symbol,type : type,mangled : getNextMangledSymbol(symbolsToMangle),fileName : fileName});
     }
 }
 
-export function symbolWithMangleableLinkageExists(symbol : string,type : SymbolType) : MangledSymbol | undefined
+export function symbolWithMangleableLinkageExists(symbol : string,type : SymbolType,symbolsToMangle : Array<MangledSymbol>) : MangledSymbol | undefined
 {
     for(let i = 0; i != symbolsToMangle.length; ++i)
     {
@@ -60,7 +58,7 @@ export function symbolWithMangleableLinkageExists(symbol : string,type : SymbolT
     return undefined;
 }
 
-export function getSymbolWithMangleableLinkage(symbol : string,type : SymbolType) : string
+export function getSymbolWithMangleableLinkage(symbol : string,type : SymbolType,symbolsToMangle : Array<MangledSymbol>) : string
 {
     for(let i = 0; i != symbolsToMangle.length; ++i)
     {
@@ -72,7 +70,7 @@ export function getSymbolWithMangleableLinkage(symbol : string,type : SymbolType
     return "";
 }
 
-export function buildSymbolList(sourceFile : ts.SourceFile) : Promise<number>
+export function buildSymbolList(sourceFile : ts.SourceFile,symbolsToMangle : Array<MangledSymbol>) : Promise<number>
 {
     let found = 0;
     return new Promise<number>((resolve : (value : number) => void) => {
@@ -97,7 +95,7 @@ export function buildSymbolList(sourceFile : ts.SourceFile) : Promise<number>
                                             type = "ClassMethod";
 
                                             
-                                        addSymbolWithMangleableLinkage((node as any).members[i].name.escapedText,type,sourceFile.fileName);
+                                        addSymbolWithMangleableLinkage((node as any).members[i].name.escapedText,type,sourceFile.fileName,symbolsToMangle);
                                     }
                                 }
                             }

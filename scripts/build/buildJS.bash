@@ -24,7 +24,7 @@ if [[ "$1" != "opt" ]]; then
 
 	cd ../
 
-	node scripts/tsBundle src/*.ts --debug --buildCmd="bash scripts/tsBundleDebug.bash"
+	node scripts/tsBundle src/*.ts --debug --buildCmd="bash scripts/tsBundleDebug.bash" --mangleSymbols
 	cp .buildCache/debug/*.js dist
 fi
 

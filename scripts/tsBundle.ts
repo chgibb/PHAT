@@ -7,10 +7,11 @@ import * as ts from "typescript";
 
 const arg = require("minimist")(process.argv.slice(2));
 
-import {buildSymbolList,symbolsToMangle} from "./mangleSymbols";
+import {buildSymbolList,MangledSymbol} from "./mangleSymbols";
 import {mangleSymbolsInFile} from "./mangleSymbolsInFile";
 
 let mode : "debug" | "release";
+let mangleSymbols = false;
 
 if(!fs.existsSync(".buildCache"))
 {
@@ -31,6 +32,10 @@ if(arg.debug)
     mode = "debug";
 if(arg.release)
     mode = "release";
+
+if(arg.mangleSymbols)
+    mangleSymbols = true;
+
 if(!mode)
 {
     console.error("No build mode given");
@@ -42,11 +47,11 @@ if(!arg.buildCmd)
     process.exit(1);
 }
 
-
 interface BuildState
 {
     entryPoints : Array<string>;
     files : {[key : string] : string};
+    symbolsToMangle : Array<MangledSymbol>;
 }
 
 function getJSFileExtension(fileName : string) : string
@@ -92,6 +97,7 @@ let currentBuild : BuildState = <any>{};
 
 currentBuild.entryPoints = arg._;
 currentBuild.files = {};
+currentBuild.symbolsToMangle = new Array<MangledSymbol>();
 
 
 let changedTargets = 0;
@@ -105,18 +111,11 @@ if(mode == "debug")
 if(mode == "release")
     console.log(`${currentBuild.entryPoints.length} Release Targets`);
 
-function updateBuildProgress() : void
+function updateProgress() : void
 {
     readline.clearLine(process.stdout,0);
     readline.cursorTo(process.stdout,0,null);
-    process.stdout.write(`${changedTargets} changed targets, ${upToDate} up-to-date targets, ${newlyBuiltTargets} newly built targets`);
-}
-
-function updateMangleProgress() : void
-{
-    readline.clearLine(process.stdout,0);
-    readline.cursorTo(process.stdout,0,null);
-    process.stdout.write(`${symbolsToMangle.length} symbols with mangleable linkage, ${mangledSymbols} mangled references`);
+    process.stdout.write(`${changedTargets} changed targets, ${upToDate} up-to-date targets, ${newlyBuiltTargets} newly built targets. ${currentBuild.symbolsToMangle.length} symbols with mangleable linkage, ${mangledSymbols} mangled references`);
 }
 
 function gatherSymbolsToMangle() : Promise<void>
@@ -124,34 +123,34 @@ function gatherSymbolsToMangle() : Promise<void>
     return new Promise<void>(async (resolve : () => void) => {
         for(let i = 0; i != currentBuild.entryPoints.length; ++i)
         {
-            updateMangleProgress();
+            updateProgress();
             const sources = ts.createProgram([currentBuild.entryPoints[i]],tsconfig).getSourceFiles();
-            updateMangleProgress();
+            updateProgress();
             for(let k = 0; k != sources.length; ++k)
             {
-                await buildSymbolList(sources[k]);
-                updateMangleProgress();
+                await buildSymbolList(sources[k],currentBuild.symbolsToMangle);
+                updateProgress();
             }
         }
         return resolve();
     });
 }
 
-function mangleReferences() : Promise<void>
+function mangleReferences(symbolsToMangle : Array<MangledSymbol>) : Promise<void>
 {
     return new Promise<void>(async (resolve : () => void) => {
         for(let i = 0; i != currentBuild.entryPoints.length; ++i)
         {
-            updateMangleProgress();
+            updateProgress();
             const sources = ts.createProgram([currentBuild.entryPoints[i]],tsconfig).getSourceFiles();
             for(let k = 0; k != sources.length; ++k)
             {
                 if(fs.existsSync(getJSFileExtension(sources[k].fileName)))
                 {
-                    let res = await mangleSymbolsInFile(fs.readFileSync(getJSFileExtension(sources[k].fileName)).toString());
+                    let res = await mangleSymbolsInFile(fs.readFileSync(getJSFileExtension(sources[k].fileName)).toString(),symbolsToMangle);
                     fs.writeFileSync(getJSFileExtension(sources[k].fileName),res.res);
                     mangledSymbols += res.num;
-                    updateMangleProgress();
+                    updateProgress();
                 }
             }
         }
@@ -160,20 +159,19 @@ function mangleReferences() : Promise<void>
 }
 
 (async function(){
-    await gatherSymbolsToMangle();
-    await mangleReferences();
-    console.log();
-    //console.log(`${symbolsToMangle.length} mangleable symbols`);
+    if(mangleSymbols)
+    {
+        await gatherSymbolsToMangle();
+        await mangleReferences(currentBuild.symbolsToMangle);
+    }
 
     let newSymbols = false;
-
-    let oldSymbols = new Array();
-    if(fs.existsSync(".buildCache/symbolsToMangle.json"))
-        oldSymbols = JSON.parse(fs.readFileSync(".buildCache/symbolsToMangle.json").toString());
     
-    if(oldSymbols.length != symbolsToMangle.length)
+    if(!oldBuild.symbolsToMangle && currentBuild.symbolsToMangle)
         newSymbols = true;
-
+    else if(oldBuild.symbolsToMangle && currentBuild.symbolsToMangle && oldBuild.symbolsToMangle.length != currentBuild.symbolsToMangle.length)
+        newSymbols = true;
+        
     for(let i = 0; i != currentBuild.entryPoints.length; ++i)
     {
         let rebuildEntryPoint = false;
@@ -203,7 +201,7 @@ function mangleReferences() : Promise<void>
         {
             changedTargets++;
             runningBuilds.push(build(getJSFileExtension(currentBuild.entryPoints[i])));
-            updateBuildProgress();
+            updateProgress();
         }
 
         else if(mode == "debug")
@@ -213,12 +211,12 @@ function mangleReferences() : Promise<void>
             {
                 runningBuilds.push(build(getJSFileExtension(currentBuild.entryPoints[i])));
                 newlyBuiltTargets++;
-                updateBuildProgress();
+                updateProgress();
             }
             else
             {
                 upToDate++;
-                updateBuildProgress();
+                updateProgress();
             }
         }
 
@@ -228,12 +226,12 @@ function mangleReferences() : Promise<void>
             {
                 runningBuilds.push(build(getJSFileExtension(currentBuild.entryPoints[i])));
                 newlyBuiltTargets++;
-                updateBuildProgress();
+                updateProgress();
             }
             else
             {
                 upToDate++;
-                updateBuildProgress();
+                updateProgress();
             }
         }
     }
@@ -244,8 +242,6 @@ function mangleReferences() : Promise<void>
         fs.writeFileSync(".buildCache/release/oldBuild.json",JSON.stringify(currentBuild,undefined,4));
 
     await Promise.all(runningBuilds);
-
-    fs.writeFileSync(".buildCache/symbolsToMangle.json",JSON.stringify(symbolsToMangle,undefined,4));
 
     process.stdout.write("\n");
 })().catch((err) => {
