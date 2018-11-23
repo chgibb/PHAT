@@ -105,10 +105,13 @@ export class IndexFastaForBowtie2Alignment extends atomic.AtomicOperation
                     self.setSuccess(self.flags);
                     self.fasta.indexed = true;
                     self.update();
+
+                    return resolve();
                 }
                 catch(err)
                 {
                     self.abortOperationWithMessage(err);
+                    return reject(err);
                 }
             });
         })();
