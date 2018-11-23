@@ -20,18 +20,24 @@ if [[ "$OSTYPE" == "linux-gnu" ]]; then
 fi
 
 if [[ "$OSTYPE" == "cygwin" ]]; then
+    wget "http://ccb.jhu.edu/software/hisat2/dl/hisat2-2.1.0-Linux_x86_64.zip"
 	wget "http://www.di.fc.ul.pt/~afalcao/hisat2.1/hisat2.1_Windows.zip"
 
-    jar xf *.zip
+    jar xf hisat2.1_Windows.zip
 
-    rm *zip
-    rm *.1
+    jar xf hisat2-2.1.0-Linux_x86_64.zip
 
     cp hisat2.1/hisat2 forDist
+    cp hisat2-2.1.0//hisat2-build forDist
     cp hisat2.1/hisat2-build-s.exe forDist
     cp hisat2.1/hisat2-build-l.exe forDist
     cp hisat2.1/hisat2-align-s.exe forDist
     cp hisat2.1/hisat2-align-l.exe forDist
     cp hisat2.1/hisat2-inspect-s.exe forDist
     cp hisat2.1/hisat2-inspect-l.exe forDist
+
+    rm *zip
+
+    rm -rf hisat2-2.1.0
+    rm -rf hisat2.1
 fi
