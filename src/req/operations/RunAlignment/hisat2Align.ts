@@ -26,8 +26,6 @@ export function hisat2Align(alignData : AlignData,logger : atomic.AtomicOperatio
             hisat2Exe = getReadable('hisat2');
         else if(process.platform == "win32")
             hisat2Exe = getReadable("hisat2-align-s.exe");  
-        //else if(process.platform == "win32")
-         //   hisat2Exe = getReadable('perl/perl/bin/perl.exe');
 
         let jobCallBack : JobCallBackObject = {
             send(channel : string,params : SpawnRequestParams)
@@ -54,9 +52,6 @@ export function hisat2Align(alignData : AlignData,logger : atomic.AtomicOperatio
         
 
         let args : Array<string> = new Array<string>();
-
-        //if(process.platform == "win32")
-         //   args.push(getReadable("hisat2"));
             
         args.push("-x");
         if(process.platform == "linux")
