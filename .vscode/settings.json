@@ -5,6 +5,7 @@
         "**/.git/subtree-cache/**": true,
         "**/node_modules/**": true,
         "**/phat-linux-x64/**": true,
+        "**/phat-win32-x64/**": true,
         "**/src/*.js": true,
         "**/not_node_modules": true,
         "**/tests/**": true,
