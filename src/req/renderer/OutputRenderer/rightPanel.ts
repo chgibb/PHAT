@@ -43,6 +43,7 @@ export class AlignmentInfoSelection
     public alias : boolean;
     public sizeInBytes : boolean;
     public formattedSize : boolean;
+    public aligner : boolean;
     public reads : boolean;
     public mates : boolean;
     public overallAlignmentRate : boolean;
@@ -61,6 +62,7 @@ export class AlignmentInfoSelection
         this.fullName = false;
         this.sizeInBytes = false;
         this.formattedSize = true;
+        this.aligner = true;
         this.reads = true;
         this.mates = true;
         this.overallAlignmentRate = true;
@@ -222,6 +224,7 @@ export class View extends viewMgr.View
                 {
                     res += `
                         <input type="checkbox" id="alias">Alias</input>
+                        <input type="checkbox" id="aligner">Aligner</input>
                         <input type="checkbox" id="sizeInBytes">Size In Bytes</input>
                         <input type="checkbox" id="formattedSize">Formatted Size</input>
                         <br />

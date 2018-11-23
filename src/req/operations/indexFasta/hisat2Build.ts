@@ -1,20 +1,20 @@
 import * as fs from "fs";
 
 import {getReadable} from "./../../getAppPath";
-import {IndexFastaForBowtie2Alignment} from "../indexFastaForBowtie2Alignment";
+import {IndexFastaForHisat2Alignment} from "../indexFastaForHisat2Alignment";
 import {getPath} from "./../../file";
 
 import {SpawnRequestParams} from "./../../JobIPC";
 import {Job,JobCallBackObject} from "./../../main/Job";
 
 /**
- * Builds a bowtie2 index
+ * Builds a hisat2 index
  * 
  * @export
- * @param {IndexFastaForBowtie2Alignment} op 
+ * @param {IndexFastaForHisat2Alignment} op 
  * @returns {(Promise<string | undefined>)} 
  */
-export function bowTie2Build(op : IndexFastaForBowtie2Alignment) : Promise<string | undefined>
+export function hisat2Build(op : IndexFastaForHisat2Alignment) : Promise<string | undefined>
 {
     return new Promise((resolve,reject) => {
         let jobCallBack : JobCallBackObject = {
@@ -29,14 +29,14 @@ export function bowTie2Build(op : IndexFastaForBowtie2Alignment) : Promise<strin
                             function(){
                                 try
                                 {
-                                    for(let i : number = 0; i != op.bowtieIndices.length; ++i)
+                                    for(let i : number = 0; i != op.hisat2Indices.length; ++i)
                                     {
-                                        fs.accessSync(`${op.bowtieIndices[i]}`,fs.constants.F_OK | fs.constants.R_OK);
+                                        fs.accessSync(`${op.hisat2Indices[i]}`,fs.constants.F_OK | fs.constants.R_OK);
                                     }
                                 }
                                 catch(err)
                                 {
-                                    reject(`Failed to write all bowtie2 indices for ${op.fasta.alias}`);
+                                    reject(`Failed to write all hisat2 indices for ${op.fasta.alias}${"\n"}${err}`);
                                 }
                                 resolve();
                             },5000
@@ -44,27 +44,27 @@ export function bowTie2Build(op : IndexFastaForBowtie2Alignment) : Promise<strin
                     }
                     else
                     {
-                        return reject(params.data)
+                        return reject(params.data);
                     }
                 }
             }
         }
-        let bowTieArgs : Array<string> = new Array<string>();
+        let hisat2Args : Array<string> = new Array<string>();
         if(process.platform == "linux")
-            bowTieArgs = [getPath(op.fasta),op.bowTieIndexPath];
+            hisat2Args = [getPath(op.fasta),op.hisat2IndexPath];
         else if(process.platform == "win32")
         {
-            bowTieArgs = [
-                getReadable(`bowtie2-build`),
+            hisat2Args = [
+                getReadable(`hisat2-build`),
                 `"${getPath(op.fasta)}"`,
-                `"${op.bowTieIndexPath}"`
+                `"${op.hisat2IndexPath}"`
             ];
         }
-        op.bowtieJob = new Job(op.bowtie2BuildExe,bowTieArgs,"",true,jobCallBack,{});
+        op.hisat2Job = new Job(op.hisat2BuildExe,hisat2Args,"",true,jobCallBack,{});
         try
         {
-            op.bowtieJob.Run();
-            op.addPIDFromFork(op.bowtieJob.pid);
+            op.hisat2Job.Run();
+            op.addPIDFromFork(op.hisat2Job.pid);
         }
         catch(err)
         {
