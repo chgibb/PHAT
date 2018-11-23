@@ -34,7 +34,7 @@ export function samToolsFaidx(fasta : Fasta,logger : atomic.AtomicOperation) : P
                                 {
                                     fse.copy(`${getPath(fasta)}.fai`,getFaiPath(fasta),function(err : string){
                                         if(err)
-                                            reject(err);
+                                            return reject(err);
                                         resolve();
                                     });
                                 }
