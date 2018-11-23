@@ -19,6 +19,7 @@ export class BLASTSegment extends atomic.AtomicOperation
         super();
     }
 
+    @Mangle
     public setData(data : {
         align : AlignData,
         start : number,

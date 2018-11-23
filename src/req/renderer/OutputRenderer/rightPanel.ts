@@ -1,6 +1,7 @@
 import * as viewMgr from "./../viewMgr";
 import * as masterView from "./masterView";
 import * as reportView from "./reportView";
+import {Mangle} from "./../../mangle";
 import {CSVExportDialog} from "./CSVExportDialog";
 import {XLSExportDialog} from "./XLSExportDialog";
 
@@ -160,12 +161,25 @@ export class BLASTSingleRunInfoSelection
 
 export class View extends viewMgr.View
 {
+    @Mangle
     public fastQInfoSelection : FastQInfoSelection;
+
+    @Mangle
     public refSeqInfoSelection : FastaInfoSelection;
+
+    @Mangle
     public alignmentInfoSelection : AlignmentInfoSelection;
+
+    @Mangle
     public snpPositionsInfoSelection : SNPPositionsInfoSelection;
+
+    @Mangle
     public mapppedReadsPerContigInfoSelection : MappedReadsPerContigInfoSelection;
+
+    @Mangle
     public BLASTRunsInfoSelection : BLASTRunsInfoSelection;
+
+    @Mangle
     public BLASTSingleRunInfoSelection : BLASTSingleRunInfoSelection;
     public constructor(name : string,div : string)
     {
