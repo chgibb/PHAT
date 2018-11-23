@@ -42,6 +42,10 @@ export function bowTie2Build(op : IndexFastaForBowtie2Alignment) : Promise<strin
                             },5000
                         );
                     }
+                    else
+                    {
+                        return reject(params.data)
+                    }
                 }
             }
         }

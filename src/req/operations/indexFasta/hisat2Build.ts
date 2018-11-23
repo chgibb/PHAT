@@ -42,6 +42,10 @@ export function hisat2Build(op : IndexFastaForHisat2Alignment) : Promise<string 
                             },5000
                         );
                     }
+                    else
+                    {
+                        return reject(params.data);
+                    }
                 }
             }
         }
