@@ -7,7 +7,7 @@ import {Fastq} from "./../../fastq";
 import {Fasta} from "./../../fasta";
 import {AtomicOperationIPC} from "./../../atomicOperationsIPC";
 import {AtomicOperation} from "./../../operations/atomicOperations";
-import {RunAlignment} from "./../../operations/RunAlignment";
+import {RunBowtie2Alignment} from "../../operations/RunBowtie2Alignment";
 import {getReadable} from "./../../getAppPath";
 import {Mangle} from '../../mangle';
 export class ReportView extends viewMgr.View
@@ -74,7 +74,7 @@ export class ReportView extends viewMgr.View
                 `;
                 for(let i = 0; i != this.fastaInputs.length; ++i)
                 {
-                    if(!this.fastaInputs[i].indexed || !this.fastaInputs[i].checked)
+                    if(!this.fastaInputs[i].checked)
                         continue;
                     res += `<tr>`;
                     if(this.selectedFasta && this.fastaInputs[i].uuid == this.selectedFasta.uuid)
@@ -111,6 +111,11 @@ export class ReportView extends viewMgr.View
                     if(validSelection && this.shouldAllowTriggeringOps)
                     {
                         res += `
+                            <h3>Using</h3>
+                            <input type="radio" name="alignerSelect" id="bowtie2Radio" checked="checked">Bowtie2</input>
+                            <input type="radio" name="alignerSelect" id="hisat2Radio">Hisat2</input>
+                            <br />
+                            <br />
                             <img id="alignButton" src="${getReadable("img/alignButton.png")}" class="activeHover activeHoverButton">
                         `;
                     }
@@ -139,17 +144,61 @@ export class ReportView extends viewMgr.View
     {
         if(event.target.id == "alignButton")
         {
-            ipc.send(
-                "runOperation",
-                <AtomicOperationIPC>{
-                    opName : "runAlignment",
-                    alignParams : {
-                        fasta : this.selectedFasta,
-                        fastq1 : this.selectedFastq1,
-                        fastq2 : this.selectedFastq2
-                    }
+            if((<HTMLInputElement>document.getElementById("bowtie2Radio")).checked)
+            {
+                if(!this.selectedFasta.indexed)
+                {
+                    ipc.send(
+                        "runOperation",
+                        <AtomicOperationIPC>{
+                            opName : "indexFastaForBowtie2Alignment",
+                            channel : "input",
+                            key : "fastaInputs",
+                            uuid : this.selectedFasta.uuid
+                        }
+                    );
                 }
-            );
+
+                ipc.send(
+                    "runOperation",
+                    <AtomicOperationIPC>{
+                        opName : "runBowtie2Alignment",
+                        alignParams : {
+                            fasta : this.selectedFasta,
+                            fastq1 : this.selectedFastq1,
+                            fastq2 : this.selectedFastq2
+                        }
+                    }
+                );
+            }
+
+            else if((<HTMLInputElement>document.getElementById("hisat2Radio")).checked)
+            {
+                if(!this.selectedFasta.indexedForHisat2)
+                {
+                    ipc.send(
+                        "runOperation",
+                        <AtomicOperationIPC>{
+                            opName : "indexFastaForHisat2Alignment",
+                            channel : "input",
+                            key : "fastaInputs",
+                            uuid : this.selectedFasta.uuid
+                        }
+                    );
+                }
+
+                ipc.send(
+                    "runOperation",
+                    <AtomicOperationIPC>{
+                        opName : "runHisat2Alignment",
+                        alignParams : {
+                            fasta : this.selectedFasta,
+                            fastq1 : this.selectedFastq1,
+                            fastq2 : this.selectedFastq2
+                        }
+                    }
+                );
+            }
         }
         if(this.selectedFastq1 && event.target.id == this.selectedFastq1.uuid)
         {

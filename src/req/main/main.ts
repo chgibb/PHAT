@@ -20,9 +20,11 @@ import * as dataMgr from "./dataMgr";
 import * as atomicOp from "./../operations/atomicOperations";
 import {AtomicOperationIPC} from "./../atomicOperationsIPC";
 import {GenerateQCReport} from "./../operations/GenerateQCReport";
-import {IndexFastaForAlignment} from "./../operations/indexFastaForAlignment";
+import {IndexFastaForBowtie2Alignment} from "../operations/indexFastaForBowtie2Alignment";
+import {IndexFastaForHisat2Alignment} from "../operations/indexFastaForHisat2Alignment";
 import {IndexFastaForVisualization} from "./../operations/indexFastaForVisualization";
-import {RunAlignment} from "./../operations/RunAlignment";
+import {RunBowtie2Alignment} from "../operations/RunBowtie2Alignment";
+import {RunHisat2Alignment} from "../operations/RunHisat2Alignment";
 import {RenderCoverageTrackForContig} from "./../operations/RenderCoverageTrack";
 import {RenderSNPTrackForContig} from "./../operations/RenderSNPTrack";
 import {CheckForUpdate} from "./../operations/CheckForUpdate";
@@ -62,8 +64,6 @@ import {CircularFigure} from "./../renderer/circularFigure";
 import {PIDInfo} from "./../PIDInfo";
 import {finishLoadingProject} from "./finishLoadingProject";
 
-
-
 import {GetKeyEvent,SaveKeyEvent,KeySubEvent} from "./../ipcEvents";
 
 var pjson = require('./package.json');
@@ -81,7 +81,6 @@ import "./logViewer";
 import "./procMgr";
 import "./noSamHeaderPrompt";
 
-
 app.on
 (
 	'ready',function()
@@ -93,9 +92,11 @@ app.on
 		winMgr.windowCreators["projectSelection"].Create();
 		
 		atomicOp.register("generateFastQCReport",GenerateQCReport);
-		atomicOp.register("indexFastaForAlignment",IndexFastaForAlignment);
+		atomicOp.register("indexFastaForBowtie2Alignment",IndexFastaForBowtie2Alignment);
+		atomicOp.register("indexFastaForHisat2Alignment",IndexFastaForHisat2Alignment);
 		atomicOp.register("indexFastaForVisualization",IndexFastaForVisualization);
-		atomicOp.register("runAlignment",RunAlignment);
+		atomicOp.register("runBowtie2Alignment",RunBowtie2Alignment);
+		atomicOp.register("runHisat2Alignment",RunHisat2Alignment);
 		atomicOp.register("renderCoverageTrackForContig",RenderCoverageTrackForContig);
 		atomicOp.register("renderSNPTrackForContig",RenderSNPTrackForContig);
 
@@ -299,7 +300,7 @@ ipc.on(
 		console.log(arg);
 		dataMgr.setKey("application","operations",atomicOp.operationsQueue);
 		winMgr.publishChangeForKey("application","operations");
-		if(arg.opName =="indexFastaForAlignment" || arg.opName == "indexFastaForVisualization" || arg.opName == "generateFastQCReport")
+		if(arg.opName =="indexFastaForBowtie2Alignment" || arg.opName == "indexFastaForHisat2Alignment" || arg.opName == "indexFastaForVisualization" || arg.opName == "generateFastQCReport")
 		{
 			let list : Array<File> = dataMgr.getKey(arg.channel,arg.key);
 			for(let i : number = 0; i != list.length; ++i)
@@ -313,7 +314,7 @@ ipc.on(
 				}
 			}
 		}
-		else if(arg.opName == "runAlignment")
+		else if(arg.opName == "runBowtie2Alignment" || arg.opName == "runHisat2Alignment")
 		{
 			console.log("running alignment");
 			atomicOp.addOperation(
@@ -605,8 +606,9 @@ ipc.on(
 		winMgr.publishChangeForKey("application","operations");
 	}
 );
+
 atomicOp.updates.on(
-	"indexFastaForAlignment",function(op : IndexFastaForAlignment)
+	"indexFastaForBowtie2Alignment",function(op : IndexFastaForBowtie2Alignment)
 	{
 		dataMgr.setKey("application","operations",atomicOp.operationsQueue);
 		winMgr.publishChangeForKey("application","operations");
@@ -629,6 +631,32 @@ atomicOp.updates.on(
 		}
 	}
 );
+
+atomicOp.updates.on(
+	"indexFastaForHisat2Alignment",function(op : IndexFastaForHisat2Alignment)
+	{
+		dataMgr.setKey("application","operations",atomicOp.operationsQueue);
+		winMgr.publishChangeForKey("application","operations");
+		if(op.flags.success)
+		{
+			let fasta : Fasta = op.fasta;
+			let fastaInputs : Array<Fasta> = dataMgr.getKey("input","fastaInputs");
+			for(let i = 0; i != fastaInputs.length; ++i)
+			{
+				if(fastaInputs[i].uuid == fasta.uuid)
+				{
+					fastaInputs[i].indexedForHisat2 = true;
+					fastaInputs[i].contigs = fasta.contigs;
+					break;
+				}
+			}
+
+			dataMgr.setKey("input","fastaInputs",fastaInputs);
+			winMgr.publishChangeForKey("input","fastaInputs");
+		}
+	}
+);
+
 atomicOp.updates.on(
 	"indexFastaForVisualization",function(op : IndexFastaForVisualization)
 	{
@@ -653,6 +681,7 @@ atomicOp.updates.on(
 		}
 	}
 );
+
 atomicOp.updates.on(
 	"generateFastQCReport",function(op : atomicOp.AtomicOperation)
 	{
@@ -676,13 +705,15 @@ atomicOp.updates.on(
 		}
 	}
 );
+
 atomicOp.updates.on(
-	"runAlignment",function(op : RunAlignment)
+	"runBowtie2Alignment",function(op : RunBowtie2Alignment)
 	{
 		dataMgr.setKey("application","operations",atomicOp.operationsQueue);
 		winMgr.publishChangeForKey("application","operations");
 		if(op.flags.success)
 		{
+			op.alignData.alignerUsed = "bowtie2";
 			let aligns : Array<AlignData> = dataMgr.getKey("align","aligns");
 			if(aligns == undefined)
 				aligns = new Array<AlignData>();
@@ -693,6 +724,26 @@ atomicOp.updates.on(
 		}
 	}
 );
+
+atomicOp.updates.on(
+	"runHisat2Alignment",function(op : RunBowtie2Alignment)
+	{
+		dataMgr.setKey("application","operations",atomicOp.operationsQueue);
+		winMgr.publishChangeForKey("application","operations");
+		if(op.flags.success)
+		{
+			op.alignData.alignerUsed = "hisat2";
+			let aligns : Array<AlignData> = dataMgr.getKey("align","aligns");
+			if(aligns == undefined)
+				aligns = new Array<AlignData>();
+
+			aligns.push(op.alignData);
+			dataMgr.setKey("align","aligns",aligns);
+			winMgr.publishChangeForKey("align","aligns");
+		}
+	}
+);
+
 atomicOp.updates.on(
 	"renderCoverageTrackForContig",function(op : RenderCoverageTrackForContig)
 	{

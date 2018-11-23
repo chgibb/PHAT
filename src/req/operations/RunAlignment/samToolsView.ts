@@ -3,7 +3,7 @@ import {getReadable} from "./../../getAppPath";
 import {AlignData,getSam,getUnSortedBam} from "./../../alignData";
 import {SpawnRequestParams} from "./../../JobIPC";
 import {Job,JobCallBackObject} from "./../../main/Job";
-import {parseBowTie2AlignmentReport} from "./../../bowTie2AlignmentReportParser";
+import {parseBowtie2AlignmentReport} from "./../../bowTie2AlignmentReportParser";
 
 /**
  * Produce an unsorted bam from the sam managed by alignData. fastaPath should be provided to properly convert
@@ -40,7 +40,7 @@ export function samToolsView(alignData : AlignData,logger : atomic.AtomicOperati
                 }
             }
         }
-        alignData.summary = parseBowTie2AlignmentReport(alignData.summaryText);
+        alignData.summary = parseBowtie2AlignmentReport(alignData.summaryText);
         let samToolsViewJob : Job;
         if(!fastaPath)
         {

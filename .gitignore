@@ -22,6 +22,7 @@ forDist/FastQC/**
 forDist/linux/samtools
 forDist/win32/*.exe
 forDist/bootstrap.min.css
+forDist/hisat2*
 src/installUpdateProcess/*.dll
 \.idea/
 src/**/*.js

@@ -1,10 +1,10 @@
-import * as atomic from "./../operations/atomicOperations";
-import {IndexFastaForAlignment} from "./../operations/indexFastaForAlignment";
+import * as atomic from "../operations/atomicOperations";
+import {IndexFastaForHisat2Alignment} from "../operations/indexFastaForHisat2Alignment";
 import * as hpv16Ref from "./hpv16Ref";
-export async function testHPV16Index() : Promise<void>
+export async function testHPV16Hisat2Index() : Promise<void>
 {
     return new Promise<void>((resolve,reject) => {
-        atomic.updates.removeAllListeners().on("indexFastaForAlignment",function(op : IndexFastaForAlignment){
+        atomic.updates.removeAllListeners().on("indexFastaForHisat2Alignment",function(op : IndexFastaForHisat2Alignment){
             if(op.flags.failure)
             {
                 console.log(`Failed to index ${op.fasta.alias}`);
