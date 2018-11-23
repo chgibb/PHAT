@@ -25,7 +25,9 @@ export function hisat2Align(alignData : AlignData,logger : atomic.AtomicOperatio
         if(process.platform == "linux")
             hisat2Exe = getReadable('hisat2');
         else if(process.platform == "win32")
-            hisat2Exe = getReadable('perl/perl/bin/perl.exe');
+            hisat2Exe = getReadable("hisat2-align-s.exe");  
+        //else if(process.platform == "win32")
+         //   hisat2Exe = getReadable('perl/perl/bin/perl.exe');
 
         let jobCallBack : JobCallBackObject = {
             send(channel : string,params : SpawnRequestParams)
@@ -53,18 +55,30 @@ export function hisat2Align(alignData : AlignData,logger : atomic.AtomicOperatio
 
         let args : Array<string> = new Array<string>();
 
-        if(process.platform == "win32")
-            args.push(getReadable("hisat2"));
+        //if(process.platform == "win32")
+         //   args.push(getReadable("hisat2"));
             
         args.push("-x");
-        args.push("\""+getReadableAndWritable(`rt/indexes/${alignData.fasta.uuid}`)+"\"");
+        if(process.platform == "linux")
+            args.push("\""+getReadableAndWritable(`rt/indexes/${alignData.fasta.uuid}`)+"\"");
+        else if(process.platform == "win32")
+            args.push(getReadableAndWritable(`rt/indexes/${alignData.fasta.uuid}`));
         if(alignData.fastqs[1])
         {
             args.push("-1");
             //hisat2 cannot handle spaces in fastq paths unless they're quoted but bowtie2 can for some reason
-            args.push("\""+getPath(alignData.fastqs[0])+"\"");
-            args.push("-2");
-            args.push("\""+getPath(alignData.fastqs[1])+"\"");
+            if(process.platform == "linux")
+            {
+                args.push("\""+getPath(alignData.fastqs[0])+"\"");
+                args.push("-2");
+                args.push("\""+getPath(alignData.fastqs[1])+"\"");
+            }
+            else if(process.platform == "win32")
+            {
+                args.push(getPath(alignData.fastqs[0]));
+                args.push("-2");
+                args.push(getPath(alignData.fastqs[1]));
+            }
         }
         else
         {
