@@ -91,7 +91,7 @@ $
                                 document.body.innerHTML = savingMessage;
                             }
                             if(ops[i].flags.done && (ops[i].name == "indexFasta" ||
-                                ops[i].name == "runAlignment" || ops[i].name == "saveProject" ||
+                                ops[i].name == "runBowtie2Alignment" || ops[i].name == "saveProject" ||
                                 ops[i].name == "renderCoverageTrackForContig" || ops[i].name == "renderSNPTrackForContig"
                             ))
                             {

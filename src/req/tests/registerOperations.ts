@@ -1,9 +1,11 @@
 import * as atomic from "./../operations/atomicOperations";
 
 import {GenerateQCReport} from "./../operations/GenerateQCReport";
-import {IndexFastaForAlignment} from "./../operations/indexFastaForAlignment";
+import {IndexFastaForBowtie2Alignment} from "../operations/indexFastaForBowtie2Alignment";
+import {IndexFastaForHisat2Alignment} from "../operations/indexFastaForHisat2Alignment";
 import {IndexFastaForVisualization} from "./../operations/indexFastaForVisualization";
-import {RunAlignment} from "./../operations/RunAlignment";
+import {RunBowtie2Alignment} from "../operations/RunBowtie2Alignment";
+import {RunHisat2Alignment} from "../operations/RunHisat2Alignment";
 import {RenderCoverageTrackForContig} from "./../operations/RenderCoverageTrack";
 import {RenderSNPTrackForContig} from "./../operations/RenderSNPTrack";
 import {CheckForUpdate} from "./../operations/CheckForUpdate";
@@ -18,9 +20,11 @@ import {BLASTSegment} from "./../operations//BLASTSegment";
 export function registerOperations() : void
 {
     atomic.register("generateFastQCReport",GenerateQCReport);
-    atomic.register("indexFastaForAlignment",IndexFastaForAlignment);
+    atomic.register("indexFastaForHisat2Alignment",IndexFastaForHisat2Alignment);
+    atomic.register("indexFastaForBowtie2Alignment",IndexFastaForBowtie2Alignment);
     atomic.register("indexFastaForVisualization",IndexFastaForVisualization);
-    atomic.register("runAlignment",RunAlignment);
+    atomic.register("runBowtie2Alignment",RunBowtie2Alignment);
+    atomic.register("runHisat2Alignment",RunHisat2Alignment);
     atomic.register("renderCoverageTrackForContig",RenderCoverageTrackForContig);
     atomic.register("renderSNPTrackForContig",RenderSNPTrackForContig);
     atomic.register("inputBamFile",InputBamFile);

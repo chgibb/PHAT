@@ -17,6 +17,7 @@ export class AlignData
     public dateStamp : string;
     public alias : string;
     public invokeString : string;
+    public alignerUsed : string;
     public fasta : Fasta;
     public summary : Bowtie2Report;
     public summaryText : string;
