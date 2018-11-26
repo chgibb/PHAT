@@ -1,21 +1,21 @@
 import * as cp from "child_process";
 
 import * as atomic from "./atomicOperations";
-import {AtomicOperationForkEvent} from "./../atomicOperationsIPC";
-import {getReadable} from "./../getAppPath";
-import {Fasta,getFaiPath} from "./../fasta";
-import {Fastq} from "./../fastq";
-import {getPath} from "./../file";
-import {AlignData,getArtifactDir} from "./../alignData"
+import {AtomicOperationForkEvent} from "../atomicOperationsIPC";
+import {getReadable} from "../getAppPath";
+import {Fasta,getFaiPath} from "../fasta";
+import {Fastq} from "../fastq";
+import {getPath} from "../file";
+import {AlignData,getArtifactDir} from "../alignData"
 
-export class RunAlignment extends atomic.AtomicOperation
+export class RunBowtie2Alignment extends atomic.AtomicOperation
 {
     public alignData : AlignData;
     public fasta : Fasta;
     public fastq1 : Fastq;
     public fastq2 : Fastq;
 
-    public runAlignmentProcess : cp.ChildProcess;
+    public runBowtie2AlignmentProcess : cp.ChildProcess;
     constructor()
     {
         super();
@@ -43,17 +43,17 @@ export class RunAlignment extends atomic.AtomicOperation
         this.closeLogOnFailure = false;
         this.closeLogOnSuccess = false;
         let self = this;
-        this.runAlignmentProcess = atomic.makeFork("RunAlignment.js",<AtomicOperationForkEvent>{
+        this.runBowtie2AlignmentProcess = atomic.makeFork("RunBowtie2Alignment.js",<AtomicOperationForkEvent>{
             setData : true,
             data : {
                 alignData : self.alignData
             },
             name : self.name,
-            description : "Run Alignment"
+            description : "Run Bowtie2 Alignment"
         },function(ev : AtomicOperationForkEvent){
             if(ev.finishedSettingData == true)
             {
-                self.runAlignmentProcess.send(
+                self.runBowtie2AlignmentProcess.send(
                     <AtomicOperationForkEvent>{
                         run : true
                     }
@@ -82,6 +82,6 @@ export class RunAlignment extends atomic.AtomicOperation
                 self.update();
             }
         });
-        this.addPID(this.runAlignmentProcess.pid);
+        this.addPID(this.runBowtie2AlignmentProcess.pid);
     }
 }

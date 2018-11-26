@@ -1,12 +1,15 @@
-import * as atomic from "./../operations/atomicOperations";
-import {RunAlignment} from "./../operations/RunAlignment";
-import * as L6R7R1 from "./L6R7R1";
-import * as L6R7R2 from "./L6R7R2";
-import * as L6R7HPV16Align from "./L6R7HPV16Align";
-export async function testL6R7HPV16Alignment() : Promise<void>
+import * as fs from "fs";
+
+import * as atomic from "../operations/atomicOperations";
+import {RunBowtie2Alignment} from "../operations/RunBowtie2Alignment";
+import * as L6R1HPV16Align from "./L6R1HPV16Align";
+import * as HPV16Ref from "./hpv16Ref";
+import {getCoverageForContig} from '../alignData';
+
+export async function testL6R1HPV16Bowtie2Alignment() : Promise<void>
 {
     return new Promise<void>((resolve,reject) => {
-        atomic.updates.removeAllListeners().on("runAlignment",function(op : RunAlignment){
+        atomic.updates.removeAllListeners().on("runBowtie2Alignment",function(op : RunBowtie2Alignment){
             if(op.flags.failure)
             {
                 console.log(`Failed to align`);
@@ -14,17 +17,17 @@ export async function testL6R7HPV16Alignment() : Promise<void>
             }
             else if(op.flags.success)
             {
-                if(op.alignData.summary.reads == 4327)
+                if(op.alignData.summary.reads == 2689)
                     console.log(`${op.alignData.alias} has correct number of reads`);
                 else
                     return reject();
 
-                if(op.alignData.summary.mates == 1954)
+                if(op.alignData.summary.mates == 4564)
                     console.log(`${op.alignData.alias} has correct number of mates`);
                 else
                     return reject();
                 
-                if(op.alignData.summary.overallAlignmentRate == 77.62)
+                if(op.alignData.summary.overallAlignmentRate == 15.15)
                     console.log(`${op.alignData.alias} has correct overall alignment rate`);
                 else
                     return reject();
@@ -49,7 +52,7 @@ export async function testL6R7HPV16Alignment() : Promise<void>
                 else
                     return reject();
                 
-                if(op.alignData.varScanSNPSummary.SNPsReported == 13)
+                if(op.alignData.varScanSNPSummary.SNPsReported == 11)
                     console.log(`${op.alignData.alias} has correct predicted SNPs`);
                 else
                     return reject();
@@ -59,19 +62,25 @@ export async function testL6R7HPV16Alignment() : Promise<void>
                 else
                     return reject();
 
-                if(op.alignData.idxStatsReport[0].mappedReads == 6717)
+                if(op.alignData.idxStatsReport[0].mappedReads == 815)
                     console.log(`${op.alignData.alias} has correct number of mapped reads`);
                 else
                     return reject();
                 
-                if(op.alignData.idxStatsReport[0].unMappedReads == 15)
+                if(op.alignData.idxStatsReport[0].unMappedReads == 1)
                     console.log(`${op.alignData.alias} has correct number of unmapped reads`);
                 else
                     return reject();
 
-                L6R7HPV16Align.set(op.alignData);
+                if(fs.existsSync(getCoverageForContig(op.alignData,HPV16Ref.get().contigs[0].uuid)))
+                    console.log(`${op.alignData.alias} coverage depth wrote succesffully`);
+                else
+                    return reject();
+
+                L6R1HPV16Align.set(op.alignData);
 
                 return resolve();
+
             }
         });
     });
