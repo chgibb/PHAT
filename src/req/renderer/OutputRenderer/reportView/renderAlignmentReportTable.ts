@@ -15,6 +15,7 @@ export function renderAlignmentReportTable() : string
             res += `
                 <tr>
                     ${rightPanel.alignmentInfoSelection.alias != false ? "<th>Alias</th>" : ""}
+                    ${rightPanel.alignmentInfoSelection.aligner != false ? "<th>Aligner</th>" : ""}
                     ${rightPanel.alignmentInfoSelection.sizeInBytes != false ? "<th>Size In Bytes</th>" : ""}
                     ${rightPanel.alignmentInfoSelection.formattedSize != false ? "<th>Formatted Size</th>" : ""}
                     ${rightPanel.alignmentInfoSelection.reads != false ? "<th>Reads</th>" : ""}
@@ -72,6 +73,9 @@ export function renderAlignmentReportTable() : string
                     res += "<tr>";
                     if(rightPanel.alignmentInfoSelection.alias)
                         res += `<td class="cellHover" id="${masterView.alignData[i].uuid}ViewAlignment">${masterView.alignData[i].alias}</td>`;
+                    
+                    if(rightPanel.alignmentInfoSelection.aligner)
+                        res += `<td>${masterView.alignData[i].alignerUsed ? masterView.alignData[i].alignerUsed : "bowtie2"}</td>`;
 
                     if(rightPanel.alignmentInfoSelection.sizeInBytes)
                         res += `<td>${masterView.alignData[i].size}</td>`;

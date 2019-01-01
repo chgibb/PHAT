@@ -17,7 +17,7 @@ export interface Bowtie2Report
  * @param {string} report 
  * @returns {Bowtie2Report} 
  */
-export function parseBowTie2AlignmentReport(report : string) : Bowtie2Report
+export function parseBowtie2AlignmentReport(report : string) : Bowtie2Report
 {
     let res : Bowtie2Report = {
         reads : 0,
