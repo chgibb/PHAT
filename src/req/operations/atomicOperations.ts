@@ -366,7 +366,6 @@ export function makeFork(target : string,data : any,cb : (ev : any) => void) : c
  */
 export function exitFork(retCode : number) : void
 {
-    process.disconnect();
     process.exitCode = retCode;
 }
 
