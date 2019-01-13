@@ -364,8 +364,10 @@ export function makeFork(target : string,data : any,cb : (ev : any) => void) : c
  * @export
  * @param {number} retCode 
  */
-export function exitFork(retCode : number) : void
+export function exitFork(retCode : number,disconnect = true) : void
 {
+    if(disconnect)
+        process.disconnect();
     process.exitCode = retCode;
 }
 
