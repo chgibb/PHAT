@@ -29,7 +29,7 @@ $
     {
         document.body.innerHTML += `
             <br />
-            <a id="citeLink" style="color:black;" class="activeHover">Gibb et al., 2017 (bioRxiv pre-print)</a>
+            <a id="citeLink" style="color:black;" class="activeHover">Gibb et al., 2018 (Bioinformatics)</a>
         `;
         ipc.send(
             "runOperation",
@@ -102,7 +102,7 @@ $
             }
         );
         document.getElementById("citeLink").onclick = function(this : HTMLElement,ev : MouseEvent){
-            remote.shell.openExternal("https://doi.org/10.1101/178327");
+            remote.shell.openExternal("https://doi.org/10.1093/bioinformatics/bty1003");
         }
     }
 );
