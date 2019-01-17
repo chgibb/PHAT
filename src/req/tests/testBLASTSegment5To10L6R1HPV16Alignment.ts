@@ -12,6 +12,7 @@ export async function testBLASTSegment5To10L6R1HPV16Alignment() : Promise<void>
             if(op.flags.failure)
             {
                 console.log("failed to BLAST segment");
+                console.log(await atomic.getLogContent(op.logRecord)); 
                 return reject();
             }
 
@@ -21,13 +22,19 @@ export async function testBLASTSegment5To10L6R1HPV16Alignment() : Promise<void>
                 if(readResults.length == 0)
                     console.log(`BLAST segment has correct number of read results in whole file`);
                 else
+                {
+                    console.log(await atomic.getLogContent(op.logRecord)); 
                     return reject();
+                }
                 
                 let fragmentResults = await getBLASTFragmentResults(op.blastSegmentResult);
                 if(fragmentResults.length == 0)
                     console.log(`BLAST segment has correct number of fragment results`);
                 else
+                {
+                    console.log(await atomic.getLogContent(op.logRecord)); 
                     return reject();
+                }
 
                 return resolve();
             }
