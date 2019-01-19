@@ -34,7 +34,7 @@ export function parseBowtie2AlignmentReport(report : string) : Bowtie2Report
     if(report.match(new RegExp("(undefined)","g")))
         report = report.substring(9,tokens.length);
     //</hack>
-    tokens = report.split(new RegExp("\s"));
+    tokens = report.split(new RegExp("\\s"));
     
     for(let i = 0; i != tokens.length; i++)
     {
