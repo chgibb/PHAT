@@ -10,6 +10,7 @@ export interface Bowtie2Report
     mates : number;
     overallAlignmentRate : number;
 }
+
 /**
  * Takes the entire text of the report as input and returns properties of interest
  * 
@@ -33,7 +34,7 @@ export function parseBowtie2AlignmentReport(report : string) : Bowtie2Report
     if(report.match(new RegExp("(undefined)","g")))
         report = report.substring(9,tokens.length);
     //</hack>
-    tokens = report.split(new RegExp("[ ]|[\n]|[\t]"));
+    tokens = report.split(new RegExp("\s"));
     
     for(let i = 0; i != tokens.length; i++)
     {
