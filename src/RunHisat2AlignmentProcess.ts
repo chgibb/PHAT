@@ -13,6 +13,7 @@ import {samToolsFaidx} from "./req/operations/indexFasta/samToolsFaidx";
 import {samToolsMPileup} from "./req/operations/RunAlignment/samToolsMPileup";
 import {samToolsIdxStats} from "./req/operations/RunAlignment/samToolsIdxStats";
 import {varScanMPileup2SNP} from "./req/operations/RunAlignment/varScanMPileup2SNP"
+import {parseBowtie2AlignmentReport} from './req/bowTie2AlignmentReportParser';
 
 let flags : CompletionFlags = new CompletionFlags();
 let align : AlignData;
@@ -67,6 +68,7 @@ process.on(
             update();
 
             await hisat2Align(align,logger);
+            align.summary = parseBowtie2AlignmentReport(align.summaryText);
 
             progressMessage = "Converting SAM to BAM";
             step++;

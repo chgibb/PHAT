@@ -39,7 +39,9 @@ export function bowtie2Align(alignData : AlignData,logger : atomic.AtomicOperati
                     {
                         if(params.retCode == 0)
                         {
-                            return resolve();
+                            setTimeout(function(){
+                                return resolve()
+                            },2000);
                         }
                         else
                         {
