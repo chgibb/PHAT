@@ -40,7 +40,7 @@ PHAT is under development in the Zehbe Lab ([http://zehbelab.weebly.com/](http:/
 
 Gibb CM, Jackson R, Mohammed S, Fiaidhi J, Zehbe I. Pathogen-Host Analysis Tool (PHAT): an Integrative Platform to Analyze Pathogen-Host Relationships in Next-Generation Sequencing Data. Bioinformatics. https://doi.org/10.1093/bioinformatics/bty1003
 
-### [Latest Beta Release: PHAT@0.10.0-beta.1](https://chgibb.github.io/PHATDocs/releases/0.10.0-beta.1/index)
+### [Latest Beta Release: PHAT@0.10.1-beta.1](https://chgibb.github.io/PHATDocs/releases/0.10.1-beta.1/index)
 
 ### [Release History](https://chgibb.github.io/PHATDocs/allReleases)
 
