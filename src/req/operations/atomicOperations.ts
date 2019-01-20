@@ -364,9 +364,10 @@ export function makeFork(target : string,data : any,cb : (ev : any) => void) : c
  * @export
  * @param {number} retCode 
  */
-export function exitFork(retCode : number) : void
+export function exitFork(retCode : number,disconnect = true) : void
 {
-    process.disconnect();
+    if(disconnect)
+        process.disconnect();
     process.exitCode = retCode;
 }
 
@@ -817,5 +818,36 @@ export async function getLogRecords(last : number) : Promise<Array<LogRecord>>
             });
         }
         catch(err){}        
+    });
+}
+
+/**
+ * Retrieve the full log for the given LogRecord
+ *
+ * @export
+ * @param {LogRecord} logRecord
+ * @returns {Promise<string>}
+ */
+export async function getLogContent(logRecord : LogRecord) : Promise<string>
+{
+    return new Promise<string>((resolve : (value : string) => void) => {
+        let res = "";
+
+        let rl : readline.ReadLine = readline.createInterface(
+            <readline.ReadLineOptions>{
+                input : fs.createReadStream(
+                    getReadableAndWritable(`logs/${logRecord.uuid}/log`)
+                )
+            }
+        );
+
+        rl.on("line",function(line : string) {
+            res += line;
+            res += "\n";
+        });
+
+        rl.on("close",function() {
+            resolve(res);
+        });
     });
 }
