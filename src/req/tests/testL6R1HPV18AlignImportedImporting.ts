@@ -10,10 +10,11 @@ import {getLinkableRefSeqs} from "./../getLinkableRefSeqs";
 export async function testL6R1HPV18AlignImportedImporting() : Promise<void>
 {
     return new Promise<void>((resolve,reject) => {
-        atomic.updates.removeAllListeners().on("inputBamFile",function(op : InputBamFile){
+        atomic.updates.removeAllListeners().on("inputBamFile",async function(op : InputBamFile){
             if(op.flags.failure)
             {
                 console.log(`Failed to input bam`);
+                console.log(await atomic.getLogContent(op.logRecord)); 
                 return reject();
             }
             else if(op.flags.success)
@@ -25,21 +26,31 @@ export async function testL6R1HPV18AlignImportedImporting() : Promise<void>
                 if(op.alignData.flagStatReport.overallAlignmentRate == 0.04)
                     console.log(`${op.alignData.alias} has correct overall alignment rate`);
                 else
+                {
+                    console.log(await atomic.getLogContent(op.logRecord)); 
                     return reject();
+                }
                 if(op.alignData.idxStatsReport[0].mappedReads == 2)
                     console.log(`${op.alignData.alias} has correct number of mapped reads`);
                 else
+                {
+                    console.log(await atomic.getLogContent(op.logRecord)); 
                     return reject();
+                }
                 if(op.alignData.idxStatsReport[0].unMappedReads == 0)
                     console.log(`${op.alignData.alias} has correct number of unmapped reads`);
                 else
+                {
+                    console.log(await atomic.getLogContent(op.logRecord)); 
                     return reject();
+                }
 
                 let res = getLinkableRefSeqs(<Array<Fasta>>[hpv18Ref.get()],op.alignData);
 
                 if(!res)
                 {
                     console.log(`Failed to determine link status for ${op.alignData.alias}`);
+                    console.log(await atomic.getLogContent(op.logRecord)); 
                     return reject();
                 }
                 if(res[0].linkable == true && res[0].uuid == hpv18Ref.get().uuid)
@@ -47,6 +58,7 @@ export async function testL6R1HPV18AlignImportedImporting() : Promise<void>
                 else
                 {
                     console.log(`${op.alignData.alias} is not linkable to HPV18`);
+                    console.log(await atomic.getLogContent(op.logRecord)); 
                     return reject();
                 }
 

@@ -12,7 +12,7 @@ export async function  testL6R7HPV16CoverageTrackRenderer() : Promise<void>
             contiguuid : hpv16Figure.get().contigs[0].uuid,
             alignData : L6R7HPV16Align.get()
         });
-        atomic.updates.removeAllListeners().on("renderCoverageTrackForContig",function(op : RenderCoverageTrackForContig){
+        atomic.updates.removeAllListeners().on("renderCoverageTrackForContig",async function(op : RenderCoverageTrackForContig){
             if(op.flags.success)
             {
                 console.log(`Successfully rendered coverage track for ${op.circularFigure.name}`);
@@ -22,6 +22,7 @@ export async function  testL6R7HPV16CoverageTrackRenderer() : Promise<void>
             else if(op.flags.failure)
             {
                 console.log(`Failed to render coverage track for ${op.circularFigure.name}`);
+                console.log(await atomic.getLogContent(op.logRecord)); 
                 return reject();
             }
         });

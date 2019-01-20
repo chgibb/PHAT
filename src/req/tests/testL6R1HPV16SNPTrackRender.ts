@@ -11,7 +11,7 @@ export async function testL6R1HPV16SNPTrackRenderer() : Promise<void>
             contiguuid : hpv16Figure.get().contigs[0].uuid,
             alignData : L6R1HPV16Align.get()
         });
-        atomic.updates.removeAllListeners().on("renderSNPTrackForContig",function(op : RenderSNPTrackForContig){
+        atomic.updates.removeAllListeners().on("renderSNPTrackForContig",async function(op : RenderSNPTrackForContig){
             if(op.flags.success)
             {
                 console.log(`Successfully rendered SNP track for ${op.circularFigure.name}`);
@@ -21,6 +21,7 @@ export async function testL6R1HPV16SNPTrackRenderer() : Promise<void>
             else if(op.flags.failure)
             {
                 console.log(`Failed to render SNP track for ${op.circularFigure.name}`);
+                console.log(await atomic.getLogContent(op.logRecord)); 
                 return reject();
             }
         });
