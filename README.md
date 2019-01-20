@@ -36,7 +36,7 @@ PHAT is under development in the Zehbe Lab ([http://zehbelab.weebly.com/](http:/
 **Project Lead/Software Developer:** Chris Gibb, HBSc Comp Sci Student  
 **Team Members:** Mitchell Pynn, Shane Liu, Jeremy Braun, Nick Catanzaro, Zachary Moorman
 
-**How to Cite PHAT (pre-print):**
+**How to Cite PHAT:**
 
 Gibb CM, Jackson R, Mohammed S, Fiaidhi J, Zehbe I. Pathogen-Host Analysis Tool (PHAT): an Integrative Platform to Analyze Pathogen-Host Relationships in Next-Generation Sequencing Data. Bioinformatics. https://doi.org/10.1093/bioinformatics/bty1003
 
