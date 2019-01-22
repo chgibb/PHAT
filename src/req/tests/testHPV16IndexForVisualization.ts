@@ -7,10 +7,11 @@ import * as hpv16Ref from "./hpv16Ref";
 export async function testHPV16IndexForVisualization() : Promise<void>
 {
     return new Promise<void>((resolve,reject) => {
-        atomic.updates.removeAllListeners().on("indexFastaForVisualization",function(op : IndexFastaForVisualization){
+        atomic.updates.removeAllListeners().on("indexFastaForVisualization",async function(op : IndexFastaForVisualization){
             if(op.flags.failure)
             {
                 console.log(`Failed to index ${op.fasta.alias} for visualization`);
+                console.log(await atomic.getLogContent(op.logRecord)); 
                 return reject();
             }
             else if(op.flags.success)
@@ -18,7 +19,10 @@ export async function testHPV16IndexForVisualization() : Promise<void>
                 if(hpv16Ref.get().indexedForVisualization)
                     console.log(`${op.fasta.alias} was indexed for visualization`);
                 else
+                {
+                    console.log(await atomic.getLogContent(op.logRecord)); 
                     return reject();
+                }
                 
                 try
                 {
@@ -28,6 +32,7 @@ export async function testHPV16IndexForVisualization() : Promise<void>
                 catch(err)
                 {
                     console.log(`Failed to access 2bit archive for HPV16 ref`);
+                    console.log(await atomic.getLogContent(op.logRecord)); 
                     return reject();
                 }
 
