@@ -1,11 +1,11 @@
 import * as fs from "fs";
 
-import * as atomic from "./../atomicOperations";
-import {AlignData,getArtifactDir,getCoverageDir,getSam} from "./../../alignData";
-import {getReadable,getReadableAndWritable} from "./../../getAppPath";
-import {SpawnRequestParams} from "./../../JobIPC";
-import {Job,JobCallBackObject} from "./../../main/Job";
-import {getPath} from "./../../file";
+import * as atomic from "../atomicOperations";
+import {AlignData,getArtifactDir,getCoverageDir,getSam} from "../../alignData";
+import {getReadable,getReadableAndWritable} from "../../getAppPath";
+import {SpawnRequestParams} from "../../JobIPC";
+import {Job,JobCallBackObject} from "../../main/Job";
+import {getPath} from "../../file";
 
 /**
  * Produce an unsorted sam from aligning alignData's fastqs against its fasta
@@ -15,7 +15,7 @@ import {getPath} from "./../../file";
  * @param {atomic.AtomicOperation} logger 
  * @returns {Promise<void>} 
  */
-export function bowTie2Align(alignData : AlignData,logger : atomic.AtomicOperation) : Promise<void>
+export function bowtie2Align(alignData : AlignData,logger : atomic.AtomicOperation) : Promise<void>
 {
     return new Promise<void>((
         resolve : (value? : void) => void,
@@ -39,7 +39,9 @@ export function bowTie2Align(alignData : AlignData,logger : atomic.AtomicOperati
                     {
                         if(params.retCode == 0)
                         {
-                            return resolve();
+                            setTimeout(function(){
+                                return resolve()
+                            },2000);
                         }
                         else
                         {

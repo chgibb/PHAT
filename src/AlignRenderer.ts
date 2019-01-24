@@ -105,7 +105,7 @@ $
                             {
                                 for(let i = 0; i != ops.length; ++i)
                                 {
-                                    if(ops[i].name == "runAlignment")
+                                    if(ops[i].name == "indexFastaForBowtie2" || ops[i].name == "runBowtie2Alignment" || ops[i].name == "indexFastaForHisat2" || ops[i].name == "runHisat2Alignment")
                                     {
                                         (<reportView.ReportView>viewMgr.getViewByName("report")).shouldAllowTriggeringOps = false;
                                         found = true;

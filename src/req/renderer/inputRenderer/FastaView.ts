@@ -23,7 +23,6 @@ export class View extends viewMgr.View
                         <th>Reference Name</th>
                         <th>Directory</th>
                         <th>Size</th>
-                        <th>Ready for Alignment</th>
                         <th>Ready for Visualization</th>
                     </tr>
                     ${(()=>{
@@ -36,18 +35,6 @@ export class View extends viewMgr.View
                                     <td class="${this.fastaInputs[i].uuid}Class">${this.fastaInputs[i].imported ? "In Project" : this.fastaInputs[i].path}</td>
                                     <td class="${this.fastaInputs[i].uuid}Class">${this.fastaInputs[i].sizeString}</td>
                                 `;
-                            if(this.fastaInputs[i].indexed)
-                            {
-                                res += `<td class="cellHover ${this.fastaInputs[i].uuid}Class" id="${this.fastaInputs[i].uuid}Index"><img src="${getReadable("img/pass.png")}"></td>`;
-                            }
-                            else if(this.shouldAllowTriggeringOps)
-                            {
-                                res += `<td class="cellHover ${this.fastaInputs[i].uuid}Class" id="${this.fastaInputs[i].uuid}Index">Not Ready</td>`;
-                            }
-                            else if(!this.shouldAllowTriggeringOps)
-                            {
-                                res += `<td><div class="three-quarters-loader"></div></td>`;
-                            }
 
                             if(this.fastaInputs[i].indexedForVisualization)
                             {

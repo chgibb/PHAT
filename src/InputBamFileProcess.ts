@@ -108,7 +108,7 @@ process.on(
                 flags.done = true
                 flags.success = true;
                 update();
-                atomic.exitFork(0);
+                atomic.exitFork(0,false);
             })();
         }
     }
