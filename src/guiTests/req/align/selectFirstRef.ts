@@ -29,6 +29,6 @@ export async function selectFirstRef() : Promise<void>
                 document.getElementById("${fasta.uuid}").click();
             `);
             resolve();
-        },500);
+        },1000);
     });
 }

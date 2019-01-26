@@ -34,6 +34,6 @@ export async function createHPV16Figure() : Promise<void>
                 }
             }
             return reject()
-        },500);
+        },1000);
     });
 }

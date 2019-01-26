@@ -18,8 +18,8 @@ export async function openAlignWindow() : Promise<void>
                 `);
                 setTimeout(async function(){
                     resolve();
-                },500);
-            },500);
-        },500);
+                },1000);
+            },1000);
+        },1000);
     });
 }
