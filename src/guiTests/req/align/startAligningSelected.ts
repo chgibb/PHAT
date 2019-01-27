@@ -21,6 +21,6 @@ export async function startAligningSelected() : Promise<void>
                 document.getElementById("alignButton").click();
             `);
             resolve();
-        },500);
+        },1000);
     });
 }

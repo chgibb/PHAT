@@ -32,6 +32,6 @@ export async function selectFirstTwoReads() : Promise<void>
             setTimeout(async function(){
                 resolve();
             });
-        },500);
+        },1000);
     });
 }
