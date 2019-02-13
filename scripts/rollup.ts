@@ -6,13 +6,19 @@
 
     const inOpts = {
         input : args[0],
-        external : ["electron"],
+        external : ["electron","react","react-dom","typestyle"],
         onwarn : function(){},
         plugins : [
             resolve({
                 preferBuiltins : true
-            })
-        ]
+            }),
+            /*commonjs({
+                namedExports : {
+                    "node_modules/react-dom/index.js" : ["render"],
+                    "node_modules/react/index.js" : ["Component","createElement","Fragment"]
+                }
+            })*/
+        ],
     };
 
     const outOpts = {

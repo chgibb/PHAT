@@ -48,7 +48,9 @@ interface BuildState
 
 function getJSFileExtension(fileName : string) : string
 {
-    return fileName.replace(/\.ts/,`.js`);
+    let res = fileName.replace(/\.ts/,`.js`);
+    res = res.replace(/\.jsx/,`.js`);
+    return res;
 }
 
 function build(file : string) : Promise<void>
@@ -83,7 +85,10 @@ else if(mode == "release" && fs.existsSync(".buildCache/release/oldBuild.json"))
 }
 
 
-const tsconfig = JSON.parse(fs.readFileSync("tsconfig.json").toString());
+//const tsconfig = JSON.parse(fs.readFileSync("tsconfig.json").toString());
+const tsconfig = {
+    jsx : ts.JsxEmit.React
+} as ts.CompilerOptions;
 
 let currentBuild : BuildState = <any>{};
 
