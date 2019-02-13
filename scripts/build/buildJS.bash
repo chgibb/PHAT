@@ -1,15 +1,8 @@
 (set -o igncr) 2>/dev/null && set -o igncr; # For Cygwin on Windows compaibility
 function cleanTSArtifacts {
-	for f in $(find src -name '*.ts'); 
+	for f in $(find src -name '*.js'); 
 	do
-		artifact=$(echo $f | awk '{gsub("\\.ts",".js");print}')
-		rm $artifact
-	done
-
-	for f in $(find src -name '*.tsx'); 
-	do
-		artifact=$(echo $f | awk '{gsub("\\.tsx",".js");print}')
-		rm $artifact
+		rm $f
 	done
 }
 
