@@ -4,6 +4,10 @@ function cleanTSArtifacts {
 	do
 		artifact=$(echo $f | awk '{gsub("\\.ts",".js");print}')
 		rm $artifact
+	done
+
+	for f in $(find src -name '*.tsx'); 
+	do
 		artifact=$(echo $f | awk '{gsub("\\.tsx",".js");print}')
 		rm $artifact
 	done
