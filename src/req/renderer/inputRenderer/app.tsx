@@ -1,0 +1,78 @@
+import * as electron from "electron";
+const ipc = electron.ipcRenderer;
+import * as React from "react";
+import {Component} from "react";
+import {Fastq} from './../../fastq';
+import {Fasta} from "./../../fasta";
+import {getReadable} from '../../getAppPath';
+
+import {activeHover,activeHoverButton} from "./../styles/activeHover";
+import {FastqView} from './fastqView';
+
+export interface AppState
+{
+    fastqs? : Array<Fastq>;
+    fastas? : Array<Fasta>;
+    tab : "fastq" | "ref" | "align"
+}
+
+export class App extends Component<{},AppState>
+{
+    public state : AppState;
+    public constructor()
+    {
+        super({});
+        this.state = {
+            tab : "fastq"
+        };
+
+        ipc.on(	'input',(event : Electron.IpcMessageEvent,arg : any) => {
+            if(arg.action == "getKey" || arg.action == "keyChange")
+            {
+                if(arg.key == "fastqInputs")
+                {
+                    this.setState({fastqs : arg.val});
+                    return;
+                }
+            }
+        });
+    }
+
+    public changeTab(tab : "fastq" | "ref" | "align") : void 
+    {
+        this.setState({
+            tab : tab
+        });
+    }
+
+    public render()
+    {
+        return (
+            <div>
+                <img 
+                    className={`${activeHover} ${activeHoverButton}`}
+                    src={this.state.tab == "fastq" ? getReadable("img/fastqButtonActive.png") : getReadable("img/fastqButton.png")}
+                    onClick={() => {
+                        this.changeTab("fastq");
+                    }}
+                />
+                <img 
+                    className={`${activeHover} ${activeHoverButton}`}
+                    src={this.state.tab == "ref" ? getReadable("img/refSeqButtonActive.png") : getReadable("img/refSeqButton.png")}
+                    onClick={() => {
+                        this.changeTab("ref");
+                    }}
+                />
+                <img 
+                    className={`${activeHover} ${activeHoverButton}`}
+                    src={this.state.tab == "align" ? getReadable("img/alignButtonActive.png") : getReadable("img/alignButton.png")}
+                    onClick={() => {
+                        this.changeTab("align");
+                    }}
+                />
+
+                {this.state.tab == "fastq" ? <FastqView fastqInputs={this.state.fastqs} /> : undefined}
+            </div>
+        )
+    }
+}
