@@ -11,13 +11,7 @@
         plugins : [
             resolve({
                 preferBuiltins : true
-            }),
-            /*commonjs({
-                namedExports : {
-                    "node_modules/react-dom/index.js" : ["render"],
-                    "node_modules/react/index.js" : ["Component","createElement","Fragment"]
-                }
-            })*/
+            })
         ],
     };
 
