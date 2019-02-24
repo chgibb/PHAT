@@ -63,6 +63,7 @@
         "bootstrap": "4.1.2",
         "browserify": "^13.1.0",
         "bundle-collapser": "^1.2.1",
+        "csx": "^9.0.0",
         "delete-empty": "^1.0.1",
         "dialogs": "^1.1.19",
         "dragula": "^3.7.2",

@@ -8,6 +8,7 @@ import {GetKeyEvent,KeySubEvent} from "./req/ipcEvents";
 import {makeWindowDockable} from "./req/renderer/dock";
 
 import "./req/renderer/commonBehaviour";
+import "./req/renderer/styles/defaults";
 
 render(
     <App />,
