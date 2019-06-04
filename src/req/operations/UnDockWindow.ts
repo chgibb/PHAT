@@ -19,7 +19,8 @@ export class UnDockWindow extends atomic.AtomicOperation
     public setData(data : {
         refName : string,
         guestinstance : number
-    }) : void {
+    }) : void 
+    {
         this.refName = data.refName;
         this.guestinstance = data.guestinstance;
     }
@@ -31,17 +32,23 @@ export class UnDockWindow extends atomic.AtomicOperation
         let self = this;
 
         //on response from a wcHost attaching to the given web contents
-        ipc.once(`guestInstance-${this.guestinstance}-Attached`,function(event : Electron.IpcMessageEvent,arg : any){
+        ipc.once(`guestInstance-${this.guestinstance}-Attached`,function(event : Electron.IpcMessageEvent,arg : any)
+        {
             console.log(self.guestinstance+" attached to new host");
             //let the event loop spin before completing
             //the webview the given web contents was attached to before being moved will listen for completion and remove it
             //when this operation finishes. We let the event loop spin to make sure Electron has finished processing ipc messages and housekeeping triggered
             //by the move.
-            setTimeout(function(){
-                setImmediate(function(){
-                    setImmediate(function(){
-                        process.nextTick(function(){
-                            setTimeout(function(){
+            setTimeout(function()
+            {
+                setImmediate(function()
+                {
+                    setImmediate(function()
+                    {
+                        process.nextTick(function()
+                        {
+                            setTimeout(function()
+                            {
                                 self.flags.success = true;
                                 self.flags.done = true;
                                 self.update();

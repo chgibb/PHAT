@@ -9,8 +9,10 @@ export class View extends viewMgr.View
         super("alignView",div);
         this.aligns = new Array<AlignData>();
     }
-    public onMount() : void{}
-    public onUnMount() : void{}
+    public onMount() : void
+    {}
+    public onUnMount() : void
+    {}
     public renderView() : string
     {
         return `
@@ -22,32 +24,36 @@ export class View extends viewMgr.View
                 <th>Size</th>
                 <th>Ref Seq</th>
             </tr>
-            ${(()=>{
-                let res = "";
-                if(!this.aligns)
-                    return "";
-                for(let i = 0; i != this.aligns.length; ++i)
-                {
-                    if(this.aligns[i].isExternalAlignment)
-                    {
-                        res += `
+            ${(()=>
+    {
+        let res = "";
+        if(!this.aligns)
+            return "";
+        for(let i = 0; i != this.aligns.length; ++i)
+        {
+            if(this.aligns[i].isExternalAlignment)
+            {
+                res += `
                             <tr>
                                 <td>${this.aligns[i].alias}</td>
                                 <td>${this.aligns[i].sizeString ? this.aligns[i].sizeString : "Unknown"}</td>
                                 <td ${this.aligns[i].fasta ? "" : `id="${this.aligns[i].uuid}LinkRef" class="cellHover"`}>${this.aligns[i].fasta ? this.aligns[i].fasta.alias : "Not Linked"}</td>
                             </tr>
                         `;
-                    }
-                }
-                return res;
-            })()}
+            }
+        }
+        return res;
+    })()}
         </table>
     </div>
         `;
     }
-    public postRender() : void{}
-    public divClickEvents(event : JQueryEventObject) : void{}
-    public dataChanged() : void{}
+    public postRender() : void
+    {}
+    public divClickEvents(event : JQueryEventObject) : void
+    {}
+    public dataChanged() : void
+    {}
 }
 export function addView(arr : Array<viewMgr.View>,div : string) : void
 {

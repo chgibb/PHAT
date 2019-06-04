@@ -1,8 +1,8 @@
 import * as atomic from "./req/operations/atomicOperations";
 import {AtomicOperationForkEvent,CompletionFlags} from "./req/atomicOperationsIPC";
-import {AlignData} from "./req/alignData"
+import {AlignData} from "./req/alignData";
 import * as cf from "./req/renderer/circularFigure";
-import { buildCoverageTrackMap } from "./req/renderer/circularFigure";
+import {buildCoverageTrackMap} from "./req/renderer/circularFigure";
 
 let align : AlignData;
 let contiguuid : string;
@@ -50,7 +50,8 @@ process.on
         }
     }  
 );
-(process as NodeJS.EventEmitter).on("uncaughtException",function(err : string){
+(process as NodeJS.EventEmitter).on("uncaughtException",function(err : string)
+{
     flags.done = true;
     flags.failure = true;
     flags.success = false;

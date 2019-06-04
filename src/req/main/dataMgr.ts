@@ -142,24 +142,24 @@ export function addSubscriberToKey(sub : KeySubObj) : void
         keySubs[i].key == sub.key)
             return;
     }
-	keySubs.push(
-		{
-			channel : sub.channel,
-			key : sub.key,
-			replyChannel : sub.replyChannel
-		}
-	);
+    keySubs.push(
+        {
+            channel : sub.channel,
+            key : sub.key,
+            replyChannel : sub.replyChannel
+        }
+    );
 }
 export function removeSubscriberFromKey(sub : KeySubObj)
 {
-	for(let i : number = keySubs.length - 1; i >= 0; --i)
-	{
-		if(keySubs[i].channel == sub.channel &&
+    for(let i : number = keySubs.length - 1; i >= 0; --i)
+    {
+        if(keySubs[i].channel == sub.channel &&
 		   keySubs[i].key == sub.key &&
 		   keySubs[i].replyChannel == sub.replyChannel)
-		{
-			keySubs.splice(i,1);
-		}
-	}
+        {
+            keySubs.splice(i,1);
+        }
+    }
 }
 

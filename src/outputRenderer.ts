@@ -4,7 +4,6 @@ const ipc = electron.ipcRenderer;
 import {GetKeyEvent,KeySubEvent} from "./req/ipcEvents";
 import * as viewMgr from "./req/renderer/viewMgr";
 import {makeWindowDockable} from "./req/renderer/dock";
-
 import * as masterView from "./req/renderer/OutputRenderer/masterView";
 
 const $ = require("jquery");
@@ -26,19 +25,19 @@ $
             {
                 if(arg.action === "getKey" || arg.action === "keyChange")
                 {
-                     let masterView = <masterView.View>viewMgr.getViewByName("masterView");
-                     if(arg.key == "fastqInputs" && arg.val !== undefined)
-                     {
-                         masterView.fastqInputs = arg.val;
-                     }
-                     if(arg.key == "fastaInputs" && arg.val !== undefined)
-                     {
+                    let masterView = <masterView.View>viewMgr.getViewByName("masterView");
+                    if(arg.key == "fastqInputs" && arg.val !== undefined)
+                    {
+                        masterView.fastqInputs = arg.val;
+                    }
+                    if(arg.key == "fastaInputs" && arg.val !== undefined)
+                    {
                         masterView.fastaInputs = arg.val;
-                     }
-                     if(arg.key == "aligns" && arg.val !== undefined)
-                     {
+                    }
+                    if(arg.key == "aligns" && arg.val !== undefined)
+                    {
                         masterView.alignData = arg.val;
-                     }
+                    }
                 }
                 viewMgr.render();
             }

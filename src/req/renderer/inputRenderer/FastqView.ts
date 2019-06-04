@@ -9,8 +9,10 @@ export class View extends viewMgr.View
         super("fastqView",div);
         this.fastqInputs = new Array<Fastq>();
     }
-    public onMount() : void{}
-    public onUnMount() : void{}
+    public onMount() : void
+    {}
+    public onUnMount() : void
+    {}
     public renderView() : string
     {
         return `
@@ -22,20 +24,21 @@ export class View extends viewMgr.View
                         <th>Path</th>
                         <th>Size</th>
                     </tr>
-                    ${(()=>{
-                        let res = "";
-                        for(let i = 0; i != this.fastqInputs.length; ++i)
-                        {
-                            res += `
+                    ${(()=>
+    {
+        let res = "";
+        for(let i = 0; i != this.fastqInputs.length; ++i)
+        {
+            res += `
                                 <tr class="activeHover ${this.fastqInputs[i].uuid}Class" id="${this.fastqInputs[i].uuid}Row">
                                     <td class="${this.fastqInputs[i].uuid}Class">${this.fastqInputs[i].alias}</td>
                                     <td class="${this.fastqInputs[i].uuid}Class">${this.fastqInputs[i].imported ? "In Project" : this.fastqInputs[i].path}</td>
                                     <td class="${this.fastqInputs[i].uuid}Class">${this.fastqInputs[i].sizeString}</td>
                                 </tr>
                             `;
-                        }
-                        return res;
-                    })()}
+        }
+        return res;
+    })()}
                 </table>
                 ${this.fastqInputs.length > 0 ? `<img src="${getReadable("img/import.png")}" class="activeHover activeHoverButton" id="importSelectedFastqs" />` : ""}
             </div>
@@ -56,7 +59,8 @@ export class View extends viewMgr.View
     {
         console.log(event.target);
     }
-    public dataChanged() : void{}
+    public dataChanged() : void
+    {}
 }
 export function addView(arr : Array<viewMgr.View>,div : string) : void
 {

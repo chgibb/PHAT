@@ -8,25 +8,25 @@ export let keySubs = new Array();
 
 export function subToKey(sub : KeySubObj) : void
 {
-	keySubs.push(
-		{
-			channel : sub.channel,
-			key : sub.key,
-			replyChannel : sub.replyChannel
-		}
-	);
+    keySubs.push(
+        {
+            channel : sub.channel,
+            key : sub.key,
+            replyChannel : sub.replyChannel
+        }
+    );
 }
 export function unSubToKey(sub : KeySubObj)
 {
-	for(let i : number = keySubs.length - 1; i >= 0; --i)
-	{
-		if(keySubs[i].channel == sub.channel &&
+    for(let i : number = keySubs.length - 1; i >= 0; --i)
+    {
+        if(keySubs[i].channel == sub.channel &&
 		   keySubs[i].key == sub.key &&
 		   keySubs[i].replyChannel == sub.replyChannel)
-		{
-			keySubs.splice(i,1);
-		}
-	}
+        {
+            keySubs.splice(i,1);
+        }
+    }
 }
 /*module.exports.unSubChannel = function(replyChannel)
 {

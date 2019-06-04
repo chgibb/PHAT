@@ -5,7 +5,8 @@ import * as L6R1R2 from "./L6R1R2";
 
 export async function testFastQCReportGeneration() : Promise<void>
 {
-    return new Promise<void>((resolve,reject) => {
+    return new Promise<void>((resolve,reject) => 
+    {
 
         atomic.updates.removeAllListeners().on(
             "generateFastQCReport",async function(op : GenerateQCReport)

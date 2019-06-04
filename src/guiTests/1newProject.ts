@@ -16,6 +16,7 @@ async function runTest() : Promise<void>
     await openFirstProject();
     await closeToolBar();
 }
-setTimeout(function(){
+setTimeout(function()
+{
     runTest();
 },1000);

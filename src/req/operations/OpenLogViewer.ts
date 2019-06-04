@@ -20,15 +20,19 @@ export class OpenLogViewer extends atomic.AtomicOperation
         let viewer = viewers[viewers.length - 1];
 
         let self = this;
-        new Promise<void>((resolve,reject) => {
-            viewer.webContents.once("did-finish-load",function(){
+        new Promise<void>((resolve,reject) => 
+        {
+            viewer.webContents.once("did-finish-load",function()
+            {
                 viewer.webContents.send("logViewer",{logRecord : self.logRecordToOpen});
                 resolve();
             });
-        }).then(() => {
+        }).then(() => 
+        {
             self.setSuccess(self.flags);
             self.update();
-        }).catch((err) => {
+        }).catch((err) => 
+        {
             self.abortOperationWithMessage(err);
             self.update();
         });

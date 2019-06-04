@@ -10,8 +10,10 @@ import {Fastq} from "./../../../req/fastq";
  */
 export async function selectFirstTwoReads() : Promise<void>
 {
-    return new Promise<void>(async (resolve,reject) => {
-        setTimeout(async function(){
+    return new Promise<void>(async (resolve,reject) => 
+    {
+        setTimeout(async function()
+        {
             console.log("selecting first two reads");
             let align = winMgr.getFreeWebContents();
             if(!align || align.length == 0)
@@ -29,7 +31,8 @@ export async function selectFirstTwoReads() : Promise<void>
                 document.getElementById("${fastqs[0].uuid}").click();
                 document.getElementById("${fastqs[1].uuid}").click();
             `);
-            setTimeout(async function(){
+            setTimeout(async function()
+            {
                 resolve();
             });
         },1000);

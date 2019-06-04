@@ -1,8 +1,7 @@
 import * as viewMgr from "./../viewMgr";
 import * as rightPanel from "./rightPanel";
 import * as reportView from "./reportView";
-
-import {Fastq} from "./../../fastq"
+import {Fastq} from "./../../fastq";
 import {Fasta} from "./../../fasta";
 import {AlignData} from "./../../alignData";
 
@@ -34,7 +33,8 @@ export class View extends viewMgr.View
     public onMount() : void
     {
         let self = this;
-        (<HTMLInputElement>document.getElementById("rightPanel")).onclick = function(this : HTMLElement,ev : MouseEvent){
+        (<HTMLInputElement>document.getElementById("rightPanel")).onclick = function(this : HTMLElement,ev : MouseEvent)
+        {
             $("#rightSlideOutPanel").animate
             (
                 {
@@ -57,7 +57,7 @@ export class View extends viewMgr.View
                     )()
                 }
             );
-        }
+        };
         rightPanel.addView(this.views,"rightSlideOutPanelView");
         reportView.addView(this.views,"reportView");
         for(let i = 0; i != this.views.length; ++i)
@@ -65,7 +65,8 @@ export class View extends viewMgr.View
             this.views[i].mount();
         }
     }
-    public onUnMount() : void{}
+    public onUnMount() : void
+    {}
     public renderView() : string
     {
         if(this.firstRender)
@@ -89,7 +90,8 @@ export class View extends viewMgr.View
         }
     }
 
-    public dataChanged() : void{}
+    public dataChanged() : void
+    {}
 
     public divClickEvents(event : JQueryEventObject) : void
     {

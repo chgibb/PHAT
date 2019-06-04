@@ -18,6 +18,7 @@ async function runTest() : Promise<void>
     await inputL6R1Reads();
     await closeToolBar();
 }
-setTimeout(function(){
+setTimeout(function()
+{
     runTest();
 },1000);

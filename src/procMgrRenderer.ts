@@ -3,17 +3,16 @@ const ipc = electron.ipcRenderer;
 
 import * as viewMgr from "./req/renderer/viewMgr";
 import {GetKeyEvent} from "./req/ipcEvents";
-
 import {PIDInfo} from "./req/PIDInfo";
 import {getPIDInfo,getPIDUsage} from "./req/getPIDInfo";
-
 import * as masterView from "./req/renderer/procMgr/masterView";
 
 const $ = require("jquery");
 (<any>window).$ = $;
 import "./req/renderer/commonBehaviour";
 
-let pingPIDs : NodeJS.Timer = setInterval(function(){
+let pingPIDs : NodeJS.Timer = setInterval(function()
+{
     ipc.send(
         "getAllPIDs",
         <GetKeyEvent>{
@@ -47,7 +46,8 @@ $
                             pids[i].cpu = use.cpu;
                             pids[i].memory = use.memory;
                         }
-                        catch(err){}
+                        catch(err)
+                        {}
                         if(!pids[i].isPHAT)
                         {
                             try
@@ -57,7 +57,8 @@ $
                                 pids[i].command = info[0].command;
                                 pids[i].arguments = info[0].arguments;
                             }
-                            catch(err){}
+                            catch(err)
+                            {}
                         }
                     }
                     //console.log(pids);

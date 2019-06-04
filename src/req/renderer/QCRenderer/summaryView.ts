@@ -5,23 +5,25 @@ const ipc = electron.ipcRenderer;
 import * as viewMgr from "./../viewMgr";
 import {ReportView} from "./reportView";
 import {Fastq} from "./../../fastq";
-import {getQCSummaryByNameOfReportByIndex} from "./../../QCData"
+import {getQCSummaryByNameOfReportByIndex} from "./../../QCData";
 import {AtomicOperationIPC} from "./../../atomicOperationsIPC";
 export class SummaryView extends viewMgr.View
 {
 	public fastqInputs : Array<Fastq>;
 	public shouldAllowTriggeringOps : boolean;
 	public constructor(div : string)
-    {
-    	super('summary',div);
-		this.fastqInputs = new Array<Fastq>();
-		this.shouldAllowTriggeringOps = true;
-    }
-	onMount(){}
-	onUnMount(){}
+	{
+    	super("summary",div);
+	    this.fastqInputs = new Array<Fastq>();
+	    this.shouldAllowTriggeringOps = true;
+	}
+	onMount()
+	{}
+	onUnMount()
+	{}
 	renderView()
 	{
-		return `
+	    return `
 			<p style='float:right;'>Failure</p><img style='float:right;' src='img/fail.png'>
 			<p style='float:right;' >Warning</p><img style='float:right;' src='img/warn.png'>
 			<p style='float:right;'>Pass</p><img style='float:right;' src='img/pass.png'>
@@ -36,27 +38,28 @@ export class SummaryView extends viewMgr.View
 					<th>Sequence Duplication Levels</th>
 					<th>Over Represented Sequences</th>
 				</tr>
-				${(()=>{
-					let res = "";
-					for(let i : number = 0; i != this.fastqInputs.length; ++i)
-					{
-						if(this.fastqInputs[i].checked)
-						{
-							res += `<tr>`;
-							if(!this.fastqInputs[i].QCData.reportRun)
-							{
-								if(this.shouldAllowTriggeringOps)
-								{
-									res += `<td class="cellHover" style='text-align:center;'><b id='${this.fastqInputs[i].uuid}'>Click to Analyze</b></td>`;
-								}
-								else
-								{
-									res += `<td><div class="three-quarters-loader"></div></td>`;
-								}
-							}
-							else
-							{
-								res += `
+				${(()=>
+    {
+        let res = "";
+        for(let i : number = 0; i != this.fastqInputs.length; ++i)
+        {
+            if(this.fastqInputs[i].checked)
+            {
+                res += "<tr>";
+                if(!this.fastqInputs[i].QCData.reportRun)
+                {
+                    if(this.shouldAllowTriggeringOps)
+                    {
+                        res += `<td class="cellHover" style='text-align:center;'><b id='${this.fastqInputs[i].uuid}'>Click to Analyze</b></td>`;
+                    }
+                    else
+                    {
+                        res += "<td><div class=\"three-quarters-loader\"></div></td>";
+                    }
+                }
+                else
+                {
+                    res += `
 									<td style='text-align:center;'>
 										<p>
 											<img class="cellHover" id='${this.fastqInputs[i].uuid}' src='img/done_Analysis.png' style='text-align:center;'>
@@ -64,8 +67,8 @@ export class SummaryView extends viewMgr.View
 											View Report
 											</p>
 									</td>`;
-							}
-							res += `
+                }
+                res += `
 								<td>${this.fastqInputs[i].alias}</td>
 								<td style='text-align:center;'>
 									<img src='img/${getQCSummaryByNameOfReportByIndex(this.fastqInputs,i,"Per base sequence quality")}.png' style='text-align:center;'>
@@ -84,44 +87,46 @@ export class SummaryView extends viewMgr.View
 								</td>
 								</tr>
 							`;
-						}
-					}
-					return res;
-				})()}
+            }
+        }
+        return res;
+    })()}
 			</table>
 		`;
 	}
-	postRender(){}
+	postRender()
+	{}
 	divClickEvents(event : JQueryEventObject) : void
 	{
-		if(!event || !event.target || !event.target.id)
+	    if(!event || !event.target || !event.target.id)
         	return;
-		for(let i : number = 0; i != this.fastqInputs.length; ++i)
-		{
-			if(this.fastqInputs[i].uuid == event.target.id)
-			{
-				if(!this.fastqInputs[i].QCData.reportRun)
-				{
-					ipc.send(
-						"runOperation",<AtomicOperationIPC>{
-							opName : "generateFastQCReport",
-							channel : "input",
-							key : "fastqInputs",
-							uuid : this.fastqInputs[i].uuid
-						}
-					);
-				}
-				else
-				{
+	    for(let i : number = 0; i != this.fastqInputs.length; ++i)
+	    {
+	        if(this.fastqInputs[i].uuid == event.target.id)
+	        {
+	            if(!this.fastqInputs[i].QCData.reportRun)
+	            {
+	                ipc.send(
+	                    "runOperation",<AtomicOperationIPC>{
+	                        opName : "generateFastQCReport",
+	                        channel : "input",
+	                        key : "fastqInputs",
+	                        uuid : this.fastqInputs[i].uuid
+	                    }
+	                );
+	            }
+	            else
+	            {
                 	(<ReportView>viewMgr.getViewByName("report")).fastqToReport = this.fastqInputs[i];
-					viewMgr.changeView('report');
-				}
-			}
-		}
+	                viewMgr.changeView("report");
+	            }
+	        }
+	    }
 	}
-	dataChanged(){}
+	dataChanged()
+	{}
 }
 export function addView(arr : Array<viewMgr.View>,div : string) : void
 {
-	arr.push(new SummaryView(div));
+    arr.push(new SummaryView(div));
 }

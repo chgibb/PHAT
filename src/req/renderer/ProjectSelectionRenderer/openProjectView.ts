@@ -2,7 +2,6 @@
 import {ipcRenderer} from "electron";
 let ipc = ipcRenderer;
 
-const jsonFile = require("jsonfile");
 
 import {ProjectManifest,getProjectManifests} from "./../../projectManifest";
 import {getCurrentlyOpenProject} from "./../../getCurrentlyOpenProject";
@@ -10,8 +9,9 @@ import {exportProjectBrowseDialog} from "./exportProjectBrowseDialog";
 import {importProjectBrowseDialog} from "./importProjectBrowseDialog";
 import {AtomicOperationIPC} from "./../../atomicOperationsIPC";
 import {getReadable} from "./../../getAppPath";
-
 import * as viewMgr from "./../viewMgr";
+
+const jsonFile = require("jsonfile");
 
 export class OpenProjectView extends viewMgr.View
 {
@@ -35,64 +35,66 @@ export class OpenProjectView extends viewMgr.View
         this.projects = projects;
         this.currentlyOpenProject = getCurrentlyOpenProject();
     }
-    public onUnMount() : void{}
+    public onUnMount() : void
+    {}
     public renderView() : string
     {
         return `
 
-            ${(()=>{
-                let res = `
+            ${(()=>
+    {
+        let res = `
                     <img src="${getReadable("img/GoBack.png")}" class="activeHover activeHoverButton" id="goBack" />
                     <img src="${getReadable("img/openFromFile.png")}" class="activeHover activeHoverButton" id="openFromFile" />
                     <br />
                     <br />
                 `;
-                if(this.currentlyOpenProject)
-                {
-                    res += `
+        if(this.currentlyOpenProject)
+        {
+            res += `
                     <h3>Currently Open Project</h3>
                     <h4 class="activeHover" style="display:flex;margin-right:50px;" id="currentlyOpen">${this.currentlyOpenProject.alias}</h4>
                     `;
-                    if(this.currentlyOpenProject.isExternal)
-                    {
-                        res += `
+            if(this.currentlyOpenProject.isExternal)
+            {
+                res += `
                             <h5>${this.currentlyOpenProject.externalPath}</h5>
                         `;
-                    }
-                    else
-                    {
-                        res += `
+            }
+            else
+            {
+                res += `
                             <h5>Not exported</h5>
                         `;
-                    }
-                    res += `
+            }
+            res += `
                         <br />
                     `;
-                }
-                if(this.projects)
-                {
-                    for(let i = 0; i != this.projects.length; ++i)
-                    {
-                        res += `
+        }
+        if(this.projects)
+        {
+            for(let i = 0; i != this.projects.length; ++i)
+            {
+                res += `
                             <div class="projectCell">
                                 <h4 class="activeHover" style="display:flex;margin-right:50px;" id="${this.projects[i].uuid}Open">${this.projects[i].alias}</h4>
                                 <img src="${getReadable("img/export.png")}" class="activeHover activeHoverButton" style="display:inline-block;" id="${this.projects[i].uuid}Export" />
                             </div>
                             <br />
                         `;
-                    }
-                }
-                if((!this.projects || this.projects.length == 0) && !this.currentlyOpenProject)
-                {
-                    res += `
+            }
+        }
+        if((!this.projects || this.projects.length == 0) && !this.currentlyOpenProject)
+        {
+            res += `
                         <div class="innerCenteredDiv">
                             <h3>You have no projects</h3>
                         </div>
                     `;
-                }
+        }
 
-                return res;
-            })()}
+        return res;
+    })()}
 
         `;
     }
@@ -109,7 +111,8 @@ export class OpenProjectView extends viewMgr.View
         }
         if(event.target.id == "openFromFile")
         {
-            importProjectBrowseDialog().then((path) => {
+            importProjectBrowseDialog().then((path) => 
+            {
                 if(!path)
                     return;
                 ipc.send(
@@ -119,8 +122,9 @@ export class OpenProjectView extends viewMgr.View
                         externalProjectPath : path
                     }
                 );
-            }).catch((err) => {
-                throw err
+            }).catch((err) => 
+            {
+                throw err;
             });
         }
         if(event.target.id == "currentlyOpen")
@@ -154,9 +158,11 @@ export class OpenProjectView extends viewMgr.View
                 if(event.target.id == `${this.projects[i].uuid}Export`)
                 {
                     document.getElementById(this.div).innerHTML = `<h3>Exporting ${this.projects[i].alias}</h3>`;
-                    exportProjectBrowseDialog(this.projects[i]).then(() => {
+                    exportProjectBrowseDialog(this.projects[i]).then(() => 
+                    {
                         viewMgr.render();
-                    }).catch((err) => {
+                    }).catch((err) => 
+                    {
                         throw err;
                     });
                 }

@@ -31,7 +31,7 @@ export function writeSequenceSelectionModal() : void
     let masterView = <masterView.View>viewMgr.getViewByName("masterView");
     let genomeView = <genomeView.GenomeView>viewMgr.getViewByName("genomeView",masterView.views);
 
-    let title = `Select Genomic Sequence`;
+    let title = "Select Genomic Sequence";
 
     let body = `
         <h5>End</h5>
@@ -57,33 +57,37 @@ export function writeSequenceSelectionModal() : void
     document.getElementById("modalBody").innerHTML = body;
     document.getElementById("modalFooter").innerHTML = footer;
 
-    document.getElementById("selectSequence").onclick = function(this : HTMLElement,ev : MouseEvent){
+    document.getElementById("selectSequence").onclick = function(this : HTMLElement,ev : MouseEvent)
+    {
         masterView.seqSelectionModalOpen = false;
         masterView.seqSelectionActionModalOpen = true;
         writeSeqSelectionActionModal();
-    }
+    };
 
     if(genomeView.genome.isInteractive)
     {
-        document.getElementById("seqSelectionStart").oninput = function(this : HTMLElement,ev : Event){
+        document.getElementById("seqSelectionStart").oninput = function(this : HTMLElement,ev : Event)
+        {
             valSelectionStartAndEnd();
             updateSeqSelectionOnFigure(parseInt((<HTMLInputElement>document.getElementById("seqSelectionStart")).value),undefined);
-        }
+        };
 
-        document.getElementById("seqSelectionEnd").oninput = function(this : HTMLElement,ev : Event){
+        document.getElementById("seqSelectionEnd").oninput = function(this : HTMLElement,ev : Event)
+        {
             valSelectionStartAndEnd();
             updateSeqSelectionOnFigure(undefined,parseInt((<HTMLInputElement>document.getElementById("seqSelectionEnd")).value));
-        }
+        };
     }
     if(!genomeView.genome.isInteractive)
     {
-        document.getElementById("updateSeqSelection").onclick = function(this : HTMLElement,ev : MouseEvent){
+        document.getElementById("updateSeqSelection").onclick = function(this : HTMLElement,ev : MouseEvent)
+        {
             valSelectionStartAndEnd();
             updateSeqSelectionOnFigure(
                 parseInt((<HTMLInputElement>document.getElementById("seqSelectionStart")).value),
                 parseInt((<HTMLInputElement>document.getElementById("seqSelectionEnd")).value)
             );
-        }
+        };
     }
 
 }

@@ -1,7 +1,7 @@
 import * as viewMgr from "./../../viewMgr";
 import * as masterView from "./../masterView";
 import * as rightPanel from "./../rightPanel";
-import {getQCSummaryByNameOfReportByIndex} from "./../../../QCData"
+import {getQCSummaryByNameOfReportByIndex} from "./../../../QCData";
 import {getPath} from "./../../../file";
 
 export function renderQCReportTable() : string
@@ -12,9 +12,10 @@ export function renderQCReportTable() : string
         return "";
     return `
         <table style="width:100%">
-        ${(()=>{
-            let res = "";
-            res += `
+        ${(()=>
+    {
+        let res = "";
+        res += `
                     <tr>
                         ${rightPanel.fastQInfoSelection.alias != false ? "<th>Alias</th>" : ""}
                         ${rightPanel.fastQInfoSelection.fullName != false ? "<th>Full Path</th>" : ""}
@@ -28,50 +29,51 @@ export function renderQCReportTable() : string
                         ${rightPanel.fastQInfoSelection.ORS != false ? "<th>Over Represented Sequences</th>" : ""}
                     </tr>
             `;
-            return res;
-        })()}
-        ${(()=>{
-            let res = "";
-            for(let i = 0; i != masterView.fastqInputs.length; ++i)
+        return res;
+    })()}
+        ${(()=>
+    {
+        let res = "";
+        for(let i = 0; i != masterView.fastqInputs.length; ++i)
+        {
+            if(masterView.fastqInputs[i].checked)
             {
-                if(masterView.fastqInputs[i].checked)
-                {
-                    res += "<tr>";
-                        if(rightPanel.fastQInfoSelection.alias)
-                            res += `<td>${masterView.fastqInputs[i].alias}</td>`;
+                res += "<tr>";
+                if(rightPanel.fastQInfoSelection.alias)
+                    res += `<td>${masterView.fastqInputs[i].alias}</td>`;
 
-                        if(rightPanel.fastQInfoSelection.fullName)
-                            res += `<td>${getPath(masterView.fastqInputs[i])}</td>`;
+                if(rightPanel.fastQInfoSelection.fullName)
+                    res += `<td>${getPath(masterView.fastqInputs[i])}</td>`;
 
-                        if(rightPanel.fastQInfoSelection.sizeInBytes)
-                            res += `<td>${masterView.fastqInputs[i].size}</td>`;
+                if(rightPanel.fastQInfoSelection.sizeInBytes)
+                    res += `<td>${masterView.fastqInputs[i].size}</td>`;
 
-                        if(rightPanel.fastQInfoSelection.formattedSize)
-                            res += `<td>${masterView.fastqInputs[i].sizeString}</td>`;
+                if(rightPanel.fastQInfoSelection.formattedSize)
+                    res += `<td>${masterView.fastqInputs[i].sizeString}</td>`;
 
-                        if(rightPanel.fastQInfoSelection.numberOfSequences)
-                            res += `<td>${masterView.fastqInputs[i].sequences}</td>`;
+                if(rightPanel.fastQInfoSelection.numberOfSequences)
+                    res += `<td>${masterView.fastqInputs[i].sequences}</td>`;
 
-                        if(rightPanel.fastQInfoSelection.PBSQ)
-                            res += `<td>${getQCSummaryByNameOfReportByIndex(masterView.fastqInputs,i,"Per base sequence quality")}</td>`;
+                if(rightPanel.fastQInfoSelection.PBSQ)
+                    res += `<td>${getQCSummaryByNameOfReportByIndex(masterView.fastqInputs,i,"Per base sequence quality")}</td>`;
 
-                        if(rightPanel.fastQInfoSelection.PSQS)
-                            res += `<td>${getQCSummaryByNameOfReportByIndex(masterView.fastqInputs,i,"Per sequence quality scores")}</td>`;
+                if(rightPanel.fastQInfoSelection.PSQS)
+                    res += `<td>${getQCSummaryByNameOfReportByIndex(masterView.fastqInputs,i,"Per sequence quality scores")}</td>`;
 
-                        if(rightPanel.fastQInfoSelection.PSGCC)
-                            res += `<td>${getQCSummaryByNameOfReportByIndex(masterView.fastqInputs,i,"Per sequence GC content")}</td>`;
+                if(rightPanel.fastQInfoSelection.PSGCC)
+                    res += `<td>${getQCSummaryByNameOfReportByIndex(masterView.fastqInputs,i,"Per sequence GC content")}</td>`;
 
-                        if(rightPanel.fastQInfoSelection.SDL)
-                            res += `<td>${getQCSummaryByNameOfReportByIndex(masterView.fastqInputs,i,"Sequence Duplication Levels")}</td>`;
+                if(rightPanel.fastQInfoSelection.SDL)
+                    res += `<td>${getQCSummaryByNameOfReportByIndex(masterView.fastqInputs,i,"Sequence Duplication Levels")}</td>`;
 
-                        if(rightPanel.fastQInfoSelection.ORS)
-                            res += `<td>${getQCSummaryByNameOfReportByIndex(masterView.fastqInputs,i,"Overrepresented sequences")}</td>`;
+                if(rightPanel.fastQInfoSelection.ORS)
+                    res += `<td>${getQCSummaryByNameOfReportByIndex(masterView.fastqInputs,i,"Overrepresented sequences")}</td>`;
 
-                    res += "</tr>";
-                }
+                res += "</tr>";
             }
-            return res;
-        })()}
+        }
+        return res;
+    })()}
         </table>
     `;
 }

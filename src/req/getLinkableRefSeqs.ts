@@ -188,7 +188,7 @@ export function getLinkableRefSeqs(fastaInputs : Array<Fasta>,align : AlignData)
         {
             curr.linkable = false;
             curr.reason = "Not Indexed";
-            curr.reason = `Ref is not indexed for visualization or indexing`;
+            curr.reason = "Ref is not indexed for visualization or indexing";
             res.push(curr);
         }
     }

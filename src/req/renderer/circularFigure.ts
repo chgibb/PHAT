@@ -8,9 +8,6 @@
 import * as fs from "fs";
 import * as readline from "readline";
 
-const jsonFile = require("jsonfile");
-const uuidv4 : () => string = require("uuid/v4");
-const mkdirp = require("mkdirp");
 import * as html from "@chgibb/ngplasmid/lib/html";
 import * as ngDirectives from "@chgibb/ngplasmid/lib/directives";
 import * as pbDirectives from "@chgibb/ngplasmid/lib/pb/node";
@@ -23,12 +20,14 @@ import * as trackLabel from "./circularGenome/trackLabel";
 import * as trackMarker from "./circularGenome/trackMarker";
 import * as markerLabel from "./circularGenome/markerLabel";
 import * as trackScale from "./circularGenome/trackScale";
-
 import * as plasmid from "./circularGenome/plasmid";
-
 import {AlignData,getSNPsJSON} from "./../alignData";
 import {VCF2JSONRow} from "./../varScanMPileup2SNPVCF2JSON";
 import {parseCSS} from "./../parseCSS";
+
+const mkdirp = require("mkdirp");
+const uuidv4 : () => string = require("uuid/v4");
+const jsonFile = require("jsonfile");
 
 /**
  * Represents a single contig in a circular figure
@@ -79,7 +78,10 @@ function getRandColor(brightness : number)
     // Six levels of brightness from 0 to 5, 0 being the darkest
     let rgb = [Math.random() * 256, Math.random() * 256, Math.random() * 256];
     let mix = [brightness*51, brightness*51, brightness*51]; //51 => 255/5
-    let mixedrgb = [rgb[0] + mix[0], rgb[1] + mix[1], rgb[2] + mix[2]].map(function(x){return Math.round(x/2.0)});
+    let mixedrgb = [rgb[0] + mix[0], rgb[1] + mix[1], rgb[2] + mix[2]].map(function(x)
+    {
+        return Math.round(x/2.0);
+    });
     return "rgb(" + mixedrgb.join(",") + ")";
 }
 
@@ -123,14 +125,14 @@ export class RenderedTrackRecord
         uuidContig : string,
         uuidFigure : string,
         colour : string)
-        {
-            this.uuid = uuidv4();
-            this.uuidAlign = uuidAlign;
-            this.uuidContig = uuidContig;
-            this.uuidFigure = uuidFigure;
-            this.checked = false;
-            this.colour = colour;
-        }
+    {
+        this.uuid = uuidv4();
+        this.uuidAlign = uuidAlign;
+        this.uuidContig = uuidContig;
+        this.uuidFigure = uuidFigure;
+        this.checked = false;
+        this.colour = colour;
+    }
 }
 
 /**
@@ -203,7 +205,7 @@ export class SeqSelectionDisplayArm
         this.armWadjust = 12;
         this.armMarkerClick = `seqSelectionArmOnClick($event,$handler,'${side}')`;
         this.armLineClass = "seqSelectionArm";
-        this.armLineStyle = `stroke:rgb(0,0,0);stroke-dasharray:5,10;stroke-width:2px;animation: moveSeqSelectionArm 3s infinite;`;
+        this.armLineStyle = "stroke:rgb(0,0,0);stroke-dasharray:5,10;stroke-width:2px;animation: moveSeqSelectionArm 3s infinite;";
         this.armShowLine = 1;
         this.armVadjust = 1200;
         this.armLabelClick = this.armMarkerClick;
@@ -281,7 +283,7 @@ export function makeMapScope(cf : CircularFigure, seqSelectOptions? : {
             seqSelectOptions ? seqSelectOptions.end : 100,
             cf.radius
         )
-    }
+    };
 }
 
 export class TrackMap extends ngDirectives.Plasmid
@@ -423,11 +425,11 @@ export function buildContigTemplate(figure : CircularFigure,contig : Contig,star
             isInteractive : figure.isInteractive
         })}
             ${markerLabel.add(
-            {
-                type : "path",
-                text : figure.showContigNames ?  contig.alias : "",
-                labelStyle : `fill:${contig.fontFill};opacity:${contig.opacity};`
-            })}
+        {
+            type : "path",
+            text : figure.showContigNames ?  contig.alias : "",
+            labelStyle : `fill:${contig.fontFill};opacity:${contig.opacity};`
+        })}
             ${markerLabel.end()}
         ${trackMarker.end()}
     `;
@@ -450,36 +452,36 @@ export function buildBaseFigureTemplate(figure : CircularFigure) : string
             radius : "{{genome.radius}}"
         })}
             ${trackLabel.add(
-            {
-                text : figure.name,
-                labelStyle : "font-size:20px;font-weight:400",
-                onClick : "figureNameOnClick",
-                isInteractive : figure.isInteractive
-            })}
+        {
+            text : figure.name,
+            labelStyle : "font-size:20px;font-weight:400",
+            onClick : "figureNameOnClick",
+            isInteractive : figure.isInteractive
+        })}
             ${trackLabel.end()}
             ${(()=>
-            {
-                let res = "";
-                let lastLocation = 0;
-                for(let i = 0; i != figure.contigs.length; ++i)
-                {
-                    res += buildContigTemplate(figure,figure.contigs[i],lastLocation,lastLocation+figure.contigs[i].bp);
-                    lastLocation = lastLocation + figure.contigs[i].bp;
-                }
-                for(let i = 0; i != figure.customContigs.length; ++i)
-                {
-                    res += buildContigTemplate(figure,figure.customContigs[i],figure.customContigs[i].start,figure.customContigs[i].end);
-                }
-                return res; 
-            })()}
+    {
+        let res = "";
+        let lastLocation = 0;
+        for(let i = 0; i != figure.contigs.length; ++i)
+        {
+            res += buildContigTemplate(figure,figure.contigs[i],lastLocation,lastLocation+figure.contigs[i].bp);
+            lastLocation = lastLocation + figure.contigs[i].bp;
+        }
+        for(let i = 0; i != figure.customContigs.length; ++i)
+        {
+            res += buildContigTemplate(figure,figure.customContigs[i],figure.customContigs[i].start,figure.customContigs[i].end);
+        }
+        return res; 
+    })()}
             ${trackScale.add(
-            {
-                interval : "{{genome.circularFigureBPTrackOptions.interval}}",
-                vAdjust : "{{genome.circularFigureBPTrackOptions.vAdjust}}",
-                showLabels : "{{genome.circularFigureBPTrackOptions.showLabels}}",
-                direction : "{{genome.circularFigureBPTrackOptions.direction}}"
-            }
-        )}
+        {
+            interval : "{{genome.circularFigureBPTrackOptions.interval}}",
+            vAdjust : "{{genome.circularFigureBPTrackOptions.vAdjust}}",
+            showLabels : "{{genome.circularFigureBPTrackOptions.showLabels}}",
+            direction : "{{genome.circularFigureBPTrackOptions.direction}}"
+        }
+    )}
         ${trackScale.end()}
     ${plasmidTrack.end()}
     `;
@@ -489,7 +491,8 @@ export function buildSequenceSelectorTemplate(figure : CircularFigure,
     seqSelectionLeftArm : SeqSelectionDisplayArm,
     seqSelectionRightArm : SeqSelectionDisplayArm,
     seqSelectionArrow : SeqSelectionDisplayArrow
-) : string {
+) : string 
+{
 
     let template = `
         <plasmidtrack width="{{seqSelectionLeftArm.armWidth}}" trackstyle="{{seqSelectionLeftArm.armTrackStyle}}" radius="{{seqSelectionLeftArm.armRadius}}">
@@ -530,7 +533,8 @@ export function cacheBaseFigureTemplate(figure : CircularFigure) : void
     {
         fs.mkdirSync(getReadableAndWritable(`rt/circularFigures/${figure.uuid}`));
     }
-    catch(err){}
+    catch(err)
+    {}
     fs.writeFileSync(getReadableAndWritable(`rt/circularFigures/${figure.uuid}/baseFigure`),buildBaseFigureTemplate(figure));
 }
 
@@ -582,7 +586,8 @@ export function deleteBaseFigureSVGFromCache(figure : CircularFigure) : void
     {
         fs.unlinkSync(getReadableAndWritable(`rt/circularFigures/${figure.uuid}/baseFigure.svg`));
     }
-    catch(err){}
+    catch(err)
+    {}
 }
 /**
  * Compile base figure. Returns the resulting SVG
@@ -593,7 +598,8 @@ export function deleteBaseFigureSVGFromCache(figure : CircularFigure) : void
  */
 export function compileBaseFigureSVG(figure : CircularFigure) : Promise<string>
 {
-    return new Promise<string>(async (resolve,reject) => {
+    return new Promise<string>(async (resolve,reject) => 
+    {
 
         let nodes : Array<html.Node> = await html.loadFromString(
             assembleCompilableBaseFigureTemplates(figure)
@@ -672,7 +678,8 @@ export async function buildCoverageTrackTemplate(
     scaleFactor : number = 1
 ) : Promise<string>
 {
-    return new Promise<string>((resolve,reject) => {
+    return new Promise<string>((resolve,reject) => 
+    {
         let coverageTracks : string = "";
         //Stream the distilled samtools depth data from the specified alignment for the specified contig
         let rl : readline.ReadLine = readline.createInterface(<readline.ReadLineOptions>{
@@ -688,7 +695,8 @@ export async function buildCoverageTrackTemplate(
             the same track.
         */
         let depths : Array<PositionsWithDepths> = new Array<PositionsWithDepths>();
-        rl.on("line",function(line : string){
+        rl.on("line",function(line : string)
+        {
             let tokens = line.split(/\s/g);
             let depth = parseInt(tokens[1]);
             let found = false;
@@ -709,9 +717,13 @@ export async function buildCoverageTrackTemplate(
                 });
             }
         });
-        rl.on("close",function(){
+        rl.on("close",function()
+        {
             //sort depths
-            depths.sort(function(a : PositionsWithDepths,b : PositionsWithDepths){return a.depth - b.depth;});
+            depths.sort(function(a : PositionsWithDepths,b : PositionsWithDepths)
+            {
+                return a.depth - b.depth;
+            });
 
             /*
                 Instead of rendering one marker for every single position, we stretch a single marker to cover sequential positions which are all at the same
@@ -720,7 +732,10 @@ export async function buildCoverageTrackTemplate(
             for(let i = 0; i != depths.length; ++i)
             {
                 //sort positions within each depth position we're looking at
-                depths[i].positions.sort(function(a : number,b : number){return a - b});
+                depths[i].positions.sort(function(a : number,b : number)
+                {
+                    return a - b;
+                });
                 let res = "";
                 //render the start of the current track
                 res += `<plasmidtrack trackstyle="fill-opacity:0.0;fill:${colour}" width="10" radius="{{genome.radius+${100+(depths[i].depth*scaleFactor)}}}" >`;
@@ -740,7 +755,7 @@ export async function buildCoverageTrackTemplate(
                     res += `<trackmarker start="${baseBP+depths[i].positions[initial]}" end="${baseBP+depths[i].positions[initial]+offset}" markerstyle="fill:${colour};stroke-width:1px;" wadjust="-8"></trackmarker>`;
                 }
             
-                res += `</plasmidtrack>`;
+                res += "</plasmidtrack>";
                 coverageTracks += res;
             }
             resolve(coverageTracks);
@@ -769,12 +784,14 @@ export async function cacheCoverageTrackTemplate(
     scaleFactor : number = 1
 ) : Promise<void>
 {
-    return new Promise<void>(async (resolve,reject) => {
+    return new Promise<void>(async (resolve,reject) => 
+    {
         try
         {
             mkdirp.sync(getReadableAndWritable(`rt/circularFigures/${figure.uuid}/coverage/${align.uuid}/${contiguuid}`));
         }
-        catch(err){}
+        catch(err)
+        {}
     
         let coverageTracks = await buildCoverageTrackTemplate(figure,contiguuid,align,colour,scaleFactor);
         let trackRecord = new RenderedCoverageTrackRecord(align.uuid,contiguuid,figure.uuid,colour,scaleFactor);
@@ -898,7 +915,8 @@ export function buildSNPTrackTemplate(
     colour : string = "rgb(64,64,64)"
 ) : Promise<string>
 {
-    return new Promise<string>((resolve,reject) => {
+    return new Promise<string>((resolve,reject) => 
+    {
         let SNPTracks : string = "";
 
         let baseBP = getBaseBP(figure,contiguuid);
@@ -935,7 +953,10 @@ export function buildSNPTrackTemplate(
                 });
             }
         }
-        SNPPositions.sort(function(a : SNPPosition,b : SNPPosition){return a.position - b.position;});
+        SNPPositions.sort(function(a : SNPPosition,b : SNPPosition)
+        {
+            return a.position - b.position;
+        });
 
         for(let i = 0; i != SNPPositions.length; ++i)
         {
@@ -983,12 +1004,14 @@ export function cacheSNPTrackTemplate(
     colour : string = "rgb(64,64,64)"
 ) : Promise<string>
 {
-    return new Promise<string>(async (resolve,reject) => {
+    return new Promise<string>(async (resolve,reject) => 
+    {
         try
         {
             mkdirp.sync(getReadableAndWritable(`rt/circularFigures/${figure.uuid}/snp/${align.uuid}/${contiguuid}`));
         }
-        catch(err){}
+        catch(err)
+        {}
         let SNPTracks = await buildSNPTrackTemplate(figure,contiguuid,align,colour);
         let trackRecord = new RenderedSNPTrackRecord(align.uuid,contiguuid,figure.uuid,colour);
         fs.writeFileSync(getCachedSNPTrackTemplatePath(trackRecord),SNPTracks);
@@ -1048,7 +1071,8 @@ export function getSNPTrackSVGFromCache(trackRecord : RenderedSNPTrackRecord) : 
 export function buildCoverageTrackMap(trackRecord : RenderedCoverageTrackRecord,figure : CircularFigure) : Promise<CoverageTrackMap>
 {
 
-    return new Promise<CoverageTrackMap>(async (resolve,reject) => {
+    return new Promise<CoverageTrackMap>(async (resolve,reject) => 
+    {
 
         let map : CoverageTrackMap = new CoverageTrackMap();
         map.$scope = makeMapScope(figure);
@@ -1100,7 +1124,8 @@ export function buildCoverageTrackMap(trackRecord : RenderedCoverageTrackRecord,
 export function buildSNPTrackMap(trackRecord : RenderedSNPTrackRecord,figure : CircularFigure) : Promise<SNPTrackMap>
 {
 
-    return new Promise<SNPTrackMap>(async (resolve,reject) => {
+    return new Promise<SNPTrackMap>(async (resolve,reject) => 
+    {
 
         let nodes : Array<html.Node> = await html.loadFromString(
             assembleCompilableSNPTrack(figure,trackRecord)
@@ -1139,7 +1164,8 @@ export function buildSNPTrackMap(trackRecord : RenderedSNPTrackRecord,figure : C
  */
 export function compileTemplatesToSVG(templates : string,$scope : MapScope) : Promise<string>
 {
-    return new Promise<string>(async (resolve,reject) => {
+    return new Promise<string>(async (resolve,reject) => 
+    {
         let nodes : Array<html.Node> = await html.loadFromString(templates);
 
         let plasmid : ngDirectives.Plasmid = new ngDirectives.Plasmid();
@@ -1251,7 +1277,8 @@ export function assembleCompilableSNPTrack(figure : CircularFigure,trackRecord :
  */
 export function buildSingleSVG(figure : CircularFigure) : Promise<string>
 {
-    return new Promise<string>(async (resolve,reject) => {
+    return new Promise<string>(async (resolve,reject) => 
+    {
         let template = "";
         
         for(let i = 0; i != figure.renderedCoverageTracks.length; ++i)
@@ -1307,17 +1334,19 @@ export function buildSingleSVG(figure : CircularFigure) : Promise<string>
  */
 export function renderSVGToCanvas(svg : string, ctx : CanvasRenderingContext2D) : Promise<void>
 {
-    return new Promise<void>((resolve,reject) => {
+    return new Promise<void>((resolve,reject) => 
+    {
         let img : HTMLImageElement = new Image();
         let url : string = window.URL.createObjectURL(
             new Blob(
                 [svg],
                 <BlobPropertyBag>{
-                    type : `image/svg+xml`
+                    type : "image/svg+xml"
                 }
             )
         );
-        img.onload = function(){
+        img.onload = function()
+        {
             ctx.drawImage(img,0,0);
             window.URL.revokeObjectURL(url);
             resolve();
@@ -1338,7 +1367,8 @@ export function renderCoverageTrackToCanvas(
     map : CoverageTrackMap,
     figure : CircularFigure,
     ctx : CanvasRenderingContext2D
-) : void {
+) : void 
+{
     //We assume a lot of things about coverage tracks in this method to save time
     //If coverage tracks change at some point in the future, this will have to be updated
     //We assume coverage tracks are made of <plasmidtrack>s and <trackmarker>s only
@@ -1385,8 +1415,10 @@ export function renderSNPTrackToCanvas(
     map : SNPTrackMap,
     figure : CircularFigure,
     ctx : CanvasRenderingContext2D
-) : Promise<void> {
-    return new Promise<void>(async (resolve,reject) => {
+) : Promise<void> 
+{
+    return new Promise<void>(async (resolve,reject) => 
+    {
         map.$scope = makeMapScope(figure);
 
         await renderSVGToCanvas(map.renderStart()+map.renderEnd(),ctx);

@@ -10,11 +10,13 @@ import {getLinkableRefSeqs} from "./../getLinkableRefSeqs";
 
 export function testL6R1HPV16NoHeaderSAMImporting() : Promise<void>
 {
-    return new Promise<void>((resolve,reject) => {
-        atomic.updates.removeAllListeners().on("inputBamFile",async function(op : InputBamFile){
+    return new Promise<void>((resolve,reject) => 
+    {
+        atomic.updates.removeAllListeners().on("inputBamFile",async function(op : InputBamFile)
+        {
             if(op.flags.failure)
             {
-                console.log(`Failed to input bam`);
+                console.log("Failed to input bam");
                 console.log(await atomic.getLogContent(op.logRecord)); 
                 return reject();
             }

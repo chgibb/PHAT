@@ -4,9 +4,10 @@ const ipc = electron.ipcRenderer;
 import {GetKeyEvent,KeySubEvent} from "./req/ipcEvents";
 import * as viewMgr from "./req/renderer/viewMgr";
 import {makeWindowDockable} from "./req/renderer/dock";
-import * as reportView from "./req/renderer/AlignRenderer/reportView"
+import * as reportView from "./req/renderer/AlignRenderer/reportView";
 
 const $ = require("jquery");
+
 (<any>window).$ = $;
 import "./req/renderer/commonBehaviour";
 import {AtomicOperation} from "./req/operations/atomicOperations";
@@ -76,7 +77,7 @@ $
 
         ipc.on
         (
-            'align',function(event : Electron.IpcMessageEvent,arg : any)
+            "align",function(event : Electron.IpcMessageEvent,arg : any)
             {
                 console.log(arg);
                 if(arg.action == "getKey" || arg.action == "keyChange")
@@ -113,7 +114,8 @@ $
                                     }
                                 }
                             }
-                            catch(err){}
+                            catch(err)
+                            {}
                         }
                     }
                     if(!found)
@@ -126,8 +128,8 @@ $
 );
 $(window).resize
 (
-	function()
-	{
+    function()
+    {
         viewMgr.render();
     }
 );

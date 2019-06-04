@@ -1,10 +1,9 @@
 import * as electron from "electron";
 const ipc = electron.ipcRenderer;
 
-import {AtomicOperation} from "./req/operations/atomicOperations"
+import {AtomicOperation} from "./req/operations/atomicOperations";
 import {GetKeyEvent,KeySubEvent} from "./req/ipcEvents";
 import * as viewMgr from "./req/renderer/viewMgr";
-
 import * as masterView from "./req/renderer/OperationViewerRenderer/masterView";
 import * as runningView from "./req/renderer/OperationViewerRenderer/runningView";
 import * as logView from "./req/renderer/OperationViewerRenderer/logView";
@@ -20,7 +19,8 @@ function postRender(view : viewMgr.View) : void
 }
 viewMgr.setPostRender(postRender);
 
-let pingOperations = setInterval(function(){
+let pingOperations = setInterval(function()
+{
     console.log("running ping");
     ipc.send(
         "getKey",
@@ -33,7 +33,8 @@ let pingOperations = setInterval(function(){
     );
     console.log("done running ping");
 },3000);
-window.addEventListener("unload",function(){
+window.addEventListener("unload",function()
+{
     clearInterval(pingOperations);
 });
 $
@@ -43,7 +44,7 @@ $
         console.log("adding views");
         masterView.addView(viewMgr.views,"masterView");
         viewMgr.changeView("masterView");
-        console.log('done adding views');
+        console.log("done adding views");
         ipc.send(
             "getKey",
             <GetKeyEvent>{
@@ -73,7 +74,7 @@ $
                     viewMgr.render();
                 }
             }
-        )
+        );
         viewMgr.render();
     }
 );

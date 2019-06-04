@@ -2,14 +2,11 @@ import * as electron from "electron";
 const ipc = electron.ipcRenderer;
 
 import {GetKeyEvent,KeySubEvent} from "./req/ipcEvents";
-
 import * as viewMgr from "./req/renderer/viewMgr";
 import {makeWindowDockable} from "./req/renderer/dock";
-
 import * as masterView from "./req/renderer/inputRenderer/masterView";
 import * as fastqView from "./req/renderer/inputRenderer/FastqView";
 import * as fastaView from "./req/renderer/inputRenderer/FastaView";
-
 import {AtomicOperation} from "./req/operations/atomicOperations";
 import {IndexFastaForBowtie2Alignment} from "./req/operations/indexFastaForBowtie2Alignment";
 import {IndexFastaForVisualization} from "./req/operations/indexFastaForVisualization";
@@ -31,8 +28,8 @@ function postRender(view : viewMgr.View) : void
 }
 $(window).resize
 (
-	function()
-	{
+    function()
+    {
         viewMgr.render();
     }
 );
@@ -42,7 +39,7 @@ $
     {
         makeWindowDockable("input");
         viewMgr.setPostRender(postRender);
-        masterView.addView(viewMgr.views,'view');
+        masterView.addView(viewMgr.views,"view");
 
         viewMgr.changeView("masterView");
 
@@ -126,28 +123,28 @@ $
 
         //on message from main process
         ipc.on
-		(	
-		    'input',function(event : Electron.IpcMessageEvent,arg : any)
-			{
+        (	
+		    "input",function(event : Electron.IpcMessageEvent,arg : any)
+            {
                 //reply from call to getState
 			    if(arg.action == "getKey" || arg.action == "keyChange")
-				{
+                {
                     let masterView = <masterView.View>viewMgr.getViewByName("masterView");
-					if(arg.key == 'fastqInputs')
-					{
+                    if(arg.key == "fastqInputs")
+                    {
                         if(arg.val !== undefined)
                         {
                             masterView.fastqInputs = arg.val;
                         }
                     }
-                    if(arg.key == 'fastaInputs')
-					{
+                    if(arg.key == "fastaInputs")
+                    {
                         if(arg.val !== undefined)
                         {
                             masterView.fastaInputs = arg.val;
                         }
                     }
-                    if(arg.key == 'aligns')
+                    if(arg.key == "aligns")
                     {
                         if(arg.val !== undefined)
                         {
@@ -175,12 +172,14 @@ $
                                     }
                                 }
                             }
-                            catch(err){}
+                            catch(err)
+                            {}
                         }
                     }
                     if(!found)
                         masterView.shouldAllowTriggeringOps = true;
-                    setTimeout(function(){
+                    setTimeout(function()
+                    {
                         masterView.dataChanged();
                         viewMgr.render();
                     },100);

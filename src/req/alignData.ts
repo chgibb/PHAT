@@ -49,7 +49,7 @@ export function getArtifactDir(alignData : AlignData) : string
 }
 export function getCoverageDir(alignData : AlignData) : string
 {
-    return getReadableAndWritable(`rt/AlignmentArtifacts/${alignData.uuid}/contigCoverage`)
+    return getReadableAndWritable(`rt/AlignmentArtifacts/${alignData.uuid}/contigCoverage`);
 }
 export function getSam(alignData : AlignData) : string
 {

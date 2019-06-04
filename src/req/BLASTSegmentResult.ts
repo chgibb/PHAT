@@ -101,7 +101,8 @@ export function getBLASTFragmentResultsStore(blastResult : BLASTSegmentResult) :
  */
 export function getBLASTReadResults(blastResult : BLASTSegmentResult) : Promise<Array<BLASTReadResult>> 
 {
-    return new Promise<Array<BLASTReadResult>>(async (resolve : (value : Array<BLASTReadResult>) => void,reject) => {
+    return new Promise<Array<BLASTReadResult>>(async (resolve : (value : Array<BLASTReadResult>) => void,reject) => 
+    {
         let res = new Array<BLASTReadResult>();
 
         if(blastResult.readsBLASTed == 0)
@@ -113,7 +114,8 @@ export function getBLASTReadResults(blastResult : BLASTSegmentResult) : Promise<
             }
         );
 
-        rl.on("line",function(line : string){
+        rl.on("line",function(line : string)
+        {
             let result : BLASTReadResult = JSON.parse(line);
 
             if(result)
@@ -123,9 +125,10 @@ export function getBLASTReadResults(blastResult : BLASTSegmentResult) : Promise<
             }
         });
 
-        rl.on("close",function(){
+        rl.on("close",function()
+        {
             return resolve(res);
-        })
+        });
     });
 }
 
@@ -138,7 +141,8 @@ export function getBLASTReadResults(blastResult : BLASTSegmentResult) : Promise<
  */
 export function getBLASTFragmentResults(blastResult : BLASTSegmentResult) : Promise<Array<BLASTFragmentResult>> 
 {
-    return new Promise<Array<BLASTFragmentResult>>(async (resolve : (value : Array<BLASTFragmentResult>) => void) => {
+    return new Promise<Array<BLASTFragmentResult>>(async (resolve : (value : Array<BLASTFragmentResult>) => void) => 
+    {
         let res = new Array<BLASTFragmentResult>();
 
         if(blastResult.readsBLASTed == 0)
@@ -153,7 +157,8 @@ export function getBLASTFragmentResults(blastResult : BLASTSegmentResult) : Prom
             }
         );
 
-        rl.on("line",function(line : string){
+        rl.on("line",function(line : string)
+        {
             let result : BLASTFragmentResult = JSON.parse(line);
 
             if(result)
@@ -162,8 +167,9 @@ export function getBLASTFragmentResults(blastResult : BLASTSegmentResult) : Prom
             }
         });
 
-        rl.on("close",function(){
+        rl.on("close",function()
+        {
             return resolve(res);
-        })
+        });
     });
 }

@@ -3,9 +3,6 @@
 import * as electron from "electron";
 const ipc = electron.ipcRenderer;
 
-const Dialogs = require("dialogs");
-const dialogs = Dialogs();
-
 import {SaveKeyEvent} from "./../../ipcEvents";
 import {AtomicOperationIPC} from "./../../atomicOperationsIPC";
 import * as viewMgr from "./../viewMgr";
@@ -14,10 +11,8 @@ import {reCacheBaseFigure} from "./reCacheBaseFigure";
 import {Fasta} from "./../../fasta";
 import {AlignData} from "./../../alignData";
 import {changeWindowTitle} from "./../changeWindowTitle";
-
 import * as GenomeView from "./genomeView";
 import * as tc from "./templateCache";
-
 import {writeAlignsModal} from "./writeAlignsModal";
 import {writeAvailableTracksModal} from "./writeAvailableTracksModal";
 import {writeContigEditorModal} from "./writeContigEditorModal";
@@ -27,7 +22,11 @@ import {writeSequenceSelectionModal} from "./writeSequenceSelectionModal";
 import {writeSeqSelectionActionModal} from "./writeSequenceSelectionActionModal";
 import {showGenericLoadingSpinnerInNavBar} from "./loadingSpinner";
 
+const Dialogs = require("dialogs");
 const $ = require("jquery");
+
+const dialogs = Dialogs();
+
 (<any>window).$ = $;
 (<any>window).jQuery = $;
 (<any>window).Tether = require("tether");
@@ -170,7 +169,8 @@ export class View extends viewMgr.View
                 {
                     document.getElementById(`${this.circularFigures[i].uuid}Open`).classList.add("selectedFigureInDropDown");
                 }
-                catch(err){}
+                catch(err)
+                {}
             }
         }
     }
@@ -237,10 +237,12 @@ export class View extends viewMgr.View
         }
         let genomeView = <GenomeView.GenomeView>viewMgr.getViewByName("genomeView",this.views);
         let self = this;
-        window.onbeforeunload = function(e){
+        window.onbeforeunload = function(e)
+        {
             self.saveFigureChanges();
-        }
-        document.getElementById("figures").onclick = function(this : HTMLElement,ev : MouseEvent){
+        };
+        document.getElementById("figures").onclick = function(this : HTMLElement,ev : MouseEvent)
+        {
             for(let i = 0; i != self.fastaInputs.length; ++i)
             {
                 if((<any>ev.target).id == `${self.fastaInputs[i].uuid}NewFigure`)
@@ -271,8 +273,9 @@ export class View extends viewMgr.View
                     return;
                 }
             }
-        }
-        document.getElementById("figureOptions").onclick = async function(this : HTMLElement,ev : MouseEvent){
+        };
+        document.getElementById("figureOptions").onclick = async function(this : HTMLElement,ev : MouseEvent)
+        {
             if((<any>event.target).id == `${genomeView.genome.uuid}ToggleInteractivity`)
             {
                 genomeView.genome.isInteractive = !genomeView.genome.isInteractive;
@@ -283,36 +286,40 @@ export class View extends viewMgr.View
                 genomeView.genome.showContigNames = !genomeView.genome.showContigNames;
                 self.saveFigureChanges();
             }
-            if((<any>event.target).id == `EditFigureName`)
+            if((<any>event.target).id == "EditFigureName")
             {
                 genomeView.figureNameOnClick();
             }
-            if((<any>event.target).id ==`EditContigs`)
+            if((<any>event.target).id =="EditContigs")
             {
                 self.editContigsModalOpen = true;
                 writeEditContigsModal();
                 self.showModal();
 
             }
-        }
+        };
 
-        document.getElementById("showBPIntervalCheckBox").onclick = function(this : HTMLElement,ev : MouseEvent){
+        document.getElementById("showBPIntervalCheckBox").onclick = function(this : HTMLElement,ev : MouseEvent)
+        {
             document.getElementById("updateNavBarButton").click();
-        }
+        };
 
-        document.getElementById("openModalAligns").onclick = function(this : HTMLElement,ev : MouseEvent){
+        document.getElementById("openModalAligns").onclick = function(this : HTMLElement,ev : MouseEvent)
+        {
             self.alignsModalOpen = true;
             writeAlignsModal();
             self.showModal();
-        }
+        };
 
-        document.getElementById("openContigCreator").onclick = function(this : HTMLElement,ev : MouseEvent){
+        document.getElementById("openContigCreator").onclick = function(this : HTMLElement,ev : MouseEvent)
+        {
             self.contigCreatorModalOpen = true;
             writeContigCreatorModal();
             self.showModal();
-        }
+        };
 
-        document.getElementById("selectSequence").onclick = function(this : HTMLElement,ev : MouseEvent){
+        document.getElementById("selectSequence").onclick = function(this : HTMLElement,ev : MouseEvent)
+        {
             if(!genomeView.genome)
             {
                 dialogs.alert("You must open a figure before you can select a sequence on it");
@@ -326,16 +333,18 @@ export class View extends viewMgr.View
             genomeView.showSeqSelectorOnChange();
         };
 
-        document.getElementById("exportToSVG").onclick = function(this : HTMLElement,ev : MouseEvent){
+        document.getElementById("exportToSVG").onclick = function(this : HTMLElement,ev : MouseEvent)
+        {
             if(!genomeView.genome)
             {
                 dialogs.alert("You must open a figure before you can export it");
                 return;
             }
             genomeView.exportSVG();
-        }
+        };
 
-        document.getElementById("copyFigure").onclick = function(this : HTMLElement,ev : MouseEvent){
+        document.getElementById("copyFigure").onclick = function(this : HTMLElement,ev : MouseEvent)
+        {
             if(!genomeView.genome)
             {
                 dialogs.alert("You must open a figure before you can copy it");
@@ -348,9 +357,10 @@ export class View extends viewMgr.View
                     figureuuid : genomeView.genome.uuid
                 }
             );
-        }
+        };
 
-        document.getElementById("deleteFigure").onclick = function(this : HTMLElement,ev : MouseEvent){
+        document.getElementById("deleteFigure").onclick = function(this : HTMLElement,ev : MouseEvent)
+        {
             if(!genomeView.genome)
             {
                 dialogs.alert("You must open a figure before you can delete it");
@@ -363,14 +373,15 @@ export class View extends viewMgr.View
                     figureuuid : genomeView.genome.uuid
                 }
             );
-        }
+        };
 
-        document.getElementById("updateNavBarButton").onclick = async function(this : HTMLElement,ev : MouseEvent){
+        document.getElementById("updateNavBarButton").onclick = async function(this : HTMLElement,ev : MouseEvent)
+        {
             let radiusHasChanged = false;
             let trackIntervalChanged = false;
             let showIntervalChanged = false;
             if(!genomeView.genome)
-                    return;
+                return;
             let radius = parseInt((<HTMLInputElement>document.getElementById("figureRadiusInput")).value);
             if(radius)
             {
@@ -404,25 +415,30 @@ export class View extends viewMgr.View
                 self.saveFigureChanges();
             }
             genomeView.updateScope();
-        }
+        };
 
         //on modal dismissal
-        $("#modal").on('hidden.bs.modal',function(){
+        $("#modal").on("hidden.bs.modal",function()
+        {
             self.resetModalStates();
         });
 
         //adapted from https://jsfiddle.net/tovic/mkUJf/
-        $(".modal-header").on("mousedown",function(this : any,e : any){
-            $(".modal-content").addClass('draggable').parents().on('mousemove',function(e : any){
-                $('.draggable').offset({
-                    top: e.pageY - $('.draggable').outerHeight() / 2,
-                    left: e.pageX - $('.draggable').outerWidth() / 2
-                }).on('mouseup',function(this : any){
-                    $(this).removeClass('draggable');
+        $(".modal-header").on("mousedown",function(this : any,e : any)
+        {
+            $(".modal-content").addClass("draggable").parents().on("mousemove",function(e : any)
+            {
+                $(".draggable").offset({
+                    top: e.pageY - $(".draggable").outerHeight() / 2,
+                    left: e.pageX - $(".draggable").outerWidth() / 2
+                }).on("mouseup",function(this : any)
+                {
+                    $(this).removeClass("draggable");
                 });
             });
-        }).on('mouseup',function(){
-            $('.draggable').removeClass('draggable');
+        }).on("mouseup",function()
+        {
+            $(".draggable").removeClass("draggable");
         });
 
     }
@@ -463,18 +479,18 @@ export class View extends viewMgr.View
                         `;
                     }
                 }
-                res += `<li role="separator" class="divider"></li>`;
+                res += "<li role=\"separator\" class=\"divider\"></li>";
             }
         }
         document.getElementById("figures").innerHTML = res;
 
-        res = ""
+        res = "";
         if(genomeView.genome)
         {
             res += `<li><a href="#" id="${genomeView.genome.uuid}ToggleInteractivity">${genomeView.genome.isInteractive ? "Disable Interactivity" : "Enable Interactivity"}</a></li>`;
             res += `<li><a href="#" id="${genomeView.genome.uuid}ToggleContigNames">${genomeView.genome.showContigNames ? "Don't Show Contig Names" : "Show Contig Names"}</a></li>`;
-            res += `<li><a href="#" id="EditFigureName">Edit Figure Name</a></li>`;
-            res += `<li><a href="#" id="EditContigs">Edit Contigs</a></li>`;
+            res += "<li><a href=\"#\" id=\"EditFigureName\">Edit Figure Name</a></li>";
+            res += "<li><a href=\"#\" id=\"EditContigs\">Edit Contigs</a></li>";
         }
         document.getElementById("figureOptions").innerHTML = res;
 

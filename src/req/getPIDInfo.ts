@@ -14,8 +14,10 @@ export async function getPIDUsage(pid : number) : Promise<{cpu : number,memory :
 {
     const pidUsage = require("pidusage");
     
-    return new Promise<{cpu : number,memory : number}>((resolve,reject) => {
-        pidUsage.stat(pid,function(err : Error,stat : any){
+    return new Promise<{cpu : number,memory : number}>((resolve,reject) => 
+    {
+        pidUsage.stat(pid,function(err : Error,stat : any)
+        {
             if(err)
                 reject(err);
             pidUsage.unmonitor(pid);
@@ -45,8 +47,10 @@ export async function getPIDInfo(pid : number) : Promise<Array<PIDInfo>>
     const psNode = require("ps-node");
 
     let res = new Array<PIDInfo>();
-    return new Promise<Array<PIDInfo>>((resolve,reject) => {
-        psNode.lookup({pid : pid},function(err : Error,resultList : Array<any>){
+    return new Promise<Array<PIDInfo>>((resolve,reject) => 
+    {
+        psNode.lookup({pid : pid},function(err : Error,resultList : Array<any>)
+        {
             if(err)
                 reject(err);
             for(let i = 0; i != resultList.length; ++i)

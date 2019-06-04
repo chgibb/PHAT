@@ -11,13 +11,13 @@ export function get() : Fastq
 export function loadNoSpaces() : void
 {
     console.log("loading L6R7R2 no spaces");
-    L6R7R2 = new Fastq('data/L6R7.R2.fastq');
+    L6R7R2 = new Fastq("data/L6R7.R2.fastq");
 }
 
 export function loadSpaces() : void
 {
     console.log("loading L6R7R2 spaces");
-    L6R7R2 = new Fastq('data with spaces/L6R7.R2.fastq');
+    L6R7R2 = new Fastq("data with spaces/L6R7.R2.fastq");
 }
 
 export function importSampleIntoProject() : void

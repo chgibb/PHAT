@@ -17,8 +17,9 @@ import {samToolsIdxStatsReportParser} from "./../../samToolsIdxStatsReport";
  */
 export function samToolsIdxStats(alignData : AlignData,logger : atomic.AtomicOperation) : Promise<void>
 {
-    return new Promise<void>((resolve,reject) => {
-        let samToolsExe = getReadable('samtools');
+    return new Promise<void>((resolve,reject) => 
+    {
+        let samToolsExe = getReadable("samtools");
 
         let samToolsIdxStatsStream : fs.WriteStream = fs.createWriteStream(getIdxStats(alignData));
 
@@ -38,7 +39,8 @@ export function samToolsIdxStats(alignData : AlignData,logger : atomic.AtomicOpe
                     if(params.retCode == 0)
                     {
                         setTimeout(
-                            function(){
+                            function()
+                            {
                                 samToolsIdxStatsStream.end();
                                 alignData.idxStatsReport = samToolsIdxStatsReportParser(
                                     <any>fs.readFileSync(

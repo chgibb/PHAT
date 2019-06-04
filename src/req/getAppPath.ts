@@ -65,7 +65,7 @@ function getConfigDir() : string
         return getLinuxConfigDir();
     else if(process.platform == "win32")
         return getWin32ConfigDir();
-    return undefined
+    return undefined;
 }
 
 export function getReadable(relativePath : string) : string

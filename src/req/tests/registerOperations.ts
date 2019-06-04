@@ -1,11 +1,12 @@
-import * as atomic from "./../operations/atomicOperations";
 
-import {GenerateQCReport} from "./../operations/GenerateQCReport";
 import {IndexFastaForBowtie2Alignment} from "../operations/indexFastaForBowtie2Alignment";
 import {IndexFastaForHisat2Alignment} from "../operations/indexFastaForHisat2Alignment";
-import {IndexFastaForVisualization} from "./../operations/indexFastaForVisualization";
 import {RunBowtie2Alignment} from "../operations/RunBowtie2Alignment";
 import {RunHisat2Alignment} from "../operations/RunHisat2Alignment";
+
+import {IndexFastaForVisualization} from "./../operations/indexFastaForVisualization";
+import {GenerateQCReport} from "./../operations/GenerateQCReport";
+import * as atomic from "./../operations/atomicOperations";
 import {RenderCoverageTrackForContig} from "./../operations/RenderCoverageTrack";
 import {RenderSNPTrackForContig} from "./../operations/RenderSNPTrack";
 import {CheckForUpdate} from "./../operations/CheckForUpdate";

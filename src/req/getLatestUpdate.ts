@@ -28,18 +28,21 @@ export function getLatestUpdate(userName : string,repo : string) : Promise<Statu
     let GitHubAPI = require("github-api");
     const pjson = require("./package.json");
     
-    return new Promise<Status>((resolve,reject) => {
+    return new Promise<Status>((resolve,reject) => 
+    {
         let ghapi = new GitHubAPI();
         ghapi.getRepo(userName,repo).listReleases(
-            (error : string,result : any,request : any) => {
+            (error : string,result : any,request : any) => 
+            {
                 if(error)
                     return reject(<Status>{status : -1,msg : error});
             }
-        ).then((arg : any) => {
+        ).then((arg : any) => 
+        {
             let updateChannel = getAppSettings().updateChannel;
             for(let i = arg.data.length-1; i != -1; i--)
             {
-                let greaterThan = versionIsGreaterThan(arg.data[i].tag_name,pjson.version)
+                let greaterThan = versionIsGreaterThan(arg.data[i].tag_name,pjson.version);
             
                 if(!greaterThan && updateChannel == "beta")
                 {
@@ -77,7 +80,8 @@ export function getLatestUpdate(userName : string,repo : string) : Promise<Statu
                 }
             }
             return reject(<Status>{status : 2,msg : "No valid release"});
-        }).catch((arg : any) => {
+        }).catch((arg : any) => 
+        {
             return reject(arg);
         });
     });

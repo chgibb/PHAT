@@ -21,7 +21,8 @@ process.on
         {
             try
             {
-                await saveProject(proj,function(totalBytesToSave : number,bytesSaved : number){
+                await saveProject(proj,function(totalBytesToSave : number,bytesSaved : number)
+                {
                     process.send(
                         <AtomicOperationForkEvent>{
                             update : true,

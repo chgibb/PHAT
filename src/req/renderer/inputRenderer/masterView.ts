@@ -4,7 +4,6 @@ const ipc = electron.ipcRenderer;
 import {SaveKeyEvent} from "./../../ipcEvents";
 import {AtomicOperationIPC} from "./../../atomicOperationsIPC";
 import {getReadable} from "./../../getAppPath";
-
 import * as viewMgr from "./../viewMgr";
 import * as fastqView from "./FastqView";
 import * as fastaView from "./FastaView";
@@ -13,7 +12,6 @@ import * as linkRefView from "./LinkRefView";
 import {inputFastqDialog} from "./inputFastqDialog";
 import {inputFastaDialog} from "./inputFastaDialog";
 import {inputAlignDialog} from "./inputAlignDialog";
-
 import {Fastq} from "./../../fastq";
 import {Fasta} from "./../../fasta";
 import {AlignData} from "./../../alignData";
@@ -45,7 +43,8 @@ export class View extends viewMgr.View
         alignView.addView(this.views,"tableView");
         linkRefView.addView(this.views,"tableView");
     }
-    public onUnMount() : void{}
+    public onUnMount() : void
+    {}
     public renderView() : string
     {
         if(this.firstRender)
@@ -174,7 +173,7 @@ export class View extends viewMgr.View
             {
                 if(event.target.id == `${this.fastaInputs[i].uuid}Index`)
                 {
-                     ipc.send(
+                    ipc.send(
                         "runOperation",
                         <AtomicOperationIPC>{
                             opName : "indexFastaForBowtie2Alignment",
@@ -187,7 +186,7 @@ export class View extends viewMgr.View
                 }
                 if(event.target.id == `${this.fastaInputs[i].uuid}IndexForVisualization`)
                 {
-                     ipc.send(
+                    ipc.send(
                         "runOperation",
                         <AtomicOperationIPC>{
                             opName : "indexFastaForVisualization",

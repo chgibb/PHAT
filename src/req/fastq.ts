@@ -24,12 +24,14 @@ export class Fastq extends File
 
 export function parseSeqLengthFromQCReport(fastq : Fastq) : Promise<void>
 {
-    return new Promise<void>((resolve,reject) => {
+    return new Promise<void>((resolve,reject) => 
+    {
         let rl : readline.ReadLine = readline.createInterface(<readline.ReadLineOptions>{
             input : fs.createReadStream(getQCReportData(fastq))
         });
 
-        rl.on("line",function(line : string){
+        rl.on("line",function(line : string)
+        {
             let tokens = line.split(/\s/g);
             if(tokens[0] && tokens[1])
             {

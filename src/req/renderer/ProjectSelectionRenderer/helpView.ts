@@ -14,8 +14,10 @@ export class HelpView extends viewMgr.View
     {
         super("helpView",div);
     }
-    public onMount() : void{}
-    public onUnMount() : void{}
+    public onMount() : void
+    {}
+    public onUnMount() : void
+    {}
     public renderView() : string
     {
         return `
@@ -44,7 +46,8 @@ export class HelpView extends viewMgr.View
         else if(getAppSettings().updateChannel == "beta")
             (<HTMLInputElement>document.getElementById("betaChannel")).checked = true;
     }
-    public dataChanged() : void{}
+    public dataChanged() : void
+    {}
     public divClickEvents(event : JQueryEventObject) : void
     {
         if(event.target.id == "goBack")

@@ -2,16 +2,15 @@ import * as electron from "electron";
 const ipc = electron.ipcRenderer;
 
 import {GetKeyEvent,KeySubEvent} from "./req/ipcEvents";
-
 import * as viewMgr from "./req/renderer/viewMgr";
-
 import * as masterView from "./req/renderer/NoSamHeaderPrompt/masterView";
 
 const $ = require("jquery");
 (<any>window).$ = $;
 import "./req/renderer/commonBehaviour";
 
-$(function(){
+$(function()
+{
 
     masterView.addView(viewMgr.views,"view");
     viewMgr.changeView("masterView");
@@ -34,7 +33,8 @@ $(function(){
         }
     );
 
-    ipc.on("noSamHeaderPrompt",function(event : Electron.IpcMessageEvent,arg : any){
+    ipc.on("noSamHeaderPrompt",function(event : Electron.IpcMessageEvent,arg : any)
+    {
         console.log(arg);
         if(arg.action == "getKey" || arg.action == "keyChange")
         {

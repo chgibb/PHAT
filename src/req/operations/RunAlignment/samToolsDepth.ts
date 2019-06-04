@@ -17,13 +17,15 @@ import {Job,JobCallBackObject} from "./../../main/Job";
  */
 export function samToolsDepth(alignData: AlignData,logger : atomic.AtomicOperation) : Promise<void>
 {
-    return new Promise<void>((resolve,reject) => {
-        let samToolsExe = getReadable('samtools');
+    return new Promise<void>((resolve,reject) => 
+    {
+        let samToolsExe = getReadable("samtools");
         try
         {
             fs.mkdirSync(getCoverageDir(alignData));
         }
-        catch(err){}
+        catch(err)
+        {}
         let samToolsCoverageFileStream : fs.WriteStream = fs.createWriteStream(getCoverage(alignData));
 
         let jobCallBack : JobCallBackObject = {
@@ -42,12 +44,14 @@ export function samToolsDepth(alignData: AlignData,logger : atomic.AtomicOperati
                         if(params.retCode == 0)
                         {
                             setTimeout(
-                                function(){
+                                function()
+                                {
                                     samToolsCoverageFileStream.end();
                                     let rl : readline.ReadLine = readline.createInterface(<readline.ReadLineOptions>{
                                         input : fs.createReadStream(getCoverage(alignData))
                                     });
-                                    rl.on("line",function(line){
+                                    rl.on("line",function(line)
+                                    {
                                         //distill output from samtools depth into individual contig coverage files identified by uuid and without the contig name.
                                         let coverageTokens = line.split(/\s/g);
                                         for(let i = 0; i != alignData.fasta.contigs.length; ++i)
@@ -62,7 +66,8 @@ export function samToolsDepth(alignData: AlignData,logger : atomic.AtomicOperati
                                             }
                                         }
                                     });
-                                    rl.on("close",function(){
+                                    rl.on("close",function()
+                                    {
                                         resolve();
                                     });
                                 },500
@@ -72,25 +77,25 @@ export function samToolsDepth(alignData: AlignData,logger : atomic.AtomicOperati
                         {
                             reject(`Failed to get depth for ${alignData.alias}`);
                         }
+                    }
                 }
             }
-        }
-    }
-    let samToolsDepthJob = new Job(
-        samToolsExe,
+        };
+        let samToolsDepthJob = new Job(
+            samToolsExe,
         <Array<string>>[
             "depth",
             getSortedBam(alignData)
         ],"",true,jobCallBack,{}
-    );
-    try
-    {
-        samToolsDepthJob.Run();
-        logger.addPIDFromFork(samToolsDepthJob.pid);
-    }
-    catch(err)
-    {
-        return reject(err);
-    }
+        );
+        try
+        {
+            samToolsDepthJob.Run();
+            logger.addPIDFromFork(samToolsDepthJob.pid);
+        }
+        catch(err)
+        {
+            return reject(err);
+        }
     });
 }

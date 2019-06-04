@@ -14,7 +14,7 @@ export function insertLeadingPadToSize(str : string,digits : number,padChar : st
     if(str.length == digits)
         return str;
     if(!digits || digits == 0)
-            return "";
+        return "";
     if(str.length > digits)
         return "";
     let res = "";

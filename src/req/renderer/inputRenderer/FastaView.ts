@@ -11,8 +11,10 @@ export class View extends viewMgr.View
         this.fastaInputs = new Array<Fasta>();
         this.shouldAllowTriggeringOps = true;
     }
-    public onMount() : void{}
-    public onUnMount() : void{}
+    public onMount() : void
+    {}
+    public onUnMount() : void
+    {}
     public renderView() : string
     {
         return `
@@ -25,33 +27,34 @@ export class View extends viewMgr.View
                         <th>Size</th>
                         <th>Ready for Visualization</th>
                     </tr>
-                    ${(()=>{
-                        let res = "";
-                        for(let i = 0; i != this.fastaInputs.length; ++i)
-                        {
-                            res += `
+                    ${(()=>
+    {
+        let res = "";
+        for(let i = 0; i != this.fastaInputs.length; ++i)
+        {
+            res += `
                                 <tr class="activeHover ${this.fastaInputs[i].uuid}Class" id="${this.fastaInputs[i].uuid}Row">
                                     <td class="${this.fastaInputs[i].uuid}Class">${this.fastaInputs[i].alias}</td>
                                     <td class="${this.fastaInputs[i].uuid}Class">${this.fastaInputs[i].imported ? "In Project" : this.fastaInputs[i].path}</td>
                                     <td class="${this.fastaInputs[i].uuid}Class">${this.fastaInputs[i].sizeString}</td>
                                 `;
 
-                            if(this.fastaInputs[i].indexedForVisualization)
-                            {
-                                res += `<td class="cellHover ${this.fastaInputs[i].uuid}Class" id="${this.fastaInputs[i].uuid}IndexForVisualization"><img src="${getReadable("img/pass.png")}"></td>`;
-                            }
-                            else if(this.shouldAllowTriggeringOps)
-                            {
-                                res += `<td class="cellHover ${this.fastaInputs[i].uuid}Class" id="${this.fastaInputs[i].uuid}IndexForVisualization">Not Ready</td>`;
-                            }
-                            else if(!this.shouldAllowTriggeringOps)
-                            {
-                                res += `<td><div class="three-quarters-loader"></div></td>`;
-                            }
-                            res += `</tr>`;
-                        }
-                        return res;
-                    })()}
+            if(this.fastaInputs[i].indexedForVisualization)
+            {
+                res += `<td class="cellHover ${this.fastaInputs[i].uuid}Class" id="${this.fastaInputs[i].uuid}IndexForVisualization"><img src="${getReadable("img/pass.png")}"></td>`;
+            }
+            else if(this.shouldAllowTriggeringOps)
+            {
+                res += `<td class="cellHover ${this.fastaInputs[i].uuid}Class" id="${this.fastaInputs[i].uuid}IndexForVisualization">Not Ready</td>`;
+            }
+            else if(!this.shouldAllowTriggeringOps)
+            {
+                res += "<td><div class=\"three-quarters-loader\"></div></td>";
+            }
+            res += "</tr>";
+        }
+        return res;
+    })()}
                 </table>
                 ${this.fastaInputs.length > 0 ? `<img src="${getReadable("img/import.png")}" class="activeHover activeHoverButton" id="importSelectedFastas" />` : ""}
             </div>
@@ -72,7 +75,8 @@ export class View extends viewMgr.View
     {
 
     }
-    public dataChanged() : void{}
+    public dataChanged() : void
+    {}
 }
 export function addView(arr : Array<viewMgr.View>,div : string) : void
 {
