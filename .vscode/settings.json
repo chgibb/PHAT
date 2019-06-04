@@ -9,7 +9,8 @@
         "**/src/**/.js": true,
         "**/not_node_modules": true,
         "**/tests/**": true,
-        "**/.buildCache/**": true
+        "**/.buildCache/**": true,
+        "**/forDist/**": true
     },
     "files.exclude": {
         "**/.git": true,
