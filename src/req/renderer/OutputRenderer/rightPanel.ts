@@ -55,6 +55,8 @@ export class AlignmentInfoSelection
     public indelsPredicted : boolean;
     public BLASTRuns : boolean;
     public dateRan : boolean;
+    public fullName : boolean;
+    public SNPPositions : boolean;
     [index : string] : boolean;
     public constructor()
     {

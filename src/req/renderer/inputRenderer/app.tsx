@@ -2,6 +2,7 @@ import * as electron from "electron";
 const ipc = electron.ipcRenderer;
 import * as React from "react";
 import {Component} from "react";
+import Button from "@material-ui/core/Button";
 
 import {Fastq} from './../../fastq';
 import {Fasta} from "./../../fasta";
@@ -83,9 +84,8 @@ export class App extends Component<{},AppState>
     {
         return (
             <div>
-                <img 
-                    className={`${activeHover} ${activeHoverButton}`}
-                    src={this.state.tab == "fastq" ? getReadable("img/fastqButtonActive.png") : getReadable("img/fastqButton.png")}
+                <Button 
+                    color="primary"
                     onClick={() => {
                         this.changeTab("fastq");
                     }}

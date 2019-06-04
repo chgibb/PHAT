@@ -3,6 +3,7 @@
     {
         "module" : "commonjs",
         "moduleResolution": "node",
+        "esModuleInterop": true,
         "target" : "es6",
         "noEmitOnError": true,
         "noImplicitAny" : true,
@@ -12,10 +13,11 @@
         "sourceMap" : false,
         "listFiles" : false,
         "importHelpers": true,
-        "jsx": "react"
+        "jsx": "react",
     },
     "exclude": 
     [
         "node_modules"
-    ]
+    ],
+    
 }
