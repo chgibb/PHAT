@@ -117,5 +117,8 @@
     "dependencies": {},
     "optionalDependencies": {
         "electron-installer-debian": "^0.5.2"
+    },
+    "jest": {
+        "testURL": "http://localhost/"
     }
 }
