@@ -13,7 +13,7 @@
         "sourceMap" : false,
         "listFiles" : false,
         "importHelpers": true,
-        "jsx": "react",
+        "jsx": "react"
     },
     "exclude": 
     [

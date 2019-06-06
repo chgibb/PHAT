@@ -2,7 +2,8 @@ import * as electron from "electron";
 const ipc = electron.ipcRenderer;
 import * as React from "react";
 import {Component} from "react";
-import Button from "@material-ui/core/Button";
+
+const Button : typeof import("@material-ui/core/Button").default = require("@material-ui/core/Button").default;
 
 import {Fastq} from './../../fastq';
 import {Fasta} from "./../../fasta";
@@ -85,11 +86,13 @@ export class App extends Component<{},AppState>
         return (
             <div>
                 <Button 
+                    variant="contained"
                     color="primary"
                     onClick={() => {
                         this.changeTab("fastq");
-                    }}
-                />
+                    }}>
+
+                Fastq</Button>
                 <img 
                     className={`${activeHover} ${activeHoverButton}`}
                     src={this.state.tab == "ref" ? getReadable("img/refSeqButtonActive.png") : getReadable("img/refSeqButton.png")}

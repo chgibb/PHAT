@@ -59,12 +59,16 @@ function build(file : string) : Promise<void>
         let job = cp.exec(`${arg.buildCmd} ${file}`,{},(error : Error, stdout : string, stderr : string) => {
             if(error)
             {
-                return reject(error);
+                console.log(error);
+                process.exit(1);
             }
             if(stdout)
                 console.log(stdout);
             if(stderr)
+            {
                 console.log(stderr);
+                process.exit(1);
+            }
         });
         return resolve();
     }); 
