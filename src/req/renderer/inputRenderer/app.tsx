@@ -3,8 +3,6 @@ const ipc = electron.ipcRenderer;
 import * as React from "react";
 import {Component} from "react";
 
-const Button : typeof import("@material-ui/core/Button").default = require("@material-ui/core/Button").default;
-
 import {Fastq} from './../../fastq';
 import {Fasta} from "./../../fasta";
 import {getReadable} from '../../getAppPath';
@@ -13,12 +11,12 @@ import {activeHover,activeHoverButton} from "./../styles/activeHover";
 import {FastqView} from './fastqView';
 import {FastaView} from "./fastaView";
 import { AtomicOperation } from '../../operations/atomicOperations';
+import { FullWidthTabs } from '../../components/fullWidthTabs';
 
 export interface AppState
 {
     fastqs? : Array<Fastq>;
     fastas? : Array<Fasta>;
-    tab : "fastq" | "ref" | "align";
     shouldAllowTriggeringOps : boolean;
 }
 
@@ -29,7 +27,6 @@ export class App extends Component<{},AppState>
     {
         super(undefined);
         this.state = {
-            tab : "fastq",
             shouldAllowTriggeringOps : true
         };
 
@@ -74,42 +71,24 @@ export class App extends Component<{},AppState>
         });
     }
 
-    public changeTab(tab : "fastq" | "ref" | "align") : void 
-    {
-        this.setState({
-            tab : tab
-        });
-    }
-
     public render()
     {
         return (
             <div>
-                <Button 
-                    variant="contained"
-                    color="primary"
-                    onClick={() => {
-                        this.changeTab("fastq");
-                    }}>
-
-                Fastq</Button>
-                <img 
-                    className={`${activeHover} ${activeHoverButton}`}
-                    src={this.state.tab == "ref" ? getReadable("img/refSeqButtonActive.png") : getReadable("img/refSeqButton.png")}
-                    onClick={() => {
-                        this.changeTab("ref");
-                    }}
-                />
-                <img 
-                    className={`${activeHover} ${activeHoverButton}`}
-                    src={this.state.tab == "align" ? getReadable("img/alignButtonActive.png") : getReadable("img/alignButton.png")}
-                    onClick={() => {
-                        this.changeTab("align");
-                    }}
-                />
-
-                {this.state.tab == "fastq" ? <FastqView fastqInputs={this.state.fastqs} /> : undefined}
-                {this.state.tab == "ref" ? <FastaView fastaInputs={this.state.fastas} shouldAllowTriggeringOps={this.state.shouldAllowTriggeringOps}/> : undefined}
+                <FullWidthTabs tabs={[
+                    {
+                        label : "Fastqs",
+                        body : (
+                            <FastqView fastqInputs={this.state.fastqs} />
+                        )
+                    },
+                    {
+                        label : "References",
+                        body : (
+                            <FastaView fastaInputs={this.state.fastas} shouldAllowTriggeringOps={this.state.shouldAllowTriggeringOps} />
+                        )
+                    }
+                ]}/>
             </div>
         )
     }
