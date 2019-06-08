@@ -2,6 +2,7 @@ import * as React from "react";
 import {Component} from "react";
 
 import * as pub from "./publish";
+import {MaterialTable} from "./../../components/materialTable";
 import {Fastq} from "./../../fastq";
 import {inputFastqDialog} from "./inputFastqDialog";
 import {activeHover,activeHoverButton} from "./../styles/activeHover";
@@ -9,6 +10,7 @@ import {selected} from "./../styles/selected";
 import {getReadable}  from './../../getAppPath';
 import {fullWidth} from './../styles/fullWidth';
 import {threeQuartersLoader} from "./../styles/threeQuartersLoader";
+import { tableIcons } from '../../components/tableIcons';
 
 export interface FastqViewProps
 {
@@ -25,6 +27,27 @@ export class FastqView extends Component<FastqViewProps,{}>
     public render()
     {
         return (
+            <MaterialTable
+                title=""
+                columns={[
+                    {
+                        title: "Sample Name",
+                        field: "alias"
+                    },
+                    {
+                        title: "Path",
+                        field: "path"
+                    },
+                    {
+                        title: "Size",
+                        field: "sizeString"
+                    }
+                ]}
+                data={this.props.fastqInputs}
+                icons={tableIcons}
+            />
+        );
+        /*return (
             <div>
                 <img 
                     className={`${activeHover} ${activeHoverButton}`} 
@@ -78,6 +101,6 @@ export class FastqView extends Component<FastqViewProps,{}>
                     }
                 </div>
             </div>
-        );
+        );*/
     }
 }

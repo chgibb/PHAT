@@ -11,8 +11,8 @@ export interface TabContainerProps
 export function TabContainer({children,dir} : TabContainerProps) : JSX.Element
 {
     return (
-        <Typography component="div" dir={dir} style={{padding: 8*3}}>
+        <div>
             {children}
-        </Typography>
+        </div>
     )
 }
