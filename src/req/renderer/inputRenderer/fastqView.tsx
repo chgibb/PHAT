@@ -30,7 +30,12 @@ export class FastqView extends Component<FastqViewProps,{}>
     {
         return (
             <React.Fragment>
-                <Button>Browse</Button>
+                <Button 
+                    onClick={() => {
+                        inputFastqDialog();
+                    }}
+                    label="Browse"
+                />
                 <MaterialTable
                     options={{
                         toolbar : false,
@@ -45,7 +50,10 @@ export class FastqView extends Component<FastqViewProps,{}>
                         },
                         {
                             title: "Path",
-                            field: "path"
+                            field: "path",
+                            render: (row : Fastq) => {
+                                return row.imported ? "In Project" : row.path; 
+                            }
                         },
                         {
                             title: "Size",
@@ -55,6 +63,15 @@ export class FastqView extends Component<FastqViewProps,{}>
                     data={this.props.fastqInputs}
                     icons={tableIcons}
                 />
+                {
+                    this.props.fastqInputs ? this.props.fastqInputs.length > 0 ?
+                    <Button
+                        label="Import All"
+                        onClick={() => {
+                            pub.importSelectedFastqs(this.props.fastqInputs);
+                        }}
+                    /> : "" : ""
+                }
             </React.Fragment>
         );
         /*return (
