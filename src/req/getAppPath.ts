@@ -46,6 +46,8 @@ function getReadableDir() : string
 {
     let electronBaseDir = "";
     let CIBaseDir = "";
+    let devBasedir = "";
+
     electronBaseDir = path.dirname(process.execPath)+"/resources/app";
 
     if(fs.existsSync(electronBaseDir))
@@ -55,6 +57,11 @@ function getReadableDir() : string
 
     if(fs.existsSync(CIBaseDir))
         return CIBaseDir;
+    
+    devBasedir = path.resolve(path.normalize(""));
+
+    if(fs.existsSync(devBasedir))
+        return devBasedir;
     
     return undefined;
 }

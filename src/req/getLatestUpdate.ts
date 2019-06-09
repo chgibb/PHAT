@@ -1,5 +1,8 @@
 import {versionIsGreaterThan,isBeta,sepBaseAndBeta} from "./versionIsGreaterThan";
 import {getAppSettings,writeAppSettings} from "./appSettings";
+import { getReadable } from './getAppPath';
+
+const jsonFile = require("jsonfile");
 
 let isRightOS : RegExp;
 if(process.platform == "linux")
@@ -26,7 +29,7 @@ export interface Status
 export function getLatestUpdate(userName : string,repo : string) : Promise<Status>
 {
     let GitHubAPI = require("github-api");
-    const pjson = require("./package.json");
+    const pjson = jsonFile.readFileSync(getReadable('package.json'));
     
     return new Promise<Status>((resolve,reject) => {
         let ghapi = new GitHubAPI();

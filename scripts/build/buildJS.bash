@@ -13,8 +13,9 @@ if [[ "$1" != "opt" ]]; then
 	if [ $? != 0 ]; then
 		exit 1
 	fi
-	node scripts/tsBundle src/*.tsx src/*.ts --debug --buildCmd="bash scripts/tsBundleDebug.bash"
-	cp .buildCache/debug/*.js dist
+
+	cp src/*.html phat-linux-x64/resources/app
+	cd .buildCache/debug/src; cp -R . ../../../phat-linux-x64/resources/app;
 fi
 
 if [[ "$1" == "opt" ]]; then

@@ -9,6 +9,14 @@ if [ $? != 0 ]; then
 	exit 1
 fi
 
+NODE_ENV=production node scripts/replaceEnv $1 > $1.tmp
+if [ $? != 0 ]; then
+    printf "Could not replace env"
+    rm $1.tmp
+    exit 1
+fi
+mv $1.tmp $1
+
 ./node_modules/.bin/browserify $1 --node --debug -o $1.tmp  --exclude electron --ignore-missing --noparse=jquery 
 if [ $? != 0 ]; then
     printf "Could not browserify"
