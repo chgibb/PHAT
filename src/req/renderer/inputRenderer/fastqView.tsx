@@ -11,6 +11,8 @@ import {getReadable}  from './../../getAppPath';
 import {fullWidth} from './../styles/fullWidth';
 import {threeQuartersLoader} from "./../styles/threeQuartersLoader";
 import { tableIcons } from '../../components/tableIcons';
+import { tableCell } from '../styles/tableCell';
+import { Button } from '../../components/button';
 
 export interface FastqViewProps
 {
@@ -27,25 +29,33 @@ export class FastqView extends Component<FastqViewProps,{}>
     public render()
     {
         return (
-            <MaterialTable
-                title=""
-                columns={[
-                    {
-                        title: "Sample Name",
-                        field: "alias"
-                    },
-                    {
-                        title: "Path",
-                        field: "path"
-                    },
-                    {
-                        title: "Size",
-                        field: "sizeString"
-                    }
-                ]}
-                data={this.props.fastqInputs}
-                icons={tableIcons}
-            />
+            <React.Fragment>
+                <Button>Browse</Button>
+                <MaterialTable
+                    options={{
+                        toolbar : false,
+                        headerStyle: tableCell as any,
+                        rowStyle: tableCell as any
+                    }}
+                    title=""
+                    columns={[
+                        {
+                            title: "Sample Name",
+                            field: "alias"
+                        },
+                        {
+                            title: "Path",
+                            field: "path"
+                        },
+                        {
+                            title: "Size",
+                            field: "sizeString"
+                        }
+                    ]}
+                    data={this.props.fastqInputs}
+                    icons={tableIcons}
+                />
+            </React.Fragment>
         );
         /*return (
             <div>
