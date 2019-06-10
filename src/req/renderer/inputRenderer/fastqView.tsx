@@ -2,7 +2,7 @@ import * as React from "react";
 import {Component} from "react";
 
 import * as pub from "./publish";
-import {MaterialTable} from "./../../components/materialTable";
+import {FastqTable} from "../../components/fastqTable";
 import {Fastq} from "./../../fastq";
 import {inputFastqDialog} from "./inputFastqDialog";
 import {activeHover,activeHoverButton} from "./../styles/activeHover";
@@ -36,32 +36,8 @@ export class FastqView extends Component<FastqViewProps,{}>
                     }}
                     label="Browse"
                 />
-                <MaterialTable
-                    options={{
-                        toolbar : false,
-                        headerStyle: tableCell as any,
-                        rowStyle: tableCell as any
-                    }}
-                    title=""
-                    columns={[
-                        {
-                            title: "Sample Name",
-                            field: "alias"
-                        },
-                        {
-                            title: "Path",
-                            field: "path",
-                            render: (row : Fastq) => {
-                                return row.imported ? "In Project" : row.path; 
-                            }
-                        },
-                        {
-                            title: "Size",
-                            field: "sizeString"
-                        }
-                    ]}
+                <FastqTable
                     data={this.props.fastqInputs}
-                    icons={tableIcons}
                 />
                 {
                     this.props.fastqInputs ? this.props.fastqInputs.length > 0 ?
