@@ -10,6 +10,8 @@ import {getReadable}  from './../../getAppPath';
 import {fullWidth} from './../styles/fullWidth';
 import {threeQuartersLoader} from '../styles/threeQuartersLoader';
 import {cellHover} from '../styles/cellHover';
+import { Button } from '../../components/button';
+import { FastaTable } from '../../components/fastaTable';
 
 export interface FastaViewProps
 {
@@ -27,6 +29,19 @@ export class FastaView extends Component<FastaViewProps,{}>
     public render()
     {
         return (
+            <React.Fragment>
+                <Button
+                    onClick={() => {
+                        inputFastaDialog();
+                    }}
+                    label="Browse"
+                />
+                <FastaTable 
+                    data={this.props.fastaInputs} 
+                    shouldAllowTriggeringOps={this.props.shouldAllowTriggeringOps}
+                />
+            </React.Fragment>
+            /*
             <div>
                 <img 
                     className={`${activeHover} ${activeHoverButton}`} 
@@ -93,7 +108,7 @@ export class FastaView extends Component<FastaViewProps,{}>
                         /> : "" : ""
                     }
                 </div>
-            </div>
+            </div>*/
         )
     }
 }
