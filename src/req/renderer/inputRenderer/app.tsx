@@ -11,7 +11,7 @@ import {activeHover,activeHoverButton} from "./../styles/activeHover";
 import {FastqView} from './fastqView';
 import {FastaView} from "./fastaView";
 import { AtomicOperation } from '../../operations/atomicOperations';
-import { FullWidthTabs } from '../../components/fullWidthTabs';
+import { FullWidthTabs } from '../../containers/fullWidthTabs';
 
 export interface AppState
 {

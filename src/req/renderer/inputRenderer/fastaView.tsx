@@ -11,7 +11,7 @@ import {fullWidth} from './../styles/fullWidth';
 import {threeQuartersLoader} from '../styles/threeQuartersLoader';
 import {cellHover} from '../styles/cellHover';
 import { Button } from '../../components/button';
-import { FastaTable } from '../../components/fastaTable';
+import { FastaTable } from '../../containers/fastaTable';
 
 export interface FastaViewProps
 {

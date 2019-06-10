@@ -1,10 +1,10 @@
 import * as React from "react";
 
-import {SwipeableViews} from "./swipeableViews";
-import {TabContainer} from "./tabContainer";
-import { AppBar } from './appBar';
-import { Tabs } from './tabs';
-import { Tab } from './tab';
+import {SwipeableViews} from "../components/swipeableViews";
+import {TabContainer} from "../components/tabContainer";
+import { AppBar } from '../components/appBar';
+import { Tabs } from '../components/tabs';
+import { Tab } from '../components/tab';
 
 export interface FullWidthTab
 {

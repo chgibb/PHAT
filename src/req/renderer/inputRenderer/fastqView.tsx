@@ -2,7 +2,7 @@ import * as React from "react";
 import {Component} from "react";
 
 import * as pub from "./publish";
-import {FastqTable} from "../../components/fastqTable";
+import {FastqTable} from "../../containers/fastqTable";
 import {Fastq} from "./../../fastq";
 import {inputFastqDialog} from "./inputFastqDialog";
 import {Button} from '../../components/button';
