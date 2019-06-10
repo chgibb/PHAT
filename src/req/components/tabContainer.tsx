@@ -1,7 +1,5 @@
 import * as React from 'react';
 
-import { Typography } from './typography';
-
 export interface TabContainerProps
 {
     children : React.ReactNode;
