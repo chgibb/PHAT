@@ -1,12 +1,15 @@
 import * as React from "react";
+
 import { Fasta } from '../fasta';
 import { Table } from '../components/table';
 import { getReadable } from '../getAppPath';
-import { threeQuartersLoader } from '../renderer/styles/threeQuartersLoader';
+import { ThreeQuartersLoader } from '../components/threeQuartersLoader';
+import { tableIcons } from '../components/tableIcons';
 
 export interface FastaTableProps
 {
-    shouldAllowTriggeringOps: boolean;
+    shouldAllowTriggeringOps : boolean;
+    onIndexForVizClick : (event : React.MouseEvent<HTMLButtonElement, MouseEvent>,data : Fasta) => void;
     data : Array<Fasta>;
 }
 
@@ -38,9 +41,17 @@ export function FastaTable(props : FastaTableProps) : JSX.Element
                     render : (row : Fasta) => {
                         return row.indexedForVisualization ? <img src={getReadable("img/pass.png")} /> : 
                         props.shouldAllowTriggeringOps ? "Not Ready" : 
-                        !props.shouldAllowTriggeringOps ? <div className={threeQuartersLoader} /> : undefined
+                        !props.shouldAllowTriggeringOps ? <ThreeQuartersLoader /> : undefined
                     }
                 }
+            ]}
+            actions={[
+                (rowData : Fasta) => ({
+                    icon : tableIcons.Add as any,
+                    tooltip : "Index For Visualization",
+                    onClick : props.onIndexForVizClick,
+                    disabled : rowData.indexedForVisualization
+                })
             ]}
             data={props.data}
         />
