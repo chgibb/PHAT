@@ -4,12 +4,6 @@ import {Component} from "react";
 import * as pub from "./publish";
 import {Fasta} from "./../../fasta";
 import {inputFastaDialog} from "./inputFastaDialog";
-import {activeHover,activeHoverButton} from "./../styles/activeHover";
-import {selected} from "./../styles/selected";
-import {getReadable}  from './../../getAppPath';
-import {fullWidth} from './../styles/fullWidth';
-import {threeQuartersLoader} from '../styles/threeQuartersLoader';
-import {cellHover} from '../styles/cellHover';
 import { Button } from '../../components/button';
 import { FastaTable } from '../../containers/fastaTable';
 
@@ -39,6 +33,10 @@ export class FastaView extends Component<FastaViewProps,{}>
                 <FastaTable 
                     data={this.props.fastaInputs} 
                     shouldAllowTriggeringOps={this.props.shouldAllowTriggeringOps}
+                    onIndexForVizClick={(event,data) => {
+                        event;
+                        pub.indexFastaForVisualization(data);
+                    }}
                 />
             </React.Fragment>
             /*
