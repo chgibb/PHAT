@@ -10,6 +10,8 @@ export interface TableProps<T>
     toolbar : typeof MuiTable.defaultProps.options.toolbar;
     title : typeof MuiTable.defaultProps.title;
     columns : typeof MuiTable.defaultProps.columns;
+    actions? : typeof MuiTable.defaultProps.actions;
+    actionsColumnIndex? : typeof MuiTable.defaultProps.options.actionsColumnIndex;
     data : Array<T>;
 }
 
@@ -20,9 +22,11 @@ export function Table<T>(props : TableProps<T>) : JSX.Element
             title={props.title}
             options={{
                 toolbar : props.toolbar,
+                actionsColumnIndex : props.actionsColumnIndex ? props.actionsColumnIndex : 0,
                 headerStyle: tableCell as any,
                 rowStyle : tableCell as any
             }}
+            actions={props.actions}
             icons={tableIcons}
             columns={props.columns}
             data={props.data}
