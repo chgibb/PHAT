@@ -1,3 +1,4 @@
+import * as React from "react";
 import {cssRaw} from "typestyle";
 
 cssRaw(`
@@ -54,4 +55,9 @@ cssRaw(`
   
 `);
 
-export const threeQuartersLoader = "three-quarters-loader";
+export function threeQuartersLoader() : JSX.Element {
+    return (
+        <div className="three-quarters-loader" />
+    );
+}
+
