@@ -2,7 +2,7 @@ import * as React from "react";
 
 export const MuiTable : typeof import("material-table").default = require("material-table").default;
 
-import { tableCell } from '../renderer/styles/tableCell';
+import { tableCell } from '../../renderer/styles/tableCell';
 import { tableIcons } from './tableIcons';
 
 export interface TableProps<T>

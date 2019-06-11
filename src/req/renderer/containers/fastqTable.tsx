@@ -1,7 +1,7 @@
 import * as React from "react";
 
 import {Table} from "../components/table";
-import {Fastq} from '../fastq';
+import {Fastq} from '../../fastq';
 
 export interface FastqTableProps
 {

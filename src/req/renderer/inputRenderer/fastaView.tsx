@@ -4,8 +4,8 @@ import {Component} from "react";
 import * as pub from "./publish";
 import {Fasta} from "./../../fasta";
 import {inputFastaDialog} from "./inputFastaDialog";
-import { Button } from '../../components/button';
-import { FastaTable } from '../../containers/fastaTable';
+import { Button } from '../components/button';
+import { FastaTable } from '../containers/fastaTable';
 
 export interface FastaViewProps
 {

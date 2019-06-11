@@ -1,8 +1,8 @@
 import * as React from "react";
 
-import { Fasta } from '../fasta';
+import { Fasta } from '../../fasta';
 import { Table } from '../components/table';
-import { getReadable } from '../getAppPath';
+import { getReadable } from '../../getAppPath';
 import { ThreeQuartersLoader } from '../components/threeQuartersLoader';
 import { tableIcons } from '../components/tableIcons';
 
