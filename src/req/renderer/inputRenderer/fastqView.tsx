@@ -35,10 +35,10 @@ export class FastqView extends Component<FastqViewProps,{}>
                 {
                     this.props.fastqInputs ? this.props.fastqInputs.length > 0 ?
                     <Button
-                        label="Import All"
                         onClick={() => {
                             pub.importSelectedFastqs(this.props.fastqInputs);
                         }}
+                        label="Import All"
                     /> : "" : ""
                 }
             </React.Fragment>
