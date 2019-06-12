@@ -38,6 +38,15 @@ export class FastaView extends Component<FastaViewProps,{}>
                         pub.indexFastaForVisualization(data);
                     }}
                 />
+                {
+                    this.props.fastaInputs ? this.props.fastaInputs.length > 0 ?
+                    <Button
+                        onClick={() => {
+                            pub.importSelectedFastas(this.props.fastaInputs);
+                        }}
+                        label="Import All"
+                    /> : "" : ""
+                }
             </React.Fragment>
             /*
             <div>
