@@ -6,8 +6,8 @@ import {AtomicOperationIPC} from "./../../atomicOperationsIPC";
 import {getReadable} from "./../../getAppPath";
 
 import * as viewMgr from "./../viewMgr";
-import * as fastqView from "./FastqView";
-import * as fastaView from "./FastaView";
+//import * as fastqView from "./FastqView";
+//import * as fastaView from "./FastaView";
 import * as alignView from "./AlignView";
 import * as linkRefView from "./LinkRefView";
 import {inputFastqDialog} from "./inputFastqDialog";
@@ -40,8 +40,8 @@ export class View extends viewMgr.View
     }
     public onMount() : void
     {
-        fastqView.addView(this.views,"tableView");
-        fastaView.addView(this.views,"tableView");
+        //fastqView.addView(this.views,"tableView");
+        //fastaView.addView(this.views,"tableView");
         alignView.addView(this.views,"tableView");
         linkRefView.addView(this.views,"tableView");
     }
@@ -284,7 +284,7 @@ export class View extends viewMgr.View
     }
     public dataChanged() : void
     {
-        let fastqView = <fastqView.View>viewMgr.getViewByName("fastqView",this.views);
+        /*let fastqView = <fastqView.View>viewMgr.getViewByName("fastqView",this.views);
         fastqView.fastqInputs = this.fastqInputs;
         
 
@@ -313,7 +313,7 @@ export class View extends viewMgr.View
                     }
                 }
             }
-        }
+        }*/
     }
 }
 export function addView(arr : Array<viewMgr.View>,div : string) : void
