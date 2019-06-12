@@ -12,11 +12,14 @@ import {FastqView} from './fastqView';
 import {FastaView} from "./fastaView";
 import { AtomicOperation } from '../../operations/atomicOperations';
 import { FullWidthTabs } from '../containers/fullWidthTabs';
+import { AlignView } from './alignView';
+import { AlignData } from '../../alignData';
 
 export interface AppState
 {
     fastqs? : Array<Fastq>;
     fastas? : Array<Fasta>;
+    aligns? : Array<AlignData>;
     shouldAllowTriggeringOps : boolean;
 }
 
@@ -43,6 +46,11 @@ export class App extends Component<{},AppState>
                 {
                     this.setState({fastas : arg.val});
                     return;
+                }
+
+                if(arg.key == "aligns")
+                {
+                    this.setState({aligns : arg.val});
                 }
 
                 let found = false;
@@ -86,6 +94,12 @@ export class App extends Component<{},AppState>
                         label : "References",
                         body : (
                             <FastaView fastaInputs={this.state.fastas} shouldAllowTriggeringOps={this.state.shouldAllowTriggeringOps} />
+                        )
+                    },
+                    {
+                        label : "Alignment Maps",
+                        body : (
+                            <AlignView aligns={this.state.aligns}/>
                         )
                     }
                 ]}/>
