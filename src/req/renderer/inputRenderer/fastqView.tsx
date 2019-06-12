@@ -1,5 +1,4 @@
 import * as React from "react";
-import {Component} from "react";
 
 import * as pub from "./publish";
 import {FastqTable} from "../containers/fastqTable";
@@ -12,7 +11,7 @@ export interface FastqViewProps
     fastqInputs : Array<Fastq>
 }
 
-export class FastqView extends Component<FastqViewProps,{}>
+export class FastqView extends React.Component<FastqViewProps,{}>
 {
     public constructor(props : FastqViewProps)
     {
