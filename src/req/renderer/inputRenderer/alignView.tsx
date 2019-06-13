@@ -5,6 +5,7 @@ import { AlignData } from '../../alignData';
 import { Button } from '../components/button';
 import { inputAlignDialog } from './inputAlignDialog';
 import { Table } from '../components/table';
+import { LinkMapTable } from '../containers/linkMapTable';
 
 export interface AlignViewProps
 {
@@ -28,28 +29,7 @@ export class AlignView extends React.Component<AlignViewProps,{}>
                     }}
                     label="Browse"
                 />
-                <Table<AlignData>
-                    title=""
-                    toolbar={false}
-                    columns={[
-                        {
-                            title : "File Name",
-                            field : "alias"
-                        },
-                        {
-                            title : "Size",
-                            field : "sizeString"
-                        },
-                        {
-                            title : "Ref Seq",
-                            field : "",
-                            render : (row : AlignData) => {
-                                return row.fasta ? row.fasta.alias : "Not Linked"
-                            }
-                        }
-                    ]}
-                    data={this.props.aligns}
-                />
+                <LinkMapTable aligns={this.props.aligns} />
             </React.Fragment>
         )
     }
