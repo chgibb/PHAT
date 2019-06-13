@@ -15,7 +15,7 @@ render(
     document.getElementById("app")
 );
 
-window.onload = function(){
+//window.onload = function(){
     makeWindowDockable("input");
     //get saved data
     ipc.send(
@@ -92,4 +92,5 @@ window.onload = function(){
             replyChannel : "input"
         } as KeySubEvent
     );
-}
+//}
+
