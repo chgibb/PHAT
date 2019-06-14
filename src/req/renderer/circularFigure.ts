@@ -30,6 +30,7 @@ import * as plasmid from "./circularGenome/plasmid";
 import {AlignData,getSNPsJSON} from "./../alignData";
 import {VCF2JSONRow} from "./../varScanMPileup2SNPVCF2JSON";
 import {parseCSS} from "./../parseCSS";
+import { UniquelyAddressable } from '../uniquelyAddressable';
 
 /**
  * Represents a single contig in a circular figure
@@ -111,7 +112,7 @@ export class CircularFigureBPTrackOptions
  * @export
  * @class RenderedTrackRecord
  */
-export class RenderedTrackRecord
+export class RenderedTrackRecord implements UniquelyAddressable
 {
     public uuid : string;
     public uuidAlign : string;
@@ -316,7 +317,7 @@ export class SNPTrackMap extends TrackMap
  * @export
  * @class CircularFigure
  */
-export class CircularFigure
+export class CircularFigure implements UniquelyAddressable
 {
     public uuid : string;
     public uuidFasta : string;

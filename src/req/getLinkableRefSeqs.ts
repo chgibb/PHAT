@@ -2,6 +2,7 @@ import {Fasta} from "./fasta";
 import {Contig} from "./fastaContigLoader";
 import {AlignData} from "./alignData";
 import {SamToolsIdxStatsReport} from "./samToolsIdxStatsReport";
+import { UniquelyAddressable } from './uniquelyAddressable';
 
 /**
  * Structure describing the linkability of a ref seq. If linkable is false, reason will give a short description, longReason
@@ -10,7 +11,7 @@ import {SamToolsIdxStatsReport} from "./samToolsIdxStatsReport";
  * @export
  * @interface LinkableRefSeq
  */
-export class LinkableRefSeq
+export class LinkableRefSeq implements UniquelyAddressable
 {
     public uuid : string;
     public linkable : boolean;
