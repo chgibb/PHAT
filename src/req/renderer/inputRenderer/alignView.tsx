@@ -7,6 +7,7 @@ import { LinkMapTable } from '../containers/linkMapTable';
 import { CompatibleRefTable } from '../containers/compatibleRefTable';
 import { getLinkableRefSeqs } from '../../getLinkableRefSeqs';
 import { Fasta } from '../../fasta';
+import { getReferenceFromUuid } from '../../uniquelyAddressable';
 
 export interface AlignViewProps
 {
@@ -17,7 +18,7 @@ export interface AlignViewProps
 export interface AlignViewState
 {
     tryingToLinkRef : boolean;
-    mapToLink? : AlignData;
+    mapToLinkUuid? : string;
 }
 
 export class AlignView extends React.Component<AlignViewProps,AlignViewState>
@@ -28,7 +29,7 @@ export class AlignView extends React.Component<AlignViewProps,AlignViewState>
 
         this.state = {
             tryingToLinkRef : false,
-            mapToLink : undefined
+            mapToLinkUuid : undefined
         } as AlignViewState;
     }
 
@@ -50,18 +51,33 @@ export class AlignView extends React.Component<AlignViewProps,AlignViewState>
                             linkMapOnClick={(map : AlignData) => {
                                 this.setState({
                                     tryingToLinkRef : true,
-                                    mapToLink : map
+                                    mapToLinkUuid : map.uuid
                                 });
                             }}
                         />
                         </React.Fragment>
-                : 
+                : this.state.tryingToLinkRef && this.state.mapToLinkUuid ?
                 <React.Fragment>
-                    <CompatibleRefTable
-                        linkableRefSeqs={getLinkableRefSeqs(this.props.fastaInputs,this.state.mapToLink)}
-                        mapToLink={this.state.mapToLink}
+                    <Button
+                        onClick={() => {
+                            this.setState({
+                                tryingToLinkRef : false,
+                                mapToLinkUuid : undefined
+                            });
+                        }}
+                        label="Go Back"
                     />
-                </React.Fragment>}
+                    <CompatibleRefTable
+                        linkableRefSeqs={
+                            getLinkableRefSeqs(
+                                this.props.fastaInputs.filter((x) => {
+                                    return x.indexedForVisualization
+                                }),getReferenceFromUuid(this.props.aligns,this.state.mapToLinkUuid)
+                            )
+                        }
+                        mapToLinkUuid={this.state.mapToLinkUuid}
+                    />
+                </React.Fragment> : ""}
             </React.Fragment>
         )
     }

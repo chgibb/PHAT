@@ -62,7 +62,9 @@ export class LinkMapTable extends React.Component<LinkMapTableProps, {}>
                         tooltip: alreadyLinked(rowData) ? "Already Linked" :
                                     noReferences(this.props.fastaInputs) ? "No References to Link Against" : 
                                         "Link This Reference",
-                        onClick: this.props.linkMapOnClick,
+                        onClick: () => {
+                            this.props.linkMapOnClick(rowData)
+                        },
                         disabled: alreadyLinked(rowData) || noReferences(this.props.fastaInputs)
                     })
                 ]}

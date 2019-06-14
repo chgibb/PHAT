@@ -8,7 +8,7 @@ import { LinkableRefSeq } from '../../getLinkableRefSeqs';
 export interface CompatibleRefTableProps
 {
     linkableRefSeqs : Array<LinkableRefSeq>;
-    mapToLink : AlignData;
+    mapToLinkUuid : string;
 }
 
 export function CompatibleRefTable(props : CompatibleRefTableProps) : JSX.Element
