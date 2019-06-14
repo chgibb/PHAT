@@ -2,18 +2,41 @@ import * as React from "react";
 
 import { Table } from "../components/table";
 import { AlignData } from '../../alignData';
-import { Fasta } from '../../fasta';
+import { CompareArrows } from '../components/icons/compareArrows';
+import { LinkableRefSeq } from '../../getLinkableRefSeqs';
 
 export interface CompatibleRefTableProps
 {
-
+    linkableRefSeqs : Array<LinkableRefSeq>;
+    mapToLink : AlignData;
 }
 
 export function CompatibleRefTable(props : CompatibleRefTableProps) : JSX.Element
 {
     return (
-        <Table<Fasta>
-
+        <Table<LinkableRefSeq>
+            toolbar={true}
+            title="Potentially Compatible References"
+            columns={[
+                {
+                    title: "Sample Name",
+                    field: "alias"
+                },
+                {
+                    title: "Size",
+                    field: "sizeString"
+                },
+            ]}
+            actions={[
+                (rowData : LinkableRefSeq) => ({
+                    icon : CompareArrows as any,
+                    tooltip : "Link This Reference",
+                    onClick : () => null,
+                })
+            ]}
+            data={props.linkableRefSeqs.filter((val : LinkableRefSeq) => {
+                return val.linkable;
+            })}
         />
     );
 }

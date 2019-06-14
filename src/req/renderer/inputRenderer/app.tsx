@@ -87,19 +87,27 @@ export class App extends Component<{},AppState>
                     {
                         label : "Fastqs",
                         body : (
-                            <FastqView fastqInputs={this.state.fastqs} />
+                            <FastqView 
+                                fastqInputs={this.state.fastqs} 
+                            />
                         )
                     },
                     {
                         label : "References",
                         body : (
-                            <FastaView fastaInputs={this.state.fastas} shouldAllowTriggeringOps={this.state.shouldAllowTriggeringOps} />
+                            <FastaView 
+                                fastaInputs={this.state.fastas} 
+                                shouldAllowTriggeringOps={this.state.shouldAllowTriggeringOps} 
+                            />
                         )
                     },
                     {
                         label : "Alignment Maps",
                         body : (
-                            <AlignView aligns={this.state.aligns}/>
+                            <AlignView 
+                                aligns={this.state.aligns}
+                                fastaInputs={this.state.fastas}
+                            />
                         )
                     }
                 ]}/>

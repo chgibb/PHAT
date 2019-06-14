@@ -3,10 +3,27 @@ import * as React from "react";
 import { Table } from "../components/table";
 import { AlignData } from '../../alignData';
 import { CompareArrows } from '../components/icons/compareArrows';
+import { Fasta } from '../../fasta';
 
 export interface LinkMapTableProps 
 {
     aligns: Array<AlignData>;
+    fastaInputs : Array<Fasta>;
+    linkMapOnClick : (data : AlignData) => void;
+}
+
+function alreadyLinked(row : AlignData) : boolean
+{
+    return !!row.fasta; 
+}
+
+function noReferences(fastaInputs? : Array<Fasta>) : boolean
+{
+    if(!fastaInputs)
+        return true;
+    if(!fastaInputs.length)
+        return true;
+    return false;
 }
 
 export class LinkMapTable extends React.Component<LinkMapTableProps, {}>
@@ -42,9 +59,11 @@ export class LinkMapTable extends React.Component<LinkMapTableProps, {}>
                 actions={[
                     (rowData: AlignData) => ({
                         icon: CompareArrows as any,
-                        tooltip: "Link This Reference",
-                        onClick: () => null,
-                        disabled: !!rowData.fasta
+                        tooltip: alreadyLinked(rowData) ? "Already Linked" :
+                                    noReferences(this.props.fastaInputs) ? "No References to Link Against" : 
+                                        "Link This Reference",
+                        onClick: this.props.linkMapOnClick,
+                        disabled: alreadyLinked(rowData) || noReferences(this.props.fastaInputs)
                     })
                 ]}
                 data={this.props.aligns}
