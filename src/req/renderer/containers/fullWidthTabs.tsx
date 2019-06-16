@@ -10,6 +10,7 @@ export interface FullWidthTab
 {
     label : string;
     body : JSX.Element
+    className? : string;
 }
 
 export interface FullWidthTabsProps
@@ -41,7 +42,7 @@ export function FullWidthTabs({tabs} : FullWidthTabsProps) : JSX.Element
                 >
                     {tabs.map((el) => {
                         return (
-                            <Tab label={el.label} />
+                            <Tab className={el.className} label={el.label} />
                         )
                     })}
                 </Tabs>

@@ -99,7 +99,8 @@ export class App extends Component<{},AppState>
                                 fastaInputs={this.state.fastas} 
                                 shouldAllowTriggeringOps={this.state.shouldAllowTriggeringOps} 
                             />
-                        )
+                        ),
+                        className : "refSeqViewButton"
                     },
                     {
                         label : "Alignment Maps",
