@@ -1,10 +1,11 @@
 import * as React from "react";
 
 import { Fasta } from '../../fasta';
-import { Table } from '../components/table';
 import { getReadable } from '../../getAppPath';
+import { AddBox } from '../components/icons/addBox';
+import { Table } from '../components/table';
 import { ThreeQuartersLoader } from '../components/threeQuartersLoader';
-import { tableIcons } from '../components/tableIcons';
+
 
 export interface FastaTableProps
 {
@@ -47,7 +48,11 @@ export function FastaTable(props : FastaTableProps) : JSX.Element
             ]}
             actions={[
                 (rowData : Fasta) => ({
-                    icon : tableIcons.Add as any,
+                    icon : (() => {
+                        return (
+                            <div className={`${rowData.uuid}IndexForVisualization`}><AddBox /></div>
+                        );
+                     }) as any,
                     tooltip : "Index For Visualization",
                     onClick : props.onIndexForVizClick,
                     disabled : rowData.indexedForVisualization
@@ -57,4 +62,3 @@ export function FastaTable(props : FastaTableProps) : JSX.Element
         />
     )
 }
-
