@@ -64,7 +64,7 @@ async function runTests() : Promise<void>
         {
             return reject();
         }
-		
+        
         console.log("Validating version in package.json");
         try
         {
@@ -89,7 +89,7 @@ async function runTests() : Promise<void>
         }
 
         console.log("Generating FastQC report for L6R1R2");
-    	atomic.addOperation("generateFastQCReport",L6R1R2.get());
+        atomic.addOperation("generateFastQCReport",L6R1R2.get());
         try
         {
             await testFastQCReportGeneration();

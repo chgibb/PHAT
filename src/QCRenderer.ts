@@ -125,7 +125,9 @@ $(
                        
                     }
                     catch(err)
-                    {}
+                    {
+                        err;
+                    }
                 }
                 viewMgr.render();
             }

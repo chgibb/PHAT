@@ -27,20 +27,17 @@ setTimeout(
                             {
                                 console.log("opening pileup");
                                 winMgr.windowCreators["pileup"].Create();
-                                setTimeout
-                                (
+                                setTimeout(
                                     function()
                                     {
                                         console.log("opening output");
                                         winMgr.windowCreators["output"].Create();
-                                        setTimeout
-                                        (
+                                        setTimeout(
                                             function()
                                             {
                                                 console.log("opening circularGenomeBuilder");
                                                 winMgr.windowCreators["circularGenomeBuilder"].Create();
-                                                setTimeout
-                                                (
+                                                setTimeout(
                                                     function()
                                                     {
                                                         app.quit();

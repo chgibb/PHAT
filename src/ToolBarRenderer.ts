@@ -10,9 +10,7 @@ const $ = require("jquery");
 (<any>window).$ = $;
 import "./req/renderer/commonBehaviour";
 
-
-$
-(
+$(
     function()
     {
         initializeWindowDock();
@@ -47,8 +45,7 @@ $
             }
         );
 
-        ipc.on
-        (
+        ipc.on(
             "toolBar",function(event : Electron.IpcMessageEvent,arg : any)
             {
                 if(arg.action == "getKey" || arg.action == "keyChange")

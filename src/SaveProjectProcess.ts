@@ -6,8 +6,7 @@ import {saveProject} from "./req/saveProject";
 let proj : ProjectManifest;
 let flags : CompletionFlags = new CompletionFlags();
 atomic.handleForkFailures();
-process.on
-(
+process.on(
     "message",async function(ev : AtomicOperationForkEvent)
     {
         if(ev.setData == true)

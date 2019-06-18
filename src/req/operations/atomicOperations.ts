@@ -844,7 +844,9 @@ export async function getLogRecords(last : number) : Promise<Array<LogRecord>>
             });
         }
         catch(err)
-        {}        
+        {
+            err;
+        }        
     });
 }
 
