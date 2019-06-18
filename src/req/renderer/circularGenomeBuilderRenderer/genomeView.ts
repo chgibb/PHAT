@@ -5,8 +5,6 @@ import * as fs from "fs";
 import * as electron from "electron";
 const dialog = electron.remote.dialog;
 
-const dialogs = Dialogs();
-
 import * as viewMgr from "./../viewMgr";
 import * as masterView from "./masterView";
 import {AlignData} from "./../../alignData";
@@ -24,6 +22,9 @@ const Dialogs = require("dialogs");
 
 require("angular");
 require("@chgibb/angularplasmid");
+
+const dialogs = Dialogs();
+
 let app : any = angular.module("myApp",["angularplasmid"]);
 /**
  * Manages the display and behaviour of the figure being edited

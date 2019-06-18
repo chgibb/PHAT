@@ -1,5 +1,3 @@
-const dialogs = Dialogs();
-
 import * as viewMgr from "./../viewMgr";
 import * as masterView from "./masterView";
 import * as genomeView from "./genomeView";
@@ -8,6 +6,7 @@ import {reCacheBaseFigure} from "./reCacheBaseFigure";
 import {showGenericLoadingSpinnerInNavBar,hideSpinnerInNavBar} from "./loadingSpinner";
 
 const Dialogs = require("dialogs");
+const dialogs = Dialogs();
 let contig : cf.Contig;
 let editedAlias = "";
 

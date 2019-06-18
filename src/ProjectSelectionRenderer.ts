@@ -2,8 +2,6 @@ import * as electron from "electron";
 const ipc = electron.ipcRenderer;
 const remote = electron.remote;
 
-const dialogs = Dialogs();
-
 import {ProjectManifest,getProjectManifests} from "./req/projectManifest";
 import {AtomicOperation} from "./req/operations/atomicOperations";
 import {AtomicOperationIPC} from "./req/atomicOperationsIPC";
@@ -17,11 +15,13 @@ import * as helpView from "./req/renderer/ProjectSelectionRenderer/helpView";
 const Dialogs = require("dialogs");
 const jsonFile = require("jsonfile");
 const $ = require("jquery");
-(<any>window).$ = $;
+
 import "./req/renderer/commonBehaviour";
 
-$
-(
+(<any>window).$ = $;
+const dialogs = Dialogs();
+
+$(
     function()
     {
         document.body.innerHTML += `

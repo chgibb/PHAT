@@ -2,8 +2,6 @@
 import {ipcRenderer} from "electron";
 let ipc = ipcRenderer;
 
-const dialogs = Dialogs();
-
 import {AtomicOperationIPC} from "./../../atomicOperationsIPC";
 import {AtomicOperation} from "./../../operations/atomicOperations";
 import {getReadable} from "./../../getAppPath";
@@ -12,6 +10,8 @@ import * as viewMgr from "./../viewMgr";
 
 const jsonFile = require("jsonfile");
 const Dialogs = require("dialogs");
+
+const dialogs = Dialogs();
 
 export class SplashView extends viewMgr.View
 {

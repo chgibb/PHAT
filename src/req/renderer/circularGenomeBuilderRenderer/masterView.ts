@@ -3,8 +3,6 @@
 import * as electron from "electron";
 const ipc = electron.ipcRenderer;
 
-const dialogs = Dialogs();
-
 import {SaveKeyEvent} from "./../../ipcEvents";
 import {AtomicOperationIPC} from "./../../atomicOperationsIPC";
 import * as viewMgr from "./../viewMgr";
@@ -26,6 +24,7 @@ import {showGenericLoadingSpinnerInNavBar} from "./loadingSpinner";
 
 const Dialogs = require("dialogs");
 const $ = require("jquery");
+const dialogs = Dialogs();
 (<any>window).$ = $;
 (<any>window).jQuery = $;
 (<any>window).Tether = require("tether");
