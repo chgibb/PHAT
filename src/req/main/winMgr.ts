@@ -13,21 +13,21 @@ import {getReadable} from "../getAppPath";
 
 export class WindowRef
 {
-	public name : string;
-	public window : Electron.BrowserWindow;
-	public constructor(name : string, window : Electron.BrowserWindow)
-	{
-	    this.name = name;
-	    this.window = window;
-	}
+    public name : string;
+    public window : Electron.BrowserWindow;
+    public constructor(name : string, window : Electron.BrowserWindow)
+    {
+        this.name = name;
+        this.window = window;
+    }
 }
 export interface WindowCreator
-{	
-	Create : () => void;
+{   
+    Create : () => void;
 }
 let windows = new Array<WindowRef>();
 export let windowCreators : {
-	[index : string] : WindowCreator;
+    [index : string] : WindowCreator;
 } = {};
 
 /**
@@ -295,30 +295,30 @@ export function initWindowOptions(
         let x = (display.workArea.width/2)-(width/2);
         let y = 0;
         windowOptions = 
-		{
-		    x : x,
-		    y : y,
-		    width : width,
-		    height : height,
-		    useContentSize : false,
-		    center : true,
-		    minWidth: minWidth,
-		    minHeight: minHeight,
-		    resizable : true,
-		    movable : true,
-		    minimizable : true,
-		    maximizable : true,
-		    closable : true,
-		    alwaysOnTop : alwaysOnTop,
-		    fullscreen : false,
-		    title : title,
-		    icon : "./../icon.png",
-		    webPreferences : {
-		        nodeIntegrationInWorker : true
-		    }
-			
-		};
-		
+        {
+            x : x,
+            y : y,
+            width : width,
+            height : height,
+            useContentSize : false,
+            center : true,
+            minWidth: minWidth,
+            minHeight: minHeight,
+            resizable : true,
+            movable : true,
+            minimizable : true,
+            maximizable : true,
+            closable : true,
+            alwaysOnTop : alwaysOnTop,
+            fullscreen : false,
+            title : title,
+            icon : "./../icon.png",
+            webPreferences : {
+                nodeIntegrationInWorker : true
+            }
+            
+        };
+        
         dataMgr.setKey(refName,"windowOptions",windowOptions);
     }
 }
@@ -344,23 +344,20 @@ export function createFromOptions(
     ref.loadURL(html);
     if(debug)
         ref.webContents.openDevTools();
-	
-    ref.on
-    (
+    
+    ref.on(
         "close",function()
         {
             saveBounds(ref,refName);
         }
     );
-    ref.on
-    (
+    ref.on(
         "move",function()
         {
             saveBounds(ref,refName);
         }
     );
-    ref.on
-    (
+    ref.on(
         "resize",function()
         {
             saveBounds(ref,refName);

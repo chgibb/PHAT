@@ -14,8 +14,7 @@ export default function fsAccess(filePath : string,addProtocol : boolean = true)
 {
     if(addProtocol)
     {
-        return url.format
-        (
+        return url.format(
             {
                 protocol: "file",
                 slashes: true,

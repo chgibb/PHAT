@@ -25,7 +25,10 @@ export function samToolsDepth(alignData: AlignData,logger : atomic.AtomicOperati
             fs.mkdirSync(getCoverageDir(alignData));
         }
         catch(err)
-        {}
+        {
+            err;
+        }
+        
         let samToolsCoverageFileStream : fs.WriteStream = fs.createWriteStream(getCoverage(alignData));
 
         let jobCallBack : JobCallBackObject = {

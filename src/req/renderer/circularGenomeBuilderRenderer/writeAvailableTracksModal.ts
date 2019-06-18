@@ -236,7 +236,9 @@ export function writeAvailableTracksModal() : void
             };
         }
         catch(err)
-        {}
+        {
+            err;
+        }
     }
     for(let i = 0; i != genomeView.genome.renderedCoverageTracks.length; ++i)
     {

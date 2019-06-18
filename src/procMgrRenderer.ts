@@ -58,7 +58,9 @@ $(
                                 pids[i].arguments = info[0].arguments;
                             }
                             catch(err)
-                            {}
+                            {
+                                err;
+                            }
                         }
                     }
                     //console.log(pids);

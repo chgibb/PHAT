@@ -146,29 +146,25 @@ export class Job
         this.stdout = this.process.stdout;
         this.stderr = this.process.stderr;
         var obj = this;
-        this.process.stderr.on
-        (
+        this.process.stderr.on(
             "data",function(data : Buffer)
             {
                 obj.OnErr(data);
             }
         );
-        this.process.stdout.on
-        (
+        this.process.stdout.on(
             "data",function(data : Buffer)
             {
                 obj.OnOut(data);
             }
         );
-        this.process.on
-        (
+        this.process.on(
             "exit",function(retCode : number)
             {
                 obj.OnComplete(retCode);
             }
         );
-        this.process.on
-        (
+        this.process.on(
             "error",function(err : string)
             {
                 obj.OnSpawnError(err);

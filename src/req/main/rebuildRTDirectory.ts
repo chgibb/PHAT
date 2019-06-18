@@ -5,7 +5,7 @@ export function rebuildRTDirectory() : void
 {
     try
     {
-    	fs.mkdirSync(getReadableAndWritable("rt"));
+        fs.mkdirSync(getReadableAndWritable("rt"));
         fs.mkdirSync(getReadableAndWritable("rt/QCReports"));
         fs.mkdirSync(getReadableAndWritable("rt/indexes"));
         fs.mkdirSync(getReadableAndWritable("rt/AlignmentArtifacts"));
@@ -14,5 +14,7 @@ export function rebuildRTDirectory() : void
         fs.mkdirSync(getReadableAndWritable("rt/BLASTSegmentResults"));
     }
     catch(err)
-    {}
+    {
+        err;
+    }
 }

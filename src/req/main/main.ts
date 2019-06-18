@@ -77,8 +77,7 @@ import "./logViewer";
 import "./procMgr";
 import "./noSamHeaderPrompt";
 
-app.on
-(
+app.on(
     "ready",function()
     {
         electron.Menu.setApplicationMenu(
@@ -86,7 +85,7 @@ app.on
         );
 
         winMgr.windowCreators["projectSelection"].Create();
-		
+        
         atomicOp.register("generateFastQCReport",GenerateQCReport);
         atomicOp.register("indexFastaForBowtie2Alignment",IndexFastaForBowtie2Alignment);
         atomicOp.register("indexFastaForHisat2Alignment",IndexFastaForHisat2Alignment);
@@ -190,16 +189,14 @@ app.on
     }
 );
 
-ipc.on
-(
+ipc.on(
     "openWindow",function(event : Electron.IpcMessageEvent,arg : {refName : string})
     {
         winMgr.windowCreators[arg.refName].Create();
     }
 );
 
-ipc.on
-(
+ipc.on(
     "getAllPIDs",function(event : Electron.IpcMessageEvent,arg : GetKeyEvent)
     {
         let res = new Array<PIDInfo>();
@@ -247,19 +244,18 @@ ipc.on
         });
         event.sender.send(
             arg.replyChannel,
-			<GetKeyEvent>{
-			    replyChannel : arg.replyChannel,
-			    channel : arg.channel,
-			    key : "pids",
-			    val : res,
-			    action : "getKey"
-			}
+            <GetKeyEvent>{
+                replyChannel : arg.replyChannel,
+                channel : arg.channel,
+                key : "pids",
+                val : res,
+                action : "getKey"
+            }
         );
     }
 );
 
-ipc.on
-(
+ipc.on(
     "getKey",function(event : Electron.IpcMessageEvent,arg : GetKeyEvent)
     {
         winMgr.pushKeyTo(
@@ -286,18 +282,17 @@ ipc.on
 );
 
 
-ipc.on
-(
+ipc.on(
     "keySub",function(event : Electron.IpcMessageEvent,arg : KeySubEvent)
     {
         if(arg.action == "keySub")
         {
             dataMgr.addSubscriberToKey(
-				<KeySubEvent>{
-				    channel : arg.channel,
-				    key : arg.key,
-				    replyChannel : arg.replyChannel
-				}
+                <KeySubEvent>{
+                    channel : arg.channel,
+                    key : arg.key,
+                    replyChannel : arg.replyChannel
+                }
             );
         }
     }

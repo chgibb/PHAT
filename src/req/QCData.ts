@@ -2,14 +2,14 @@ import {Fastq} from "./fastq";
 import {getReadableAndWritable} from "./getAppPath";
 export class QCData
 {
-	public summary : Array<QCSummary>;
-	public validID : string;
-	public reportRun : boolean;
-	public constructor()
-	{
-	    this.reportRun = false;
-	    this.summary = new Array<QCSummary>();
-	}
+    public summary : Array<QCSummary>;
+    public validID : string;
+    public reportRun : boolean;
+    public constructor()
+    {
+        this.reportRun = false;
+        this.summary = new Array<QCSummary>();
+    }
 }
 
 export function getQCReportHTML(fastq : Fastq) : string
@@ -24,19 +24,19 @@ export function getQCReportData(fastq : Fastq) : string
 
 export class QCSummary
 {
-	public name : string;
-	public status : string;
-	public constructor(name : string,status : string)
-	{
-	    if(name)
-	        this.name = name;
-	    else
-	        this.name = "";
-	    if(status)
-	        this.status = status;
-	    else
-	        this.status = "";
-	}
+    public name : string;
+    public status : string;
+    public constructor(name : string,status : string)
+    {
+        if(name)
+            this.name = name;
+        else
+            this.name = "";
+        if(status)
+            this.status = status;
+        else
+            this.status = "";
+    }
 }
 
 //returns 'pass', 'warn', 'fail', or 'No Data'
@@ -53,6 +53,9 @@ export function getQCSummaryByNameOfReportByIndex(fastqInputs : Array<Fastq>,ind
         }
     }
     catch(err)
-    {}
+    {
+		err;
+	}
+	
     return "No Data";
 }
