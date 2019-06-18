@@ -1,4 +1,4 @@
-c/// <reference types="jquery" />
+c;/// <reference types="jquery" />
 import * as electron from "electron";
 const ipc = electron.ipcRenderer;
 

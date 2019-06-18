@@ -54,8 +54,8 @@ export function getQCSummaryByNameOfReportByIndex(fastqInputs : Array<Fastq>,ind
     }
     catch(err)
     {
-		err;
-	}
+        err;
+    }
 	
     return "No Data";
 }
