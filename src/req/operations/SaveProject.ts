@@ -3,7 +3,6 @@ import * as cp from "child_process";
 import * as atomic from "./atomicOperations";
 import {AtomicOperationForkEvent} from "./../atomicOperationsIPC";
 import {getReadable} from "./../getAppPath";
-
 import {ProjectManifest} from "./../projectManifest";
 export class SaveProject extends atomic.AtomicOperation
 {
@@ -24,7 +23,8 @@ export class SaveProject extends atomic.AtomicOperation
         this.saveProjectProcess = atomic.makeFork("SaveProject.js",<AtomicOperationForkEvent>{
             setData : true,
             data : self.proj
-        },function(ev : AtomicOperationForkEvent){
+        },function(ev : AtomicOperationForkEvent)
+        {
             self.logObject(ev);
             if(ev.finishedSettingData == true)
             {

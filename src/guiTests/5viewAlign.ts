@@ -17,12 +17,10 @@ import {openSNPTableForFirstAlignment} from "./req/output/openSNPTableForFirstAl
 import {viewSNP} from "./req/output/viewSNP";
 import {openPileupViewerSucess} from "./req/output/openPileupViewerSuccess";
 import {closeAllPileupWindows} from "./req/pileup/closeAllPileupWindows";
-
 import {openInputWindow} from "./req/input/openInputWindow";
 import {openRefSeqTab} from "./req/input/openRefSeqTab";
 import {indexRefsForVisualization} from "./req/input/indexRefsForVisualization";
-import {indexForVisualizationSuccess} from "./req/input/indexForVisualizationSuccess"
-
+import {indexForVisualizationSuccess} from "./req/input/indexForVisualizationSuccess";
 import {closeAllTabs} from "./req/closeAllTabs";
 import {closeToolBar} from "./req/closeToolBar";
 
@@ -73,6 +71,7 @@ async function runTest() : Promise<void>
 
     await closeToolBar();
 }
-setTimeout(function(){
+setTimeout(function()
+{
     runTest();
 },1000);

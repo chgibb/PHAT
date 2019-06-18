@@ -1,10 +1,10 @@
 import * as React from "react";
 
-import { Table } from "../components/table";
-import { AlignData } from '../../alignData';
-import { CompareArrows } from '../components/icons/compareArrows';
-import { LinkableRefSeq } from '../../getLinkableRefSeqs';
-import { Fasta } from '../../fasta';
+import {Table} from "../components/table";
+import {AlignData} from "../../alignData";
+import {CompareArrows} from "../components/icons/compareArrows";
+import {LinkableRefSeq} from "../../getLinkableRefSeqs";
+import {Fasta} from "../../fasta";
 
 export interface CompatibleRefTableProps
 {
@@ -51,14 +51,16 @@ export function CompatibleRefTable(props : CompatibleRefTableProps) : JSX.Elemen
                 {
                     title: "Sample Name",
                     field: "alias",
-                    render : (row : CompatibleRefTableRow) => {
+                    render : (row : CompatibleRefTableRow) => 
+                    {
                         return row.fasta.alias;
                     }
                 },
                 {
                     title: "Size",
                     field: "sizeString",
-                    render : (row : CompatibleRefTableRow) => {
+                    render : (row : CompatibleRefTableRow) => 
+                    {
                         return row.fasta.sizeString;
                     }
                 },
@@ -67,7 +69,8 @@ export function CompatibleRefTable(props : CompatibleRefTableProps) : JSX.Elemen
                 (rowData : CompatibleRefTableRow) => ({
                     icon : CompareArrows as any,
                     tooltip : "Link This Reference",
-                    onClick : () => {
+                    onClick : () => 
+                    {
                         props.linkActionClick(rowData);
                     },
                 })

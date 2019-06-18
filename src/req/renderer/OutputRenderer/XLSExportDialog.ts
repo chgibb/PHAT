@@ -1,4 +1,5 @@
 import * as electron from "electron";
+
 const dialog = electron.remote.dialog;
 import * as fs from "fs";
 
@@ -12,8 +13,8 @@ export function XLSExportDialog(htmlString : string) : void
             filters:
             [
                 {
-                    name : 'Spread Sheet',
-                    extensions : ['xls'] 
+                    name : "Spread Sheet",
+                    extensions : ["xls"] 
                 }
             ]
         },

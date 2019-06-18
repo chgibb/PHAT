@@ -1,10 +1,10 @@
 import * as React from "react";
 
-import { Fasta } from '../../fasta';
-import { getReadable } from '../../getAppPath';
-import { AddBox } from '../components/icons/addBox';
-import { Table } from '../components/table';
-import { ThreeQuartersLoader } from '../components/threeQuartersLoader';
+import {Fasta} from "../../fasta";
+import {getReadable} from "../../getAppPath";
+import {AddBox} from "../components/icons/addBox";
+import {Table} from "../components/table";
+import {ThreeQuartersLoader} from "../components/threeQuartersLoader";
 
 
 export interface FastaTableProps
@@ -28,7 +28,8 @@ export function FastaTable(props : FastaTableProps) : JSX.Element
                 {
                     title : "Path",
                     field : "path",
-                    render : (row : Fasta) => {
+                    render : (row : Fasta) => 
+                    {
                         return row.imported ? "In Project" : row.path;
                     }
                 },
@@ -39,20 +40,22 @@ export function FastaTable(props : FastaTableProps) : JSX.Element
                 {
                     title : "Ready For Visualization",
                     field : "indexedForVisualization",
-                    render : (row : Fasta) => {
+                    render : (row : Fasta) => 
+                    {
                         return row.indexedForVisualization ? <img src={getReadable("img/pass.png")} /> : 
-                        props.shouldAllowTriggeringOps ? "Not Ready" : 
-                        !props.shouldAllowTriggeringOps ? <ThreeQuartersLoader /> : undefined
+                            props.shouldAllowTriggeringOps ? "Not Ready" : 
+                                !props.shouldAllowTriggeringOps ? <ThreeQuartersLoader /> : undefined;
                     }
                 }
             ]}
             actions={[
                 (rowData : Fasta) => ({
-                    icon : (() => {
+                    icon : (() => 
+                    {
                         return (
                             <div className={`${rowData.uuid}IndexForVisualization`}><AddBox /></div>
                         );
-                     }) as any,
+                    }) as any,
                     tooltip : "Index For Visualization",
                     onClick : props.onIndexForVizClick,
                     disabled : rowData.indexedForVisualization
@@ -60,5 +63,5 @@ export function FastaTable(props : FastaTableProps) : JSX.Element
             ]}
             data={props.data}
         />
-    )
+    );
 }

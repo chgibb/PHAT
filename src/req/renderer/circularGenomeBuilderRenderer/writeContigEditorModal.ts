@@ -1,4 +1,3 @@
-const Dialogs = require("dialogs");
 const dialogs = Dialogs();
 
 import * as viewMgr from "./../viewMgr";
@@ -7,6 +6,8 @@ import * as genomeView from "./genomeView";
 import * as cf from "./../circularFigure";
 import {reCacheBaseFigure} from "./reCacheBaseFigure";
 import {showGenericLoadingSpinnerInNavBar,hideSpinnerInNavBar} from "./loadingSpinner";
+
+const Dialogs = require("dialogs");
 let contig : cf.Contig;
 let editedAlias = "";
 
@@ -56,7 +57,7 @@ export function writeContigEditorModal() : void
     let genomeView = <genomeView.GenomeView>viewMgr.getViewByName("genomeView",masterView.views);
 
     let title = `Edit Contig ${contig.name}`;
-    let body = ``;
+    let body = "";
     body += `
         <h5>Name in Reference</h4>
         <h4>${contig.name}</h4>
@@ -96,11 +97,13 @@ export function writeContigEditorModal() : void
     document.getElementById("modalBody").innerHTML = body;
     document.getElementById("modalFooter").innerHTML = footer;
 
-    document.getElementById("footerClose").onclick = function(this : HTMLElement,ev : MouseEvent){
+    document.getElementById("footerClose").onclick = function(this : HTMLElement,ev : MouseEvent)
+    {
         masterView.contigEditorModalOpen = false;
-    }
+    };
 
-    document.getElementById("footerSave").onclick = function(this : HTMLElement,ev : MouseEvent){
+    document.getElementById("footerSave").onclick = function(this : HTMLElement,ev : MouseEvent)
+    {
         contig.alias = editedAlias;
         let colour : string = (<string>(<any>$(document.getElementById("fillColourPicker"))).minicolors("rgbString"));
         let fontColour : string = (<string>(<any>$(document.getElementById("fontColourPicker"))).minicolors("rgbString"));
@@ -122,22 +125,26 @@ export function writeContigEditorModal() : void
         masterView.saveFigureChanges();
         viewMgr.render();
     
-    }
+    };
 
-    document.getElementById("contigAlias").onclick = function(this : HTMLElement,ev : MouseEvent){
+    document.getElementById("contigAlias").onclick = function(this : HTMLElement,ev : MouseEvent)
+    {
         masterView.dismissModal();
-        dialogs.prompt("Contig Name",editedAlias,function(text : string){
+        dialogs.prompt("Contig Name",editedAlias,function(text : string)
+        {
             if(text)
                 editedAlias = text;
             masterView.showModal();
             viewMgr.render();
         });
-    }
+    };
     if(contig.allowPositionChange)
     {
-        document.getElementById("deleteContig").onclick = function(this : HTMLElement,ev : MouseEvent){
+        document.getElementById("deleteContig").onclick = function(this : HTMLElement,ev : MouseEvent)
+        {
             masterView.dismissModal();
-            dialogs.confirm("This cannot be undone",function(ok : boolean){
+            dialogs.confirm("This cannot be undone",function(ok : boolean)
+            {
                 if(ok)
                 {
                     for(let i = genomeView.genome.customContigs.length - 1; i != -1; i--)
@@ -150,7 +157,7 @@ export function writeContigEditorModal() : void
                     }
                 }
             });
-        }
+        };
     }
     let colourPicker = document.getElementById("fillColourPicker");
     (<any>$(colourPicker)).minicolors({
@@ -161,7 +168,8 @@ export function writeContigEditorModal() : void
         inline : false,
         swatches : [],
         theme : "default",
-        change : function(hex : string,opacity : string){}
+        change : function(hex : string,opacity : string)
+        {}
     });
     let fontColourPicker = document.getElementById("fontColourPicker");
     (<any>$(fontColourPicker)).minicolors({
@@ -172,6 +180,7 @@ export function writeContigEditorModal() : void
         inline : false,
         swatches : [],
         theme : "default",
-        change : function(hex : string,opacity : string){}
+        change : function(hex : string,opacity : string)
+        {}
     });
 }

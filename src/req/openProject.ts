@@ -2,7 +2,7 @@ import * as fs from "fs";
 
 import {getReadableAndWritable} from "./getAppPath";
 import {ProjectManifest,getTarBallPath} from "./projectManifest";
-import {rebuildRTDirectory} from "./main/rebuildRTDirectory"
+import {rebuildRTDirectory} from "./main/rebuildRTDirectory";
 import * as dataMgr from "./main/dataMgr";
 
 export function openProject(
@@ -17,7 +17,8 @@ export function openProject(
     const gunzip = require("gunzip-maybe");
     const jsonFile = require("jsonfile");
     
-    return new Promise((resolve,reject) => {
+    return new Promise((resolve,reject) => 
+    {
         dataMgr.clearData();
         rimraf.sync(getReadableAndWritable("rt"));
         rebuildRTDirectory();
@@ -30,26 +31,30 @@ export function openProject(
             projectTarBall = externalProjectPath;
         try
         {
-            fs.accessSync(projectTarBall)
+            fs.accessSync(projectTarBall);
             let totalFiles = 0;
             let unPackedFiles = 0;
 
             let countFiles = tarStream.extract();
             countFiles.on(
-                "entry",(header : any,stream : any,next : () => void) => {
+                "entry",(header : any,stream : any,next : () => void) => 
+                {
                     if(header)
                     {
                         totalFiles++;
                         cb(totalFiles,unPackedFiles);
                     }
-                    stream.on("end",() => {
+                    stream.on("end",() => 
+                    {
                         next();
                     });
                     stream.resume();
-            });
-            countFiles.on("finish",() => {
+                });
+            countFiles.on("finish",() => 
+            {
                 let extract = tarfs.extract(getReadableAndWritable("rt"),{
-                    ignore : (name : string) => {
+                    ignore : (name : string) => 
+                    {
                         unPackedFiles++;
                         cb(totalFiles,unPackedFiles);
                         return false;
@@ -57,7 +62,8 @@ export function openProject(
                     readable : true,
                     writable : true
                 });
-                extract.on("finish",() => {
+                extract.on("finish",() => 
+                {
                     if(externalProjectPath)
                     {
                         let rt = jsonFile.readFileSync(getReadableAndWritable("rt/rt.json"));

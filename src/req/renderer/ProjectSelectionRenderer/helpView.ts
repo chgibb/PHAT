@@ -2,13 +2,14 @@
 import * as electron from "electron";
 const remote = electron.remote;
 
-const jsonFile = require("jsonfile");
 
 import * as viewMgr from "./../viewMgr";
 import {getAppSettings,writeAppSettings} from "./../../appSettings";
 import {getReadable} from "./../../getAppPath";
 
-const pjson = jsonFile.readFileSync(getReadable('package.json'));
+const jsonFile = require("jsonfile");
+
+const pjson = jsonFile.readFileSync(getReadable("package.json"));
 
 export class HelpView extends viewMgr.View
 {
@@ -16,8 +17,10 @@ export class HelpView extends viewMgr.View
     {
         super("helpView",div);
     }
-    public onMount() : void{}
-    public onUnMount() : void{}
+    public onMount() : void
+    {}
+    public onUnMount() : void
+    {}
     public renderView() : string
     {
         return `
@@ -46,7 +49,8 @@ export class HelpView extends viewMgr.View
         else if(getAppSettings().updateChannel == "beta")
             (<HTMLInputElement>document.getElementById("betaChannel")).checked = true;
     }
-    public dataChanged() : void{}
+    public dataChanged() : void
+    {}
     public divClickEvents(event : JQueryEventObject) : void
     {
         if(event.target.id == "goBack")

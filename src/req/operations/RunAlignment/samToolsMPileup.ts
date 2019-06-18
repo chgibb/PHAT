@@ -17,8 +17,9 @@ import {getPath} from "./../../file";
  */
 export function samToolsMPileup(alignData : AlignData,logger : atomic.AtomicOperation) : Promise<void>
 {
-    return new Promise<void>((resolve,reject) => {
-        let samToolsExe = getReadable('samtools');
+    return new Promise<void>((resolve,reject) => 
+    {
+        let samToolsExe = getReadable("samtools");
 
         let samToolsMPileupStream = fs.createWriteStream(getMPileup(alignData));
 
@@ -37,7 +38,8 @@ export function samToolsMPileup(alignData : AlignData,logger : atomic.AtomicOper
                         if(params.retCode == 0)
                         {
                             setTimeout(
-                                function(){
+                                function()
+                                {
                                     samToolsMPileupStream.end();
                                     resolve();
                                 },500
@@ -50,7 +52,7 @@ export function samToolsMPileup(alignData : AlignData,logger : atomic.AtomicOper
                     }
                 }
             }
-        }
+        };
         let samToolsMPileupJob = new Job(
             samToolsExe,
             <Array<string>>[

@@ -21,7 +21,8 @@ export class View extends viewMgr.View
     {
         this.linkableRefSeqs = getLinkableRefSeqs(this.fastaInputs,this.inspectingAlign);
     }
-    public onUnMount() : void{}
+    public onUnMount() : void
+    {}
     public renderView() : string
     {
         return `
@@ -36,40 +37,42 @@ export class View extends viewMgr.View
                         <th>Size</th>
                         <th>Link This Ref</th>
                     </tr>
-                    ${(()=>{
-                        let res = "";
-                        for(let i = 0; i != this.fastaInputs.length; ++i)
-                        {
-                            let fasta = this.fastaInputs[i];
-                            for(let k = 0; k != this.linkableRefSeqs.length; ++k)
-                            {
-                                if(this.linkableRefSeqs[k].linkable && fasta.uuid == this.linkableRefSeqs[k].uuid)
-                                {
-                                    res += `
+                    ${(()=>
+    {
+        let res = "";
+        for(let i = 0; i != this.fastaInputs.length; ++i)
+        {
+            let fasta = this.fastaInputs[i];
+            for(let k = 0; k != this.linkableRefSeqs.length; ++k)
+            {
+                if(this.linkableRefSeqs[k].linkable && fasta.uuid == this.linkableRefSeqs[k].uuid)
+                {
+                    res += `
                                         <tr>
                                             <th>${fasta.alias}</th>
                                             <th>${fasta.sizeString}</th>
-                                            ${(()=>{
-                                                if(this.shouldAllowTriggeringOps)
-                                                {
-                                                    return `
+                                            ${(()=>
+        {
+            if(this.shouldAllowTriggeringOps)
+            {
+                return `
                                                         <th id="${fasta.uuid}Link" class="activeHover">Link to ${this.inspectingAlign.alias}</th>
                                                     `;
-                                                }
-                                                else
-                                                {
-                                                    return `
+            }
+            else
+            {
+                return `
                                                         <td><div class="three-quarters-loader"></div></td>
                                                     `;
-                                                }
-                                            })()}
+            }
+        })()}
                                         </tr>
                                     `;
-                                }
-                            }
-                        }
-                        return res;
-                    })()}
+                }
+            }
+        }
+        return res;
+    })()}
                 </table>
             </div>
             <br />
@@ -82,34 +85,38 @@ export class View extends viewMgr.View
                         <th>Size</th>
                         <th>Reason</th>
                     </tr>
-                    ${(()=>{
-                        let res = "";
-                        for(let i = 0; i != this.fastaInputs.length; ++i)
-                        {
-                            let fasta = this.fastaInputs[i];
-                            for(let k = 0; k != this.linkableRefSeqs.length; ++k)
-                            {
-                                if(!this.linkableRefSeqs[k].linkable && fasta.uuid == this.linkableRefSeqs[k].uuid)
-                                {
-                                    res += `
+                    ${(()=>
+    {
+        let res = "";
+        for(let i = 0; i != this.fastaInputs.length; ++i)
+        {
+            let fasta = this.fastaInputs[i];
+            for(let k = 0; k != this.linkableRefSeqs.length; ++k)
+            {
+                if(!this.linkableRefSeqs[k].linkable && fasta.uuid == this.linkableRefSeqs[k].uuid)
+                {
+                    res += `
                                         <tr>
                                             <th>${fasta.alias}</th>
                                             <th>${fasta.sizeString}</th>
                                             <th id="${fasta.uuid}LongReason" class="activeHover">${this.linkableRefSeqs[k].reason}</th>
                                         </tr>
                                     `;
-                                }
-                            }
-                        }
-                        return res;
-                    })()}
+                }
+            }
+        }
+        return res;
+    })()}
                 </table>
             </div>
         `;
     }
-    public postRender() : void{}
-    public divClickEvents(event : JQueryEventObject) : void{}
-    public dataChanged() : void{}
+    public postRender() : void
+    {}
+    public divClickEvents(event : JQueryEventObject) : void
+    {}
+    public dataChanged() : void
+    {}
 }
 export function addView(arr : Array<viewMgr.View>,div : string) : void
 {

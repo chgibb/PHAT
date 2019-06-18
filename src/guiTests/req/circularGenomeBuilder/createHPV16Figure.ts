@@ -10,8 +10,10 @@ import {Fasta} from "./../../../req/fasta";
  */
 export async function createHPV16Figure() : Promise<void>
 {
-    return new Promise<void>((resolve,reject) => {
-        setTimeout(function(){
+    return new Promise<void>((resolve,reject) => 
+    {
+        setTimeout(function()
+        {
             console.log("creating new figure for hpv16 ref");
             
             let genomeBuilder = winMgr.getFreeWebContents();
@@ -33,7 +35,7 @@ export async function createHPV16Figure() : Promise<void>
                     return resolve();
                 }
             }
-            return reject()
+            return reject();
         },1000);
     });
 }

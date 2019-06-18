@@ -2,11 +2,8 @@ import * as atomic from "./atomicOperations";
 import {Fasta,get2BitPath} from "./../fasta";
 import {getContigsFromFastaFile} from "./../fastaContigLoader";
 import {getPath} from "./../file";
-
 import {getReadable,getReadableAndWritable} from "./../getAppPath";
-
 import {Job} from "./../main/Job";
-
 import {faToTwoBit} from "./indexFasta/faToTwoBit";
 export class IndexFastaForVisualization extends atomic.AtomicOperation
 {
@@ -21,7 +18,7 @@ export class IndexFastaForVisualization extends atomic.AtomicOperation
         super();
         this.twoBitFlags = new atomic.CompletionFlags();
 
-        this.faToTwoBitExe = getReadable('faToTwoBit');
+        this.faToTwoBitExe = getReadable("faToTwoBit");
     }
     public setData(data : Fasta) : void
     {
@@ -34,8 +31,10 @@ export class IndexFastaForVisualization extends atomic.AtomicOperation
         this.logRecord = atomic.openLog(this.name,"Index Fasta for Visualization");
 
         let self = this;
-        (async function(){
-            return new Promise<void>(async (resolve,reject) => {
+        (async function()
+        {
+            return new Promise<void>(async (resolve,reject) => 
+            {
                 try
                 {
                     self.progressMessage = "Building 2bit archive";

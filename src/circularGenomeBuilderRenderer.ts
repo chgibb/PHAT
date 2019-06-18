@@ -1,4 +1,5 @@
 import {ipcRenderer} from "electron";
+
 let ipc = ipcRenderer;
 import * as viewMgr from "./req/renderer/viewMgr";
 import * as masterView from "./req/renderer/circularGenomeBuilderRenderer/masterView";
@@ -87,7 +88,7 @@ $
         );
         ipc.on
         (
-            'circularGenomeBuilder',async function(event : Electron.IpcMessageEvent,arg : any)
+            "circularGenomeBuilder",async function(event : Electron.IpcMessageEvent,arg : any)
             {
                 let masterView = <masterView.View>viewMgr.getViewByName("masterView");
                 let genomeView = <genomeView.GenomeView>viewMgr.getViewByName("genomeView",masterView.views);
@@ -159,7 +160,8 @@ $
                                     }
                                 }
                             }
-                            catch(err){}
+                            catch(err)
+                            {}
                         }
                     }
                     if(!found)
@@ -172,12 +174,13 @@ $
 );
 $(window).resize
 (
-	function()
-	{
+    function()
+    {
         viewMgr.render();
     }
 );
-window.addEventListener("beforeunload",function(){
+window.addEventListener("beforeunload",function()
+{
     let masterView = <masterView.View>viewMgr.getViewByName("masterView");
     masterView.dataChanged();
 });

@@ -24,6 +24,7 @@ async function runTest() : Promise<void>
     await alignSuccess();
     await closeToolBar();
 }
-setTimeout(function(){
+setTimeout(function()
+{
     runTest();
 },1000);

@@ -1,9 +1,9 @@
 import * as React from "react";
 
-import { Fasta } from '../../fasta';
-import { LinkableRefSeq } from '../../getLinkableRefSeqs';
-import { Table } from '../components/table';
-import { Info } from '../components/icons/info';
+import {Fasta} from "../../fasta";
+import {LinkableRefSeq} from "../../getLinkableRefSeqs";
+import {Table} from "../components/table";
+import {Info} from "../components/icons/info";
 
 export interface IncompatibleRefTableProps
 {
@@ -67,8 +67,9 @@ export function IncompatibleRefTable(props : IncompatibleRefTableProps) : JSX.El
                 (rowData : IncompatibleRefTableRow) => ({
                     icon : Info as any,
                     tooltip : "See Detailed Reason",
-                    onClick : () => {
-                        alert(rowData.longReason ? rowData.longReason : "")
+                    onClick : () => 
+                    {
+                        alert(rowData.longReason ? rowData.longReason : "");
                     }
                 })
             ]}

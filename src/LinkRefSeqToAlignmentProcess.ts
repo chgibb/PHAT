@@ -4,12 +4,11 @@ import {AlignData,getArtifactDir} from "./req/alignData";
 import {Fasta} from "./req/fasta";
 import {getFolderSize} from "./req/getFolderSize";
 import formatByteString from "./req/renderer/formatByteString";
-
 import {getLinkableRefSeqs} from "./req/getLinkableRefSeqs";
 import {samToolsDepth} from "./req/operations/RunAlignment/samToolsDepth";
 import {samToolsFaidx} from "./req/operations/indexFasta/samToolsFaidx";
 import {samToolsMPileup} from "./req/operations/RunAlignment/samToolsMPileup";
-import {varScanMPileup2SNP} from "./req/operations/RunAlignment/varScanMPileup2SNP"
+import {varScanMPileup2SNP} from "./req/operations/RunAlignment/varScanMPileup2SNP";
 
 let flags : CompletionFlags = new CompletionFlags();
 let align : AlignData;
@@ -49,7 +48,8 @@ function update() : void
 }
 
 process.on(
-    "message",function(ev : AtomicOperationForkEvent){
+    "message",function(ev : AtomicOperationForkEvent)
+    {
         if(ev.setData == true)
         {
             logger.logRecord = atomic.openLog(ev.name,ev.description);
@@ -61,7 +61,8 @@ process.on(
         }
         if(ev.run == true)
         {
-            (async function(){
+            (async function()
+            {
                 let linkableRefSeqs = getLinkableRefSeqs(<Array<Fasta>>[fasta],align);
                 for(let i = 0; i != linkableRefSeqs.length; ++i)
                 {

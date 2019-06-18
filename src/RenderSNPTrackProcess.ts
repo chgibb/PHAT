@@ -1,6 +1,6 @@
 import * as atomic from "./req/operations/atomicOperations";
 import {AtomicOperationForkEvent,CompletionFlags} from "./req/atomicOperationsIPC";
-import {AlignData} from "./req/alignData"
+import {AlignData} from "./req/alignData";
 import * as cf from "./req/renderer/circularFigure";
 
 let align : AlignData;
@@ -25,7 +25,8 @@ process.on
 
         if(ev.run == true)
         {
-            cf.cacheSNPTrackTemplate(circularFigure,contiguuid,align,colour).then((SNPTracks : string) => {
+            cf.cacheSNPTrackTemplate(circularFigure,contiguuid,align,colour).then((SNPTracks : string) => 
+            {
                 flags.done = true;
                 flags.success = true;
                 process.send(
@@ -45,7 +46,8 @@ process.on
         }
     }  
 );
-(process as NodeJS.EventEmitter).on("uncaughtException",function(err : string){
+(process as NodeJS.EventEmitter).on("uncaughtException",function(err : string)
+{
     console.log(err);
     flags.done = true;
     flags.failure = true;
@@ -60,7 +62,8 @@ process.on
     atomic.exitFork(1);
 });
 
-process.on("unhandledRejection",function(err : string){
+process.on("unhandledRejection",function(err : string)
+{
     console.log(err);
     flags.done = true;
     flags.failure = true;

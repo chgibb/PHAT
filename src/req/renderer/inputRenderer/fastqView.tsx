@@ -1,10 +1,12 @@
 import * as React from "react";
 
-import * as pub from "./publish";
 import {FastqTable} from "../containers/fastqTable";
+import {Button} from "../components/button";
+
+import * as pub from "./publish";
 import {Fastq} from "./../../fastq";
 import {inputFastqDialog} from "./inputFastqDialog";
-import {Button} from '../components/button';
+
 
 export interface FastqViewProps
 {
@@ -23,7 +25,8 @@ export class FastqView extends React.Component<FastqViewProps,{}>
         return (
             <React.Fragment>
                 <Button 
-                    onClick={() => {
+                    onClick={() => 
+                    {
                         inputFastqDialog();
                     }}
                     label="Browse"
@@ -33,12 +36,13 @@ export class FastqView extends React.Component<FastqViewProps,{}>
                 />
                 {
                     this.props.fastqInputs ? this.props.fastqInputs.length > 0 ?
-                    <Button
-                        onClick={() => {
-                            pub.importSelectedFastqs(this.props.fastqInputs);
-                        }}
-                        label="Import All"
-                    /> : "" : ""
+                        <Button
+                            onClick={() => 
+                            {
+                                pub.importSelectedFastqs(this.props.fastqInputs);
+                            }}
+                            label="Import All"
+                        /> : "" : ""
                 }
             </React.Fragment>
         );

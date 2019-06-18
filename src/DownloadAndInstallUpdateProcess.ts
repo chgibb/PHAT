@@ -1,11 +1,12 @@
 import * as fs from "fs";
 import * as cp from "child_process";
 
-let GitHubReleases = require("github-releases");
 
 import * as atomic from "./req/operations/atomicOperations";
 import {AtomicOperationForkEvent,CompletionFlags} from "./req/atomicOperationsIPC";
 import {getReadable} from "./req/getAppPath";
+
+let GitHubReleases = require("github-releases");
 
 let flags : CompletionFlags = new CompletionFlags();
 
@@ -23,11 +24,13 @@ process.on
         if(ev.run == true)
         {
             let ghr = new GitHubReleases({user : "chgibb",repo : "PHAT"});
-            ghr.downloadAsset(asset,(error : string,istream : fs.ReadStream) => {
+            ghr.downloadAsset(asset,(error : string,istream : fs.ReadStream) => 
+            {
                 if(error)
                     throw new Error(error);
                 let progress = 0;
-                istream.on("data",(chunk : Buffer) => {
+                istream.on("data",(chunk : Buffer) => 
+                {
                     progress += chunk.length;
                     process.send(
                         <AtomicOperationForkEvent>{
@@ -39,9 +42,16 @@ process.on
                 });
                 const ostream = fs.createWriteStream("phat.update");
                 istream.pipe(ostream);
-                istream.on("error",(error : string) => {throw new Error(error);});
-                ostream.on("error",(error : string) => {throw new Error(error);});
-                ostream.on("close",() => {
+                istream.on("error",(error : string) => 
+                {
+                    throw new Error(error);
+                });
+                ostream.on("error",(error : string) => 
+                {
+                    throw new Error(error);
+                });
+                ostream.on("close",() => 
+                {
 
                     flags.done = true;
                     flags.success = true;
@@ -79,7 +89,8 @@ process.on
         }
     }
 );
-(process as NodeJS.EventEmitter).on("uncaughtException",function(err : string){
+(process as NodeJS.EventEmitter).on("uncaughtException",function(err : string)
+{
     console.log("ERROR "+err);
     flags.done = true;
     flags.failure = true;
@@ -93,7 +104,8 @@ process.on
     );
     atomic.exitFork(1);
 });
-process.on("unhandledRejection",function(err : string){
+process.on("unhandledRejection",function(err : string)
+{
     console.log("ERROR "+err);
     flags.done = true;
     flags.failure = true;

@@ -6,11 +6,9 @@ logMainProcessErrors();
 
 import {openProjectsView} from "./req/projectSelection/openProjectsView";
 import {openFirstProject} from "./req/projectSelection/openFirstProject";
-
 import {openCircularGenomeBuilderWindow} from "./req/circularGenomeBuilder/openCircularGenomeBuilderWindow";
 import {toggleFiguresDropdown} from "./req/circularGenomeBuilder/toggleFiguresDropdown";
 import {createHPV16Figure} from "./req/circularGenomeBuilder/createHPV16Figure";
-
 import {closeToolBar} from "./req/closeToolBar";
 
 async function runTest() : Promise<void>
@@ -24,6 +22,7 @@ async function runTest() : Promise<void>
 
     await closeToolBar();
 }
-setTimeout(function(){
+setTimeout(function()
+{
     runTest();
 },1000);

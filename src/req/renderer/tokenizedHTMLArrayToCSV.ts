@@ -7,14 +7,15 @@ export default function tokenizedHTMLArrayToCSV(html : Array<string>) : string
 
     let isTableHeader = new RegExp("(<th>)","i");
     let isTableHeaderEnd = new RegExp("(</th>)","i");
-    let csv = `${(()=>{
+    let csv = `${(()=>
+    {
         let res = "";
         let inCell = false;
         for(let i = 0; i != html.length; ++i)
         {
             if(isTableRowEnd.test(html[i]))
             {
-                res += '\n';
+                res += "\n";
                 continue;
             }
             else if(isTableData.test(html[i]))

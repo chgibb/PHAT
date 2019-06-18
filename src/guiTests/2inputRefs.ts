@@ -20,6 +20,7 @@ async function runTest() : Promise<void>
     await inputHPV16Ref();
     await closeToolBar();
 }
-setTimeout(function(){
+setTimeout(function()
+{
     runTest();
 },1000);

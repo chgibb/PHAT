@@ -2,7 +2,7 @@ import {Fasta} from "./fasta";
 import {Contig} from "./fastaContigLoader";
 import {AlignData} from "./alignData";
 import {SamToolsIdxStatsReport} from "./samToolsIdxStatsReport";
-import { UniquelyAddressable } from './uniquelyAddressable';
+import {UniquelyAddressable} from "./uniquelyAddressable";
 
 /**
  * Structure describing the linkability of a ref seq. If linkable is false, reason will give a short description, longReason
@@ -189,7 +189,7 @@ export function getLinkableRefSeqs(fastaInputs : Array<Fasta>,align : AlignData)
         {
             curr.linkable = false;
             curr.reason = "Not Indexed";
-            curr.reason = `Ref is not indexed for visualization or indexing`;
+            curr.reason = "Ref is not indexed for visualization or indexing";
             res.push(curr);
         }
     }

@@ -1,4 +1,3 @@
-const fse = require("fs-extra");
 
 import * as atomic from "./../atomicOperations";
 import {getReadable} from "./../../getAppPath";
@@ -6,6 +5,8 @@ import {Fasta,getFaiPath} from "./../../fasta";
 import {getPath} from "./../../file";
 import {SpawnRequestParams} from "./../../JobIPC";
 import {Job,JobCallBackObject} from "./../../main/Job";
+
+const fse = require("fs-extra");
 
 /**
  * Produces a samtools fai index for fasta
@@ -17,8 +18,9 @@ import {Job,JobCallBackObject} from "./../../main/Job";
  */
 export function samToolsFaidx(fasta : Fasta,logger : atomic.AtomicOperation) : Promise<void>
 {
-    return new Promise<void>((resolve,reject) => {
-        let samToolsExe = getReadable('samtools');
+    return new Promise<void>((resolve,reject) => 
+    {
+        let samToolsExe = getReadable("samtools");
 
         let jobCallBack : JobCallBackObject = {
             send(channel : string,params : SpawnRequestParams)
@@ -29,10 +31,12 @@ export function samToolsFaidx(fasta : Fasta,logger : atomic.AtomicOperation) : P
                     if(params.retCode == 0)
                     {
                         setTimeout(
-                            function(){
+                            function()
+                            {
                                 try
                                 {
-                                    fse.copy(`${getPath(fasta)}.fai`,getFaiPath(fasta),function(err : string){
+                                    fse.copy(`${getPath(fasta)}.fai`,getFaiPath(fasta),function(err : string)
+                                    {
                                         if(err)
                                             return reject(err);
                                         resolve();
@@ -51,7 +55,7 @@ export function samToolsFaidx(fasta : Fasta,logger : atomic.AtomicOperation) : P
                     }
                 }
             }
-        }
+        };
         let faiJob = new Job(
             samToolsExe,
             <Array<string>>[

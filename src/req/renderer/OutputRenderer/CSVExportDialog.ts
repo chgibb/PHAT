@@ -1,4 +1,5 @@
 import * as electron from "electron";
+
 const dialog = electron.remote.dialog;
 import * as fs from "fs";
 
@@ -11,8 +12,8 @@ export function CSVExportDialog(htmlString : string) : void
             filters:
                 [
                     {
-                        name : 'comma separated values',
-                        extensions : ['csv']
+                        name : "comma separated values",
+                        extensions : ["csv"]
                     }
                 ]
         },

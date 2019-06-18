@@ -1,7 +1,7 @@
-import {cssRule} from 'typestyle';
+import {cssRule} from "typestyle";
+import {color} from "csx";
 
 import {tableCell} from "./tableCell";
-import { color } from 'csx';
 
 cssRule("table",tableCell);
 

@@ -1,6 +1,5 @@
 import * as viewMgr from "./../viewMgr";
-
-import {AtomicOperation} from "./../../operations/atomicOperations"
+import {AtomicOperation} from "./../../operations/atomicOperations";
 
 export class View extends viewMgr.View
 {
@@ -11,11 +10,16 @@ export class View extends viewMgr.View
         this.ops = new Array<AtomicOperation>();
 
     }
-    public onMount() : void{}
-    public onUnMount() : void{}
-    public postRender() : void{}
-    public dataChanged() : void{}
-    public divClickEvents(event : JQueryEventObject) : void{}
+    public onMount() : void
+    {}
+    public onUnMount() : void
+    {}
+    public postRender() : void
+    {}
+    public dataChanged() : void
+    {}
+    public divClickEvents(event : JQueryEventObject) : void
+    {}
     public renderView() : string
     {
         return `
@@ -25,15 +29,16 @@ export class View extends viewMgr.View
                     <th>Status</th>
                     <th>Message</th>
                 </tr>
-                ${(()=>{
-                    let res = "";
-                    if(!this.ops)
-                        return res;
-                    for(let i = 0; i != this.ops.length; ++i)
-                    {
-                        if(!this.ops[i])
-                            continue;
-                        res += `
+                ${(()=>
+    {
+        let res = "";
+        if(!this.ops)
+            return res;
+        for(let i = 0; i != this.ops.length; ++i)
+        {
+            if(!this.ops[i])
+                continue;
+            res += `
                             <tr>
                                 <td>${this.ops[i].name}</td>
                                 <td>${this.ops[i].running === true ? "Running" : "Queued"}</td>
@@ -41,9 +46,9 @@ export class View extends viewMgr.View
                             
                             </tr>
                         `;
-                    }
-                    return res;
-                })()}
+        }
+        return res;
+    })()}
 
             </table>
         `;

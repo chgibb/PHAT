@@ -27,7 +27,8 @@ export class OpenNoSamHeaderPrompt extends atomic.AtomicOperation
             val : this.inputBamFile
         };
         setTimeout(
-            function(){
+            function()
+            {
                 prompt.webContents.send("noSamHeaderPrompt",options);
             },500
         );

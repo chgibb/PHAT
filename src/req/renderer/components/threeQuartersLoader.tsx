@@ -55,7 +55,8 @@ cssRaw(`
   
 `);
 
-export function ThreeQuartersLoader() : JSX.Element {
+export function ThreeQuartersLoader() : JSX.Element 
+{
     return (
         <div className="three-quarters-loader" />
     );

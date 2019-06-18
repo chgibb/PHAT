@@ -10,8 +10,10 @@ import {IndexFastaForVisualization} from "./../../../req/operations/indexFastaFo
  */
 export async function indexForVisualizationSuccess() : Promise<void>
 {
-    return new Promise<void>((resolve,reject) => {
-        atomicOp.updates.on("indexFastaForVisualization",function(op : IndexFastaForVisualization){
+    return new Promise<void>((resolve,reject) => 
+    {
+        atomicOp.updates.on("indexFastaForVisualization",function(op : IndexFastaForVisualization)
+        {
             if(op.flags.done && op.flags.failure)
             {
                 console.log("Failed to index for visualization");

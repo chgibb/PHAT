@@ -2,73 +2,76 @@
 
 import * as electron from "electron";
 
-const jsonFile = require("jsonfile");
+import {getReadable} from "../getAppPath";
 
 import * as winMgr from "./winMgr";
-import { getReadable } from '../getAppPath';
+
+const jsonFile = require("jsonfile");
+
 export function appMenu() : Array<Electron.MenuItemConstructorOptions>
 {
-	const pjson = jsonFile.readFileSync(getReadable('package.json'));
+    const pjson = jsonFile.readFileSync(getReadable("package.json"));
 	
     return <Array<Electron.MenuItemConstructorOptions>>[
-		{
-			label: 'View',
-			submenu: [
+        {
+            label: "View",
+            submenu: [
                 {
-                    label : `Operations`,
-                    click(){
+                    label : "Operations",
+                    click()
+                    {
                         winMgr.windowCreators["operationViewer"].Create();
                     }
-				}/*,
+                }/*,
 				{
 					label : 'Process Manager',
 					click(){
 						winMgr.windowCreators["procMgr"].Create();
 					}
 				}*/
-			]
-		},
-		{
-			role: 'window',
-			submenu: [
+            ]
+        },
+        {
+            role: "window",
+            submenu: [
 			    {
-				    role: 'minimize'
+				    role: "minimize"
 			    },
 			    {
-				    role: 'resetzoom'
+				    role: "resetzoom"
 			    },
 			    {
-				    role: 'zoomin'
+				    role: "zoomin"
 			    },
 			    {
-				    role: 'zoomout'
+				    role: "zoomout"
 			    },
 			    {
-				    type: 'separator'
+				    type: "separator"
 			    },
 			    {
-				    role: 'togglefullscreen'
+				    role: "togglefullscreen"
 			    },
 			    {
-				    role: 'toggledevtools'
+				    role: "toggledevtools"
 			    }
-			]
-		},
-		{
-			role: 'help',
-			submenu: [
+            ]
+        },
+        {
+            role: "help",
+            submenu: [
 			    {
-				    label: 'About PHAT',
+				    label: "About PHAT",
 				    click() 
 				    { 	
 					    electron.dialog.showMessageBox(
 					    {
 						    type: "info",
-						    title: 'About PHAT',
+						    title: "About PHAT",
 						    message: `PHAT version ${pjson.version}`,
-						    buttons: ['OK', 'End User License Agreement', 'Dependent Open Source Licenses' ]
+						    buttons: ["OK", "End User License Agreement", "Dependent Open Source Licenses" ]
 					    },
-                        function(response: number) 
+                            function(response: number) 
 					    {
 						    if (response == 1)
 							    electron.shell.openExternal(`${pjson.repository.url}/blob/master/TERMS`);
@@ -78,33 +81,33 @@ export function appMenu() : Array<Electron.MenuItemConstructorOptions>
 				    }
 			    },
 			    {
-				    label: 'Version '+pjson.version+' (64-bit)',
+				    label: "Version "+pjson.version+" (64-bit)",
 				    enabled: false
 			    },
 			    {
-				    type: 'separator'
+				    type: "separator"
 			    },
 			    {
-				    label: 'Send us feedback',
+				    label: "Send us feedback",
 				    click() 
 				    {
 					    electron.shell.openExternal(`${pjson.repository.url}/issues`);
 				    }
 			    },
 			    {
-				    type: 'separator'
+				    type: "separator"
 			    },	
 			    {
-				    label: 'Learn More',
+				    label: "Learn More",
 				    click() 
 				    { 
 					    electron.shell.openExternal(`https://chgibb.github.io/PHATDocs/docs/releases/${pjson.version}/home`);
 				    }
 			    },
 			    {
-				    type: 'separator'
+				    type: "separator"
 			    }
 		    ]
-		}
-	];
+        }
+    ];
 }

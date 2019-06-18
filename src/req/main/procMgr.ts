@@ -2,7 +2,8 @@ import * as winMgr from "./winMgr";
 import {getReadable} from "./../getAppPath";
 import {add} from "./afterProjectLoad";
 
-add(function(){
+add(function()
+{
     winMgr.initWindowOptions(
         "Process Manager",
         "procMgr",
@@ -25,4 +26,4 @@ winMgr.windowCreators["procMgr"] =
             )
         );
     }
-}
+};

@@ -4,7 +4,8 @@ import * as getUpdate from "./req/getLatestUpdate";
 
 let flags : CompletionFlags = new CompletionFlags();
 
-let connectivityTimeout : NodeJS.Timer = setTimeout(function(){
+let connectivityTimeout : NodeJS.Timer = setTimeout(function()
+{
     throw new Error("Took too long to determine network connectivity");
 },5000);
 
@@ -19,7 +20,8 @@ process.on
         }
         if(ev.run == true)
         {
-            getUpdate.getLatestUpdate("chgibb","PHAT").then((res : any) => {
+            getUpdate.getLatestUpdate("chgibb","PHAT").then((res : any) => 
+            {
                 clearTimeout(connectivityTimeout);
                 flags.done = true;
                 flags.success = true;
@@ -31,7 +33,8 @@ process.on
                     }
                 );
                 atomic.exitFork(0);
-            }).catch((arg : any) => {
+            }).catch((arg : any) => 
+            {
                 clearTimeout(connectivityTimeout);
                 console.log(arg);
                 flags.done = true;
@@ -49,7 +52,8 @@ process.on
         }
     }
 );
-(process as NodeJS.EventEmitter).on("uncaughtException",function(err : Error){
+(process as NodeJS.EventEmitter).on("uncaughtException",function(err : Error)
+{
     clearTimeout(connectivityTimeout);
     console.log(err);
     flags.done = true;
@@ -64,7 +68,8 @@ process.on
     );
     atomic.exitFork(1);
 });
-process.on("unhandledRejection",function(err : Error){
+process.on("unhandledRejection",function(err : Error)
+{
     clearTimeout(connectivityTimeout);
     console.log(err);
     flags.done = true;

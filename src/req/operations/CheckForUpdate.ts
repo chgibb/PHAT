@@ -26,7 +26,8 @@ export class CheckForUpdate extends atomic.AtomicOperation
         this.checkForUpdateProcess = atomic.makeFork("CheckForUpdate.js",<AtomicOperationForkEvent>{
             setData : true,
             data : <AtomicOperationIPC>{}
-        },function(ev : AtomicOperationForkEvent){
+        },function(ev : AtomicOperationForkEvent)
+        {
             self.logObject(ev);
             if(ev.finishedSettingData == true)
             {

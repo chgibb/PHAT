@@ -1,4 +1,3 @@
-const fse = require("fs-extra");
 
 import * as atomic from "./atomicOperations";
 import {Fastq,parseSeqLengthFromQCReport} from "./../fastq";
@@ -7,8 +6,9 @@ import trimPath from "./../trimPath";
 import {SpawnRequestParams} from "./../JobIPC";
 import {getPath} from "./../file";
 import {getReadable,getReadableAndWritable} from "./../getAppPath";
-
 import {Job,JobCallBackObject} from "./../main/Job";
+
+const fse = require("fs-extra");
 export class GenerateQCReport extends atomic.AtomicOperation
 {
 	public hasJVMCrashed : boolean = false;
@@ -31,13 +31,13 @@ export class GenerateQCReport extends atomic.AtomicOperation
 
 		let remainder = getPath(this.fastq).substr(0,getPath(this.fastq).length-trimmed.length);
 
-		trimmed = trimmed.replace(new RegExp('(.fastq)','g'),'_fastqc');
+		trimmed = trimmed.replace(new RegExp("(.fastq)","g"),"_fastqc");
 
 		this.generatedArtifactsDirectories.push(remainder+trimmed);
 		this.generatedArtifacts.push(remainder+trimmed+".zip");
 
 		this.srcDir = remainder+trimmed;
-		this.destDir = getReadableAndWritable('rt/QCReports/'+data.uuid);
+		this.destDir = getReadableAndWritable("rt/QCReports/"+data.uuid);
 
 		this.destinationArtifactsDirectories.push(this.destDir);
 	}
@@ -46,16 +46,16 @@ export class GenerateQCReport extends atomic.AtomicOperation
 		this.logRecord = atomic.openLog(this.name,"FastQC Report Generation");
 		//Set path to fastqc entry file
 		if(process.platform == "linux")
-            this.fastQCPath = getReadable('FastQC/fastqc');
-        else if(process.platform == "win32")
-            this.fastQCPath = getReadable('perl/perl/bin/perl.exe');
+			this.fastQCPath = getReadable("FastQC/fastqc");
+		else if(process.platform == "win32")
+			this.fastQCPath = getReadable("perl/perl/bin/perl.exe");
 
 		//figure out arg ordering based on platform
 		let args : Array<string>;
-        if(process.platform == "linux")
-            args = [getPath(this.fastq)];
-        else if(process.platform == "win32")
-            args = [getReadable('FastQC/fastqc'),getPath(this.fastq)];
+		if(process.platform == "linux")
+			args = [getPath(this.fastq)];
+		else if(process.platform == "win32")
+			args = [getReadable("FastQC/fastqc"),getPath(this.fastq)];
 
 		//Running FastQC with certain versions of OpenJDK occasionally crash it.
 		//One of the first things in the stdout when this happens is "fatal error"
@@ -75,7 +75,7 @@ export class GenerateQCReport extends atomic.AtomicOperation
 					if(isJVMCrashed.test(params.unBufferedData))
 					{
 						self.hasJVMCrashed = true;
-						self.abortOperationWithMessage(`JVM crashed.`);
+						self.abortOperationWithMessage("JVM crashed.");
 						return;
 					}
 				}
@@ -88,7 +88,7 @@ export class GenerateQCReport extends atomic.AtomicOperation
 					//FastQC failed. Mark the entire operation as failed
 					else
 					{
-						self.abortOperationWithMessage(`FastQC failed`);
+						self.abortOperationWithMessage("FastQC failed");
 						return;
 					}
 				}

@@ -12,8 +12,10 @@ import {Fastq} from "./../../../req/fastq";
  */
 export async function inputL6R1Reads() : Promise<void>
 {
-    return new Promise<void>((resolve,reject) => {
-        setTimeout(function(){
+    return new Promise<void>((resolve,reject) => 
+    {
+        setTimeout(function()
+        {
             console.log("inputting L6R1 reads");
             let fastqs = new Array<Fastq>();
             fastqs.push(new Fastq(path.resolve(path.normalize("../testData/L6R1.R1.fastq"))));

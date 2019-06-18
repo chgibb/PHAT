@@ -29,7 +29,8 @@ export function inputFastaDialog() : void
                 "multiSelections"
             ]
         },
-        function(files : Array<string>){
+        function(files : Array<string>)
+        {
             if(files)
             {
                 for(let i = 0; i != files.length; ++i)
@@ -44,5 +45,5 @@ export function inputFastaDialog() : void
                 }
             }
         }
-    )
+    );
 }

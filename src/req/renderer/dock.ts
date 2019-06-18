@@ -34,11 +34,13 @@ function ensureTabGroupInit() : void
     dragula = require("dragula");
 
     tabGroup = new electronTabs({
-        ready : function(tabGroup : any){
+        ready : function(tabGroup : any)
+        {
             drake = dragula([tabGroup.tabContainer],{
                 direction : "horizontal"
             });
-            drake.on("dragend",function(el : any,container : any,source : any){
+            drake.on("dragend",function(el : any,container : any,source : any)
+            {
                 let clientBounds = electron.remote.getCurrentWindow().getBounds();
                 let cursorPos = screen.getCursorScreenPoint();
 
@@ -56,7 +58,8 @@ function ensureTabGroupInit() : void
     });
     
     //make tabs hoverable
-    tabGroup.on("tab-added",function(tab : any,tabGroup : any){
+    tabGroup.on("tab-added",function(tab : any,tabGroup : any)
+    {
         let tabs = document.getElementsByClassName("etabs-tab");
         for(let i = 0; i != tabs.length; ++i)
         {
@@ -65,7 +68,8 @@ function ensureTabGroupInit() : void
         }
     });
 
-    window.addEventListener("keypress",function(this : Window,e : KeyboardEvent){
+    window.addEventListener("keypress",function(this : Window,e : KeyboardEvent)
+    {
         if(e.ctrlKey)
         {
             if(e.key == "w")
@@ -78,8 +82,10 @@ function ensureTabGroupInit() : void
         }
     });
 
-    ipc.on("changeTitle",function(event : Electron.IpcMessageEvent,arg : any){
-        tabGroup.eachTab(function(currentTab : any,index : number,tabs : Array<any>){
+    ipc.on("changeTitle",function(event : Electron.IpcMessageEvent,arg : any)
+    {
+        tabGroup.eachTab(function(currentTab : any,index : number,tabs : Array<any>)
+        {
             if(currentTab.webview.getWebContents().id == arg.id)
             {
                 currentTab.setTitle(arg.newTitle);
@@ -151,7 +157,8 @@ let refNameToTab : {[key : string] : Tab;} = {};
  */
 export function initializeWindowDock() : void
 {
-    ipc.on("dockWindow",function(event : Electron.IpcMessageEvent,arg : DockIpc){
+    ipc.on("dockWindow",function(event : Electron.IpcMessageEvent,arg : DockIpc)
+    {
         //lazy load the tab container and associated libraries
         ensureTabGroupInit();
         //get config object for tab being added
@@ -169,7 +176,8 @@ export function initializeWindowDock() : void
         newTab.refName = arg.refName;
 
         //forward console messages from tab into the window's console
-        newTab.webview.addEventListener("console-message",function(e : any){
+        newTab.webview.addEventListener("console-message",function(e : any)
+        {
             console.log(`${tab.title}: ${e.message}`);
         });
     });
@@ -236,11 +244,16 @@ export function removeZombieTabs() : void
     //The "destroy" event on <webview>s is broken https://github.com/electron/electron/issues/9675
     //We have to manually remove tabs that have been moved into new windows
     //let the event loop spin before we try to remove
-    setTimeout(function(){
-        setImmediate(function(){
-            setImmediate(function(){
-                tabGroup.eachTab(function(currentTab : any,index : number,tabs : Array<any>){
-                    if(currentTab.unDocked){
+    setTimeout(function()
+    {
+        setImmediate(function()
+        {
+            setImmediate(function()
+            {
+                tabGroup.eachTab(function(currentTab : any,index : number,tabs : Array<any>)
+                {
+                    if(currentTab.unDocked)
+                    {
                         console.log(`removed ${currentTab.title}`);
                         currentTab.close();
                     }

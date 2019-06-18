@@ -3,17 +3,18 @@ const ipc = electron.ipcRenderer;
 import * as React from "react";
 import {Component} from "react";
 
-import {Fastq} from './../../fastq';
-import {Fasta} from "./../../fasta";
-import {getReadable} from '../../getAppPath';
+import {getReadable} from "../../getAppPath";
+import {AtomicOperation} from "../../operations/atomicOperations";
+import {FullWidthTabs} from "../containers/fullWidthTabs";
+import {AlignData} from "../../alignData";
 
+import {Fastq} from "./../../fastq";
+import {Fasta} from "./../../fasta";
 import {activeHover,activeHoverButton} from "./../styles/activeHover";
-import {FastqView} from './fastqView';
+import {FastqView} from "./fastqView";
 import {FastaView} from "./fastaView";
-import { AtomicOperation } from '../../operations/atomicOperations';
-import { FullWidthTabs } from '../containers/fullWidthTabs';
-import { AlignView } from './alignView';
-import { AlignData } from '../../alignData';
+import {AlignView} from "./alignView";
+
 
 export interface AppState
 {
@@ -33,7 +34,8 @@ export class App extends Component<{},AppState>
             shouldAllowTriggeringOps : true
         };
 
-        ipc.on('input',(event : Electron.IpcMessageEvent,arg : any) => {
+        ipc.on("input",(event : Electron.IpcMessageEvent,arg : any) => 
+        {
             if(arg.action == "getKey" || arg.action == "keyChange")
             {
                 if(arg.key == "fastqInputs")
@@ -113,6 +115,6 @@ export class App extends Component<{},AppState>
                     }
                 ]}/>
             </div>
-        )
+        );
     }
 }

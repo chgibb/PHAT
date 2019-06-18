@@ -10,16 +10,20 @@ const GithubAPI = require("github-api");
  */
 export function checkServerPermission(token : string) : Promise<{}>
 {
-    return new Promise((resolve,reject) => {
+    return new Promise((resolve,reject) => 
+    {
         let ghapi = new GithubAPI({token : token});
         ghapi.getRepo("chgibb","PHAT").listReleases(
-            (error : string,result : any,request : any) => {
+            (error : string,result : any,request : any) => 
+            {
                 if(error)
                     return reject(error);
 
-        }).then((arg : any) => {
+            }).then((arg : any) => 
+        {
             resolve();
-        }).catch((arg : any) => {
+        }).catch((arg : any) => 
+        {
             reject(arg);
         });
     });

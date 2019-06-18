@@ -8,11 +8,13 @@ import * as L6R1HPV16AlignImported from "./L6R1HPV16AlignImported";
 import {getCoverage,getCoverageDir,getFlagStats,getMPileup,getSNPsJSON,getSNPsVCF} from "./../alignData";
 export async function testL6R1HPV16AlignImportedLinking() : Promise<void>
 {
-    return new Promise<void>((resolve,reject) => {
-        atomic.updates.removeAllListeners().on("linkRefSeqToAlignment",async function(op : LinkRefSeqToAlignment){
+    return new Promise<void>((resolve,reject) => 
+    {
+        atomic.updates.removeAllListeners().on("linkRefSeqToAlignment",async function(op : LinkRefSeqToAlignment)
+        {
             if(op.flags.failure)
             {
-                console.log(`Failure to link bam`);
+                console.log("Failure to link bam");
                 console.log(await atomic.getLogContent(op.logRecord)); 
                 return reject();
             }

@@ -2,9 +2,7 @@
 import {ipcRenderer} from "electron";
 let ipc = ipcRenderer;
 
-const Dialogs = require("dialogs");
 const dialogs = Dialogs();
-const jsonFile = require("jsonfile");
 
 import {AtomicOperationIPC} from "./../../atomicOperationsIPC";
 import {AtomicOperation} from "./../../operations/atomicOperations";
@@ -12,14 +10,19 @@ import {getReadable} from "./../../getAppPath";
 import {ProjectManifest,getProjectManifests} from "./../../projectManifest";
 import * as viewMgr from "./../viewMgr";
 
+const jsonFile = require("jsonfile");
+const Dialogs = require("dialogs");
+
 export class SplashView extends viewMgr.View
 {
     public constructor(div : string)
     {
         super("splashView",div);
     }
-    public onMount() : void{}
-    public onUnMount() : void{}
+    public onMount() : void
+    {}
+    public onUnMount() : void
+    {}
     public renderView() : string
     {
         return `
@@ -48,7 +51,8 @@ export class SplashView extends viewMgr.View
     {
         if(event.target.id == "createNewProject")
         {
-            dialogs.prompt("Project Name","New Project",function(text : string){
+            dialogs.prompt("Project Name","New Project",function(text : string)
+            {
                 if(text)
                 {
                     ipc.send(
@@ -59,8 +63,10 @@ export class SplashView extends viewMgr.View
                         }
                     );
                     //wait for the response from newProject and then open the newly created project from the manifest
-                    new Promise<void>((resolve,reject) => {
-                        function doneOperation(event : any,arg : any){
+                    new Promise<void>((resolve,reject) => 
+                    {
+                        function doneOperation(event : any,arg : any)
+                        {
                             if(arg.action == "getKey" || arg.action == "keyChange")
                             {
                                 if(arg.key == "operations" && arg.val !== undefined)
@@ -84,7 +90,8 @@ export class SplashView extends viewMgr.View
                             }
                         }
                         ipc.on("projectSelection",doneOperation);
-                    }).then(() =>{
+                    }).then(() =>
+                    {
                         let projects : Array<ProjectManifest> = (<Array<ProjectManifest>>jsonFile.readFileSync(getProjectManifests()));
                         ipc.send(
                             "runOperation",
@@ -92,8 +99,9 @@ export class SplashView extends viewMgr.View
                                 opName : "openProject",
                                 proj : projects[projects.length - 1]
                             }
-                        )
-                    }).catch(() => {
+                        );
+                    }).catch(() => 
+                    {
                         alert("There was an error creating your project");
                     });
                 }

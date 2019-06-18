@@ -14,8 +14,9 @@ import {Job,JobCallBackObject} from "./../../main/Job";
  */
 export function samToolsSort(alignData : AlignData,logger : atomic.AtomicOperation) : Promise<void>
 {
-    return new Promise<void>((resolve,reject) => {
-        let samToolsExe = getReadable('samtools');
+    return new Promise<void>((resolve,reject) => 
+    {
+        let samToolsExe = getReadable("samtools");
 
         let jobCallBack : JobCallBackObject = {
             send(channel : string,params : SpawnRequestParams)
@@ -36,7 +37,7 @@ export function samToolsSort(alignData : AlignData,logger : atomic.AtomicOperati
                     }
                 }
             }
-        }
+        };
         let input : string = getUnSortedBam(alignData);
         let output : string;
         output = getSortedBam(alignData);
