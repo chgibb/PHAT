@@ -5,6 +5,7 @@ import {Fastq} from "./../../fastq";
 import {Fasta} from '../../fasta';
 import {SaveKeyEvent} from "./../../ipcEvents";
 import {AtomicOperationIPC} from '../../atomicOperationsIPC';
+import { AlignData } from '../../alignData';
 
 let channel = "input";
 
@@ -83,6 +84,18 @@ export function indexFastaForVisualization(val : Fasta) : void
             channel : "input",
             key : "fastaInputs",
             uuid : val.uuid
+        } as AtomicOperationIPC
+    );
+}
+
+export function linkRefSeqToAlignment(fasta : Fasta,align : AlignData) : void
+{
+    ipc.send(
+        "runOperation",
+        {
+            opName : "linkRefSeqToAlignment",
+            fasta : fasta,
+            align : align
         } as AtomicOperationIPC
     );
 }

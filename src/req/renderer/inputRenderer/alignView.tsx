@@ -4,11 +4,12 @@ import { AlignData } from '../../alignData';
 import { Button } from '../components/button';
 import { inputAlignDialog } from './inputAlignDialog';
 import { LinkMapTable } from '../containers/linkMapTable';
-import { CompatibleRefTable } from '../containers/compatibleRefTable';
+import { CompatibleRefTable, CompatibleRefTableRow } from '../containers/compatibleRefTable';
 import { getLinkableRefSeqs, LinkableRefSeq } from '../../getLinkableRefSeqs';
 import { Fasta } from '../../fasta';
 import { getReferenceFromUuid } from '../../uniquelyAddressable';
 import { IncompatibleRefTable } from '../containers/incompatibleRefTable';
+import { linkRefSeqToAlignment } from './publish';
 
 export interface AlignViewProps
 {
@@ -82,7 +83,17 @@ export class AlignView extends React.Component<AlignViewProps,AlignViewState>
                     <CompatibleRefTable
                         fastaInputs={this.props.fastaInputs}
                         linkableRefSeqs={linkableRefSeqs}
-                        linkActionClick={()=>null}
+                        linkActionClick={(row : CompatibleRefTableRow) => {
+                            linkRefSeqToAlignment(
+                                getReferenceFromUuid(this.props.fastaInputs,row.fasta.uuid),
+                                getReferenceFromUuid(this.props.aligns,this.state.mapToLinkUuid)
+                            );
+
+                            this.setState({
+                                tryingToLinkRef : false,
+                                mapToLinkUuid : undefined
+                            });
+                        }}
                     />
                     <IncompatibleRefTable
                         fastaInputs={this.props.fastaInputs}
