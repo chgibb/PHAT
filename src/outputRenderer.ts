@@ -9,8 +9,7 @@ import * as masterView from "./req/renderer/OutputRenderer/masterView";
 const $ = require("jquery");
 (<any>window).$ = $;
 import "./req/renderer/commonBehaviour";
-$
-(
+$(
     function()
     {
         makeWindowDockable("output");
@@ -19,8 +18,7 @@ $
 
 
         viewMgr.render();
-        ipc.on
-        (
+        ipc.on(
             "output",function(event : Electron.IpcMessageEvent,arg : any)
             {
                 if(arg.action === "getKey" || arg.action === "keyChange")

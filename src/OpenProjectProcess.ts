@@ -17,8 +17,7 @@ function progressCallBack(toUnpack : number,unPacked : number) : void
         }
     );
 }
-process.on
-(
+process.on(
     "message",function(ev : AtomicOperationForkEvent)
     {
         if(ev.setData == true)

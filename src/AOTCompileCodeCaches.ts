@@ -7,26 +7,22 @@ import * as winMgr from "./req/main/winMgr";
 
 //This script bootstraps the apps main process and opens each window so code caches
 //for each window can be ahead of time compiled. This gets invoked through optPackage.bash
-setTimeout
-(
+setTimeout(
     function()
     {
         console.log("opening input");
         winMgr.windowCreators["input"].Create();
-        setTimeout
-        (
+        setTimeout(
             function()
             {
                 console.log("opening QC");
                 winMgr.windowCreators["QC"].Create();
-                setTimeout
-                (
+                setTimeout(
                     function()
                     {
                         console.log("opening align");
                         winMgr.windowCreators["align"].Create();
-                        setTimeout
-                        (
+                        setTimeout(
                             function()
                             {
                                 console.log("opening pileup");

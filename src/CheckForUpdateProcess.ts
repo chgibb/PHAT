@@ -9,8 +9,7 @@ let connectivityTimeout : NodeJS.Timer = setTimeout(function()
     throw new Error("Took too long to determine network connectivity");
 },5000);
 
-process.on
-(
+process.on(
     "message",function(ev : AtomicOperationForkEvent)
     {
         if(ev.setData == true)

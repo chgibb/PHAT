@@ -14,8 +14,7 @@ import {AtomicOperation} from "./req/operations/atomicOperations";
 
 const $ = require("jquery");
 (<any>window).$ = $;
-$
-(
+$(
     function()
     {
         makeWindowDockable("circularGenomeBuilder");
@@ -86,8 +85,7 @@ $
                 action : "keySub"
             }
         );
-        ipc.on
-        (
+        ipc.on(
             "circularGenomeBuilder",async function(event : Electron.IpcMessageEvent,arg : any)
             {
                 let masterView = <masterView.View>viewMgr.getViewByName("masterView");
@@ -161,7 +159,9 @@ $
                                 }
                             }
                             catch(err)
-                            {}
+                            {
+                                err;
+                            }
                         }
                     }
                     if(!found)
@@ -172,8 +172,7 @@ $
         );
     }
 );
-$(window).resize
-(
+$(window).resize(
     function()
     {
         viewMgr.render();

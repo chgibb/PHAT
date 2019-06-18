@@ -22,16 +22,14 @@ let pingPIDs : NodeJS.Timer = setInterval(function()
     );
 },1000);
 
-$
-(
+$(
     function()
     {
         masterView.addView(viewMgr.views,"view");
         viewMgr.changeView("masterView");
         viewMgr.render();
         viewMgr.render();
-        ipc.on
-        (
+        ipc.on(
             "procMgr",async function(event : Electron.IpcMessageEvent,arg : any)
             {
                 let masterView = <masterView.View>viewMgr.getViewByName("masterView");
@@ -47,7 +45,9 @@ $
                             pids[i].memory = use.memory;
                         }
                         catch(err)
-                        {}
+                        {
+                            err;
+                        }
                         if(!pids[i].isPHAT)
                         {
                             try

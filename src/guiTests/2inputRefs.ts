@@ -1,9 +1,7 @@
 console.log("Started GUI test for ref seq inputing");
 require("./../req/main/main");
-
 import {logMainProcessErrors} from "./req/logMainProcessErrors";
 logMainProcessErrors();
-
 import {openProjectsView} from "./req/projectSelection/openProjectsView";
 import {openFirstProject} from "./req/projectSelection/openFirstProject";
 import {openInputWindow} from "./req/input/openInputWindow";

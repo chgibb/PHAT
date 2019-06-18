@@ -521,7 +521,9 @@ export function cleanGeneratedArtifacts(op : AtomicOperation) : void
             fs.unlinkSync(op.generatedArtifacts[i]);
         }
         catch(err)
-        {}
+        {
+            err;
+        }
     }
     for(let i = 0; i != op.generatedArtifactsDirectories.length; ++i)
     {
@@ -530,7 +532,9 @@ export function cleanGeneratedArtifacts(op : AtomicOperation) : void
             rimraf.sync(op.generatedArtifactsDirectories[i]);
         }
         catch(err)
-        {}
+        {
+            err;
+        }
     }
 }
 
@@ -549,7 +553,9 @@ export function cleanDestinationArtifacts(op : AtomicOperation) : void
             fs.unlinkSync(op.destinationArtifacts[i]);
         }
         catch(err)
-        {}
+        {
+            err;
+        }
     }
     for(let i = 0; i != op.destinationArtifactsDirectories.length; ++i)
     {
@@ -558,7 +564,9 @@ export function cleanDestinationArtifacts(op : AtomicOperation) : void
             rimraf.sync(op.destinationArtifactsDirectories[i]);
         }
         catch(err)
-        {}
+        {
+            err;
+        }
     }
 }
 export let onComplete : (op : AtomicOperation) => void = undefined;

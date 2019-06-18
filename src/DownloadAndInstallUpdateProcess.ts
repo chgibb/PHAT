@@ -11,8 +11,7 @@ let GitHubReleases = require("github-releases");
 let flags : CompletionFlags = new CompletionFlags();
 
 let asset : any;
-process.on
-(
+process.on(
     "message",function(ev : AtomicOperationForkEvent)
     {
         if(ev.setData == true)

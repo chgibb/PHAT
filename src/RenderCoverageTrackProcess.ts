@@ -11,8 +11,7 @@ let colour : string;
 let scaleFactor : number;
 
 let flags : CompletionFlags = new CompletionFlags();
-process.on
-(
+process.on(
     "message",async function(ev : AtomicOperationForkEvent)
     {
         if(ev.setData == true)

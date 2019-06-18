@@ -37,8 +37,7 @@ window.addEventListener("unload",function()
 {
     clearInterval(pingOperations);
 });
-$
-(
+$(
     function()
     {
         console.log("adding views");
@@ -54,8 +53,7 @@ $
                 replyChannel : "operationViewer"
             }
         );
-        ipc.on
-        (
+        ipc.on(
             "operationViewer",function(event : Electron.IpcMessageEvent,arg : any)
             {
                 if(arg.action == "getKey")
