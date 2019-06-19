@@ -7,10 +7,14 @@ import { AtomicOperation } from '../../operations/atomicOperations';
 import { GenerateQCReport } from '../../operations/GenerateQCReport';
 import { QCReportsTable } from '../containers/qCReportsTable';
 import { generateFastQCReport } from './publish';
+import { QCReport } from '../containers/qcReport';
 
 export interface QCRendererAppState {
     fastqs?: Array<Fastq>;
-    shouldAllowTriggeringOps: boolean;
+    shouldAllowTriggeringOps : boolean;
+
+    viewingReport : boolean;
+    viewUuid : string | undefined;
 }
 
 export class QCRendererApp extends Component<{}, QCRendererAppState>
@@ -68,15 +72,37 @@ export class QCRendererApp extends Component<{}, QCRendererAppState>
     public render() : JSX.Element
     {
         return (
-            <QCReportsTable
-                data={this.state.fastqs}
-                shouldAllowTriggeringOps={true}
-                onGenerateClick={(event, data : Fastq) => {
-                    event;
-                    generateFastQCReport(data);
-                }}
-                onViewReportClick={()=>null}
-            />
-        )
+            <React.Fragment>
+                {!this.state.viewingReport ? 
+                    <QCReportsTable
+                        data={this.state.fastqs}
+                        shouldAllowTriggeringOps={true}
+                        onGenerateClick={(event, data : Fastq) => {
+                            event;
+                            generateFastQCReport(data);
+                        }}
+                        onViewReportClick={(event,data : Fastq) => {
+                            event;
+                            this.setState({
+                                viewUuid : data.uuid,
+                                viewingReport : true
+                            })
+                        }}
+                    />
+                : ""}
+                {this.state.viewingReport && this.state.viewUuid ? 
+                    <QCReport
+                        fastqs={this.state.fastqs}
+                        viewingFastq={this.state.viewUuid}
+                        onGoBackClick={() => {
+                            this.setState({
+                                viewUuid : "",
+                                viewingReport : false
+                            });
+                        }}
+                    />
+                : ""}
+             </React.Fragment>
+        );
     }
 }
