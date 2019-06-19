@@ -5,8 +5,7 @@ export type QCReportDisposition =
     "pass" |
     "warn" |
     "fail" |
-    "No Data" |
-    "";
+    "No Data";
 
 export type QCReportType = 
     "Per base sequence quality" |
@@ -41,16 +40,10 @@ export class QCSummary
 {
     public name : QCReportType;
     public status : QCReportDisposition;
-    public constructor(name : string,status : QCReportDisposition)
+    public constructor(name : QCReportType,status : QCReportDisposition)
     {
-        if(name)
-            this.name = name;
-        else
-            this.name = "";
-        if(status)
-            this.status = status;
-        else
-            this.status = "";
+        this.name = name;
+        this.status = status;
     }
 }
 
