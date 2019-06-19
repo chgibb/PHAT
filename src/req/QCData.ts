@@ -12,7 +12,8 @@ export type QCReportType =
     "Per sequence quality scores" |
     "Per sequence GC content" |
     "Sequence Duplication Levels" |
-    "Overrepresented sequences";
+    "Overrepresented sequences" |
+    "Basic Stastics";
 
 export class QCData
 {
