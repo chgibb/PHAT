@@ -5,6 +5,8 @@ import { Component } from "react";
 import { Fastq } from '../../fastq';
 import { AtomicOperation } from '../../operations/atomicOperations';
 import { GenerateQCReport } from '../../operations/GenerateQCReport';
+import { QCReportsTable } from '../containers/qCReportsTable';
+import { generateFastQCReport } from './publish';
 
 export interface QCRendererAppState {
     fastqs?: Array<Fastq>;
@@ -45,30 +47,6 @@ export class QCRendererApp extends Component<{}, QCRendererAppState>
                                 this.setState({
                                     shouldAllowTriggeringOps: false
                                 });
-
-                                let op: GenerateQCReport = (operations[i] as any);
-                                //Check for stdout from FastQC
-                                if (op.progressMessage) {
-                                    //if its not garbled
-                                    if (validFastQCOut.test(op.progressMessage)) {
-                                        //extract percentage
-                                        let regResult = trimOutFastQCPercentage.exec(op.progressMessage);
-                                        if (regResult && regResult[0]) {
-                                            //find the fastq in the table corresponding to the one being processed and
-                                            //put the percentage next to it
-                                            /*let fastqInputs = (<summary.SummaryView>viewMgr.getViewByName("summary")).fastqInputs;
-                                            for(let i : number = 0; i != fastqInputs.length; ++i)
-                                            {
-                                                if(fastqInputs[i].uuid == op.fastq.uuid)
-                                                {
-                                                    $(`#${op.fastq.uuid}`).text(regResult[0]);
-                                                    break;
-                                                }
-                                            }*/
-                                        }
-                                    }
-                                    break;
-                                }
                             }
                         }
                         if (!found) {
@@ -89,6 +67,16 @@ export class QCRendererApp extends Component<{}, QCRendererAppState>
 
     public render() : JSX.Element
     {
-        return <div></div>
+        return (
+            <QCReportsTable
+                data={this.state.fastqs}
+                shouldAllowTriggeringOps={true}
+                onGenerateClick={(event, data : Fastq) => {
+                    event;
+                    generateFastQCReport(data);
+                }}
+                onViewReportClick={()=>null}
+            />
+        )
     }
 }
