@@ -1,22 +1,37 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<script>
-			var startUp = performance.now();
-		</script>
-		<meta charset="UTF-8">
-		<title>Input</title>
-		<link rel="stylesheet" type="text/css" href="styles/Input.css">
-		<link rel="stylesheet" type="text/css" href="styles/three-quarters.css">
-    </head>
-    <body>
-        <script>
+
+<head>
+	<script>
+		var startUp = performance.now();
+	</script>
+	<link rel="stylesheet" type="text/css" href="styles/large-spinner.css">
+	<meta charset="UTF-8">
+	<title>Input</title>
+</head>
+
+<body>
+	<div id="app">
+		<section class="wrapper">
+			<div class="spinner">
+				<i></i>
+				<i></i>
+				<i></i>
+				<i></i>
+				<i></i>
+				<i></i>
+				<i></i>
+			</div>
+		</section>
+	</div>
+	<script defer>
+		setTimeout(() => {
 			require("./Input");
-		</script>
-		<div id="view">
-		</div>
-		<script>
-			console.log("Start up took "+(performance.now()-startUp+"ms"));
-		</script>
-    </body>
+		}, 100);
+	</script>
+	<script>
+		console.log("Start up took " + (performance.now() - startUp + "ms"));
+	</script>
+</body>
+
 </html>

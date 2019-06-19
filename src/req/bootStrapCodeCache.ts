@@ -140,6 +140,11 @@ function compileCache(jsFile : string,cdata : string) : number
  */
 export function bootStrapCodeCache(jsFile : string,jsModule : string,cdata : string) : void
 {
+	if("production" !== process.env.NODE_ENV)
+	{
+		require(`./../${jsModule}`);
+		return;
+	}
 	let cacheStatus : number = loadFromCache(jsFile,cdata);
 	//cdata exists, is valid and has been executed
 	if(cacheStatus == 0)

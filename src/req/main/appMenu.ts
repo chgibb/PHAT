@@ -2,10 +2,13 @@
 
 import * as electron from "electron";
 
+const jsonFile = require("jsonfile");
+
 import * as winMgr from "./winMgr";
+import { getReadable } from '../getAppPath';
 export function appMenu() : Array<Electron.MenuItemConstructorOptions>
 {
-	const pjson = require("./package.json");
+	const pjson = jsonFile.readFileSync(getReadable('package.json'));
 	
     return <Array<Electron.MenuItemConstructorOptions>>[
 		{

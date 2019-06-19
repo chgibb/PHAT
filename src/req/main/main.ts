@@ -12,6 +12,8 @@ app.commandLine.appendSwitch("js-flags","--expose_gc --nolazy --serialize_eager 
 
 if(require('electron-squirrel-startup')) app.quit();
 
+const jsonFile = require("jsonfile");
+
 import {getReadable,getWritable,getReadableAndWritable} from "./../getAppPath";
 import {getEdition} from "./../getEdition";
 import {appMenu} from "./appMenu";
@@ -66,7 +68,7 @@ import {finishLoadingProject} from "./finishLoadingProject";
 
 import {GetKeyEvent,SaveKeyEvent,KeySubEvent} from "./../ipcEvents";
 
-var pjson = require('./package.json');
+var pjson = jsonFile.readFileSync(getReadable('package.json'));
 
 import "./ProjectSelection";
 import "./toolBar";

@@ -4,6 +4,7 @@ import * as readline from "readline";
 import {ReadWithFragments} from "./readWithFragments";
 import {BLASTOutputRawJSON} from "./BLASTOutput";
 import {getReadableAndWritable} from "./getAppPath";
+import { UniquelyAddressable } from './uniquelyAddressable';
 
 /**
  * The results of all SAM reads BLASTed in a given run
@@ -11,7 +12,7 @@ import {getReadableAndWritable} from "./getAppPath";
  * @export
  * @class BLASTReadResult
  */
-export class BLASTReadResult
+export class BLASTReadResult implements UniquelyAddressable
 {
     public readonly resultType : string = "read";
     public readonly uuid : string;
@@ -33,7 +34,7 @@ export class BLASTReadResult
  * @export
  * @class BLASTFragmentResult
  */
-export class BLASTFragmentResult
+export class BLASTFragmentResult implements UniquelyAddressable
 {
     public readonly resultType : string = "fragment";
     public readonly uuid : string;
@@ -58,7 +59,7 @@ export class BLASTFragmentResult
  * @export
  * @class BLASTSegmentResult
  */
-export class BLASTSegmentResult
+export class BLASTSegmentResult implements UniquelyAddressable
 {
     public uuid : string;
     public start : number;

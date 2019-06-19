@@ -1,8 +1,9 @@
 import * as fs from "fs";
 import * as readline from "readline";
 import {EventEmitter} from "events";
+import { UniquelyAddressable } from './uniquelyAddressable';
 
-export class Contig
+export class Contig implements UniquelyAddressable
 {
     public bp : number;
     public name : string;

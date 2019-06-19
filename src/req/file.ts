@@ -4,7 +4,9 @@ import * as path from "path";
 import {getReadableAndWritable} from "./getAppPath";
 import trimPath from "./trimPath";
 import formatByteString from "./renderer/formatByteString";
-export class File
+import { UniquelyAddressable } from './uniquelyAddressable';
+
+export class File implements UniquelyAddressable
 {
     public alias : string
     public path : string;

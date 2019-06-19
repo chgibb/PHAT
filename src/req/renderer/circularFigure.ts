@@ -1,9 +1,9 @@
-/// <reference path="../../../node_modules/@chgibb/ngplasmid/lib/html" />
-/// <reference path="../../../node_modules/@chgibb/ngplasmid/lib/directives" />
-/// <reference path="../../../node_modules/@chgibb/ngplasmid/lib/services" />
-/// <reference path="../../../node_modules/@chgibb/ngplasmid/lib/interpolate" />
-/// <reference path="../../../node_modules/@chgibb/ngplasmid/lib/directiveToPB" />
-/// <reference path="../../../node_modules/@chgibb/ngplasmid/lib/pb/node" />
+/// <reference path="../../../node_modules/@chgibb/ngplasmid/lib/html.ts" />
+/// <reference path="../../../node_modules/@chgibb/ngplasmid/lib/directives.ts" />
+/// <reference path="../../../node_modules/@chgibb/ngplasmid/lib/services.ts" />
+/// <reference path="../../../node_modules/@chgibb/ngplasmid/lib/interpolate.ts" />
+/// <reference path="../../../node_modules/@chgibb/ngplasmid/lib/directiveToPB.ts" />
+/// <reference path="../../../node_modules/@chgibb/ngplasmid/lib/pb/node.ts" />
 
 import * as fs from "fs";
 import * as readline from "readline";
@@ -11,6 +11,7 @@ import * as readline from "readline";
 const jsonFile = require("jsonfile");
 const uuidv4 : () => string = require("uuid/v4");
 const mkdirp = require("mkdirp");
+
 import * as html from "@chgibb/ngplasmid/lib/html";
 import * as ngDirectives from "@chgibb/ngplasmid/lib/directives";
 import * as pbDirectives from "@chgibb/ngplasmid/lib/pb/node";
@@ -29,6 +30,7 @@ import * as plasmid from "./circularGenome/plasmid";
 import {AlignData,getSNPsJSON} from "./../alignData";
 import {VCF2JSONRow} from "./../varScanMPileup2SNPVCF2JSON";
 import {parseCSS} from "./../parseCSS";
+import { UniquelyAddressable } from '../uniquelyAddressable';
 
 /**
  * Represents a single contig in a circular figure
@@ -110,7 +112,7 @@ export class CircularFigureBPTrackOptions
  * @export
  * @class RenderedTrackRecord
  */
-export class RenderedTrackRecord
+export class RenderedTrackRecord implements UniquelyAddressable
 {
     public uuid : string;
     public uuidAlign : string;
@@ -315,7 +317,7 @@ export class SNPTrackMap extends TrackMap
  * @export
  * @class CircularFigure
  */
-export class CircularFigure
+export class CircularFigure implements UniquelyAddressable
 {
     public uuid : string;
     public uuidFasta : string;

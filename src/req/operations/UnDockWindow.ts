@@ -28,10 +28,14 @@ export class UnDockWindow extends atomic.AtomicOperation
     {
         this.logRecord = atomic.openLog(this.name,"UnDock Window");
 
-        let self = this;
+        winMgr.windowCreators[this.refName].Create();
+
+        this.flags.success = true;
+        this.flags.done = true;
+        this.update();
 
         //on response from a wcHost attaching to the given web contents
-        ipc.once(`guestInstance-${this.guestinstance}-Attached`,function(event : Electron.IpcMessageEvent,arg : any){
+        /*ipc.once(`guestInstance-${this.guestinstance}-Attached`,function(event : Electron.IpcMessageEvent,arg : any){
             console.log(self.guestinstance+" attached to new host");
             //let the event loop spin before completing
             //the webview the given web contents was attached to before being moved will listen for completion and remove it
@@ -62,7 +66,7 @@ export class UnDockWindow extends atomic.AtomicOperation
         //signal the new host to attach to the given webcontents
         target.webContents.send("changeGuestInstance",{
             guestinstance : this.guestinstance
-        });
+        });*/
         
     }
 }

@@ -18,12 +18,12 @@ export async function indexRefsForVisualization() : Promise<void>
                 process.exit(1);
             }
             input[0].executeJavaScript(`
-                let els = document.getElementsByTagName("td");
+                let els = document.getElementsByTagName("div");
                 let isIndex = /IndexForVisualization/;
                 for(let i = 0; i != els.length; ++i)
                 {
                     console.log(els[i]);
-                    if(els[i].id && isIndex.test(els[i].id))
+                    if(els[i].className && isIndex.test(els[i].className))
                     {
                         console.log("clicked "+els[i]);
                         els[i].click();

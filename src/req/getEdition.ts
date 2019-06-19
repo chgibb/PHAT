@@ -28,11 +28,14 @@ function getEditionSource() : string
     InstalledBaseDir = electronBaseDir;
     InstalledEditionFile = electronEditionFile;
 
+    let devEditionFile = path.resolve(path.normalize("edition.txt"));
 
     if(fs.existsSync(electronEditionFile))
         return electronEditionFile;
     if(fs.existsSync(CIEditionFile))
         return CIEditionFile;
+    if(fs.existsSync(devEditionFile))
+        return devEditionFile;
     
     throw new Error("Could not determine edition file path");
 } 

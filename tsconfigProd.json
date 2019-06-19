@@ -3,14 +3,17 @@
     {
         "module" : "es2015",
         "moduleResolution": "node",
+        "allowSyntheticDefaultImports": true,
         "target" : "es6",
+        "noEmitOnError": true,
         "noImplicitAny" : true,
         "noImplicitReturns" : true,
         "noImplicitThis": true,
         "removeComments": true,
         "sourceMap" : false,
         "listFiles" : false,
-        "importHelpers" : true
+        "importHelpers": true,
+        "jsx": "react"
     },
     "exclude": 
     [

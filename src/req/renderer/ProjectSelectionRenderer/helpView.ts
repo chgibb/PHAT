@@ -2,11 +2,13 @@
 import * as electron from "electron";
 const remote = electron.remote;
 
+const jsonFile = require("jsonfile");
+
 import * as viewMgr from "./../viewMgr";
 import {getAppSettings,writeAppSettings} from "./../../appSettings";
 import {getReadable} from "./../../getAppPath";
 
-const pjson = require("./package.json");
+const pjson = jsonFile.readFileSync(getReadable('package.json'));
 
 export class HelpView extends viewMgr.View
 {
