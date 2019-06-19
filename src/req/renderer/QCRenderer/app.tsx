@@ -4,7 +4,6 @@ import * as React from "react";
 import { Component } from "react";
 import { Fastq } from '../../fastq';
 import { AtomicOperation } from '../../operations/atomicOperations';
-import { GenerateQCReport } from '../../operations/GenerateQCReport';
 import { QCReportsTable } from '../containers/qCReportsTable';
 import { generateFastQCReport } from './publish';
 import { QCReport } from '../containers/qcReport';
@@ -25,9 +24,6 @@ export class QCRendererApp extends Component<{}, QCRendererAppState>
         this.state = {
             shouldAllowTriggeringOps: true
         } as QCRendererAppState;
-
-        let validFastQCOut = new RegExp("[0-9]|[.]", "g");
-        let trimOutFastQCPercentage = new RegExp("[0-9][0-9][%]|[0-9][%]", "g");
 
         ipc.on("QC", (event: Electron.IpcMessageEvent, arg: any) => {
             if (arg.action == "getKey" || arg.action == "keyChange") {
