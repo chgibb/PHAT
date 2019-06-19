@@ -1,9 +1,10 @@
 import * as React from "react";
-import { Fastq } from '../../fastq';
-import { Table } from '../components/table';
-import { getQCSummaryByName } from '../../QCData';
-import { AddBox } from '../components/icons/addBox';
-import { Search } from '../components/icons/search';
+
+import {Fastq} from "../../fastq";
+import {Table} from "../components/table";
+import {getQCSummaryByName} from "../../QCData";
+import {AddBox} from "../components/icons/addBox";
+import {Search} from "../components/icons/search";
 
 export interface QCReportsTableProps
 {
@@ -27,61 +28,66 @@ export function QCReportsTable(props : QCReportsTableProps) : JSX.Element
                 {
                     title : "Per Base Sequence Quality",
                     field : "",
-                    render : (row : Fastq) => {
+                    render : (row : Fastq) => 
+                    {
                         return (
                             <p>{getQCSummaryByName(
                                 row,
                                 "Per base sequence quality"
                             )}</p>
-                        )
+                        );
                     }
                 },
                 {
                     title : "Per Sequence Quality Scores",
                     field : "",
-                    render : (row : Fastq) => {
+                    render : (row : Fastq) => 
+                    {
                         return (
                             <p>{getQCSummaryByName(
                                 row,
                                 "Per sequence quality scores"
                             )}</p>
-                        )
+                        );
                     }
                 },
                 {
                     title : "Per Sequence GC Content",
                     field : "",
-                    render : (row : Fastq) => {
+                    render : (row : Fastq) => 
+                    {
                         return (
                             <p>{getQCSummaryByName(
                                 row,
                                 "Per sequence GC content"
                             )}</p>
-                        )
+                        );
                     }
                 },
                 {
                     title : "Sequence Duplication Levels",
                     field : "",
-                    render : (row : Fastq) => {
+                    render : (row : Fastq) => 
+                    {
                         return (
                             <p>{getQCSummaryByName(
                                 row,
                                 "Sequence Duplication Levels"
                             )}</p>
-                        )
+                        );
                     }
                 },
                 {
                     title : "Overrepresented Sequences",
                     field : "",
-                    render : (row : Fastq) => {
+                    render : (row : Fastq) => 
+                    {
                         return (
                             <p>{getQCSummaryByName(
                                 row,
                                 "Overrepresented sequences"
                             )}</p>
-                        )
+                        );
                     }
                 }
             ]}
@@ -101,5 +107,5 @@ export function QCReportsTable(props : QCReportsTableProps) : JSX.Element
             ]}
             data={props.data}
         />
-    )
+    );
 }

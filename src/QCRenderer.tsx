@@ -1,14 +1,14 @@
 import * as electron from "electron";
 const ipc = electron.ipcRenderer;
 import * as React from "react";
-import { render } from "react-dom";
+import {render} from "react-dom";
 
-import { makeWindowDockable } from "./req/renderer/dock";
+import {makeWindowDockable} from "./req/renderer/dock";
 
 import "./req/renderer/commonBehaviour";
 import "./req/renderer/styles/defaults";
-import { QCRendererApp } from './req/renderer/QCRenderer/app';
-import { KeySubEvent, GetKeyEvent } from './req/ipcEvents';
+import {QCRendererApp} from "./req/renderer/QCRenderer/app";
+import {KeySubEvent, GetKeyEvent} from "./req/ipcEvents";
 
 render(
     <QCRendererApp />,
