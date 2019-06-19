@@ -13,7 +13,7 @@ import {FastqView} from "./fastqView";
 import {FastaView} from "./fastaView";
 import {AlignView} from "./alignView";
 
-export interface AppState
+export interface InputRendererAppState
 {
     fastqs? : Array<Fastq>;
     fastas? : Array<Fasta>;
@@ -21,9 +21,9 @@ export interface AppState
     shouldAllowTriggeringOps : boolean;
 }
 
-export class App extends Component<{},AppState>
+export class InputRendererApp extends Component<{},InputRendererAppState>
 {
-    public state : AppState;
+    public state : InputRendererAppState;
     public constructor()
     {
         super(undefined);

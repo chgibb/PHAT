@@ -3,7 +3,7 @@ const ipc = electron.ipcRenderer;
 import * as React from "react";
 import {render} from "react-dom";
 
-import {App} from "./req/renderer/inputRenderer/app";
+import {InputRendererApp} from "./req/renderer/inputRenderer/app";
 import {GetKeyEvent,KeySubEvent} from "./req/ipcEvents";
 import {makeWindowDockable} from "./req/renderer/dock";
 
@@ -11,7 +11,7 @@ import "./req/renderer/commonBehaviour";
 import "./req/renderer/styles/defaults";
 
 render(
-    <App />,
+    <InputRendererApp />,
     document.getElementById("app")
 );
 
