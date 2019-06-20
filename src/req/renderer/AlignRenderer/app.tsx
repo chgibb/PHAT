@@ -6,6 +6,7 @@ import {Component} from "react";
 import {Fastq} from "../../fastq";
 import {Fasta} from "../../fasta";
 import {AtomicOperation} from "../../operations/atomicOperations";
+import { FullWidthStepper } from '../containers/fullWidthStepper';
 
 export interface AlignRendererAppState
 {
@@ -80,7 +81,29 @@ export class AlignRendererApp extends Component<{},AlignRendererAppState>
     public render() : JSX.Element
     {
         return (
-            <div></div>
+            <div>
+                <FullWidthStepper steps={[
+                    {
+                        label : "First",
+                        body : (
+                            <p>First</p>
+                        )
+                    },
+                    {
+                        label : "Second",
+                        body : (
+                            <p>Second</p>
+                        )
+                    },
+                    {
+                        label : "Third",
+                        body : (
+                            <p>Third</p>
+                        )
+                    },
+                ]}
+                />
+            </div>
         );
     }
 }
