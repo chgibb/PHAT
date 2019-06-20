@@ -2,17 +2,20 @@ import * as fs from "fs";
 
 import * as atomic from "../operations/atomicOperations";
 import {RunBowtie2Alignment} from "../operations/RunBowtie2Alignment";
+import {getCoverageForContig} from "../alignData";
+
 import * as L6R1HPV18Align from "./L6R1HPV18Align";
 import * as HPV18Ref from "./hpv18Ref";
-import {getCoverageForContig} from '../alignData';
 
 export async function testL6R1HPV18Bowtie2Alignment() : Promise<void>
 {
-    return new Promise<void>((resolve,reject) => {
-        atomic.updates.removeAllListeners().on("runBowtie2Alignment",async function(op : RunBowtie2Alignment){
+    return new Promise<void>((resolve,reject) => 
+    {
+        atomic.updates.removeAllListeners().on("runBowtie2Alignment",async function(op : RunBowtie2Alignment)
+        {
             if(op.flags.failure)
             {
-                console.log(`Failed to align`);
+                console.log("Failed to align");
                 console.log(await atomic.getLogContent(op.logRecord)); 
                 return reject();
             }

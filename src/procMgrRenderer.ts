@@ -3,17 +3,16 @@ const ipc = electron.ipcRenderer;
 
 import * as viewMgr from "./req/renderer/viewMgr";
 import {GetKeyEvent} from "./req/ipcEvents";
-
 import {PIDInfo} from "./req/PIDInfo";
 import {getPIDInfo,getPIDUsage} from "./req/getPIDInfo";
-
 import * as masterView from "./req/renderer/procMgr/masterView";
 
 const $ = require("jquery");
 (<any>window).$ = $;
 import "./req/renderer/commonBehaviour";
 
-let pingPIDs : NodeJS.Timer = setInterval(function(){
+let pingPIDs : NodeJS.Timer = setInterval(function()
+{
     ipc.send(
         "getAllPIDs",
         <GetKeyEvent>{
@@ -23,16 +22,14 @@ let pingPIDs : NodeJS.Timer = setInterval(function(){
     );
 },1000);
 
-$
-(
+$(
     function()
     {
         masterView.addView(viewMgr.views,"view");
         viewMgr.changeView("masterView");
         viewMgr.render();
         viewMgr.render();
-        ipc.on
-        (
+        ipc.on(
             "procMgr",async function(event : Electron.IpcMessageEvent,arg : any)
             {
                 let masterView = <masterView.View>viewMgr.getViewByName("masterView");
@@ -47,7 +44,10 @@ $
                             pids[i].cpu = use.cpu;
                             pids[i].memory = use.memory;
                         }
-                        catch(err){}
+                        catch(err)
+                        {
+                            err;
+                        }
                         if(!pids[i].isPHAT)
                         {
                             try
@@ -57,7 +57,10 @@ $
                                 pids[i].command = info[0].command;
                                 pids[i].arguments = info[0].arguments;
                             }
-                            catch(err){}
+                            catch(err)
+                            {
+                                err;
+                            }
                         }
                     }
                     //console.log(pids);

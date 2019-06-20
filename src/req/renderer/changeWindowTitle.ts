@@ -13,5 +13,5 @@ export function changeWindowTitle(newTitle : string) : void
             id : webContents.getFocusedWebContents().id,
             newTitle : newTitle
         }
-    )
+    );
 }

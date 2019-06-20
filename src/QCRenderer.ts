@@ -2,11 +2,10 @@ import * as electron from "electron";
 const ipc = electron.ipcRenderer;
 
 import {GetKeyEvent,KeySubEvent} from "./req/ipcEvents";
-import  {AtomicOperation} from "./req/operations/atomicOperations"
-import  {GenerateQCReport} from "./req/operations/GenerateQCReport"
+import  {AtomicOperation} from "./req/operations/atomicOperations";
+import  {GenerateQCReport} from "./req/operations/GenerateQCReport";
 import * as viewMgr from "./req/renderer/viewMgr";
 import {makeWindowDockable} from "./req/renderer/dock";
-
 import * as summary from "./req/renderer/QCRenderer/summaryView";
 import * as report from "./req/renderer/QCRenderer/reportView";
 
@@ -14,14 +13,13 @@ const $ = require("jquery");
 (<any>window).$ = $;
 import "./req/renderer/commonBehaviour";
 
-$
-(
+$(
     function()
     {
         makeWindowDockable("QC");
         
-        summary.addView(viewMgr.views,'reports');
-        report.addView(viewMgr.views,'reports');
+        summary.addView(viewMgr.views,"reports");
+        report.addView(viewMgr.views,"reports");
 
 
         viewMgr.changeView("summary");
@@ -64,9 +62,8 @@ $
         );
         let validFastQCOut = new RegExp("[0-9]|[.]","g");
         let trimOutFastQCPercentage = new RegExp("[0-9][0-9][%]|[0-9][%]","g");
-        ipc.on
-        (
-            'QC',function(event : Electron.IpcMessageEvent,arg : any)
+        ipc.on(
+            "QC",function(event : Electron.IpcMessageEvent,arg : any)
             {
                 if(arg.action == "getKey" || arg.action == "keyChange")
                 {
@@ -113,12 +110,12 @@ $
                                                     if(fastqInputs[i].uuid == op.fastq.uuid)
                                                     {
                                                         $(`#${op.fastq.uuid}`).text(regResult[0]);
-                                                        break;;
+                                                        break;
                                                     }
                                                 }
                                             }
                                         }
-                                        break;;
+                                        break;
                                     }
                                 }
                             }
@@ -127,7 +124,10 @@ $
                         }
                        
                     }
-                    catch(err){}
+                    catch(err)
+                    {
+                        err;
+                    }
                 }
                 viewMgr.render();
             }

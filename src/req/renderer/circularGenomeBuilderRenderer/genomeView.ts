@@ -5,9 +5,6 @@ import * as fs from "fs";
 import * as electron from "electron";
 const dialog = electron.remote.dialog;
 
-const Dialogs = require("dialogs");
-const dialogs = Dialogs();
-
 import * as viewMgr from "./../viewMgr";
 import * as masterView from "./masterView";
 import {AlignData} from "./../../alignData";
@@ -21,9 +18,14 @@ import {reCacheBaseFigure} from "./reCacheBaseFigure";
 import * as tc from "./templateCache";
 import {resetCaches} from "./templateCache";
 
+const Dialogs = require("dialogs");
+
 require("angular");
 require("@chgibb/angularplasmid");
-let app : any = angular.module('myApp',['angularplasmid']);
+
+const dialogs = Dialogs();
+
+let app : any = angular.module("myApp",["angularplasmid"]);
 /**
  * Manages the display and behaviour of the figure being edited
  * 
@@ -79,8 +81,10 @@ export class GenomeView extends viewMgr.View implements cf.FigureCanvas
         this.showSeqSelector = false;
         this.shouldAllowTriggeringOps = true;
     }
-    public onMount() : void{}
-    public onUnMount() : void{}
+    public onMount() : void
+    {}
+    public onUnMount() : void
+    {}
 
     public loadFigure(figure : cf.CircularFigure) : void
     {
@@ -199,7 +203,8 @@ export class GenomeView extends viewMgr.View implements cf.FigureCanvas
     public figureNameOnClick() : void
     {
         let self = this;
-        dialogs.prompt("Figure Name",this.genome.name,function(text : string){
+        dialogs.prompt("Figure Name",this.genome.name,function(text : string)
+        {
             if(text)
             {
                 self.genome.name = text;
@@ -275,10 +280,13 @@ export class GenomeView extends viewMgr.View implements cf.FigureCanvas
                 showGenericLoadingSpinnerInNavBar();
                 
                 let self = this;
-                setTimeout(function(){
-                    displayFigure(self).then(() => {
+                setTimeout(function()
+                {
+                    displayFigure(self).then(() => 
+                    {
                         hideSpinnerInNavBar();
-                        setTimeout(function(){
+                        setTimeout(function()
+                        {
                             window.dispatchEvent(new Event("resize"));
                             console.log(`re-rendering figure took ${(performance.now()-startUp)}`);
                         },10);
@@ -332,8 +340,10 @@ export class GenomeView extends viewMgr.View implements cf.FigureCanvas
             viewMgr.render();
         }
     }
-    public dataChanged() : void{}
-    public divClickEvents(event : JQueryEventObject) : void{}
+    public dataChanged() : void
+    {}
+    public divClickEvents(event : JQueryEventObject) : void
+    {}
 }
 export function addView(arr : Array<viewMgr.View>,div : string)
 {

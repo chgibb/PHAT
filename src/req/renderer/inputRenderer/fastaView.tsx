@@ -1,11 +1,12 @@
 import * as React from "react";
 import {Component} from "react";
 
+import {Button} from "../components/button";
+import {FastaTable} from "../containers/fastaTable";
+
 import * as pub from "./publish";
 import {Fasta} from "./../../fasta";
 import {inputFastaDialog} from "./inputFastaDialog";
-import { Button } from '../components/button';
-import { FastaTable } from '../containers/fastaTable';
 
 export interface FastaViewProps
 {
@@ -25,7 +26,8 @@ export class FastaView extends Component<FastaViewProps,{}>
         return (
             <React.Fragment>
                 <Button
-                    onClick={() => {
+                    onClick={() => 
+                    {
                         inputFastaDialog();
                     }}
                     label="Browse"
@@ -33,19 +35,21 @@ export class FastaView extends Component<FastaViewProps,{}>
                 <FastaTable 
                     data={this.props.fastaInputs} 
                     shouldAllowTriggeringOps={this.props.shouldAllowTriggeringOps}
-                    onIndexForVizClick={(event,data) => {
+                    onIndexForVizClick={(event,data) => 
+                    {
                         event;
                         pub.indexFastaForVisualization(data);
                     }}
                 />
                 {
                     this.props.fastaInputs ? this.props.fastaInputs.length > 0 ?
-                    <Button
-                        onClick={() => {
-                            pub.importSelectedFastas(this.props.fastaInputs);
-                        }}
-                        label="Import All"
-                    /> : "" : ""
+                        <Button
+                            onClick={() => 
+                            {
+                                pub.importSelectedFastas(this.props.fastaInputs);
+                            }}
+                            label="Import All"
+                        /> : "" : ""
                 }
             </React.Fragment>
             /*
@@ -116,6 +120,6 @@ export class FastaView extends Component<FastaViewProps,{}>
                     }
                 </div>
             </div>*/
-        )
+        );
     }
 }

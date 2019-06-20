@@ -16,81 +16,81 @@ render(
 );
 
 //window.onload = function(){
-    makeWindowDockable("input");
-    //get saved data
-    ipc.send(
-        "getKey",
+makeWindowDockable("input");
+//get saved data
+ipc.send(
+    "getKey",
         {
             channel : "input",
             key : "fastqInputs",
             replyChannel : "input",
             action : "getKey"
         } as GetKeyEvent
-    );
-    ipc.send(
-        "getKey",
+);
+ipc.send(
+    "getKey",
         {
             channel : "input",
             key : "fastaInputs",
             replyChannel : "input",
             action : "getKey"
         }  as GetKeyEvent
-    );
-    ipc.send(
-        "getKey",
+);
+ipc.send(
+    "getKey",
         {
             channel : "align",
             key : "aligns",
             replyChannel : "input",
             action : "getKey"
         }  as GetKeyEvent
-    );
-    ipc.send(
-        "getKey",
+);
+ipc.send(
+    "getKey",
         {
             action : "getKey",
             channel : "application",
             key : "operations",
             replyChannel : "input"
         }  as GetKeyEvent
-    );
+);
 
-    //subscribe to changes in data
-    ipc.send(
-        "keySub",
+//subscribe to changes in data
+ipc.send(
+    "keySub",
         {
             action : "keySub",
             channel : "input",
             key : "fastqInputs",
             replyChannel : "input"
         } as KeySubEvent
-    );
-    ipc.send(
-        "keySub",
+);
+ipc.send(
+    "keySub",
         {
             action : "keySub",
             channel : "input",
             key : "fastaInputs",
             replyChannel : "input"
         } as KeySubEvent
-    );
-    ipc.send(
-        "keySub",
+);
+ipc.send(
+    "keySub",
         {
             channel : "align",
             key : "aligns",
             replyChannel : "input",
             action : "keySub"
         } as KeySubEvent
-    );
-    ipc.send(
-        "keySub",
+);
+ipc.send(
+    "keySub",
         {
             action : "keySub",
             channel : "application",
             key : "operations",
             replyChannel : "input"
         } as KeySubEvent
-    );
+);
 //}
 

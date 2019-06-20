@@ -6,8 +6,10 @@ import {get2BitPath} from "./../fasta";
 import * as hpv18Ref from "./hpv18Ref";
 export async function testHPV18IndexForVisualization() : Promise<void>
 {
-    return new Promise<void>((resolve,reject) => {
-        atomic.updates.removeAllListeners().on("indexFastaForVisualization",async function(op : IndexFastaForVisualization){
+    return new Promise<void>((resolve,reject) => 
+    {
+        atomic.updates.removeAllListeners().on("indexFastaForVisualization",async function(op : IndexFastaForVisualization)
+        {
             if(op.flags.failure)
             {
                 console.log(`Failed to index ${op.fasta.alias} for visualization`);
@@ -27,11 +29,11 @@ export async function testHPV18IndexForVisualization() : Promise<void>
                 try
                 {
                     fs.accessSync(get2BitPath(hpv18Ref.get()));
-                    console.log(`Successfully accessed 2bit archive for hpv18 ref`);
+                    console.log("Successfully accessed 2bit archive for hpv18 ref");
                 }
                 catch(err)
                 {
-                    console.log(`Failed to access 2bit archive for hpv18 ref`);
+                    console.log("Failed to access 2bit archive for hpv18 ref");
                     console.log(await atomic.getLogContent(op.logRecord)); 
                     return reject();
                 }

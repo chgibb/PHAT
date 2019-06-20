@@ -3,8 +3,7 @@ import * as cp from "child_process";
 import * as atomic from "./atomicOperations";
 import {AtomicOperationForkEvent} from "./../atomicOperationsIPC";
 import {getReadable} from "./../getAppPath";
-
-import {AlignData} from "./../alignData"
+import {AlignData} from "./../alignData";
 import * as cf from "./../renderer/circularFigure";
 export class RenderCoverageTrackForContig extends atomic.AtomicOperation
 {
@@ -45,7 +44,8 @@ export class RenderCoverageTrackForContig extends atomic.AtomicOperation
                 colour : self.colour,
                 scaleFactor : self.scaleFactor
             }
-        },function(ev : AtomicOperationForkEvent){
+        },function(ev : AtomicOperationForkEvent)
+        {
             if(ev.finishedSettingData == true)
             {
                 self.renderCoverageTrackProcess.send(

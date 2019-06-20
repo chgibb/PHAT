@@ -45,13 +45,17 @@ export function getQCSummaryByNameOfReportByIndex(fastqInputs : Array<Fastq>,ind
     try
     {
         for(let i = 0; i != fastqInputs[index].QCData.summary.length; ++i)
-	    {
-		    if(fastqInputs[index].QCData.summary[i].name == summary)
-		    {
-			    return fastqInputs[index].QCData.summary[i].status;
-		    }
-	    }
+        {
+            if(fastqInputs[index].QCData.summary[i].name == summary)
+            {
+                return fastqInputs[index].QCData.summary[i].status;
+            }
+        }
     }
-    catch(err){}
-	return "No Data";
+    catch(err)
+    {
+        err;
+    }
+	
+    return "No Data";
 }

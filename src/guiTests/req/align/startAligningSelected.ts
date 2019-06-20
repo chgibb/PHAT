@@ -8,8 +8,10 @@ import * as winMgr from "./../../../req/main/winMgr";
  */
 export async function startAligningSelected() : Promise<void>
 {
-    return new Promise<void>(async (resolve,reject) => {
-        setTimeout(async function(){
+    return new Promise<void>(async (resolve,reject) => 
+    {
+        setTimeout(async function()
+        {
             console.log("starting to align selected reads against selected ref seq");
             let align = winMgr.getFreeWebContents();
             if(!align || align.length == 0)

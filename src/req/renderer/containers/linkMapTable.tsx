@@ -1,9 +1,9 @@
 import * as React from "react";
 
-import { Table } from "../components/table";
-import { AlignData } from '../../alignData';
-import { CompareArrows } from '../components/icons/compareArrows';
-import { Fasta } from '../../fasta';
+import {Table} from "../components/table";
+import {AlignData} from "../../alignData";
+import {CompareArrows} from "../components/icons/compareArrows";
+import {Fasta} from "../../fasta";
 
 export interface LinkMapTableProps 
 {
@@ -51,8 +51,9 @@ export class LinkMapTable extends React.Component<LinkMapTableProps, {}>
                     {
                         title: "Ref Seq",
                         field: "",
-                        render: (row: AlignData) => {
-                            return row.fasta ? row.fasta.alias : "Not Linked"
+                        render: (row: AlignData) => 
+                        {
+                            return row.fasta ? row.fasta.alias : "Not Linked";
                         }
                     }
                 ]}
@@ -60,10 +61,11 @@ export class LinkMapTable extends React.Component<LinkMapTableProps, {}>
                     (rowData: AlignData) => ({
                         icon: CompareArrows as any,
                         tooltip: alreadyLinked(rowData) ? "Already Linked" :
-                                    noReferences(this.props.fastaInputs) ? "No References to Link Against" : 
-                                        "Link This Reference",
-                        onClick: () => {
-                            this.props.linkMapOnClick(rowData)
+                            noReferences(this.props.fastaInputs) ? "No References to Link Against" : 
+                                "Link This Reference",
+                        onClick: () => 
+                        {
+                            this.props.linkMapOnClick(rowData);
                         },
                         disabled: alreadyLinked(rowData) || noReferences(this.props.fastaInputs)
                     })

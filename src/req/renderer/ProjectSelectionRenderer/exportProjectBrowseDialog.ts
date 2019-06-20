@@ -1,15 +1,17 @@
-const fse = require("fs-extra");
 import * as electron from "electron";
 const dialog = electron.remote.dialog;
 
-const jsonFile = require("jsonfile");
 
 import * as viewMgr from "./../viewMgr";
 import {ProjectManifest,getTarBallPath,getProjectManifests} from "./../../projectManifest";
 
+const jsonFile = require("jsonfile");
+const fse = require("fs-extra");
+
 export function exportProjectBrowseDialog(proj : ProjectManifest) : Promise<undefined>
 {
-    return new Promise((resolve,reject) => {
+    return new Promise((resolve,reject) => 
+    {
         dialog.showSaveDialog(
             {
                 filters : [
@@ -25,7 +27,8 @@ export function exportProjectBrowseDialog(proj : ProjectManifest) : Promise<unde
                     return resolve();
             
                 fse.copy(
-                    getTarBallPath(proj),fileName,(err : Error) => {
+                    getTarBallPath(proj),fileName,(err : Error) => 
+                    {
                         if(err)
                             reject(err);
                         else
@@ -36,11 +39,13 @@ export function exportProjectBrowseDialog(proj : ProjectManifest) : Promise<unde
                             {
                                 if(proj.uuid == projects[i].uuid)
                                 {
-                                    new Promise<void>((resolve,reject) => {
-                                        fse.remove(getTarBallPath(projects[i]),(err : Error) => {
+                                    new Promise<void>((resolve,reject) => 
+                                    {
+                                        fse.remove(getTarBallPath(projects[i]),(err : Error) => 
+                                        {
                                             if(err)
                                             {
-                                                alert(`Failed to remove original project`);
+                                                alert("Failed to remove original project");
                                                 reject();
                                             }
                                             else
@@ -50,7 +55,8 @@ export function exportProjectBrowseDialog(proj : ProjectManifest) : Promise<unde
                                                 resolve();
                                             }
                                         });
-                                    }).then(() => {
+                                    }).then(() => 
+                                    {
                                         viewMgr.changeView("splashView");
                                         viewMgr.render();
                                         resolve();

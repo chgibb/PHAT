@@ -4,7 +4,6 @@ import * as electron from "electron";
 const ipc = electron.ipcRenderer;
 
 import {AtomicOperationIPC} from "./../../atomicOperationsIPC";
-
 import * as cf from "./../circularFigure";
 
 /*
@@ -154,7 +153,8 @@ export function getSNPTrack(trackRecord : cf.RenderedSNPTrackRecord) : cf.SNPTra
 
 export function renderToCanvas(ctx : CanvasRenderingContext2D,canv : cf.FigureCanvas) : Promise<void>
 {
-    return new Promise<void>(async (resolve,reject) => {
+    return new Promise<void>(async (resolve,reject) => 
+    {
         for(let i = 0; i != figure.renderedCoverageTracks.length; ++i)
         {
             if(figure.renderedCoverageTracks[i].checked)
@@ -172,13 +172,13 @@ export function renderToCanvas(ctx : CanvasRenderingContext2D,canv : cf.FigureCa
                     `
                         ${cf.getBaseFigureTemplateFromCache(canv.genome)}
                         ${canv.showSeqSelector ? 
-                            cf.buildSequenceSelectorTemplate(
-                                figure,
-                                canv.seqSelectionLeftArm,
-                                canv.seqSelectionRightArm,
-                                canv.seqSelectionArrow
-                            )
-                        : ""}
+        cf.buildSequenceSelectorTemplate(
+            figure,
+            canv.seqSelectionLeftArm,
+            canv.seqSelectionRightArm,
+            canv.seqSelectionArrow
+        )
+        : ""}
                     `,
                 ),
                 canv

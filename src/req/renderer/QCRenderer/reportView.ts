@@ -10,14 +10,16 @@ export class ReportView extends viewMgr.View
     public fastqToReport : Fastq;
     public constructor(div : string)
     {
-        super('report',div);
+        super("report",div);
         this.fastqToReport = undefined;
     }
-    onMount(){}
-    onUnMount(){}
+    onMount()
+    {}
+    onUnMount()
+    {}
     renderView()
     {
-        if(document.getElementById('reportIsOpen') || !this.fastqToReport)
+        if(document.getElementById("reportIsOpen") || !this.fastqToReport)
             return undefined;
         return `
             <div id='gobackbutton' style='padding: 0px 0px 5px 20px'>
@@ -25,12 +27,14 @@ export class ReportView extends viewMgr.View
                 <img class="activeHover activeHoverButton" id='goBack' src='img/GoBack.png' >
             </div>
             <div id='reportIsOpen'></div>
-            ${(()=>{
-                return fs.readFileSync(getQCReportHTML(this.fastqToReport)).toString();
-            })()}
+            ${(()=>
+    {
+        return fs.readFileSync(getQCReportHTML(this.fastqToReport)).toString();
+    })()}
         `;
     }
-    postRender(){}
+    postRender()
+    {}
     divClickEvents(event : JQueryEventObject) : void
     {
         if(!event || !event.target || !event.target.id)
@@ -38,11 +42,12 @@ export class ReportView extends viewMgr.View
         if(event.target.id == "goBack")
         {
             this.fastqToReport = undefined;
-            viewMgr.changeView('summary');
+            viewMgr.changeView("summary");
             return;
         }
     }
-    dataChanged(){}
+    dataChanged()
+    {}
 }
 
 export function addView(arr : Array<viewMgr.View>,div : string) : void

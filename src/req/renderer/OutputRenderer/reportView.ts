@@ -9,19 +9,15 @@ import * as viewMgr from "./../viewMgr";
 import * as masterView from "./masterView";
 import * as rightPanel from "./rightPanel";
 import * as reportView from "./reportView";
-
 import {VCF2JSONRow} from "./../../varScanMPileup2SNPVCF2JSON";
 import {Fasta} from "./../../fasta";
-
 import {renderQCReportTable} from "./reportView/renderQCReportTable";
 import {renderAlignmentReportTable} from "./reportView/renderAlignmentReportTable";
 import {renderSNPPositionsTable} from "./reportView/renderSNPPositionsTable";
 import {renderMappedReadsPerContigTable} from "./reportView/renderMappedReadsPerContigTable";
 import {renderBLASTRunsTable} from "./reportView/renderBLASTRunsTable";
 import {renderBLASTSingleRunTable} from "./reportView/renderBLASTSingleRunTable";
-
 import {getReadable} from "./../../getAppPath";
-
 import {CSVExportDialog} from "./CSVExportDialog";
 import {XLSExportDialog} from "./XLSExportDialog";
 
@@ -63,8 +59,10 @@ export class View extends viewMgr.View
         this.inspectingUUID = "";
         this.vcfRows = new Array<VCF2JSONRow>();
     }
-    public onMount() : void{}
-    public onUnMount() : void{}
+    public onMount() : void
+    {}
+    public onUnMount() : void
+    {}
     public renderView() : string
     {
         let masterView = <masterView.View>viewMgr.getViewByName("masterView");
@@ -75,7 +73,7 @@ export class View extends viewMgr.View
             if(this.inspectingUUID != masterView.inspectingAlignUUID)
             {
                 this.vcfRows = JSON.parse(
-                            fs.readFileSync(getReadableAndWritable(`rt/AlignmentArtifacts/${masterView.inspectingAlignUUID}/snps.json`)
+                    fs.readFileSync(getReadableAndWritable(`rt/AlignmentArtifacts/${masterView.inspectingAlignUUID}/snps.json`)
                     ).toString()
                 );
                 this.inspectingUUID = masterView.inspectingAlignUUID;
@@ -94,8 +92,10 @@ export class View extends viewMgr.View
             <br/><button id="exportCSV">Export CSV</button>
         `;
     }
-    public postRender() : void{}
-    public dataChanged() : void{}
+    public postRender() : void
+    {}
+    public dataChanged() : void
+    {}
     public divClickEvents(event : JQueryEventObject) : void
     {
         if(event.target.classList.contains("propogateParent"))
@@ -140,12 +140,12 @@ export class View extends viewMgr.View
             {
                 if(
                     masterView.alignData[i].isExternalAlignment ?
-                    (masterView.alignData[i].flagStatReport && !masterView.alignData[i].flagStatReport.overallAlignmentRate):
-                    (masterView.alignData[i].summary && !masterView.alignData[i].summary.overallAlignmentRate) 
+                        (masterView.alignData[i].flagStatReport && !masterView.alignData[i].flagStatReport.overallAlignmentRate):
+                        (masterView.alignData[i].summary && !masterView.alignData[i].summary.overallAlignmentRate) 
                     
                 )
                 {
-                    alert(`Can't view an alignment with 0% alignment rate`);
+                    alert("Can't view an alignment with 0% alignment rate");
                     return;
                 }
                 let fasta : Fasta;
@@ -163,12 +163,12 @@ export class View extends viewMgr.View
                 }
                 if(!fasta)
                 {
-                    alert(`You must link this alignment to a reference to visualize`);
+                    alert("You must link this alignment to a reference to visualize");
                     return;
                 }
                 if(!fasta.indexedForVisualization)
                 {
-                    alert(`The reference for this alignment is not ready for visualization`);
+                    alert("The reference for this alignment is not ready for visualization");
                     return;
                 }
                 ipc.send(
@@ -177,7 +177,7 @@ export class View extends viewMgr.View
                         opName : "openPileupViewer",
                         pileupViewerParams : {
                             align : masterView.alignData[i],
-                            contig : fasta.contigs[0].name.split(' ')[0],
+                            contig : fasta.contigs[0].name.split(" ")[0],
                             start : 0,
                             stop : 100
                         }
@@ -188,12 +188,12 @@ export class View extends viewMgr.View
             {
                 if(
                     masterView.alignData[i].isExternalAlignment ?
-                    (masterView.alignData[i].flagStatReport && !masterView.alignData[i].flagStatReport.overallAlignmentRate):
-                    (masterView.alignData[i].summary && !masterView.alignData[i].summary.overallAlignmentRate) 
+                        (masterView.alignData[i].flagStatReport && !masterView.alignData[i].flagStatReport.overallAlignmentRate):
+                        (masterView.alignData[i].summary && !masterView.alignData[i].summary.overallAlignmentRate) 
                     
                 )
                 {
-                    alert(`Can't view an alignment with 0% alignment rate`);
+                    alert("Can't view an alignment with 0% alignment rate");
                     return;
                 }
                 masterView.inspectingAlignUUID = masterView.alignData[i].uuid;
@@ -218,12 +218,12 @@ export class View extends viewMgr.View
                         }
                         if(!fasta)
                         {
-                            alert(`You must link this alignment to a reference to visualize`);
+                            alert("You must link this alignment to a reference to visualize");
                             return;
                         }
                         if(!fasta.indexedForVisualization)
                         {
-                            alert(`The reference for this alignment is not ready for visualization`);
+                            alert("The reference for this alignment is not ready for visualization");
                             return;
                         }
                         //trim off leading text
@@ -264,12 +264,14 @@ export class View extends viewMgr.View
             return;
         }
 
-        if(event.target.id == "viewQC"){
+        if(event.target.id == "viewQC")
+        {
             masterView.displayInfo = "QCInfo";
             viewMgr.render();
             return;
         }
-        if(event.target.id == "viewAlign"){
+        if(event.target.id == "viewAlign")
+        {
             masterView.displayInfo = "AlignmentInfo";
             viewMgr.render();
             return;
@@ -281,7 +283,8 @@ export class View extends viewMgr.View
             XLSExportDialog(reportView.renderView());
             return;
         }
-        if (event.target.id == "exportCSV"){
+        if (event.target.id == "exportCSV")
+        {
             let reportView = <reportView.View>viewMgr.getViewByName("reportView",masterView.views);
             CSVExportDialog(reportView.renderView());
             return;

@@ -19,7 +19,8 @@ export class UnDockWindow extends atomic.AtomicOperation
     public setData(data : {
         refName : string,
         guestinstance : number
-    }) : void {
+    }) : void 
+    {
         this.refName = data.refName;
         this.guestinstance = data.guestinstance;
     }

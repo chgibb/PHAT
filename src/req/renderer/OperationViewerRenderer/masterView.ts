@@ -41,8 +41,10 @@ export class View extends viewMgr.View
             this.views[i].postRender();
         }
     }
-    public dataChanged() : void{}
-    public divClickEvents(event : JQueryEventObject) : void{}
+    public dataChanged() : void
+    {}
+    public divClickEvents(event : JQueryEventObject) : void
+    {}
 }
 export function addView(arr : Array<viewMgr.View>,div : string)
 {

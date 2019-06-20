@@ -14,8 +14,9 @@ import {Job,JobCallBackObject} from "./../../main/Job";
  */
 export function samToolsIndex(alignData : AlignData,logger : atomic.AtomicOperation) : Promise<void>
 {
-    return new Promise<void>((resolve,reject) => {
-        let samToolsExe = getReadable('samtools');
+    return new Promise<void>((resolve,reject) => 
+    {
+        let samToolsExe = getReadable("samtools");
 
         let jobCallBack : JobCallBackObject = {
             send(channel : string,params : SpawnRequestParams)
@@ -36,7 +37,7 @@ export function samToolsIndex(alignData : AlignData,logger : atomic.AtomicOperat
                     return reject(`Failed to index bam for ${alignData.alias}`);
                 }
             }
-        }
+        };
         let samToolsIndexJob = new Job(
             samToolsExe,
             <Array<string>>[

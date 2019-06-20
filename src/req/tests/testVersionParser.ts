@@ -112,7 +112,8 @@ versionTests.push({
 });
 export async function testVersionParser() : Promise<void>
 {
-    return new Promise<void>((resolve,reject) => {
+    return new Promise<void>((resolve,reject) => 
+    {
         for(let i = 0; i != versionTests.length; ++i)
         {
             try
@@ -132,11 +133,11 @@ export async function testVersionParser() : Promise<void>
             {
                 if(versionTests[i].invalid)
                 {
-                    console.log(`Invalid as expected`);
+                    console.log("Invalid as expected");
                 }
                 else
                 {
-                    console.log(`Was unexpectedly invalid`);
+                    console.log("Was unexpectedly invalid");
                     console.log(err);
                     reject();
                 }

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import * as React from "react";
 
 export interface TabContainerProps
 {
@@ -12,5 +12,5 @@ export function TabContainer({children,dir} : TabContainerProps) : JSX.Element
         <div>
             {children}
         </div>
-    )
+    );
 }

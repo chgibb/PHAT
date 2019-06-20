@@ -1,14 +1,17 @@
 import * as atomic from "../operations/atomicOperations";
 import {RunHisat2Alignment} from "../operations/RunHisat2Alignment";
+
 import * as L6R1HPV18Align from "./L6R1HPV18Align";
 
 export async function testL6R1HPV18Hisat2Alignment() : Promise<void>
 {
-    return new Promise<void>((resolve,reject) => {
-        atomic.updates.removeAllListeners().on("runHisat2Alignment",async function(op : RunHisat2Alignment){
+    return new Promise<void>((resolve,reject) => 
+    {
+        atomic.updates.removeAllListeners().on("runHisat2Alignment",async function(op : RunHisat2Alignment)
+        {
             if(op.flags.failure)
             {
-                console.log(`Failed to align`);
+                console.log("Failed to align");
                 console.log(await atomic.getLogContent(op.logRecord)); 
                 return reject();
             }

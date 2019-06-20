@@ -2,9 +2,7 @@ import * as cp from "child_process";
 
 import * as atomic from "./atomicOperations";
 import {AtomicOperationForkEvent} from "./../atomicOperationsIPC";
-
 import {getReadable,getWritable,getReadableAndWritable} from "./../getAppPath";
-
 import {ProjectManifest} from "./../projectManifest";
 export class OpenProject extends atomic.AtomicOperation
 {
@@ -37,7 +35,8 @@ export class OpenProject extends atomic.AtomicOperation
             writableBasePath : getWritable(""),
             readableAndWritableBasePath : getReadableAndWritable("")
 
-        },function(ev : AtomicOperationForkEvent){
+        },function(ev : AtomicOperationForkEvent)
+        {
             self.logObject(ev);
             if(ev.finishedSettingData == true)
             {

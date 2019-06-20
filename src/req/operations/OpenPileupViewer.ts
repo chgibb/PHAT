@@ -33,13 +33,14 @@ export class OpenPileupViewer extends atomic.AtomicOperation
         let viewer = viewers[viewers.length-1];
 
         let pileupOptions = {
-                align : this.align,
-                contig : this.contig,
-                start : this.start,
-                stop : this.stop
-            };
+            align : this.align,
+            contig : this.contig,
+            start : this.start,
+            stop : this.stop
+        };
         setTimeout(
-            function(){
+            function()
+            {
                 viewer.webContents.send("pileup",pileupOptions);
             },500
         );

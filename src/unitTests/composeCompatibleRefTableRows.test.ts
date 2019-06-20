@@ -2,13 +2,14 @@
 
 import * as fs from "fs";
 
-import { composeCompatibleRefTableRows } from "../req/renderer/containers/compatibleRefTable";
-import { Fasta } from '../req/fasta';
-import { LinkableRefSeq } from '../req/getLinkableRefSeqs';
+import {composeCompatibleRefTableRows} from "../req/renderer/containers/compatibleRefTable";
+import {Fasta} from "../req/fasta";
+import {LinkableRefSeq} from "../req/getLinkableRefSeqs";
 
 jest.mock("fs");
 
-it("should combine correct references",() => {
+it("should combine correct references",() => 
+{
     (fs.statSync as any).mockReturnValue({
         size : 0
     });

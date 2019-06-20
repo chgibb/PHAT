@@ -1,4 +1,4 @@
-import { cssRaw } from "typestyle";
+import {cssRaw} from "typestyle";
 
 //https://github.com/IanLunn/Hover/blob/master/css/hover.css
 cssRaw(`
@@ -42,4 +42,4 @@ cssRaw(`
     transform: scaleY(1);
   }`);
 
-  export const sweepToBottom = "hvr-sweep-to-bottom";
+export const sweepToBottom = "hvr-sweep-to-bottom";

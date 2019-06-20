@@ -1,9 +1,7 @@
 console.log("Started GUI test for read aligning");
 require("./../req/main/main");
-
 import {logMainProcessErrors} from "./req/logMainProcessErrors";
 logMainProcessErrors();
-
 import {openProjectsView} from "./req/projectSelection/openProjectsView";
 import {openFirstProject} from "./req/projectSelection/openFirstProject";
 import {openAlignWindow} from "./req/align/openAlignWindow";
@@ -24,6 +22,7 @@ async function runTest() : Promise<void>
     await alignSuccess();
     await closeToolBar();
 }
-setTimeout(function(){
+setTimeout(function()
+{
     runTest();
 },1000);

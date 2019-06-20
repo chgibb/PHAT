@@ -14,10 +14,9 @@ export default function fsAccess(filePath : string,addProtocol : boolean = true)
 {
     if(addProtocol)
     {
-        return url.format
-        (
+        return url.format(
             {
-                protocol: 'file',
+                protocol: "file",
                 slashes: true,
                 pathname: path.join(process.cwd(),filePath)
             }

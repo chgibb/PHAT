@@ -19,7 +19,7 @@ export default function formatByteString(bytes : number) : string
     if(res[res.length-1] == "0" && res[res.length-2] == "0" && res[res.length-3] == ".")
         res = res.substring(0,res.length-3);
 
-    res +=  ['B', 'kB', 'MB', 'GB', 'TB'][i];
+    res +=  ["B", "kB", "MB", "GB", "TB"][i];
 
     return res;
 }

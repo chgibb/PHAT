@@ -1,7 +1,7 @@
 import * as React from "react";
 
 import {Table} from "../components/table";
-import {Fastq} from '../../fastq';
+import {Fastq} from "../../fastq";
 
 export interface FastqTableProps
 {
@@ -22,7 +22,8 @@ export function FastqTable(props : FastqTableProps) : JSX.Element
                 {
                     title: "Path",
                     field: "path",
-                    render: (row : Fastq) => {
+                    render: (row : Fastq) => 
+                    {
                         return row.imported ? "In Project" : row.path; 
                     }
                 },

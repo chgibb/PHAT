@@ -8,8 +8,10 @@ import * as winMgr from "./../../req/main/winMgr";
  */
 export async function closeAllTabs() : Promise<void>
 {
-    return new Promise<void>((resolve,reject) => {
-        setTimeout(function(){
+    return new Promise<void>((resolve,reject) => 
+    {
+        setTimeout(function()
+        {
             console.log("closing all tabs");
             let toolBar = winMgr.getWindowsByName("toolBar");
             if(!toolBar || toolBar.length > 1 || toolBar.length == 0)

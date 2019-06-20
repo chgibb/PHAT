@@ -12,11 +12,12 @@ export function newProject(name : string) : Promise<void>
     const jsonFile = require("jsonfile");
     const uuidv4 : () => string = require("uuid/v4");
     
-    return new Promise<void>((resolve,reject) => {
+    return new Promise<void>((resolve,reject) => 
+    {
         let projects : Array<ProjectManifest>;
         try
         {
-             projects = jsonFile.readFileSync(getProjectManifests());
+            projects = jsonFile.readFileSync(getProjectManifests());
         }
         catch(err)
         {

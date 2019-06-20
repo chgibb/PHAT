@@ -8,8 +8,10 @@ import * as winMgr from "./../../../req/main/winMgr";
  */
 export async function toggleOptionsPanel() : Promise<void>
 {
-    return new Promise<void>((resolve,reject) => {
-        setTimeout(function(){
+    return new Promise<void>((resolve,reject) => 
+    {
+        setTimeout(function()
+        {
             console.log("toggling options panel");
             let output = winMgr.getFreeWebContents();
             if(!output || output.length == 0)
