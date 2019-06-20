@@ -2,7 +2,7 @@ import * as React from "react";
 
 export const MuiButton : typeof import("@material-ui/core/Button").default = require("@material-ui/core/Button").default;
 
-import {sweepToBottom} from "../../renderer/styles/sweepToBottom";
+import {sweepToBottom} from "./../../renderer/styles/sweepToBottom";
 
 export interface ButtonProps
 {
