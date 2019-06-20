@@ -1,4 +1,4 @@
-./node_modules/.bin/eslint --fix $(find src -name *.ts -o -name *.tsx)
+./node_modules/.bin/eslint ./src/**/*.ts ./src/**/*.tsx --cache --fix
 if [[ $? != 0 ]]; then
     exit 1
 fi
