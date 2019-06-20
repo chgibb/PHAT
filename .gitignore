@@ -35,3 +35,4 @@ scripts/tsBundle.js
 scripts/babelMinify.js
 scripts/replaceEnv.js
 .buildCache
+.eslintcache
