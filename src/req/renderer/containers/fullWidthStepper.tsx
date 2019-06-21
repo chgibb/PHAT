@@ -5,25 +5,11 @@ import {SwipeableViews} from "../components/swipeableViews";
 import { Stepper } from '../components/stepper';
 import { Step } from '../components/step';
 import { StepLabel } from '../components/stepLabel';
-import { Button } from '../components/button';
-
-export interface FormData<T>
-{
-    step : string;
-    data : T;
-}
-
-export interface FormStepProps<T>
-{
-    setFormState : (data : T) => void;
-}
-
-export type FormStep = React.Component<FormStepProps<any>,{}>;
 
 export interface FullWidthStep
 {
     label : string;
-    body : FormStep;
+    body : JSX.Element
     className? : string;
 }
 
@@ -41,7 +27,7 @@ export function FullWidthStepper(props : FullWidthStepperProps) : JSX.Element
         setValue(newValue);
     };
 
-    const handleChangeIndex = async (index : number) => 
+    const handleChangeIndex = (index : number) => 
     {
         setValue(index);
     };
@@ -66,13 +52,7 @@ export function FullWidthStepper(props : FullWidthStepperProps) : JSX.Element
                 {
                     return (
                         <div>
-                            <div>
-                                {el.body} 
-                            </div>
-                            <Button
-                                label="Next"
-                                onClick={()=>null}
-                            />
+                            {el.body}
                         </div>
                     );
                 })}

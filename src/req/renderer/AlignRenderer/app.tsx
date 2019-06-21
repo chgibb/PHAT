@@ -6,7 +6,7 @@ import {Component} from "react";
 import {Fastq} from "../../fastq";
 import {Fasta} from "../../fasta";
 import {AtomicOperation} from "../../operations/atomicOperations";
-import { FullWidthStepper,FormStep,FormStepProps } from '../containers/fullWidthStepper';
+import { FullWidthStepper, FullWidthStep} from '../containers/fullWidthStepper';
 import { FastqTable } from '../containers/fastqTable';
 
 export interface AlignRendererAppState
@@ -14,33 +14,6 @@ export interface AlignRendererAppState
     fastqs? : Array<Fastq>;
     fastas? : Array<Fasta>;
     shouldAllowTriggeringOps : boolean;
-}
-
-interface StepOneProps
-{
-    fastqs? : Array<Fastq>;
-    setFormState : (data :{first : string,second : string}) => void;
-}
-
-class StepOne extends React.Component<StepOneProps,{}>
-{
-    public constructor(props : StepOneProps)
-    {
-        super(props);
-    }
-
-    public render()
-    {
-        return (
-            <FastqTable
-                                selection={true}
-                                onSelectionChange={(data) => {
-                                    console.log(data);
-                                }}
-                                data={this.props.fastqs}
-                            />
-        );
-    }
 }
 
 export class AlignRendererApp extends Component<{},AlignRendererAppState>
@@ -110,15 +83,29 @@ export class AlignRendererApp extends Component<{},AlignRendererAppState>
     {
         return (
             <div>
+                <div>
                 <FullWidthStepper steps={[
                     {
                         label : "First",
                         body : (
-                            <StepOne setFormState={()=>null}/>
+                            <p>First</p>
                         )
-                    }
+                    },
+                    {
+                        label : "Second",
+                        body : (
+                            <p>Second</p>
+                        )
+                    },
+                    {
+                        label : "Third",
+                        body : (
+                            <p>Third</p>
+                        )
+                    },
                 ]}
                 />
+            </div>
             </div>
         );
     }
