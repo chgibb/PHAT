@@ -88,7 +88,9 @@ export class AlignRendererApp extends Component<{},AlignRendererAppState>
                     {
                         label : "First",
                         body : (
-                            <p>First</p>
+                            <FastqTable
+                                data={this.state.fastqs}
+                            />
                         )
                     },
                     {
