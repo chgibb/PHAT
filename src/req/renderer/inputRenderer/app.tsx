@@ -3,20 +3,17 @@ const ipc = electron.ipcRenderer;
 import * as React from "react";
 import {Component} from "react";
 
-import {getReadable} from "../../getAppPath";
 import {AtomicOperation} from "../../operations/atomicOperations";
 import {FullWidthTabs} from "../containers/fullWidthTabs";
 import {AlignData} from "../../alignData";
 
 import {Fastq} from "./../../fastq";
 import {Fasta} from "./../../fasta";
-import {activeHover,activeHoverButton} from "./../styles/activeHover";
 import {FastqView} from "./fastqView";
 import {FastaView} from "./fastaView";
 import {AlignView} from "./alignView";
 
-
-export interface AppState
+export interface InputRendererAppState
 {
     fastqs? : Array<Fastq>;
     fastas? : Array<Fasta>;
@@ -24,9 +21,9 @@ export interface AppState
     shouldAllowTriggeringOps : boolean;
 }
 
-export class App extends Component<{},AppState>
+export class InputRendererApp extends Component<{},InputRendererAppState>
 {
-    public state : AppState;
+    public state : InputRendererAppState;
     public constructor()
     {
         super(undefined);
