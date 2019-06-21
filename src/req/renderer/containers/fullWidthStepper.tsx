@@ -7,18 +7,21 @@ import { StepLabel } from '../components/stepLabel';
 import { Button } from '../components/button';
 import {Grid} from "../components/grid";
 import {GridWrapper} from "../containers/gridWrapper";
+import { Typography } from '../components/typography';
 
 export interface FullWidthStep
 {
     label : string;
     body : JSX.Element
     className? : string;
-    errors? : Array<string>;
 }
 
 export interface FullWidthStepperForm
 {
     onAdvance : (step : number) => Promise<boolean>;
+    state : {
+        errors : Array<string>;
+    };
 }
 
 export interface FullWidthStepperProps
@@ -66,7 +69,13 @@ export function FullWidthStepper(props : FullWidthStepperProps) : JSX.Element
                             </div>
                             <GridWrapper>
                                 <Grid container spacing={4} justify="flex-end">
-                                    <Grid item />
+                                    <Grid item>
+                                        {props.form.state.errors ? props.form.state.errors.map((err) => {
+                                            return (
+                                                <Typography>{err}</Typography>
+                                            );
+                                        }) : ""}
+                                    </Grid>
                                     <Grid item>
                                         <Button
                                             label="Previous"
@@ -82,7 +91,8 @@ export function FullWidthStepper(props : FullWidthStepperProps) : JSX.Element
                                             onClick={async () => {
                                                 if(await props.form.onAdvance(value))
                                                 {
-                                                    handleChangeIndex(value + 1);
+                                                    if(value < props.steps.length - 1)
+                                                        handleChangeIndex(value + 1);
                                                 }
                                             }}
                                         />
