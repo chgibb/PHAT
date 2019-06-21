@@ -6,7 +6,7 @@ import {Component} from "react";
 import {Fastq} from "../../fastq";
 import {Fasta} from "../../fasta";
 import {AtomicOperation} from "../../operations/atomicOperations";
-import { FullWidthStepper, FullWidthStep} from '../containers/fullWidthStepper';
+import { FullWidthStepper, FullWidthStepperForm} from '../containers/fullWidthStepper';
 import { FastqTable } from '../containers/fastqTable';
 
 export interface AlignRendererAppState
@@ -16,7 +16,9 @@ export interface AlignRendererAppState
     shouldAllowTriggeringOps : boolean;
 }
 
-export class AlignRendererApp extends Component<{},AlignRendererAppState>
+export class AlignRendererApp 
+    extends Component<{},AlignRendererAppState>
+    implements FullWidthStepperForm
 {
     public state : AlignRendererAppState;
     public constructor()
@@ -79,33 +81,44 @@ export class AlignRendererApp extends Component<{},AlignRendererAppState>
         );
     }
 
+    public onAdvance(step : number) : Promise<boolean>
+    {
+        return new Promise<boolean>((resolve : (val : boolean) => void) : void =>  {
+            if(step == 0)
+                return resolve(true);
+            return resolve(false);
+        });
+    }
+
     public render() : JSX.Element
     {
         return (
             <div>
                 <div>
-                <FullWidthStepper steps={[
-                    {
-                        label : "First",
-                        body : (
-                            <FastqTable
-                                data={this.state.fastqs}
-                            />
-                        )
-                    },
-                    {
-                        label : "Second",
-                        body : (
-                            <p>Second</p>
-                        )
-                    },
-                    {
-                        label : "Third",
-                        body : (
-                            <p>Third</p>
-                        )
-                    },
-                ]}
+                <FullWidthStepper 
+                    form={this}
+                    steps={[
+                        {
+                            label : "First",
+                            body : (
+                                <FastqTable
+                                    data={this.state.fastqs}
+                                />
+                            )
+                        },
+                        {
+                            label : "Second",
+                            body : (
+                                <p>Second</p>
+                            )
+                        },
+                        {
+                            label : "Third",
+                            body : (
+                                <p>Third</p>
+                            )
+                        },
+                    ]}
                 />
             </div>
             </div>
