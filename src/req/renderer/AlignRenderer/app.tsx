@@ -26,6 +26,7 @@ export class AlignRendererApp
     public constructor()
     {
         super(undefined);
+        
         this.state = {
 
         } as AlignRendererAppState;

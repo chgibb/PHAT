@@ -19,10 +19,8 @@ export interface FullWidthStep
 export interface FullWidthStepperForm
 {
     onAdvance : (step : number) => Promise<boolean>;
-    currentStep : number;
     state : {
         errors : Array<string>;
-        validSteps : Array<boolean>;
     };
 }
 
@@ -34,7 +32,7 @@ export interface FullWidthStepperProps
 
 export function FullWidthStepper(props : FullWidthStepperProps) : JSX.Element
 {
-    props.form.currentStep = 0;
+    const [value,setValue] = React.useState(0);
 
     const handleChangeIndex = (index : number) => 
     {
