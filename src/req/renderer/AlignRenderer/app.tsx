@@ -12,8 +12,10 @@ import { FastqTable } from '../containers/fastqTable';
 export interface AlignRendererAppState
 {
     fastqs? : Array<Fastq>;
+    selectedFastqUuids? : Array<string>;
     fastas? : Array<Fasta>;
     shouldAllowTriggeringOps : boolean;
+    errors : Array<string>;
 }
 
 export class AlignRendererApp 
@@ -27,6 +29,8 @@ export class AlignRendererApp
         this.state = {
 
         } as AlignRendererAppState;
+
+        this.onFastqSelectionChange = this.onFastqSelectionChange.bind(this);
 
         ipc.on
         (
@@ -84,14 +88,44 @@ export class AlignRendererApp
     public onAdvance(step : number) : Promise<boolean>
     {
         return new Promise<boolean>((resolve : (val : boolean) => void) : void =>  {
+            console.log(step);
             if(step == 0)
-                return resolve(true);
-            return resolve(false);
+            {
+                if(!this.state.selectedFastqUuids || this.state.selectedFastqUuids.length < 1 || this.state.selectedFastqUuids.length > 2)
+                {
+                    this.setState({
+                        errors : ["Select at at least 1 fastq but no more than 2."]
+                    });
+                    return resolve(false);
+                }
+            }
+            this.setState({
+                errors: []
+            });
+            return resolve(true);
+        });
+    }
+
+    public onFastqSelectionChange(data : Array<Fastq>) : void
+    {
+        this.setState({
+            selectedFastqUuids : data.map((el) => el.uuid)
         });
     }
 
     public render() : JSX.Element
     {
+        let selected : Array<string> | undefined = undefined;
+
+        if(this.state.fastqs && this.state.selectedFastqUuids)
+        {
+            selected = [];
+            this.state.selectedFastqUuids.map((uuid) => {
+                selected.push(this.state.fastqs.find((el) => {
+                    return el.uuid == uuid;
+                }).alias);
+            });
+        }
         return (
             <div>
                 <div>
@@ -99,23 +133,31 @@ export class AlignRendererApp
                     form={this}
                     steps={[
                         {
-                            label : "First",
+                            label : !this.state.selectedFastqUuids || this.state.selectedFastqUuids.length == 0 ? "Select fastq(s) to align" : `Selected${"\n"}${selected.join(",\n")}`,
                             body : (
                                 <FastqTable
+                                    selection={true}
+                                    onSelectionChange={this.onFastqSelectionChange}
                                     data={this.state.fastqs}
                                 />
                             )
                         },
                         {
-                            label : "Second",
+                            label : "Select orientation",
                             body : (
                                 <p>Second</p>
                             )
                         },
                         {
-                            label : "Third",
+                            label : "Select reference to align against",
                             body : (
                                 <p>Third</p>
+                            )
+                        },
+                        {
+                            label : "Select aligner",
+                            body : (
+                                <p>Fourth</p>
                             )
                         },
                     ]}
