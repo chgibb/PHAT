@@ -116,13 +116,13 @@ export class AlignRendererApp
 
     public render() : JSX.Element
     {
-        let selected : Array<string> | undefined = undefined;
+        let selectedFastqs : Array<string> | undefined = undefined;
 
         if(this.state.fastqs && this.state.selectedFastqUuids)
         {
-            selected = [];
+            selectedFastqs = [];
             this.state.selectedFastqUuids.map((uuid) => {
-                selected.push(this.state.fastqs.find((el) => {
+                selectedFastqs.push(this.state.fastqs.find((el) => {
                     return el.uuid == uuid;
                 }).alias);
             });
@@ -134,7 +134,7 @@ export class AlignRendererApp
                     form={this}
                     steps={[
                         {
-                            label : !this.state.selectedFastqUuids || this.state.selectedFastqUuids.length == 0 ? "Select fastq(s) to align" : `Selected${"\n"}${selected.join(",\n")}`,
+                            label : !this.state.selectedFastqUuids || this.state.selectedFastqUuids.length == 0 ? "Select fastq(s) to align" : `Selected${"\n"}${selectedFastqs.join(",\n")}`,
                             body : (
                                 <FastqTable
                                     selection={true}
