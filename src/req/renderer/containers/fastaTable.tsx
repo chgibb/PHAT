@@ -10,6 +10,7 @@ import {ThreeQuartersLoader} from "../components/threeQuartersLoader";
 export interface FastaTableProps
 {
     shouldAllowTriggeringOps : boolean;
+    actions? : boolean;
     onIndexForVizClick : (event : React.MouseEvent<HTMLButtonElement, MouseEvent>,data : Fasta) => void;
     data : Array<Fasta>;
 }
@@ -48,7 +49,7 @@ export function FastaTable(props : FastaTableProps) : JSX.Element
                     }
                 }
             ]}
-            actions={[
+            actions={props.actions ? [
                 (rowData : Fasta) => ({
                     icon : (() => 
                     {
@@ -60,7 +61,7 @@ export function FastaTable(props : FastaTableProps) : JSX.Element
                     onClick : props.onIndexForVizClick,
                     disabled : rowData.indexedForVisualization
                 })
-            ]}
+            ] : undefined}
             data={props.data}
         />
     );
