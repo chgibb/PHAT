@@ -40,7 +40,7 @@ export function FullWidthStepper(props : FullWidthStepperProps) : JSX.Element
     {
         setValue(index);
         props.setFormState({
-            currentStep : value
+            currentStep : index
         });
     };
 
