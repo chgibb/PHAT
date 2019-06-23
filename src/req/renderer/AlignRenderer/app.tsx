@@ -2,8 +2,6 @@ import * as electron from "electron";
 const ipc = electron.ipcRenderer;
 import * as React from "react";
 import {Component} from "react";
-import {createPortal} from "react-dom";
-import { DragDropContext, Droppable, Draggable, DropResult, ResponderProvided, DroppableProvided, DroppableStateSnapshot, DraggableProvided, DraggableStateSnapshot } from "react-beautiful-dnd";
 
 import {Fastq} from "../../fastq";
 import {Fasta} from "../../fasta";
@@ -13,6 +11,10 @@ import { FastqTable } from '../containers/fastqTable';
 import { reOrder } from '../../reOrder';
 import { ListItem } from '../components/listItem';
 import { ListItemText } from '../components/listItemText';
+import { GridWrapper } from '../containers/gridWrapper';
+import {Grid} from "../components/grid";
+import { Typography } from '../components/typography';
+import { VerticalDnD, DropResult, ResponderProvided } from '../containers/verticalDnD';
 
 export interface AlignRendererAppState
 {
@@ -169,41 +171,39 @@ export class AlignRendererApp
                             label : "Select orientation",
                             body : (
                                 <div>
-                                    {this.state.selectedFastqUuids ? 
-                                        <DragDropContext onDragEnd={this.onStepTwoDragEnd}>
-                                            <Droppable droppableId="droppable">
-                                                {(provided : DroppableProvided,snapshot : DroppableStateSnapshot) => (
-                                                    <div
-                                                        {...provided.droppableProps}
-                                                        ref={provided.innerRef}
-                                                    >
-                                                        {this.state.selectedFastqUuids.map((el,i) => (
-                                                            <Draggable key={el} draggableId={el} index={i}>
-                                                                {(provided : DraggableProvided,snapshot : DraggableStateSnapshot) => {
-                                                                    const node : JSX.Element = (
-                                                                        <div
-                                                                            {...provided.draggableProps}
-                                                                            {...provided.dragHandleProps}
-                                                                            ref={provided.innerRef}
-                                                                            ><ListItem>
-                                                                                <ListItemText
-                                                                                    primary={el}
-                                                                                />
-                                                                            </ListItem></div>
-                                                                    );
-                                                                    
-                                                                    if(snapshot.isDragging)
-                                                                        return createPortal(node,this.portal);
-                                                                    
-                                                                    return node;
-                                                                }}
-                                                            </Draggable>
-                                                        ))}
-                                                        {provided.placeholder}
-                                                    </div>
-                                                )}
-                                            </Droppable>
-                                        </DragDropContext>
+                                    {this.state.selectedFastqUuids ?
+                                        <GridWrapper>
+                                            <Grid container spacing={4} justify="center">
+                                            <Grid item>
+                                                <Typography>
+                                                    Forward
+                                                </Typography>
+                                                <Typography>
+                                                    Reverse
+                                                </Typography>
+                                            </Grid>
+                                            <Grid item>
+
+                                                <VerticalDnD<string>
+                                                    onDragEnd={this.onStepTwoDragEnd}
+                                                    droppableID="droppable"
+                                                    draggableKey={(el) => el}
+                                                    draggableId={(el) => el}
+                                                    draggableContent={(el) => {
+                                                        return (
+                                                            <ListItem>
+                                                                <ListItemText
+                                                                    primary={el}
+                                                                />
+                                                            </ListItem>
+                                                        );
+                                                    }}
+                                                    portal={this.portal}
+                                                    data={this.state.selectedFastqUuids}
+                                                />
+                                        </Grid>
+                                        </Grid>
+                                        </GridWrapper> 
                                     : ""}
                                 </div>
                             )
