@@ -43,6 +43,7 @@ export class AlignRendererApp
 
         this.onFastqSelectionChange = this.onFastqSelectionChange.bind(this);
         this.onStepTwoDragEnd = this.onStepTwoDragEnd.bind(this);
+        this.setState = this.setState.bind(this);
 
         this.portal = document.createElement("div");
         document.body.appendChild(this.portal);
@@ -145,6 +146,8 @@ export class AlignRendererApp
         let selectedFastqsAliases : Array<string> | undefined = undefined;
         let selectedFastqsObjs : Array<Fastq> | undefined = undefined;
 
+        let stepTwoLabel = "Select orientation";
+
         if(this.state.fastqs && this.state.selectedFastqUuids)
         {
             selectedFastqsAliases = [];
@@ -161,6 +164,15 @@ export class AlignRendererApp
                 }));
             });
         }
+
+        if(this.state.currentStep >= 1 && selectedFastqsObjs && selectedFastqsObjs.length > 0)
+        {
+            stepTwoLabel = `Forward: ${selectedFastqsObjs[0].alias}${"\n"}`;
+
+            if(selectedFastqsObjs.length > 1)
+                stepTwoLabel += `${"\n"}Reverse: ${selectedFastqsObjs[1].alias}${"\n"}`;
+        }
+
         return (
             <div>
                 <div>
@@ -179,7 +191,7 @@ export class AlignRendererApp
                             )
                         },
                         {
-                            label : "Select orientation",
+                            label : stepTwoLabel,
                             body : (
                                 <div>
                                     {this.state.selectedFastqUuids ?
