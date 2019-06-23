@@ -1,10 +1,10 @@
 import * as React from "react";
 
-export const MuiButton : typeof import("@material-ui/core/Button").default = require("@material-ui/core/Button").default;
-
 import {sweepToBottom} from "../styles/sweepToBottom";
-import { sweepToRight } from '../styles/sweepToRight';
-import { sweepToLeft } from '../styles/sweepToLeft';
+import {sweepToRight} from "../styles/sweepToRight";
+import {sweepToLeft} from "../styles/sweepToLeft";
+
+export const MuiButton : typeof import("@material-ui/core/Button").default = require("@material-ui/core/Button").default;
 
 export interface ButtonProps
 {

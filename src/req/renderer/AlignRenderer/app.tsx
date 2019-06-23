@@ -15,13 +15,13 @@ import {Typography} from "../components/typography";
 import {VerticalDnD, DropResult, ResponderProvided} from "../containers/verticalDnD";
 import {Paper} from "../components/paper";
 import {paperPadding} from "../styles/paperPadding";
+import {FastaTable} from "../containers/fastaTable";
+import {FormControl} from "../components/formControl";
+import {RadioGroup} from "../components/radioGroup";
+import {FormControlLabel} from "../components/formControlLabel";
+import {Radio} from "../components/radio";
 
 import {headingPadding} from "./styles/headingPadding";
-import { FastaTable } from '../containers/fastaTable';
-import { FormControl } from '../components/formControl';
-import { RadioGroup } from '../components/radioGroup';
-import { FormControlLabel } from '../components/formControlLabel';
-import { Radio } from '../components/radio';
 
 export interface AlignRendererAppState
 {
@@ -291,25 +291,25 @@ export class AlignRendererApp
             body : (
                 <div>
                     <GridWrapper>
-                                <Grid container spacing={4} justify="center">
-                                    <Grid item>
-                    <FormControl component="fieldset">
-                        <RadioGroup
-                        >
-                            <FormControlLabel 
-                                value="bowtie2"
-                                control={<Radio color="primary" />}
-                                label="Bowtie2"
-                            />
-                            <FormControlLabel 
-                                value="hisat2"
-                                control={<Radio color="primary" />}
-                                label="Hisat2"
-                            />
-                        </RadioGroup>
-                    </FormControl>
-                    </Grid>
-                    </Grid>
+                        <Grid container spacing={4} justify="center">
+                            <Grid item>
+                                <FormControl component="fieldset">
+                                    <RadioGroup
+                                    >
+                                        <FormControlLabel 
+                                            value="bowtie2"
+                                            control={<Radio color="primary" />}
+                                            label="Bowtie2"
+                                        />
+                                        <FormControlLabel 
+                                            value="hisat2"
+                                            control={<Radio color="primary" />}
+                                            label="Hisat2"
+                                        />
+                                    </RadioGroup>
+                                </FormControl>
+                            </Grid>
+                        </Grid>
                     </GridWrapper>
                 </div>
             )
