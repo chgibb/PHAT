@@ -9,12 +9,12 @@ import {AtomicOperation} from "../../operations/atomicOperations";
 import { FullWidthStepper, FullWidthStepperForm} from '../containers/fullWidthStepper';
 import { FastqTable } from '../containers/fastqTable';
 import { reOrder } from '../../reOrder';
-import { ListItem } from '../components/listItem';
-import { ListItemText } from '../components/listItemText';
 import { GridWrapper } from '../containers/gridWrapper';
 import {Grid} from "../components/grid";
 import { Typography } from '../components/typography';
 import { VerticalDnD, DropResult, ResponderProvided } from '../containers/verticalDnD';
+import { Paper } from '../components/paper';
+import { paperPadding } from '../styles/paperPadding';
 
 export interface AlignRendererAppState
 {
@@ -140,15 +140,23 @@ export class AlignRendererApp
 
     public render() : JSX.Element
     {
-        let selectedFastqs : Array<string> | undefined = undefined;
+        let selectedFastqsAliases : Array<string> | undefined = undefined;
+        let selectedFastqsObjs : Array<Fastq> | undefined = undefined;
 
         if(this.state.fastqs && this.state.selectedFastqUuids)
         {
-            selectedFastqs = [];
+            selectedFastqsAliases = [];
             this.state.selectedFastqUuids.map((uuid) => {
-                selectedFastqs.push(this.state.fastqs.find((el) => {
+                selectedFastqsAliases.push(this.state.fastqs.find((el) => {
                     return el.uuid == uuid;
                 }).alias);
+            });
+
+            selectedFastqsObjs = [];
+            this.state.selectedFastqUuids.map((uuid) => {
+                selectedFastqsObjs.push(this.state.fastqs.find((el) => {
+                    return el.uuid == uuid;
+                }));
             });
         }
         return (
@@ -158,7 +166,7 @@ export class AlignRendererApp
                     form={this}
                     steps={[
                         {
-                            label : !this.state.selectedFastqUuids || this.state.selectedFastqUuids.length == 0 ? "Select fastq(s) to align" : `Selected${"\n"}${selectedFastqs.join(",\n")}`,
+                            label : !this.state.selectedFastqUuids || this.state.selectedFastqUuids.length == 0 ? "Select fastq(s) to align" : `Selected${"\n"}${selectedFastqsAliases.join(",\n")}`,
                             body : (
                                 <FastqTable
                                     selection={true}
@@ -184,22 +192,25 @@ export class AlignRendererApp
                                             </Grid>
                                             <Grid item>
 
-                                                <VerticalDnD<string>
+                                                <VerticalDnD<Fastq>
                                                     onDragEnd={this.onStepTwoDragEnd}
                                                     droppableID="droppable"
-                                                    draggableKey={(el) => el}
-                                                    draggableId={(el) => el}
+                                                    draggableKey={(el) => el.uuid}
+                                                    draggableId={(el) => el.uuid}
                                                     draggableContent={(el) => {
                                                         return (
-                                                            <ListItem>
-                                                                <ListItemText
-                                                                    primary={el}
-                                                                />
-                                                            </ListItem>
+                                                            <Paper className={paperPadding}>
+                                                                <Typography variant="h5" component="h3">
+                                                                    {el.alias}
+                                                                </Typography>
+                                                                <Typography component="p">
+                                                                    {el.sizeString}
+                                                                </Typography>
+                                                            </Paper>
                                                         );
                                                     }}
                                                     portal={this.portal}
-                                                    data={this.state.selectedFastqUuids}
+                                                    data={selectedFastqsObjs}
                                                 />
                                         </Grid>
                                         </Grid>
