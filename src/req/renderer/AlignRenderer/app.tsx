@@ -17,6 +17,7 @@ import {Paper} from "../components/paper";
 import {paperPadding} from "../styles/paperPadding";
 
 import {headingPadding} from "./styles/headingPadding";
+import { FastaTable } from '../containers/fastaTable';
 
 export interface AlignRendererAppState
 {
@@ -246,7 +247,14 @@ export class AlignRendererApp
         steps.push({
             label : "Select reference to align against",
             body : (
-                <p>Third</p>
+                <div>
+                    <FastaTable
+                        actions={false}
+                        data={this.state.fastas}
+                        shouldAllowTriggeringOps={true}
+                        onIndexForVizClick={()=>null}
+                    />
+                </div>
             )
         });
 
