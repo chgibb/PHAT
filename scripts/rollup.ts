@@ -19,6 +19,7 @@
             "hoist-non-react-statics",
             "dom-helpers/class/addClass",
             "dom-helpers/class/removeClass",
+            "react-beautiful-dnd",
 
             "@material-ui/core/Button",
 
