@@ -2,12 +2,17 @@ import * as electron from "electron";
 const ipc = electron.ipcRenderer;
 import * as React from "react";
 import {Component} from "react";
+import {createPortal} from "react-dom";
+import { DragDropContext, Droppable, Draggable, DropResult, ResponderProvided, DroppableProvided, DroppableStateSnapshot, DraggableProvided, DraggableStateSnapshot } from "react-beautiful-dnd";
 
 import {Fastq} from "../../fastq";
 import {Fasta} from "../../fasta";
 import {AtomicOperation} from "../../operations/atomicOperations";
 import { FullWidthStepper, FullWidthStepperForm} from '../containers/fullWidthStepper';
 import { FastqTable } from '../containers/fastqTable';
+import { reOrder } from '../../reOrder';
+import { ListItem } from '../components/listItem';
+import { ListItemText } from '../components/listItemText';
 
 export interface AlignRendererAppState
 {
@@ -23,6 +28,7 @@ export class AlignRendererApp
     implements FullWidthStepperForm
 {
     public state : AlignRendererAppState;
+    public portal : HTMLElement;
     public constructor()
     {
         super(undefined);
@@ -32,6 +38,10 @@ export class AlignRendererApp
         } as AlignRendererAppState;
 
         this.onFastqSelectionChange = this.onFastqSelectionChange.bind(this);
+        this.onStepTwoDragEnd = this.onStepTwoDragEnd.bind(this);
+
+        this.portal = document.createElement("div");
+        document.body.appendChild(this.portal);
 
         ipc.on
         (
@@ -114,6 +124,18 @@ export class AlignRendererApp
         });
     }
 
+    public onStepTwoDragEnd(result : DropResult,provider : ResponderProvided) : void
+    {
+        if(!result.destination)
+            return;
+        this.setState({
+            selectedFastqUuids : reOrder(
+                this.state.selectedFastqUuids,
+                result.source.index,
+                result.destination.index
+        )});
+    }
+
     public render() : JSX.Element
     {
         let selectedFastqs : Array<string> | undefined = undefined;
@@ -146,7 +168,44 @@ export class AlignRendererApp
                         {
                             label : "Select orientation",
                             body : (
-                                <p>Second</p>
+                                <div>
+                                    {this.state.selectedFastqUuids ? 
+                                        <DragDropContext onDragEnd={this.onStepTwoDragEnd}>
+                                            <Droppable droppableId="droppable">
+                                                {(provided : DroppableProvided,snapshot : DroppableStateSnapshot) => (
+                                                    <div
+                                                        {...provided.droppableProps}
+                                                        ref={provided.innerRef}
+                                                    >
+                                                        {this.state.selectedFastqUuids.map((el,i) => (
+                                                            <Draggable key={el} draggableId={el} index={i}>
+                                                                {(provided : DraggableProvided,snapshot : DraggableStateSnapshot) => {
+                                                                    const node : JSX.Element = (
+                                                                        <div
+                                                                            {...provided.draggableProps}
+                                                                            {...provided.dragHandleProps}
+                                                                            ref={provided.innerRef}
+                                                                            ><ListItem>
+                                                                                <ListItemText
+                                                                                    primary={el}
+                                                                                />
+                                                                            </ListItem></div>
+                                                                    );
+                                                                    
+                                                                    if(snapshot.isDragging)
+                                                                        return createPortal(node,this.portal);
+                                                                    
+                                                                    return node;
+                                                                }}
+                                                            </Draggable>
+                                                        ))}
+                                                        {provided.placeholder}
+                                                    </div>
+                                                )}
+                                            </Droppable>
+                                        </DragDropContext>
+                                    : ""}
+                                </div>
                             )
                         },
                         {
