@@ -148,8 +148,6 @@ export class AlignRendererApp
         let selectedFastqsAliases : Array<string> | undefined = undefined;
         let selectedFastqsObjs : Array<Fastq> | undefined = undefined;
 
-        let stepTwoLabel = "Select orientation";
-
         if(this.state.fastqs && this.state.selectedFastqUuids)
         {
             selectedFastqsAliases = [];
@@ -171,13 +169,7 @@ export class AlignRendererApp
             });
         }
 
-        if(this.state.currentStep >= 1 && selectedFastqsObjs && selectedFastqsObjs.length > 0)
-        {
-            stepTwoLabel = `Forward: ${selectedFastqsObjs[0].alias}${"\n"}`;
-
-            if(selectedFastqsObjs.length > 1)
-                stepTwoLabel += `${"\n"}Reverse: ${selectedFastqsObjs[1].alias}${"\n"}`;
-        }
+        
 
         let steps : Array<FullWidthStep> = new Array();
 
@@ -194,6 +186,16 @@ export class AlignRendererApp
 
         if(this.state.selectedFastqUuids && this.state.selectedFastqUuids.length > 1)
         {
+            let stepTwoLabel = "Select orientation";
+            
+            if(this.state.currentStep >= 1 && selectedFastqsObjs && selectedFastqsObjs.length > 0)
+            {
+                stepTwoLabel = `Forward: ${selectedFastqsObjs[0].alias}${"\n"}`;
+
+                if(selectedFastqsObjs.length > 1)
+                    stepTwoLabel += `${"\n"}Reverse: ${selectedFastqsObjs[1].alias}${"\n"}`;
+            }
+
             steps.push({
                 label : stepTwoLabel,
                 body : (
