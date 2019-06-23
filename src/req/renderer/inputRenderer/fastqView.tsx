@@ -25,7 +25,7 @@ export class FastqView extends React.Component<FastqViewProps,{}>
         return (
             <React.Fragment>
                 <Button
-                    type="advance"
+                    type="remain"
                     onClick={() => 
                     {
                         inputFastqDialog();
@@ -38,7 +38,7 @@ export class FastqView extends React.Component<FastqViewProps,{}>
                 {
                     this.props.fastqInputs ? this.props.fastqInputs.length > 0 ?
                         <Button
-                            type="advance"
+                            type="remain"
                             onClick={() => 
                             {
                                 pub.importSelectedFastqs(this.props.fastqInputs);

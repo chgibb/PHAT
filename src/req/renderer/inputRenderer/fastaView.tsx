@@ -26,7 +26,7 @@ export class FastaView extends Component<FastaViewProps,{}>
         return (
             <React.Fragment>
                 <Button
-                    type="advance"
+                    type="remain"
                     onClick={() => 
                     {
                         inputFastaDialog();
@@ -46,7 +46,7 @@ export class FastaView extends Component<FastaViewProps,{}>
                 {
                     this.props.fastaInputs ? this.props.fastaInputs.length > 0 ?
                         <Button
-                            type="advance"
+                            type="remain"
                             onClick={() => 
                             {
                                 pub.importSelectedFastas(this.props.fastaInputs);

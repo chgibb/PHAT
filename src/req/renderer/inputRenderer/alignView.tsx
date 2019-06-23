@@ -55,7 +55,7 @@ export class AlignView extends React.Component<AlignViewProps,AlignViewState>
                 {!this.state.tryingToLinkRef ?
                     <React.Fragment>
                         <Button
-                            type="advance"
+                            type="remain"
                             onClick={() => 
                             {
                                 inputAlignDialog();
@@ -77,7 +77,7 @@ export class AlignView extends React.Component<AlignViewProps,AlignViewState>
                     : showingCompatibleTables ?
                         <React.Fragment>
                             <Button
-                                type="advance"
+                                type="retreat"
                                 onClick={() => 
                                 {
                                     this.setState({
