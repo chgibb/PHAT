@@ -191,7 +191,7 @@ export class AlignRendererApp
             
             if(this.state.currentStep >= 1 && selectedFastqsObjs && selectedFastqsObjs.length > 0)
             {
-                stepTwoLabel = `Forward: ${selectedFastqsObjs[0].alias}${"\n"}`;
+                stepTwoLabel = `Forward: ${selectedFastqsObjs[0].alias},${"\n"}`;
 
                 if(selectedFastqsObjs.length > 1)
                     stepTwoLabel += `${"\n"}Reverse: ${selectedFastqsObjs[1].alias}${"\n"}`;
