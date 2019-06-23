@@ -6,16 +6,17 @@ import {Component} from "react";
 import {Fastq} from "../../fastq";
 import {Fasta} from "../../fasta";
 import {AtomicOperation} from "../../operations/atomicOperations";
-import { FullWidthStepper, FullWidthStepperForm, FullWidthStepperProps, FullWidthStep} from '../containers/fullWidthStepper';
-import { FastqTable } from '../containers/fastqTable';
-import { reOrder } from '../../reOrder';
-import { GridWrapper } from '../containers/gridWrapper';
+import {FullWidthStepper, FullWidthStepperForm, FullWidthStepperProps, FullWidthStep} from "../containers/fullWidthStepper";
+import {FastqTable} from "../containers/fastqTable";
+import {reOrder} from "../../reOrder";
+import {GridWrapper} from "../containers/gridWrapper";
 import {Grid} from "../components/grid";
-import { Typography } from '../components/typography';
-import { VerticalDnD, DropResult, ResponderProvided } from '../containers/verticalDnD';
-import { Paper } from '../components/paper';
-import { paperPadding } from '../styles/paperPadding';
-import { headingPadding } from './styles/headingPadding';
+import {Typography} from "../components/typography";
+import {VerticalDnD, DropResult, ResponderProvided} from "../containers/verticalDnD";
+import {Paper} from "../components/paper";
+import {paperPadding} from "../styles/paperPadding";
+
+import {headingPadding} from "./styles/headingPadding";
 
 export interface AlignRendererAppState
 {
@@ -103,7 +104,8 @@ export class AlignRendererApp
 
     public onAdvance(step : number) : Promise<boolean>
     {
-        return new Promise<boolean>((resolve : (val : boolean) => void) : void =>  {
+        return new Promise<boolean>((resolve : (val : boolean) => void) : void =>  
+        {
             console.log(step);
             if(step == 0)
             {
@@ -138,7 +140,7 @@ export class AlignRendererApp
                 this.state.selectedFastqUuids,
                 result.source.index,
                 result.destination.index
-        )});
+            )});
     }
 
     public render() : JSX.Element
@@ -151,15 +153,19 @@ export class AlignRendererApp
         if(this.state.fastqs && this.state.selectedFastqUuids)
         {
             selectedFastqsAliases = [];
-            this.state.selectedFastqUuids.map((uuid) => {
-                selectedFastqsAliases.push(this.state.fastqs.find((el) => {
+            this.state.selectedFastqUuids.map((uuid) => 
+            {
+                selectedFastqsAliases.push(this.state.fastqs.find((el) => 
+                {
                     return el.uuid == uuid;
                 }).alias);
             });
 
             selectedFastqsObjs = [];
-            this.state.selectedFastqUuids.map((uuid) => {
-                selectedFastqsObjs.push(this.state.fastqs.find((el) => {
+            this.state.selectedFastqUuids.map((uuid) => 
+            {
+                selectedFastqsObjs.push(this.state.fastqs.find((el) => 
+                {
                     return el.uuid == uuid;
                 }));
             });
@@ -188,51 +194,52 @@ export class AlignRendererApp
 
         if(this.state.selectedFastqUuids && this.state.selectedFastqUuids.length > 1)
         {
-        steps.push({
-            label : stepTwoLabel,
-            body : (
-                <div>
-                    {this.state.selectedFastqUuids ?
-                        <GridWrapper>
-                            <Grid container spacing={4} justify="center">
-                            <Grid item>
-                                <Typography className={headingPadding}>
-                                    Forward
-                                </Typography>
-                                <Typography>
-                                    Reverse
-                                </Typography>
-                            </Grid>
-                            <Grid item>
+            steps.push({
+                label : stepTwoLabel,
+                body : (
+                    <div>
+                        {this.state.selectedFastqUuids ?
+                            <GridWrapper>
+                                <Grid container spacing={4} justify="center">
+                                    <Grid item>
+                                        <Typography className={headingPadding}>
+                                            Forward
+                                        </Typography>
+                                        <Typography>
+                                            Reverse
+                                        </Typography>
+                                    </Grid>
+                                    <Grid item>
 
-                                <VerticalDnD<Fastq>
-                                    onDragEnd={this.onStepTwoDragEnd}
-                                    droppableID="droppable"
-                                    draggableKey={(el) => el.uuid}
-                                    draggableId={(el) => el.uuid}
-                                    draggableContent={(el) => {
-                                        return (
-                                            <Paper className={paperPadding}>
-                                                <Typography variant="h5" component="h3">
-                                                    {el.alias}
-                                                </Typography>
-                                                <Typography component="p">
-                                                    {el.sizeString}
-                                                </Typography>
-                                            </Paper>
-                                        );
-                                    }}
-                                    portal={this.portal}
-                                    data={selectedFastqsObjs}
-                                />
-                        </Grid>
-                        </Grid>
-                        </GridWrapper> 
-                    : ""}
-                </div>
-            )
-        });
-    }
+                                        <VerticalDnD<Fastq>
+                                            onDragEnd={this.onStepTwoDragEnd}
+                                            droppableID="droppable"
+                                            draggableKey={(el) => el.uuid}
+                                            draggableId={(el) => el.uuid}
+                                            draggableContent={(el) => 
+                                            {
+                                                return (
+                                                    <Paper className={paperPadding}>
+                                                        <Typography variant="h5" component="h3">
+                                                            {el.alias}
+                                                        </Typography>
+                                                        <Typography component="p">
+                                                            {el.sizeString}
+                                                        </Typography>
+                                                    </Paper>
+                                                );
+                                            }}
+                                            portal={this.portal}
+                                            data={selectedFastqsObjs}
+                                        />
+                                    </Grid>
+                                </Grid>
+                            </GridWrapper> 
+                            : ""}
+                    </div>
+                )
+            });
+        }
 
         steps.push({
             label : "Select reference to align against",
@@ -251,12 +258,12 @@ export class AlignRendererApp
         return (
             <div>
                 <div>
-                <FullWidthStepper 
-                    form={this}
-                    setFormState={this.setState}
-                    steps={steps}
-                />
-            </div>
+                    <FullWidthStepper 
+                        form={this}
+                        setFormState={this.setState}
+                        steps={steps}
+                    />
+                </div>
             </div>
         );
     }

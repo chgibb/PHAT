@@ -1,13 +1,13 @@
 import * as React from "react";
 
 import {SwipeableViews} from "../components/swipeableViews";
-import { Stepper } from '../components/stepper';
-import { Step } from '../components/step';
-import { StepLabel } from '../components/stepLabel';
-import { Button } from '../components/button';
+import {Stepper} from "../components/stepper";
+import {Step} from "../components/step";
+import {StepLabel} from "../components/stepLabel";
+import {Button} from "../components/button";
 import {Grid} from "../components/grid";
 import {GridWrapper} from "../containers/gridWrapper";
-import { Typography } from '../components/typography';
+import {Typography} from "../components/typography";
 
 export interface FullWidthStep
 {
@@ -47,7 +47,8 @@ export function FullWidthStepper(props : FullWidthStepperProps) : JSX.Element
     return (
         <div>
             <Stepper activeStep={value} alternativeLabel>
-                {props.steps.map((step) => {
+                {props.steps.map((step) => 
+                {
                     return (
                         <Step key={step.label}>
                             <StepLabel>{step.label}</StepLabel>
@@ -70,7 +71,8 @@ export function FullWidthStepper(props : FullWidthStepperProps) : JSX.Element
                             <GridWrapper>
                                 <Grid container spacing={4} justify="flex-end">
                                     <Grid item>
-                                        {props.form.state.errors ? props.form.state.errors.map((err) => {
+                                        {props.form.state.errors ? props.form.state.errors.map((err) => 
+                                        {
                                             return (
                                                 <Typography>{err}</Typography>
                                             );
@@ -79,7 +81,8 @@ export function FullWidthStepper(props : FullWidthStepperProps) : JSX.Element
                                     <Grid item>
                                         <Button
                                             label="Previous"
-                                            onClick={() => {
+                                            onClick={() => 
+                                            {
                                                 if(value > 0)
                                                     handleChangeIndex(value - 1);
                                             }}
@@ -88,7 +91,8 @@ export function FullWidthStepper(props : FullWidthStepperProps) : JSX.Element
                                     <Grid item>
                                         <Button
                                             label="Next"
-                                            onClick={async () => {
+                                            onClick={async () => 
+                                            {
                                                 if(await props.form.onAdvance(value))
                                                 {
                                                     if(value < props.steps.length - 1)

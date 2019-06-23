@@ -1,6 +1,6 @@
 import  * as React from "react";
 
-import { gridWrapper } from '../styles/gridWrapper';
+import {gridWrapper} from "../styles/gridWrapper";
 
 export interface GridWrapperProps
 {

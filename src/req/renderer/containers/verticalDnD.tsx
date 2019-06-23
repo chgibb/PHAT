@@ -1,6 +1,5 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-
 import { 
     DragDropContext, 
     Droppable, 
@@ -32,20 +31,23 @@ export function VerticalDnD<T>(props : VerticalDnDPRops<T>) : JSX.Element
     return (
         <DragDropContext onDragEnd={props.onDragEnd}>
             <Droppable droppableId={props.droppableID}>
-                {(provided : DroppableProvided,snapshot : DroppableStateSnapshot) => {
+                {(provided : DroppableProvided,snapshot : DroppableStateSnapshot) => 
+                {
                     return (
                         <div
                             {...provided.droppableProps}
                             ref={provided.innerRef}
                         >
-                            {props.data.map((el : T,i : number) => {
+                            {props.data.map((el : T,i : number) => 
+                            {
                                 return (
                                     <Draggable 
                                         key={props.draggableKey(el)} 
                                         draggableId={props.draggableId(el)}
                                         index={i}
                                     >
-                                        {(provided : DraggableProvided,snapshot : DraggableStateSnapshot) => {
+                                        {(provided : DraggableProvided,snapshot : DraggableStateSnapshot) => 
+                                        {
                                             const node : JSX.Element = (
                                                 <div
                                                     {...provided.draggableProps}
