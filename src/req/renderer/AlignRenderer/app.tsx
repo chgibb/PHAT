@@ -24,6 +24,7 @@ export interface AlignRendererAppState
     fastas? : Array<Fasta>;
     shouldAllowTriggeringOps : boolean;
     errors : Array<string>;
+    currentStep : number;
 }
 
 export class AlignRendererApp 
@@ -37,7 +38,7 @@ export class AlignRendererApp
         super(undefined);
         
         this.state = {
-
+            currentStep : 0
         } as AlignRendererAppState;
 
         this.onFastqSelectionChange = this.onFastqSelectionChange.bind(this);
@@ -165,6 +166,7 @@ export class AlignRendererApp
                 <div>
                 <FullWidthStepper 
                     form={this}
+                    setFormState={this.setState}
                     steps={[
                         {
                             label : !this.state.selectedFastqUuids || this.state.selectedFastqUuids.length == 0 ? "Select fastq(s) to align" : `Selected${"\n"}${selectedFastqsAliases.join(",\n")}`,
