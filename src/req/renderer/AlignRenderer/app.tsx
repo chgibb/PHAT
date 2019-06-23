@@ -337,6 +337,13 @@ export class AlignRendererApp
             )
         });
 
+        steps.push({
+            label : "Review and begin",
+            body : (
+                <p>Fifth</p>
+            )
+        });
+
         return (
             <div>
                 <div>
