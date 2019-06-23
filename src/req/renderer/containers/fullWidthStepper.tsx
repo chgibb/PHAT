@@ -80,6 +80,7 @@ export function FullWidthStepper(props : FullWidthStepperProps) : JSX.Element
                                     </Grid>
                                     <Grid item>
                                         <Button
+                                            type="retreat"
                                             label="Previous"
                                             onClick={() => 
                                             {
@@ -90,6 +91,7 @@ export function FullWidthStepper(props : FullWidthStepperProps) : JSX.Element
                                     </Grid>
                                     <Grid item>
                                         <Button
+                                            type="advance"
                                             label="Next"
                                             onClick={async () => 
                                             {
