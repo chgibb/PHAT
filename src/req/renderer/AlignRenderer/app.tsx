@@ -29,6 +29,7 @@ export interface AlignRendererAppState
     selectedFastqUuids? : Array<string>;
     fastas? : Array<Fasta>;
     selectedFastaUuids? : Array<string>;
+    selectedAligner? : "bowtie2" | "hisat2" | undefined;
     shouldAllowTriggeringOps : boolean;
     errors : Array<string>;
     currentStep : number;
@@ -51,6 +52,8 @@ export class AlignRendererApp
         this.onFastqSelectionChange = this.onFastqSelectionChange.bind(this);
         this.onFastaSelectionChange = this.onFastaSelectionChange.bind(this);
         this.onStepTwoDragEnd = this.onStepTwoDragEnd.bind(this);
+        this.onStepThreeRadioChange = this.onStepThreeRadioChange.bind(this);
+
         this.setState = this.setState.bind(this);
 
         this.portal = document.createElement("div");
@@ -137,6 +140,17 @@ export class AlignRendererApp
                         return resolve(false);
                     }
                 }
+
+                if((this.state.selectedFastqUuids.length == 1 && step == 2) || (this.state.selectedFastqUuids.length == 2 && step == 3))
+                {
+                    if(!this.state.selectedAligner)
+                    {
+                        this.setState({
+                            errors : ["Select an aligner"]
+                        });
+                        return resolve(false);
+                    }
+                }
             }
             this.setState({
                 errors: []
@@ -169,6 +183,13 @@ export class AlignRendererApp
                 result.source.index,
                 result.destination.index
             )});
+    }
+
+    public onStepThreeRadioChange(event : React.ChangeEvent<{}>,value : "bowtie2" | "hisat2") : void
+    {
+        this.setState({
+            selectedAligner : value
+        });
     }
 
     public render() : JSX.Element
@@ -287,21 +308,22 @@ export class AlignRendererApp
         });
 
         steps.push({
-            label : "Select aligner",
+            label : !this.state.selectedAligner ? "Select aligner" : `Selected ${this.state.selectedAligner}`,
             body : (
                 <div>
                     <GridWrapper>
                         <Grid container spacing={4} justify="center">
                             <Grid item>
                                 <FormControl component="fieldset">
-                                    <RadioGroup
-                                    >
-                                        <FormControlLabel 
+                                    <RadioGroup onChange={this.onStepThreeRadioChange}>
+                                        <FormControlLabel
+                                            checked={this.state.selectedAligner == "bowtie2"} 
                                             value="bowtie2"
                                             control={<Radio color="primary" />}
                                             label="Bowtie2"
                                         />
-                                        <FormControlLabel 
+                                        <FormControlLabel
+                                            checked={this.state.selectedAligner == "hisat2"} 
                                             value="hisat2"
                                             control={<Radio color="primary" />}
                                             label="Hisat2"
