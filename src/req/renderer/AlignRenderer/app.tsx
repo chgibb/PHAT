@@ -15,6 +15,7 @@ import { Typography } from '../components/typography';
 import { VerticalDnD, DropResult, ResponderProvided } from '../containers/verticalDnD';
 import { Paper } from '../components/paper';
 import { paperPadding } from '../styles/paperPadding';
+import { headingPadding } from './styles/headingPadding';
 
 export interface AlignRendererAppState
 {
@@ -183,7 +184,7 @@ export class AlignRendererApp
                                         <GridWrapper>
                                             <Grid container spacing={4} justify="center">
                                             <Grid item>
-                                                <Typography>
+                                                <Typography className={headingPadding}>
                                                     Forward
                                                 </Typography>
                                                 <Typography>
