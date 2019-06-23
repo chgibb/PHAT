@@ -24,6 +24,7 @@ export interface AlignRendererAppState
     fastqs? : Array<Fastq>;
     selectedFastqUuids? : Array<string>;
     fastas? : Array<Fasta>;
+    selectedFastaUuids? : Array<string>;
     shouldAllowTriggeringOps : boolean;
     errors : Array<string>;
     currentStep : number;
@@ -44,6 +45,7 @@ export class AlignRendererApp
         } as AlignRendererAppState;
 
         this.onFastqSelectionChange = this.onFastqSelectionChange.bind(this);
+        this.onFastaSelectionChange = this.onFastaSelectionChange.bind(this);
         this.onStepTwoDragEnd = this.onStepTwoDragEnd.bind(this);
         this.setState = this.setState.bind(this);
 
@@ -118,6 +120,20 @@ export class AlignRendererApp
                     return resolve(false);
                 }
             }
+
+            if(this.state.selectedFastqUuids)
+            {
+                if((this.state.selectedFastqUuids.length == 1 && step == 1) || (this.state.selectedFastqUuids.length == 2 && step == 2))
+                {
+                    if(!this.state.selectedFastaUuids || this.state.selectedFastaUuids.length != 1)
+                    {
+                        this.setState({
+                            errors : ["Select exactly 1 fasta to align against."]
+                        });
+                        return resolve(false);
+                    }
+                }
+            }
             this.setState({
                 errors: []
             });
@@ -129,6 +145,13 @@ export class AlignRendererApp
     {
         this.setState({
             selectedFastqUuids : data.map((el) => el.uuid)
+        });
+    }
+
+    public onFastaSelectionChange(data : Array<Fasta>) : void
+    {
+        this.setState({
+            selectedFastaUuids: data.map((el) => el.uuid)
         });
     }
 
@@ -213,7 +236,6 @@ export class AlignRendererApp
                                         </Typography>
                                     </Grid>
                                     <Grid item>
-
                                         <VerticalDnD<Fastq>
                                             onDragEnd={this.onStepTwoDragEnd}
                                             droppableID="droppable"
@@ -253,6 +275,8 @@ export class AlignRendererApp
                         data={this.state.fastas}
                         shouldAllowTriggeringOps={true}
                         onIndexForVizClick={()=>null}
+                        selection={true}
+                        onSelectionChange={this.onFastaSelectionChange}
                     />
                 </div>
             )
