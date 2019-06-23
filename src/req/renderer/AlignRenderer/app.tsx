@@ -6,7 +6,7 @@ import {Component} from "react";
 import {Fastq} from "../../fastq";
 import {Fasta} from "../../fasta";
 import {AtomicOperation} from "../../operations/atomicOperations";
-import { FullWidthStepper, FullWidthStepperForm} from '../containers/fullWidthStepper';
+import { FullWidthStepper, FullWidthStepperForm, FullWidthStepperProps, FullWidthStep} from '../containers/fullWidthStepper';
 import { FastqTable } from '../containers/fastqTable';
 import { reOrder } from '../../reOrder';
 import { GridWrapper } from '../containers/gridWrapper';
@@ -173,80 +173,88 @@ export class AlignRendererApp
                 stepTwoLabel += `${"\n"}Reverse: ${selectedFastqsObjs[1].alias}${"\n"}`;
         }
 
+        let steps : Array<FullWidthStep> = new Array();
+
+        steps.push({
+            label : !this.state.selectedFastqUuids || this.state.selectedFastqUuids.length == 0 ? "Select fastq(s) to align" : `Selected${"\n"}${selectedFastqsAliases.join(",\n")}`,
+            body : (
+                <FastqTable
+                    selection={true}
+                    onSelectionChange={this.onFastqSelectionChange}
+                    data={this.state.fastqs}
+                />
+            )
+        });
+
+        if(this.state.selectedFastqUuids && this.state.selectedFastqUuids.length > 1)
+        {
+        steps.push({
+            label : stepTwoLabel,
+            body : (
+                <div>
+                    {this.state.selectedFastqUuids ?
+                        <GridWrapper>
+                            <Grid container spacing={4} justify="center">
+                            <Grid item>
+                                <Typography className={headingPadding}>
+                                    Forward
+                                </Typography>
+                                <Typography>
+                                    Reverse
+                                </Typography>
+                            </Grid>
+                            <Grid item>
+
+                                <VerticalDnD<Fastq>
+                                    onDragEnd={this.onStepTwoDragEnd}
+                                    droppableID="droppable"
+                                    draggableKey={(el) => el.uuid}
+                                    draggableId={(el) => el.uuid}
+                                    draggableContent={(el) => {
+                                        return (
+                                            <Paper className={paperPadding}>
+                                                <Typography variant="h5" component="h3">
+                                                    {el.alias}
+                                                </Typography>
+                                                <Typography component="p">
+                                                    {el.sizeString}
+                                                </Typography>
+                                            </Paper>
+                                        );
+                                    }}
+                                    portal={this.portal}
+                                    data={selectedFastqsObjs}
+                                />
+                        </Grid>
+                        </Grid>
+                        </GridWrapper> 
+                    : ""}
+                </div>
+            )
+        });
+    }
+
+        steps.push({
+            label : "Select reference to align against",
+            body : (
+                <p>Third</p>
+            )
+        });
+
+        steps.push({
+            label : "Select aligner",
+            body : (
+                <p>Fourth</p>
+            )
+        });
+
         return (
             <div>
                 <div>
                 <FullWidthStepper 
                     form={this}
                     setFormState={this.setState}
-                    steps={[
-                        {
-                            label : !this.state.selectedFastqUuids || this.state.selectedFastqUuids.length == 0 ? "Select fastq(s) to align" : `Selected${"\n"}${selectedFastqsAliases.join(",\n")}`,
-                            body : (
-                                <FastqTable
-                                    selection={true}
-                                    onSelectionChange={this.onFastqSelectionChange}
-                                    data={this.state.fastqs}
-                                />
-                            )
-                        },
-                        {
-                            label : stepTwoLabel,
-                            body : (
-                                <div>
-                                    {this.state.selectedFastqUuids ?
-                                        <GridWrapper>
-                                            <Grid container spacing={4} justify="center">
-                                            <Grid item>
-                                                <Typography className={headingPadding}>
-                                                    Forward
-                                                </Typography>
-                                                <Typography>
-                                                    Reverse
-                                                </Typography>
-                                            </Grid>
-                                            <Grid item>
-
-                                                <VerticalDnD<Fastq>
-                                                    onDragEnd={this.onStepTwoDragEnd}
-                                                    droppableID="droppable"
-                                                    draggableKey={(el) => el.uuid}
-                                                    draggableId={(el) => el.uuid}
-                                                    draggableContent={(el) => {
-                                                        return (
-                                                            <Paper className={paperPadding}>
-                                                                <Typography variant="h5" component="h3">
-                                                                    {el.alias}
-                                                                </Typography>
-                                                                <Typography component="p">
-                                                                    {el.sizeString}
-                                                                </Typography>
-                                                            </Paper>
-                                                        );
-                                                    }}
-                                                    portal={this.portal}
-                                                    data={selectedFastqsObjs}
-                                                />
-                                        </Grid>
-                                        </Grid>
-                                        </GridWrapper> 
-                                    : ""}
-                                </div>
-                            )
-                        },
-                        {
-                            label : "Select reference to align against",
-                            body : (
-                                <p>Third</p>
-                            )
-                        },
-                        {
-                            label : "Select aligner",
-                            body : (
-                                <p>Fourth</p>
-                            )
-                        },
-                    ]}
+                    steps={steps}
                 />
             </div>
             </div>
