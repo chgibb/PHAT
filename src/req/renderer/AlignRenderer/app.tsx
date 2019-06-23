@@ -18,6 +18,10 @@ import {paperPadding} from "../styles/paperPadding";
 
 import {headingPadding} from "./styles/headingPadding";
 import { FastaTable } from '../containers/fastaTable';
+import { FormControl } from '../components/formControl';
+import { RadioGroup } from '../components/radioGroup';
+import { FormControlLabel } from '../components/formControlLabel';
+import { Radio } from '../components/radio';
 
 export interface AlignRendererAppState
 {
@@ -285,7 +289,29 @@ export class AlignRendererApp
         steps.push({
             label : "Select aligner",
             body : (
-                <p>Fourth</p>
+                <div>
+                    <GridWrapper>
+                                <Grid container spacing={4} justify="center">
+                                    <Grid item>
+                    <FormControl component="fieldset">
+                        <RadioGroup
+                        >
+                            <FormControlLabel 
+                                value="bowtie2"
+                                control={<Radio color="primary" />}
+                                label="Bowtie2"
+                            />
+                            <FormControlLabel 
+                                value="hisat2"
+                                control={<Radio color="primary" />}
+                                label="Hisat2"
+                            />
+                        </RadioGroup>
+                    </FormControl>
+                    </Grid>
+                    </Grid>
+                    </GridWrapper>
+                </div>
             )
         });
 
