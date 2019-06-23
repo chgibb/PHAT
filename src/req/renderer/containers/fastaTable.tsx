@@ -12,6 +12,8 @@ export interface FastaTableProps
     shouldAllowTriggeringOps : boolean;
     actions? : boolean;
     onIndexForVizClick : (event : React.MouseEvent<HTMLButtonElement, MouseEvent>,data : Fasta) => void;
+    selection? : boolean;
+    onSelectionChange? : (data : Array<Fasta>,rowData? : Fasta) => void;
     data : Array<Fasta>;
 }
 
@@ -62,6 +64,8 @@ export function FastaTable(props : FastaTableProps) : JSX.Element
                     disabled : rowData.indexedForVisualization
                 })
             ] : undefined}
+            selection={props.selection}
+            onSelectionChange={props.onSelectionChange}
             data={props.data}
         />
     );
