@@ -218,6 +218,18 @@ export class AlignRendererApp
             });
         }
 
+        let selectedFastaObjs : Array<Fasta> | undefined = undefined;
+
+        if(this.state.selectedFastaUuids)
+        {
+            selectedFastaObjs = [];
+            this.state.selectedFastaUuids.map((uuid) => {
+                selectedFastaObjs.push(this.state.fastas.find((el) => {
+                    return el.uuid == uuid;
+                }));
+            });
+        }
+
         
 
         let steps : Array<FullWidthStep> = new Array();
@@ -292,7 +304,7 @@ export class AlignRendererApp
         }
 
         steps.push({
-            label : "Select reference to align against",
+            label : !selectedFastaObjs ? "Select reference to align against" : `Selected ${selectedFastaObjs[0].alias}`,
             body : (
                 <div>
                     <FastaTable
@@ -340,7 +352,16 @@ export class AlignRendererApp
         steps.push({
             label : "Review and begin",
             body : (
-                <p>Fifth</p>
+                <div>
+                {selectedFastqsObjs && selectedFastaObjs && this.state.selectedAligner ?
+                    <div>
+                        <Typography>
+                            Align {selectedFastqsObjs[0] ? `${selectedFastqsObjs[0].alias} forward, ` : ''} {selectedFastqsObjs[1] ? `${selectedFastqsObjs[1].alias} reverse, ` : ''} {`against `}
+                             {selectedFastaObjs[0].alias} using {this.state.selectedAligner}.
+                        </Typography>
+                    </div>
+                : ""}
+                </div>
             )
         });
 
