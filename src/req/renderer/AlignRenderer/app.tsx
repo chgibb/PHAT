@@ -22,6 +22,7 @@ import {FormControlLabel} from "../components/formControlLabel";
 import {Radio} from "../components/radio";
 
 import {headingPadding} from "./styles/headingPadding";
+import { getPropertiesOfReferencesFromUuids, getReferencesFromUuids } from '../../uniquelyAddressable';
 
 export interface AlignRendererAppState
 {
@@ -199,35 +200,26 @@ export class AlignRendererApp
 
         if(this.state.fastqs && this.state.selectedFastqUuids)
         {
-            selectedFastqsAliases = [];
-            this.state.selectedFastqUuids.map((uuid) => 
-            {
-                selectedFastqsAliases.push(this.state.fastqs.find((el) => 
-                {
-                    return el.uuid == uuid;
-                }).alias);
-            });
+            selectedFastqsAliases = getPropertiesOfReferencesFromUuids(
+                this.state.fastqs,
+                this.state.selectedFastqUuids,
+                "alias"
+            );
 
-            selectedFastqsObjs = [];
-            this.state.selectedFastqUuids.map((uuid) => 
-            {
-                selectedFastqsObjs.push(this.state.fastqs.find((el) => 
-                {
-                    return el.uuid == uuid;
-                }));
-            });
+            selectedFastqsObjs = getReferencesFromUuids(
+                this.state.fastqs,
+                this.state.selectedFastqUuids
+            );
         }
 
         let selectedFastaObjs : Array<Fasta> | undefined = undefined;
 
         if(this.state.selectedFastaUuids)
         {
-            selectedFastaObjs = [];
-            this.state.selectedFastaUuids.map((uuid) => {
-                selectedFastaObjs.push(this.state.fastas.find((el) => {
-                    return el.uuid == uuid;
-                }));
-            });
+            selectedFastaObjs = getReferencesFromUuids(
+                this.state.fastas,
+                this.state.selectedFastaUuids
+            );
         }
 
         
