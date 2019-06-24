@@ -22,10 +22,10 @@ import {FormControlLabel} from "../components/formControlLabel";
 import {Radio} from "../components/radio";
 import {getPropertiesOfReferencesFromUuids, getReferencesFromUuids} from "../../uniquelyAddressable";
 import {Button} from "../components/button";
+import {ThreeQuartersLoader} from "../components/threeQuartersLoader";
 
 import {headingPadding} from "./styles/headingPadding";
-import { triggerBowtie2Alignment, triggerHisat2Alignment } from './publish';
-import { ThreeQuartersLoader } from '../components/threeQuartersLoader';
+import {triggerBowtie2Alignment, triggerHisat2Alignment} from "./publish";
 
 export interface AlignRendererAppState
 {
@@ -365,38 +365,38 @@ export class AlignRendererApp
                                                 {selectedFastaObjs[0].alias} using {this.state.selectedAligner}.
                                             </Typography>
                                             
-                                                <GridWrapper>
-                                                    <Grid container spacing={4} justify="center">
-                                                        <Grid item>
+                                            <GridWrapper>
+                                                <Grid container spacing={4} justify="center">
+                                                    <Grid item>
                                                         {this.state.shouldAllowTriggeringOps ? <Button
-                                                                label="Start"
-                                                                type="remain"
-                                                                onClick={() => 
+                                                            label="Start"
+                                                            type="remain"
+                                                            onClick={() => 
+                                                            {
+                                                                if(this.state.selectedAligner == "bowtie2")
                                                                 {
-                                                                    if(this.state.selectedAligner == "bowtie2")
-                                                                    {
-                                                                        triggerBowtie2Alignment(
-                                                                            selectedFastaObjs[0],
-                                                                            selectedFastqsObjs[0],
-                                                                            selectedFastqsObjs[1]
-                                                                        );
-                                                                    }
+                                                                    triggerBowtie2Alignment(
+                                                                        selectedFastaObjs[0],
+                                                                        selectedFastqsObjs[0],
+                                                                        selectedFastqsObjs[1]
+                                                                    );
+                                                                }
 
-                                                                    if(this.state.selectedAligner == "hisat2")
-                                                                    {
-                                                                        triggerHisat2Alignment(
-                                                                            selectedFastaObjs[0],
-                                                                            selectedFastqsObjs[0],
-                                                                            selectedFastqsObjs[1]
-                                                                        );
-                                                                    }
-                                                                }}
-                                                            /> :
+                                                                if(this.state.selectedAligner == "hisat2")
+                                                                {
+                                                                    triggerHisat2Alignment(
+                                                                        selectedFastaObjs[0],
+                                                                        selectedFastqsObjs[0],
+                                                                        selectedFastqsObjs[1]
+                                                                    );
+                                                                }
+                                                            }}
+                                                        /> :
                                                             <ThreeQuartersLoader />
                                                         }
-                                                        </Grid>
                                                     </Grid>
-                                                </GridWrapper>
+                                                </Grid>
+                                            </GridWrapper>
                                         </Paper>
                                     </Grid>
                                 </Grid>
