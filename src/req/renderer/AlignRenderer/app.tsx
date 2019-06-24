@@ -6,7 +6,7 @@ import {Component} from "react";
 import {Fastq} from "../../fastq";
 import {Fasta} from "../../fasta";
 import {AtomicOperation} from "../../operations/atomicOperations";
-import {FullWidthStepper, FullWidthStepperForm, FullWidthStepperProps, FullWidthStep} from "../containers/fullWidthStepper";
+import {Form, FullWidthFormStep, FullWidthStepperForm} from "../containers/fullWidthStepper";
 import {FastqTable} from "../containers/fastqTable";
 import {reOrder} from "../../reOrder";
 import {GridWrapper} from "../containers/gridWrapper";
@@ -41,7 +41,7 @@ export interface AlignRendererAppState
 
 export class AlignRendererApp 
     extends Component<{},AlignRendererAppState>
-    implements FullWidthStepperForm
+    implements Form
 {
     public state : AlignRendererAppState;
     public portal : HTMLElement;
@@ -232,7 +232,7 @@ export class AlignRendererApp
 
         
 
-        let steps : Array<FullWidthStep> = new Array();
+        let steps : Array<FullWidthFormStep> = new Array();
 
         steps.push({
             label : !this.state.selectedFastqUuids || this.state.selectedFastqUuids.length == 0 ? "Select fastq(s) to align" : `Selected${"\n"}${selectedFastqsAliases.join(",\n")}`,
@@ -409,7 +409,7 @@ export class AlignRendererApp
         return (
             <div>
                 <div>
-                    <FullWidthStepper 
+                    <FullWidthStepperForm 
                         form={this}
                         setFormState={this.setState}
                         steps={steps}

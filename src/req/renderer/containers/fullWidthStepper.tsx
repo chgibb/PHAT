@@ -9,14 +9,14 @@ import {Grid} from "../components/grid";
 import {GridWrapper} from "../containers/gridWrapper";
 import {Typography} from "../components/typography";
 
-export interface FullWidthStep
+export interface FullWidthFormStep
 {
     label : string;
     body : JSX.Element
     className? : string;
 }
 
-export interface FullWidthStepperForm
+export interface Form
 {
     onAdvance : (step : number) => Promise<boolean>;
     state : {
@@ -25,14 +25,14 @@ export interface FullWidthStepperForm
     };
 }
 
-export interface FullWidthStepperProps
+export interface FullWidthStepperFormProps
 {
-    steps : Array<FullWidthStep>;
-    form : FullWidthStepperForm;
+    steps : Array<FullWidthFormStep>;
+    form : Form;
     setFormState : (newState : any) => void;
 }
 
-export function FullWidthStepper(props : FullWidthStepperProps) : JSX.Element
+export function FullWidthStepperForm(props : FullWidthStepperFormProps) : JSX.Element
 {
     const [value,setValue] = React.useState(0);
 
