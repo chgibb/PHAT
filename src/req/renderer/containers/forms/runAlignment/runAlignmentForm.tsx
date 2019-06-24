@@ -1,25 +1,27 @@
 import * as React from "react";
-import { Fastq } from '../../../../fastq';
-import { Form, FullWidthFormStep, FullWidthStepperForm } from '../../fullWidthStepper';
-import { Fasta } from '../../../../fasta';
-import { DropResult, ResponderProvided, VerticalDnD } from '../../verticalDnD';
-import { reOrder } from '../../../../reOrder';
-import { getPropertiesOfReferencesFromUuids, getReferencesFromUuids } from '../../../../uniquelyAddressable';
-import { FastqTable } from '../../fastqTable';
-import { GridWrapper } from '../../gridWrapper';
-import { headingPadding } from '../../../AlignRenderer/styles/headingPadding';
-import { paperPadding } from '../../../styles/paperPadding';
-import { FastaTable } from '../../fastaTable';
-import { triggerBowtie2Alignment, triggerHisat2Alignment } from './publish';
-import { ThreeQuartersLoader } from '../../../components/threeQuartersLoader';
-import { Grid } from '../../../components/grid';
-import { Typography } from '../../../components/typography';
-import { Paper } from '../../../components/paper';
-import { FormControl } from '../../../components/formControl';
-import { RadioGroup } from '../../../components/radioGroup';
-import { FormControlLabel } from '../../../components/formControlLabel';
-import { Radio } from '../../../components/radio';
-import { Button } from '../../../components/button';
+
+import {Fastq} from "../../../../fastq";
+import {Form, FullWidthFormStep, FullWidthStepperForm} from "../../fullWidthStepper";
+import {Fasta} from "../../../../fasta";
+import {DropResult, ResponderProvided, VerticalDnD} from "../../verticalDnD";
+import {reOrder} from "../../../../reOrder";
+import {getPropertiesOfReferencesFromUuids, getReferencesFromUuids} from "../../../../uniquelyAddressable";
+import {FastqTable} from "../../fastqTable";
+import {GridWrapper} from "../../gridWrapper";
+import {headingPadding} from "../../../AlignRenderer/styles/headingPadding";
+import {paperPadding} from "../../../styles/paperPadding";
+import {FastaTable} from "../../fastaTable";
+import {ThreeQuartersLoader} from "../../../components/threeQuartersLoader";
+import {Grid} from "../../../components/grid";
+import {Typography} from "../../../components/typography";
+import {Paper} from "../../../components/paper";
+import {FormControl} from "../../../components/formControl";
+import {RadioGroup} from "../../../components/radioGroup";
+import {FormControlLabel} from "../../../components/formControlLabel";
+import {Radio} from "../../../components/radio";
+import {Button} from "../../../components/button";
+
+import {triggerBowtie2Alignment, triggerHisat2Alignment} from "./publish";
 
 export interface RunAlignmentFormProps
 {
