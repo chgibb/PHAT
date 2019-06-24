@@ -23,6 +23,7 @@ import {Radio} from "../components/radio";
 
 import {headingPadding} from "./styles/headingPadding";
 import { getPropertiesOfReferencesFromUuids, getReferencesFromUuids } from '../../uniquelyAddressable';
+import { Button } from '../components/button';
 
 export interface AlignRendererAppState
 {
@@ -347,10 +348,33 @@ export class AlignRendererApp
                 <div>
                 {selectedFastqsObjs && selectedFastaObjs && this.state.selectedAligner ?
                     <div>
-                        <Typography>
+                        <GridWrapper>
+                                <Grid container spacing={4} justify="center">
+                                    <Grid item>
+                        <Paper>
+                        <Typography variant="h5" component="h3">
                             Align {selectedFastqsObjs[0] ? `${selectedFastqsObjs[0].alias} forward, ` : ''} {selectedFastqsObjs[1] ? `${selectedFastqsObjs[1].alias} reverse, ` : ''} {`against `}
                              {selectedFastaObjs[0].alias} using {this.state.selectedAligner}.
                         </Typography>
+                        {this.state.shouldAllowTriggeringOps ? 
+                        <GridWrapper>
+                        <Grid container spacing={4} justify="center">
+                            <Grid item>
+                            <Button
+                                label="Start"
+                                type="remain"
+                                onClick={() => {
+
+                                }}
+                            />
+                            </Grid>
+                            </Grid>
+                            </GridWrapper>
+                        : ""}
+                        </Paper>
+                        </Grid>
+                        </Grid>
+                        </GridWrapper>
                     </div>
                 : ""}
                 </div>
