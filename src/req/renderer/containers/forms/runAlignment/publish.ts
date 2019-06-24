@@ -1,7 +1,7 @@
 import * as electron from "electron";
-import { Fastq } from '../../fastq';
-import { Fasta } from '../../fasta';
-import { AtomicOperationIPC } from '../../atomicOperationsIPC';
+import { Fastq } from '../../../../fastq';
+import { Fasta } from '../../../../fasta';
+import { AtomicOperationIPC } from '../../../../atomicOperationsIPC';
 const ipc = electron.ipcRenderer;
 
 export function triggerHisat2Alignment(fasta : Fasta,fastq1 : Fastq,fastq2 : Fastq | undefined) : void
