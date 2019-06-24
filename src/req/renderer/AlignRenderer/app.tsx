@@ -126,7 +126,6 @@ export class AlignRendererApp
     {
         return new Promise<boolean>((resolve : (val : boolean) => void) : void =>  
         {
-            console.log(step);
             if(step == 0)
             {
                 if(!this.state.selectedFastqUuids || this.state.selectedFastqUuids.length < 1 || this.state.selectedFastqUuids.length > 2)
