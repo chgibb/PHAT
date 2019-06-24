@@ -6,7 +6,8 @@ export interface UniquelyAddressable
 export function getReferenceFromUuid<T extends UniquelyAddressable>(
     arr : Array<T> | undefined,
     uuid : string | undefined
-) : T | undefined {
+) : T | undefined 
+{
     if(!arr)
         return undefined;
     if(!uuid)
@@ -24,7 +25,8 @@ export function getReferenceFromUuid<T extends UniquelyAddressable>(
 export function getReferencesFromUuids<T extends UniquelyAddressable>(
     arr : Array<T> | undefined,
     uuids : Array<string> | undefined
-) : Array<T> | undefined {
+) : Array<T> | undefined 
+{
     if(!arr)
         return undefined;
     if(!uuids)
@@ -32,9 +34,11 @@ export function getReferencesFromUuids<T extends UniquelyAddressable>(
 
     let res = new Array<T>();
 
-    uuids.map((uuid) => {
-        res.push(arr.find((el) => {
-            return el.uuid == uuid
+    uuids.map((uuid) => 
+    {
+        res.push(arr.find((el) => 
+        {
+            return el.uuid == uuid;
         }));
     });
 
@@ -47,7 +51,8 @@ export function getPropertiesOfReferencesFromUuids<T extends UniquelyAddressable
     arr : Array<T>,
     uuids : Array<string>,
     prop : K
-) : Array<T[K]> | undefined {
+) : Array<T[K]> | undefined 
+{
     if(!arr)
         return undefined;
     if(!uuids)
@@ -57,9 +62,11 @@ export function getPropertiesOfReferencesFromUuids<T extends UniquelyAddressable
         
     let res = new Array<T[K]>();
 
-    uuids.map((uuid) => {
-        res.push(arr.find((el) => {
-            return el.uuid == uuid
+    uuids.map((uuid) => 
+    {
+        res.push(arr.find((el) => 
+        {
+            return el.uuid == uuid;
         })[prop]);
     });
 
