@@ -24,6 +24,8 @@ import {getPropertiesOfReferencesFromUuids, getReferencesFromUuids} from "../../
 import {Button} from "../components/button";
 
 import {headingPadding} from "./styles/headingPadding";
+import { triggerBowtie2Alignment, triggerHisat2Alignment } from './publish';
+import { ThreeQuartersLoader } from '../components/threeQuartersLoader';
 
 export interface AlignRendererAppState
 {
@@ -93,9 +95,7 @@ export class AlignRendererApp
                                 {
                                     if(ops[i].name == "indexFastaForBowtie2" || ops[i].name == "runBowtie2Alignment" || ops[i].name == "indexFastaForHisat2" || ops[i].name == "runHisat2Alignment")
                                     {
-                                        this.setState({
-                                            shouldAllowTriggeringOps: false
-                                        });
+                                        found = true;
                                     }
                                 }
                             }
@@ -103,7 +103,15 @@ export class AlignRendererApp
                             {}
                         }
                     }
-                    if(!found)
+
+                    if(found)
+                    {
+                        this.setState({
+                            shouldAllowTriggeringOps: false
+                        });
+                    }
+                    
+                    else
                     {
                         this.setState({
                             shouldAllowTriggeringOps: true
@@ -356,22 +364,39 @@ export class AlignRendererApp
                                                 Align {selectedFastqsObjs[0] ? `${selectedFastqsObjs[0].alias} forward, ` : ""} {selectedFastqsObjs[1] ? `${selectedFastqsObjs[1].alias} reverse, ` : ""} {"against "}
                                                 {selectedFastaObjs[0].alias} using {this.state.selectedAligner}.
                                             </Typography>
-                                            {this.state.shouldAllowTriggeringOps ? 
+                                            
                                                 <GridWrapper>
                                                     <Grid container spacing={4} justify="center">
                                                         <Grid item>
-                                                            <Button
+                                                        {this.state.shouldAllowTriggeringOps ? <Button
                                                                 label="Start"
                                                                 type="remain"
                                                                 onClick={() => 
                                                                 {
+                                                                    if(this.state.selectedAligner == "bowtie2")
+                                                                    {
+                                                                        triggerBowtie2Alignment(
+                                                                            selectedFastaObjs[0],
+                                                                            selectedFastqsObjs[0],
+                                                                            selectedFastqsObjs[1]
+                                                                        );
+                                                                    }
 
+                                                                    if(this.state.selectedAligner == "hisat2")
+                                                                    {
+                                                                        triggerHisat2Alignment(
+                                                                            selectedFastaObjs[0],
+                                                                            selectedFastqsObjs[0],
+                                                                            selectedFastqsObjs[1]
+                                                                        );
+                                                                    }
                                                                 }}
-                                                            />
+                                                            /> :
+                                                            <ThreeQuartersLoader />
+                                                        }
                                                         </Grid>
                                                     </Grid>
                                                 </GridWrapper>
-                                                : ""}
                                         </Paper>
                                     </Grid>
                                 </Grid>
