@@ -3,7 +3,7 @@ import * as dataMgr from "../../../req/main/dataMgr";
 import {Fastq} from "../../../req/fastq";
 
 /**
- * Selects the first two reads for alignment in the first align window
+ * Selects the fourth input on the page
  * 
  * @export
  * @returns {Promise<void>} 
