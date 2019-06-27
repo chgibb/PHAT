@@ -61,7 +61,7 @@ export function FullWidthStepperForm(props : FullWidthStepperFormProps) : JSX.El
                 index={value}
                 onChangeIndex={handleChangeIndex}
             >
-                {props.steps.map((el) => 
+                {props.steps.map((el,viewIndex) => 
                 {
                     return (
                         <div>
@@ -87,6 +87,7 @@ export function FullWidthStepperForm(props : FullWidthStepperFormProps) : JSX.El
                                                 if(value > 0)
                                                     handleChangeIndex(value - 1);
                                             }}
+                                            id={`previous${viewIndex}`}
                                         />
                                     </Grid>
                                     <Grid item>
@@ -101,6 +102,7 @@ export function FullWidthStepperForm(props : FullWidthStepperFormProps) : JSX.El
                                                         handleChangeIndex(value + 1);
                                                 }
                                             }}
+                                            id={`next${viewIndex}`}
                                         />
                                     </Grid>
                                     <Grid item />
