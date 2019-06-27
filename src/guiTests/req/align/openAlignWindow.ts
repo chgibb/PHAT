@@ -22,7 +22,7 @@ export async function openAlignWindow() : Promise<void>
                 setTimeout(async function()
                 {
                     resolve();
-                },1000);
+                },2000);
             },1000);
         },1000);
     });

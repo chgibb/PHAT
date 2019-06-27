@@ -5,7 +5,7 @@ logMainProcessErrors();
 import {openProjectsView} from "./req/projectSelection/openProjectsView";
 import {openFirstProject} from "./req/projectSelection/openFirstProject";
 import {openAlignWindow} from "./req/align/openAlignWindow";
-import {selectFirstTwoReads} from "./req/align/selectFirstTwoReads";
+import {clickSecondAndThirdInputs} from "./req/align/clickSecondAndThirdInputs";
 import {selectFirstRef} from "./req/align/selectFirstRef";
 import {startAligningSelected} from "./req/align/startAligningSelected";
 import {alignSuccess} from "./req/align/alignSuccess";
@@ -16,7 +16,7 @@ async function runTest() : Promise<void>
     await openProjectsView();
     await openFirstProject();
     await openAlignWindow();
-    await selectFirstTwoReads();
+    await clickSecondAndThirdInputs();
     await selectFirstRef();
     await startAligningSelected();
     await alignSuccess();
