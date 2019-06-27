@@ -1,7 +1,7 @@
 import * as React from "react";
 
 import {Fastq} from "../../../../fastq";
-import {Form, FullWidthFormStep, FullWidthStepperForm} from "../../fullWidthStepper";
+import {Form, FullWidthFormStep, FullWidthStepperForm} from "../../fullWidthStepperForm";
 import {Fasta} from "../../../../fasta";
 import {DropResult, ResponderProvided, VerticalDnD} from "../../verticalDnD";
 import {reOrder} from "../../../../reOrder";
