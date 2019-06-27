@@ -277,12 +277,14 @@ export class RunAlignmentForm
                                             value="bowtie2"
                                             control={<Radio color="primary" />}
                                             label="Bowtie2"
+                                            id="bowtie2Radio"
                                         />
                                         <FormControlLabel
                                             checked={this.state.selectedAligner == "hisat2"} 
                                             value="hisat2"
                                             control={<Radio color="primary" />}
                                             label="Hisat2"
+                                            id="hisat2Radio"
                                         />
                                     </RadioGroup>
                                 </FormControl>
@@ -314,6 +316,7 @@ export class RunAlignmentForm
                                                         {this.props.shouldAllowTriggeringOps ? <Button
                                                             label="Start"
                                                             type="remain"
+                                                            id="startAlignment"
                                                             onClick={() => 
                                                             {
                                                                 if(this.state.selectedAligner == "bowtie2")
