@@ -8,13 +8,13 @@ import {openAlignWindow} from "./req/align/openAlignWindow";
 import {clickSecondAndThirdInputs} from "./req/align/clickSecondAndThirdInputs";
 import {alignSuccess} from "./req/align/alignSuccess";
 import {closeToolBar} from "./req/closeToolBar";
-import { clickAdvanceZero } from './req/align/clickAdvanceZero';
-import { clickAdvanceOne } from './req/align/clickAdvanceOne';
-import { clickFourthInput } from './req/align/clickFourthInput';
-import { clickAdvanceTwo } from './req/align/clickAdvanceTwo';
-import { clickAdvanceThree } from './req/align/clickAdvanceThree';
-import { clickBowtie2Radio } from './req/align/clickBowtie2Radio';
-import { clickStartAlign } from './req/align/clickStartAlign';
+import {clickAdvanceZero} from "./req/align/clickAdvanceZero";
+import {clickAdvanceOne} from "./req/align/clickAdvanceOne";
+import {clickFourthInput} from "./req/align/clickFourthInput";
+import {clickAdvanceTwo} from "./req/align/clickAdvanceTwo";
+import {clickAdvanceThree} from "./req/align/clickAdvanceThree";
+import {clickBowtie2Radio} from "./req/align/clickBowtie2Radio";
+import {clickStartAlign} from "./req/align/clickStartAlign";
 
 async function runTest() : Promise<void>
 {
