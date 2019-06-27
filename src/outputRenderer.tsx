@@ -1,24 +1,22 @@
 import * as electron from "electron";
 const ipc = electron.ipcRenderer;
+import * as React from "react";
+import {render} from "react-dom";
 
 import {GetKeyEvent,KeySubEvent} from "./req/ipcEvents";
-import * as viewMgr from "./req/renderer/viewMgr";
 import {makeWindowDockable} from "./req/renderer/dock";
-import * as masterView from "./req/renderer/OutputRenderer/masterView";
 
-const $ = require("jquery");
-(<any>window).$ = $;
+import "./req/renderer/styles/defaults";
 import "./req/renderer/commonBehaviour";
-$(
-    function()
-    {
+import { OutputRendererApp } from './req/renderer/OutputRenderer/app';
+
+render(
+    <OutputRendererApp />,
+    document.getElementById("app")
+);
+
         makeWindowDockable("output");
-        masterView.addView(viewMgr.views,"masterView");
-        viewMgr.changeView("masterView");
-
-
-        viewMgr.render();
-        ipc.on(
+        /*ipc.on(
             "output",function(event : Electron.IpcMessageEvent,arg : any)
             {
                 if(arg.action === "getKey" || arg.action === "keyChange")
@@ -40,67 +38,63 @@ $(
                 viewMgr.render();
             }
         );
-
+*/
         ipc.send(
             "keySub",
-            <KeySubEvent>{
+            {
                 action : "keySub",
                 channel : "input",
                 key : "fastqInputs",
                 replyChannel : "output"
-            }
+            } as KeySubEvent
         );
 
         ipc.send(
             "getKey",
-            <KeySubEvent>{
+            {
                 action : "keySub",
                 channel : "input",
                 key : "fastqInputs",
                 replyChannel : "output"
-            }
+            } as KeySubEvent
         );
 
         ipc.send(
             "keySub",
-            <KeySubEvent>{
+            {
                 action : "keySub",
                 channel : "input",
                 key : "fastaInputs",
                 replyChannel : "output"
-            }
+            } as KeySubEvent
         );
 
         ipc.send(
             "getKey",
-            <KeySubEvent>{
-                action : "keySub",
+            {
+                action : "getKey",
                 channel : "input",
                 key : "fastaInputs",
                 replyChannel : "output"
-            }
+            } as GetKeyEvent
         );
 
         ipc.send(
             "getKey",
-            <GetKeyEvent>{
+            {
                 action : "getKey",
                 channel : "align",
                 key : "aligns",
                 replyChannel : "output"
-            }
+            } as GetKeyEvent
         );
 
         ipc.send(
             "keySub",
-            <KeySubEvent>{
+            {
                 action : "keySub",
                 channel : "align",
                 key : "aligns",
                 replyChannel : "output"
-            }
+            } as KeySubEvent
         );
-
-        viewMgr.render();
-    }
-);
