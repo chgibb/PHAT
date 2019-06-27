@@ -11,5 +11,5 @@ do
 	destination=$(echo $f | awk '{gsub(".buildCache/debug/src/guiTests/","guiTests/");print}')
 	printf $destination
 	printf "\n"
-	./node_modules/.bin/browserify $f --node --debug -o $destination --ignore-missing --exclude electron
+	./node_modules/.bin/browserify $f --node --debug -o $destination --exclude electron
 done
