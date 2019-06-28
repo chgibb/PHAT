@@ -15,7 +15,9 @@ export interface TableProps<T>
     actions? : typeof MuiTable.defaultProps.actions;
     actionsColumnIndex? : typeof MuiTable.defaultProps.options.actionsColumnIndex;
     selection? : typeof MuiTable.defaultProps.options.selection;
+    detailPanel? : typeof MuiTable.defaultProps.detailPanel;
     onSelectionChange? : typeof MuiTable.defaultProps.onSelectionChange;
+    onRowClick? : typeof MuiTable.defaultProps.onRowClick;
     data : Array<T>;
 }
 
@@ -36,12 +38,8 @@ export function Table<T>(props : TableProps<T>) : JSX.Element
             icons={tableIcons}
             columns={props.columns}
             data={props.data}
-            onRowClick={(event,rowData,toggleDetailPanel) => {
-                event.persist();
-                console.log(event),
-                console.log(rowData);
-                console.log(toggleDetailPanel);
-            }}
+            onRowClick={props.onRowClick}
+            detailPanel={props.detailPanel} 
         />
     );
 }
