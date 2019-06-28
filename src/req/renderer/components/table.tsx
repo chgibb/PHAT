@@ -36,6 +36,12 @@ export function Table<T>(props : TableProps<T>) : JSX.Element
             icons={tableIcons}
             columns={props.columns}
             data={props.data}
+            onRowClick={(event,rowData,toggleDetailPanel) => {
+                event.persist();
+                console.log(event),
+                console.log(rowData);
+                console.log(toggleDetailPanel);
+            }}
         />
     );
 }

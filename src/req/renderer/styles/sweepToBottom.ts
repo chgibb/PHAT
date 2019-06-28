@@ -3,7 +3,6 @@ import {cssRaw} from "typestyle";
 //https://github.com/IanLunn/Hover/blob/master/css/hover.css
 cssRaw(`
 .hvr-sweep-to-bottom {
-    display: inline-block;
     vertical-align: middle;
     -webkit-transform: perspective(1px) translateZ(0);
     transform: perspective(1px) translateZ(0);
