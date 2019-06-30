@@ -4,6 +4,8 @@ import {AlignData} from "../../alignData";
 import {Table} from "../components/table";
 import {sweepToBottom} from "../styles/sweepToBottom";
 import { TableCellHover } from './tableCellHover';
+import { VCF2JSONRow } from '../../varScanMPileup2SNPVCF2JSON';
+import { SNPPositionsTable } from './snpPositionsTable';
 
 
 export interface AlignmentsReportTableProps {
@@ -36,26 +38,16 @@ export class AlignmentsReportTable extends React.Component<AlignmentsReportTable
                             render : (rowData : AlignData) => 
                             {
                                 return (
-                                    <div>
-                                        <p>{rowData.uuid}</p>
-                                    </div>
+                                    <SNPPositionsTable
+                                        align={rowData}
+                                    />
                                 );
                             }
                         }
                     ]}
                     onRowClick={(event : React.MouseEvent<HTMLElement>,rowData : AlignData,toggleDetailPanel) => 
                     {
-                        event.persist();
-
-                        let el : HTMLElement | undefined;
-
-                        let target = (event.target as HTMLElement);
-
-                        if(target.id)
-                            el = target;
-                        
-                        else if ((target.firstChild as HTMLElement).id)
-                            el = (target.firstChild as HTMLElement);
+                        let el = TableCellHover.getClickedCell(event);
                        
                         if(el)
                         {

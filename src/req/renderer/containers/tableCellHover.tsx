@@ -55,6 +55,31 @@ export class TableCellHover extends React.Component<TableCellHoverProps,{}>
        }
     }
 
+    /**
+     * Retrieve a reference to the cell that was clicked, not the Mui-table wrapper
+     *
+     * @static
+     * @param {React.MouseEvent<HTMLElement>} event
+     * @returns {(HTMLElement | undefined)}
+     * @memberof TableCellHover
+     */
+    public static getClickedCell(event : React.MouseEvent<HTMLElement>) : HTMLElement | undefined
+    {
+        event.persist();
+
+        let el : HTMLElement | undefined;
+
+        let target = (event.target as HTMLElement);
+
+        if(target.id)
+            el = target;
+                        
+        else if (target.firstChild && (target.firstChild as HTMLElement).id)
+            el = (target.firstChild as HTMLElement);
+        
+        return el;
+    }
+
     public componentDidMount(): void 
     {
         this.updateStyles();
