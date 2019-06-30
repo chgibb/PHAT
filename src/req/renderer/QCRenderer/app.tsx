@@ -1,7 +1,6 @@
 import * as electron from "electron";
 const ipc = electron.ipcRenderer;
 import * as React from "react";
-import {Component} from "react";
 
 import {Fastq} from "../../fastq";
 import {AtomicOperation} from "../../operations/atomicOperations";
@@ -18,7 +17,7 @@ export interface QCRendererAppState {
     viewUuid : string | undefined;
 }
 
-export class QCRendererApp extends Component<{}, QCRendererAppState>
+export class QCRendererApp extends React.Component<{}, QCRendererAppState>
 {
     public state: QCRendererAppState;
     public constructor() 

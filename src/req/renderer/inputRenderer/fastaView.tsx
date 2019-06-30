@@ -1,5 +1,4 @@
 import * as React from "react";
-import {Component} from "react";
 
 import {Button} from "../components/button";
 import {FastaTable} from "../containers/fastaTable";
@@ -14,7 +13,7 @@ export interface FastaViewProps
     shouldAllowTriggeringOps : boolean;
 }
 
-export class FastaView extends Component<FastaViewProps,{}>
+export class FastaView extends React.Component<FastaViewProps,{}>
 {
     public constructor(props : FastaViewProps)
     {

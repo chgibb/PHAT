@@ -1,7 +1,6 @@
 import * as electron from "electron";
 const ipc = electron.ipcRenderer;
 import * as React from "react";
-import {Component} from "react";
 
 import {Fastq} from "../../fastq";
 import {Fasta} from "../../fasta";
@@ -15,7 +14,7 @@ export interface AlignRendererAppState
     shouldAllowTriggeringOps? : boolean;
 }
 
-export class AlignRendererApp  extends Component<{},AlignRendererAppState>
+export class AlignRendererApp  extends React.Component<{},AlignRendererAppState>
 {
     public state : AlignRendererAppState;
     public constructor()

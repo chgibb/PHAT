@@ -5,7 +5,7 @@ import * as React from "react";
 import {Fasta} from "../../fasta";
 import {AlignData} from "../../alignData";
 import {Fastq} from "../../fastq";
-import { AlignmentsReportTable } from '../containers/alignmentsReportTable';
+import {AlignmentsReportTable} from "../containers/alignmentsReportTable";
 
 export interface OutputRendererAppState
 {
