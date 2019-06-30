@@ -1,10 +1,12 @@
 import * as React from "react";
 
-import {Table} from "../components/table";
+import {Table,TableProps} from "../components/table";
 import {Fastq} from "../../fastq";
 
 export interface FastqTableProps
 {
+    selection? : boolean;
+    onSelectionChange? : (data : Array<Fastq>,rowData? : Fastq) => void; 
     data : Array<Fastq>;
 }
 
@@ -32,6 +34,8 @@ export function FastqTable(props : FastqTableProps) : JSX.Element
                     field: "sizeString"
                 }
             ]}
+            selection={props.selection}
+            onSelectionChange={props.onSelectionChange}
             data={props.data}
         />
     );

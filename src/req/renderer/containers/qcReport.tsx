@@ -37,6 +37,7 @@ export class QCReport extends React.Component<QCReportProps,{}>
         return (
             <div>
                 <Button
+                    type="retreat"
                     onClick={() => 
                     {
                         this.props.onGoBackClick();

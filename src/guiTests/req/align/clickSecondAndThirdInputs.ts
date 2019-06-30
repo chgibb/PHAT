@@ -1,20 +1,20 @@
-import * as winMgr from "./../../../req/main/winMgr";
-import * as dataMgr from "./../../../req/main/dataMgr";
-import {Fastq} from "./../../../req/fastq";
+import * as winMgr from "../../../req/main/winMgr";
+import * as dataMgr from "../../../req/main/dataMgr";
+import {Fastq} from "../../../req/fastq";
 
 /**
- * Selects the first two reads for alignment in the first align window
+ * Selects the second and third inputs on the page
  * 
  * @export
  * @returns {Promise<void>} 
  */
-export async function selectFirstTwoReads() : Promise<void>
+export async function clickSecondAndThirdInputs() : Promise<void>
 {
     return new Promise<void>(async (resolve,reject) => 
     {
         setTimeout(async function()
         {
-            console.log("selecting first two reads");
+            console.log("clicking second and third inputs");
             let align = winMgr.getFreeWebContents();
             if(!align || align.length == 0)
             {
@@ -28,8 +28,8 @@ export async function selectFirstTwoReads() : Promise<void>
                 process.exit(1);
             }
             await align[0].executeJavaScript(`
-                document.getElementById("${fastqs[0].uuid}").click();
-                document.getElementById("${fastqs[1].uuid}").click();
+            document.getElementsByTagName("input")[1].click();
+            document.getElementsByTagName("input")[2].click()
             `);
             setTimeout(async function()
             {
