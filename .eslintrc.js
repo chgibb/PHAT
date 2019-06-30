@@ -62,5 +62,8 @@ module.exports = {
                 "newlines-between" : "always"
             }
         ],
+        "import/no-duplicates": [
+            "error"
+        ]
     }
 }; 
