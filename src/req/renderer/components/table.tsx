@@ -1,24 +1,34 @@
 import * as React from "react";
 
-
 import {tableCell} from "../../renderer/styles/tableCell";
 
 import {tableIcons} from "./tableIcons";
 
 export const MuiTable : typeof import("material-table").default = require("material-table").default;
 
+type Row<T> = T & {
+    tableData : {
+        id : number
+    }
+};
+
 export interface TableProps<T>
 {
     toolbar : typeof MuiTable.defaultProps.options.toolbar;
     title : typeof MuiTable.defaultProps.title;
-    columns : typeof MuiTable.defaultProps.columns;
     actions? : typeof MuiTable.defaultProps.actions;
     actionsColumnIndex? : typeof MuiTable.defaultProps.options.actionsColumnIndex;
     selection? : typeof MuiTable.defaultProps.options.selection;
     detailPanel? : typeof MuiTable.defaultProps.detailPanel;
     onSelectionChange? : typeof MuiTable.defaultProps.onSelectionChange;
-    onRowClick? : typeof MuiTable.defaultProps.onRowClick;
     data : Array<T>;
+    columns : Array<
+        Omit<typeof MuiTable.defaultProps.columns[number],"render"> & {
+            render? : (row : Row<T>) => string | number | boolean | JSX.Element}>;
+    onRowClick? : (
+            event : React.MouseEvent<HTMLElement>,
+            row : Row<T>,
+            toggleDetailPanel : (i : number) => void) => void;
 }
 
 export function Table<T>(props : TableProps<T>) : JSX.Element
