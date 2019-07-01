@@ -4,7 +4,7 @@ module.exports = {
         "es6": true
     },
     "extends": "eslint:recommended",
-    "plugins": ["import"],
+    "plugins": ["import","jsdoc"],
     "globals": {
         "Atomics": "readonly",
         "SharedArrayBuffer": "readonly",
@@ -64,6 +64,9 @@ module.exports = {
         ],
         "import/no-duplicates": [
             "error"
-        ]
+        ],
+
+        "jsdoc/require-jsdoc": 1, 
+        "jsdoc/require-param-description": 1, 
     }
 }; 
