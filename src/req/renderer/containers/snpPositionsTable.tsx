@@ -1,5 +1,6 @@
 import * as fs from "fs";
 
+import * as electron from "electron";
 import * as React from "react";
 
 import {AlignData, getSNPsJSON} from "../../alignData";
@@ -8,6 +9,11 @@ import {Table} from "../components/table";
 import {Fasta} from "../../fasta";
 
 import {TableCellHover} from "./tableCellHover";
+import { AtomicOperationIPC } from '../../atomicOperationsIPC';
+import { Paper } from '../components/paper';
+import { SubTableContainer } from './subTableContainer';
+
+const ipc = electron.ipcRenderer;
 
 export interface SNPPositionsTableProps
 {
@@ -35,7 +41,14 @@ export function SNPPositionsTable(props : SNPPositionsTableProps) : JSX.Element
             <Table<VCF2JSONRow>
                 toolbar={false}
                 title=""
+                pageSize={snps.length < 100 ? snps.length : 100}
+                pageSizeOptions={[100,1000]}
                 data={snps}
+                components={{
+                    Container : (props) => {
+                        return SubTableContainer(props);
+                    }
+                }}
                 onRowClick={(event : React.MouseEvent<HTMLElement>,rowData) => 
                 {
                     console.log(rowData);
@@ -66,6 +79,26 @@ export function SNPPositionsTable(props : SNPPositionsTableProps) : JSX.Element
                             alert("The reference for this alignment is not ready for visualization");
                             return;
                         }
+
+                        //trim off leading text
+                        let snpPos = parseInt(el.id.replace(/(viewSNP)/,""));
+                        //set beginning position in viewer offset by 20
+                        let start = parseInt(snps[snpPos].position)-20;
+                        //offset end by 40 to center SNP in viewer
+                        let stop = start+40;
+                        let contig = snps[snpPos].chrom;
+                        ipc.send(
+                            "runOperation",
+                            {
+                                opName : "openPileupViewer",
+                                pileupViewerParams : {
+                                    align : props.align,
+                                    contig : contig,
+                                    start : start,
+                                    stop : stop
+                                }
+                            } as AtomicOperationIPC
+                        );
                     }
                 }}
                 columns={[
