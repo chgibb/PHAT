@@ -1,5 +1,6 @@
 import * as React from "react";
-import { sweepToBottom } from '../styles/sweepToBottom';
+
+import {sweepToBottom} from "../styles/sweepToBottom";
 
 export interface TableCellHoverProps
 {
@@ -30,29 +31,29 @@ export class TableCellHover extends React.Component<TableCellHoverProps,{}>
             We want to enable cell-clicks, not row clicks. It is currently impossible to style entirety of specific table cells.
         */
 
-       if (this.ref.current) 
-       {
-           let tableRows: HTMLCollectionOf<HTMLTableRowElement> = this.ref.current.getElementsByTagName("tr");
+        if (this.ref.current) 
+        {
+            let tableRows: HTMLCollectionOf<HTMLTableRowElement> = this.ref.current.getElementsByTagName("tr");
 
-           //disable pointer cursor on rows
-           for (let i = 0; i != tableRows.length; ++i) 
-           {
-               if (tableRows[i].style.cursor == "pointer") 
-               {
-                   tableRows[i].style.cursor = "inherit";
-               }
-           }
+            //disable pointer cursor on rows
+            for (let i = 0; i != tableRows.length; ++i) 
+            {
+                if (tableRows[i].style.cursor == "pointer") 
+                {
+                    tableRows[i].style.cursor = "inherit";
+                }
+            }
 
-           let selectableCells: HTMLCollectionOf<Element> = this.ref.current.getElementsByClassName(TableCellHover.cellHoverClass);
+            let selectableCells: HTMLCollectionOf<Element> = this.ref.current.getElementsByClassName(TableCellHover.cellHoverClass);
 
-           //any cell with the special cellHoveClass applied will have it's parent styled as hoverable
-           for (let i = 0; i != selectableCells.length; ++i) 
-           {
-               selectableCells[i].parentElement.classList.add(sweepToBottom);
-               selectableCells[i].parentElement.style.cursor = "pointer";
-           }
+            //any cell with the special cellHoveClass applied will have it's parent styled as hoverable
+            for (let i = 0; i != selectableCells.length; ++i) 
+            {
+                selectableCells[i].parentElement.classList.add(sweepToBottom);
+                selectableCells[i].parentElement.style.cursor = "pointer";
+            }
 
-       }
+        }
     }
 
     /**

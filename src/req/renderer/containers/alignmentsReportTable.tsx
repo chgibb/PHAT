@@ -3,10 +3,12 @@ import * as React from "react";
 import {AlignData} from "../../alignData";
 import {Table} from "../components/table";
 import {sweepToBottom} from "../styles/sweepToBottom";
-import { TableCellHover } from './tableCellHover';
-import { VCF2JSONRow } from '../../varScanMPileup2SNPVCF2JSON';
-import { SNPPositionsTable } from './snpPositionsTable';
-import { Fasta } from '../../fasta';
+import {VCF2JSONRow} from "../../varScanMPileup2SNPVCF2JSON";
+import {Fasta} from "../../fasta";
+
+import {TableCellHover} from "./tableCellHover";
+import {SNPPositionsTable} from "./snpPositionsTable";
+
 
 
 export interface AlignmentsReportTableProps {
