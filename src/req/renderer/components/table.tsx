@@ -21,6 +21,9 @@ export interface TableProps<T>
     selection? : typeof MuiTable.defaultProps.options.selection;
     detailPanel? : typeof MuiTable.defaultProps.detailPanel;
     onSelectionChange? : typeof MuiTable.defaultProps.onSelectionChange;
+    pageSize? : typeof MuiTable.defaultProps.options.pageSize;
+    pageSizeOptions? : typeof MuiTable.defaultProps.options.pageSizeOptions;
+    components? : typeof MuiTable.defaultProps.components;
     data : Array<T>;
     columns : Array<
         Omit<typeof MuiTable.defaultProps.columns[number],"render"> & {
@@ -41,8 +44,11 @@ export function Table<T>(props : TableProps<T>) : JSX.Element
                 actionsColumnIndex : props.actionsColumnIndex ? props.actionsColumnIndex : 0,
                 headerStyle: tableCell as any,
                 rowStyle : tableCell as any,
-                selection : props.selection
+                selection : props.selection,
+                pageSize : props.pageSize ? props.pageSize : 5,
+                pageSizeOptions : props.pageSizeOptions
             }}
+            components={props.components}
             actions={props.actions}
             onSelectionChange={props.onSelectionChange}
             icons={tableIcons}
