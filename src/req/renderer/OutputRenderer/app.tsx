@@ -52,6 +52,7 @@ export class OutputRendererApp extends React.Component<{},OutputRendererAppState
             <div>
                 <AlignmentsReportTable
                     aligns={this.state.aligns}
+                    fastas={this.state.fastas}
                 />
             </div>
         );

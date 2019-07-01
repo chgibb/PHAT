@@ -6,10 +6,12 @@ import {sweepToBottom} from "../styles/sweepToBottom";
 import { TableCellHover } from './tableCellHover';
 import { VCF2JSONRow } from '../../varScanMPileup2SNPVCF2JSON';
 import { SNPPositionsTable } from './snpPositionsTable';
+import { Fasta } from '../../fasta';
 
 
 export interface AlignmentsReportTableProps {
     aligns?: Array<AlignData>;
+    fastas? : Array<Fasta>;
 }
 
 export class AlignmentsReportTable extends React.Component<AlignmentsReportTableProps, {}>
@@ -40,6 +42,7 @@ export class AlignmentsReportTable extends React.Component<AlignmentsReportTable
                                 return (
                                     <SNPPositionsTable
                                         align={rowData}
+                                        fastas={this.props.fastas}
                                     />
                                 );
                             }
