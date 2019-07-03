@@ -7,11 +7,10 @@ import {AlignData, getSNPsJSON} from "../../alignData";
 import {VCF2JSONRow} from "../../varScanMPileup2SNPVCF2JSON";
 import {Table} from "../components/table";
 import {Fasta} from "../../fasta";
+import {AtomicOperationIPC} from "../../atomicOperationsIPC";
 
 import {TableCellHover} from "./tableCellHover";
-import { AtomicOperationIPC } from '../../atomicOperationsIPC';
-import { Paper } from '../components/paper';
-import { SubTableContainer } from './subTableContainer';
+import {SubTableContainer} from "./subTableContainer";
 
 const ipc = electron.ipcRenderer;
 
@@ -34,8 +33,6 @@ export function SNPPositionsTable(props : SNPPositionsTableProps) : JSX.Element
         console.log(err);
     }
 
-    console.log(snps);
-
     return (
         <TableCellHover>
             <Table<VCF2JSONRow>
@@ -45,7 +42,8 @@ export function SNPPositionsTable(props : SNPPositionsTableProps) : JSX.Element
                 pageSizeOptions={[100,1000]}
                 data={snps}
                 components={{
-                    Container : (props) => {
+                    Container : (props) => 
+                    {
                         return SubTableContainer(props);
                     }
                 }}
