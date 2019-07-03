@@ -28,6 +28,11 @@ export class AlignmentsReportTable extends React.Component<AlignmentsReportTable
         return `${row.uuid}SNP`;
     }
 
+    public aliasCellId(row : AlignData) : string
+    {
+        return `${row.uuid}ViewAlignment`;
+    }
+
     public render(): JSX.Element 
     {
         return (
@@ -67,7 +72,7 @@ export class AlignmentsReportTable extends React.Component<AlignmentsReportTable
                             title: "Alias",
                             render: (row: AlignData) => 
                             {
-                                return row.alias;
+                                return (<div id={this.aliasCellId(row)} className={TableCellHover.cellHoverClass}>{row.alias}</div>)
                             }
                         },
                         {
