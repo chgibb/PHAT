@@ -1,19 +1,22 @@
 import * as React from "react";
+import * as electron from "electron";
 
 import {AlignData} from "../../alignData";
 import {Table} from "../components/table";
 import {sweepToBottom} from "../styles/sweepToBottom";
 import {VCF2JSONRow} from "../../varScanMPileup2SNPVCF2JSON";
 import {Fasta} from "../../fasta";
+import {AtomicOperationIPC} from "../../atomicOperationsIPC";
 
 import {TableCellHover} from "./tableCellHover";
 import {SNPPositionsTable} from "./snpPositionsTable";
 
+const ipc = electron.ipcRenderer;
 
-
-export interface AlignmentsReportTableProps {
+export interface AlignmentsReportTableProps 
+{
     aligns?: Array<AlignData>;
-    fastas? : Array<Fasta>;
+    fastas?: Array<Fasta>;
 }
 
 export class AlignmentsReportTable extends React.Component<AlignmentsReportTableProps, {}>
@@ -23,12 +26,12 @@ export class AlignmentsReportTable extends React.Component<AlignmentsReportTable
         super(props);
     }
 
-    public SNPCellId(row : AlignData) : string
+    public SNPCellId(row: AlignData): string 
     {
         return `${row.uuid}SNP`;
     }
 
-    public aliasCellId(row : AlignData) : string
+    public aliasCellId(row: AlignData): string 
     {
         return `${row.uuid}ViewAlignment`;
     }
@@ -43,8 +46,8 @@ export class AlignmentsReportTable extends React.Component<AlignmentsReportTable
                     data={this.props.aligns}
                     detailPanel={[
                         {
-                            tooltip : "SNPs",
-                            render : (rowData : AlignData) => 
+                            tooltip: "SNPs",
+                            render: (rowData: AlignData) => 
                             {
                                 return (
                                     <SNPPositionsTable
@@ -55,15 +58,63 @@ export class AlignmentsReportTable extends React.Component<AlignmentsReportTable
                             }
                         }
                     ]}
-                    onRowClick={(event : React.MouseEvent<HTMLElement>,rowData : AlignData,toggleDetailPanel) => 
+                    onRowClick={(event: React.MouseEvent<HTMLElement>, rowData: AlignData, toggleDetailPanel) => 
                     {
                         let el = TableCellHover.getClickedCell(event);
-                       
-                        if(el)
+
+                        if (el) 
                         {
-                            if(this.SNPCellId(rowData) == el.id)
+                            if (this.SNPCellId(rowData) == el.id) 
                             {
                                 toggleDetailPanel(0);
+                            }
+
+                            else if (this.aliasCellId(rowData) == el.id) 
+                            {
+                                if (
+                                    rowData.isExternalAlignment ?
+                                        (rowData.flagStatReport && !rowData.flagStatReport.overallAlignmentRate) :
+                                        (rowData.summary && !rowData.summary.overallAlignmentRate)
+
+                                ) 
+                                {
+                                    alert("Can't view an alignment with 0% alignment rate");
+                                    return;
+                                }
+
+                                let fasta: Fasta | undefined;
+                                
+                                for (let k = 0; k != this.props.fastas.length; ++k) 
+                                {
+
+                                    if (rowData.fasta && this.props.fastas[k].uuid == rowData.fasta.uuid) 
+                                    {
+                                        fasta = this.props.fastas[k];
+                                        break;
+                                    }
+                                }
+                                if (!fasta) 
+                                {
+                                    alert("You must link this alignment to a reference to visualize");
+                                    return;
+                                }
+                                if (!fasta.indexedForVisualization) 
+                                {
+                                    alert("The reference for this alignment is not ready for visualization");
+                                    return;
+                                }
+                                ipc.send(
+                                    "runOperation",
+                                    {
+                                        opName: "openPileupViewer",
+                                        pileupViewerParams: {
+                                            align: rowData,
+                                            contig: fasta.contigs[0].name.split(" ")[0],
+                                            start: 0,
+                                            stop: 100
+                                        }
+                                    } as AtomicOperationIPC
+                                );
                             }
                         }
                     }}
@@ -72,7 +123,7 @@ export class AlignmentsReportTable extends React.Component<AlignmentsReportTable
                             title: "Alias",
                             render: (row: AlignData) => 
                             {
-                                return (<div id={this.aliasCellId(row)} className={TableCellHover.cellHoverClass}>{row.alias}</div>)
+                                return (<div id={this.aliasCellId(row)} className={TableCellHover.cellHoverClass}>{row.alias}</div>);
                             }
                         },
                         {
