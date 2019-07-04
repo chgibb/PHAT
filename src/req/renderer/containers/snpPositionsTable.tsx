@@ -10,7 +10,6 @@ import {Fasta} from "../../fasta";
 import {AtomicOperationIPC} from "../../atomicOperationsIPC";
 
 import {TableCellHover} from "./tableCellHover";
-import {SubTableContainer} from "./subTableContainer";
 
 const ipc = electron.ipcRenderer;
 
