@@ -39,12 +39,7 @@ export function SNPPositionsTable(props : SNPPositionsTableProps) : JSX.Element
                 toolbar={false}
                 title=""
                 data={snps}
-                components={{
-                    Container : (props) => 
-                    {
-                        return SubTableContainer(props);
-                    }
-                }}
+                isSubTable={true}
                 onRowClick={(event : React.MouseEvent<HTMLElement>,rowData) => 
                 {
                     console.log(rowData);

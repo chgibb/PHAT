@@ -3,6 +3,7 @@ import * as React from "react";
 import {tableCell} from "../../renderer/styles/tableCell";
 
 import {tableIcons} from "./tableIcons";
+import { SubTableContainer } from '../containers/subTableContainer';
 
 export const MuiTable : typeof import("material-table").default = require("material-table").default;
 
@@ -23,7 +24,7 @@ export interface TableProps<T>
     onSelectionChange? : typeof MuiTable.defaultProps.onSelectionChange;
     pageSize? : typeof MuiTable.defaultProps.options.pageSize;
     pageSizeOptions? : typeof MuiTable.defaultProps.options.pageSizeOptions;
-    components? : typeof MuiTable.defaultProps.components;
+    isSubTable? : boolean;
     data? : Array<T>;
     columns : Array<
         Omit<typeof MuiTable.defaultProps.columns[number],"render"> & {
@@ -51,7 +52,12 @@ export function Table<T>(props : TableProps<T>) : JSX.Element
                 pageSize : props.pageSize ? props.pageSize : defaultPageSize,
                 pageSizeOptions : props.pageSizeOptions ? props.pageSizeOptions : defaultPageSizeOptions
             }}
-            components={props.components}
+            components={props.isSubTable ? {
+                Container : (subProps) => 
+                    {
+                        return SubTableContainer(subProps);
+                    }
+            } : undefined}
             actions={props.actions}
             onSelectionChange={props.onSelectionChange}
             icons={tableIcons}
