@@ -18,6 +18,7 @@ export interface SNPPositionsTableProps
 {
     align : AlignData;
     fastas : Array<Fasta>;
+    isSubTable? : boolean;
 }
 
 export function SNPPositionsTable(props : SNPPositionsTableProps) : JSX.Element
@@ -39,7 +40,7 @@ export function SNPPositionsTable(props : SNPPositionsTableProps) : JSX.Element
                 toolbar={false}
                 title=""
                 data={snps}
-                isSubTable={true}
+                isSubTable={props.isSubTable}
                 onRowClick={(event : React.MouseEvent<HTMLElement>,rowData) => 
                 {
                     console.log(rowData);
