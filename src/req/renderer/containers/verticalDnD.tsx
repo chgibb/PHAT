@@ -15,7 +15,7 @@ import {
 export type DropResult = DropResult;
 export type ResponderProvided = ResponderProvided;
 
-export interface VerticalDnDPRops<T>
+export interface VerticalDnDProps<T>
 {
     onDragEnd : (result : DropResult,provided : ResponderProvided) => void;
     droppableID : string;
@@ -26,7 +26,7 @@ export interface VerticalDnDPRops<T>
     data : Array<T>;
 }
 
-export function VerticalDnD<T>(props : VerticalDnDPRops<T>) : JSX.Element
+export function VerticalDnD<T>(props : VerticalDnDProps<T>) : JSX.Element
 {
     return (
         <DragDropContext onDragEnd={props.onDragEnd}>
