@@ -1,9 +1,9 @@
 import * as React from "react";
 
 import {tableCell} from "../../renderer/styles/tableCell";
+import {SubTableContainer} from "../containers/subTableContainer";
 
 import {tableIcons} from "./tableIcons";
-import { SubTableContainer } from '../containers/subTableContainer';
 
 export const MuiTable : typeof import("material-table").default = require("material-table").default;
 
@@ -54,9 +54,9 @@ export function Table<T>(props : TableProps<T>) : JSX.Element
             }}
             components={props.isSubTable ? {
                 Container : (subProps) => 
-                    {
-                        return SubTableContainer(subProps);
-                    }
+                {
+                    return SubTableContainer(subProps);
+                }
             } : undefined}
             actions={props.actions}
             onSelectionChange={props.onSelectionChange}

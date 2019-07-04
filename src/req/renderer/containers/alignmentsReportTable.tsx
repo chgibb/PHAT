@@ -10,7 +10,7 @@ import {AtomicOperationIPC} from "../../atomicOperationsIPC";
 
 import {TableCellHover} from "./tableCellHover";
 import {SNPPositionsTable} from "./snpPositionsTable";
-import { ReadsPerContigTable } from './readsPerContigTable';
+import {ReadsPerContigTable} from "./readsPerContigTable";
 
 const ipc = electron.ipcRenderer;
 
@@ -61,13 +61,14 @@ export class AlignmentsReportTable extends React.Component<AlignmentsReportTable
                         },
                         {
                             tooltip: "Reads Aligned Per Contig",
-                            render: (rowData : AlignData) => {
+                            render: (rowData : AlignData) => 
+                            {
                                 return (
                                     <ReadsPerContigTable
                                         align={rowData}
                                         isSubTable={true}
                                     />
-                                )
+                                );
                             }
                         }
                     ]}

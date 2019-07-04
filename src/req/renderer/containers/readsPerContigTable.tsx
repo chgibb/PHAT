@@ -1,7 +1,8 @@
 import * as React from "react";
-import { AlignData } from '../../alignData';
-import { SamToolsIdxStatsReport } from '../../samToolsIdxStatsReport';
-import { Table } from '../components/table';
+
+import {AlignData} from "../../alignData";
+import {SamToolsIdxStatsReport} from "../../samToolsIdxStatsReport";
+import {Table} from "../components/table";
 
 export interface ReadsPerContigTable
 {
@@ -20,29 +21,33 @@ export function ReadsPerContigTable(props : ReadsPerContigTable) : JSX.Element
             columns={[
                 {
                     title: "Contig Name",
-                    render : (row) => {
+                    render : (row) => 
+                    {
                         return row.refSeqName;
                     }
                 },
                 {
                     title: "Length",
-                    render : (row) => {
+                    render : (row) => 
+                    {
                         return row.seqLength;
                     }
                 },
                 {
                     title: "Mapped Reads",
-                    render : (row) => {
+                    render : (row) => 
+                    {
                         return row.mappedReads;
                     }
                 },
                 {
                     title: "Unmapped Reads",
-                    render : (row) => {
+                    render : (row) => 
+                    {
                         return row.unMappedReads;
                     }
                 }
             ]}
         />
-    )
+    );
 }
