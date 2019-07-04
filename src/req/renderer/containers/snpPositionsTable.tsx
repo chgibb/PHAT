@@ -38,8 +38,6 @@ export function SNPPositionsTable(props : SNPPositionsTableProps) : JSX.Element
             <Table<VCF2JSONRow>
                 toolbar={false}
                 title=""
-                pageSize={snps.length < 100 ? snps.length : 100}
-                pageSizeOptions={[100,1000]}
                 data={snps}
                 components={{
                     Container : (props) => 

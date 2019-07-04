@@ -24,7 +24,7 @@ export interface TableProps<T>
     pageSize? : typeof MuiTable.defaultProps.options.pageSize;
     pageSizeOptions? : typeof MuiTable.defaultProps.options.pageSizeOptions;
     components? : typeof MuiTable.defaultProps.components;
-    data : Array<T>;
+    data? : Array<T>;
     columns : Array<
         Omit<typeof MuiTable.defaultProps.columns[number],"render"> & {
             render? : (row : Row<T>) => string | number | boolean | JSX.Element}>;
@@ -36,6 +36,9 @@ export interface TableProps<T>
 
 export function Table<T>(props : TableProps<T>) : JSX.Element
 {
+    let defaultPageSize : typeof props.pageSize = props.data ? props.data.length < 100 ? props.data.length : 100 : 5;
+    let defaultPageSizeOptions : typeof props.pageSizeOptions = [defaultPageSize,500,1000];
+
     return (
         <MuiTable
             title={props.title}
@@ -45,8 +48,8 @@ export function Table<T>(props : TableProps<T>) : JSX.Element
                 headerStyle: tableCell as any,
                 rowStyle : tableCell as any,
                 selection : props.selection,
-                pageSize : props.pageSize ? props.pageSize : 5,
-                pageSizeOptions : props.pageSizeOptions
+                pageSize : props.pageSize ? props.pageSize : defaultPageSize,
+                pageSizeOptions : props.pageSizeOptions ? props.pageSizeOptions : defaultPageSizeOptions
             }}
             components={props.components}
             actions={props.actions}
