@@ -56,7 +56,7 @@ export function writeAvailableTracksModal() : void
                 if(genomeView.genome.renderedCoverageTracks[i].uuidContig == selectedAlign.fasta.contigs[j].uuid)
                 {
                     body += `
-                    <b>Scaled by ${genomeView.genome.renderedCoverageTracks[i].scaleFactor}</b><p id="${genomeView.genome.renderedCoverageTracks[i].uuid}Available" class="activeHover" style="color:${genomeView.genome.renderedCoverageTracks[i].colour}">${selectedAlign.fasta.contigs[j].name}</p>
+                    <b>${genomeView.genome.renderedCoverageTracks[i].log10Scaled ? "Log10 scaled, " : ""}Scaled by ${genomeView.genome.renderedCoverageTracks[i].scaleFactor}</b><p id="${genomeView.genome.renderedCoverageTracks[i].uuid}Available" class="activeHover" style="color:${genomeView.genome.renderedCoverageTracks[i].colour}">${selectedAlign.fasta.contigs[j].name}</p>
                     `;
                     foundTrack = true;
                 }
@@ -103,6 +103,10 @@ export function writeAvailableTracksModal() : void
         <input type="text" id="colourPicker" data-format="rgb" value="rgb(0, 0, 0)">
         <br />
         <br />
+        <div>
+            <input type="checkbox" name="log10scalecheckbox" id="log10scale">
+            <label for="log10scalecheckbox">Log10 Scale Before Applying Depth Scale</label>
+        </div>
         <p>Coverage Depth Scale</p>
         <input type="number" step="0.1" min="0" value="1" id="scaleFactor">
         <br />
@@ -210,7 +214,8 @@ export function writeAvailableTracksModal() : void
                         alignuuid : selectedAlign.uuid,
                         uuid : genomeView.genome.contigs[i].uuid,
                         colour : (<string>(<any>$(document.getElementById("colourPicker"))).minicolors("rgbString")),
-                        scaleFactor : parseFloat((<HTMLInputElement>document.getElementById("scaleFactor")).value)
+                        scaleFactor : parseFloat((<HTMLInputElement>document.getElementById("scaleFactor")).value),
+                        log10Scale : (<HTMLInputElement>document.getElementById("log10scale")).checked
                     }
                 );
             }
@@ -228,7 +233,10 @@ export function writeAvailableTracksModal() : void
                 );
             }
         }
-        catch(err){}
+        catch(err)
+        {
+            console.log(err);
+        }
     }
     for(let i = 0; i != genomeView.genome.renderedCoverageTracks.length; ++i)
     {
