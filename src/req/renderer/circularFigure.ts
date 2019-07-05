@@ -142,7 +142,8 @@ export class RenderedTrackRecord
  */
 export class RenderedCoverageTrackRecord extends RenderedTrackRecord
 {
-    scaleFactor : number;
+    public scaleFactor : number;
+    public log10Scaled : boolean;
     public constructor(
         uuidAlign : string,
         uuidContig : string,
