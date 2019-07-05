@@ -13,6 +13,7 @@ export class RenderCoverageTrackForContig extends atomic.AtomicOperation
     public circularFigure : cf.CircularFigure;
     public colour : string;
     public scaleFactor : number;
+    public log10Scale : boolean;
     public renderCoverageTrackProcess : cp.ChildProcess;
     constructor()
     {
@@ -23,7 +24,8 @@ export class RenderCoverageTrackForContig extends atomic.AtomicOperation
         contiguuid : string,
         alignData : AlignData,
         colour : string,
-        scaleFactor : number
+        scaleFactor : number,
+        log10Scale : boolean
     }) : void
     {
         this.circularFigure = data.circularFigure;
@@ -31,11 +33,15 @@ export class RenderCoverageTrackForContig extends atomic.AtomicOperation
         this.alignData = data.alignData;
         this.colour = data.colour;
         this.scaleFactor = data.scaleFactor;
+        this.log10Scale = data.log10Scale;
     }
     public run() : void
     {
         this.logRecord = atomic.openLog(this.name,"Render Coverage Track");
         let self = this;
+
+        atomic.logString(this.logRecord,JSON.stringify(this,undefined,4));
+
         this.renderCoverageTrackProcess = atomic.makeFork("RenderCoverageTrack.js",<AtomicOperationForkEvent>{
             setData : true,
             data : {
@@ -43,7 +49,8 @@ export class RenderCoverageTrackForContig extends atomic.AtomicOperation
                 contiguuid : self.contiguuid,
                 circularFigure : self.circularFigure,
                 colour : self.colour,
-                scaleFactor : self.scaleFactor
+                scaleFactor : self.scaleFactor,
+                log10Scale : self.log10Scale
             }
         },function(ev : AtomicOperationForkEvent){
             if(ev.finishedSettingData == true)
