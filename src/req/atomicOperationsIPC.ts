@@ -48,6 +48,7 @@ export interface AtomicOperationIPC
     figure? : CircularFigure;
 
     scaleFactor? : number;
+    log10Scale? : boolean;
 
     toDock? : string;
     dockTarget? : string;
