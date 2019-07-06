@@ -50,7 +50,8 @@ export function Table<T>(props : TableProps<T>) : JSX.Element
                 rowStyle : tableCell as any,
                 selection : props.selection,
                 pageSize : props.pageSize ? props.pageSize : defaultPageSize,
-                pageSizeOptions : props.pageSizeOptions ? props.pageSizeOptions : defaultPageSizeOptions
+                pageSizeOptions : props.pageSizeOptions ? props.pageSizeOptions : defaultPageSizeOptions,
+                columnsButton : true
             }}
             components={props.isSubTable ? {
                 Container : (subProps) => 
