@@ -42,9 +42,9 @@ export function samToolsDepth(alignData: AlignData,logger : atomic.AtomicOperati
                         if(params.retCode == 0)
                         {
                             atomic.logString(logger.logRecord,`Finished samtools`);
-                            samToolsCoverageFileStream.end();
                             setTimeout(
                                 function(){
+                                    samToolsCoverageFileStream.end();
                                     atomic.logString(logger.logRecord,`Starting distillation`);
                                     let rl : readline.ReadLine = readline.createInterface(<readline.ReadLineOptions>{
                                         input : fs.createReadStream(getCoverage(alignData))
