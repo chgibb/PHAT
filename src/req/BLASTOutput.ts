@@ -122,7 +122,7 @@ export interface BLASTOutputRawJSON
             }>;
         }>;
     }
-};
+}
 
 function throwOnUndefined(obj : any) : void
 {

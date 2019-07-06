@@ -2,31 +2,32 @@
  * Shared window management objects and methods.
  * @module req/main/window
  */
-const electron = require('electron');
+const electron = require("electron");
 const BrowserWindow = electron.BrowserWindow;
 
 import * as dataMgr from "./dataMgr";
 import {GetKeyEvent,KeyChangeEvent} from "./../ipcEvents";
+
 import {getReadable} from "../getAppPath";
 
 
 export class WindowRef
 {
-	public name : string;
-	public window : Electron.BrowserWindow;
-	public constructor(name : string, window : Electron.BrowserWindow)
-	{
-		this.name = name;
-		this.window = window;
-	}
+    public name : string;
+    public window : Electron.BrowserWindow;
+    public constructor(name : string, window : Electron.BrowserWindow)
+    {
+        this.name = name;
+        this.window = window;
+    }
 }
 export interface WindowCreator
-{	
-	Create : () => void;
+{   
+    Create : () => void;
 }
 let windows = new Array<WindowRef>();
 export let windowCreators : {
-	[index : string] : WindowCreator;
+    [index : string] : WindowCreator;
 } = {};
 
 /**
@@ -38,7 +39,7 @@ export let windowCreators : {
  */
 export function pushWindow(refName : string,ref : Electron.BrowserWindow) : void
 {
-	windows.push(new WindowRef(refName,ref));
+    windows.push(new WindowRef(refName,ref));
 }
 
 /**
@@ -49,23 +50,23 @@ export function pushWindow(refName : string,ref : Electron.BrowserWindow) : void
  */
 export function getWindowPIDs() : Array<number>
 {
-	for(let i : number = windows.length - 1; i >= 0; --i)
-	{
-		try
-		{
-			windows[i].window.isResizable();
-		}
-		catch(err)
-		{
-			windows.splice(i,1);
-		}
-	}
-	let res = new Array<number>();
-	for(let i = 0; i != windows.length; ++i)
-	{
-		res.push(windows[i].window.webContents.getOSProcessId());
-	}
-	return res;
+    for(let i : number = windows.length - 1; i >= 0; --i)
+    {
+        try
+        {
+            windows[i].window.isResizable();
+        }
+        catch(err)
+        {
+            windows.splice(i,1);
+        }
+    }
+    let res = new Array<number>();
+    for(let i = 0; i != windows.length; ++i)
+    {
+        res.push(windows[i].window.webContents.getOSProcessId());
+    }
+    return res;
 }
 
 /**
@@ -76,37 +77,37 @@ export function getWindowPIDs() : Array<number>
  */
 export function getFreeWebContents() : Array<Electron.WebContents>
 {
-	for(let i : number = windows.length - 1; i >= 0; --i)
-	{
-		try
-		{
-			windows[i].window.isResizable();
-		}
-		catch(err)
-		{
-			windows.splice(i,1);
-		}
-	}
-	let res = new Array<Electron.WebContents>();
+    for(let i : number = windows.length - 1; i >= 0; --i)
+    {
+        try
+        {
+            windows[i].window.isResizable();
+        }
+        catch(err)
+        {
+            windows.splice(i,1);
+        }
+    }
+    let res = new Array<Electron.WebContents>();
 
-	let webContents = electron.webContents.getAllWebContents();
+    let webContents = electron.webContents.getAllWebContents();
 
-	for(let i = 0; i != webContents.length; ++i)
-	{
-		let found = false;
-		for(let k = 0; k != windows.length; ++k)
-		{
-			if(webContents[i].id == windows[k].window.webContents.id)
-			{
-				found = true;
-				break;
-			}
-		}
-		if(!found)
-			res.push(webContents[i]);
-	}
+    for(let i = 0; i != webContents.length; ++i)
+    {
+        let found = false;
+        for(let k = 0; k != windows.length; ++k)
+        {
+            if(webContents[i].id == windows[k].window.webContents.id)
+            {
+                found = true;
+                break;
+            }
+        }
+        if(!found)
+            res.push(webContents[i]);
+    }
 
-	return res;
+    return res;
 }
 
 /**
@@ -117,18 +118,18 @@ export function getFreeWebContents() : Array<Electron.WebContents>
  */
 export function getOpenWindows() : Array<WindowRef>
 {
-	for(let i : number = windows.length - 1; i >= 0; --i)
-	{
-		try
-		{
-			windows[i].window.isResizable();
-		}
-		catch(err)
-		{
-			windows.splice(i,1);
-		}
-	}
-	return windows;
+    for(let i : number = windows.length - 1; i >= 0; --i)
+    {
+        try
+        {
+            windows[i].window.isResizable();
+        }
+        catch(err)
+        {
+            windows.splice(i,1);
+        }
+    }
+    return windows;
 }
 
 /**
@@ -139,22 +140,22 @@ export function getOpenWindows() : Array<WindowRef>
  */
 export function closeAllExcept(refName : string) : void
 {
-	for(let i : number = windows.length - 1; i >= 0; --i)
-	{
-		try
-		{
-			windows[i].window.isResizable();
-		}
-		catch(err)
-		{
-			windows.splice(i,1);
-		}
-	}
-	for(let i : number = 0; i != windows.length; ++i)
-	{
-		if(windows[i].name != refName)
-			windows[i].window.close();
-	}
+    for(let i : number = windows.length - 1; i >= 0; --i)
+    {
+        try
+        {
+            windows[i].window.isResizable();
+        }
+        catch(err)
+        {
+            windows.splice(i,1);
+        }
+    }
+    for(let i : number = 0; i != windows.length; ++i)
+    {
+        if(windows[i].name != refName)
+            windows[i].window.close();
+    }
 }
 
 /**
@@ -166,26 +167,26 @@ export function closeAllExcept(refName : string) : void
  */
 export function getWindowsByName(refName : string) : Array<Electron.BrowserWindow>
 {
-	let res : Array<Electron.BrowserWindow> = new Array<Electron.BrowserWindow>();
-	for(let i : number = windows.length - 1; i >= 0; --i)
-	{
-		try
-		{
-			windows[i].window.isResizable();
-		}
-		catch(err)
-		{
-			windows.splice(i,1);
-		}
-	}
-	for(let i = 0; i != windows.length; ++i)
-	{
-		if(windows[i].name == refName)
-		{
-			res.push(windows[i].window);
-		}
-	}
-	return res;
+    let res : Array<Electron.BrowserWindow> = new Array<Electron.BrowserWindow>();
+    for(let i : number = windows.length - 1; i >= 0; --i)
+    {
+        try
+        {
+            windows[i].window.isResizable();
+        }
+        catch(err)
+        {
+            windows.splice(i,1);
+        }
+    }
+    for(let i = 0; i != windows.length; ++i)
+    {
+        if(windows[i].name == refName)
+        {
+            res.push(windows[i].window);
+        }
+    }
+    return res;
 }
 
 /**
@@ -242,9 +243,9 @@ export function publishChangeForKey(channel : string,key : string) : void
                         val : dataMgr.getKey(channel,key)
                     }
                 );
-			}
-			let webContents = getFreeWebContents();
-			for(let k : number = 0; k != webContents.length; ++k)
+            }
+            let webContents = getFreeWebContents();
+            for(let k : number = 0; k != webContents.length; ++k)
             {
                 webContents[k].send(
                     dataMgr.keySubs[i].replyChannel,
@@ -255,7 +256,7 @@ export function publishChangeForKey(channel : string,key : string) : void
                         val : dataMgr.getKey(channel,key)
                     }
                 );
-			}
+            }
         }
     }
 }
@@ -273,52 +274,53 @@ export function publishChangeForKey(channel : string,key : string) : void
  * @param {number} [minHeight] - Minimum height for window
  */
 export function initWindowOptions(
-	title : string,
-	refName : string,
-	width : number,
-	height : number,
-	alwaysOnTop? : boolean,
-	minWidth? : number,
-	minHeight? : number
-) : void {
-	let windowOptions : Electron.BrowserWindowConstructorOptions = dataMgr.getKey(refName,"windowOptions");
-	if(!windowOptions)
-	{
-		let display = electron.screen.getPrimaryDisplay();
-		if(refName == "toolBar")
-		{
-			width = display.workArea.width/4;
-			height = display.workArea.height/8;
-		}
-		let x = (display.workArea.width/2)-(width/2);
-		let y = 0;
-		windowOptions = 
-		{
-			x : x,
-			y : y,
-			width : width,
-			height : height,
-			useContentSize : false,
-			center : true,
-			minWidth: minWidth,
-			minHeight: minHeight,
-			resizable : true,
-			movable : true,
-			minimizable : true,
-			maximizable : true,
-			closable : true,
-			alwaysOnTop : alwaysOnTop,
-			fullscreen : false,
-			title : title,
-			icon : './../icon.png',
-			webPreferences : {
-				nodeIntegrationInWorker : true
-			}
-			
-		};
-		
-		dataMgr.setKey(refName,"windowOptions",windowOptions);
-	}
+    title : string,
+    refName : string,
+    width : number,
+    height : number,
+    alwaysOnTop? : boolean,
+    minWidth? : number,
+    minHeight? : number
+) : void 
+{
+    let windowOptions : Electron.BrowserWindowConstructorOptions = dataMgr.getKey(refName,"windowOptions");
+    if(!windowOptions)
+    {
+        let display = electron.screen.getPrimaryDisplay();
+        if(refName == "toolBar")
+        {
+            width = display.workArea.width/4;
+            height = display.workArea.height/8;
+        }
+        let x = (display.workArea.width/2)-(width/2);
+        let y = 0;
+        windowOptions = 
+        {
+            x : x,
+            y : y,
+            width : width,
+            height : height,
+            useContentSize : false,
+            center : true,
+            minWidth: minWidth,
+            minHeight: minHeight,
+            resizable : true,
+            movable : true,
+            minimizable : true,
+            maximizable : true,
+            closable : true,
+            alwaysOnTop : alwaysOnTop,
+            fullscreen : false,
+            title : title,
+            icon : "./../icon.png",
+            webPreferences : {
+                nodeIntegrationInWorker : true
+            }
+            
+        };
+        
+        dataMgr.setKey(refName,"windowOptions",windowOptions);
+    }
 }
 /**
  * Opens a new window using window options identified by refName
@@ -330,41 +332,38 @@ export function initWindowOptions(
  * @returns {Electron.BrowserWindow} 
  */
 export function createFromOptions(
-	refName : string,
-	html : string,
-	debug : boolean
+    refName : string,
+    html : string,
+    debug : boolean
 ) : Electron.BrowserWindow
 {
-		let windowOptions : Electron.BrowserWindowConstructorOptions = dataMgr.getKey(refName,"windowOptions");
+    let windowOptions : Electron.BrowserWindowConstructorOptions = dataMgr.getKey(refName,"windowOptions");
 
-		let ref = new BrowserWindow(windowOptions);
+    let ref = new BrowserWindow(windowOptions);
 
-		ref.loadURL(html);
-		if(debug)
-			ref.webContents.openDevTools();
-	
-		ref.on
-		(
-			'close',function()
-			{
-				saveBounds(ref,refName);
-			}
-		);
-		ref.on
-		(
-			'move',function()
-			{
-				saveBounds(ref,refName);
-			}
-		);
-		ref.on
-		(
-			'resize',function()
-			{
-				saveBounds(ref,refName);
-			}
-		);
-		return ref;
+    ref.loadURL(html);
+    if(debug)
+        ref.webContents.openDevTools();
+    
+    ref.on(
+        "close",function()
+        {
+            saveBounds(ref,refName);
+        }
+    );
+    ref.on(
+        "move",function()
+        {
+            saveBounds(ref,refName);
+        }
+    );
+    ref.on(
+        "resize",function()
+        {
+            saveBounds(ref,refName);
+        }
+    );
+    return ref;
 }
 /**
  * Create an empty webcontents host window, hooking into sizing and options for
@@ -376,38 +375,45 @@ export function createFromOptions(
  */
 export function createWCHost(refName : string) : Promise<void>
 {
-	return new Promise<void>((resolve,reject) => {
-		let windowOptions : Electron.BrowserWindowConstructorOptions = dataMgr.getKey(refName,"windowOptions");
+    return new Promise<void>((resolve,reject) => 
+    {
+        let windowOptions : Electron.BrowserWindowConstructorOptions = dataMgr.getKey(refName,"windowOptions");
 
-		let ref = new BrowserWindow(windowOptions);
-		ref.loadURL(`file://${getReadable("wcHost.html")}`);
+        let ref = new BrowserWindow(windowOptions);
+        ref.loadURL(`file://${getReadable("wcHost.html")}`);
 
-		ref.on("close",function(){
-			saveBounds(ref,refName);
-		});
+        ref.on("close",function()
+        {
+            saveBounds(ref,refName);
+        });
 
-		ref.on("move",function(){
-			saveBounds(ref,refName);
-		});
+        ref.on("move",function()
+        {
+            saveBounds(ref,refName);
+        });
 
-		ref.on("resize",function(){
-			saveBounds(ref,refName);
-		});
+        ref.on("resize",function()
+        {
+            saveBounds(ref,refName);
+        });
 
-		ref.webContents.on("devtools-opened",function(){
-			ref.webContents.send("devtools-opened");
-		});
+        ref.webContents.on("devtools-opened",function()
+        {
+            ref.webContents.send("devtools-opened");
+        });
 
-		ref.webContents.on("devtools-closed",function(){
-			ref.webContents.send("devtools-closed");
-		});
+        ref.webContents.on("devtools-closed",function()
+        {
+            ref.webContents.send("devtools-closed");
+        });
 
-		ref.webContents.once("dom-ready",function(){
-			resolve();
-		});
+        ref.webContents.once("dom-ready",function()
+        {
+            resolve();
+        });
 
-		pushWindow(refName,ref);
-	});
+        pushWindow(refName,ref);
+    });
 }
 
 /**
@@ -417,45 +423,45 @@ export function createWCHost(refName : string) : Promise<void>
  */
 export function saveBounds(ref : Electron.BrowserWindow,refName : string) : void
 {
-	let x : number;
-	let y : number;
-	let width : number;
-	let height : number;
-	let pos = ref.getPosition();
-	let dimensions = ref.getSize();
-	x = pos[0];
-	y = pos[1];
-	width = dimensions[0];
-	height = dimensions[1];
-	//Get old saved values.
-	//let windowOptions = getState.getState(refName,"windowOptions");
-	let windowOptions = dataMgr.getKey(refName,"windowOptions");
-	if(!windowOptions)
-	{
-		return;
-	}
-	//Determine simple diff
-	let change = false;
-	if(windowOptions.x != x)
-	{
-		windowOptions.x = x;
-		change = true;
-	}
-	if(windowOptions.y != y)
-	{
-		windowOptions.y = y;
-		change = true;
-	}
-	if(windowOptions.width != width)
-	{
-		windowOptions.width = width;
-		change = true;
-	}
-	if(windowOptions.height != height)
-	{
-		windowOptions.height = height;
-		change = true;
-	}
-	if(change)
-		dataMgr.setKey(refName,"windowOptions",windowOptions);
+    let x : number;
+    let y : number;
+    let width : number;
+    let height : number;
+    let pos = ref.getPosition();
+    let dimensions = ref.getSize();
+    x = pos[0];
+    y = pos[1];
+    width = dimensions[0];
+    height = dimensions[1];
+    //Get old saved values.
+    //let windowOptions = getState.getState(refName,"windowOptions");
+    let windowOptions = dataMgr.getKey(refName,"windowOptions");
+    if(!windowOptions)
+    {
+        return;
+    }
+    //Determine simple diff
+    let change = false;
+    if(windowOptions.x != x)
+    {
+        windowOptions.x = x;
+        change = true;
+    }
+    if(windowOptions.y != y)
+    {
+        windowOptions.y = y;
+        change = true;
+    }
+    if(windowOptions.width != width)
+    {
+        windowOptions.width = width;
+        change = true;
+    }
+    if(windowOptions.height != height)
+    {
+        windowOptions.height = height;
+        change = true;
+    }
+    if(change)
+        dataMgr.setKey(refName,"windowOptions",windowOptions);
 }

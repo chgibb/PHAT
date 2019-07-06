@@ -17,7 +17,8 @@ import {samToolsFlagStatReportParser} from "./../../samToolsFlagStatReport";
  */
 export function samToolsFlagStat(alignData : AlignData,logger : atomic.AtomicOperation) : Promise<void>
 {
-    return new Promise<void>((resolve,reject) => {
+    return new Promise<void>((resolve,reject) => 
+    {
         let samToolsExe = getReadable("samtools");
         
         let samToolsFlagStatStream : fs.WriteStream = fs.createWriteStream(getFlagStats(alignData));
@@ -38,7 +39,8 @@ export function samToolsFlagStat(alignData : AlignData,logger : atomic.AtomicOpe
                     if(params.retCode == 0)
                     {
                         setTimeout(
-                            function(){
+                            function()
+                            {
                                 samToolsFlagStatStream.end();
                                 alignData.flagStatReport = samToolsFlagStatReportParser(
                                     <any>fs.readFileSync(

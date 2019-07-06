@@ -12,9 +12,10 @@ export function renderMappedReadsPerContigTable() : string
     return `
         <img class="activeHover activeHoverButton" id="goBackToAlignments" src="${getReadable("img/GoBack.png")}">
         <table style="width:100%">
-            ${(()=>{
-                let res = "";
-                res += `
+            ${(()=>
+    {
+        let res = "";
+        res += `
                     <tr>
                         ${rightPanel.mapppedReadsPerContigInfoSelection.refSeqName != false ? "<th>Contig Name</th>" : ""}
                         ${rightPanel.mapppedReadsPerContigInfoSelection.seqLength != false ? "<th>Length</th>" : ""}
@@ -22,33 +23,34 @@ export function renderMappedReadsPerContigTable() : string
                         ${rightPanel.mapppedReadsPerContigInfoSelection.unMappedReads != false ? "<th>Unmapped Reads</th>" : ""}
                     </tr>
                 `;
-                return res;
-            })()}
-            ${(()=>{
-                let res = "";
-                for(let i = 0; i != masterView.alignData.length; ++i)
-                {
+        return res;
+    })()}
+            ${(()=>
+    {
+        let res = "";
+        for(let i = 0; i != masterView.alignData.length; ++i)
+        {
                     
-                    if(masterView.alignData[i].uuid == masterView.inspectingAlignUUID)
-                    {
-                        for(let k = 0; k != masterView.alignData[i].idxStatsReport.length-1; ++k)
-                        {
-                                res += "<tr>";
-                                if(rightPanel.mapppedReadsPerContigInfoSelection.refSeqName)
-                                    res += `<td>${masterView.alignData[i].idxStatsReport[k].refSeqName}</td>`;
-                                if(rightPanel.mapppedReadsPerContigInfoSelection.seqLength)
-                                    res += `<td>${masterView.alignData[i].idxStatsReport[k].seqLength}</td>`;
-                                if(rightPanel.mapppedReadsPerContigInfoSelection.mappedReads)
-                                    res += `<td>${masterView.alignData[i].idxStatsReport[k].mappedReads}</td>`;
-                                if(rightPanel.mapppedReadsPerContigInfoSelection.unMappedReads)
-                                    res += `<td>${masterView.alignData[i].idxStatsReport[k].unMappedReads}</td>`;
-                                res += "</tr>";
-                        }
-                        break;
-                    }
+            if(masterView.alignData[i].uuid == masterView.inspectingAlignUUID)
+            {
+                for(let k = 0; k != masterView.alignData[i].idxStatsReport.length-1; ++k)
+                {
+                    res += "<tr>";
+                    if(rightPanel.mapppedReadsPerContigInfoSelection.refSeqName)
+                        res += `<td>${masterView.alignData[i].idxStatsReport[k].refSeqName}</td>`;
+                    if(rightPanel.mapppedReadsPerContigInfoSelection.seqLength)
+                        res += `<td>${masterView.alignData[i].idxStatsReport[k].seqLength}</td>`;
+                    if(rightPanel.mapppedReadsPerContigInfoSelection.mappedReads)
+                        res += `<td>${masterView.alignData[i].idxStatsReport[k].mappedReads}</td>`;
+                    if(rightPanel.mapppedReadsPerContigInfoSelection.unMappedReads)
+                        res += `<td>${masterView.alignData[i].idxStatsReport[k].unMappedReads}</td>`;
+                    res += "</tr>";
                 }
-                return res;
-            })()}
+                break;
+            }
+        }
+        return res;
+    })()}
         </table>
     `;
 }

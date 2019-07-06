@@ -19,9 +19,9 @@ export function writeAlignsModal() : void
 
     let aligns = masterView.getAlignsForOpenGenome();
 
-    let title = `Select Alignment`;
+    let title = "Select Alignment";
 
-    let body = ``;
+    let body = "";
     if(!genomeView.genome)
     {
         body = `
@@ -54,18 +54,19 @@ export function writeAlignsModal() : void
             {
                 body += `
                     <tr>
-                        ${(()=>{
-                            if(masterView.willBLASTAlignment)
-                            {
-                                if(genomeView.shouldAllowTriggeringOps)
-                                    return `<td id="${aligns[i].uuid}View" class="cellHover">BLAST</td>`;
-                                else
-                                    return `<td><div class="three-quarters-loader"></div></td>`
-                            }
-                            return `<td><img src="${getReadable("img/viewAvailableTracks.png")}" id="${aligns[i].uuid}View" class="activeHover activeHoverButton" /><br />
+                        ${(()=>
+    {
+        if(masterView.willBLASTAlignment)
+        {
+            if(genomeView.shouldAllowTriggeringOps)
+                return `<td id="${aligns[i].uuid}View" class="cellHover">BLAST</td>`;
+            else
+                return "<td><div class=\"three-quarters-loader\"></div></td>";
+        }
+        return `<td><img src="${getReadable("img/viewAvailableTracks.png")}" id="${aligns[i].uuid}View" class="activeHover activeHoverButton" /><br />
                             </td>`;
 
-                        })()}
+    })()}
                         <td>${aligns[i].alias}</td>
                         <td>${aligns[i].alignerUsed ? aligns[i].alignerUsed : "bowtie2"}</td>
                         <td>${!aligns[i].isExternalAlignment ? aligns[i].summary.reads : aligns[i].flagStatReport.reads}</td>
@@ -75,11 +76,11 @@ export function writeAlignsModal() : void
                     </tr>
                 `;
             }
-            body += `</table>`;
+            body += "</table>";
         }
     }
 
-    let footer = ``;
+    let footer = "";
     if(!genomeView.genome)
     {
         footer = `
@@ -90,31 +91,34 @@ export function writeAlignsModal() : void
     {
         footer += `
             <button type="button" class="btn btn-secondary" data-dismiss="modal" id="footerClose">Cancel</button>
-            ${masterView.willBLASTAlignment == false ? `<button type="button" class="btn btn-primary" id="footerSave">Save changes</button>` : ""}
+            ${masterView.willBLASTAlignment == false ? "<button type=\"button\" class=\"btn btn-primary\" id=\"footerSave\">Save changes</button>" : ""}
         `;
     }
 
     document.getElementById("modalTitle").innerHTML = title;
     document.getElementById("modalBody").innerHTML = body;
     document.getElementById("modalFooter").innerHTML = footer;
-    document.getElementById("footerClose").onclick = function(this : HTMLElement,ev : MouseEvent){
+    document.getElementById("footerClose").onclick = function(this : HTMLElement,ev : MouseEvent)
+    {
         masterView.alignsModalOpen = false;
-    }
+    };
     if(genomeView.genome)
     {
         if(!masterView.willBLASTAlignment)
         {
-            document.getElementById("footerSave").onclick = function(this : HTMLElement,ev : MouseEvent){
+            document.getElementById("footerSave").onclick = function(this : HTMLElement,ev : MouseEvent)
+            {
                 masterView.alignsModalOpen = false;
                 masterView.dismissModal();
-            }
+            };
         }
     }
     if(aligns)
     {
         for(let i = 0; i != aligns.length; ++i)
         {
-            document.getElementById(`${aligns[i].uuid}View`).onclick = function(this : HTMLElement,ev : MouseEvent){
+            document.getElementById(`${aligns[i].uuid}View`).onclick = function(this : HTMLElement,ev : MouseEvent)
+            {
                 if(masterView.willBLASTAlignment)
                 {
                     ipc.send(
@@ -134,7 +138,7 @@ export function writeAlignsModal() : void
                 masterView.availableTracksModalOpen = true;
                 setSelectedAlign(aligns[i]);
                 writeAvailableTracksModal();
-            }
+            };
         }
     }
     

@@ -55,6 +55,8 @@ export class AlignmentInfoSelection
     public indelsPredicted : boolean;
     public BLASTRuns : boolean;
     public dateRan : boolean;
+    public fullName : boolean;
+    public SNPPositions : boolean;
     [index : string] : boolean;
     public constructor()
     {
@@ -179,17 +181,20 @@ export class View extends viewMgr.View
         this.BLASTSingleRunInfoSelection = new BLASTSingleRunInfoSelection();
     }
 
-    public onMount() : void{}
-    public onUnMount() : void{}
+    public onMount() : void
+    {}
+    public onUnMount() : void
+    {}
     public renderView() : string
     {
         return `
-            ${(()=>{
-                let res = "";
-                let masterView = <masterView.View>viewMgr.getViewByName("masterView");
-                if(masterView.displayInfo == "QCInfo")
-                {
-                    res += `
+            ${(()=>
+    {
+        let res = "";
+        let masterView = <masterView.View>viewMgr.getViewByName("masterView");
+        if(masterView.displayInfo == "QCInfo")
+        {
+            res += `
                         <input type="checkbox" id="alias">Alias</input>
                         <input type="checkbox" id="fullName">Full Path</input>
                         <input type="checkbox" id="sizeInBytes">Size In Bytes</input>
@@ -213,16 +218,16 @@ export class View extends viewMgr.View
 
                         <input type="checkbox" id="ORS">Over Represented Sequences</input>
                     `;
-                }
-                if(masterView.displayInfo == "RefSeqInfo")
-                {
-                    res += `
+        }
+        if(masterView.displayInfo == "RefSeqInfo")
+        {
+            res += `
 
                     `;
-                }
-                if(masterView.displayInfo == "AlignmentInfo")
-                {
-                    res += `
+        }
+        if(masterView.displayInfo == "AlignmentInfo")
+        {
+            res += `
                         <input type="checkbox" id="alias">Alias</input>
                         <input type="checkbox" id="aligner">Aligner</input>
                         <input type="checkbox" id="sizeInBytes">Size In Bytes</input>
@@ -262,11 +267,11 @@ export class View extends viewMgr.View
                         <input type="checkbox" id="dateRan">Date Ran</input>
                         <br />
                     `;
-                }
+        }
 
-                if(masterView.displayInfo == "BLASTRuns")
-                {
-                    res += `
+        if(masterView.displayInfo == "BLASTRuns")
+        {
+            res += `
                         <input type="checkbox" id="start">Start</input>
                         <br />
 
@@ -282,11 +287,11 @@ export class View extends viewMgr.View
                         <input type="checkbox" id="ran">Date Ran</input>
                         <br />
                     `;
-                }
+        }
 
-                if(masterView.displayInfo == "BLASTSingleRun")
-                {
-                    res += `
+        if(masterView.displayInfo == "BLASTSingleRun")
+        {
+            res += `
                         <input type="checkbox" id="position">Position</input>
                         <br />
 
@@ -299,27 +304,28 @@ export class View extends viewMgr.View
                         <input type="checkbox" id="eValue">E-Value</input>
                         <br />
                     `;
-                }
+        }
 
-                if(masterView.displayInfo == "SNPPositions")
+        if(masterView.displayInfo == "SNPPositions")
+        {
+            res += `
+
+
+                        ${(()=>
+        {
+            let inspectingAlignMarkup = "";
+            for(let i = 0; i != masterView.alignData.length; ++i)
+            {
+                if(masterView.inspectingAlignUUID == masterView.alignData[i].uuid)
                 {
-                    res += `
-
-
-                        ${(()=>{
-                            let inspectingAlignMarkup = "";
-                            for(let i = 0; i != masterView.alignData.length; ++i)
-                            {
-                                if(masterView.inspectingAlignUUID == masterView.alignData[i].uuid)
-                                {
-                                    inspectingAlignMarkup += `
+                    inspectingAlignMarkup += `
                                         <h5>SNP Reporting for ${masterView.alignData[i].alias}</h5>
                                     `;
-                                    return inspectingAlignMarkup;
-                                }
-                            }
-                            throw new Error("No alignment to inspect");
-                        })()}
+                    return inspectingAlignMarkup;
+                }
+            }
+            throw new Error("No alignment to inspect");
+        })()}
 
 
                         <input type="checkbox" id="chrom">Chrom</input>
@@ -355,10 +361,10 @@ export class View extends viewMgr.View
                         <input type="checkbox" id="consCovReads1Reads2FreqPValue2">Cons:Cov:Reads1:Reads2:Freq:P-value</input>
                         <br />
                     `;
-                }
-                if(masterView.displayInfo == "MappedReadsPerContigInfo")
-                {
-                    res += `
+        }
+        if(masterView.displayInfo == "MappedReadsPerContigInfo")
+        {
+            res += `
                         <input type="checkbox" id="refSeqName">Contig Name</input>
                         <br />
 
@@ -371,24 +377,24 @@ export class View extends viewMgr.View
                         <input type="checkbox" id="unMappedReads">Unmapped Reads</input>
                         <br />
                     `;
-                    let found = false;
-                    for(let i = 0; i != masterView.alignData.length; ++i)
-                    {
-                        if(masterView.inspectingAlignUUID == masterView.alignData[i].uuid)
-                        {
-                            res += `
+            let found = false;
+            for(let i = 0; i != masterView.alignData.length; ++i)
+            {
+                if(masterView.inspectingAlignUUID == masterView.alignData[i].uuid)
+                {
+                    res += `
                                 <h5>Mapped reads per contig for ${masterView.alignData[i].alias}</h5>
                             `;
-                            found = true;
-                            break;
-                        }
-                    }
-                    if(!found)
-                        throw new Error("No alignment to inspect");
+                    found = true;
+                    break;
                 }
+            }
+            if(!found)
+                throw new Error("No alignment to inspect");
+        }
 
-                return res;
-            })()}
+        return res;
+    })()}
         `;
     }
 
@@ -406,7 +412,8 @@ export class View extends viewMgr.View
                     {
                         (<HTMLInputElement>document.getElementById(i)).checked = this.fastQInfoSelection[i];
                     }
-                    catch(err){}
+                    catch(err)
+                    {}
                 }
             }
             if(masterView.displayInfo == "RefSeqInfo")
@@ -419,7 +426,8 @@ export class View extends viewMgr.View
                         {
                             (<HTMLInputElement>document.getElementById(i)).checked = this.refSeqInfoSelection[i];
                         }
-                        catch(err){}
+                        catch(err)
+                        {}
                     }
                 }
             }
@@ -433,7 +441,8 @@ export class View extends viewMgr.View
                         {
                             (<HTMLInputElement>document.getElementById(i)).checked = this.alignmentInfoSelection[i];
                         }
-                        catch(err){}
+                        catch(err)
+                        {}
                     }
                 }
             }
@@ -447,7 +456,8 @@ export class View extends viewMgr.View
                         {
                             (<HTMLInputElement>document.getElementById(i)).checked = this.snpPositionsInfoSelection[i];
                         }
-                        catch(err){}
+                        catch(err)
+                        {}
                     }
                 }
             }
@@ -461,7 +471,8 @@ export class View extends viewMgr.View
                         {
                             (<HTMLInputElement>document.getElementById(i)).checked = this.mapppedReadsPerContigInfoSelection[i];
                         }
-                        catch(err){}
+                        catch(err)
+                        {}
                     }
                 }
             }
@@ -475,7 +486,10 @@ export class View extends viewMgr.View
                         {
                             (<HTMLInputElement>document.getElementById(i)).checked = this.BLASTRunsInfoSelection[i];
                         }
-                        catch(err){console.log(err)}
+                        catch(err)
+                        {
+                            console.log(err);
+                        }
                     }
                 }
             }
@@ -489,14 +503,19 @@ export class View extends viewMgr.View
                         {
                             (<HTMLInputElement>document.getElementById(i)).checked = this.BLASTSingleRunInfoSelection[i];
                         }
-                        catch(err){console.log(err)}
+                        catch(err)
+                        {
+                            console.log(err);
+                        }
                     }
                 }
             }
         }
-        catch(err){}
+        catch(err)
+        {}
     }
-    public dataChanged() : void{}
+    public dataChanged() : void
+    {}
     public divClickEvents(event : JQueryEventObject) : void
     {
         let masterView = <masterView.View>viewMgr.getViewByName("masterView");

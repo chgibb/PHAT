@@ -61,7 +61,8 @@ export function showPileup(
         }
     );
     setTimeout(
-        function(){
+        function()
+        {
             window.dispatchEvent(new Event("resize"));
         },500
     );

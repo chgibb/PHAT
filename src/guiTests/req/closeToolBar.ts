@@ -1,4 +1,4 @@
-import * as winMgr from "./../../req/main/winMgr"
+import * as winMgr from "./../../req/main/winMgr";
 
 /**
  * Triggers close event on the PHAT tool bar
@@ -8,10 +8,13 @@ import * as winMgr from "./../../req/main/winMgr"
  */
 export async function closeToolBar() : Promise<void>
 {
-    return new Promise<void>((resolve,reject) => {
-        setTimeout(function(){
+    return new Promise<void>((resolve,reject) => 
+    {
+        setTimeout(function()
+        {
             console.log("closing toolbar");
-            setTimeout(function(){  
+            setTimeout(function()
+            {  
                 let toolBar = winMgr.getWindowsByName("toolBar");
                 if(!toolBar || toolBar.length > 1 || toolBar.length == 0)
                 {

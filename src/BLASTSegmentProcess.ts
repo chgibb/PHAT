@@ -50,7 +50,8 @@ function update(updateLog = true) : void
         logger.logObject(update);
 }
 
-process.on("message",async function(ev : AtomicOperationForkEvent){
+process.on("message",async function(ev : AtomicOperationForkEvent)
+{
     if(ev.setData == true)
     {
         logger.logRecord = atomic.openLog(ev.name,ev.description);
@@ -73,7 +74,8 @@ process.on("message",async function(ev : AtomicOperationForkEvent){
             getSam(align),
             blastSegmentResult.start,
             blastSegmentResult.stop,
-            function(){}
+            function()
+            {}
         );
 
         let readsBLASTed = 0;
@@ -99,10 +101,11 @@ process.on("message",async function(ev : AtomicOperationForkEvent){
             let repeatedSearching = 0;
             progressMessage = `BLASTing suspicious read ${i+1} of ${readsWithFragments.length}: submitting query`;
             update();
-            let res : BLASTOutputRawJSON = await performQuery(readsWithFragments[i].read.SEQ,BLASTDatabase.nt,function(status : QueryStatus){
+            let res : BLASTOutputRawJSON = await performQuery(readsWithFragments[i].read.SEQ,BLASTDatabase.nt,function(status : QueryStatus)
+            {
                 if(status == "searching")
                     repeatedSearching++;
-                progressMessage = `BLASTing suspicious read ${i+1} of ${readsWithFragments.length}: ${status} ${status == "searching" ? `x${repeatedSearching}` : ``}`;
+                progressMessage = `BLASTing suspicious read ${i+1} of ${readsWithFragments.length}: ${status} ${status == "searching" ? `x${repeatedSearching}` : ""}`;
                 update();
             });
 
@@ -122,20 +125,22 @@ process.on("message",async function(ev : AtomicOperationForkEvent){
                 progressMessage = `BLASTING suspicious fragment ${k+1} of read ${i+1}: submitting query`;
                 update();
 
-                let res : BLASTOutputRawJSON = await performQuery(readsWithFragments[i].fragments[k].seq,BLASTDatabase.nt,function(status : QueryStatus){
+                let res : BLASTOutputRawJSON = await performQuery(readsWithFragments[i].fragments[k].seq,BLASTDatabase.nt,function(status : QueryStatus)
+                {
                     if(status == "searching")
                         repeatedSearching++;
-                    progressMessage = `BLASTING suspicious fragment ${k+1} of read ${i+1}: ${status} ${status == "searching" ? `x${repeatedSearching}` : ``}`;
+                    progressMessage = `BLASTING suspicious fragment ${k+1} of read ${i+1}: ${status} ${status == "searching" ? `x${repeatedSearching}` : ""}`;
                     update();
                 });
 
                 if(res.noHits == true)
                 {
                     repeatedSearching = 1;
-                    res = await performQuery(readsWithFragments[i].fragments[k].seq,BLASTDatabase.Human,function(status : QueryStatus){
+                    res = await performQuery(readsWithFragments[i].fragments[k].seq,BLASTDatabase.Human,function(status : QueryStatus)
+                    {
                         if(status == "searching")
                             repeatedSearching++;
-                        progressMessage = `Re-BLASTING suspicious fragment ${k+1} of read ${i+1} against human genomic + transcript: ${status} ${status == "searching" ? `x${repeatedSearching}` : ``}`;
+                        progressMessage = `Re-BLASTING suspicious fragment ${k+1} of read ${i+1} against human genomic + transcript: ${status} ${status == "searching" ? `x${repeatedSearching}` : ""}`;
                         update();
                     });
                 }
@@ -152,7 +157,8 @@ process.on("message",async function(ev : AtomicOperationForkEvent){
         flags.done = true;
         flags.success = true;
         update();
-        setTimeout(function(){
+        setTimeout(function()
+        {
             atomic.exitFork(0);
         },1000);
     }

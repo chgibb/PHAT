@@ -1,9 +1,8 @@
 (set -o igncr) 2>/dev/null && set -o igncr; # For Cygwin on Windows compaibility
 function cleanTSArtifacts {
-	for f in $(find src -name '*.ts'); 
+	for f in $(find src -name '*.js'); 
 	do
-		artifact=$(echo $f | awk '{gsub("\\.ts",".js");print}')
-		rm $artifact
+		rm $f
 	done
 }
 
@@ -14,8 +13,9 @@ if [[ "$1" != "opt" ]]; then
 	if [ $? != 0 ]; then
 		exit 1
 	fi
-	node scripts/tsBundle src/*.ts --debug --buildCmd="bash scripts/tsBundleDebug.bash"
-	cp .buildCache/debug/*.js dist
+
+	cp src/*.html phat-linux-x64/resources/app
+	cd .buildCache/debug/src; cp -R . ../../../phat-linux-x64/resources/app;
 fi
 
 if [[ "$1" == "opt" ]]; then
@@ -33,9 +33,8 @@ if [[ "$1" == "opt" ]]; then
 
 	cd ../
 	
-	node scripts/tsBundle src/*.ts --release --buildCmd="bash scripts/tsBundleRelease.bash"
+	node scripts/tsBundle src/*.ts src/*.tsx --release --buildCmd="bash scripts/tsBundleRelease.bash"
 	cp .buildCache/release/*.js dist
 fi
 
 cleanTSArtifacts
-

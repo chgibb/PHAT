@@ -3,6 +3,7 @@
     {
         "module" : "commonjs",
         "moduleResolution": "node",
+        "allowSyntheticDefaultImports": true,
         "target" : "es6",
         "noEmitOnError": true,
         "noImplicitAny" : true,
@@ -11,10 +12,15 @@
         "removeComments": true,
         "sourceMap" : false,
         "listFiles" : false,
-        "importHelpers": true
+        "importHelpers": true,
+        "jsx": "react",
+        "outDir": ".buildCache/debug/",
+        "incremental": true
     },
+    "include": ["src"],
     "exclude": 
     [
         "node_modules"
-    ]
+    ],
+    
 }

@@ -26,7 +26,7 @@ export abstract class AtomicOperation
      */
     public generatedArtifacts : Array<string>;
 
-	/**
+    /**
      * Those files which will generated as final output by the operation. They will be deleted ONLY on failure
      * 
      * @type {Array<string>}
@@ -44,7 +44,7 @@ export abstract class AtomicOperation
     public generatedArtifactsDirectories : Array<string>;
 
 
-	/**
+    /**
      * Those directories which will be generated as final output by the operation. They will be deleted ONLY on failure
      * 
      * @type {Array<string>}
@@ -310,8 +310,10 @@ export class ForkLogger extends AtomicOperation
     {
         super();
     }
-    public setData(data : any){}
-    public run(){}
+    public setData(data : any)
+    {}
+    public run()
+    {}
 }
 
 
@@ -333,24 +335,29 @@ export function makeFork(target : string,data : any,cb : (ev : any) => void) : c
         }
     );
 
-    res.stdout.on("data",function(data : Buffer){
+    res.stdout.on("data",function(data : Buffer)
+    {
         console.log(data.toString());
     });
 
-    res.stderr.on("data",function(data : Buffer){
+    res.stderr.on("data",function(data : Buffer)
+    {
         console.error(data.toString());
     });
 
-    res.on("message",function(ev : any){
+    res.on("message",function(ev : any)
+    {
         cb(ev);
     });
 
-    res.on("exit",function(code : number){
+    res.on("exit",function(code : number)
+    {
         console.log(`${target} exited with ${code}`);
     });
 
     setTimeout(
-        function(){
+        function()
+        {
             res.send(data);
         },10
     );
@@ -380,7 +387,8 @@ export function exitFork(retCode : number,disconnect = true) : void
  */
 export function handleForkFailures(logger? : ForkLogger,progressMessage? : string)
 {
-    let signalFailure = function(err : string){
+    let signalFailure = function(err : string)
+    {
         let flags : CompletionFlags = new CompletionFlags();
         flags.done = true;
         flags.failure = true;
@@ -403,7 +411,8 @@ export function handleForkFailures(logger? : ForkLogger,progressMessage? : strin
         exitFork(1);
 
     };
-    (process as NodeJS.EventEmitter).on("uncaughtException",function(err : Error){
+    (process as NodeJS.EventEmitter).on("uncaughtException",function(err : Error)
+    {
         let errString = `Uncaught exception ${err}`;
         console.log(errString);
         if(logger !== undefined)
@@ -413,7 +422,8 @@ export function handleForkFailures(logger? : ForkLogger,progressMessage? : strin
         signalFailure(`${err.toString()} ${err.stack}`);
     });
 
-    process.on("unhandledRejection",function(reason : Error){
+    process.on("unhandledRejection",function(reason : Error)
+    {
         let errString = `Unhandled rejection ${reason}`;
         console.log(errString);
         if(logger !== undefined)
@@ -492,7 +502,7 @@ export function register(opName : string,op : typeof AtomicOperation) : void
         <RegisteredAtomicOperation>{
             name : opName,
             op : op
-            }
+        }
     );
 }
 
@@ -510,7 +520,10 @@ export function cleanGeneratedArtifacts(op : AtomicOperation) : void
         {
             fs.unlinkSync(op.generatedArtifacts[i]);
         }
-        catch(err){}
+        catch(err)
+        {
+            err;
+        }
     }
     for(let i = 0; i != op.generatedArtifactsDirectories.length; ++i)
     {
@@ -518,7 +531,10 @@ export function cleanGeneratedArtifacts(op : AtomicOperation) : void
         {
             rimraf.sync(op.generatedArtifactsDirectories[i]);
         }
-        catch(err){}
+        catch(err)
+        {
+            err;
+        }
     }
 }
 
@@ -536,7 +552,10 @@ export function cleanDestinationArtifacts(op : AtomicOperation) : void
         {
             fs.unlinkSync(op.destinationArtifacts[i]);
         }
-        catch(err){}
+        catch(err)
+        {
+            err;
+        }
     }
     for(let i = 0; i != op.destinationArtifactsDirectories.length; ++i)
     {
@@ -544,7 +563,10 @@ export function cleanDestinationArtifacts(op : AtomicOperation) : void
         {
             rimraf.sync(op.destinationArtifactsDirectories[i]);
         }
-        catch(err){}
+        catch(err)
+        {
+            err;
+        }
     }
 }
 export let onComplete : (op : AtomicOperation) => void = undefined;
@@ -578,7 +600,8 @@ export function addOperation(opName : string,data : any) : void
             let op : AtomicOperation = new (<any>(registeredOperations[i].op))();
             op.name = registeredOperations[i].name;
             op.setData(data);
-            op.update = function(){
+            op.update = function()
+            {
                 if(op.flags.done)
                 {
                     cleanGeneratedArtifacts(op);
@@ -604,7 +627,7 @@ export function addOperation(opName : string,data : any) : void
                         onComplete(op);
                 }
                 updates.emit(op.name,op);
-            }
+            };
             operationsQueue.push(op);
             return;
         }
@@ -661,7 +684,7 @@ export function runOperations(maxRunning : number) : void
     }
 }
 
-export let logRecordFile = getReadableAndWritable(`logs/logRecords`);
+export let logRecordFile = getReadableAndWritable("logs/logRecords");
 
 /**
  * Structure describing an operation log
@@ -763,8 +786,8 @@ export function recordLogRecord(record : LogRecord) : void
     const mkdirp = require("mkdirp");
     
     if(record === undefined)
-        throw new Error(`Cannot close log with record which does not exist`);
-    mkdirp.sync(getReadableAndWritable(`logs`));
+        throw new Error("Cannot close log with record which does not exist");
+    mkdirp.sync(getReadableAndWritable("logs"));
     fs.appendFileSync(logRecordFile,JSON.stringify(record)+"\n");
 }
 
@@ -778,7 +801,7 @@ export function recordLogRecord(record : LogRecord) : void
 export function logString(logRecord : LogRecord,data : string) : void
 {
     if(!logRecord || !logRecord.uuid)
-        throw new Error(`Cannot write string to log which does not exist`);
+        throw new Error("Cannot write string to log which does not exist");
 
     fs.appendFileSync(getLogFile(logRecord),`${"\n"}${data}`);
 
@@ -793,7 +816,8 @@ export function logString(logRecord : LogRecord,data : string) : void
  */
 export async function getLogRecords(last : number) : Promise<Array<LogRecord>>
 {
-    return new Promise<Array<LogRecord>>((resolve,reject) => {
+    return new Promise<Array<LogRecord>>((resolve,reject) => 
+    {
         let lines : Array<string> = new Array<string>();
         let res : Array<LogRecord> = new Array<LogRecord>();
         try
@@ -801,10 +825,12 @@ export async function getLogRecords(last : number) : Promise<Array<LogRecord>>
             let rl : readline.ReadLine = readline.createInterface(<readline.ReadLineOptions>{
                 input : fs.createReadStream(logRecordFile)
             });
-            rl.on("line",function(line : string){
+            rl.on("line",function(line : string)
+            {
                 lines.push(line);
             });
-            rl.on("close",function(){
+            rl.on("close",function()
+            {
                 lines = lines.reverse();
                 for(let i = 0; i != last; ++i)
                 {
@@ -817,7 +843,10 @@ export async function getLogRecords(last : number) : Promise<Array<LogRecord>>
                 resolve(res);
             });
         }
-        catch(err){}        
+        catch(err)
+        {
+            err;
+        }        
     });
 }
 
@@ -830,7 +859,8 @@ export async function getLogRecords(last : number) : Promise<Array<LogRecord>>
  */
 export async function getLogContent(logRecord : LogRecord) : Promise<string>
 {
-    return new Promise<string>((resolve : (value : string) => void) => {
+    return new Promise<string>((resolve : (value : string) => void) => 
+    {
         let res = "";
 
         let rl : readline.ReadLine = readline.createInterface(
@@ -841,12 +871,14 @@ export async function getLogContent(logRecord : LogRecord) : Promise<string>
             }
         );
 
-        rl.on("line",function(line : string) {
+        rl.on("line",function(line : string) 
+        {
             res += line;
             res += "\n";
         });
 
-        rl.on("close",function() {
+        rl.on("close",function() 
+        {
             resolve(res);
         });
     });

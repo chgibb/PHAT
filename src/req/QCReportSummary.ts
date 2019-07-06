@@ -1,7 +1,7 @@
 import * as fs from "fs";
 
-import {QCSummary} from "./QCData";
-export function getStatus(token : string) : string | undefined
+import {QCSummary, QCReportDisposition} from "./QCData";
+export function getStatus(token : string) : QCReportDisposition | undefined
 {
     if(token.match(new RegExp("(pass)")))
         return "pass";

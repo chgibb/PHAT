@@ -1,7 +1,7 @@
 import * as electron from "electron";
 const ipc = electron.ipcRenderer;
 
-import {AtomicOperation} from "./req/operations/atomicOperations"
+import {AtomicOperation} from "./req/operations/atomicOperations";
 import {KeySubEvent} from "./req/ipcEvents";
 import {initializeWindowDock,dockWindow,removeZombieTabs} from "./req/renderer/dock";
 import formatByteString from "./req/renderer/formatByteString";
@@ -10,27 +10,30 @@ const $ = require("jquery");
 (<any>window).$ = $;
 import "./req/renderer/commonBehaviour";
 
-
-$
-(
+$(
     function()
     {
         initializeWindowDock();
-        document.getElementById("input").onclick = function(this : HTMLElement,ev : MouseEvent){
+        document.getElementById("input").onclick = function(this : HTMLElement,ev : MouseEvent)
+        {
             dockWindow("input","toolBar");
-        }
-        document.getElementById("QC").onclick = function(this : HTMLElement,ev : MouseEvent){
+        };
+        document.getElementById("QC").onclick = function(this : HTMLElement,ev : MouseEvent)
+        {
             dockWindow("QC","toolBar");
-        }
-        document.getElementById("align").onclick = function(this : HTMLElement,ev : MouseEvent){
+        };
+        document.getElementById("align").onclick = function(this : HTMLElement,ev : MouseEvent)
+        {
             dockWindow("align","toolBar");
-        }
-        document.getElementById("output").onclick = function(this : HTMLElement,ev : MouseEvent){
+        };
+        document.getElementById("output").onclick = function(this : HTMLElement,ev : MouseEvent)
+        {
             dockWindow("output","toolBar");
-        }
-        document.getElementById("circularGenomeBuilder").onclick = function(this : HTMLElement,ev : MouseEvent){
+        };
+        document.getElementById("circularGenomeBuilder").onclick = function(this : HTMLElement,ev : MouseEvent)
+        {
             dockWindow("circularGenomeBuilder","toolBar");
-        }
+        };
 
         ipc.send(
             "keySub",
@@ -42,8 +45,7 @@ $
             }
         );
 
-        ipc.on
-        (
+        ipc.on(
             "toolBar",function(event : Electron.IpcMessageEvent,arg : any)
             {
                 if(arg.action == "getKey" || arg.action == "keyChange")
@@ -97,21 +99,22 @@ $
                             {
                                 let notification : Notification = new Notification(ops[i].flags.success ? "Success" : "Failure",<NotificationOptions>{
                                     body : `
-                                        ${(()=>{
-                                            if(ops[i].flags.success)
-                                            {
-                                                return `
+                                        ${(()=>
+                                    {
+                                        if(ops[i].flags.success)
+                                        {
+                                            return `
                                                     ${ops[i].name} has completed successfully
                                                 `;
-                                            }
-                                            else
-                                            {
-                                                return `
+                                        }
+                                        else
+                                        {
+                                            return `
                                                     ${ops[i].name} has failed
                                                     ${JSON.stringify(ops[i].extraData)}
                                                 `;
-                                            }
-                                        })()}
+                                        }
+                                    })()}
                                     `
                                 });
                             }

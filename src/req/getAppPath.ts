@@ -46,6 +46,8 @@ function getReadableDir() : string
 {
     let electronBaseDir = "";
     let CIBaseDir = "";
+    let devBasedir = "";
+
     electronBaseDir = path.dirname(process.execPath)+"/resources/app";
 
     if(fs.existsSync(electronBaseDir))
@@ -56,6 +58,11 @@ function getReadableDir() : string
     if(fs.existsSync(CIBaseDir))
         return CIBaseDir;
     
+    devBasedir = path.resolve(path.normalize(""));
+
+    if(fs.existsSync(devBasedir))
+        return devBasedir;
+    
     return undefined;
 }
 
@@ -65,7 +72,7 @@ function getConfigDir() : string
         return getLinuxConfigDir();
     else if(process.platform == "win32")
         return getWin32ConfigDir();
-    return undefined
+    return undefined;
 }
 
 export function getReadable(relativePath : string) : string

@@ -7,7 +7,9 @@ import {varScanMPileup2SNPReport} from "./varScanMPileup2SNPReportParser";
 import {SamToolsIdxStatsReport} from "./samToolsIdxStatsReport";
 import {SamToolsFlagStatReport} from "./samToolsFlagStatReport";
 import {BLASTSegmentResult} from "./BLASTSegmentResult";
-export class AlignData
+import {UniquelyAddressable} from "./uniquelyAddressable";
+
+export class AlignData implements UniquelyAddressable
 {
     public uuid : string;
     public fastqs : Array<Fastq>;
@@ -49,7 +51,7 @@ export function getArtifactDir(alignData : AlignData) : string
 }
 export function getCoverageDir(alignData : AlignData) : string
 {
-    return getReadableAndWritable(`rt/AlignmentArtifacts/${alignData.uuid}/contigCoverage`)
+    return getReadableAndWritable(`rt/AlignmentArtifacts/${alignData.uuid}/contigCoverage`);
 }
 export function getSam(alignData : AlignData) : string
 {

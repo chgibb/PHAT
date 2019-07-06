@@ -8,8 +8,11 @@ import * as winMgr from "./../../../req/main/winMgr";
  */
 export async function openRefSeqTab() : Promise<void>
 {
-    return new Promise<void>((resolve,reject) => {
-        setTimeout(function(){
+    return new Promise<void>((resolve,reject) => 
+    {
+        setTimeout(function()
+        {
+            console.log("Trying to open ref seq tab");
             let input = winMgr.getFreeWebContents();
             if(!input || input.length == 0)
             {
@@ -17,7 +20,7 @@ export async function openRefSeqTab() : Promise<void>
                 process.exit(1);
             }
             input[0].executeJavaScript(`
-                document.getElementById("refSeqViewButton").click();
+                document.getElementsByClassName("refSeqViewButton")[0].click();
             `);
             resolve();
         },500);

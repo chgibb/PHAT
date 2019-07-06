@@ -4,7 +4,9 @@ import * as path from "path";
 import {getReadableAndWritable} from "./getAppPath";
 import trimPath from "./trimPath";
 import formatByteString from "./renderer/formatByteString";
-export class File
+import {UniquelyAddressable} from "./uniquelyAddressable";
+
+export class File implements UniquelyAddressable
 {
     public alias : string
     public path : string;
@@ -32,7 +34,8 @@ export function importIntoProject(file : File) : Promise<Error> | undefined
 {
     const fse = require("fs-extra");
     
-    return new Promise<Error>((resolve,reject) => {
+    return new Promise<Error>((resolve,reject) => 
+    {
         if(file.imported)
             return reject(new Error(`${file.alias} has already been imported`));
         try
@@ -41,7 +44,8 @@ export function importIntoProject(file : File) : Promise<Error> | undefined
             fse.copy(
                 getPath(file),
                 getReadableAndWritable(`rt/imported/${file.uuid}/${file.alias}`),
-                function(err : Error){
+                function(err : Error)
+                {
                     if(err)
                         reject(err);
                     else

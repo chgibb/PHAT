@@ -1,5 +1,20 @@
 import {Fastq} from "./fastq";
 import {getReadableAndWritable} from "./getAppPath";
+
+export type QCReportDisposition = 
+    "pass" |
+    "warn" |
+    "fail" |
+    "No Data";
+
+export type QCReportType = 
+    "Per base sequence quality" |
+    "Per sequence quality scores" |
+    "Per sequence GC content" |
+    "Sequence Duplication Levels" |
+    "Overrepresented sequences" |
+    "Basic Stastics";
+
 export class QCData
 {
     public summary : Array<QCSummary>;
@@ -24,34 +39,51 @@ export function getQCReportData(fastq : Fastq) : string
 
 export class QCSummary
 {
-    public name : string;
-    public status : string;
-    public constructor(name : string,status : string)
+    public name : QCReportType;
+    public status : QCReportDisposition;
+    public constructor(name : QCReportType,status : QCReportDisposition)
     {
-        if(name)
-            this.name = name;
-        else
-            this.name = "";
-        if(status)
-            this.status = status;
-        else
-            this.status = "";
+        this.name = name;
+        this.status = status;
     }
 }
 
-//returns 'pass', 'warn', 'fail', or 'No Data'
-export function getQCSummaryByNameOfReportByIndex(fastqInputs : Array<Fastq>,index : number,summary : string) : string
+export function getQCSummaryByNameOfReportByIndex(fastqInputs : Array<Fastq>,index : number,summary : QCReportType) : QCReportDisposition
 {
     try
     {
         for(let i = 0; i != fastqInputs[index].QCData.summary.length; ++i)
-	    {
-		    if(fastqInputs[index].QCData.summary[i].name == summary)
-		    {
-			    return fastqInputs[index].QCData.summary[i].status;
-		    }
-	    }
+        {
+            if(fastqInputs[index].QCData.summary[i].name == summary)
+            {
+                return fastqInputs[index].QCData.summary[i].status;
+            }
+        }
     }
-    catch(err){}
-	return "No Data";
+    catch(err)
+    {
+        err;
+    }
+	
+    return "No Data";
+}
+
+export function getQCSummaryByName(fastq : Fastq,summary : QCReportType) : QCReportDisposition
+{
+    try
+    {
+        for(let i = 0; i != fastq.QCData.summary.length; ++i)
+        {
+            if(fastq.QCData.summary[i].name == summary)
+            {
+                return fastq.QCData.summary[i].status;
+            }
+        }
+    }
+    catch(err)
+    {
+        err;
+    }
+
+    return "No Data";
 }

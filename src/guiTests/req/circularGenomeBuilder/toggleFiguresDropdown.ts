@@ -8,21 +8,23 @@ import * as winMgr from "./../../../req/main/winMgr";
  */
 export async function toggleFiguresDropdown() : Promise<void>
 {
-    return new Promise<void>((resolve,reject) => {
-       setTimeout(function(){
-           console.log("toggling figures dropdown");
-           let genomeBuilder = winMgr.getFreeWebContents();
+    return new Promise<void>((resolve,reject) => 
+    {
+        setTimeout(function()
+        {
+            console.log("toggling figures dropdown");
+            let genomeBuilder = winMgr.getFreeWebContents();
            
-           if(!genomeBuilder || genomeBuilder.length == 0)
-           {
-               console.log("Failed to open genomeBuilder window");
-               process.exit(1);
-           }
+            if(!genomeBuilder || genomeBuilder.length == 0)
+            {
+                console.log("Failed to open genomeBuilder window");
+                process.exit(1);
+            }
 
-           genomeBuilder[0].executeJavaScript(`
+            genomeBuilder[0].executeJavaScript(`
                document.getElementById("figuresDropdownToggle").click();
            `);
-           resolve();
-       },500); 
+            resolve();
+        },500); 
     });
 }
