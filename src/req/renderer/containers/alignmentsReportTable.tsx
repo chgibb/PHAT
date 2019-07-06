@@ -11,6 +11,7 @@ import {AtomicOperationIPC} from "../../atomicOperationsIPC";
 import {TableCellHover} from "./tableCellHover";
 import {SNPPositionsTable} from "./snpPositionsTable";
 import {ReadsPerContigTable} from "./readsPerContigTable";
+import { BLASTRunsTable } from './BLASTRunsTable';
 
 const ipc = electron.ipcRenderer;
 
@@ -35,6 +36,11 @@ export class AlignmentsReportTable extends React.Component<AlignmentsReportTable
     public aliasCellId(row: AlignData): string 
     {
         return `${row.uuid}ViewAlignment`;
+    }
+
+    public BLASTRunsCellId(row : AlignData) : string
+    {
+        return `${row.uuid}ViewBLASTRuns`;
     }
 
     public render(): JSX.Element 
@@ -65,6 +71,17 @@ export class AlignmentsReportTable extends React.Component<AlignmentsReportTable
                             {
                                 return (
                                     <ReadsPerContigTable
+                                        align={rowData}
+                                        isSubTable={true}
+                                    />
+                                );
+                            }
+                        },
+                        {
+                            tooltip: "BLAST Runs",
+                            render : (rowData : AlignData) => {
+                                return (
+                                    <BLASTRunsTable
                                         align={rowData}
                                         isSubTable={true}
                                     />
@@ -130,6 +147,11 @@ export class AlignmentsReportTable extends React.Component<AlignmentsReportTable
                                     } as AtomicOperationIPC
                                 );
                             }
+
+                            else if(this.BLASTRunsCellId(rowData) == el.id)
+                            {
+                                toggleDetailPanel(2);
+                            }
                         }
                     }}
                     columns={[
@@ -138,7 +160,7 @@ export class AlignmentsReportTable extends React.Component<AlignmentsReportTable
                             render: (row: AlignData) => 
                             {
                                 return (<div id={this.aliasCellId(row)} className={TableCellHover.cellHoverClass}>{row.alias}</div>);
-                            }
+                            },
                         },
                         {
                             title: "Aligner",
@@ -229,7 +251,7 @@ export class AlignmentsReportTable extends React.Component<AlignmentsReportTable
                             title: "BLAST Runs",
                             render: (row: AlignData) => 
                             {
-                                return row.BLASTSegmentResults ? row.BLASTSegmentResults.length : 0;
+                                return row.BLASTSegmentResults ? (<div id={this.BLASTRunsCellId(row)} className={TableCellHover.cellHoverClass}>{row.BLASTSegmentResults.length}</div>) : 0;
                             }
                         },
                         {
