@@ -299,316 +299,317 @@ ipc.on(
 );
 
 ipc.on(
-    "runOperation",function(event : Electron.IpcMessageEvent,arg : AtomicOperationIPC)
-    {
-        console.log(arg);
-        dataMgr.setKey("application","operations",atomicOp.operationsQueue);
-        winMgr.publishChangeForKey("application","operations");
-        if(arg.opName =="indexFastaForBowtie2Alignment" || arg.opName == "indexFastaForHisat2Alignment" || arg.opName == "indexFastaForVisualization" || arg.opName == "generateFastQCReport")
-        {
-            let list : Array<File> = dataMgr.getKey(arg.channel,arg.key);
-            for(let i : number = 0; i != list.length; ++i)
-            {
-                if(list[i].uuid == arg.uuid)
-                {
-                    let tmp = {};
-                    Object.assign(tmp,list[i]);
-                    atomicOp.addOperation(arg.opName,tmp);
-                    break;
-                }
-            }
-        }
-        else if(arg.opName == "runBowtie2Alignment" || arg.opName == "runHisat2Alignment")
-        {
-            console.log("running alignment");
-            atomicOp.addOperation(
-                arg.opName,
-                Object.assign({},arg.alignParams)
-            );
-        }
-        else if(arg.opName == "installUpdate")
-            atomicOp.addOperation(arg.opName,{});
-        else if(arg.opName == "renderCoverageTrackForContig")
-        {
-            let aligns : Array<AlignData> = dataMgr.getKey("align","aligns");
-            let circularFigures : Array<CircularFigure> = dataMgr.getKey("circularGenomeBuilder","circularFigures",);
+	"runOperation",function(event : Electron.IpcMessageEvent,arg : AtomicOperationIPC)
+	{
+		console.log(arg);
+		dataMgr.setKey("application","operations",atomicOp.operationsQueue);
+		winMgr.publishChangeForKey("application","operations");
+		if(arg.opName =="indexFastaForBowtie2Alignment" || arg.opName == "indexFastaForHisat2Alignment" || arg.opName == "indexFastaForVisualization" || arg.opName == "generateFastQCReport")
+		{
+			let list : Array<File> = dataMgr.getKey(arg.channel,arg.key);
+			for(let i : number = 0; i != list.length; ++i)
+			{
+				if(list[i].uuid == arg.uuid)
+				{
+					let tmp = {};
+					Object.assign(tmp,list[i]);
+					atomicOp.addOperation(arg.opName,tmp);
+					break;
+				}
+			}
+		}
+		else if(arg.opName == "runBowtie2Alignment" || arg.opName == "runHisat2Alignment")
+		{
+			console.log("running alignment");
+			atomicOp.addOperation(
+				arg.opName,
+				Object.assign({},arg.alignParams)
+			);
+		}
+		else if(arg.opName == "installUpdate")
+			atomicOp.addOperation(arg.opName,{});
+		else if(arg.opName == "renderCoverageTrackForContig")
+		{
+			let aligns : Array<AlignData> = dataMgr.getKey("align","aligns");
+			let circularFigures : Array<CircularFigure> = dataMgr.getKey("circularGenomeBuilder","circularFigures",);
 
-            if(aligns && circularFigures)
-            {
-                let alignData : AlignData = <any>{};
-                let circularFigure : CircularFigure = <any>{};
-                for(let i = 0; i != aligns.length; ++i)
-                {
-                    if(arg.alignuuid == aligns[i].uuid)
-                    {
-                        Object.assign(alignData,aligns[i]);
-                        break;
-                    }
-                }
-                for(let i = 0; i != circularFigures.length; ++i)
-                {
-                    if(arg.figureuuid == circularFigures[i].uuid)
-                    {
-                        Object.assign(circularFigure,circularFigures[i]);
-                        break;
-                    }
-                }
-                atomicOp.addOperation(
-                    "renderCoverageTrackForContig",
-                    {
-                        circularFigure : circularFigure,
-                        contiguuid : arg.uuid,
-                        alignData : alignData,
-                        colour : arg.colour,
-                        scaleFactor : arg.scaleFactor
-                    }
-                );
-            }
-        }
+			if(aligns && circularFigures)
+			{
+				let alignData : AlignData = <any>{};
+				let circularFigure : CircularFigure = <any>{};
+				for(let i = 0; i != aligns.length; ++i)
+				{
+					if(arg.alignuuid == aligns[i].uuid)
+					{
+						Object.assign(alignData,aligns[i]);
+						break;
+					}
+				}
+				for(let i = 0; i != circularFigures.length; ++i)
+				{
+					if(arg.figureuuid == circularFigures[i].uuid)
+					{
+						Object.assign(circularFigure,circularFigures[i]);
+						break;
+					}
+				}
+				atomicOp.addOperation(
+					"renderCoverageTrackForContig",
+					{
+						circularFigure : circularFigure,
+						contiguuid : arg.uuid,
+						alignData : alignData,
+						colour : arg.colour,
+						scaleFactor : arg.scaleFactor,
+						log10Scale : arg.log10Scale
+					}
+				);
+			}
+		}
 
-        else if(arg.opName == "renderSNPTrackForContig")
-        {
-            let aligns : Array<AlignData> = dataMgr.getKey("align","aligns");
-            let circularFigures : Array<CircularFigure> = dataMgr.getKey("circularGenomeBuilder","circularFigures",);
+		else if(arg.opName == "renderSNPTrackForContig")
+		{
+			let aligns : Array<AlignData> = dataMgr.getKey("align","aligns");
+			let circularFigures : Array<CircularFigure> = dataMgr.getKey("circularGenomeBuilder","circularFigures",);
 
-            if(aligns && circularFigures)
-            {
-                let alignData : AlignData = <any>{};
-                let circularFigure : CircularFigure = <any>{};
-                for(let i = 0; i != aligns.length; ++i)
-                {
-                    if(arg.alignuuid == aligns[i].uuid)
-                    {
-                        Object.assign(alignData,aligns[i]);
-                        break;
-                    }
-                }
-                for(let i = 0; i != circularFigures.length; ++i)
-                {
-                    if(arg.figureuuid == circularFigures[i].uuid)
-                    {
-                        Object.assign(circularFigure,circularFigures[i]);
-                        break;
-                    }
-                }
-                atomicOp.addOperation(
-                    "renderSNPTrackForContig",
-                    {
-                        circularFigure : circularFigure,
-                        contiguuid : arg.uuid,
-                        alignData : alignData,
-                        colour : arg.colour
-                    }
-                );
-            }
-        }
-        else if(arg.opName == "checkForUpdate")
-        {
-            let token = "";
-            let auth = dataMgr.getKey("application","auth");
-            if(auth && auth.token)
-                token = auth.token;
-            console.log("token: "+token);
-            atomicOp.addOperation("checkForUpdate",{token : token});
-        }
-        else if(arg.opName == "downloadAndInstallUpdate")
-        {
-            let token = "";
-            let asset : any = undefined;
-            let auth = dataMgr.getKey("application","auth");
-            if(auth && auth.token)
-                token = auth.token;
-            //if checkForUpdate was not successful, this will not be set
-            asset = dataMgr.getKey("application","availableUpdate");
+			if(aligns && circularFigures)
+			{
+				let alignData : AlignData = <any>{};
+				let circularFigure : CircularFigure = <any>{};
+				for(let i = 0; i != aligns.length; ++i)
+				{
+					if(arg.alignuuid == aligns[i].uuid)
+					{
+						Object.assign(alignData,aligns[i]);
+						break;
+					}
+				}
+				for(let i = 0; i != circularFigures.length; ++i)
+				{
+					if(arg.figureuuid == circularFigures[i].uuid)
+					{
+						Object.assign(circularFigure,circularFigures[i]);
+						break;
+					}
+				}
+				atomicOp.addOperation(
+					"renderSNPTrackForContig",
+					{
+						circularFigure : circularFigure,
+						contiguuid : arg.uuid,
+						alignData : alignData,
+						colour : arg.colour
+					}
+				);
+			}
+		}
+		else if(arg.opName == "checkForUpdate")
+		{
+			let token = "";
+			let auth = dataMgr.getKey("application","auth");
+			if(auth && auth.token)
+				token = auth.token
+				console.log("token: "+token);
+			atomicOp.addOperation("checkForUpdate",{token : token});
+		}
+		else if(arg.opName == "downloadAndInstallUpdate")
+		{
+			let token = "";
+			let asset : any = undefined;
+			let auth = dataMgr.getKey("application","auth");
+			if(auth && auth.token)
+				token = auth.token
+			//if checkForUpdate was not successful, this will not be set
+			asset = dataMgr.getKey("application","availableUpdate");
 
-            //If we're running a portable edition then we can use our auto updater
-            let isPortable = /(portable)/i;
-            if(isPortable.test(getEdition()))
-            {
-                if(!asset)
-                    return;
-                atomicOp.addOperation("downloadAndInstallUpdate",
-                    {
-                        asset : asset,
-                        token : token
-                    });
-                winMgr.closeAllExcept("projectSelection");
-            }
-            else
-            {
-                //Electron.shell.openExternal("https://github.com/chgibb/PHAT/releases");
-            }
-        }
-        else if(arg.opName == "newProject")
-        {
-            atomicOp.addOperation("newProject",arg.name);
-        }
+			//If we're running a portable edition then we can use our auto updater
+			let isPortable = /(portable)/i;
+			if(isPortable.test(getEdition()))
+			{
+				if(!asset)
+					return;
+				atomicOp.addOperation("downloadAndInstallUpdate",
+				{
+					asset : asset,
+					token : token
+				});
+				winMgr.closeAllExcept("projectSelection");
+			}
+			else
+			{
+				//Electron.shell.openExternal("https://github.com/chgibb/PHAT/releases");
+			}
+		}
+		else if(arg.opName == "newProject")
+		{
+			atomicOp.addOperation("newProject",arg.name);
+		}
 
-        else if(arg.opName == "openProject")
-        {
-            atomicOp.addOperation("openProject",{
-                proj : arg.proj,
-                externalProjectPath : arg.externalProjectPath
-            });
-        }
-        else if(arg.opName == "loadCurrentlyOpenProject")
-        {
-            atomicOp.addOperation("loadCurrentlyOpenProject",{});
-        }
-        else if(arg.opName == "openPileupViewer")
-        {
-            atomicOp.addOperation("openPileupViewer",arg.pileupViewerParams);
-        }
-        else if(arg.opName == "openLogViewer")
-        {
-            atomicOp.addOperation("openLogViewer",arg.logRecord);
-        }
-        else if(arg.opName == "openNoSamHeaderPrompt")
-        {
-            atomicOp.addOperation("openNoSamHeaderPrompt",{});
-        }
-        else if(arg.opName == "inputFastqFile")
-        {
-            let fastqs : Array<Fastq> = dataMgr.getKey("input","fastqInputs");
-            if(fastqs)
-            {
-                for(let i = 0; i != fastqs.length; ++i)
-                {
-                    if(getPath(fastqs[i]) == arg.filePath)
-                    {
-                        return;
-                    }
-                }
-            }
-            atomicOp.addOperation("inputFastqFile",arg.filePath);
-        }
-        else if(arg.opName == "inputFastaFile")
-        {
-            let fastas : Array<Fasta> = dataMgr.getKey("input","fastaInputs");
-            if(fastas)
-            {
-                for(let i = 0; i != fastas.length; ++i)
-                {
-                    if(getPath(fastas[i]) == arg.filePath)
-                    {
-                        return;
-                    }
-                }
-            }
-            atomicOp.addOperation("inputFastaFile",arg.filePath);
-        }
-        else if(arg.opName == "inputBamFile")
-        {
-            atomicOp.addOperation("inputBamFile",{
-                bamPath : arg.filePath,
-                fasta : arg.fasta
-            });
-        }
-        else if(arg.opName == "linkRefSeqToAlignment")
-        {
-            atomicOp.addOperation("linkRefSeqToAlignment",{align : arg.align,fasta : arg.fasta});
-        }
-        else if(arg.opName == "importFileIntoProject")
-        {
-            let fastqInputs : Array<Fastq> = dataMgr.getKey("input","fastqInputs");
-            if(fastqInputs)
-            {
-                for(let i = 0; i != fastqInputs.length; ++i)
-                {
-                    if(fastqInputs[i].uuid == arg.uuid)
-                    {
-                        if(fastqInputs[i].imported)
-                            return;
-                        let tmp = {};
-                        Object.assign(tmp,fastqInputs[i]);
-                        atomicOp.addOperation(arg.opName,tmp);
-                        return;
-                    }
-                }
-            }
-            let fastaInputs : Array<Fasta> = dataMgr.getKey("input","fastaInputs");
-            if(fastaInputs)
-            {
-                for(let i = 0; i != fastaInputs.length; ++i)
-                {
-                    if(fastaInputs[i].uuid == arg.uuid)
-                    {
-                        if(fastaInputs[i].imported)
-                            return;
-                        let tmp = {};
-                        Object.assign(tmp,fastaInputs[i]);
-                        atomicOp.addOperation(arg.opName,tmp);
-                        return;
-                    }
-                }
-            }
-        }
-        else if(arg.opName == "copyCircularFigure")
-        {
-            let circularFigures : Array<CircularFigure> = dataMgr.getKey("circularGenomeBuilder","circularFigures");
-            if(circularFigures)
-            {
-                let circularFigure : CircularFigure = <any>{};
-                for(let i = 0; i != circularFigures.length; ++i)
-                {
-                    if(arg.figureuuid == circularFigures[i].uuid)
-                    {
-                        Object.assign(circularFigure,circularFigures[i]);
-                        break;
-                    }
-                }
-                atomicOp.addOperation("copyCircularFigure",circularFigure);
-            }
-        }
-        else if(arg.opName == "deleteCircularFigure")
-        {
-            let circularFigures : Array<CircularFigure> = dataMgr.getKey("circularGenomeBuilder","circularFigures");
-            if(circularFigures)
-            {
-                let circularFigure : CircularFigure = <any>{};
-                for(let i = 0; i != circularFigures.length; ++i)
-                {
-                    if(arg.figureuuid == circularFigures[i].uuid)
-                    {
-                        Object.assign(circularFigure,circularFigures[i]);
-                        break;
-                    }
-                }
-                atomicOp.addOperation("deleteCircularFigure",circularFigure);
-            }
-        }
-        else if(arg.opName == "dockWindow")
-        {
-            atomicOp.addOperation("dockWindow",{
-                toDock : arg.toDock,
-                dockTarget : arg.dockTarget
-            });
-        }
-        else if(arg.opName == "unDockWindow")
-        {
-            atomicOp.addOperation("unDockWindow",{
-                refName : arg.refName,
-                guestinstance : arg.guestinstance
-            });
-        }
-        else if(arg.opName == "changeTitle")
-        {
-            atomicOp.addOperation("changeTitle",{
-                id : arg.id,
-                newTitle : arg.newTitle
-            });
-        }
-        else if(arg.opName == "BLASTSegment")
-        {
-            atomicOp.addOperation("BLASTSegment",{
-                align : arg.align,
-                start : arg.start,
-                stop : arg.stop
-            });
-        }
-        dataMgr.setKey("application","operations",atomicOp.operationsQueue);
-        winMgr.publishChangeForKey("application","operations");
-    }
+		else if(arg.opName == "openProject")
+		{
+			atomicOp.addOperation("openProject",{
+				proj : arg.proj,
+				externalProjectPath : arg.externalProjectPath
+			});
+		}
+		else if(arg.opName == "loadCurrentlyOpenProject")
+		{
+			atomicOp.addOperation("loadCurrentlyOpenProject",{});
+		}
+		else if(arg.opName == "openPileupViewer")
+		{
+			atomicOp.addOperation("openPileupViewer",arg.pileupViewerParams);
+		}
+		else if(arg.opName == "openLogViewer")
+		{
+			atomicOp.addOperation("openLogViewer",arg.logRecord);
+		}
+		else if(arg.opName == "openNoSamHeaderPrompt")
+		{
+			atomicOp.addOperation("openNoSamHeaderPrompt",{});
+		}
+		else if(arg.opName == "inputFastqFile")
+		{
+			let fastqs : Array<Fastq> = dataMgr.getKey("input","fastqInputs");
+			if(fastqs)
+			{
+				for(let i = 0; i != fastqs.length; ++i)
+				{
+					if(getPath(fastqs[i]) == arg.filePath)
+					{
+						return;
+					}
+				}
+			}
+			atomicOp.addOperation("inputFastqFile",arg.filePath);
+		}
+		else if(arg.opName == "inputFastaFile")
+		{
+			let fastas : Array<Fasta> = dataMgr.getKey("input","fastaInputs");
+			if(fastas)
+			{
+				for(let i = 0; i != fastas.length; ++i)
+				{
+					if(getPath(fastas[i]) == arg.filePath)
+					{
+						return;
+					}
+				}
+			}
+			atomicOp.addOperation("inputFastaFile",arg.filePath);
+		}
+		else if(arg.opName == "inputBamFile")
+		{
+			atomicOp.addOperation("inputBamFile",{
+				bamPath : arg.filePath,
+				fasta : arg.fasta
+			});
+		}
+		else if(arg.opName == "linkRefSeqToAlignment")
+		{
+			atomicOp.addOperation("linkRefSeqToAlignment",{align : arg.align,fasta : arg.fasta});
+		}
+		else if(arg.opName == "importFileIntoProject")
+		{
+			let fastqInputs : Array<Fastq> = dataMgr.getKey("input","fastqInputs");
+			if(fastqInputs)
+			{
+				for(let i = 0; i != fastqInputs.length; ++i)
+				{
+					if(fastqInputs[i].uuid == arg.uuid)
+					{
+						if(fastqInputs[i].imported)
+							return;
+						let tmp = {};
+						Object.assign(tmp,fastqInputs[i]);
+						atomicOp.addOperation(arg.opName,tmp);
+						return;
+					}
+				}
+			}
+			let fastaInputs : Array<Fasta> = dataMgr.getKey("input","fastaInputs");
+			if(fastaInputs)
+			{
+				for(let i = 0; i != fastaInputs.length; ++i)
+				{
+					if(fastaInputs[i].uuid == arg.uuid)
+					{
+						if(fastaInputs[i].imported)
+							return;
+						let tmp = {};
+						Object.assign(tmp,fastaInputs[i]);
+						atomicOp.addOperation(arg.opName,tmp);
+						return;
+					}
+				}
+			}
+		}
+		else if(arg.opName == "copyCircularFigure")
+		{
+			let circularFigures : Array<CircularFigure> = dataMgr.getKey("circularGenomeBuilder","circularFigures");
+			if(circularFigures)
+			{
+				let circularFigure : CircularFigure = <any>{};
+				for(let i = 0; i != circularFigures.length; ++i)
+				{
+					if(arg.figureuuid == circularFigures[i].uuid)
+					{
+						Object.assign(circularFigure,circularFigures[i]);
+						break;
+					}
+				}
+				atomicOp.addOperation("copyCircularFigure",circularFigure);
+			}
+		}
+		else if(arg.opName == "deleteCircularFigure")
+		{
+			let circularFigures : Array<CircularFigure> = dataMgr.getKey("circularGenomeBuilder","circularFigures");
+			if(circularFigures)
+			{
+				let circularFigure : CircularFigure = <any>{};
+				for(let i = 0; i != circularFigures.length; ++i)
+				{
+					if(arg.figureuuid == circularFigures[i].uuid)
+					{
+						Object.assign(circularFigure,circularFigures[i]);
+						break;
+					}
+				}
+				atomicOp.addOperation("deleteCircularFigure",circularFigure);
+			}
+		}
+		else if(arg.opName == "dockWindow")
+		{
+			atomicOp.addOperation("dockWindow",{
+				toDock : arg.toDock,
+				dockTarget : arg.dockTarget
+			});
+		}
+		else if(arg.opName == "unDockWindow")
+		{
+			atomicOp.addOperation("unDockWindow",{
+				refName : arg.refName,
+				guestinstance : arg.guestinstance
+			});
+		}
+		else if(arg.opName == "changeTitle")
+		{
+			atomicOp.addOperation("changeTitle",{
+				id : arg.id,
+				newTitle : arg.newTitle
+			});
+		}
+		else if(arg.opName == "BLASTSegment")
+		{
+			atomicOp.addOperation("BLASTSegment",{
+				align : arg.align,
+				start : arg.start,
+				stop : arg.stop
+			});
+		}
+		dataMgr.setKey("application","operations",atomicOp.operationsQueue);
+		winMgr.publishChangeForKey("application","operations");
+	}
 );
 
 atomicOp.updates.on(

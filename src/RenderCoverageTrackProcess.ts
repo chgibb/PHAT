@@ -9,6 +9,7 @@ let contiguuid : string;
 let circularFigure : cf.CircularFigure;
 let colour : string;
 let scaleFactor : number;
+let log10Scale : boolean;
 
 let flags : CompletionFlags = new CompletionFlags();
 process.on(
@@ -21,13 +22,14 @@ process.on(
             circularFigure = ev.data.circularFigure;
             colour = ev.data.colour;
             scaleFactor = ev.data.scaleFactor;
+            log10Scale = ev.data.log10Scale;
             process.send(<AtomicOperationForkEvent>{finishedSettingData : true});
             return;
         }
 
         if(ev.run == true)
         {
-            await cf.cacheCoverageTrackTemplate(circularFigure,contiguuid,align,colour,scaleFactor);
+            await cf.cacheCoverageTrackTemplate(circularFigure,contiguuid,align,colour,scaleFactor,log10Scale);
             let trackRecord : cf.RenderedCoverageTrackRecord = circularFigure.renderedCoverageTracks[circularFigure.renderedCoverageTracks.length - 1];
             let map : cf.CoverageTrackMap = await buildCoverageTrackMap(trackRecord,circularFigure);
             cf.cacheCoverageTrackPB(trackRecord,map);
