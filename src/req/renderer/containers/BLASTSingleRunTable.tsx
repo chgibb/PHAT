@@ -73,6 +73,8 @@ export class BLASTSingleRunTable extends React.Component<BLASTSingleRunTableProp
         let positions : Array<number> = new Array();
         let sequences : Array<JSX.Element> = new Array();
         let tableData : Array<BLASTSingleRunTableLayout> = new Array();
+        let hitDefs : Array<string> = new Array();
+        let eValues : Array<string> = new Array();
 
         if(this.state.readResults && this.state.fragmentResults)
         {
@@ -132,6 +134,30 @@ export class BLASTSingleRunTable extends React.Component<BLASTSingleRunTableProp
                         })}
                     </React.Fragment>
                 ));
+
+                hitDefs.push(
+                    this.state.readResults[i]
+                    .results
+                    .BlastOutput
+                    .BlastOutput_iterations[0]
+                    .Iteration[0]
+                    .Iteration_hits[0]
+                    .Hit[0]
+                    .Hit_def[0]
+                );
+                
+                eValues.push(
+                    this.state.readResults[i]
+                    .results
+                    .BlastOutput
+                    .BlastOutput_iterations[0]
+                    .Iteration[0]
+                    .Iteration_hits[0]
+                    .Hit[0]
+                    .Hit_hsps[0]
+                    .Hsp[0]
+                    .Hsp_evalue[0]
+                );
             }
         }
 
@@ -141,8 +167,8 @@ export class BLASTSingleRunTable extends React.Component<BLASTSingleRunTableProp
             tableData.push({
                 position : positions[i],
                 sequence : sequences[i],
-                hitDef : "",
-                eValue : ""
+                hitDef : hitDefs[i],
+                eValue : eValues[i]
             });
         }
 
@@ -170,6 +196,26 @@ export class BLASTSingleRunTable extends React.Component<BLASTSingleRunTableProp
                         render : (row : BLASTSingleRunTableLayout) => 
                         {
                             return row.sequence;
+                        }
+                    },
+                    {
+                        title : "Hit Definition",
+                        hidden : false,
+                        searchable : true,
+                        field : "hitDef",
+                        render : (row : BLASTSingleRunTableLayout) => 
+                        {
+                            return row.hitDef;
+                        }
+                    },
+                    {
+                        title : "E-Value",
+                        hidden : false,
+                        searchable : true,
+                        field : "eValue",
+                        render : (row : BLASTSingleRunTableLayout) => 
+                        {
+                            return row.eValue;
                         }
                     }
                 ]}
