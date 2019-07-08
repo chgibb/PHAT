@@ -13,19 +13,13 @@ type Row<T> = T & {
     }
 };
 
-type ColumnOmitRender<T> = Omit<typeof MuiTable.defaultProps.columns[number],"render"> & {
+type TableColumn<T> = Omit<typeof MuiTable.defaultProps.columns[number],"render"> & {
     render? : (row : Row<T>) => string | number | boolean | JSX.Element;
-};
-
-type ColumnOmitSearchable<T> = Omit<ColumnOmitRender<T>,"searchable"> & {
+} & {
     searchable : boolean;
-};
-
-type ColumnOmitField<T> = Omit<ColumnOmitSearchable<T>,"field"> & {
+} & {
     field : string;
 };
-
-type TableColumn<T> = ColumnOmitField<T>;
 
 export interface TableProps<T>
 {
