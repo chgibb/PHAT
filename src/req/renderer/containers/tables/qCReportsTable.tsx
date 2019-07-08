@@ -1,10 +1,10 @@
 import * as React from "react";
 
-import {Fastq} from "../../fastq";
-import {Table} from "../components/table";
-import {getQCSummaryByName} from "../../QCData";
-import {AddBox} from "../components/icons/addBox";
-import {Search} from "../components/icons/search";
+import {Fastq} from "../../../fastq";
+import {Table} from "../../components/table";
+import {getQCSummaryByName} from "../../../QCData";
+import {AddBox} from "../../components/icons/addBox";
+import {Search} from "../../components/icons/search";
 
 export interface QCReportsTableProps
 {

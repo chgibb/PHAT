@@ -1,8 +1,8 @@
 import * as React from "react";
 
-import {AlignData} from "../../alignData";
-import {BLASTSegmentResult} from "../../BLASTSegmentResult";
-import {Table, SubTableProps} from "../components/table";
+import {AlignData} from "../../../alignData";
+import {BLASTSegmentResult} from "../../../BLASTSegmentResult";
+import {Table, SubTableProps} from "../../components/table";
 
 import {BLASTSingleRunTable} from "./BLASTSingleRunTable";
 

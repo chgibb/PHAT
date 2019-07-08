@@ -1,10 +1,10 @@
 import * as React from "react";
 
-import {Fasta} from "../../fasta";
-import {getReadable} from "../../getAppPath";
-import {AddBox} from "../components/icons/addBox";
-import {Table} from "../components/table";
-import {ThreeQuartersLoader} from "../components/threeQuartersLoader";
+import {Fasta} from "../../../fasta";
+import {getReadable} from "../../../getAppPath";
+import {AddBox} from "../../components/icons/addBox";
+import {Table} from "../../components/table";
+import {ThreeQuartersLoader} from "../../components/threeQuartersLoader";
 
 
 export interface FastaTableProps

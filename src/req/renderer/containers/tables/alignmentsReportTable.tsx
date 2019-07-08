@@ -1,14 +1,14 @@
 import * as React from "react";
 import * as electron from "electron";
 
-import {AlignData} from "../../alignData";
-import {Table} from "../components/table";
-import {sweepToBottom} from "../styles/sweepToBottom";
-import {VCF2JSONRow} from "../../varScanMPileup2SNPVCF2JSON";
-import {Fasta} from "../../fasta";
-import {AtomicOperationIPC} from "../../atomicOperationsIPC";
+import {AlignData} from "../../../alignData";
+import {Table} from "../../components/table";
+import {sweepToBottom} from "../../styles/sweepToBottom";
+import {VCF2JSONRow} from "../../../varScanMPileup2SNPVCF2JSON";
+import {Fasta} from "../../../fasta";
+import {AtomicOperationIPC} from "../../../atomicOperationsIPC";
 
-import {TableCellHover} from "./tableCellHover";
+import {TableCellHover} from "../tableCellHover";
 import {SNPPositionsTable} from "./snpPositionsTable";
 import {ReadsPerContigTable} from "./readsPerContigTable";
 import {BLASTRunsTable} from "./BLASTRunsTable";

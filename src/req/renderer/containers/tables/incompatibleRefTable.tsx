@@ -1,9 +1,9 @@
 import * as React from "react";
 
-import {Fasta} from "../../fasta";
-import {LinkableRefSeq} from "../../getLinkableRefSeqs";
-import {Table} from "../components/table";
-import {Info} from "../components/icons/info";
+import {Fasta} from "../../../fasta";
+import {LinkableRefSeq} from "../../../getLinkableRefSeqs";
+import {Table} from "../../components/table";
+import {Info} from "../../components/icons/info";
 
 export interface IncompatibleRefTableProps
 {

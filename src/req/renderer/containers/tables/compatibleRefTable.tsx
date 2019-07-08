@@ -1,10 +1,10 @@
 import * as React from "react";
 
-import {Table} from "../components/table";
-import {AlignData} from "../../alignData";
-import {CompareArrows} from "../components/icons/compareArrows";
-import {LinkableRefSeq} from "../../getLinkableRefSeqs";
-import {Fasta} from "../../fasta";
+import {Table} from "../../components/table";
+import {AlignData} from "../../../alignData";
+import {CompareArrows} from "../../components/icons/compareArrows";
+import {LinkableRefSeq} from "../../../getLinkableRefSeqs";
+import {Fasta} from "../../../fasta";
 
 export interface CompatibleRefTableProps
 {

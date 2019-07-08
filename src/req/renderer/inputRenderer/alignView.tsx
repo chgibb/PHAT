@@ -2,12 +2,12 @@ import * as React from "react";
 
 import {AlignData} from "../../alignData";
 import {Button} from "../components/button";
-import {LinkMapTable} from "../containers/linkMapTable";
-import {CompatibleRefTable, CompatibleRefTableRow} from "../containers/compatibleRefTable";
+import {LinkMapTable} from "../containers/tables/linkMapTable";
+import {CompatibleRefTable, CompatibleRefTableRow} from "../containers/tables/compatibleRefTable";
 import {getLinkableRefSeqs, LinkableRefSeq} from "../../getLinkableRefSeqs";
 import {Fasta} from "../../fasta";
 import {getReferenceFromUuid} from "../../uniquelyAddressable";
-import {IncompatibleRefTable} from "../containers/incompatibleRefTable";
+import {IncompatibleRefTable} from "../containers/tables/incompatibleRefTable";
 
 import {inputAlignDialog} from "./inputAlignDialog";
 import {linkRefSeqToAlignment} from "./publish";

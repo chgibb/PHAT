@@ -1,7 +1,7 @@
 import * as React from "react";
 
 import {Button} from "../components/button";
-import {FastaTable} from "../containers/fastaTable";
+import {FastaTable} from "../containers/tables/fastaTable";
 
 import * as pub from "./publish";
 import {Fasta} from "./../../fasta";

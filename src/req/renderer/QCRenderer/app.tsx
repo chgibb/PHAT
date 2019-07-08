@@ -4,7 +4,7 @@ import * as React from "react";
 
 import {Fastq} from "../../fastq";
 import {AtomicOperation} from "../../operations/atomicOperations";
-import {QCReportsTable} from "../containers/qCReportsTable";
+import {QCReportsTable} from "../containers/tables/qCReportsTable";
 import {QCReport} from "../containers/qcReport";
 
 import {generateFastQCReport} from "./publish";

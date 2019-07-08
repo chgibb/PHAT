@@ -1,10 +1,10 @@
 import * as React from "react";
 
-import {AlignData} from "../../alignData";
-import {BLASTReadResult, BLASTFragmentResult, getBLASTReadResults, BLASTSegmentResult, getBLASTFragmentResults} from "../../BLASTSegmentResult";
-import {Table, SubTableProps} from "../components/table";
-import {activeHover} from "../styles/activeHover";
-import {BLASTSingleRunSequenceStyle} from "../styles/BLASTSingleRunSequence";
+import {AlignData} from "../../../alignData";
+import {BLASTReadResult, BLASTFragmentResult, getBLASTReadResults, BLASTSegmentResult, getBLASTFragmentResults} from "../../../BLASTSegmentResult";
+import {Table, SubTableProps} from "../../components/table";
+import {activeHover} from "../../styles/activeHover";
+import {BLASTSingleRunSequenceStyle} from "../../styles/BLASTSingleRunSequence";
 
 export interface BLASTSingleRunTableProps
 {

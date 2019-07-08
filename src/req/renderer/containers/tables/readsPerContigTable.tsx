@@ -1,8 +1,8 @@
 import * as React from "react";
 
-import {AlignData} from "../../alignData";
-import {SamToolsIdxStatsReport} from "../../samToolsIdxStatsReport";
-import {Table, SubTableProps} from "../components/table";
+import {AlignData} from "../../../alignData";
+import {SamToolsIdxStatsReport} from "../../../samToolsIdxStatsReport";
+import {Table, SubTableProps} from "../../components/table";
 
 export interface ReadsPerContigTable
 {
