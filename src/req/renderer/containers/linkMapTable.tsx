@@ -38,7 +38,6 @@ export class LinkMapTable extends React.Component<LinkMapTableProps, {}>
         return (
             <Table<AlignData>
                 title=""
-                toolbar={false}
                 columns={[
                     {
                         title: "File Name",

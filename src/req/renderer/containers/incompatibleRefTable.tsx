@@ -47,7 +47,6 @@ export function IncompatibleRefTable(props : IncompatibleRefTableProps) : JSX.El
     let rows = composeIncompatibleRefTableRows(props.fastaInputs,props.linkableRefSeqs);
     return (
         <Table<IncompatibleRefTableRow>
-            toolbar={true}
             title="Incompatible References"
             columns={[
                 {

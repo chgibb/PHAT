@@ -29,7 +29,6 @@ type TableColumn<T> = ColumnOmitField<T>;
 
 export interface TableProps<T>
 {
-    toolbar : typeof MuiTable.defaultProps.options.toolbar;
     title : typeof MuiTable.defaultProps.title;
     actions? : typeof MuiTable.defaultProps.actions;
     actionsColumnIndex? : typeof MuiTable.defaultProps.options.actionsColumnIndex;

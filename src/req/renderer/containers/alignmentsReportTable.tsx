@@ -42,7 +42,6 @@ export class AlignmentsReportTable extends React.Component<AlignmentsReportTable
         return (
             <TableCellHover>
                 <Table<AlignData>
-                    toolbar={true}
                     title="Alignment Reports"
                     data={this.props.aligns}
                     detailPanel={[

@@ -14,7 +14,6 @@ export function ReadsPerContigTable(props : ReadsPerContigTable) : JSX.Element
 {
     return (
         <Table<SamToolsIdxStatsReport>
-            toolbar={false}
             title=""
             data={props.align.idxStatsReport}
             isSubTable={props.isSubTable}

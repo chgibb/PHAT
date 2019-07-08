@@ -21,7 +21,6 @@ export function FastaTable(props : FastaTableProps) : JSX.Element
 {
     return (
         <Table<Fasta>
-            toolbar={false}
             title=""
             columns={[
                 {

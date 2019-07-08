@@ -45,7 +45,6 @@ export function CompatibleRefTable(props : CompatibleRefTableProps) : JSX.Elemen
     let rows = composeCompatibleRefTableRows(props.fastaInputs,props.linkableRefSeqs);
     return (
         <Table<CompatibleRefTableRow>
-            toolbar={true}
             title="Potentially Compatible References"
             columns={[
                 {

@@ -13,7 +13,6 @@ export function BLASTRunsTable(props : BLASTRunsTableProps) : JSX.Element
 {
     return (
         <Table<BLASTSegmentResult>
-            toolbar={false}
             title=""
             data={props.align.BLASTSegmentResults}
             columns={[

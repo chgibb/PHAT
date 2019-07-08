@@ -14,7 +14,6 @@ export function FastqTable(props : FastqTableProps) : JSX.Element
 {
     return (
         <Table<Fastq>
-            toolbar={false}
             title=""
             columns={[
                 {

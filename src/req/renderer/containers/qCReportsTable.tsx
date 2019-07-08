@@ -18,7 +18,6 @@ export function QCReportsTable(props : QCReportsTableProps) : JSX.Element
 {
     return (
         <Table<Fastq>
-            toolbar={true}
             title="QC Reports"
             columns={[
                 {

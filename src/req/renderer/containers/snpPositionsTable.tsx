@@ -36,7 +36,6 @@ export function SNPPositionsTable(props : SNPPositionsTableProps) : JSX.Element
     return (
         <TableCellHover>
             <Table<VCF2JSONRow>
-                toolbar={false}
                 title=""
                 data={snps}
                 isSubTable={props.isSubTable}
