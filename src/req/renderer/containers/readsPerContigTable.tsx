@@ -24,8 +24,7 @@ export function ReadsPerContigTable(props : ReadsPerContigTable) : JSX.Element
                     {
                         return row.refSeqName;
                     },
-                    searchable : true
-                    ,
+                    searchable : true,
                     field : "refSeqName",
                     hidden : false
                 },
