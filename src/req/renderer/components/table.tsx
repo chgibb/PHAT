@@ -21,6 +21,12 @@ type TableColumn<T> = Omit<typeof MuiTable.defaultProps.columns[number],"render"
     field : string;
 };
 
+export interface SubTableProps
+{
+    isSubTable : boolean;
+    nesting : number;
+}
+
 export interface TableProps<T>
 {
     title : typeof MuiTable.defaultProps.title;
@@ -31,7 +37,7 @@ export interface TableProps<T>
     onSelectionChange? : typeof MuiTable.defaultProps.onSelectionChange;
     pageSize? : typeof MuiTable.defaultProps.options.pageSize;
     pageSizeOptions? : typeof MuiTable.defaultProps.options.pageSizeOptions;
-    isSubTable? : boolean;
+    subTableProps? : SubTableProps;
     data? : Array<T>;
     columns : Array<TableColumn<T>>;
     onRowClick? : (
@@ -61,10 +67,10 @@ export function Table<T>(props : TableProps<T>) : JSX.Element
                 toolbarButtonAlignment : "left",
                 detailPanelColumnAlignment : "left"
             }}
-            components={props.isSubTable ? {
+            components={props.subTableProps && props.subTableProps.isSubTable ? {
                 Container : (subProps) => 
                 {
-                    return SubTableContainer(subProps);
+                    return SubTableContainer(subProps,props.subTableProps);
                 }
             } : undefined}
             actions={props.actions}

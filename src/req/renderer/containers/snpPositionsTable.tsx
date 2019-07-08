@@ -5,7 +5,7 @@ import * as React from "react";
 
 import {AlignData, getSNPsJSON} from "../../alignData";
 import {VCF2JSONRow} from "../../varScanMPileup2SNPVCF2JSON";
-import {Table} from "../components/table";
+import {Table, SubTableProps} from "../components/table";
 import {Fasta} from "../../fasta";
 import {AtomicOperationIPC} from "../../atomicOperationsIPC";
 
@@ -17,7 +17,7 @@ export interface SNPPositionsTableProps
 {
     align : AlignData;
     fastas : Array<Fasta>;
-    isSubTable? : boolean;
+    subTableProps? : SubTableProps;
 }
 
 export function SNPPositionsTable(props : SNPPositionsTableProps) : JSX.Element
@@ -38,7 +38,7 @@ export function SNPPositionsTable(props : SNPPositionsTableProps) : JSX.Element
             <Table<VCF2JSONRow>
                 title=""
                 data={snps}
-                isSubTable={props.isSubTable}
+                subTableProps={props.subTableProps}
                 onRowClick={(event : React.MouseEvent<HTMLElement>,rowData) => 
                 {
                     console.log(rowData);

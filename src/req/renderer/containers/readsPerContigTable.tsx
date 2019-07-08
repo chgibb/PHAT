@@ -2,12 +2,12 @@ import * as React from "react";
 
 import {AlignData} from "../../alignData";
 import {SamToolsIdxStatsReport} from "../../samToolsIdxStatsReport";
-import {Table} from "../components/table";
+import {Table, SubTableProps} from "../components/table";
 
 export interface ReadsPerContigTable
 {
     align : AlignData;
-    isSubTable? : boolean;
+    subTableProps? : SubTableProps;
 }
 
 export function ReadsPerContigTable(props : ReadsPerContigTable) : JSX.Element
@@ -16,7 +16,7 @@ export function ReadsPerContigTable(props : ReadsPerContigTable) : JSX.Element
         <Table<SamToolsIdxStatsReport>
             title=""
             data={props.align.idxStatsReport}
-            isSubTable={props.isSubTable}
+            subTableProps={props.subTableProps}
             columns={[
                 {
                     title: "Contig Name",

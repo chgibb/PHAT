@@ -53,7 +53,10 @@ export class AlignmentsReportTable extends React.Component<AlignmentsReportTable
                                     <SNPPositionsTable
                                         align={rowData}
                                         fastas={this.props.fastas}
-                                        isSubTable={true}
+                                        subTableProps={{
+                                            isSubTable : true,
+                                            nesting : 1
+                                        }}
                                     />
                                 );
                             }
@@ -65,7 +68,10 @@ export class AlignmentsReportTable extends React.Component<AlignmentsReportTable
                                 return (
                                     <ReadsPerContigTable
                                         align={rowData}
-                                        isSubTable={true}
+                                        subTableProps={{
+                                            isSubTable : true,
+                                            nesting : 1
+                                        }}
                                     />
                                 );
                             }
