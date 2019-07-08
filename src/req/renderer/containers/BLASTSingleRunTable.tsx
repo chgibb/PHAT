@@ -3,8 +3,8 @@ import * as React from "react";
 import {AlignData} from "../../alignData";
 import {BLASTReadResult, BLASTFragmentResult, getBLASTReadResults, BLASTSegmentResult, getBLASTFragmentResults} from "../../BLASTSegmentResult";
 import {Table, SubTableProps} from "../components/table";
-import { activeHover } from '../styles/activeHover';
-import { BLASTSingleRunSequenceStyle } from '../styles/BLASTSingleRunSequence';
+import {activeHover} from "../styles/activeHover";
+import {BLASTSingleRunSequenceStyle} from "../styles/BLASTSingleRunSequence";
 
 export interface BLASTSingleRunTableProps
 {
@@ -137,26 +137,26 @@ export class BLASTSingleRunTable extends React.Component<BLASTSingleRunTableProp
 
                 hitDefs.push(
                     this.state.readResults[i]
-                    .results
-                    .BlastOutput
-                    .BlastOutput_iterations[0]
-                    .Iteration[0]
-                    .Iteration_hits[0]
-                    .Hit[0]
-                    .Hit_def[0]
+                        .results
+                        .BlastOutput
+                        .BlastOutput_iterations[0]
+                        .Iteration[0]
+                        .Iteration_hits[0]
+                        .Hit[0]
+                        .Hit_def[0]
                 );
                 
                 eValues.push(
                     this.state.readResults[i]
-                    .results
-                    .BlastOutput
-                    .BlastOutput_iterations[0]
-                    .Iteration[0]
-                    .Iteration_hits[0]
-                    .Hit[0]
-                    .Hit_hsps[0]
-                    .Hsp[0]
-                    .Hsp_evalue[0]
+                        .results
+                        .BlastOutput
+                        .BlastOutput_iterations[0]
+                        .Iteration[0]
+                        .Iteration_hits[0]
+                        .Hit[0]
+                        .Hit_hsps[0]
+                        .Hsp[0]
+                        .Hsp_evalue[0]
                 );
             }
         }
