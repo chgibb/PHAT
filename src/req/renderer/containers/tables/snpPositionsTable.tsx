@@ -8,7 +8,6 @@ import {VCF2JSONRow} from "../../../varScanMPileup2SNPVCF2JSON";
 import {Table, SubTableProps} from "../../components/table";
 import {Fasta} from "../../../fasta";
 import {AtomicOperationIPC} from "../../../atomicOperationsIPC";
-
 import {TableCellHover} from "../tableCellHover";
 
 const ipc = electron.ipcRenderer;
