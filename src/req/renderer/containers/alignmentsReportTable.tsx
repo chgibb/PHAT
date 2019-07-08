@@ -11,7 +11,7 @@ import {AtomicOperationIPC} from "../../atomicOperationsIPC";
 import {TableCellHover} from "./tableCellHover";
 import {SNPPositionsTable} from "./snpPositionsTable";
 import {ReadsPerContigTable} from "./readsPerContigTable";
-import { BLASTRunsTable } from './BLASTRunsTable';
+import {BLASTRunsTable} from "./BLASTRunsTable";
 
 const ipc = electron.ipcRenderer;
 
@@ -84,7 +84,8 @@ export class AlignmentsReportTable extends React.Component<AlignmentsReportTable
                         },
                         {
                             tooltip : "BLAST Runs",
-                            render : (rowData : AlignData) => {
+                            render : (rowData : AlignData) => 
+                            {
                                 return (
                                     <BLASTRunsTable
                                         align={rowData}
@@ -93,7 +94,7 @@ export class AlignmentsReportTable extends React.Component<AlignmentsReportTable
                                             nesting : 1
                                         }}
                                     />
-                                )
+                                );
                             }
                         }
                     ]}
