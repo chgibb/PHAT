@@ -1,7 +1,8 @@
 import * as React from "react";
-import { AlignData } from '../../alignData';
-import { BLASTReadResult, BLASTFragmentResult, getBLASTReadResults, BLASTSegmentResult, getBLASTFragmentResults } from '../../BLASTSegmentResult';
-import { Table, SubTableProps } from '../components/table';
+
+import {AlignData} from "../../alignData";
+import {BLASTReadResult, BLASTFragmentResult, getBLASTReadResults, BLASTSegmentResult, getBLASTFragmentResults} from "../../BLASTSegmentResult";
+import {Table, SubTableProps} from "../components/table";
 
 export interface BLASTSingleRunTableProps
 {
@@ -79,13 +80,14 @@ export class BLASTSingleRunTable extends React.Component<BLASTSingleRunTableProp
 
                 sequences.push((
                     <React.Fragment>
-                        {this.state.readResults[i].readWithFragments.fragments.map((fragment) => {
+                        {this.state.readResults[i].readWithFragments.fragments.map((fragment) => 
+                        {
                             if(fragment.type == "mapped" || fragment.type == "remainder")
                             {
                                 return (
-                                <span>
-                                    {fragment.seq}
-                                </span>);
+                                    <span>
+                                        {fragment.seq}
+                                    </span>);
                             }
 
                             else if(fragment.type == "unmapped")
@@ -103,13 +105,13 @@ export class BLASTSingleRunTable extends React.Component<BLASTSingleRunTableProp
                                         else 
                                         {
                                             hoverText = this.state.fragmentResults[k]
-                                                        .results
-                                                        .BlastOutput
-                                                        .BlastOutput_iterations[0]
-                                                        .Iteration[0]
-                                                        .Iteration_hits[0]
-                                                        .Hit[0]
-                                                        .Hit_def[0];
+                                                .results
+                                                .BlastOutput
+                                                .BlastOutput_iterations[0]
+                                                .Iteration[0]
+                                                .Iteration_hits[0]
+                                                .Hit[0]
+                                                .Hit_def[0];
                                             break;
                                         }
                                     }
@@ -126,11 +128,11 @@ export class BLASTSingleRunTable extends React.Component<BLASTSingleRunTableProp
                                     </span>
                                 );
                             }
-                                return null;
+                            return null;
                             
                         })}
                     </React.Fragment>
-                ))
+                ));
             }
         }
 
@@ -140,8 +142,8 @@ export class BLASTSingleRunTable extends React.Component<BLASTSingleRunTableProp
             tableData.push({
                 position : positions[i],
                 sequence : sequences[i],
-                hitDef : '',
-                eValue : ''
+                hitDef : "",
+                eValue : ""
             });
         }
 
@@ -156,7 +158,8 @@ export class BLASTSingleRunTable extends React.Component<BLASTSingleRunTableProp
                         hidden : false,
                         searchable : true,
                         field : "position",
-                        render : (row : BLASTSingleRunTableLayout) => {
+                        render : (row : BLASTSingleRunTableLayout) => 
+                        {
                             return row.position;
                         }
                     },
@@ -165,7 +168,8 @@ export class BLASTSingleRunTable extends React.Component<BLASTSingleRunTableProp
                         hidden : false,
                         searchable : true,
                         field : "sequence",
-                        render : (row : BLASTSingleRunTableLayout) => {
+                        render : (row : BLASTSingleRunTableLayout) => 
+                        {
                             return row.sequence;
                         }
                     }
