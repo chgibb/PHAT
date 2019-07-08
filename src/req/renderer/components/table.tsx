@@ -19,6 +19,8 @@ type TableColumn<T> = Omit<typeof MuiTable.defaultProps.columns[number],"render"
     searchable : boolean;
 } & {
     field : string;
+} & {
+    hidden : boolean;
 };
 
 export interface SubTableProps

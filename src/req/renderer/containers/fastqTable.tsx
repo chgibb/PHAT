@@ -19,7 +19,8 @@ export function FastqTable(props : FastqTableProps) : JSX.Element
                 {
                     title: "Sample Name",
                     field: "alias",
-                    searchable : true
+                    searchable : true,
+                    hidden : false
                 },
                 {
                     title: "Path",
@@ -28,12 +29,14 @@ export function FastqTable(props : FastqTableProps) : JSX.Element
                     {
                         return row.imported ? "In Project" : row.path; 
                     },
-                    searchable : true
+                    searchable : true,
+                    hidden : false
                 },
                 {
                     title: "Size",
                     field: "sizeString",
-                    searchable : true
+                    searchable : true,
+                    hidden : false
                 }
             ]}
             selection={props.selection}

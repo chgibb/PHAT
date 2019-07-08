@@ -52,17 +52,20 @@ export function IncompatibleRefTable(props : IncompatibleRefTableProps) : JSX.El
                 {
                     title : "Sample Name",
                     field : "alias",
-                    searchable : true
+                    searchable : true,
+                    hidden : false
                 },
                 {
                     title : "Size",
                     field : "sizeString",
-                    searchable : true
+                    searchable : true,
+                    hidden : false
                 },
                 {
                     title : "Reason",
                     field : "reason",
-                    searchable : true
+                    searchable : true,
+                    hidden : false
                 }
             ]}
             actions={[

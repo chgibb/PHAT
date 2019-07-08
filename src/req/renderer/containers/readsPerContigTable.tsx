@@ -26,7 +26,8 @@ export function ReadsPerContigTable(props : ReadsPerContigTable) : JSX.Element
                     },
                     searchable : true
                     ,
-                            field : "refSeqName"
+                            field : "refSeqName",
+                            hidden : false
                 },
                 {
                     title: "Length",
@@ -35,7 +36,8 @@ export function ReadsPerContigTable(props : ReadsPerContigTable) : JSX.Element
                         return row.seqLength;
                     },
                     searchable : true,
-                    field : "seqLength"
+                    field : "seqLength",
+                    hidden : false
                 },
                 {
                     title: "Mapped Reads",
@@ -44,7 +46,8 @@ export function ReadsPerContigTable(props : ReadsPerContigTable) : JSX.Element
                         return row.mappedReads;
                     },
                     searchable : true,
-                    field : "mappedReads"
+                    field : "mappedReads",
+                    hidden : false
                 },
                 {
                     title: "Unmapped Reads",
@@ -53,7 +56,8 @@ export function ReadsPerContigTable(props : ReadsPerContigTable) : JSX.Element
                         return row.unMappedReads;
                     },
                     searchable : true,
-                    field : "unMappedReads"
+                    field : "unMappedReads",
+                    hidden : false
                 }
             ]}
         />

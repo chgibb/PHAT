@@ -42,12 +42,14 @@ export class LinkMapTable extends React.Component<LinkMapTableProps, {}>
                     {
                         title: "File Name",
                         field: "alias",
-                        searchable : true
+                        searchable : true,
+                        hidden : false
                     },
                     {
                         title: "Size",
                         field: "sizeString",
-                        searchable : true
+                        searchable : true,
+                        hidden : false
                     },
                     {
                         title: "Ref Seq",
@@ -56,7 +58,8 @@ export class LinkMapTable extends React.Component<LinkMapTableProps, {}>
                         {
                             return row.fasta ? row.fasta.alias : "Not Linked";
                         },
-                        searchable : true
+                        searchable : true,
+                        hidden : false
                     }
                 ]}
                 actions={[

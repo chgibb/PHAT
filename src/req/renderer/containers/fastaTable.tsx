@@ -26,7 +26,8 @@ export function FastaTable(props : FastaTableProps) : JSX.Element
                 {
                     title : "Reference Name",
                     field : "alias",
-                    searchable : true
+                    searchable : true,
+                    hidden : false
                 },
                 {
                     title : "Path",
@@ -35,12 +36,14 @@ export function FastaTable(props : FastaTableProps) : JSX.Element
                     {
                         return row.imported ? "In Project" : row.path;
                     },
-                    searchable : true
+                    searchable : true,
+                    hidden : false
                 },
                 {
                     title : "Size",
                     field : "sizeString",
-                    searchable : true
+                    searchable : true,
+                    hidden : false
                 },
                 {
                     title : "Ready For Visualization",
@@ -51,7 +54,8 @@ export function FastaTable(props : FastaTableProps) : JSX.Element
                             props.shouldAllowTriggeringOps ? "Not Ready" : 
                                 !props.shouldAllowTriggeringOps ? <ThreeQuartersLoader /> : undefined;
                     },
-                    searchable : true
+                    searchable : true,
+                    hidden : false
                 }
             ]}
             actions={props.actions ? [

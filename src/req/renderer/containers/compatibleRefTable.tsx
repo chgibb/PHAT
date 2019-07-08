@@ -54,7 +54,8 @@ export function CompatibleRefTable(props : CompatibleRefTableProps) : JSX.Elemen
                     {
                         return row.fasta.alias;
                     },
-                    searchable : true
+                    searchable : true,
+                    hidden : false
                 },
                 {
                     title: "Size",
@@ -63,7 +64,8 @@ export function CompatibleRefTable(props : CompatibleRefTableProps) : JSX.Elemen
                     {
                         return row.fasta.sizeString;
                     },
-                    searchable : true
+                    searchable : true,
+                    hidden : false
                 },
             ]}
             actions={[

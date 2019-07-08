@@ -145,7 +145,8 @@ export class AlignmentsReportTable extends React.Component<AlignmentsReportTable
                                 return (<div id={this.aliasCellId(row)} className={TableCellHover.cellHoverClass}>{row.alias}</div>);
                             },
                             searchable : true,
-                            field : "alias"
+                            field : "alias",
+                            hidden : false
                         },
                         {
                             title: "Aligner",
@@ -154,7 +155,8 @@ export class AlignmentsReportTable extends React.Component<AlignmentsReportTable
                                 return row.alignerUsed;
                             },
                             searchable : true,
-                            field : "alignerUsed"
+                            field : "alignerUsed",
+                            hidden : false
                         },
                         {
                             title: "Size In Bytes",
@@ -163,7 +165,8 @@ export class AlignmentsReportTable extends React.Component<AlignmentsReportTable
                                 return row.size;
                             },
                             searchable : true,
-                            field : "size"
+                            field : "size",
+                            hidden : false
                         },
                         {
                             title: "Formatted Size",
@@ -172,7 +175,8 @@ export class AlignmentsReportTable extends React.Component<AlignmentsReportTable
                                 return row.sizeString;
                             },
                             searchable : true,
-                            field : "sizeString"
+                            field : "sizeString",
+                            hidden : false
                         },
                         {
                             title: "Reads",
@@ -182,7 +186,8 @@ export class AlignmentsReportTable extends React.Component<AlignmentsReportTable
                             },
                             searchable : true
                             ,
-                            field : ""
+                            field : "",
+                            hidden : false
                         },
                         {
                             title: "Mates",
@@ -191,7 +196,8 @@ export class AlignmentsReportTable extends React.Component<AlignmentsReportTable
                                 return !row.isExternalAlignment ? row.summary.mates : "Unknown";
                             },
                             searchable : true,
-                            field : ""
+                            field : "",
+                            hidden : false
                         },
                         {
                             title: "Overall Alignment Rate %",
@@ -200,7 +206,8 @@ export class AlignmentsReportTable extends React.Component<AlignmentsReportTable
                                 return !row.isExternalAlignment ? row.summary.overallAlignmentRate : row.flagStatReport.overallAlignmentRate;
                             },
                             searchable : true,
-                            field : ""
+                            field : "",
+                            hidden : false
                         },
                         {
                             title: "Minimum Coverage",
@@ -209,7 +216,8 @@ export class AlignmentsReportTable extends React.Component<AlignmentsReportTable
                                 return row.varScanSNPSummary ? row.varScanSNPSummary.minCoverage : "Unknown";
                             },
                             searchable : true,
-                            field : ""
+                            field : "",
+                            hidden : false
                         },
                         {
                             title: "Minimum Variable Frequency",
@@ -218,7 +226,8 @@ export class AlignmentsReportTable extends React.Component<AlignmentsReportTable
                                 return row.varScanSNPSummary ? row.varScanSNPSummary.minVarFreq : "Unknown";
                             },
                             searchable : true,
-                            field : ""
+                            field : "",
+                            hidden : false
                         },
                         {
                             title: "Minimum Average Quality",
@@ -227,7 +236,8 @@ export class AlignmentsReportTable extends React.Component<AlignmentsReportTable
                                 return row.varScanSNPSummary ? row.varScanSNPSummary.minAvgQual : "Unknown";
                             },
                             searchable : true,
-                            field : ""
+                            field : "",
+                            hidden : false
                         },
                         {
                             title: "P-Value Threshold",
@@ -236,7 +246,8 @@ export class AlignmentsReportTable extends React.Component<AlignmentsReportTable
                                 return row.varScanSNPSummary ? row.varScanSNPSummary.pValueThresh : "Unknown";
                             },
                             searchable : true,
-                            field : ""
+                            field : "",
+                            hidden : false
                         },
                         {
                             title: "SNPs Predicted",
@@ -246,7 +257,8 @@ export class AlignmentsReportTable extends React.Component<AlignmentsReportTable
                                 return row.varScanSNPSummary ? (<div id={this.SNPCellId(row)} className={TableCellHover.cellHoverClass}>{row.varScanSNPSummary.SNPsReported}</div>) : "Unknown";
                             },
                             searchable : true,
-                            field : ""
+                            field : "",
+                            hidden : false
                         },
                         {
                             title: "Indels Predicted",
@@ -255,7 +267,8 @@ export class AlignmentsReportTable extends React.Component<AlignmentsReportTable
                                 return row.varScanSNPSummary ? row.varScanSNPSummary.indelsReported : "Unknown";
                             },
                             searchable : true,
-                            field : ""
+                            field : "",
+                            hidden : false
                         },
                         {
                             title: "BLAST Runs",
@@ -264,7 +277,8 @@ export class AlignmentsReportTable extends React.Component<AlignmentsReportTable
                                 return row.BLASTSegmentResults ? row.BLASTSegmentResults.length : 0;
                             },
                             searchable : true,
-                            field : ""
+                            field : "",
+                            hidden : false
                         },
                         {
                             title: "Date Ran",
@@ -273,7 +287,8 @@ export class AlignmentsReportTable extends React.Component<AlignmentsReportTable
                                 return row.dateStampString;
                             },
                             searchable : true,
-                            field : "dateStampString"
+                            field : "dateStampString",
+                            hidden : false
                         },
                     ]}
                 />

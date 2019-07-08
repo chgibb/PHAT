@@ -23,7 +23,8 @@ export function QCReportsTable(props : QCReportsTableProps) : JSX.Element
                 {
                     title : "Sample",
                     field : "alias",
-                    searchable : true
+                    searchable : true,
+                    hidden : false
                 },
                 {
                     title : "Per Base Sequence Quality",
@@ -37,7 +38,8 @@ export function QCReportsTable(props : QCReportsTableProps) : JSX.Element
                             )}</p>
                         );
                     },
-                    searchable : true
+                    searchable : true,
+                    hidden : false
                 },
                 {
                     title : "Per Sequence Quality Scores",
@@ -51,7 +53,8 @@ export function QCReportsTable(props : QCReportsTableProps) : JSX.Element
                             )}</p>
                         );
                     },
-                    searchable : true
+                    searchable : true,
+                    hidden : false
                 },
                 {
                     title : "Per Sequence GC Content",
@@ -65,7 +68,8 @@ export function QCReportsTable(props : QCReportsTableProps) : JSX.Element
                             )}</p>
                         );
                     },
-                    searchable : true
+                    searchable : true,
+                    hidden : false
                 },
                 {
                     title : "Sequence Duplication Levels",
@@ -79,7 +83,8 @@ export function QCReportsTable(props : QCReportsTableProps) : JSX.Element
                             )}</p>
                         );
                     },
-                    searchable : true
+                    searchable : true,
+                    hidden : false
                 },
                 {
                     title : "Overrepresented Sequences",
@@ -93,7 +98,8 @@ export function QCReportsTable(props : QCReportsTableProps) : JSX.Element
                             )}</p>
                         );
                     },
-                    searchable : true
+                    searchable : true,
+                    hidden : false
                 }
             ]}
             actions={[
