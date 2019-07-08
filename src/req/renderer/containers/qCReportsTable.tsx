@@ -24,6 +24,7 @@ export function QCReportsTable(props : QCReportsTableProps) : JSX.Element
                 {
                     title : "Sample",
                     field : "alias",
+                    searchable : true
                 },
                 {
                     title : "Per Base Sequence Quality",
@@ -36,7 +37,8 @@ export function QCReportsTable(props : QCReportsTableProps) : JSX.Element
                                 "Per base sequence quality"
                             )}</p>
                         );
-                    }
+                    },
+                    searchable : true
                 },
                 {
                     title : "Per Sequence Quality Scores",
@@ -49,7 +51,8 @@ export function QCReportsTable(props : QCReportsTableProps) : JSX.Element
                                 "Per sequence quality scores"
                             )}</p>
                         );
-                    }
+                    },
+                    searchable : true
                 },
                 {
                     title : "Per Sequence GC Content",
@@ -62,7 +65,8 @@ export function QCReportsTable(props : QCReportsTableProps) : JSX.Element
                                 "Per sequence GC content"
                             )}</p>
                         );
-                    }
+                    },
+                    searchable : true
                 },
                 {
                     title : "Sequence Duplication Levels",
@@ -75,7 +79,8 @@ export function QCReportsTable(props : QCReportsTableProps) : JSX.Element
                                 "Sequence Duplication Levels"
                             )}</p>
                         );
-                    }
+                    },
+                    searchable : true
                 },
                 {
                     title : "Overrepresented Sequences",
@@ -88,7 +93,8 @@ export function QCReportsTable(props : QCReportsTableProps) : JSX.Element
                                 "Overrepresented sequences"
                             )}</p>
                         );
-                    }
+                    },
+                    searchable : true
                 }
             ]}
             actions={[

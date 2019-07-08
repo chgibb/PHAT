@@ -13,6 +13,16 @@ type Row<T> = T & {
     }
 };
 
+type ColumnOmitRender<T> = Omit<typeof MuiTable.defaultProps.columns[number],"render"> & {
+    render? : (row : Row<T>) => string | number | boolean | JSX.Element;
+};
+
+type ColumnOmitSearchable<T> = Omit<ColumnOmitRender<T>,"searchable"> & {
+    searchable : boolean;
+};
+
+type TableColumn<T> = ColumnOmitSearchable<T>;
+
 export interface TableProps<T>
 {
     toolbar : typeof MuiTable.defaultProps.options.toolbar;
@@ -26,9 +36,7 @@ export interface TableProps<T>
     pageSizeOptions? : typeof MuiTable.defaultProps.options.pageSizeOptions;
     isSubTable? : boolean;
     data? : Array<T>;
-    columns : Array<
-        Omit<typeof MuiTable.defaultProps.columns[number],"render"> & {
-            render? : (row : Row<T>) => string | number | boolean | JSX.Element}>;
+    columns : Array<TableColumn<T>>;
     onRowClick? : (
             event : React.MouseEvent<HTMLElement>,
             row : Row<T>,
@@ -44,13 +52,17 @@ export function Table<T>(props : TableProps<T>) : JSX.Element
         <MuiTable
             title={props.title}
             options={{
-                toolbar : props.toolbar,
+                toolbar : true,
                 actionsColumnIndex : props.actionsColumnIndex ? props.actionsColumnIndex : 0,
                 headerStyle: tableCell as any,
                 rowStyle : tableCell as any,
                 selection : props.selection,
                 pageSize : props.pageSize ? props.pageSize : defaultPageSize,
-                pageSizeOptions : props.pageSizeOptions ? props.pageSizeOptions : defaultPageSizeOptions
+                pageSizeOptions : props.pageSizeOptions ? props.pageSizeOptions : defaultPageSizeOptions,
+                searchFieldAlignment : "left",
+                columnsButton : true,
+                toolbarButtonAlignment : "left",
+                detailPanelColumnAlignment : "left"
             }}
             components={props.isSubTable ? {
                 Container : (subProps) => 

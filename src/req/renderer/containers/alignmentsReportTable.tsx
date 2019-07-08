@@ -138,77 +138,88 @@ export class AlignmentsReportTable extends React.Component<AlignmentsReportTable
                             render: (row: AlignData) => 
                             {
                                 return (<div id={this.aliasCellId(row)} className={TableCellHover.cellHoverClass}>{row.alias}</div>);
-                            }
+                            },
+                            searchable : true
                         },
                         {
                             title: "Aligner",
                             render: (row: AlignData) => 
                             {
                                 return row.alignerUsed;
-                            }
+                            },
+                            searchable : true
                         },
                         {
                             title: "Size In Bytes",
                             render: (row: AlignData) => 
                             {
                                 return row.size;
-                            }
+                            },
+                            searchable : true
                         },
                         {
                             title: "Formatted Size",
                             render: (row: AlignData) => 
                             {
                                 return row.sizeString;
-                            }
+                            },
+                            searchable : true
                         },
                         {
                             title: "Reads",
                             render: (row: AlignData) => 
                             {
                                 return !row.isExternalAlignment ? row.summary.reads : row.flagStatReport.reads;
-                            }
+                            },
+                            searchable : true
                         },
                         {
                             title: "Mates",
                             render: (row: AlignData) => 
                             {
                                 return !row.isExternalAlignment ? row.summary.mates : "Unknown";
-                            }
+                            },
+                            searchable : true
                         },
                         {
                             title: "Overall Alignment Rate %",
                             render: (row: AlignData) => 
                             {
                                 return !row.isExternalAlignment ? row.summary.overallAlignmentRate : row.flagStatReport.overallAlignmentRate;
-                            }
+                            },
+                            searchable : true
                         },
                         {
                             title: "Minimum Coverage",
                             render: (row: AlignData) => 
                             {
                                 return row.varScanSNPSummary ? row.varScanSNPSummary.minCoverage : "Unknown";
-                            }
+                            },
+                            searchable : true
                         },
                         {
                             title: "Minimum Variable Frequency",
                             render: (row: AlignData) => 
                             {
                                 return row.varScanSNPSummary ? row.varScanSNPSummary.minVarFreq : "Unknown";
-                            }
+                            },
+                            searchable : true
                         },
                         {
                             title: "Minimum Average Quality",
                             render: (row: AlignData) => 
                             {
                                 return row.varScanSNPSummary ? row.varScanSNPSummary.minAvgQual : "Unknown";
-                            }
+                            },
+                            searchable : true
                         },
                         {
                             title: "P-Value Threshold",
                             render: (row: AlignData) => 
                             {
                                 return row.varScanSNPSummary ? row.varScanSNPSummary.pValueThresh : "Unknown";
-                            }
+                            },
+                            searchable : true
                         },
                         {
                             title: "SNPs Predicted",
@@ -216,28 +227,32 @@ export class AlignmentsReportTable extends React.Component<AlignmentsReportTable
                             render: (row: AlignData) => 
                             {
                                 return row.varScanSNPSummary ? (<div id={this.SNPCellId(row)} className={TableCellHover.cellHoverClass}>{row.varScanSNPSummary.SNPsReported}</div>) : "Unknown";
-                            }
+                            },
+                            searchable : true
                         },
                         {
                             title: "Indels Predicted",
                             render: (row: AlignData) => 
                             {
                                 return row.varScanSNPSummary ? row.varScanSNPSummary.indelsReported : "Unknown";
-                            }
+                            },
+                            searchable : true
                         },
                         {
                             title: "BLAST Runs",
                             render: (row: AlignData) => 
                             {
                                 return row.BLASTSegmentResults ? row.BLASTSegmentResults.length : 0;
-                            }
+                            },
+                            searchable : true
                         },
                         {
                             title: "Date Ran",
                             render: (row: AlignData) => 
                             {
                                 return row.dateStampString;
-                            }
+                            },
+                            searchable : true
                         },
                     ]}
                 />

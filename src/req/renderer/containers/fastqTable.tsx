@@ -19,7 +19,8 @@ export function FastqTable(props : FastqTableProps) : JSX.Element
             columns={[
                 {
                     title: "Sample Name",
-                    field: "alias"
+                    field: "alias",
+                    searchable : true
                 },
                 {
                     title: "Path",
@@ -27,11 +28,13 @@ export function FastqTable(props : FastqTableProps) : JSX.Element
                     render: (row : Fastq) => 
                     {
                         return row.imported ? "In Project" : row.path; 
-                    }
+                    },
+                    searchable : true
                 },
                 {
                     title: "Size",
-                    field: "sizeString"
+                    field: "sizeString",
+                    searchable : true
                 }
             ]}
             selection={props.selection}

@@ -24,28 +24,32 @@ export function ReadsPerContigTable(props : ReadsPerContigTable) : JSX.Element
                     render : (row) => 
                     {
                         return row.refSeqName;
-                    }
+                    },
+                    searchable : true
                 },
                 {
                     title: "Length",
                     render : (row) => 
                     {
                         return row.seqLength;
-                    }
+                    },
+                    searchable : true
                 },
                 {
                     title: "Mapped Reads",
                     render : (row) => 
                     {
                         return row.mappedReads;
-                    }
+                    },
+                    searchable : true
                 },
                 {
                     title: "Unmapped Reads",
                     render : (row) => 
                     {
                         return row.unMappedReads;
-                    }
+                    },
+                    searchable : true
                 }
             ]}
         />

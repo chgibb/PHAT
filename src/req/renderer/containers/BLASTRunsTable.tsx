@@ -21,11 +21,10 @@ export function BLASTRunsTable(props : BLASTRunsTableProps) : JSX.Element
                     title : "Start",
                     render : (row) => {
                         return row.start;
-                    }
+                    },
+                    searchable : true
                 },
-                {
-                    title
-                }
+                
             ]}
         />
     );

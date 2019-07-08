@@ -26,7 +26,8 @@ export function FastaTable(props : FastaTableProps) : JSX.Element
             columns={[
                 {
                     title : "Reference Name",
-                    field : "alias"
+                    field : "alias",
+                    searchable : true
                 },
                 {
                     title : "Path",
@@ -34,11 +35,13 @@ export function FastaTable(props : FastaTableProps) : JSX.Element
                     render : (row : Fasta) => 
                     {
                         return row.imported ? "In Project" : row.path;
-                    }
+                    },
+                    searchable : true
                 },
                 {
                     title : "Size",
-                    field : "sizeString"
+                    field : "sizeString",
+                    searchable : true
                 },
                 {
                     title : "Ready For Visualization",
@@ -48,7 +51,8 @@ export function FastaTable(props : FastaTableProps) : JSX.Element
                         return row.indexedForVisualization ? <img src={getReadable("img/pass.png")} /> : 
                             props.shouldAllowTriggeringOps ? "Not Ready" : 
                                 !props.shouldAllowTriggeringOps ? <ThreeQuartersLoader /> : undefined;
-                    }
+                    },
+                    searchable : true
                 }
             ]}
             actions={props.actions ? [

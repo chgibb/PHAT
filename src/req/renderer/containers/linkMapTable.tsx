@@ -42,11 +42,13 @@ export class LinkMapTable extends React.Component<LinkMapTableProps, {}>
                 columns={[
                     {
                         title: "File Name",
-                        field: "alias"
+                        field: "alias",
+                        searchable : true
                     },
                     {
                         title: "Size",
-                        field: "sizeString"
+                        field: "sizeString",
+                        searchable : true
                     },
                     {
                         title: "Ref Seq",
@@ -54,7 +56,8 @@ export class LinkMapTable extends React.Component<LinkMapTableProps, {}>
                         render: (row: AlignData) => 
                         {
                             return row.fasta ? row.fasta.alias : "Not Linked";
-                        }
+                        },
+                        searchable : true
                     }
                 ]}
                 actions={[

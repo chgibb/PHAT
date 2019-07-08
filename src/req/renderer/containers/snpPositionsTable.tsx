@@ -98,7 +98,8 @@ export function SNPPositionsTable(props : SNPPositionsTableProps) : JSX.Element
                         render : (row : VCF2JSONRow) => 
                         {
                             return row.chrom;
-                        }
+                        },
+                        searchable : true
                     },
                     {
                         title : "Position",
@@ -107,70 +108,80 @@ export function SNPPositionsTable(props : SNPPositionsTableProps) : JSX.Element
                             console.log(row);
 
                             return (<div id={`viewSNP${row.tableData.id}`} className={TableCellHover.cellHoverClass}>{row.position}</div>);
-                        }
+                        },
+                        searchable : true
                     },
                     {
                         title : "Ref",
                         render : (row : VCF2JSONRow) => 
                         {
                             return row.ref;
-                        }
+                        },
+                        searchable : true
                     },
                     {
                         title : "Var",
                         render : (row : VCF2JSONRow) => 
                         {
                             return row.var;
-                        }
+                        },
+                        searchable : true
                     },
                     {
                         title : "Cons:Cov:Reads1:Reads2:Freq:P-value",
                         render : (row : VCF2JSONRow) => 
                         {
                             return row.consCovReads1Reads2FreqPValue;
-                        }
+                        },
+                        searchable : true
                     },
                     {
                         title : "StrandFilter:R1+:R1-:R2+:R2-:pval",
                         render : (row : VCF2JSONRow) => 
                         {
                             return row.strandFilterR1R1R2R2pVal;
-                        }
+                        },
+                        searchable : true
                     },
                     {
                         title : "SamplesRef",
                         render : (row : VCF2JSONRow) => 
                         {
                             return row.samplesRef;
-                        }
+                        },
+                        searchable : true
                     },
                     {
                         title : "SamplesHet",
                         render : (row : VCF2JSONRow) => 
                         {
                             return row.samplesHet;
-                        }
+                        },
+                        searchable : true
                     },
                     {
                         title : "SamplesHom",
                         render : (row : VCF2JSONRow) => 
                         {
                             return row.samplesHom;
-                        }
+                        },
+                        searchable : true
                     },
                     {
                         title : "SamplesNC",
                         render : (row : VCF2JSONRow) => 
                         {
                             return row.samplesNC;
-                        }
+                        },
+                        searchable : true
                     },
                     {
                         title : "Cons:Cov:Reads1:Reads2:Freq:P-value",
                         render : (row : VCF2JSONRow) => 
                         {
                             return row.consCovReads1Reads2FreqPValue2;
-                        }
+                        },
+                        searchable : true
                     },
                 ]}
             />

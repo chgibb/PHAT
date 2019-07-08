@@ -52,15 +52,18 @@ export function IncompatibleRefTable(props : IncompatibleRefTableProps) : JSX.El
             columns={[
                 {
                     title : "Sample Name",
-                    field : "alias"
+                    field : "alias",
+                    searchable : true
                 },
                 {
                     title : "Size",
-                    field : "sizeString"
+                    field : "sizeString",
+                    searchable : true
                 },
                 {
                     title : "Reason",
-                    field : "reason"
+                    field : "reason",
+                    searchable : true
                 }
             ]}
             actions={[
