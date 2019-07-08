@@ -166,7 +166,7 @@ export class AlignmentsReportTable extends React.Component<AlignmentsReportTable
                             },
                             searchable : true,
                             field : "size",
-                            hidden : false
+                            hidden : true
                         },
                         {
                             title: "Formatted Size",
@@ -217,7 +217,7 @@ export class AlignmentsReportTable extends React.Component<AlignmentsReportTable
                             },
                             searchable : true,
                             field : "",
-                            hidden : false
+                            hidden : true
                         },
                         {
                             title: "Minimum Variable Frequency",
@@ -227,7 +227,7 @@ export class AlignmentsReportTable extends React.Component<AlignmentsReportTable
                             },
                             searchable : true,
                             field : "",
-                            hidden : false
+                            hidden : true
                         },
                         {
                             title: "Minimum Average Quality",
@@ -237,7 +237,7 @@ export class AlignmentsReportTable extends React.Component<AlignmentsReportTable
                             },
                             searchable : true,
                             field : "",
-                            hidden : false
+                            hidden : true
                         },
                         {
                             title: "P-Value Threshold",
@@ -247,7 +247,7 @@ export class AlignmentsReportTable extends React.Component<AlignmentsReportTable
                             },
                             searchable : true,
                             field : "",
-                            hidden : false
+                            hidden : true
                         },
                         {
                             title: "SNPs Predicted",
@@ -268,7 +268,7 @@ export class AlignmentsReportTable extends React.Component<AlignmentsReportTable
                             },
                             searchable : true,
                             field : "",
-                            hidden : false
+                            hidden : true
                         },
                         {
                             title: "BLAST Runs",
@@ -288,7 +288,7 @@ export class AlignmentsReportTable extends React.Component<AlignmentsReportTable
                             },
                             searchable : true,
                             field : "dateStampString",
-                            hidden : false
+                            hidden : true
                         },
                     ]}
                 />
