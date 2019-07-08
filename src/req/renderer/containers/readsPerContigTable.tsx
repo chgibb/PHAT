@@ -26,8 +26,8 @@ export function ReadsPerContigTable(props : ReadsPerContigTable) : JSX.Element
                     },
                     searchable : true
                     ,
-                            field : "refSeqName",
-                            hidden : false
+                    field : "refSeqName",
+                    hidden : false
                 },
                 {
                     title: "Length",

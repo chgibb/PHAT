@@ -1,7 +1,7 @@
 import * as React from "react";
 
 import {Paper} from "../components/paper";
-import { SubTableProps } from '../components/table';
+import {SubTableProps} from "../components/table";
 
 export interface SubTableContainerProps
 {

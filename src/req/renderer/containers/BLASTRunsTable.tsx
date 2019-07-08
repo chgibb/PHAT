@@ -1,7 +1,8 @@
 import * as React from "react";
-import { AlignData } from '../../alignData';
-import { BLASTSegmentResult } from '../../BLASTSegmentResult';
-import { Table } from '../components/table';
+
+import {AlignData} from "../../alignData";
+import {BLASTSegmentResult} from "../../BLASTSegmentResult";
+import {Table} from "../components/table";
 
 export interface BLASTRunsTableProps
 {
@@ -18,7 +19,8 @@ export function BLASTRunsTable(props : BLASTRunsTableProps) : JSX.Element
             columns={[
                 {
                     title : "Start",
-                    render : (row) => {
+                    render : (row) => 
+                    {
                         return row.start;
                     },
                     searchable : true,
