@@ -38,6 +38,11 @@ export class AlignmentsReportTable extends React.Component<AlignmentsReportTable
         return `${row.uuid}ViewAlignment`;
     }
 
+    public BLASTRunsCellId(row : AlignData) : string
+    {
+        return `${row.uuid}ViewBLASTRuns`;
+    }
+
     public render(): JSX.Element 
     {
         return (
@@ -149,6 +154,11 @@ export class AlignmentsReportTable extends React.Component<AlignmentsReportTable
                                         }
                                     } as AtomicOperationIPC
                                 );
+                            }
+
+                            else if(this.BLASTRunsCellId(rowData) == el.id)
+                            {
+                                toggleDetailPanel(2);
                             }
                         }
                     }}
@@ -289,7 +299,7 @@ export class AlignmentsReportTable extends React.Component<AlignmentsReportTable
                             title: "BLAST Runs",
                             render: (row: AlignData) => 
                             {
-                                return row.BLASTSegmentResults ? row.BLASTSegmentResults.length : 0;
+                                return row.BLASTSegmentResults ? (<div id={this.BLASTRunsCellId(row)} className={TableCellHover.cellHoverClass}>{row.BLASTSegmentResults.length}</div>) : 0;
                             },
                             searchable : true,
                             field : "",
