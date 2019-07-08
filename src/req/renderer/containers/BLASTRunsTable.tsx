@@ -2,12 +2,12 @@ import * as React from "react";
 
 import {AlignData} from "../../alignData";
 import {BLASTSegmentResult} from "../../BLASTSegmentResult";
-import {Table} from "../components/table";
+import {Table, SubTableProps} from "../components/table";
 
 export interface BLASTRunsTableProps
 {
     align : AlignData;
-    isSubTable? : boolean;
+    subTableProps : SubTableProps;
 }
 
 export function BLASTRunsTable(props : BLASTRunsTableProps) : JSX.Element
@@ -16,6 +16,7 @@ export function BLASTRunsTable(props : BLASTRunsTableProps) : JSX.Element
         <Table<BLASTSegmentResult>
             title=""
             data={props.align.BLASTSegmentResults}
+            subTableProps={props.subTableProps}
             columns={[
                 {
                     title : "Start",
