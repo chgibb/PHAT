@@ -99,7 +99,8 @@ export function SNPPositionsTable(props : SNPPositionsTableProps) : JSX.Element
                         {
                             return row.chrom;
                         },
-                        searchable : true
+                        searchable : true,
+                        field : "chrom"
                     },
                     {
                         title : "Position",
@@ -109,7 +110,8 @@ export function SNPPositionsTable(props : SNPPositionsTableProps) : JSX.Element
 
                             return (<div id={`viewSNP${row.tableData.id}`} className={TableCellHover.cellHoverClass}>{row.position}</div>);
                         },
-                        searchable : true
+                        searchable : true,
+                        field : "position"
                     },
                     {
                         title : "Ref",
@@ -117,7 +119,8 @@ export function SNPPositionsTable(props : SNPPositionsTableProps) : JSX.Element
                         {
                             return row.ref;
                         },
-                        searchable : true
+                        searchable : true,
+                        field : "ref"
                     },
                     {
                         title : "Var",
@@ -125,7 +128,8 @@ export function SNPPositionsTable(props : SNPPositionsTableProps) : JSX.Element
                         {
                             return row.var;
                         },
-                        searchable : true
+                        searchable : true,
+                        field : "var"
                     },
                     {
                         title : "Cons:Cov:Reads1:Reads2:Freq:P-value",
@@ -133,7 +137,8 @@ export function SNPPositionsTable(props : SNPPositionsTableProps) : JSX.Element
                         {
                             return row.consCovReads1Reads2FreqPValue;
                         },
-                        searchable : true
+                        searchable : true,
+                        field : "consCovReads1Reads2FreqPValue"
                     },
                     {
                         title : "StrandFilter:R1+:R1-:R2+:R2-:pval",
@@ -141,7 +146,8 @@ export function SNPPositionsTable(props : SNPPositionsTableProps) : JSX.Element
                         {
                             return row.strandFilterR1R1R2R2pVal;
                         },
-                        searchable : true
+                        searchable : true,
+                        field : "strandFilterR1R1R2R2pVal"
                     },
                     {
                         title : "SamplesRef",
@@ -149,7 +155,9 @@ export function SNPPositionsTable(props : SNPPositionsTableProps) : JSX.Element
                         {
                             return row.samplesRef;
                         },
-                        searchable : true
+                        searchable : true,
+                        field : "samplesRef"
+
                     },
                     {
                         title : "SamplesHet",
@@ -157,7 +165,8 @@ export function SNPPositionsTable(props : SNPPositionsTableProps) : JSX.Element
                         {
                             return row.samplesHet;
                         },
-                        searchable : true
+                        searchable : true,
+                        field : "samplesHet"
                     },
                     {
                         title : "SamplesHom",
@@ -165,7 +174,8 @@ export function SNPPositionsTable(props : SNPPositionsTableProps) : JSX.Element
                         {
                             return row.samplesHom;
                         },
-                        searchable : true
+                        searchable : true,
+                        field : "samplesHom"
                     },
                     {
                         title : "SamplesNC",
@@ -173,7 +183,8 @@ export function SNPPositionsTable(props : SNPPositionsTableProps) : JSX.Element
                         {
                             return row.samplesNC;
                         },
-                        searchable : true
+                        searchable : true,
+                        field : "samplesNC"
                     },
                     {
                         title : "Cons:Cov:Reads1:Reads2:Freq:P-value",
@@ -181,7 +192,8 @@ export function SNPPositionsTable(props : SNPPositionsTableProps) : JSX.Element
                         {
                             return row.consCovReads1Reads2FreqPValue2;
                         },
-                        searchable : true
+                        searchable : true,
+                        field : "consCovReads1Reads2FreqPValue2"
                     },
                 ]}
             />

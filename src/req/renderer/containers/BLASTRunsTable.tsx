@@ -22,7 +22,8 @@ export function BLASTRunsTable(props : BLASTRunsTableProps) : JSX.Element
                     render : (row) => {
                         return row.start;
                     },
-                    searchable : true
+                    searchable : true,
+                    field : "start"
                 },
                 
             ]}

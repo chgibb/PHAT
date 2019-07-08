@@ -21,7 +21,11 @@ type ColumnOmitSearchable<T> = Omit<ColumnOmitRender<T>,"searchable"> & {
     searchable : boolean;
 };
 
-type TableColumn<T> = ColumnOmitSearchable<T>;
+type ColumnOmitField<T> = Omit<ColumnOmitSearchable<T>,"field"> & {
+    field : string;
+};
+
+type TableColumn<T> = ColumnOmitField<T>;
 
 export interface TableProps<T>
 {
