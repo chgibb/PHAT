@@ -27,6 +27,46 @@ export function BLASTRunsTable(props : BLASTRunsTableProps) : JSX.Element
                     field : "start",
                     hidden : false
                 },
+                {
+                    title : "Stop",
+                    render : (row) => 
+                    {
+                        return row.stop;
+                    },
+                    searchable : true,
+                    field : "stop",
+                    hidden : false
+                },
+                {
+                    title : "Reads BLASTed",
+                    render : (row) => 
+                    {
+                        return row.readsBLASTed;
+                    },
+                    searchable : true,
+                    field : "readsBLASTed",
+                    hidden : false
+                },
+                {
+                    title : "Program",
+                    render : (row) => 
+                    {
+                        return row.program;
+                    },
+                    searchable : true,
+                    field : "program",
+                    hidden : false
+                },
+                {
+                    title : "Date Ran",
+                    render : (row) => 
+                    {
+                        return row.dateStampString;
+                    },
+                    searchable : true,
+                    field : "dateStampString",
+                    hidden : true
+                },
                 
             ]}
         />
