@@ -11,12 +11,12 @@ import {Grid} from "../components/grid";
 import {getReadable} from "../../getAppPath";
 import {activeHover, activeHoverButton} from "../styles/activeHover";
 import {toolBarButton} from "../styles/toolBarButton";
-import {FullWidthTab, FullWidthTabs} from "../containers/fullWidthTabs";
 import {Tab} from "../components/tab";
 import { Fastq } from '../../fastq';
 import { Fasta } from '../../fasta';
 import { AlignData } from '../../alignData';
 import { InputRendererApp } from '../inputRenderer/app';
+import { ToolBarTab, ToolBarTabs } from '../containers/toolBarTabs';
 
 
 export interface ToolBarViewState
@@ -24,7 +24,7 @@ export interface ToolBarViewState
     operations? : Array<AtomicOperation>;
     runningOpText? : string;
     saveText? : string;
-    views? : Array<FullWidthTab>;
+    views? : Array<ToolBarTab>;
 
     fastqs? : Array<Fastq>;
     fastas? : Array<Fasta>;
@@ -102,7 +102,7 @@ export class ToolBarView extends React.Component<{},ToolBarViewState>
     public render() : JSX.Element
     {
         return (
-            <div>
+            <div style={{width:"100%",position:"absolute",left:"0px"}}>
                 {this.state.saveText ?  (
                     <div>
                         <h1>Saving Project</h1>
@@ -153,8 +153,9 @@ export class ToolBarView extends React.Component<{},ToolBarViewState>
                                 </Grid>
                             </Grid>
                         </GridWrapper>
-                        <FullWidthTabs
-                            tabComponent={(el : FullWidthTab) => (
+                        
+                        <ToolBarTabs
+                            tabComponent={(el : ToolBarTab) => (
                                 <Tab className={el.className} label={el.label} />
                             )}
                             tabs={this.state.views}
