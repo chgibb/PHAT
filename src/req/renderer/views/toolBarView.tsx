@@ -16,7 +16,7 @@ import { Fastq } from '../../fastq';
 import { Fasta } from '../../fasta';
 import { AlignData } from '../../alignData';
 import { InputRendererApp } from '../inputRenderer/app';
-import { ToolBarTab, ToolBarTabs } from '../containers/toolBarTabs';
+import { ToolBarTab, ToolBarTabs } from './containers/toolBarTabs/toolBarTabs';
 
 
 export interface ToolBarViewState

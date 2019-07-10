@@ -1,9 +1,12 @@
 import * as React from "react";
 
-import {SwipeableViews} from "../components/swipeableViews";
-import {TabContainer} from "../components/tabContainer";
-import {AppBar} from "../components/appBar";
-import {Tabs} from "../components/tabs";
+import {SwipeableViews} from "../../../components/swipeableViews";
+import {TabContainer} from "../../../components/tabContainer";
+import {AppBar} from "../../../components/appBar";
+import {Tabs} from "../../../components/tabs";
+import { wrapperBGColour } from './styles/wrapperBGColour';
+import { outerSwipeableWrapper } from './styles/outerSwipeableWrapper';
+import { innerSwipeableWrapper } from './styles/innerSwipeableWrapper';
 
 export interface ToolBarTab
 {
@@ -35,7 +38,7 @@ export function ToolBarTabs({tabs,tabComponent} : ToolBarTabsProps) : JSX.Elemen
     if(tabs && tabs.length != 0)
     {
         return (
-            <div style={{backgroundColor:"white"}}>
+            <div className={wrapperBGColour}>
                 <AppBar position="static" color="default">
                     <Tabs
                         value={value}
@@ -50,8 +53,8 @@ export function ToolBarTabs({tabs,tabComponent} : ToolBarTabsProps) : JSX.Elemen
                         })}
                     </Tabs>
                 </AppBar>
-                <div className="FullWidthTabsWrapperWrapper" style={{backgroundColor:"white",paddingBottom:".5vh"}}>
-                        <div className="FullWidthTabsWrapper" style={{margin:"1vh"}}>
+                <div className={outerSwipeableWrapper}>
+                        <div className={innerSwipeableWrapper}>
                 <SwipeableViews
                     axis="x"
                     index={value}
