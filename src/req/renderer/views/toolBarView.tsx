@@ -3,14 +3,14 @@ const ipc = electron.ipcRenderer;
 import * as React from "react";
 
 
-import { AtomicOperation } from '../../operations/atomicOperations';
-import formatByteString from '../formatByteString';
-import { Typography } from '../components/typography';
-import { GridWrapper } from '../containers/gridWrapper';
-import { Grid } from '../components/grid';
-import { getReadable } from '../../getAppPath';
-import { activeHover, activeHoverButton } from '../styles/activeHover';
-import { toolBarButton } from '../styles/toolBarButton';
+import {AtomicOperation} from "../../operations/atomicOperations";
+import formatByteString from "../formatByteString";
+import {Typography} from "../components/typography";
+import {GridWrapper} from "../containers/gridWrapper";
+import {Grid} from "../components/grid";
+import {getReadable} from "../../getAppPath";
+import {activeHover, activeHoverButton} from "../styles/activeHover";
+import {toolBarButton} from "../styles/toolBarButton";
 
 
 export interface ToolBarViewState
@@ -53,9 +53,9 @@ export class ToolBarView extends React.Component<{},ToolBarViewState>
                                         text += `${ops[i].progressMessage}`;
                                     }
 
-                                   this.setState({
-                                       runningOpText : text
-                                   });
+                                    this.setState({
+                                        runningOpText : text
+                                    });
                                 }
                             }
 

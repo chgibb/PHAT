@@ -10,7 +10,7 @@ import {KeySubEvent} from "./req/ipcEvents";
 
 import "./req/renderer/commonBehaviour";
 import "./req/renderer/styles/defaults";
-import { ToolBarView } from './req/renderer/views/toolBarView';
+import {ToolBarView} from "./req/renderer/views/toolBarView";
 
 cssRule("body",{
     backgroundColor : `${color("#1a89bd")}`
@@ -21,13 +21,13 @@ render(
     document.getElementById("app")
 );
 
-        ipc.send(
-            "keySub",
+ipc.send(
+    "keySub",
             {
                 action : "keySub",
                 channel : "application",
                 key : "operations",
                 replyChannel : "toolBar"
             } as KeySubEvent
-        );
+);
         
