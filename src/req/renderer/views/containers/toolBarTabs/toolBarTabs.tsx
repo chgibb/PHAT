@@ -4,9 +4,10 @@ import {SwipeableViews} from "../../../components/swipeableViews";
 import {TabContainer} from "../../../components/tabContainer";
 import {AppBar} from "../../../components/appBar";
 import {Tabs} from "../../../components/tabs";
-import { wrapperBGColour } from './styles/wrapperBGColour';
-import { outerSwipeableWrapper } from './styles/outerSwipeableWrapper';
-import { innerSwipeableWrapper } from './styles/innerSwipeableWrapper';
+
+import {wrapperBGColour} from "./styles/wrapperBGColour";
+import {outerSwipeableWrapper} from "./styles/outerSwipeableWrapper";
+import {innerSwipeableWrapper} from "./styles/innerSwipeableWrapper";
 
 export interface ToolBarTab
 {
@@ -54,20 +55,20 @@ export function ToolBarTabs({tabs,tabComponent} : ToolBarTabsProps) : JSX.Elemen
                     </Tabs>
                 </AppBar>
                 <div className={outerSwipeableWrapper}>
-                        <div className={innerSwipeableWrapper}>
-                <SwipeableViews
-                    axis="x"
-                    index={value}
-                    onChangeIndex={handleChangeIndex}
-                >
-                    {tabs.map((el) => 
-                    {
-                        return (
-                            <TabContainer dir="rtl">{el.body}</TabContainer>
-                        );
-                    })}
-                </SwipeableViews>
-                </div>
+                    <div className={innerSwipeableWrapper}>
+                        <SwipeableViews
+                            axis="x"
+                            index={value}
+                            onChangeIndex={handleChangeIndex}
+                        >
+                            {tabs.map((el) => 
+                            {
+                                return (
+                                    <TabContainer dir="rtl">{el.body}</TabContainer>
+                                );
+                            })}
+                        </SwipeableViews>
+                    </div>
                 </div>
             </div>
         );

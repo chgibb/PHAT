@@ -12,11 +12,12 @@ import {getReadable} from "../../getAppPath";
 import {activeHover, activeHoverButton} from "../styles/activeHover";
 import {toolBarButton} from "../styles/toolBarButton";
 import {Tab} from "../components/tab";
-import { Fastq } from '../../fastq';
-import { Fasta } from '../../fasta';
-import { AlignData } from '../../alignData';
-import { InputRendererApp } from '../inputRenderer/app';
-import { ToolBarTab, ToolBarTabs } from './containers/toolBarTabs/toolBarTabs';
+import {Fastq} from "../../fastq";
+import {Fasta} from "../../fasta";
+import {AlignData} from "../../alignData";
+import {InputRendererApp} from "../inputRenderer/app";
+
+import {ToolBarTab, ToolBarTabs} from "./containers/toolBarTabs/toolBarTabs";
 
 
 export interface ToolBarViewState
@@ -116,13 +117,14 @@ export class ToolBarView extends React.Component<{},ToolBarViewState>
                                     <img 
                                         src={getReadable("img/input.png")}
                                         className={`${activeHover} ${activeHoverButton} ${toolBarButton}`}
-                                        onClick={() => {
+                                        onClick={() => 
+                                        {
                                             this.state.views.push({
                                                 label : "Input",
                                                 body : (
                                                     <InputRendererApp />
                                                 )
-                                            })
+                                            });
                                             this.setState({});
                                         }} 
                                     />
