@@ -32,7 +32,9 @@ export function FullWidthTabs({tabs,tabComponent} : FullWidthTabsProps) : JSX.El
     {
         setValue(index);
     };
-
+    
+    if(tabs && tabs.length != 0)
+    {
     return (
         <div>
             <AppBar position="static" color="default">
@@ -63,4 +65,6 @@ export function FullWidthTabs({tabs,tabComponent} : FullWidthTabsProps) : JSX.El
             </SwipeableViews>
         </div>
     );
+            }
+            return null;
 }
