@@ -11,6 +11,8 @@ import {Grid} from "../components/grid";
 import {getReadable} from "../../getAppPath";
 import {activeHover, activeHoverButton} from "../styles/activeHover";
 import {toolBarButton} from "../styles/toolBarButton";
+import { FullWidthTab, FullWidthTabs } from '../containers/fullWidthTabs';
+import { Tab } from '../components/tab';
 
 
 export interface ToolBarViewState
@@ -18,6 +20,7 @@ export interface ToolBarViewState
     operations? : Array<AtomicOperation>;
     runningOpText? : string;
     saveText? : string;
+    views? : Array<FullWidthTab>;
 }
 
 export class ToolBarView extends React.Component<{},ToolBarViewState>
@@ -133,6 +136,12 @@ export class ToolBarView extends React.Component<{},ToolBarViewState>
                                 </Grid>
                             </Grid>
                         </GridWrapper>
+                        <FullWidthTabs
+                            tabComponent={(el : FullWidthTab) => (
+                                <Tab className={el.className} label={el.label} />
+                            )}
+                            tabs={this.state.views}
+                        />
                     </div>
                 )}
             </div>
