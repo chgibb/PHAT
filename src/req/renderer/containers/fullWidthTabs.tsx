@@ -35,36 +35,36 @@ export function FullWidthTabs({tabs,tabComponent} : FullWidthTabsProps) : JSX.El
     
     if(tabs && tabs.length != 0)
     {
-    return (
-        <div>
-            <AppBar position="static" color="default">
-                <Tabs
-                    value={value}
-                    onChange={handleChange}
-                    indicatorColor="primary"
-                    textColor="primary"
-                    variant="fullWidth"
+        return (
+            <div>
+                <AppBar position="static" color="default">
+                    <Tabs
+                        value={value}
+                        onChange={handleChange}
+                        indicatorColor="primary"
+                        textColor="primary"
+                        variant="fullWidth"
+                    >
+                        {tabs.map((el) => 
+                        {
+                            return tabComponent(el);
+                        })}
+                    </Tabs>
+                </AppBar>
+                <SwipeableViews
+                    axis="x"
+                    index={value}
+                    onChangeIndex={handleChangeIndex}
                 >
                     {tabs.map((el) => 
                     {
-                        return tabComponent(el);
+                        return (
+                            <TabContainer dir="rtl">{el.body}</TabContainer>
+                        );
                     })}
-                </Tabs>
-            </AppBar>
-            <SwipeableViews
-                axis="x"
-                index={value}
-                onChangeIndex={handleChangeIndex}
-            >
-                {tabs.map((el) => 
-                {
-                    return (
-                        <TabContainer dir="rtl">{el.body}</TabContainer>
-                    );
-                })}
-            </SwipeableViews>
-        </div>
-    );
-            }
-            return null;
+                </SwipeableViews>
+            </div>
+        );
+    }
+    return null;
 }

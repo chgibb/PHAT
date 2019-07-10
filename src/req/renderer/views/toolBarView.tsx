@@ -11,8 +11,8 @@ import {Grid} from "../components/grid";
 import {getReadable} from "../../getAppPath";
 import {activeHover, activeHoverButton} from "../styles/activeHover";
 import {toolBarButton} from "../styles/toolBarButton";
-import { FullWidthTab, FullWidthTabs } from '../containers/fullWidthTabs';
-import { Tab } from '../components/tab';
+import {FullWidthTab, FullWidthTabs} from "../containers/fullWidthTabs";
+import {Tab} from "../components/tab";
 
 
 export interface ToolBarViewState
