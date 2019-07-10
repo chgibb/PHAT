@@ -106,18 +106,26 @@ export class ToolBarView extends React.Component<{},ToolBarViewState>
                                         src={getReadable("img/input.png")}
                                         className={`${activeHover} ${activeHoverButton} ${toolBarButton}`} 
                                     />
+                                </Grid>
+                                <Grid item>
                                     <img 
                                         src={getReadable("img/qc.png")}
                                         className={`${activeHover} ${activeHoverButton} ${toolBarButton}`} 
                                     />
+                                     </Grid>
+                                <Grid item>
                                     <img 
                                         src={getReadable("img/align.png")}
                                         className={`${activeHover} ${activeHoverButton} ${toolBarButton}`} 
                                     />
+                                     </Grid>
+                                <Grid item>
                                     <img 
                                         src={getReadable("img/output.png")}
                                         className={`${activeHover} ${activeHoverButton} ${toolBarButton}`} 
                                     />
+                                     </Grid>
+                                <Grid item>
                                     <img 
                                         src={getReadable("img/genomeBuilder.png")}
                                         className={`${activeHover} ${activeHoverButton} ${toolBarButton}`} 
