@@ -3,7 +3,7 @@ const ipc = electron.ipcRenderer;
 import * as React from "react";
 
 import {AtomicOperation} from "../../operations/atomicOperations";
-import {FullWidthTabs} from "../containers/fullWidthTabs";
+import {FullWidthTabs, FullWidthTab} from "../containers/fullWidthTabs";
 import {AlignData} from "../../alignData";
 
 import {Fastq} from "./../../fastq";
@@ -11,6 +11,7 @@ import {Fasta} from "./../../fasta";
 import {FastqView} from "./fastqView";
 import {FastaView} from "./fastaView";
 import {AlignView} from "./alignView";
+import { Tab } from '../components/tab';
 
 export interface InputRendererAppState
 {
@@ -81,7 +82,11 @@ export class InputRendererApp extends React.Component<{},InputRendererAppState>
     {
         return (
             <div>
-                <FullWidthTabs tabs={[
+                <FullWidthTabs 
+                    tabComponent={(el : FullWidthTab) => (
+                        <Tab className={el.className} label={el.label} />
+                    )}
+                    tabs={[
                     {
                         label : "Fastqs",
                         body : (

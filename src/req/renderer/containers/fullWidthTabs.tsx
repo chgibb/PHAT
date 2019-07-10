@@ -16,9 +16,10 @@ export interface FullWidthTab
 export interface FullWidthTabsProps
 {
     tabs : Array<FullWidthTab>;
+    tabComponent : (el : FullWidthTab) => JSX.Element;
 }
 
-export function FullWidthTabs({tabs} : FullWidthTabsProps) : JSX.Element
+export function FullWidthTabs({tabs,tabComponent} : FullWidthTabsProps) : JSX.Element
 {
     const [value, setValue] = React.useState(0);
 
@@ -44,9 +45,7 @@ export function FullWidthTabs({tabs} : FullWidthTabsProps) : JSX.Element
                 >
                     {tabs.map((el) => 
                     {
-                        return (
-                            <Tab className={el.className} label={el.label} />
-                        );
+                        return tabComponent(el);
                     })}
                 </Tabs>
             </AppBar>
