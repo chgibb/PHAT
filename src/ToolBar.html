@@ -1,31 +1,35 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<script>
-			var startUp = performance.now();
-		</script>
-		<meta charset="UTF-8">
-		<link rel="stylesheet" type="text/css" href="styles/ToolBar.css">
-		<link rel="stylesheet" type="text/css" href="bootstrap.min.css">
-		<link rel="stylesheet" href="styles/electron-tabs.css">
-		<link rel="stylesheet" href="styles/dragula.css">
-		<title>PHAT</title>
-  </head>
-  <body class="window-color">
-  	<script>
-		  require("./ToolBar");
-	</script>
-	<div id="toolbar">
-		<img class="activeHover activeHoverButton toolBarButton" src="img/input.png" id="input" alt="Input" name="input"></img>
-		<img class="activeHover activeHoverButton toolBarButton" src="img/qc.png" id="QC" name="QC" alt="FastQC"></img>
-		<img class="activeHover activeHoverButton toolBarButton" src="img/align.png" id="align" name="Align" alt="Align"></img>
-		<img class="activeHover activeHoverButton toolBarButton" src="img/output.png" id="output" name="Output" alt="Output"></img>
-		<img class="activeHover activeHoverButton toolBarButton" src="img/genomeBuilder.png" id="circularGenomeBuilder" name="genomeBUilder" alt="genomeBuilder"></img>
-		<p id="runningOpNotification" style="color:white;height:20px;"></p>
-		<br />
-	</div>
+
+<head>
 	<script>
-			console.log("Start up took "+(performance.now()-startUp+"ms"));
+		var startUp = performance.now();
 	</script>
-  </body>
+	<link rel="stylesheet" type="text/css" href="styles/large-spinner.css">
+	<meta charset="UTF-8">
+	<title>PHAT</title>
+</head>
+
+<body>
+	<div id="app">
+		<section class="wrapper">
+			<div class="spinner">
+				<i></i>
+				<i></i>
+				<i></i>
+				<i></i>
+				<i></i>
+				<i></i>
+				<i></i>
+			</div>
+		</section>
+	</div>
+	<script defer>
+		setTimeout(() => {
+			require("./ToolBar");
+			console.log("Start up took " + (performance.now() - startUp + "ms"));
+		}, 100);
+	</script>
+</body>
+
 </html>
