@@ -13,6 +13,10 @@ import {activeHover, activeHoverButton} from "../styles/activeHover";
 import {toolBarButton} from "../styles/toolBarButton";
 import {FullWidthTab, FullWidthTabs} from "../containers/fullWidthTabs";
 import {Tab} from "../components/tab";
+import { Fastq } from '../../fastq';
+import { Fasta } from '../../fasta';
+import { AlignData } from '../../alignData';
+import { InputRendererApp } from '../inputRenderer/app';
 
 
 export interface ToolBarViewState
@@ -21,6 +25,10 @@ export interface ToolBarViewState
     runningOpText? : string;
     saveText? : string;
     views? : Array<FullWidthTab>;
+
+    fastqs? : Array<Fastq>;
+    fastas? : Array<Fasta>;
+    aligns? : Array<AlignData>;
 }
 
 export class ToolBarView extends React.Component<{},ToolBarViewState>
@@ -30,7 +38,7 @@ export class ToolBarView extends React.Component<{},ToolBarViewState>
     {
         super(undefined);
         this.state = {
-
+            views : []
         } as ToolBarViewState;
 
         ipc.on(
@@ -107,7 +115,16 @@ export class ToolBarView extends React.Component<{},ToolBarViewState>
                                 <Grid item>
                                     <img 
                                         src={getReadable("img/input.png")}
-                                        className={`${activeHover} ${activeHoverButton} ${toolBarButton}`} 
+                                        className={`${activeHover} ${activeHoverButton} ${toolBarButton}`}
+                                        onClick={() => {
+                                            this.state.views.push({
+                                                label : "Input",
+                                                body : (
+                                                    <InputRendererApp />
+                                                )
+                                            })
+                                            this.setState({});
+                                        }} 
                                     />
                                 </Grid>
                                 <Grid item>

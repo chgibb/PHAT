@@ -81,7 +81,7 @@ export class InputRendererApp extends React.Component<{},InputRendererAppState>
     public render()
     {
         return (
-            <div>
+            <div style={{backgroundColor:"white"}}>
                 <FullWidthTabs 
                     tabComponent={(el : FullWidthTab) => (
                         <Tab className={el.className} label={el.label} />
