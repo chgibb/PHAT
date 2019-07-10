@@ -5,13 +5,13 @@ import * as React from "react";
 import {AtomicOperation} from "../../operations/atomicOperations";
 import {FullWidthTabs, FullWidthTab} from "../containers/fullWidthTabs";
 import {AlignData} from "../../alignData";
+import {Tab} from "../components/tab";
 
 import {Fastq} from "./../../fastq";
 import {Fasta} from "./../../fasta";
 import {FastqView} from "./fastqView";
 import {FastaView} from "./fastaView";
 import {AlignView} from "./alignView";
-import { Tab } from '../components/tab';
 
 export interface InputRendererAppState
 {
@@ -87,34 +87,34 @@ export class InputRendererApp extends React.Component<{},InputRendererAppState>
                         <Tab className={el.className} label={el.label} />
                     )}
                     tabs={[
-                    {
-                        label : "Fastqs",
-                        body : (
-                            <FastqView 
-                                fastqInputs={this.state.fastqs} 
-                            />
-                        )
-                    },
-                    {
-                        label : "References",
-                        body : (
-                            <FastaView 
-                                fastaInputs={this.state.fastas} 
-                                shouldAllowTriggeringOps={this.state.shouldAllowTriggeringOps} 
-                            />
-                        ),
-                        className : "refSeqViewButton"
-                    },
-                    {
-                        label : "Alignment Maps",
-                        body : (
-                            <AlignView 
-                                aligns={this.state.aligns}
-                                fastaInputs={this.state.fastas}
-                            />
-                        )
-                    }
-                ]}/>
+                        {
+                            label : "Fastqs",
+                            body : (
+                                <FastqView 
+                                    fastqInputs={this.state.fastqs} 
+                                />
+                            )
+                        },
+                        {
+                            label : "References",
+                            body : (
+                                <FastaView 
+                                    fastaInputs={this.state.fastas} 
+                                    shouldAllowTriggeringOps={this.state.shouldAllowTriggeringOps} 
+                                />
+                            ),
+                            className : "refSeqViewButton"
+                        },
+                        {
+                            label : "Alignment Maps",
+                            body : (
+                                <AlignView 
+                                    aligns={this.state.aligns}
+                                    fastaInputs={this.state.fastas}
+                                />
+                            )
+                        }
+                    ]}/>
             </div>
         );
     }
