@@ -20,96 +20,43 @@ import {Clear} from "../../components/icons/clear";
 
 import {ToolBarTab, ToolBarTabs} from "./containers/toolBarTabs/toolBarTabs";
 import {viewImages} from "./viewImages";
+import { PHATView } from '../../phatView';
 
 
 export interface ToolBarViewState
 {
-    operations? : Array<AtomicOperation>;
-    runningOpText? : string;
-    saveText? : string;
     views? : Array<ToolBarTab>;
+}
 
+export interface ToolBarViewProps
+{
+    operations? : Array<AtomicOperation>;
     fastqs? : Array<Fastq>;
     fastas? : Array<Fasta>;
     aligns? : Array<AlignData>;
+    runningOpText? : string;
+    saveText? : string;
 }
 
-export class ToolBarView extends React.Component<{},ToolBarViewState>
+export class ToolBarView extends React.Component<ToolBarViewProps,ToolBarViewState> implements PHATView
 {
     public state : ToolBarViewState;
-    public constructor()
+    public constructor(props : ToolBarViewProps)
     {
-        super(undefined);
+        super(props);
         this.state = {
             views : []
         } as ToolBarViewState;
-
-        ipc.on(
-            "toolBar",(event : Electron.IpcMessageEvent,arg : any) =>
-            {
-                if(arg.action == "getKey" || arg.action == "keyChange")
-                {
-                    if(arg.key == "operations")
-                    {
-                        let ops : Array<AtomicOperation> = arg.val;
-                        let runningOpNotification : HTMLElement = document.getElementById("runningOpNotification");
-                        let foundRunning = false;
-                        for(let i = 0; i != ops.length; ++i)
-                        {
-                            if(ops[i].running)
-                            {
-                                foundRunning = true;
-                                if(runningOpNotification)
-                                {
-                                    let text = "";
-                                    if(ops[i].progressMessage)
-                                    {
-                                        text += `${ops[i].progressMessage}`;
-                                    }
-
-                                    this.setState({
-                                        runningOpText : text
-                                    });
-                                }
-                            }
-
-                            if(ops[i].name == "saveProject")
-                            {
-                                let savingMessage = "";
-                                if(ops[i].extraData !== undefined)
-                                {
-                                    savingMessage += `
-                                        Saved ${formatByteString(ops[i].extraData.bytesSaved)} of ${formatByteString(ops[i].extraData.totalBytesToSave)}
-                                    `;
-                                }
-                                this.setState({
-                                    saveText : savingMessage
-                                });
-                            }
-                        }
-                        if(!foundRunning)
-                        {
-                            if(runningOpNotification)
-                            {
-                                this.setState({
-                                    runningOpText : ""
-                                });
-                            }
-                        }
-                    }
-                }
-            }
-        );
     }
 
     public render() : JSX.Element
     {
         return (
             <div style={{width:"100%",position:"absolute",left:"0px"}}>
-                {this.state.saveText ?  (
+                {this.props.saveText ?  (
                     <div>
                         <h1>Saving Project</h1>
-                        <Typography>{this.state.saveText}</Typography>
+                        <Typography>{this.props.saveText}</Typography>
                     </div> 
                 ) : (
                     <div>
