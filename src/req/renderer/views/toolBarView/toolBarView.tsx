@@ -8,19 +8,16 @@ import formatByteString from "../../formatByteString";
 import {Typography} from "../../components/typography";
 import {GridWrapper} from "../../containers/gridWrapper";
 import {Grid} from "../../components/grid";
-import {getReadable} from "../../../getAppPath";
 import {activeHover, activeHoverButton} from "../../styles/activeHover";
 import {toolBarButton} from "../../styles/toolBarButton";
-import {Tab} from "../../components/tab";
 import {Fastq} from "../../../fastq";
 import {Fasta} from "../../../fasta";
 import {AlignData} from "../../../alignData";
 import {InputRendererApp} from "../../inputRenderer/app";
-import {Clear} from "../../components/icons/clear";
+import {PHATView} from "../../phatView";
 
 import {ToolBarTab, ToolBarTabs} from "./containers/toolBarTabs/toolBarTabs";
 import {viewImages} from "./viewImages";
-import { PHATView } from '../../phatView';
 
 
 export interface ToolBarViewState

@@ -11,8 +11,8 @@ import {KeySubEvent} from "./req/ipcEvents";
 import "./req/renderer/commonBehaviour";
 import "./req/renderer/styles/defaults";
 import {ToolBarView, ToolBarViewProps} from "./req/renderer/views/toolBarView/toolBarView";
-import { AtomicOperation } from './req/operations/atomicOperations';
-import formatByteString from './req/renderer/formatByteString';
+import {AtomicOperation} from "./req/operations/atomicOperations";
+import formatByteString from "./req/renderer/formatByteString";
 
 cssRule("body",{
     backgroundColor : `${color("#1a89bd")}`
