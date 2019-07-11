@@ -3,15 +3,16 @@ import * as React from "react";
 import {SwipeableViews} from "../../../../components/swipeableViews";
 import {TabContainer} from "../../../../components/tabContainer";
 import {AppBar} from "../../../../components/appBar";
+import {GridWrapper} from "../../../../containers/gridWrapper";
+import {Grid} from "../../../../components/grid";
+import {Chip} from "../../../../components/chip";
+import {Avatar} from "../../../../components/avatar";
 
 import {wrapperBGColour} from "./styles/wrapperBGColour";
 import {outerSwipeableWrapper} from "./styles/outerSwipeableWrapper";
 import {innerSwipeableWrapper} from "./styles/innerSwipeableWrapper";
-import { GridWrapper } from '../../../../containers/gridWrapper';
-import { Grid } from '../../../../components/grid';
 import {viewImages} from "./../../viewImages";
-import { Chip } from '../../../../components/chip';
-import { Avatar } from '../../../../components/avatar';
+
 
 export interface ToolBarTab
 {
@@ -59,29 +60,31 @@ export function ToolBarTabs({tabs,tabComponent} : ToolBarTabsProps) : JSX.Elemen
                         })}
                     </Tabs>*/}
                     <GridWrapper>
-                            <Grid container spacing={1} justify="flex-start">
+                        <Grid container spacing={1} justify="flex-start">
                             {tabs.map((el,i) => 
-                        {
-                            return (
-                                <Grid item>
-                                    <Chip 
-                                        variant={value != i ? "outlined" : undefined}
-                                        size="medium" 
-                                        label={el.label}
-                                        color="primary"
-                                        onClick={()=>{
-                                            handleChangeIndex(i);
-                                        }}
-                                        onDelete={() => {
+                            {
+                                return (
+                                    <Grid item>
+                                        <Chip 
+                                            variant={value != i ? "outlined" : undefined}
+                                            size="medium" 
+                                            label={el.label}
+                                            color="primary"
+                                            onClick={()=>
+                                            {
+                                                handleChangeIndex(i);
+                                            }}
+                                            onDelete={() => 
+                                            {
 
-                                        }}
-                                        avatar={<Avatar src={viewImages[el.imgKey]()} />} 
-                                    />
-                                </Grid>
-                            )
-                        })}
+                                            }}
+                                            avatar={<Avatar src={viewImages[el.imgKey]()} />} 
+                                        />
                                     </Grid>
-                                    </GridWrapper>
+                                );
+                            })}
+                        </Grid>
+                    </GridWrapper>
                 </AppBar>
                 <div className={outerSwipeableWrapper}>
                     <div className={innerSwipeableWrapper}>

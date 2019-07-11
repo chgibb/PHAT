@@ -16,10 +16,10 @@ import {Fastq} from "../../../fastq";
 import {Fasta} from "../../../fasta";
 import {AlignData} from "../../../alignData";
 import {InputRendererApp} from "../../inputRenderer/app";
+import {Clear} from "../../components/icons/clear";
 
 import {ToolBarTab, ToolBarTabs} from "./containers/toolBarTabs/toolBarTabs";
-import { Clear } from '../../components/icons/clear';
-import { viewImages } from './viewImages';
+import {viewImages} from "./viewImages";
 
 
 export interface ToolBarViewState
@@ -160,7 +160,8 @@ export class ToolBarView extends React.Component<{},ToolBarViewState>
                         </GridWrapper>
                         
                         <ToolBarTabs
-                            tabComponent={(el : ToolBarTab) => {
+                            tabComponent={(el : ToolBarTab) => 
+                            {
                                 //<Tab className={el.className} label={el.label} icon={<Clear />}/>
                                 return (
                                     <Tab className={el.className} label={el.label} icon={<Clear />}>
