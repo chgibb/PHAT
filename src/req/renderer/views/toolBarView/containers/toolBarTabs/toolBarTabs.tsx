@@ -30,37 +30,20 @@ export interface ToolBarTabsProps
 
 export function ToolBarTabs({tabs,onTabDelete} : ToolBarTabsProps) : JSX.Element
 {
-    const [value, setValue] = React.useState(0);
-
-    const handleChange = (event : React.ChangeEvent<{}>,newValue : number) => 
-    {
-        setValue(newValue);
-    };
+    const [activeTabIndex, setActiveTabIndex] = React.useState(0);
 
     const handleChangeIndex = (index : number) => 
     {
-        setValue(index);
+        setActiveTabIndex(index);
     };
     
     if(tabs && tabs.length != 0)
     {
-        if(value > tabs.length - 1)
-            setValue(tabs.length - 1);
+        if(activeTabIndex > tabs.length - 1)
+            setActiveTabIndex(tabs.length - 1);
         return (
             <div className={wrapperBGColour}>
                 <AppBar position="static" color="default">
-                    {/*<Tabs
-                        value={value}
-                        onChange={handleChange}
-                        indicatorColor="primary"
-                        textColor="primary"
-                        variant="fullWidth"
-                    >
-                        {tabs.map((el) => 
-                        {
-                            return tabComponent(el);
-                        })}
-                    </Tabs>*/}
                     <GridWrapper>
                         <Grid container spacing={1} justify="flex-start">
                             {tabs.map((el,i) => 
@@ -68,7 +51,7 @@ export function ToolBarTabs({tabs,onTabDelete} : ToolBarTabsProps) : JSX.Element
                                 return (
                                     <Grid item>
                                         <Chip 
-                                            variant={value != i ? "outlined" : undefined}
+                                            variant={activeTabIndex != i ? "outlined" : undefined}
                                             size="medium" 
                                             label={el.label}
                                             color="primary"
@@ -92,7 +75,7 @@ export function ToolBarTabs({tabs,onTabDelete} : ToolBarTabsProps) : JSX.Element
                     <div className={innerSwipeableWrapper}>
                         <SwipeableViews
                             axis="x"
-                            index={value}
+                            index={activeTabIndex}
                             onChangeIndex={handleChangeIndex}
                         >
                             {tabs.map((el) => 
