@@ -7,7 +7,6 @@ import {color} from "csx";
 
 import {KeySubEvent} from "./req/ipcEvents";
 
-
 import "./req/renderer/commonBehaviour";
 import "./req/renderer/styles/defaults";
 import {ToolBarView, ToolBarViewProps} from "./req/renderer/views/toolBarView/toolBarView";
