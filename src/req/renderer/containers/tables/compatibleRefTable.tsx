@@ -49,7 +49,7 @@ export function CompatibleRefTable(props : CompatibleRefTableProps) : JSX.Elemen
             columns={[
                 {
                     title: "Sample Name",
-                    field: "alias",
+                    field: "",
                     render : (row : CompatibleRefTableRow) => 
                     {
                         return row.fasta.alias;
@@ -59,7 +59,7 @@ export function CompatibleRefTable(props : CompatibleRefTableProps) : JSX.Elemen
                 },
                 {
                     title: "Size",
-                    field: "sizeString",
+                    field: "",
                     render : (row : CompatibleRefTableRow) => 
                     {
                         return row.fasta.sizeString;
