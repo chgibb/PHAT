@@ -25,10 +25,10 @@ export interface ToolBarTab
 export interface ToolBarTabsProps
 {
     tabs : Array<ToolBarTab>;
-    tabComponent : (el : ToolBarTab) => JSX.Element;
+    onTabDelete : (tab : ToolBarTab,i : number) => void;
 }
 
-export function ToolBarTabs({tabs,tabComponent} : ToolBarTabsProps) : JSX.Element
+export function ToolBarTabs({tabs,onTabDelete} : ToolBarTabsProps) : JSX.Element
 {
     const [value, setValue] = React.useState(0);
 
@@ -44,6 +44,8 @@ export function ToolBarTabs({tabs,tabComponent} : ToolBarTabsProps) : JSX.Elemen
     
     if(tabs && tabs.length != 0)
     {
+        if(value > tabs.length - 1)
+            setValue(tabs.length - 1);
         return (
             <div className={wrapperBGColour}>
                 <AppBar position="static" color="default">
@@ -76,7 +78,7 @@ export function ToolBarTabs({tabs,tabComponent} : ToolBarTabsProps) : JSX.Elemen
                                             }}
                                             onDelete={() => 
                                             {
-
+                                                onTabDelete(el,i);
                                             }}
                                             avatar={<Avatar src={viewImages[el.imgKey]()} />} 
                                         />

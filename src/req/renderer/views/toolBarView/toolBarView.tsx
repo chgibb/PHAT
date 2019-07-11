@@ -160,14 +160,9 @@ export class ToolBarView extends React.Component<{},ToolBarViewState>
                         </GridWrapper>
                         
                         <ToolBarTabs
-                            tabComponent={(el : ToolBarTab) => 
-                            {
-                                //<Tab className={el.className} label={el.label} icon={<Clear />}/>
-                                return (
-                                    <Tab className={el.className} label={el.label} icon={<Clear />}>
-                                        <p>Input 2</p>
-                                    </Tab>
-                                );
+                            onTabDelete={(tab : ToolBarTab,i : number) => {
+                                this.state.views.splice(i,1); 
+                                this.setState({});
                             }}
                             tabs={this.state.views}
                         />
