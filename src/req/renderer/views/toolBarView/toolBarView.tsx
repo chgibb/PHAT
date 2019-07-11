@@ -3,21 +3,23 @@ const ipc = electron.ipcRenderer;
 import * as React from "react";
 
 
-import {AtomicOperation} from "../../operations/atomicOperations";
-import formatByteString from "../formatByteString";
-import {Typography} from "../components/typography";
-import {GridWrapper} from "../containers/gridWrapper";
-import {Grid} from "../components/grid";
-import {getReadable} from "../../getAppPath";
-import {activeHover, activeHoverButton} from "../styles/activeHover";
-import {toolBarButton} from "../styles/toolBarButton";
-import {Tab} from "../components/tab";
-import {Fastq} from "../../fastq";
-import {Fasta} from "../../fasta";
-import {AlignData} from "../../alignData";
-import {InputRendererApp} from "../inputRenderer/app";
+import {AtomicOperation} from "../../../operations/atomicOperations";
+import formatByteString from "../../formatByteString";
+import {Typography} from "../../components/typography";
+import {GridWrapper} from "../../containers/gridWrapper";
+import {Grid} from "../../components/grid";
+import {getReadable} from "../../../getAppPath";
+import {activeHover, activeHoverButton} from "../../styles/activeHover";
+import {toolBarButton} from "../../styles/toolBarButton";
+import {Tab} from "../../components/tab";
+import {Fastq} from "../../../fastq";
+import {Fasta} from "../../../fasta";
+import {AlignData} from "../../../alignData";
+import {InputRendererApp} from "../../inputRenderer/app";
 
 import {ToolBarTab, ToolBarTabs} from "./containers/toolBarTabs/toolBarTabs";
+import { Clear } from '../../components/icons/clear';
+import { viewImages } from './viewImages';
 
 
 export interface ToolBarViewState
@@ -115,12 +117,13 @@ export class ToolBarView extends React.Component<{},ToolBarViewState>
                             <Grid container spacing={1} justify="flex-start">
                                 <Grid item>
                                     <img 
-                                        src={getReadable("img/input.png")}
+                                        src={viewImages["Input"]()}
                                         className={`${activeHover} ${activeHoverButton} ${toolBarButton}`}
                                         onClick={() => 
                                         {
                                             this.state.views.push({
                                                 label : "Input",
+                                                imgKey : "Input",
                                                 body : (
                                                     <InputRendererApp />
                                                 )
@@ -131,25 +134,25 @@ export class ToolBarView extends React.Component<{},ToolBarViewState>
                                 </Grid>
                                 <Grid item>
                                     <img 
-                                        src={getReadable("img/qc.png")}
+                                        src={viewImages["QC"]()}
                                         className={`${activeHover} ${activeHoverButton} ${toolBarButton}`} 
                                     />
                                 </Grid>
                                 <Grid item>
                                     <img 
-                                        src={getReadable("img/align.png")}
+                                        src={viewImages["Align"]()}
                                         className={`${activeHover} ${activeHoverButton} ${toolBarButton}`} 
                                     />
                                 </Grid>
                                 <Grid item>
                                     <img 
-                                        src={getReadable("img/output.png")}
+                                        src={viewImages["Output"]()}
                                         className={`${activeHover} ${activeHoverButton} ${toolBarButton}`} 
                                     />
                                 </Grid>
                                 <Grid item>
                                     <img 
-                                        src={getReadable("img/genomeBuilder.png")}
+                                        src={viewImages["Genome Builder"]()}
                                         className={`${activeHover} ${activeHoverButton} ${toolBarButton}`} 
                                     />
                                 </Grid>
@@ -157,13 +160,19 @@ export class ToolBarView extends React.Component<{},ToolBarViewState>
                         </GridWrapper>
                         
                         <ToolBarTabs
-                            tabComponent={(el : ToolBarTab) => (
-                                <Tab className={el.className} label={el.label} />
-                            )}
+                            tabComponent={(el : ToolBarTab) => {
+                                //<Tab className={el.className} label={el.label} icon={<Clear />}/>
+                                return (
+                                    <Tab className={el.className} label={el.label} icon={<Clear />}>
+                                        <p>Input 2</p>
+                                    </Tab>
+                                );
+                            }}
                             tabs={this.state.views}
                         />
                     </div>
                 )}
+
             </div>
         );
     }

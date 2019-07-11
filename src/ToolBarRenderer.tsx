@@ -10,7 +10,7 @@ import {KeySubEvent} from "./req/ipcEvents";
 
 import "./req/renderer/commonBehaviour";
 import "./req/renderer/styles/defaults";
-import {ToolBarView} from "./req/renderer/views/toolBarView";
+import {ToolBarView} from "./req/renderer/views/toolBarView/toolBarView";
 
 cssRule("body",{
     backgroundColor : `${color("#1a89bd")}`

@@ -1,17 +1,22 @@
 import * as React from "react";
 
-import {SwipeableViews} from "../../../components/swipeableViews";
-import {TabContainer} from "../../../components/tabContainer";
-import {AppBar} from "../../../components/appBar";
-import {Tabs} from "../../../components/tabs";
+import {SwipeableViews} from "../../../../components/swipeableViews";
+import {TabContainer} from "../../../../components/tabContainer";
+import {AppBar} from "../../../../components/appBar";
 
 import {wrapperBGColour} from "./styles/wrapperBGColour";
 import {outerSwipeableWrapper} from "./styles/outerSwipeableWrapper";
 import {innerSwipeableWrapper} from "./styles/innerSwipeableWrapper";
+import { GridWrapper } from '../../../../containers/gridWrapper';
+import { Grid } from '../../../../components/grid';
+import {viewImages} from "./../../viewImages";
+import { Chip } from '../../../../components/chip';
+import { Avatar } from '../../../../components/avatar';
 
 export interface ToolBarTab
 {
     label : string;
+    imgKey : keyof typeof viewImages;
     body : JSX.Element
     className? : string;
 }
@@ -41,7 +46,7 @@ export function ToolBarTabs({tabs,tabComponent} : ToolBarTabsProps) : JSX.Elemen
         return (
             <div className={wrapperBGColour}>
                 <AppBar position="static" color="default">
-                    <Tabs
+                    {/*<Tabs
                         value={value}
                         onChange={handleChange}
                         indicatorColor="primary"
@@ -52,7 +57,31 @@ export function ToolBarTabs({tabs,tabComponent} : ToolBarTabsProps) : JSX.Elemen
                         {
                             return tabComponent(el);
                         })}
-                    </Tabs>
+                    </Tabs>*/}
+                    <GridWrapper>
+                            <Grid container spacing={1} justify="flex-start">
+                            {tabs.map((el,i) => 
+                        {
+                            return (
+                                <Grid item>
+                                    <Chip 
+                                        variant={value != i ? "outlined" : undefined}
+                                        size="medium" 
+                                        label={el.label}
+                                        color="primary"
+                                        onClick={()=>{
+                                            handleChangeIndex(i);
+                                        }}
+                                        onDelete={() => {
+
+                                        }}
+                                        avatar={<Avatar src={viewImages[el.imgKey]()} />} 
+                                    />
+                                </Grid>
+                            )
+                        })}
+                                    </Grid>
+                                    </GridWrapper>
                 </AppBar>
                 <div className={outerSwipeableWrapper}>
                     <div className={innerSwipeableWrapper}>
