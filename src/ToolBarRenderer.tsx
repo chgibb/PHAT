@@ -4,6 +4,7 @@ import * as React from "react";
 import {render} from "react-dom";
 import {cssRule} from "typestyle";
 import {color} from "csx";
+
 import {KeySubEvent} from "./req/ipcEvents";
 import "./req/renderer/commonBehaviour";
 import "./req/renderer/styles/defaults";
