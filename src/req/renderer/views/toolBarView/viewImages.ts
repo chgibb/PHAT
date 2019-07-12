@@ -1,6 +1,8 @@
 import { getReadable } from '../../../getAppPath';
 
-export const viewImages = {
+export const viewImages : {
+    [index : string] : () => string;
+} = {
     "Input": () => getReadable("img/input.png"),
     "QC": () => getReadable("img/qc.png"),
     "Align": () => getReadable("img/align.png"),
