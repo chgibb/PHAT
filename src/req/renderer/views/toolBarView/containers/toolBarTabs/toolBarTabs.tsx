@@ -62,6 +62,10 @@ export function ToolBarTabs({tabs,onTabDelete} : ToolBarTabsProps) : JSX.Element
                                             onDelete={() => 
                                             {
                                                 onTabDelete(el,i);
+
+                                                setTimeout(() => {
+                                                (global as any).gc();
+                                                },100);
                                             }}
                                             avatar={<Avatar src={viewImages[el.imgKey]()} />} 
                                         />
