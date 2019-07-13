@@ -14,21 +14,22 @@ import {innerSwipeableWrapper} from "./styles/innerSwipeableWrapper";
 import {viewImages} from "./../../viewImages";
 
 
-export interface ToolBarTab
+export interface ToolBarTab<T>
 {
     label : string;
     imgKey : keyof typeof viewImages;
-    body : JSX.Element
+    body : (props : T) => JSX.Element
     className? : string;
 }
 
-export interface ToolBarTabsProps
+export interface ToolBarTabsProps<T>
 {
-    tabs : Array<ToolBarTab>;
-    onTabDelete : (tab : ToolBarTab,i : number) => void;
+    tabs : Array<ToolBarTab<T>>;
+    onTabDelete : (tab : ToolBarTab<T>,i : number) => void;
+    propPack : T;
 }
 
-export function ToolBarTabs({tabs,onTabDelete} : ToolBarTabsProps) : JSX.Element
+export function ToolBarTabs<T>(props : ToolBarTabsProps<T>) : JSX.Element
 {
     const [activeTabIndex, setActiveTabIndex] = React.useState(0);
 
@@ -37,16 +38,16 @@ export function ToolBarTabs({tabs,onTabDelete} : ToolBarTabsProps) : JSX.Element
         setActiveTabIndex(index);
     };
     
-    if(tabs && tabs.length != 0)
+    if(props.tabs && props.tabs.length != 0)
     {
-        if(activeTabIndex > tabs.length - 1)
-            setActiveTabIndex(tabs.length - 1);
+        if(activeTabIndex > props.tabs.length - 1)
+            setActiveTabIndex(props.tabs.length - 1);
         return (
             <div className={wrapperBGColour}>
                 <AppBar position="static" color="default">
                     <GridWrapper>
                         <Grid container spacing={1} justify="flex-start">
-                            {tabs.map((el,i) => 
+                            {props.tabs.map((el,i) => 
                             {
                                 return (
                                     <Grid item>
@@ -61,7 +62,7 @@ export function ToolBarTabs({tabs,onTabDelete} : ToolBarTabsProps) : JSX.Element
                                             }}
                                             onDelete={() => 
                                             {
-                                                onTabDelete(el,i);
+                                                props.onTabDelete(el,i);
 
                                                 setTimeout(() => 
                                                 {
@@ -83,10 +84,10 @@ export function ToolBarTabs({tabs,onTabDelete} : ToolBarTabsProps) : JSX.Element
                             index={activeTabIndex}
                             onChangeIndex={handleChangeIndex}
                         >
-                            {tabs.map((el) => 
+                            {props.tabs.map((el) => 
                             {
                                 return (
-                                    <TabContainer dir="rtl">{el.body}</TabContainer>
+                                    <TabContainer dir="rtl">{el.body(props.propPack)}</TabContainer>
                                 );
                             })}
                         </SwipeableViews>

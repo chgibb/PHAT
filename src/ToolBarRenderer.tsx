@@ -5,7 +5,7 @@ import {render} from "react-dom";
 import {cssRule} from "typestyle";
 import {color} from "csx";
 
-import {KeySubEvent} from "./req/ipcEvents";
+import {KeySubEvent, GetKeyEvent} from "./req/ipcEvents";
 import "./req/renderer/commonBehaviour";
 import "./req/renderer/styles/defaults";
 import {ToolBarView, ToolBarViewProps} from "./req/renderer/views/toolBarView/toolBarView";
@@ -28,6 +28,23 @@ class ToolBarApp extends React.Component<{},ToolBarViewProps>
             {
                 if(arg.action == "getKey" || arg.action == "keyChange")
                 {
+                    if(arg.key == "fastqInputs")
+                {
+                    this.setState({fastqs : arg.val});
+                    return;
+                }
+
+                if(arg.key == "fastaInputs")
+                {
+                    this.setState({fastas : arg.val});
+                    return;
+                }
+
+                if(arg.key == "aligns")
+                {
+                    this.setState({aligns : arg.val});
+                }
+                
                     if(arg.key == "operations")
                     {
                         let ops : Array<AtomicOperation> = arg.val;
@@ -92,6 +109,71 @@ class ToolBarApp extends React.Component<{},ToolBarViewProps>
 render(
     <ToolBarApp />,
     document.getElementById("app")
+);
+
+ipc.send(
+    "getKey",
+    {
+        channel: "input",
+        key: "fastqInputs",
+        replyChannel: "toolBar",
+        action: "getKey"
+    } as GetKeyEvent
+);
+ipc.send(
+    "getKey",
+    {
+        channel: "input",
+        key: "fastaInputs",
+        replyChannel: "toolBar",
+        action: "getKey"
+    } as GetKeyEvent
+);
+ipc.send(
+    "getKey",
+    {
+        channel: "align",
+        key: "aligns",
+        replyChannel: "toolBar",
+        action: "getKey"
+    } as GetKeyEvent
+);
+ipc.send(
+    "getKey",
+    {
+        action: "getKey",
+        channel: "application",
+        key: "operations",
+        replyChannel: "toolBar"
+    } as GetKeyEvent
+);
+
+ipc.send(
+    "keySub",
+    {
+        action: "keySub",
+        channel: "input",
+        key: "fastqInputs",
+        replyChannel: "toolBar"
+    } as KeySubEvent
+);
+ipc.send(
+    "keySub",
+    {
+        action: "keySub",
+        channel: "input",
+        key: "fastaInputs",
+        replyChannel: "toolBar"
+    } as KeySubEvent
+);
+ipc.send(
+    "keySub",
+    {
+        channel: "align",
+        key: "aligns",
+        replyChannel: "toolBar",
+        action: "keySub"
+    } as KeySubEvent
 );
 
 ipc.send(

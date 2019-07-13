@@ -7,75 +7,63 @@ import {FullWidthTabs, FullWidthTab} from "../containers/fullWidthTabs";
 import {AlignData} from "../../alignData";
 import {Tab} from "../components/tab";
 
-import {Fastq} from "./../../fastq";
-import {Fasta} from "./../../fasta";
+import {Fastq} from "../../fastq";
+import {Fasta} from "../../fasta";
 import {FastqView} from "./fastqView";
 import {FastaView} from "./fastaView";
 import {AlignView} from "./alignView";
+import { PHATView } from '../phatView';
 
-export interface InputRendererAppState
+export interface InputViewState
+{
+    shouldAllowTriggeringOps : boolean;
+}
+
+
+export interface InputViewProps
 {
     fastqs? : Array<Fastq>;
     fastas? : Array<Fasta>;
     aligns? : Array<AlignData>;
-    shouldAllowTriggeringOps : boolean;
+    operations? : Array<AtomicOperation>;
+    
 }
 
-export class InputRendererApp extends React.Component<{},InputRendererAppState>
+export class InputView extends React.Component<InputViewProps,{}> implements PHATView
 {
-    public state : InputRendererAppState;
-    public constructor()
+    public state : InputViewState;
+    public constructor(props : InputViewProps)
     {
-        super(undefined);
+        super(props);
         this.state = {
             shouldAllowTriggeringOps : true
         };
+    }
 
-        ipc.on("input",(event : Electron.IpcMessageEvent,arg : any) => 
-        {
-            if(arg.action == "getKey" || arg.action == "keyChange")
-            {
-                if(arg.key == "fastqInputs")
-                {
-                    this.setState({fastqs : arg.val});
-                    return;
-                }
+    public componentWillReceiveProps()
+    {
+        console.log("inputview componentWillReceiveProps");
+    }
 
-                if(arg.key == "fastaInputs")
-                {
-                    this.setState({fastas : arg.val});
-                    return;
-                }
-
-                if(arg.key == "aligns")
-                {
-                    this.setState({aligns : arg.val});
-                }
-
-                let found = false;
-                if(arg.key == "operations")
-                {
-                    if(arg.val !== undefined)
-                    {
-                        let ops : Array<AtomicOperation> = arg.val;
-                        for(let i = 0; i != ops.length; ++i)
+    public componentDidUpdate() : void
+    {
+        console.log("inputview componentDidUpdate");
+        if(!this.props.operations)
+            return;
+        let found = false;
+        for(let i = 0; i != this.props.operations.length; ++i)
                         {
-                            if(ops[i].name == "inputBamFile" || ops[i].name == "linkRefSeqToAlignment" ||
-                            ops[i].name == "indexFastaForVisualization" || ops[i].name == "indexFastaForBowtie2Alignment" ||
-                            ops[i].name == "linkRefSeqToAlignment" || ops[i].name == "importFileIntoProject")
+                            if(this.props.operations[i].name == "inputBamFile" || this.props.operations[i].name == "linkRefSeqToAlignment" ||
+                            this.props.operations[i].name == "indexFastaForVisualization" || this.props.operations[i].name == "indexFastaForBowtie2Alignment" ||
+                            this.props.operations[i].name == "linkRefSeqToAlignment" || this.props.operations[i].name == "importFileIntoProject")
                             {
                                 found = true;
                                 break;
                             }
                         }
-                    }
-                }
-                
-                this.setState({
-                    shouldAllowTriggeringOps : !found
-                });
-            }
-        });
+                        this.setState({
+                            shouldAllowTriggeringOps : !found
+                        });
     }
 
     public render()
@@ -91,7 +79,7 @@ export class InputRendererApp extends React.Component<{},InputRendererAppState>
                             label : "Fastqs",
                             body : (
                                 <FastqView 
-                                    fastqInputs={this.state.fastqs} 
+                                    fastqInputs={this.props.fastqs} 
                                 />
                             )
                         },
@@ -99,7 +87,7 @@ export class InputRendererApp extends React.Component<{},InputRendererAppState>
                             label : "References",
                             body : (
                                 <FastaView 
-                                    fastaInputs={this.state.fastas} 
+                                    fastaInputs={this.props.fastas} 
                                     shouldAllowTriggeringOps={this.state.shouldAllowTriggeringOps} 
                                 />
                             ),
@@ -109,8 +97,8 @@ export class InputRendererApp extends React.Component<{},InputRendererAppState>
                             label : "Alignment Maps",
                             body : (
                                 <AlignView 
-                                    aligns={this.state.aligns}
-                                    fastaInputs={this.state.fastas}
+                                    aligns={this.props.aligns}
+                                    fastaInputs={this.props.fastas}
                                 />
                             )
                         }

@@ -13,7 +13,7 @@ import {toolBarButton} from "../../styles/toolBarButton";
 import {Fastq} from "../../../fastq";
 import {Fasta} from "../../../fasta";
 import {AlignData} from "../../../alignData";
-import {InputRendererApp} from "../../inputRenderer/app";
+import {InputView} from "../../inputRenderer/inputView";
 import {PHATView} from "../../phatView";
 
 import {ToolBarTab, ToolBarTabs} from "./containers/toolBarTabs/toolBarTabs";
@@ -22,7 +22,7 @@ import {viewImages} from "./viewImages";
 
 export interface ToolBarViewState
 {
-    views? : Array<ToolBarTab>;
+    views? : Array<ToolBarTab<ToolBarViewProps>>;
 }
 
 export interface ToolBarViewProps
@@ -65,14 +65,22 @@ export class ToolBarView extends React.Component<ToolBarViewProps,ToolBarViewSta
                                         className={`${activeHover} ${activeHoverButton} ${toolBarButton}`}
                                         onClick={() => 
                                         {
-                                            this.state.views.push({
+                                            this.setState({
+                                                views : this.state.views.concat([
+                                                    {
                                                 label : "Input",
                                                 imgKey : "Input",
-                                                body : (
-                                                    <InputRendererApp />
+                                                body : (props : ToolBarViewProps) => (
+                                                    <InputView 
+                                                        fastqs={props.fastqs}
+                                                        fastas={props.fastas}
+                                                        aligns={props.aligns}
+                                                        operations={props.operations}
+                                                    />
                                                 )
+                                            }
+                                                ])
                                             });
-                                            this.setState({});
                                         }} 
                                     />
                                 </Grid>
@@ -104,12 +112,13 @@ export class ToolBarView extends React.Component<ToolBarViewProps,ToolBarViewSta
                         </GridWrapper>
                         
                         <ToolBarTabs
-                            onTabDelete={(tab : ToolBarTab,i : number) => 
+                            onTabDelete={(tab : ToolBarTab<ToolBarViewProps>,i : number) => 
                             {
                                 this.state.views.splice(i,1); 
                                 this.setState({});
                             }}
                             tabs={this.state.views}
+                            propPack={this.props}
                         />
                     </div>
                 )}
