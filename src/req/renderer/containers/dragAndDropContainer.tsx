@@ -9,24 +9,26 @@ import {
     DroppableProvided,
     DroppableStateSnapshot,
     DraggableProvided, 
-    DraggableStateSnapshot 
+    DraggableStateSnapshot, 
+    DroppableProps
 } from "react-beautiful-dnd";
 
 export type DropResult = DropResult;
 export type ResponderProvided = ResponderProvided;
 
-export interface VerticalDnDProps<T>
+export interface DragAndDropContainerProps<T>
 {
     onDragEnd : (result : DropResult,provided : ResponderProvided) => void;
     droppableID : string;
     draggableKey : (el : T) => string;
     draggableId : (el : T) => string;
     draggableContent : (el : T) => JSX.Element;
+    direction :  DroppableProps["direction"];
     portal : HTMLElement;
     data : Array<T>;
 }
 
-export function VerticalDnD<T>(props : VerticalDnDProps<T>) : JSX.Element
+export function DragAndDropContainer<T>(props : DragAndDropContainerProps<T>) : JSX.Element
 {
     return (
         <DragDropContext onDragEnd={props.onDragEnd}>
