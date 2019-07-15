@@ -44,7 +44,7 @@ export class ToolBarTabs<T> extends React.Component<ToolBarTabsProps<T>,ToolBarT
         this.state = {
             activeTabIndex : 0
         } as ToolBarTabsState;
-
+        
     }
 
     public setActiveTabIndex(index : number) : void
