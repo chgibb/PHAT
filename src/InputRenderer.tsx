@@ -9,7 +9,7 @@ import {makeWindowDockable} from "./req/renderer/dock";
 
 import "./req/renderer/commonBehaviour";
 import "./req/renderer/styles/defaults";
-import { AtomicOperation } from './req/operations/atomicOperations';
+import {AtomicOperation} from "./req/operations/atomicOperations";
 
 class InputApp extends React.Component<{},InputViewProps>
 {
@@ -43,7 +43,7 @@ class InputApp extends React.Component<{},InputViewProps>
                 {
                     if(arg.val !== undefined)
                     {
-                       this.setState({operations : arg.val});
+                        this.setState({operations : arg.val});
                         
                     }
                 }

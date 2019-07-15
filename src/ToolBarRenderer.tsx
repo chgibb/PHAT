@@ -29,21 +29,21 @@ class ToolBarApp extends React.Component<{},ToolBarViewProps>
                 if(arg.action == "getKey" || arg.action == "keyChange")
                 {
                     if(arg.key == "fastqInputs")
-                {
-                    this.setState({fastqs : arg.val});
-                    return;
-                }
+                    {
+                        this.setState({fastqs : arg.val});
+                        return;
+                    }
 
-                if(arg.key == "fastaInputs")
-                {
-                    this.setState({fastas : arg.val});
-                    return;
-                }
+                    if(arg.key == "fastaInputs")
+                    {
+                        this.setState({fastas : arg.val});
+                        return;
+                    }
 
-                if(arg.key == "aligns")
-                {
-                    this.setState({aligns : arg.val});
-                }
+                    if(arg.key == "aligns")
+                    {
+                        this.setState({aligns : arg.val});
+                    }
                 
                     if(arg.key == "operations")
                     {

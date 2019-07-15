@@ -68,17 +68,17 @@ export class ToolBarView extends React.Component<ToolBarViewProps,ToolBarViewSta
                                             this.setState({
                                                 views : this.state.views.concat([
                                                     {
-                                                label : "Input",
-                                                imgKey : "Input",
-                                                body : (props : ToolBarViewProps) => (
-                                                    <InputView 
-                                                        fastqs={props.fastqs}
-                                                        fastas={props.fastas}
-                                                        aligns={props.aligns}
-                                                        operations={props.operations}
-                                                    />
-                                                )
-                                            }
+                                                        label : "Input",
+                                                        imgKey : "Input",
+                                                        body : (props : ToolBarViewProps) => (
+                                                            <InputView 
+                                                                fastqs={props.fastqs}
+                                                                fastas={props.fastas}
+                                                                aligns={props.aligns}
+                                                                operations={props.operations}
+                                                            />
+                                                        )
+                                                    }
                                                 ])
                                             });
                                         }} 

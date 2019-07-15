@@ -55,43 +55,43 @@ export class Table<T> extends React.Component<TableProps<T>,{}>
 
     public render() : JSX.Element
     {
-    let defaultPageSize = this.props.data ? this.props.data.length < 100 ? this.props.data.length : 100 : 5;
-    let defaultPageSizeOptions  = [defaultPageSize,500,1000];
+        let defaultPageSize = this.props.data ? this.props.data.length < 100 ? this.props.data.length : 100 : 5;
+        let defaultPageSizeOptions  = [defaultPageSize,500,1000];
 
-    this.renderKey += 1;
+        this.renderKey += 1;
 
-    return (
-        <MuiTable
-            key={this.renderKey}
-            title={this.props.title}
-            options={{
-                toolbar : true,
-                actionsColumnIndex : this.props.actionsColumnIndex ? this.props.actionsColumnIndex : 0,
-                headerStyle: tableCell as any,
-                rowStyle : tableCell as any,
-                selection : this.props.selection,
-                pageSize : this.props.pageSize ? this.props.pageSize : defaultPageSize,
-                pageSizeOptions : this.props.pageSizeOptions ? this.props.pageSizeOptions : defaultPageSizeOptions,
-                searchFieldAlignment : "left",
-                columnsButton : true,
-                toolbarButtonAlignment : "left",
-                detailPanelColumnAlignment : "left"
-            }}
-            components={this.props.subTableProps && this.props.subTableProps.isSubTable ? {
-                Container : (subProps) => 
-                {
-                    return SubTableContainer(subProps,this.props.subTableProps);
-                }
-            } : undefined}
-            actions={this.props.actions}
-            onSelectionChange={this.props.onSelectionChange}
-            icons={tableIcons}
-            columns={this.props.columns}
-            data={this.props.data}
-            onRowClick={this.props.onRowClick}
-            detailPanel={this.props.detailPanel} 
-        />
-    );
-        }
+        return (
+            <MuiTable
+                key={this.renderKey}
+                title={this.props.title}
+                options={{
+                    toolbar : true,
+                    actionsColumnIndex : this.props.actionsColumnIndex ? this.props.actionsColumnIndex : 0,
+                    headerStyle: tableCell as any,
+                    rowStyle : tableCell as any,
+                    selection : this.props.selection,
+                    pageSize : this.props.pageSize ? this.props.pageSize : defaultPageSize,
+                    pageSizeOptions : this.props.pageSizeOptions ? this.props.pageSizeOptions : defaultPageSizeOptions,
+                    searchFieldAlignment : "left",
+                    columnsButton : true,
+                    toolbarButtonAlignment : "left",
+                    detailPanelColumnAlignment : "left"
+                }}
+                components={this.props.subTableProps && this.props.subTableProps.isSubTable ? {
+                    Container : (subProps) => 
+                    {
+                        return SubTableContainer(subProps,this.props.subTableProps);
+                    }
+                } : undefined}
+                actions={this.props.actions}
+                onSelectionChange={this.props.onSelectionChange}
+                icons={tableIcons}
+                columns={this.props.columns}
+                data={this.props.data}
+                onRowClick={this.props.onRowClick}
+                detailPanel={this.props.detailPanel} 
+            />
+        );
+    }
 }
 

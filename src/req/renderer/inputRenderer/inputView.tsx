@@ -6,13 +6,13 @@ import {AtomicOperation} from "../../operations/atomicOperations";
 import {FullWidthTabs, FullWidthTab} from "../containers/fullWidthTabs";
 import {AlignData} from "../../alignData";
 import {Tab} from "../components/tab";
-
 import {Fastq} from "../../fastq";
 import {Fasta} from "../../fasta";
+import {PHATView} from "../phatView";
+
 import {FastqView} from "./fastqView";
 import {FastaView} from "./fastaView";
 import {AlignView} from "./alignView";
-import { PHATView } from '../phatView';
 
 export interface InputViewState
 {
@@ -46,18 +46,18 @@ export class InputView extends React.Component<InputViewProps,{}> implements PHA
             return;
         let found = false;
         for(let i = 0; i != this.props.operations.length; ++i)
-                        {
-                            if(this.props.operations[i].name == "inputBamFile" || this.props.operations[i].name == "linkRefSeqToAlignment" ||
+        {
+            if(this.props.operations[i].name == "inputBamFile" || this.props.operations[i].name == "linkRefSeqToAlignment" ||
                             this.props.operations[i].name == "indexFastaForVisualization" || this.props.operations[i].name == "indexFastaForBowtie2Alignment" ||
                             this.props.operations[i].name == "linkRefSeqToAlignment" || this.props.operations[i].name == "importFileIntoProject")
-                            {
-                                found = true;
-                                break;
-                            }
-                        }
-                        this.setState({
-                            shouldAllowTriggeringOps : !found
-                        });
+            {
+                found = true;
+                break;
+            }
+        }
+        this.setState({
+            shouldAllowTriggeringOps : !found
+        });
     }
 
     public render()
