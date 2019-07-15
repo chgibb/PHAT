@@ -45,41 +45,53 @@ export interface TableProps<T>
             toggleDetailPanel : (i : number) => void) => void;
 }
 
-export function Table<T>(props : TableProps<T>) : JSX.Element
+export class Table<T> extends React.Component<TableProps<T>,{}>
 {
-    let defaultPageSize : typeof props.pageSize = props.data ? props.data.length < 100 ? props.data.length : 100 : 5;
-    let defaultPageSizeOptions : typeof props.pageSizeOptions = [defaultPageSize,500,1000];
+    private renderKey = 0;
+    public constructor(props : TableProps<T>)
+    {
+        super(props);
+    }
+
+    public render() : JSX.Element
+    {
+    let defaultPageSize = this.props.data ? this.props.data.length < 100 ? this.props.data.length : 100 : 5;
+    let defaultPageSizeOptions  = [defaultPageSize,500,1000];
+
+    this.renderKey += 1;
 
     return (
         <MuiTable
-            title={props.title}
+            key={this.renderKey}
+            title={this.props.title}
             options={{
                 toolbar : true,
-                actionsColumnIndex : props.actionsColumnIndex ? props.actionsColumnIndex : 0,
+                actionsColumnIndex : this.props.actionsColumnIndex ? this.props.actionsColumnIndex : 0,
                 headerStyle: tableCell as any,
                 rowStyle : tableCell as any,
-                selection : props.selection,
-                pageSize : props.pageSize ? props.pageSize : defaultPageSize,
-                pageSizeOptions : props.pageSizeOptions ? props.pageSizeOptions : defaultPageSizeOptions,
+                selection : this.props.selection,
+                pageSize : this.props.pageSize ? this.props.pageSize : defaultPageSize,
+                pageSizeOptions : this.props.pageSizeOptions ? this.props.pageSizeOptions : defaultPageSizeOptions,
                 searchFieldAlignment : "left",
                 columnsButton : true,
                 toolbarButtonAlignment : "left",
                 detailPanelColumnAlignment : "left"
             }}
-            components={props.subTableProps && props.subTableProps.isSubTable ? {
+            components={this.props.subTableProps && this.props.subTableProps.isSubTable ? {
                 Container : (subProps) => 
                 {
-                    return SubTableContainer(subProps,props.subTableProps);
+                    return SubTableContainer(subProps,this.props.subTableProps);
                 }
             } : undefined}
-            actions={props.actions}
-            onSelectionChange={props.onSelectionChange}
+            actions={this.props.actions}
+            onSelectionChange={this.props.onSelectionChange}
             icons={tableIcons}
-            columns={props.columns}
-            data={props.data}
-            onRowClick={props.onRowClick}
-            detailPanel={props.detailPanel} 
+            columns={this.props.columns}
+            data={this.props.data}
+            onRowClick={this.props.onRowClick}
+            detailPanel={this.props.detailPanel} 
         />
     );
+        }
 }
 
