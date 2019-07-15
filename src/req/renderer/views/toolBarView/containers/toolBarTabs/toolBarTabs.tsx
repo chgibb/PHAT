@@ -56,64 +56,64 @@ export class ToolBarTabs<T> extends React.Component<ToolBarTabsProps<T>,ToolBarT
     
     public render() : JSX.Element
     {
-    if(this.props.tabs && this.props.tabs.length != 0)
-    {
-        if(this.state.activeTabIndex > this.props.tabs.length - 1)
-            this.setActiveTabIndex(this.props.tabs.length - 1);
-        return (
-            <div className={wrapperBGColour}>
-                <AppBar position="static" color="default">
-                    <GridWrapper>
-                        <Grid container spacing={1} justify="flex-start">
-                            {this.props.tabs.map((el,i) => 
-                            {
-                                return (
-                                    <Grid item>
-                                        <Chip 
-                                            variant={this.state.activeTabIndex != i ? "outlined" : undefined}
-                                            size="medium" 
-                                            label={el.label}
-                                            color="primary"
-                                            onClick={()=>
-                                            {
-                                                this.setActiveTabIndex(i);
-                                            }}
-                                            onDelete={() => 
-                                            {
-                                                this.props.onTabDelete(el,i);
-
-                                                setTimeout(() => 
+        if(this.props.tabs && this.props.tabs.length != 0)
+        {
+            if(this.state.activeTabIndex > this.props.tabs.length - 1)
+                this.setActiveTabIndex(this.props.tabs.length - 1);
+            return (
+                <div className={wrapperBGColour}>
+                    <AppBar position="static" color="default">
+                        <GridWrapper>
+                            <Grid container spacing={1} justify="flex-start">
+                                {this.props.tabs.map((el,i) => 
+                                {
+                                    return (
+                                        <Grid item>
+                                            <Chip 
+                                                variant={this.state.activeTabIndex != i ? "outlined" : undefined}
+                                                size="medium" 
+                                                label={el.label}
+                                                color="primary"
+                                                onClick={()=>
                                                 {
-                                                    (global as any).gc();
-                                                },100);
-                                            }}
-                                            avatar={<Avatar src={viewImages[el.imgKey]()} />} 
-                                        />
-                                    </Grid>
-                                );
-                            })}
-                        </Grid>
+                                                    this.setActiveTabIndex(i);
+                                                }}
+                                                onDelete={() => 
+                                                {
+                                                    this.props.onTabDelete(el,i);
+
+                                                    setTimeout(() => 
+                                                    {
+                                                        (global as any).gc();
+                                                    },100);
+                                                }}
+                                                avatar={<Avatar src={viewImages[el.imgKey]()} />} 
+                                            />
+                                        </Grid>
+                                    );
+                                })}
+                            </Grid>
                         </GridWrapper>
-                </AppBar>
-                <div className={outerSwipeableWrapper}>
-                    <div className={innerSwipeableWrapper}>
-                        <SwipeableViews
-                            axis="x"
-                            index={this.state.activeTabIndex}
-                            onChangeIndex={this.setActiveTabIndex}
-                        >
-                            {this.props.tabs.map((el) => 
-                            {
-                                return (
-                                    <TabContainer dir="rtl">{el.body(this.props.propPack)}</TabContainer>
-                                );
-                            })}
-                        </SwipeableViews>
+                    </AppBar>
+                    <div className={outerSwipeableWrapper}>
+                        <div className={innerSwipeableWrapper}>
+                            <SwipeableViews
+                                axis="x"
+                                index={this.state.activeTabIndex}
+                                onChangeIndex={this.setActiveTabIndex}
+                            >
+                                {this.props.tabs.map((el) => 
+                                {
+                                    return (
+                                        <TabContainer dir="rtl">{el.body(this.props.propPack)}</TabContainer>
+                                    );
+                                })}
+                            </SwipeableViews>
+                        </div>
                     </div>
                 </div>
-            </div>
-        );
+            );
+        }
+        return null;
     }
-    return null;
-}
 }
