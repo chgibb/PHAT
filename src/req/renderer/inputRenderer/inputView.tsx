@@ -40,14 +40,8 @@ export class InputView extends React.Component<InputViewProps,{}> implements PHA
         };
     }
 
-    public componentWillReceiveProps()
-    {
-        console.log("inputview componentWillReceiveProps");
-    }
-
     public componentDidUpdate() : void
     {
-        console.log("inputview componentDidUpdate");
         if(!this.props.operations)
             return;
         let found = false;
