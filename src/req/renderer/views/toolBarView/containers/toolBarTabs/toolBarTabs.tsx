@@ -29,40 +29,58 @@ export interface ToolBarTabsProps<T>
     propPack : T;
 }
 
-export function ToolBarTabs<T>(props : ToolBarTabsProps<T>) : JSX.Element
+export interface ToolBarTabsState
 {
-    const [activeTabIndex, setActiveTabIndex] = React.useState(0);
+    activeTabIndex : number;
+}
 
-    const handleChangeIndex = (index : number) => 
+export class ToolBarTabs<T> extends React.Component<ToolBarTabsProps<T>,ToolBarTabsState>
+{
+    public state : ToolBarTabsState;
+    public constructor(props : ToolBarTabsProps<T>)
     {
-        setActiveTabIndex(index);
-    };
+        super(props);
+
+        this.state = {
+            activeTabIndex : 0
+        } as ToolBarTabsState;
+
+    }
+
+    public setActiveTabIndex(index : number) : void
+    {
+        this.setState({
+            activeTabIndex : index
+        });
+    }
     
-    if(props.tabs && props.tabs.length != 0)
+    public render() : JSX.Element
     {
-        if(activeTabIndex > props.tabs.length - 1)
-            setActiveTabIndex(props.tabs.length - 1);
+    if(this.props.tabs && this.props.tabs.length != 0)
+    {
+        if(this.state.activeTabIndex > this.props.tabs.length - 1)
+            this.setActiveTabIndex(this.props.tabs.length - 1);
         return (
             <div className={wrapperBGColour}>
                 <AppBar position="static" color="default">
                     <GridWrapper>
                         <Grid container spacing={1} justify="flex-start">
-                            {props.tabs.map((el,i) => 
+                            {this.props.tabs.map((el,i) => 
                             {
                                 return (
                                     <Grid item>
                                         <Chip 
-                                            variant={activeTabIndex != i ? "outlined" : undefined}
+                                            variant={this.state.activeTabIndex != i ? "outlined" : undefined}
                                             size="medium" 
                                             label={el.label}
                                             color="primary"
                                             onClick={()=>
                                             {
-                                                handleChangeIndex(i);
+                                                this.setActiveTabIndex(i);
                                             }}
                                             onDelete={() => 
                                             {
-                                                props.onTabDelete(el,i);
+                                                this.props.onTabDelete(el,i);
 
                                                 setTimeout(() => 
                                                 {
@@ -75,19 +93,19 @@ export function ToolBarTabs<T>(props : ToolBarTabsProps<T>) : JSX.Element
                                 );
                             })}
                         </Grid>
-                    </GridWrapper>
+                        </GridWrapper>
                 </AppBar>
                 <div className={outerSwipeableWrapper}>
                     <div className={innerSwipeableWrapper}>
                         <SwipeableViews
                             axis="x"
-                            index={activeTabIndex}
-                            onChangeIndex={handleChangeIndex}
+                            index={this.state.activeTabIndex}
+                            onChangeIndex={this.setActiveTabIndex}
                         >
-                            {props.tabs.map((el) => 
+                            {this.props.tabs.map((el) => 
                             {
                                 return (
-                                    <TabContainer dir="rtl">{el.body(props.propPack)}</TabContainer>
+                                    <TabContainer dir="rtl">{el.body(this.props.propPack)}</TabContainer>
                                 );
                             })}
                         </SwipeableViews>
@@ -97,4 +115,5 @@ export function ToolBarTabs<T>(props : ToolBarTabsProps<T>) : JSX.Element
         );
     }
     return null;
+}
 }
