@@ -3,7 +3,7 @@ import { getReadable } from '../../../getAppPath';
 export const tabInfo : {
     [index : string] : {
         refName : string;
-       imgURI : () => string;
+        imgURI : () => string;
     }
 } = {
     "Input": {
