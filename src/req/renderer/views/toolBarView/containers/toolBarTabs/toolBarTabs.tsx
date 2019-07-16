@@ -90,7 +90,8 @@ export class ToolBarTabs<T> extends React.Component<ToolBarTabsProps<T>,ToolBarT
                                                 avatar={
                                                     <Avatar imgProps={
                                                         {
-                                                            onDragEnd : (event : React.DragEvent<HTMLImageElement>) => {
+                                                            onDragEnd : (event : React.DragEvent<HTMLImageElement>) => 
+                                                            {
                                                                 console.log(`stopped drgging ${i}`);
                                                             }
                                                         }
