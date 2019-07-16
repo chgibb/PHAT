@@ -44,7 +44,7 @@ export class ToolBarTabs<T> extends React.Component<ToolBarTabsProps<T>,ToolBarT
         this.state = {
             activeTabIndex : 0
         } as ToolBarTabsState;
-        
+
     }
 
     public setActiveTabIndex(index : number) : void
@@ -87,7 +87,14 @@ export class ToolBarTabs<T> extends React.Component<ToolBarTabsProps<T>,ToolBarT
                                                         (global as any).gc();
                                                     },100);
                                                 }}
-                                                avatar={<Avatar src={viewImages[el.imgKey]()} />} 
+                                                avatar={
+                                                    <Avatar imgProps={
+                                                        {
+                                                            onDragEnd : (event : React.DragEvent<HTMLImageElement>) => {
+                                                                console.log(`stopped drgging ${i}`);
+                                                            }
+                                                        }
+                                                    } src={viewImages[el.imgKey]()} />} 
                                             />
                                         </Grid>
                                     );
