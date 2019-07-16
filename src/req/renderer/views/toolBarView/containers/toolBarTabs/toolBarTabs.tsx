@@ -8,11 +8,11 @@ import {GridWrapper} from "../../../../containers/gridWrapper";
 import {Grid} from "../../../../components/grid";
 import {Chip} from "../../../../components/chip";
 import {Avatar} from "../../../../components/avatar";
+import {tabInfo} from "../../tabInfo";
 
 import {wrapperBGColour} from "./styles/wrapperBGColour";
 import {outerSwipeableWrapper} from "./styles/outerSwipeableWrapper";
 import {innerSwipeableWrapper} from "./styles/innerSwipeableWrapper";
-import {tabInfo} from "../../tabInfo";
 
 
 export interface ToolBarTab<T>
@@ -97,13 +97,13 @@ export class ToolBarTabs<T> extends React.Component<ToolBarTabsProps<T>,ToolBarT
                                                                 let clientBounds = electron.remote.getCurrentWindow().getBounds();
                                                                 let cursorPos = electron.screen.getCursorScreenPoint();
                                                                 if(cursorPos.x < clientBounds.x)
-                    unDockActiveTab();
-                else if(cursorPos.y < clientBounds.y)
-                    unDockActiveTab();
-                else if(cursorPos.x > clientBounds.x + clientBounds.width)
-                    unDockActiveTab();
-                else if(cursorPos.y > clientBounds.y + clientBounds.height)
-                    unDockActiveTab();
+                                                                    unDockActiveTab();
+                                                                else if(cursorPos.y < clientBounds.y)
+                                                                    unDockActiveTab();
+                                                                else if(cursorPos.x > clientBounds.x + clientBounds.width)
+                                                                    unDockActiveTab();
+                                                                else if(cursorPos.y > clientBounds.y + clientBounds.height)
+                                                                    unDockActiveTab();
                                                             }
                                                         }
                                                     } src={tabInfo[el.imgKey].imgURI()} />} 
