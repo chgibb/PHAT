@@ -1,12 +1,12 @@
 import * as electron from "electron";
 const ipc = electron.ipcRenderer;
 
-import {Fasta} from "../../fasta";
-import {AtomicOperationIPC} from "../../atomicOperationsIPC";
-import {AlignData} from "../../alignData";
+import {Fasta} from "../../../fasta";
+import {AtomicOperationIPC} from "../../../atomicOperationsIPC";
+import {AlignData} from "../../../alignData";
 
-import {SaveKeyEvent} from "./../../ipcEvents";
-import {Fastq} from "./../../fastq";
+import {SaveKeyEvent} from "../../../ipcEvents";
+import {Fastq} from "../../../fastq";
 
 let channel = "input";
 

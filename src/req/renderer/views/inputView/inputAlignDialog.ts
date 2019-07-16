@@ -2,7 +2,7 @@ import * as electron from "electron";
 const dialog = electron.remote.dialog;
 const ipc = electron.ipcRenderer;
 
-import {AtomicOperationIPC} from "./../../atomicOperationsIPC";
+import {AtomicOperationIPC} from "../../../atomicOperationsIPC";
 
 export function inputAlignDialog() : void
 {

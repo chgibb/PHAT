@@ -2,26 +2,22 @@ import * as electron from "electron";
 const dialog = electron.remote.dialog;
 const ipc = electron.ipcRenderer;
 
-import {AtomicOperationIPC} from "./../../atomicOperationsIPC";
+import {AtomicOperationIPC} from "../../../atomicOperationsIPC";
 
-let fastaExtensions = [
-    "fasta",
-    "fas",
-    "fa",
-    "seq",
-    "fsa",
-    "fna"
+let fastqExtensions = [
+    "fastq",
+    "fq"
 ];
 
-export function inputFastaDialog() : void
+export function inputFastqDialog() : void
 {
     dialog.showOpenDialog(
         {
-            title : "Input Reference Sequences",
+            title : "Input Read Files",
             filters : [
                 {
-                    name : "Reference Sequences",
-                    extensions : fastaExtensions
+                    name : "Read Files",
+                    extensions : fastqExtensions
                 }
             ],
             properties : [
@@ -38,7 +34,7 @@ export function inputFastaDialog() : void
                     ipc.send(
                         "runOperation",
                         <AtomicOperationIPC>{
-                            opName : "inputFastaFile",
+                            opName : "inputFastqFile",
                             filePath : files[i]
                         }
                     );

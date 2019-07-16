@@ -2,13 +2,13 @@ import * as electron from "electron";
 const ipc = electron.ipcRenderer;
 import * as React from "react";
 
-import {AtomicOperation} from "../../operations/atomicOperations";
-import {FullWidthTabs, FullWidthTab} from "../containers/fullWidthTabs";
-import {AlignData} from "../../alignData";
-import {Tab} from "../components/tab";
-import {Fastq} from "../../fastq";
-import {Fasta} from "../../fasta";
-import {PHATView} from "../phatView";
+import {AtomicOperation} from "../../../operations/atomicOperations";
+import {FullWidthTabs, FullWidthTab} from "../../containers/fullWidthTabs";
+import {AlignData} from "../../../alignData";
+import {Tab} from "../../components/tab";
+import {Fastq} from "../../../fastq";
+import {Fasta} from "../../../fasta";
+import {PHATView} from "../../phatView";
 
 import {FastqView} from "./fastqView";
 import {FastaView} from "./fastaView";

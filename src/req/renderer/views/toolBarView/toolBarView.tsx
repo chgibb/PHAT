@@ -13,7 +13,7 @@ import {toolBarButton} from "../../styles/toolBarButton";
 import {Fastq} from "../../../fastq";
 import {Fasta} from "../../../fasta";
 import {AlignData} from "../../../alignData";
-import {InputView} from "../../inputRenderer/inputView";
+import {InputView} from "../inputView/inputView";
 import {PHATView} from "../../phatView";
 
 import {ToolBarTab, ToolBarTabs} from "./containers/toolBarTabs/toolBarTabs";
