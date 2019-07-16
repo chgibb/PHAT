@@ -17,7 +17,7 @@ import {InputView} from "../../inputRenderer/inputView";
 import {PHATView} from "../../phatView";
 
 import {ToolBarTab, ToolBarTabs} from "./containers/toolBarTabs/toolBarTabs";
-import {viewImages} from "./viewImages";
+import {tabInfo} from "./tabInfo";
 
 
 export interface ToolBarViewState
@@ -61,7 +61,7 @@ export class ToolBarView extends React.Component<ToolBarViewProps,ToolBarViewSta
                             <Grid container spacing={1} justify="flex-start">
                                 <Grid item>
                                     <img 
-                                        src={viewImages["Input"]()}
+                                        src={tabInfo["Input"].imgURI()}
                                         className={`${activeHover} ${activeHoverButton} ${toolBarButton}`}
                                         onClick={() => 
                                         {
@@ -86,25 +86,25 @@ export class ToolBarView extends React.Component<ToolBarViewProps,ToolBarViewSta
                                 </Grid>
                                 <Grid item>
                                     <img 
-                                        src={viewImages["QC"]()}
+                                        src={tabInfo["QC"].imgURI()}
                                         className={`${activeHover} ${activeHoverButton} ${toolBarButton}`} 
                                     />
                                 </Grid>
                                 <Grid item>
                                     <img 
-                                        src={viewImages["Align"]()}
+                                        src={tabInfo["Align"].imgURI()}
                                         className={`${activeHover} ${activeHoverButton} ${toolBarButton}`} 
                                     />
                                 </Grid>
                                 <Grid item>
                                     <img 
-                                        src={viewImages["Output"]()}
+                                        src={tabInfo["Output"].imgURI()}
                                         className={`${activeHover} ${activeHoverButton} ${toolBarButton}`} 
                                     />
                                 </Grid>
                                 <Grid item>
                                     <img 
-                                        src={viewImages["Genome Builder"]()}
+                                        src={tabInfo["Genome Builder"].imgURI()}
                                         className={`${activeHover} ${activeHoverButton} ${toolBarButton}`} 
                                     />
                                 </Grid>

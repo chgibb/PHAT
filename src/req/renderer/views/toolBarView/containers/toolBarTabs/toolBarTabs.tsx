@@ -1,4 +1,5 @@
 import * as React from "react";
+import * as electron from "electron";
 
 import {SwipeableViews} from "../../../../components/swipeableViews";
 import {TabContainer} from "../../../../components/tabContainer";
@@ -11,13 +12,13 @@ import {Avatar} from "../../../../components/avatar";
 import {wrapperBGColour} from "./styles/wrapperBGColour";
 import {outerSwipeableWrapper} from "./styles/outerSwipeableWrapper";
 import {innerSwipeableWrapper} from "./styles/innerSwipeableWrapper";
-import {viewImages} from "./../../viewImages";
+import {tabInfo} from "../../tabInfo";
 
 
 export interface ToolBarTab<T>
 {
     label : string;
-    imgKey : keyof typeof viewImages;
+    imgKey : keyof typeof tabInfo;
     body : (props : T) => JSX.Element
     className? : string;
 }
@@ -93,9 +94,19 @@ export class ToolBarTabs<T> extends React.Component<ToolBarTabsProps<T>,ToolBarT
                                                             onDragEnd : (event : React.DragEvent<HTMLImageElement>) => 
                                                             {
                                                                 console.log(`stopped drgging ${i}`);
+                                                                let clientBounds = electron.remote.getCurrentWindow().getBounds();
+                                                                let cursorPos = electron.screen.getCursorScreenPoint();
+                                                                if(cursorPos.x < clientBounds.x)
+                    unDockActiveTab();
+                else if(cursorPos.y < clientBounds.y)
+                    unDockActiveTab();
+                else if(cursorPos.x > clientBounds.x + clientBounds.width)
+                    unDockActiveTab();
+                else if(cursorPos.y > clientBounds.y + clientBounds.height)
+                    unDockActiveTab();
                                                             }
                                                         }
-                                                    } src={viewImages[el.imgKey]()} />} 
+                                                    } src={tabInfo[el.imgKey].imgURI()} />} 
                                             />
                                         </Grid>
                                     );
