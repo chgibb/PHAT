@@ -9,11 +9,11 @@ import {Grid} from "../../../../components/grid";
 import {Chip} from "../../../../components/chip";
 import {Avatar} from "../../../../components/avatar";
 import {tabInfo} from "../../tabInfo";
+import {AtomicOperationIPC} from "../../../../../atomicOperationsIPC";
 
 import {wrapperBGColour} from "./styles/wrapperBGColour";
 import {outerSwipeableWrapper} from "./styles/outerSwipeableWrapper";
 import {innerSwipeableWrapper} from "./styles/innerSwipeableWrapper";
-import { AtomicOperationIPC } from '../../../../../atomicOperationsIPC';
 
 const ipc = electron.ipcRenderer;
 
@@ -45,7 +45,7 @@ function unDockActiveTab(refName : string) : void
             opName : "unDockWindow",
             refName : refName
         } as AtomicOperationIPC
-    )
+    );
 }
 
 export class ToolBarTabs<T> extends React.Component<ToolBarTabsProps<T>,ToolBarTabsState>
