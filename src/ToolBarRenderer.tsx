@@ -92,6 +92,10 @@ class ToolBarApp extends React.Component<{},ToolBarViewProps>
                                 });
                             }
                         }
+
+                        this.setState({
+                            operations : ops
+                        });
                     }
                 }
             }

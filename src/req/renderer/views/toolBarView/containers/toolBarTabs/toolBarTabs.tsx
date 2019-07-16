@@ -13,12 +13,14 @@ import {tabInfo} from "../../tabInfo";
 import {wrapperBGColour} from "./styles/wrapperBGColour";
 import {outerSwipeableWrapper} from "./styles/outerSwipeableWrapper";
 import {innerSwipeableWrapper} from "./styles/innerSwipeableWrapper";
+import { AtomicOperationIPC } from '../../../../../atomicOperationsIPC';
 
+const ipc = electron.ipcRenderer;
 
 export interface ToolBarTab<T>
 {
     label : string;
-    imgKey : keyof typeof tabInfo;
+    refKey : keyof typeof tabInfo;
     body : (props : T) => JSX.Element
     className? : string;
 }
@@ -33,6 +35,17 @@ export interface ToolBarTabsProps<T>
 export interface ToolBarTabsState
 {
     activeTabIndex : number;
+}
+
+function unDockActiveTab(refName : string) : void
+{
+    ipc.send(
+        "runOperation",
+        {
+            opName : "unDockWindow",
+            refName : refName
+        } as AtomicOperationIPC
+    )
 }
 
 export class ToolBarTabs<T> extends React.Component<ToolBarTabsProps<T>,ToolBarTabsState>
@@ -96,17 +109,25 @@ export class ToolBarTabs<T> extends React.Component<ToolBarTabsProps<T>,ToolBarT
                                                                 console.log(`stopped drgging ${i}`);
                                                                 let clientBounds = electron.remote.getCurrentWindow().getBounds();
                                                                 let cursorPos = electron.screen.getCursorScreenPoint();
+
+                                                                let shouldUndock = false;
                                                                 if(cursorPos.x < clientBounds.x)
-                                                                    unDockActiveTab();
+                                                                    shouldUndock = true;
                                                                 else if(cursorPos.y < clientBounds.y)
-                                                                    unDockActiveTab();
+                                                                    shouldUndock = true;
                                                                 else if(cursorPos.x > clientBounds.x + clientBounds.width)
-                                                                    unDockActiveTab();
+                                                                    shouldUndock = true;
                                                                 else if(cursorPos.y > clientBounds.y + clientBounds.height)
-                                                                    unDockActiveTab();
+                                                                    shouldUndock = true;
+                                                                
+                                                                if(shouldUndock)
+                                                                {
+                                                                    unDockActiveTab(tabInfo[el.refKey].refName);
+                                                                    this.props.onTabDelete(el,i);
+                                                                }
                                                             }
                                                         }
-                                                    } src={tabInfo[el.imgKey].imgURI()} />} 
+                                                    } src={tabInfo[el.refKey].imgURI()} />} 
                                             />
                                         </Grid>
                                     );

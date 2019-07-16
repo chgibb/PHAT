@@ -69,7 +69,7 @@ export class ToolBarView extends React.Component<ToolBarViewProps,ToolBarViewSta
                                                 views : this.state.views.concat([
                                                     {
                                                         label : "Input",
-                                                        imgKey : "Input",
+                                                        refKey : "Input",
                                                         body : (props : ToolBarViewProps) => (
                                                             <InputView 
                                                                 fastqs={props.fastqs}

@@ -55,9 +55,13 @@ export class InputView extends React.Component<InputViewProps,{}> implements PHA
                 break;
             }
         }
-        this.setState({
-            shouldAllowTriggeringOps : !found
-        });
+
+        if(this.state.shouldAllowTriggeringOps != !found)
+        {
+            this.setState({
+                shouldAllowTriggeringOps : !found
+            });
+        }
     }
 
     public render()

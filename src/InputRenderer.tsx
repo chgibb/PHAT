@@ -18,6 +18,10 @@ class InputApp extends React.Component<{},InputViewProps>
     {
         super(undefined);
 
+        this.state = {
+
+        } as InputViewProps;
+
         ipc.on("input",(event : Electron.IpcMessageEvent,arg : any) => 
         {
             if(arg.action == "getKey" || arg.action == "keyChange")
