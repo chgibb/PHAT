@@ -9,15 +9,20 @@ import {QCReport} from "../containers/qcReport";
 
 import {generateFastQCReport} from "./publish";
 
-export interface QCViewState {
-    fastqs?: Array<Fastq>;
+export interface QCViewState
+{
     shouldAllowTriggeringOps : boolean;
-
-    viewingReport : boolean;
-    viewUuid : string | undefined;
+    viewingReport? : boolean;
+    viewUuid? : string | undefined;
 }
 
-export class QCView extends React.Component<{}, QCViewState>
+export interface QCViewProps 
+{
+    fastqs?: Array<Fastq>;
+    operations? : Array<AtomicOperation>;
+}
+
+export class QCView extends React.Component<QCViewProps,QCViewState>
 {
     public state: QCViewState;
     public constructor() 
@@ -26,32 +31,14 @@ export class QCView extends React.Component<{}, QCViewState>
         this.state = {
             shouldAllowTriggeringOps: true
         } as QCViewState;
+    }
 
-        ipc.on("QC", (event: Electron.IpcMessageEvent, arg: any) => 
-        {
-            if (arg.action == "getKey" || arg.action == "keyChange") 
-            {
-                if (arg.key == "fastqInputs") 
-                {
-                    //Update fastq list and rerender
-                    if (arg.val !== undefined) 
-                    {
-                        this.setState({fastqs: arg.val});
-                        return;
-                    }
-                }
-                //occasionally when docking, we can recieve the deleted window docking operation
-                try 
-                {
-                    if (arg.key == "operations") 
-                    {
-                        //On update from running jobs
-                        let operations: Array<AtomicOperation> = arg.val;
+    public render() : JSX.Element
+    {
                         let found = false;
-                        for (let i: number = 0; i != operations.length; ++i) 
+                        for (let i: number = 0; i != this.props.operations.length; ++i) 
                         {
-                            //look for only report generation jobs
-                            if (operations[i].name == "generateFastQCReport") 
+                            if (this.props.operations[i].name == "generateFastQCReport") 
                             {
                                 found = true;
                                 this.setState({
@@ -65,25 +52,12 @@ export class QCView extends React.Component<{}, QCViewState>
                                 shouldAllowTriggeringOps: true
                             });
                         }
-                    }
 
-                }
-                catch (err) 
-                {
-                    err;
-                }
-            }
-        }
-        );
-    }
-
-    public render() : JSX.Element
-    {
         return (
             <React.Fragment>
                 {!this.state.viewingReport ? 
                     <QCReportsTable
-                        data={this.state.fastqs}
+                        data={this.props.fastqs}
                         shouldAllowTriggeringOps={true}
                         onGenerateClick={(event, data : Fastq) => 
                         {
@@ -102,7 +76,7 @@ export class QCView extends React.Component<{}, QCViewState>
                     : ""}
                 {this.state.viewingReport && this.state.viewUuid ? 
                     <QCReport
-                        fastqs={this.state.fastqs}
+                        fastqs={this.props.fastqs}
                         viewingFastq={this.state.viewUuid}
                         onGoBackClick={() => 
                         {

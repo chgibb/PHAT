@@ -7,8 +7,48 @@ import {makeWindowDockable} from "./req/renderer/dock";
 
 import "./req/renderer/commonBehaviour";
 import "./req/renderer/styles/defaults";
-import {QCView} from "./req/renderer/QCRenderer/QCView";
+import {QCView, QCViewState, QCViewProps} from "./req/renderer/QCRenderer/QCView";
 import {KeySubEvent, GetKeyEvent} from "./req/ipcEvents";
+import { AtomicOperation } from './req/operations/atomicOperations';
+
+class QCApp extends React.Component<{},QCViewProps>
+{
+    public state : QCViewProps;
+    public constructor()
+    {
+        super(undefined);
+
+        this.state = {
+
+        } as QCViewProps;
+
+        ipc.on("QC", (event: Electron.IpcMessageEvent, arg: any) => 
+        {
+            if (arg.action == "getKey" || arg.action == "keyChange") 
+            {
+                if (arg.key == "fastqInputs") 
+                {
+                    if (arg.val !== undefined) 
+                    {
+                        this.setState({fastqs: arg.val});
+                        return;
+                    }
+                }
+                    if (arg.key == "operations") 
+                    {
+                        
+                        if (arg.val !== undefined) 
+                    {
+                        this.setState({operations: arg.val});
+                        return;
+                    }
+                    }
+
+            }
+        }
+        );
+    }
+}
 
 render(
     <QCView />,

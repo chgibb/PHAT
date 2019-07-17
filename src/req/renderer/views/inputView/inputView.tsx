@@ -29,7 +29,7 @@ export interface InputViewProps
     
 }
 
-export class InputView extends React.Component<InputViewProps,{}> implements PHATView
+export class InputView extends React.Component<InputViewProps,InputViewState> implements PHATView
 {
     public state : InputViewState;
     public constructor(props : InputViewProps)
