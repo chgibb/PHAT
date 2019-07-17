@@ -7,11 +7,11 @@ import {makeWindowDockable} from "./req/renderer/dock";
 
 import "./req/renderer/commonBehaviour";
 import "./req/renderer/styles/defaults";
-import {QCRendererApp} from "./req/renderer/QCRenderer/QCView";
+import {QCView} from "./req/renderer/QCRenderer/QCView";
 import {KeySubEvent, GetKeyEvent} from "./req/ipcEvents";
 
 render(
-    <QCRendererApp />,
+    <QCView />,
     document.getElementById("app")
 );
 

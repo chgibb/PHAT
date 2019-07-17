@@ -9,7 +9,7 @@ import {QCReport} from "../containers/qcReport";
 
 import {generateFastQCReport} from "./publish";
 
-export interface QCRendererAppState {
+export interface QCViewState {
     fastqs?: Array<Fastq>;
     shouldAllowTriggeringOps : boolean;
 
@@ -17,15 +17,15 @@ export interface QCRendererAppState {
     viewUuid : string | undefined;
 }
 
-export class QCRendererApp extends React.Component<{}, QCRendererAppState>
+export class QCView extends React.Component<{}, QCViewState>
 {
-    public state: QCRendererAppState;
+    public state: QCViewState;
     public constructor() 
     {
         super(undefined);
         this.state = {
             shouldAllowTriggeringOps: true
-        } as QCRendererAppState;
+        } as QCViewState;
 
         ipc.on("QC", (event: Electron.IpcMessageEvent, arg: any) => 
         {
