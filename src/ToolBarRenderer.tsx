@@ -11,6 +11,7 @@ import "./req/renderer/styles/defaults";
 import {ToolBarView, ToolBarViewProps} from "./req/renderer/views/toolBarView/toolBarView";
 import {AtomicOperation} from "./req/operations/atomicOperations";
 import formatByteString from "./req/renderer/formatByteString";
+import { renderAppRoot } from './req/renderer/renderAppRoot';
 
 cssRule("body",{
     backgroundColor : `${color("#1a89bd")}`
@@ -110,9 +111,9 @@ class ToolBarApp extends React.Component<{},ToolBarViewProps>
     }
 }
 
-render(
-    <ToolBarApp />,
-    document.getElementById("app")
+renderAppRoot(
+    () => <ToolBarApp />,
+    document.getElementById("app") as HTMLDivElement
 );
 
 ipc.send(
