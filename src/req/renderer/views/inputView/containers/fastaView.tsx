@@ -3,8 +3,8 @@ import * as React from "react";
 import {Button} from "../../../components/button";
 import {FastaTable} from "../../../containers/tables/fastaTable";
 import {Fasta} from "../../../../fasta";
-
 import * as pub from "../publish";
+
 import {inputFastaDialog} from "./inputFastaDialog";
 
 export interface FastaViewProps

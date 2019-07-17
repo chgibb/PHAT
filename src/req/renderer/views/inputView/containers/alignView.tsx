@@ -8,9 +8,9 @@ import {getLinkableRefSeqs, LinkableRefSeq} from "../../../../getLinkableRefSeqs
 import {Fasta} from "../../../../fasta";
 import {getReferenceFromUuid} from "../../../../uniquelyAddressable";
 import {IncompatibleRefTable} from "../../../containers/tables/incompatibleRefTable";
+import {linkRefSeqToAlignment} from "../publish";
 
 import {inputAlignDialog} from "./inputAlignDialog";
-import {linkRefSeqToAlignment} from "../publish";
 
 export interface AlignViewProps
 {
