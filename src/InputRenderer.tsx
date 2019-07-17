@@ -1,7 +1,6 @@
 import * as electron from "electron";
 const ipc = electron.ipcRenderer;
 import * as React from "react";
-import {render} from "react-dom";
 
 import {InputView, InputViewProps} from "./req/renderer/views/inputView/inputView";
 import {GetKeyEvent, KeySubEvent} from "./req/ipcEvents";
@@ -9,7 +8,6 @@ import {makeWindowDockable} from "./req/renderer/dock";
 
 import "./req/renderer/commonBehaviour";
 import "./req/renderer/styles/defaults";
-import {AtomicOperation} from "./req/operations/atomicOperations";
 import {renderAppRoot} from "./req/renderer/renderAppRoot";
 
 class InputApp extends React.Component<{},InputViewProps>
