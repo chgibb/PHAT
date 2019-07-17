@@ -35,23 +35,23 @@ export class QCView extends React.Component<QCViewProps,QCViewState>
 
     public render() : JSX.Element
     {
-                        let found = false;
-                        for (let i: number = 0; i != this.props.operations.length; ++i) 
-                        {
-                            if (this.props.operations[i].name == "generateFastQCReport") 
-                            {
-                                found = true;
-                                this.setState({
-                                    shouldAllowTriggeringOps: false
-                                });
-                            }
-                        }
-                        if (!found) 
-                        {
-                            this.setState({
-                                shouldAllowTriggeringOps: true
-                            });
-                        }
+        let found = false;
+        for (let i: number = 0; i != this.props.operations.length; ++i) 
+        {
+            if (this.props.operations[i].name == "generateFastQCReport") 
+            {
+                found = true;
+                this.setState({
+                    shouldAllowTriggeringOps: false
+                });
+            }
+        }
+        if (!found) 
+        {
+            this.setState({
+                shouldAllowTriggeringOps: true
+            });
+        }
 
         return (
             <React.Fragment>
