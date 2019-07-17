@@ -10,9 +10,9 @@ import {Fastq} from "../../../fastq";
 import {Fasta} from "../../../fasta";
 import {PHATView} from "../../phatView";
 
-import {FastqView} from "./fastqView";
-import {FastaView} from "./fastaView";
-import {AlignView} from "./alignView";
+import {FastqView} from "./containers/fastqView";
+import {FastaView} from "./containers/fastaView";
+import {AlignView} from "./containers/alignView";
 
 export interface InputViewState
 {

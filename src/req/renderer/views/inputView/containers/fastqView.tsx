@@ -1,10 +1,10 @@
 import * as React from "react";
 
-import {FastqTable} from "../../containers/tables/fastqTable";
-import {Button} from "../../components/button";
-import {Fastq} from "../../../fastq";
+import {FastqTable} from "../../../containers/tables/fastqTable";
+import {Button} from "../../../components/button";
+import {Fastq} from "../../../../fastq";
 
-import * as pub from "./publish";
+import * as pub from "../publish";
 import {inputFastqDialog} from "./inputFastqDialog";
 
 

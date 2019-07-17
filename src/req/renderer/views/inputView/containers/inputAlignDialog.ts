@@ -2,22 +2,17 @@ import * as electron from "electron";
 const dialog = electron.remote.dialog;
 const ipc = electron.ipcRenderer;
 
-import {AtomicOperationIPC} from "../../../atomicOperationsIPC";
+import {AtomicOperationIPC} from "../../../../atomicOperationsIPC";
 
-let fastqExtensions = [
-    "fastq",
-    "fq"
-];
-
-export function inputFastqDialog() : void
+export function inputAlignDialog() : void
 {
     dialog.showOpenDialog(
         {
-            title : "Input Read Files",
+            title : "Input Alignment Maps",
             filters : [
                 {
-                    name : "Read Files",
-                    extensions : fastqExtensions
+                    name : "Binary Alignment Maps",
+                    extensions : ["bam","sam"]
                 }
             ],
             properties : [
@@ -34,7 +29,7 @@ export function inputFastqDialog() : void
                     ipc.send(
                         "runOperation",
                         <AtomicOperationIPC>{
-                            opName : "inputFastqFile",
+                            opName : "inputBamFile",
                             filePath : files[i]
                         }
                     );
