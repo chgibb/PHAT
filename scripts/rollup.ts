@@ -11,6 +11,7 @@
             "electron",
             "react",
             "react-dom",
+            "react-dom/server",
             "react-is",
             "prop-types",
             "typestyle",
