@@ -95,11 +95,6 @@ export class ToolBarTabs<T> extends React.Component<ToolBarTabsProps<T>,ToolBarT
                                                 onDelete={() => 
                                                 {
                                                     this.props.onTabDelete(el,i);
-
-                                                    setTimeout(() => 
-                                                    {
-                                                        (global as any).gc();
-                                                    },100);
                                                 }}
                                                 avatar={
                                                     <Avatar imgProps={
