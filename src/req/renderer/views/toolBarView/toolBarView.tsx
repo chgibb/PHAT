@@ -15,10 +15,10 @@ import {Fasta} from "../../../fasta";
 import {AlignData} from "../../../alignData";
 import {InputView} from "../inputView/inputView";
 import {PHATView} from "../../phatView";
+import {QCView} from "../../QCRenderer/QCView";
 
 import {ToolBarTab, ToolBarTabs} from "./containers/toolBarTabs/toolBarTabs";
 import {tabInfo} from "./tabInfo";
-import { QCView } from '../../QCRenderer/QCView';
 
 
 export interface ToolBarViewState
@@ -89,18 +89,19 @@ export class ToolBarView extends React.Component<ToolBarViewProps,ToolBarViewSta
                                     <img 
                                         src={tabInfo["QC"].imgURI()}
                                         className={`${activeHover} ${activeHoverButton} ${toolBarButton}`}
-                                        onClick={() =>{
+                                        onClick={() =>
+                                        {
                                             this.setState({
                                                 views : this.state.views.concat([
                                                     {
-                                                    label : "QC",
-                                                    refKey : "QC",
-                                                    body : (props : ToolBarViewProps) => (
-                                                        <QCView
-                                                            fastqs={props.fastqs}
-                                                            operations={props.operations}
-                                                        />
-                                                    )
+                                                        label : "QC",
+                                                        refKey : "QC",
+                                                        body : (props : ToolBarViewProps) => (
+                                                            <QCView
+                                                                fastqs={props.fastqs}
+                                                                operations={props.operations}
+                                                            />
+                                                        )
                                                     }])
                                             });
                                         }} 
