@@ -48,10 +48,20 @@ class QCApp extends React.Component<{},QCViewProps>
         }
         );
     }
+
+    public render() : JSX.Element
+    {
+        return (
+            <QCView
+                fastqs={this.state.fastqs}
+                operations={this.state.operations}
+            />
+        );
+    }
 }
 
 render(
-    <QCView />,
+    <QCApp />,
     document.getElementById("app")
 );
 
