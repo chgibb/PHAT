@@ -7,7 +7,7 @@ import {GetKeyEvent, KeySubEvent} from "./req/ipcEvents";
 import {makeWindowDockable} from "./req/renderer/dock";
 import "./req/renderer/commonBehaviour";
 import "./req/renderer/styles/defaults";
-import {AlignView,AlignViewProps} from "./req/renderer/AlignRenderer/AlignView";
+import {AlignView,AlignViewProps} from "./req/renderer/views/alignView/alignView";
 import {renderAppRoot} from "./req/renderer/renderAppRoot";
 
 class AlignApp extends React.Component<{},AlignViewProps>

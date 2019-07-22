@@ -15,7 +15,7 @@ import {Fasta} from "../../../fasta";
 import {AlignData} from "../../../alignData";
 import {InputView} from "../inputView/inputView";
 import {PHATView} from "../../phatView";
-import {AlignView} from "../../AlignRenderer/AlignView";
+import {AlignView} from "../alignView/alignView";
 
 import {ToolBarTab, ToolBarTabs} from "./containers/toolBarTabs/toolBarTabs";
 import {tabInfo} from "./tabInfo";

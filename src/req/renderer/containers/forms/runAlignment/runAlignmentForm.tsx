@@ -8,7 +8,7 @@ import {reOrder} from "../../../../reOrder";
 import {getPropertiesOfReferencesFromUuids, getReferencesFromUuids} from "../../../../uniquelyAddressable";
 import {FastqTable} from "../../tables/fastqTable";
 import {GridWrapper} from "../../gridWrapper";
-import {headingPadding} from "../../../AlignRenderer/styles/headingPadding";
+import {headingPadding} from "../../../views/alignView/styles/headingPadding";
 import {paperPadding} from "../../../styles/paperPadding";
 import {FastaTable} from "../../tables/fastaTable";
 import {ThreeQuartersLoader} from "../../../components/threeQuartersLoader";
