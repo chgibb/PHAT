@@ -1,6 +1,6 @@
-import * as viewMgr from "./../../viewMgr";
-import * as masterView from "./../masterView";
-import * as rightPanel from "./../rightPanel";
+import * as viewMgr from "../../../viewMgr";
+import * as masterView from "../masterView";
+import * as rightPanel from "../rightPanel";
 
 export function renderAlignmentReportTable() : string
 {

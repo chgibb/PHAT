@@ -3,21 +3,21 @@ import * as fs from "fs";
 import * as electron from "electron";
 const ipc = electron.ipcRenderer;
 
-import {AtomicOperationIPC} from "./../../atomicOperationsIPC";
-import {getReadableAndWritable} from "./../../getAppPath";
-import * as viewMgr from "./../viewMgr";
+import {AtomicOperationIPC} from "../../../atomicOperationsIPC";
+import {getReadableAndWritable} from "../../../getAppPath";
+import * as viewMgr from "../../viewMgr";
 import * as masterView from "./masterView";
 import * as rightPanel from "./rightPanel";
 import * as reportView from "./reportView";
-import {VCF2JSONRow} from "./../../varScanMPileup2SNPVCF2JSON";
-import {Fasta} from "./../../fasta";
+import {VCF2JSONRow} from "../../../varScanMPileup2SNPVCF2JSON";
+import {Fasta} from "../../../fasta";
 import {renderQCReportTable} from "./reportView/renderQCReportTable";
 import {renderAlignmentReportTable} from "./reportView/renderAlignmentReportTable";
 import {renderSNPPositionsTable} from "./reportView/renderSNPPositionsTable";
 import {renderMappedReadsPerContigTable} from "./reportView/renderMappedReadsPerContigTable";
 import {renderBLASTRunsTable} from "./reportView/renderBLASTRunsTable";
 import {renderBLASTSingleRunTable} from "./reportView/renderBLASTSingleRunTable";
-import {getReadable} from "./../../getAppPath";
+import {getReadable} from "../../../getAppPath";
 import {CSVExportDialog} from "./CSVExportDialog";
 import {XLSExportDialog} from "./XLSExportDialog";
 

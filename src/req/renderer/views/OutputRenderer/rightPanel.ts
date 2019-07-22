@@ -1,4 +1,4 @@
-import * as viewMgr from "./../viewMgr";
+import * as viewMgr from "../../viewMgr";
 import * as masterView from "./masterView";
 import * as reportView from "./reportView";
 import {CSVExportDialog} from "./CSVExportDialog";

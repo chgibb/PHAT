@@ -19,7 +19,7 @@ import {AlignView} from "../alignView/alignView";
 
 import {ToolBarTab, ToolBarTabs} from "./containers/toolBarTabs/toolBarTabs";
 import {tabInfo} from "./tabInfo";
-import { OutputView } from '../../OutputRenderer/outputView';
+import { OutputView } from '../OutputRenderer/outputView';
 
 
 export interface ToolBarViewState

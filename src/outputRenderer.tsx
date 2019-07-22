@@ -8,7 +8,7 @@ import {makeWindowDockable} from "./req/renderer/dock";
 
 import "./req/renderer/styles/defaults";
 import "./req/renderer/commonBehaviour";
-import {OutputView, OutputViewProps} from "./req/renderer/OutputRenderer/outputView";
+import {OutputView, OutputViewProps} from "./req/renderer/views/OutputRenderer/outputView";
 import { renderAppRoot } from './req/renderer/renderAppRoot';
 
 class OutputApp extends React.Component<{},OutputViewProps>

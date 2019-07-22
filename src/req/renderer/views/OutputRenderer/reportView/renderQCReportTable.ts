@@ -1,8 +1,8 @@
-import * as viewMgr from "./../../viewMgr";
-import * as masterView from "./../masterView";
-import * as rightPanel from "./../rightPanel";
-import {getQCSummaryByNameOfReportByIndex} from "./../../../QCData";
-import {getPath} from "./../../../file";
+import * as viewMgr from "../../../viewMgr";
+import * as masterView from "../masterView";
+import * as rightPanel from "../rightPanel";
+import {getQCSummaryByNameOfReportByIndex} from "../../../../QCData";
+import {getPath} from "../../../../file";
 
 export function renderQCReportTable() : string
 {

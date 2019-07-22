@@ -3,8 +3,8 @@ import * as electron from "electron";
 const dialog = electron.remote.dialog;
 import * as fs from "fs";
 
-import tokenizeHTMLString from "./../tokenizeHTMLString";
-import tokenizedHTMLArrayToXLS from "./../tokenizedHTMLArrayToXLS";
+import tokenizeHTMLString from "../../tokenizeHTMLString";
+import tokenizedHTMLArrayToXLS from "../../tokenizedHTMLArrayToXLS";
 
 export function XLSExportDialog(htmlString : string) : void
 {

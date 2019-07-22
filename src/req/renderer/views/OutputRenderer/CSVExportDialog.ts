@@ -3,8 +3,8 @@ import * as electron from "electron";
 const dialog = electron.remote.dialog;
 import * as fs from "fs";
 
-import tokenizeHTMLString from "./../tokenizeHTMLString";
-import tokenizedHTMLArrayToCSV from "./../tokenizedHTMLArrayToCSV";
+import tokenizeHTMLString from "../../tokenizeHTMLString";
+import tokenizedHTMLArrayToCSV from "../../tokenizedHTMLArrayToCSV";
 export function CSVExportDialog(htmlString : string) : void
 {
     dialog.showSaveDialog(

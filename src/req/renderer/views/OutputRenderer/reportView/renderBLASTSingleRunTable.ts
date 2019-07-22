@@ -1,8 +1,8 @@
-import * as viewMgr from "./../../viewMgr";
-import * as masterView from "./../masterView";
-import * as rightPanel from "./../rightPanel";
-import {getReadable} from "./../../../getAppPath";
-import {getBLASTReadResults,getBLASTFragmentResults,BLASTSegmentResult,BLASTReadResult,BLASTFragmentResult} from "./../../../BLASTSegmentResult";
+import * as viewMgr from "../../../viewMgr";
+import * as masterView from "../masterView";
+import * as rightPanel from "../rightPanel";
+import {getReadable} from "../../../../getAppPath";
+import {getBLASTReadResults,getBLASTFragmentResults,BLASTSegmentResult,BLASTReadResult,BLASTFragmentResult} from "../../../../BLASTSegmentResult";
 
 
 let lastBLASTUUID = "";

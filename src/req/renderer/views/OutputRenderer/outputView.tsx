@@ -2,10 +2,10 @@ import * as electron from "electron";
 const ipc = electron.ipcRenderer;
 import * as React from "react";
 
-import {Fasta} from "../../fasta";
-import {AlignData} from "../../alignData";
-import {Fastq} from "../../fastq";
-import {AlignmentsReportTable} from "../containers/tables/alignmentsReportTable";
+import {Fasta} from "../../../fasta";
+import {AlignData} from "../../../alignData";
+import {Fastq} from "../../../fastq";
+import {AlignmentsReportTable} from "../../containers/tables/alignmentsReportTable";
 
 export interface OutputViewProps
 {
