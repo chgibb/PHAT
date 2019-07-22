@@ -19,27 +19,6 @@ export class OutputView extends React.Component<OutputViewProps,{}>
     public constructor(props : OutputViewProps)
     {
         super(props);
-
-        ipc.on(
-            "output",(event : Electron.IpcMessageEvent,arg : any) =>
-            {
-                if(arg.action === "getKey" || arg.action === "keyChange")
-                {
-                    if(arg.key == "fastqInputs" && arg.val !== undefined)
-                    {
-                        this.setState({fastqs : arg.val});
-                    }
-                    if(arg.key == "fastaInputs" && arg.val !== undefined)
-                    {
-                        this.setState({fastas : arg.val});
-                    }
-                    if(arg.key == "aligns" && arg.val !== undefined)
-                    {
-                        this.setState({aligns : arg.val});
-                    }
-                }
-            }
-        );
     }
 
     public render() : JSX.Element
@@ -47,8 +26,8 @@ export class OutputView extends React.Component<OutputViewProps,{}>
         return (
             <div>
                 <AlignmentsReportTable
-                    aligns={this.state.aligns}
-                    fastas={this.state.fastas}
+                    aligns={this.props.aligns}
+                    fastas={this.props.fastas}
                 />
             </div>
         );

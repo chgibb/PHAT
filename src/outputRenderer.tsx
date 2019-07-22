@@ -8,37 +8,62 @@ import {makeWindowDockable} from "./req/renderer/dock";
 
 import "./req/renderer/styles/defaults";
 import "./req/renderer/commonBehaviour";
-import {OutputView} from "./req/renderer/OutputRenderer/outputView";
+import {OutputView, OutputViewProps} from "./req/renderer/OutputRenderer/outputView";
+import { renderAppRoot } from './req/renderer/renderAppRoot';
 
-render(
-    <OutputView />,
-    document.getElementById("app")
-);
+class OutputApp extends React.Component<{},OutputViewProps>
+{
+    public state : OutputViewProps;
 
-makeWindowDockable("output");
-/*ipc.on(
-            "output",function(event : Electron.IpcMessageEvent,arg : any)
+    public constructor()
+    {
+        super(undefined);
+
+        this.state = {
+
+        } as OutputViewProps;
+
+        ipc.on(
+            "output",(event : Electron.IpcMessageEvent,arg : any) =>
             {
                 if(arg.action === "getKey" || arg.action === "keyChange")
                 {
-                    let masterView = <masterView.View>viewMgr.getViewByName("masterView");
                     if(arg.key == "fastqInputs" && arg.val !== undefined)
                     {
-                        masterView.fastqInputs = arg.val;
+                        this.setState({fastqs : arg.val});
                     }
                     if(arg.key == "fastaInputs" && arg.val !== undefined)
                     {
-                        masterView.fastaInputs = arg.val;
+                        this.setState({fastas : arg.val});
                     }
                     if(arg.key == "aligns" && arg.val !== undefined)
                     {
-                        masterView.alignData = arg.val;
+                        this.setState({aligns : arg.val});
                     }
                 }
-                viewMgr.render();
             }
         );
-*/
+    }
+
+    public render() : JSX.Element
+    {
+        return (
+            <OutputView
+                fastqs={this.state.fastqs}
+                fastas={this.state.fastas}
+                aligns={this.state.aligns}
+            />
+        )
+    }
+}
+
+renderAppRoot(
+    () => <OutputApp />,
+    document.getElementById("app") as HTMLDivElement
+);
+
+makeWindowDockable("output");
+
 ipc.send(
     "keySub",
             {

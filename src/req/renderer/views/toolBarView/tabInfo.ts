@@ -19,7 +19,7 @@ export const tabInfo : {
         imgURI : () => getReadable("img/align.png"),
     },
     "Output": {
-        refName : "Output",
+        refName : "output",
         imgURI : () => getReadable("img/output.png"),
     },
     "Genome Builder": {

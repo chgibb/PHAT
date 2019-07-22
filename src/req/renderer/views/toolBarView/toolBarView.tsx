@@ -19,6 +19,7 @@ import {AlignView} from "../alignView/alignView";
 
 import {ToolBarTab, ToolBarTabs} from "./containers/toolBarTabs/toolBarTabs";
 import {tabInfo} from "./tabInfo";
+import { OutputView } from '../../OutputRenderer/outputView';
 
 
 export interface ToolBarViewState
@@ -119,6 +120,23 @@ export class ToolBarView extends React.Component<ToolBarViewProps,ToolBarViewSta
                                     <img 
                                         src={tabInfo["Output"].imgURI()}
                                         className={`${activeHover} ${activeHoverButton} ${toolBarButton}`} 
+                                        onClick={()=>{
+                                            this.setState({
+                                                views : this.state.views.concat([
+                                                    {
+                                                        label : "Output",
+                                                        refKey : "Output",
+                                                        body : (props : ToolBarViewProps) => (
+                                                            <OutputView
+                                                                fastqs={props.fastqs}
+                                                                fastas={props.fastas}
+                                                                aligns={props.aligns}
+                                                            />
+                                                        )
+                                                    }
+                                                ])
+                                            })
+                                        }}
                                     />
                                 </Grid>
                                 <Grid item>
