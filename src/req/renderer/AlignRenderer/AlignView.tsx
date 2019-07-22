@@ -9,12 +9,17 @@ import {RunAlignmentForm} from "../containers/forms/runAlignment/runAlignmentFor
 
 export interface AlignViewState
 {
-    fastqs? : Array<Fastq>;
-    fastas? : Array<Fasta>;
     shouldAllowTriggeringOps? : boolean;
 }
 
-export class AlignView  extends React.Component<{},AlignViewState>
+export interface AlignViewProps
+{
+    fastqs? : Array<Fastq>;
+    fastas? : Array<Fasta>;
+    operations? : Array<AtomicOperation>;
+}
+
+export class AlignView  extends React.Component<AlignViewProps,AlignViewState>
 {
     public state : AlignViewState;
     public constructor()
@@ -22,66 +27,31 @@ export class AlignView  extends React.Component<{},AlignViewState>
         super(undefined);
         
         this.state = {
-
+            shouldAllowTriggeringOps : true
         } as AlignViewState;
+    }
 
-        ipc.on
-        (
-            "align",(event : Electron.IpcMessageEvent,arg : any) =>
+    public componentDidUpdate() : void
+    {
+        if(!this.props.operations)
+            return;
+
+            let found = false;
+            for(let i = 0; i != this.props.operations.length; ++i)
             {
-                if(arg.action == "getKey" || arg.action == "keyChange")
-                {
-                    if(arg.key == "fastqInputs")
-                    {
-                        if(arg.val !== undefined)
-                        {
-                            this.setState({fastqs: arg.val});
-                        }
-                    }
-                    if(arg.key == "fastaInputs")
-                    {
-                        if(arg.val !== undefined)
-                        {
-                            this.setState({fastas: arg.val});
-                        }
-                    }
-                    let found = false;
-                    if(arg.key == "operations")
-                    {
-                        if(arg.val !== undefined)
-                        {
-                            let ops : Array<AtomicOperation> = arg.val;
-                            try
-                            {
-                                for(let i = 0; i != ops.length; ++i)
-                                {
-                                    if(ops[i].name == "indexFastaForBowtie2" || ops[i].name == "runBowtie2Alignment" || ops[i].name == "indexFastaForHisat2" || ops[i].name == "runHisat2Alignment")
+                if(this.props.operations[i].name == "indexFastaForBowtie2" || this.props.operations[i].name == "runBowtie2Alignment" || this.props.operations[i].name == "indexFastaForHisat2" || this.props.operations[i].name == "runHisat2Alignment")
                                     {
                                         found = true;
+                                        break;
                                     }
-                                }
-                            }
-                            catch(err)
-                            {}
-                        }
-                    }
-
-                    if(found)
-                    {
-                        this.setState({
-                            shouldAllowTriggeringOps: false
-                        });
-                    }
-                    
-                    else
-                    {
-                        this.setState({
-                            shouldAllowTriggeringOps: true
-                        });
-                    }
-                }
             }
-        );
+    
+            if(this.state.shouldAllowTriggeringOps != !found)
+            {
+                this.setState({
+                    shouldAllowTriggeringOps : !found
+                });
+            }
     }
 
     public render() : JSX.Element
@@ -90,8 +60,8 @@ export class AlignView  extends React.Component<{},AlignViewState>
         return (
             <div>
                 <RunAlignmentForm
-                    fastas={this.state.fastas}
-                    fastqs={this.state.fastqs}
+                    fastas={this.props.fastas}
+                    fastqs={this.props.fastqs}
                     shouldAllowTriggeringOps={this.state.shouldAllowTriggeringOps}
                 />
             </div>
