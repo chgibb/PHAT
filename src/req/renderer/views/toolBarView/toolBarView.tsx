@@ -18,6 +18,7 @@ import {PHATView} from "../../phatView";
 
 import {ToolBarTab, ToolBarTabs} from "./containers/toolBarTabs/toolBarTabs";
 import {tabInfo} from "./tabInfo";
+import { AlignView } from '../../AlignRenderer/AlignView';
 
 
 export interface ToolBarViewState
@@ -94,6 +95,23 @@ export class ToolBarView extends React.Component<ToolBarViewProps,ToolBarViewSta
                                     <img 
                                         src={tabInfo["Align"].imgURI()}
                                         className={`${activeHover} ${activeHoverButton} ${toolBarButton}`} 
+                                        onClick={()=>{
+                                            this.setState({
+                                                views : this.state.views.concat([
+                                                    {
+                                                        label : "Alignment",
+                                                        refKey : "Align",
+                                                        body : (props : ToolBarViewProps) => (
+                                                            <AlignView
+                                                                fastqs={props.fastqs}
+                                                                fastas={props.fastas}
+                                                                operations={props.operations}
+                                                            />
+                                                        )
+                                                    }
+                                                ])
+                                            })
+                                        }}
                                     />
                                 </Grid>
                                 <Grid item>
