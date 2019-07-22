@@ -7,10 +7,10 @@ import {GetKeyEvent, KeySubEvent} from "./req/ipcEvents";
 import {makeWindowDockable} from "./req/renderer/dock";
 import "./req/renderer/commonBehaviour";
 import "./req/renderer/styles/defaults";
-import {AlignRendererApp} from "./req/renderer/AlignRenderer/AlignView";
+import {AlignView} from "./req/renderer/AlignRenderer/AlignView";
 
 render(
-    <AlignRendererApp />,
+    <AlignView />,
     document.getElementById("app")
 );
 

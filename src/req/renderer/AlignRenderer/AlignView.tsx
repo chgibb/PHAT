@@ -7,23 +7,23 @@ import {Fasta} from "../../fasta";
 import {AtomicOperation} from "../../operations/atomicOperations";
 import {RunAlignmentForm} from "../containers/forms/runAlignment/runAlignmentForm";
 
-export interface AlignRendererAppState
+export interface AlignViewState
 {
     fastqs? : Array<Fastq>;
     fastas? : Array<Fasta>;
     shouldAllowTriggeringOps? : boolean;
 }
 
-export class AlignRendererApp  extends React.Component<{},AlignRendererAppState>
+export class AlignView  extends React.Component<{},AlignViewState>
 {
-    public state : AlignRendererAppState;
+    public state : AlignViewState;
     public constructor()
     {
         super(undefined);
         
         this.state = {
 
-        } as AlignRendererAppState;
+        } as AlignViewState;
 
         ipc.on
         (
