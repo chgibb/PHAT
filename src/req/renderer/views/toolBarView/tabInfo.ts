@@ -15,7 +15,7 @@ export const tabInfo : {
         imgURI : () => getReadable("img/qc.png"),
     },
     "Align": {
-        refName : "Align",
+        refName : "align",
         imgURI : () => getReadable("img/align.png"),
     },
     "Output": {
