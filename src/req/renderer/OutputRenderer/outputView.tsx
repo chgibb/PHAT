@@ -7,22 +7,18 @@ import {AlignData} from "../../alignData";
 import {Fastq} from "../../fastq";
 import {AlignmentsReportTable} from "../containers/tables/alignmentsReportTable";
 
-export interface OutputRendererAppState
+export interface OutputViewProps
 {
     fastqs? : Array<Fastq>;
     fastas? : Array<Fasta>;
     aligns? : Array<AlignData>;
 }
 
-export class OutputRendererApp extends React.Component<{},OutputRendererAppState>
+export class OutputView extends React.Component<OutputViewProps,{}>
 {
-    public constructor()
+    public constructor(props : OutputViewProps)
     {
-        super({});
-
-        this.state = {
-
-        } as OutputRendererAppState;
+        super(props);
 
         ipc.on(
             "output",(event : Electron.IpcMessageEvent,arg : any) =>
