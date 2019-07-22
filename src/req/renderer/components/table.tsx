@@ -65,6 +65,7 @@ export class Table<T> extends React.Component<TableProps<T>,{}>
                 key={this.renderKey}
                 title={this.props.title}
                 options={{
+                    showTextRowsSelected : false,
                     toolbar : true,
                     actionsColumnIndex : this.props.actionsColumnIndex ? this.props.actionsColumnIndex : 0,
                     headerStyle: tableCell as any,
