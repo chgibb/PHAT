@@ -8,7 +8,7 @@ import {makeWindowDockable} from "./req/renderer/dock";
 
 import "./req/renderer/styles/defaults";
 import "./req/renderer/commonBehaviour";
-import {OutputRendererApp} from "./req/renderer/OutputRenderer/app";
+import {OutputRendererApp} from "./req/renderer/OutputRenderer/outputView";
 
 render(
     <OutputRendererApp />,
