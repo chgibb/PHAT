@@ -8,7 +8,7 @@ import {makeWindowDockable} from "./req/renderer/dock";
 import "./req/renderer/commonBehaviour";
 import "./req/renderer/styles/defaults";
 import {AlignView,AlignViewProps} from "./req/renderer/AlignRenderer/AlignView";
-import { renderAppRoot } from './req/renderer/renderAppRoot';
+import {renderAppRoot} from "./req/renderer/renderAppRoot";
 
 class AlignApp extends React.Component<{},AlignViewProps>
 {

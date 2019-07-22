@@ -36,22 +36,22 @@ export class AlignView  extends React.Component<AlignViewProps,AlignViewState>
         if(!this.props.operations)
             return;
 
-            let found = false;
-            for(let i = 0; i != this.props.operations.length; ++i)
+        let found = false;
+        for(let i = 0; i != this.props.operations.length; ++i)
+        {
+            if(this.props.operations[i].name == "indexFastaForBowtie2" || this.props.operations[i].name == "runBowtie2Alignment" || this.props.operations[i].name == "indexFastaForHisat2" || this.props.operations[i].name == "runHisat2Alignment")
             {
-                if(this.props.operations[i].name == "indexFastaForBowtie2" || this.props.operations[i].name == "runBowtie2Alignment" || this.props.operations[i].name == "indexFastaForHisat2" || this.props.operations[i].name == "runHisat2Alignment")
-                                    {
-                                        found = true;
-                                        break;
-                                    }
+                found = true;
+                break;
             }
+        }
     
-            if(this.state.shouldAllowTriggeringOps != !found)
-            {
-                this.setState({
-                    shouldAllowTriggeringOps : !found
-                });
-            }
+        if(this.state.shouldAllowTriggeringOps != !found)
+        {
+            this.setState({
+                shouldAllowTriggeringOps : !found
+            });
+        }
     }
 
     public render() : JSX.Element
