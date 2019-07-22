@@ -22,9 +22,9 @@ export interface AlignViewProps
 export class AlignView  extends React.Component<AlignViewProps,AlignViewState>
 {
     public state : AlignViewState;
-    public constructor()
+    public constructor(props : AlignViewProps)
     {
-        super(undefined);
+        super(props);
         
         this.state = {
             shouldAllowTriggeringOps : true
