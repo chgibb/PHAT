@@ -15,10 +15,10 @@ import {Fasta} from "../../../fasta";
 import {AlignData} from "../../../alignData";
 import {InputView} from "../inputView/inputView";
 import {PHATView} from "../../phatView";
+import {AlignView} from "../../AlignRenderer/AlignView";
 
 import {ToolBarTab, ToolBarTabs} from "./containers/toolBarTabs/toolBarTabs";
 import {tabInfo} from "./tabInfo";
-import { AlignView } from '../../AlignRenderer/AlignView';
 
 
 export interface ToolBarViewState
@@ -95,7 +95,8 @@ export class ToolBarView extends React.Component<ToolBarViewProps,ToolBarViewSta
                                     <img 
                                         src={tabInfo["Align"].imgURI()}
                                         className={`${activeHover} ${activeHoverButton} ${toolBarButton}`} 
-                                        onClick={()=>{
+                                        onClick={()=>
+                                        {
                                             this.setState({
                                                 views : this.state.views.concat([
                                                     {
@@ -110,7 +111,7 @@ export class ToolBarView extends React.Component<ToolBarViewProps,ToolBarViewSta
                                                         )
                                                     }
                                                 ])
-                                            })
+                                            });
                                         }}
                                     />
                                 </Grid>
