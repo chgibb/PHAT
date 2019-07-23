@@ -1,7 +1,6 @@
 import * as electron from "electron";
 const ipc = electron.ipcRenderer;
 import * as React from "react";
-import {render} from "react-dom";
 
 import {GetKeyEvent,KeySubEvent} from "./req/ipcEvents";
 import {makeWindowDockable} from "./req/renderer/dock";
@@ -9,7 +8,7 @@ import {makeWindowDockable} from "./req/renderer/dock";
 import "./req/renderer/styles/defaults";
 import "./req/renderer/commonBehaviour";
 import {OutputView, OutputViewProps} from "./req/renderer/views/outputView/outputView";
-import { renderAppRoot } from './req/renderer/renderAppRoot';
+import {renderAppRoot} from "./req/renderer/renderAppRoot";
 
 class OutputApp extends React.Component<{},OutputViewProps>
 {
@@ -53,7 +52,7 @@ class OutputApp extends React.Component<{},OutputViewProps>
                 fastas={this.state.fastas}
                 aligns={this.state.aligns}
             />
-        )
+        );
     }
 }
 

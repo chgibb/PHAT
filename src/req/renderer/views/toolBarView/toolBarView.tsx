@@ -17,11 +17,11 @@ import {InputView} from "../inputView/inputView";
 import {PHATView} from "../../phatView";
 import {AlignView} from "../alignView/alignView";
 import {QCView} from "../../QCRenderer/QCView";
+import {OutputView} from "../outputView/outputView";
+import {CircularGenomeBuilderView} from "../circularGenomeBuilderView/circularGenomeBuilderView";
 
 import {ToolBarTab, ToolBarTabs} from "./containers/toolBarTabs/toolBarTabs";
 import {tabInfo} from "./tabInfo";
-import { OutputView } from '../outputView/outputView';
-import { CircularGenomeBuilderView } from '../circularGenomeBuilderView/circularGenomeBuilderView';
 
 
 export interface ToolBarViewState
@@ -138,7 +138,8 @@ export class ToolBarView extends React.Component<ToolBarViewProps,ToolBarViewSta
                                     <img 
                                         src={tabInfo["Output"].imgURI()}
                                         className={`${activeHover} ${activeHoverButton} ${toolBarButton}`} 
-                                        onClick={()=>{
+                                        onClick={()=>
+                                        {
                                             this.setState({
                                                 views : this.state.views.concat([
                                                     {
@@ -153,7 +154,7 @@ export class ToolBarView extends React.Component<ToolBarViewProps,ToolBarViewSta
                                                         )
                                                     }
                                                 ])
-                                            })
+                                            });
                                         }}
                                     />
                                 </Grid>
@@ -161,7 +162,8 @@ export class ToolBarView extends React.Component<ToolBarViewProps,ToolBarViewSta
                                     <img 
                                         src={tabInfo["Genome Builder"].imgURI()}
                                         className={`${activeHover} ${activeHoverButton} ${toolBarButton}`} 
-                                        onClick={()=>{
+                                        onClick={()=>
+                                        {
                                             this.setState({
                                                 views : this.state.views.concat([
                                                     {
@@ -172,7 +174,7 @@ export class ToolBarView extends React.Component<ToolBarViewProps,ToolBarViewSta
                                                         )
                                                     }
                                                 ])
-                                            })
+                                            });
                                         }}
                                     />
                                 </Grid>

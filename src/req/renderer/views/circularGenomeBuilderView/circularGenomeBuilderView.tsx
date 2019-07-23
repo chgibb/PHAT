@@ -1,5 +1,6 @@
 import * as React from "react";
-import { getReadable } from '../../../getAppPath';
+
+import {getReadable} from "../../../getAppPath";
 
 export class CircularGenomeBuilderView extends React.Component<{},{}>
 {
@@ -9,8 +10,9 @@ export class CircularGenomeBuilderView extends React.Component<{},{}>
         super(undefined);
     }
 
-    public componentDidMount(){
-        console.log('genome builder didmount');
+    public componentDidMount()
+    {
+        console.log("genome builder didmount");
         if(this.ref.current)
         {
             this.ref.current.innerHTML = `

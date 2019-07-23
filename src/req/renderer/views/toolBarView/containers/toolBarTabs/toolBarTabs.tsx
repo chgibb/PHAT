@@ -1,7 +1,6 @@
 import * as React from "react";
 import * as electron from "electron";
 
-import {SwipeableViews} from "../../../../components/swipeableViews";
 import {TabContainer} from "../../../../components/tabContainer";
 import {AppBar} from "../../../../components/appBar";
 import {GridWrapper} from "../../../../containers/gridWrapper";
@@ -10,11 +9,9 @@ import {Chip} from "../../../../components/chip";
 import {Avatar} from "../../../../components/avatar";
 import {tabInfo} from "../../tabInfo";
 import {AtomicOperationIPC} from "../../../../../atomicOperationsIPC";
+import {Tabs} from "../../../../components/tabs";
 
 import {wrapperBGColour} from "./styles/wrapperBGColour";
-import {outerSwipeableWrapper} from "./styles/outerSwipeableWrapper";
-import {innerSwipeableWrapper} from "./styles/innerSwipeableWrapper";
-import { Tabs } from '../../../../components/tabs';
 
 const ipc = electron.ipcRenderer;
 
@@ -62,7 +59,7 @@ export class ToolBarTabs<T> extends React.Component<ToolBarTabsProps<T>,ToolBarT
 
     }
 
-    public setActiveTabIndex(event : React.ChangeEvent,index : number) : void
+    public setActiveTabIndex(index : number) : void
     {
         this.setState({
             activeTabIndex : index
@@ -74,7 +71,7 @@ export class ToolBarTabs<T> extends React.Component<ToolBarTabsProps<T>,ToolBarT
         if(this.props.tabs && this.props.tabs.length != 0)
         {
             if(this.state.activeTabIndex > this.props.tabs.length - 1)
-                this.setActiveTabIndex(undefined,this.props.tabs.length - 1);
+                this.setActiveTabIndex(this.props.tabs.length - 1);
             return (
                 <div className={wrapperBGColour}>
                     <AppBar position="static" color="default">
@@ -91,7 +88,7 @@ export class ToolBarTabs<T> extends React.Component<ToolBarTabsProps<T>,ToolBarT
                                                 color="primary"
                                                 onClick={()=>
                                                 {
-                                                    this.setActiveTabIndex(undefined,i);
+                                                    this.setActiveTabIndex(i);
                                                 }}
                                                 onDelete={() => 
                                                 {
@@ -100,7 +97,7 @@ export class ToolBarTabs<T> extends React.Component<ToolBarTabsProps<T>,ToolBarT
                                                 avatar={
                                                     <Avatar imgProps={
                                                         {
-                                                            onDragEnd : (event : React.DragEvent<HTMLImageElement>) => 
+                                                            onDragEnd : () => 
                                                             {
                                                                 console.log(`stopped drgging ${i}`);
                                                                 let clientBounds = electron.remote.getCurrentWindow().getBounds();
@@ -130,23 +127,23 @@ export class ToolBarTabs<T> extends React.Component<ToolBarTabsProps<T>,ToolBarT
                                 })}
                                 
                             </Grid>
-                            </GridWrapper>
-                            <Tabs value={this.state.activeTabIndex} onChange={this.setActiveTabIndex}>
+                        </GridWrapper>
+                        <Tabs value={this.state.activeTabIndex} onChange={this.setActiveTabIndex}>
                             
-                            </Tabs>
+                        </Tabs>
                         
                     </AppBar>
                     {this.props.tabs.map((el,i) => 
-                                {
-                                    return (
-                                        <div style={{
-                                             visibility : this.state.activeTabIndex == i ? "visible" : "hidden",
-                                             height : this.state.activeTabIndex == i ? "inherit" : "0px"
-                                        }}>
-                                        <TabContainer dir="rtl">{el.body(this.props.propPack)}</TabContainer>
-                                        </div>
-                                    );
-                                })}
+                    {
+                        return (
+                            <div style={{
+                                visibility : this.state.activeTabIndex == i ? "visible" : "hidden",
+                                height : this.state.activeTabIndex == i ? "inherit" : "0px"
+                            }}>
+                                <TabContainer dir="rtl">{el.body(this.props.propPack)}</TabContainer>
+                            </div>
+                        );
+                    })}
                 </div>
             );
         }
