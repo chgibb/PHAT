@@ -128,10 +128,6 @@ export class ToolBarTabs<T> extends React.Component<ToolBarTabsProps<T>,ToolBarT
                                 
                             </Grid>
                         </GridWrapper>
-                        <Tabs value={this.state.activeTabIndex} onChange={this.setActiveTabIndex}>
-                            
-                        </Tabs>
-                        
                     </AppBar>
                     {this.props.tabs.map((el,i) => 
                     {
