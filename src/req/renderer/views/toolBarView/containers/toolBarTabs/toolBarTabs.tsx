@@ -14,6 +14,7 @@ import {AtomicOperationIPC} from "../../../../../atomicOperationsIPC";
 import {wrapperBGColour} from "./styles/wrapperBGColour";
 import {outerSwipeableWrapper} from "./styles/outerSwipeableWrapper";
 import {innerSwipeableWrapper} from "./styles/innerSwipeableWrapper";
+import { Tabs } from '../../../../components/tabs';
 
 const ipc = electron.ipcRenderer;
 
@@ -61,7 +62,7 @@ export class ToolBarTabs<T> extends React.Component<ToolBarTabsProps<T>,ToolBarT
 
     }
 
-    public setActiveTabIndex(index : number) : void
+    public setActiveTabIndex(event : React.ChangeEvent,index : number) : void
     {
         this.setState({
             activeTabIndex : index
@@ -73,7 +74,7 @@ export class ToolBarTabs<T> extends React.Component<ToolBarTabsProps<T>,ToolBarT
         if(this.props.tabs && this.props.tabs.length != 0)
         {
             if(this.state.activeTabIndex > this.props.tabs.length - 1)
-                this.setActiveTabIndex(this.props.tabs.length - 1);
+                this.setActiveTabIndex(undefined,this.props.tabs.length - 1);
             return (
                 <div className={wrapperBGColour}>
                     <AppBar position="static" color="default">
@@ -90,7 +91,7 @@ export class ToolBarTabs<T> extends React.Component<ToolBarTabsProps<T>,ToolBarT
                                                 color="primary"
                                                 onClick={()=>
                                                 {
-                                                    this.setActiveTabIndex(i);
+                                                    this.setActiveTabIndex(undefined,i);
                                                 }}
                                                 onDelete={() => 
                                                 {
@@ -127,25 +128,25 @@ export class ToolBarTabs<T> extends React.Component<ToolBarTabsProps<T>,ToolBarT
                                         </Grid>
                                     );
                                 })}
+                                
                             </Grid>
-                        </GridWrapper>
+                            </GridWrapper>
+                            <Tabs value={this.state.activeTabIndex} onChange={this.setActiveTabIndex}>
+                            
+                            </Tabs>
+                        
                     </AppBar>
-                    <div className={outerSwipeableWrapper}>
-                        <div className={innerSwipeableWrapper}>
-                            <SwipeableViews
-                                axis="x"
-                                index={this.state.activeTabIndex}
-                                onChangeIndex={this.setActiveTabIndex}
-                            >
-                                {this.props.tabs.map((el) => 
+                    {this.props.tabs.map((el,i) => 
                                 {
                                     return (
+                                        <div style={{
+                                             visibility : this.state.activeTabIndex == i ? "visible" : "hidden",
+                                             height : this.state.activeTabIndex == i ? "inherit" : "0px"
+                                        }}>
                                         <TabContainer dir="rtl">{el.body(this.props.propPack)}</TabContainer>
+                                        </div>
                                     );
                                 })}
-                            </SwipeableViews>
-                        </div>
-                    </div>
                 </div>
             );
         }
