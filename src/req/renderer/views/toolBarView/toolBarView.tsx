@@ -16,6 +16,7 @@ import {AlignData} from "../../../alignData";
 import {InputView} from "../inputView/inputView";
 import {PHATView} from "../../phatView";
 import {AlignView} from "../alignView/alignView";
+import {QCView} from "../../QCRenderer/QCView";
 
 import {ToolBarTab, ToolBarTabs} from "./containers/toolBarTabs/toolBarTabs";
 import {tabInfo} from "./tabInfo";
@@ -90,7 +91,23 @@ export class ToolBarView extends React.Component<ToolBarViewProps,ToolBarViewSta
                                 <Grid item>
                                     <img 
                                         src={tabInfo["QC"].imgURI()}
-                                        className={`${activeHover} ${activeHoverButton} ${toolBarButton}`} 
+                                        className={`${activeHover} ${activeHoverButton} ${toolBarButton}`}
+                                        onClick={() =>
+                                        {
+                                            this.setState({
+                                                views : this.state.views.concat([
+                                                    {
+                                                        label : "QC",
+                                                        refKey : "QC",
+                                                        body : (props : ToolBarViewProps) => (
+                                                            <QCView
+                                                                fastqs={props.fastqs}
+                                                                operations={props.operations}
+                                                            />
+                                                        )
+                                                    }])
+                                            });
+                                        }} 
                                     />
                                 </Grid>
                                 <Grid item>
