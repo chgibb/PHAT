@@ -15,6 +15,7 @@ if [[ "$1" != "opt" ]]; then
 	fi
 
 	cp src/*.html phat-linux-x64/resources/app
+	cp -R .buildCache/debug/node_modules phat-linux-x64/resources/app;
 	cd .buildCache/debug/src; cp -R . ../../../phat-linux-x64/resources/app;
 fi
 
