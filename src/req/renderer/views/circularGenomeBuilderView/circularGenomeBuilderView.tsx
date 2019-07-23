@@ -10,13 +10,19 @@ export class CircularGenomeBuilderView extends React.Component<{},{}>
     }
 
     public componentDidMount(){
-        console.log('genome builder didmount')
+        console.log('genome builder didmount');
+        if(this.ref.current)
+        {
+            this.ref.current.innerHTML = `
+                <webview nodeintegration="true" src="${getReadable("circularGenomeBuilder.html")}" style="height:100%;"/>
+            `;
+        }
     }
 
     public render() : JSX.Element
     {
         return (
-            <div ref={this.ref} />
+            <div ref={this.ref} style={{height: "100%"}}/>
         );
     }
 }
