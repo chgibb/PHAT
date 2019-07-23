@@ -53,12 +53,15 @@ export class Table<T> extends React.Component<TableProps<T>,{}>
         super(props);
     }
 
+    public componentDidUpdate()
+    {
+        this.renderKey += 1;
+    }
+
     public render() : JSX.Element
     {
         let defaultPageSize = this.props.data ? this.props.data.length < 100 ? this.props.data.length : 100 : 5;
         let defaultPageSizeOptions  = [defaultPageSize,500,1000];
-
-        this.renderKey += 1;
 
         return (
             <MuiTable
