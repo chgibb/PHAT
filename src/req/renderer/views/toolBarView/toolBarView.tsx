@@ -22,6 +22,7 @@ import {CircularGenomeBuilderView} from "../circularGenomeBuilderView/circularGe
 
 import {ToolBarTab, ToolBarTabs} from "./containers/toolBarTabs/toolBarTabs";
 import {tabInfo} from "./tabInfo";
+import { OutputViewWebView } from './views/outputViewWebView';
 
 
 export interface ToolBarViewState
@@ -146,11 +147,7 @@ export class ToolBarView extends React.Component<ToolBarViewProps,ToolBarViewSta
                                                         label : "Output",
                                                         refKey : "Output",
                                                         body : (props : ToolBarViewProps) => (
-                                                            <OutputView
-                                                                fastqs={props.fastqs}
-                                                                fastas={props.fastas}
-                                                                aligns={props.aligns}
-                                                            />
+                                                            <OutputViewWebView />
                                                         )
                                                     }
                                                 ])
