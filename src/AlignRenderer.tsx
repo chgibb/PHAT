@@ -22,8 +22,7 @@ class AlignApp extends React.Component<{},AlignViewProps>
 
         } as AlignViewProps;
 
-        ipc.on
-        (
+        ipc.on(
             "align",(event : Electron.IpcMessageEvent,arg : any) =>
             {
                 if(arg.action == "getKey" || arg.action == "keyChange")
