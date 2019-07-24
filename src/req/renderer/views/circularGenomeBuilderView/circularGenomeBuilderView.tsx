@@ -24,7 +24,7 @@ export class CircularGenomeBuilderView extends React.Component<{},{}>
     public render() : JSX.Element
     {
         return (
-            <div ref={this.ref} style={{height: "100%"}}/>
+           <div ref={this.ref} style={{height: "85vh",width: "100%"}}/>
         );
     }
 }
