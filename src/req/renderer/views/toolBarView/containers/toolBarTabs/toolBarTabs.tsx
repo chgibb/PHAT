@@ -65,6 +65,17 @@ export class ToolBarTabs<T> extends React.Component<ToolBarTabsProps<T>,ToolBarT
             activeTabIndex : index
         });
     }
+
+    public componentDidUpdate(prevProps : Readonly<ToolBarTabsProps<T>>,prevState : Readonly<ToolBarTabsState>) : void
+    {
+        if(this.props.tabs && prevProps.tabs)
+        {
+            if(this.props.tabs.length > prevProps.tabs.length)
+            {
+                this.setActiveTabIndex(this.props.tabs.length - 1);
+            }
+        }
+    }
     
     public render() : JSX.Element
     {
