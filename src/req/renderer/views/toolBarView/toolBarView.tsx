@@ -17,12 +17,11 @@ import {InputView} from "../inputView/inputView";
 import {PHATView} from "../../phatView";
 import {AlignView} from "../alignView/alignView";
 import {QCView} from "../../QCRenderer/QCView";
-import {OutputView} from "../outputView/outputView";
 import {CircularGenomeBuilderView} from "../circularGenomeBuilderView/circularGenomeBuilderView";
 
 import {ToolBarTab, ToolBarTabs} from "./containers/toolBarTabs/toolBarTabs";
 import {tabInfo} from "./tabInfo";
-import { OutputViewWebView } from './views/outputViewWebView';
+import {OutputViewWebView} from "./views/outputViewWebView";
 
 
 export interface ToolBarViewState
