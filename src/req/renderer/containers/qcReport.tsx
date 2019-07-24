@@ -44,7 +44,7 @@ export class QCReport extends React.Component<QCReportProps,{}>
                     }}
                     label="Go Back"
                 />
-                <div ref={this.ref} />
+                <iframe src={getQCReportHTML(getReferenceFromUuid<Fastq>(this.props.fastqs,this.props.viewingFastq))}/>
             </div>
         );
     }
