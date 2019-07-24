@@ -1,7 +1,6 @@
 import * as electron from "electron";
 const ipc = electron.ipcRenderer;
 import * as React from "react";
-import {Component} from "react";
 
 import {AtomicOperation} from "../../operations/atomicOperations";
 import {FullWidthTabs} from "../containers/fullWidthTabs";
@@ -21,7 +20,7 @@ export interface InputRendererAppState
     shouldAllowTriggeringOps : boolean;
 }
 
-export class InputRendererApp extends Component<{},InputRendererAppState>
+export class InputRendererApp extends React.Component<{},InputRendererAppState>
 {
     public state : InputRendererAppState;
     public constructor()

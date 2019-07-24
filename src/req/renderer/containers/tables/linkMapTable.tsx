@@ -1,9 +1,9 @@
 import * as React from "react";
 
-import {Table} from "../components/table";
-import {AlignData} from "../../alignData";
-import {CompareArrows} from "../components/icons/compareArrows";
-import {Fasta} from "../../fasta";
+import {Table} from "../../components/table";
+import {AlignData} from "../../../alignData";
+import {CompareArrows} from "../../components/icons/compareArrows";
+import {Fasta} from "../../../fasta";
 
 export interface LinkMapTableProps 
 {
@@ -38,15 +38,18 @@ export class LinkMapTable extends React.Component<LinkMapTableProps, {}>
         return (
             <Table<AlignData>
                 title=""
-                toolbar={false}
                 columns={[
                     {
                         title: "File Name",
-                        field: "alias"
+                        field: "alias",
+                        searchable : true,
+                        hidden : false
                     },
                     {
                         title: "Size",
-                        field: "sizeString"
+                        field: "sizeString",
+                        searchable : true,
+                        hidden : false
                     },
                     {
                         title: "Ref Seq",
@@ -54,7 +57,9 @@ export class LinkMapTable extends React.Component<LinkMapTableProps, {}>
                         render: (row: AlignData) => 
                         {
                             return row.fasta ? row.fasta.alias : "Not Linked";
-                        }
+                        },
+                        searchable : true,
+                        hidden : false
                     }
                 ]}
                 actions={[

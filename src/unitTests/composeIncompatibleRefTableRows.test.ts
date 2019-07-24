@@ -2,7 +2,7 @@
 
 import * as fs from "fs";
 
-import {composeIncompatibleRefTableRows} from "../req/renderer/containers/incompatibleRefTable";
+import {composeIncompatibleRefTableRows} from "../req/renderer/containers/tables/incompatibleRefTable";
 import {Fasta} from "../req/fasta";
 import {LinkableRefSeq} from "../req/getLinkableRefSeqs";
 

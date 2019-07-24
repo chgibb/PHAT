@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import {FastqTable} from "../containers/fastqTable";
+import {FastqTable} from "../containers/tables/fastqTable";
 import {Button} from "../components/button";
 
 import * as pub from "./publish";

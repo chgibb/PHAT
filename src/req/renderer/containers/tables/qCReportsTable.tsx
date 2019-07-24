@@ -1,10 +1,10 @@
 import * as React from "react";
 
-import {Fastq} from "../../fastq";
-import {Table} from "../components/table";
-import {getQCSummaryByName} from "../../QCData";
-import {AddBox} from "../components/icons/addBox";
-import {Search} from "../components/icons/search";
+import {Fastq} from "../../../fastq";
+import {Table} from "../../components/table";
+import {getQCSummaryByName} from "../../../QCData";
+import {AddBox} from "../../components/icons/addBox";
+import {Search} from "../../components/icons/search";
 
 export interface QCReportsTableProps
 {
@@ -18,12 +18,13 @@ export function QCReportsTable(props : QCReportsTableProps) : JSX.Element
 {
     return (
         <Table<Fastq>
-            toolbar={true}
             title="QC Reports"
             columns={[
                 {
                     title : "Sample",
                     field : "alias",
+                    searchable : true,
+                    hidden : false
                 },
                 {
                     title : "Per Base Sequence Quality",
@@ -36,7 +37,9 @@ export function QCReportsTable(props : QCReportsTableProps) : JSX.Element
                                 "Per base sequence quality"
                             )}</p>
                         );
-                    }
+                    },
+                    searchable : true,
+                    hidden : false
                 },
                 {
                     title : "Per Sequence Quality Scores",
@@ -49,7 +52,9 @@ export function QCReportsTable(props : QCReportsTableProps) : JSX.Element
                                 "Per sequence quality scores"
                             )}</p>
                         );
-                    }
+                    },
+                    searchable : true,
+                    hidden : false
                 },
                 {
                     title : "Per Sequence GC Content",
@@ -62,7 +67,9 @@ export function QCReportsTable(props : QCReportsTableProps) : JSX.Element
                                 "Per sequence GC content"
                             )}</p>
                         );
-                    }
+                    },
+                    searchable : true,
+                    hidden : false
                 },
                 {
                     title : "Sequence Duplication Levels",
@@ -75,7 +82,9 @@ export function QCReportsTable(props : QCReportsTableProps) : JSX.Element
                                 "Sequence Duplication Levels"
                             )}</p>
                         );
-                    }
+                    },
+                    searchable : true,
+                    hidden : false
                 },
                 {
                     title : "Overrepresented Sequences",
@@ -88,7 +97,9 @@ export function QCReportsTable(props : QCReportsTableProps) : JSX.Element
                                 "Overrepresented sequences"
                             )}</p>
                         );
-                    }
+                    },
+                    searchable : true,
+                    hidden : false
                 }
             ]}
             actions={[

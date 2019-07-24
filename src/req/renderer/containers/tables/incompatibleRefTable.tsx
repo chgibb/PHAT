@@ -1,9 +1,9 @@
 import * as React from "react";
 
-import {Fasta} from "../../fasta";
-import {LinkableRefSeq} from "../../getLinkableRefSeqs";
-import {Table} from "../components/table";
-import {Info} from "../components/icons/info";
+import {Fasta} from "../../../fasta";
+import {LinkableRefSeq} from "../../../getLinkableRefSeqs";
+import {Table} from "../../components/table";
+import {Info} from "../../components/icons/info";
 
 export interface IncompatibleRefTableProps
 {
@@ -47,20 +47,25 @@ export function IncompatibleRefTable(props : IncompatibleRefTableProps) : JSX.El
     let rows = composeIncompatibleRefTableRows(props.fastaInputs,props.linkableRefSeqs);
     return (
         <Table<IncompatibleRefTableRow>
-            toolbar={true}
             title="Incompatible References"
             columns={[
                 {
                     title : "Sample Name",
-                    field : "alias"
+                    field : "alias",
+                    searchable : true,
+                    hidden : false
                 },
                 {
                     title : "Size",
-                    field : "sizeString"
+                    field : "sizeString",
+                    searchable : true,
+                    hidden : false
                 },
                 {
                     title : "Reason",
-                    field : "reason"
+                    field : "reason",
+                    searchable : true,
+                    hidden : false
                 }
             ]}
             actions={[

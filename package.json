@@ -84,6 +84,7 @@
         "electron-winstaller": "^2.5.2",
         "eslint": "^5.16.0",
         "eslint-plugin-import": "^2.17.3",
+        "eslint-plugin-jsdoc": "^10.0.3",
         "fs-backwards-stream": "0.0.0",
         "fs-extra": "^2.0.0",
         "github-api": "^3.0.0",

@@ -1,10 +1,10 @@
 import * as React from "react";
 
-import {Fasta} from "../../fasta";
-import {getReadable} from "../../getAppPath";
-import {AddBox} from "../components/icons/addBox";
-import {Table} from "../components/table";
-import {ThreeQuartersLoader} from "../components/threeQuartersLoader";
+import {Fasta} from "../../../fasta";
+import {getReadable} from "../../../getAppPath";
+import {AddBox} from "../../components/icons/addBox";
+import {Table} from "../../components/table";
+import {ThreeQuartersLoader} from "../../components/threeQuartersLoader";
 
 
 export interface FastaTableProps
@@ -21,12 +21,13 @@ export function FastaTable(props : FastaTableProps) : JSX.Element
 {
     return (
         <Table<Fasta>
-            toolbar={false}
             title=""
             columns={[
                 {
                     title : "Reference Name",
-                    field : "alias"
+                    field : "alias",
+                    searchable : true,
+                    hidden : false
                 },
                 {
                     title : "Path",
@@ -34,11 +35,15 @@ export function FastaTable(props : FastaTableProps) : JSX.Element
                     render : (row : Fasta) => 
                     {
                         return row.imported ? "In Project" : row.path;
-                    }
+                    },
+                    searchable : true,
+                    hidden : false
                 },
                 {
                     title : "Size",
-                    field : "sizeString"
+                    field : "sizeString",
+                    searchable : true,
+                    hidden : false
                 },
                 {
                     title : "Ready For Visualization",
@@ -48,7 +53,9 @@ export function FastaTable(props : FastaTableProps) : JSX.Element
                         return row.indexedForVisualization ? <img src={getReadable("img/pass.png")} /> : 
                             props.shouldAllowTriggeringOps ? "Not Ready" : 
                                 !props.shouldAllowTriggeringOps ? <ThreeQuartersLoader /> : undefined;
-                    }
+                    },
+                    searchable : true,
+                    hidden : false
                 }
             ]}
             actions={props.actions ? [

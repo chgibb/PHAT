@@ -1,10 +1,10 @@
 import * as React from "react";
 
-import {Table} from "../components/table";
-import {AlignData} from "../../alignData";
-import {CompareArrows} from "../components/icons/compareArrows";
-import {LinkableRefSeq} from "../../getLinkableRefSeqs";
-import {Fasta} from "../../fasta";
+import {Table} from "../../components/table";
+import {AlignData} from "../../../alignData";
+import {CompareArrows} from "../../components/icons/compareArrows";
+import {LinkableRefSeq} from "../../../getLinkableRefSeqs";
+import {Fasta} from "../../../fasta";
 
 export interface CompatibleRefTableProps
 {
@@ -45,7 +45,6 @@ export function CompatibleRefTable(props : CompatibleRefTableProps) : JSX.Elemen
     let rows = composeCompatibleRefTableRows(props.fastaInputs,props.linkableRefSeqs);
     return (
         <Table<CompatibleRefTableRow>
-            toolbar={true}
             title="Potentially Compatible References"
             columns={[
                 {
@@ -54,7 +53,9 @@ export function CompatibleRefTable(props : CompatibleRefTableProps) : JSX.Elemen
                     render : (row : CompatibleRefTableRow) => 
                     {
                         return row.fasta.alias;
-                    }
+                    },
+                    searchable : true,
+                    hidden : false
                 },
                 {
                     title: "Size",
@@ -62,7 +63,9 @@ export function CompatibleRefTable(props : CompatibleRefTableProps) : JSX.Elemen
                     render : (row : CompatibleRefTableRow) => 
                     {
                         return row.fasta.sizeString;
-                    }
+                    },
+                    searchable : true,
+                    hidden : false
                 },
             ]}
             actions={[

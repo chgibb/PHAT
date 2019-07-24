@@ -1,7 +1,7 @@
 import * as React from "react";
 
-import {Table,TableProps} from "../components/table";
-import {Fastq} from "../../fastq";
+import {Table,TableProps} from "../../components/table";
+import {Fastq} from "../../../fastq";
 
 export interface FastqTableProps
 {
@@ -14,12 +14,13 @@ export function FastqTable(props : FastqTableProps) : JSX.Element
 {
     return (
         <Table<Fastq>
-            toolbar={false}
             title=""
             columns={[
                 {
                     title: "Sample Name",
-                    field: "alias"
+                    field: "alias",
+                    searchable : true,
+                    hidden : false
                 },
                 {
                     title: "Path",
@@ -27,11 +28,15 @@ export function FastqTable(props : FastqTableProps) : JSX.Element
                     render: (row : Fastq) => 
                     {
                         return row.imported ? "In Project" : row.path; 
-                    }
+                    },
+                    searchable : true,
+                    hidden : false
                 },
                 {
                     title: "Size",
-                    field: "sizeString"
+                    field: "sizeString",
+                    searchable : true,
+                    hidden : false
                 }
             ]}
             selection={props.selection}
