@@ -108,9 +108,11 @@ export class ToolBarTabs<T> extends React.Component<ToolBarTabsProps<T>,ToolBarT
                                                 avatar={
                                                     <Avatar imgProps={
                                                         {
-                                                            onDragEnd : () => 
+                                                            onDragEnd : (event : React.DragEvent<HTMLImageElement>) => 
                                                             {
-                                                                console.log(`stopped drgging ${i}`);
+                                                                event.preventDefault();
+                                                                event.stopPropagation();
+                                                                
                                                                 let clientBounds = electron.remote.getCurrentWindow().getBounds();
                                                                 let cursorPos = electron.screen.getCursorScreenPoint();
 
