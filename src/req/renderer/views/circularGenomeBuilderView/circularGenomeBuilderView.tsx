@@ -12,7 +12,6 @@ export class CircularGenomeBuilderView extends React.Component<{},{}>
 
     public componentDidMount()
     {
-        console.log("genome builder didmount");
         if(this.ref.current)
         {
             this.ref.current.innerHTML = `
