@@ -17,9 +17,9 @@ import {CircularGenomeBuilderView} from "../circularGenomeBuilderView/circularGe
 import {ToolBarTab, ToolBarTabs} from "./containers/toolBarTabs/toolBarTabs";
 import {tabInfo} from "./tabInfo";
 import {OutputViewWebView} from "./views/outputViewWebView";
-import { InputViewWebView } from './views/inputViewWebView';
-import { QCViewWebView } from './views/QCViewWebView';
-import { AlignViewWebView } from './views/alignViewWebView';
+import {InputViewWebView} from "./views/inputViewWebView";
+import {QCViewWebView} from "./views/QCViewWebView";
+import {AlignViewWebView} from "./views/alignViewWebView";
 
 
 export interface ToolBarViewState
