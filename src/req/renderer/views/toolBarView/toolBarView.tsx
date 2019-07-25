@@ -22,6 +22,8 @@ import {CircularGenomeBuilderView} from "../circularGenomeBuilderView/circularGe
 import {ToolBarTab, ToolBarTabs} from "./containers/toolBarTabs/toolBarTabs";
 import {tabInfo} from "./tabInfo";
 import {OutputViewWebView} from "./views/outputViewWebView";
+import { InputViewWebView } from './views/inputViewWebView';
+import { QCViewWebView } from './views/QCViewWebView';
 
 
 export interface ToolBarViewState
@@ -76,12 +78,7 @@ export class ToolBarView extends React.Component<ToolBarViewProps,ToolBarViewSta
                                                         label : "Input",
                                                         refKey : "Input",
                                                         body : (props : ToolBarViewProps) => (
-                                                            <InputView 
-                                                                fastqs={props.fastqs}
-                                                                fastas={props.fastas}
-                                                                aligns={props.aligns}
-                                                                operations={props.operations}
-                                                            />
+                                                            <InputViewWebView />
                                                         )
                                                     }
                                                 ])
@@ -101,10 +98,7 @@ export class ToolBarView extends React.Component<ToolBarViewProps,ToolBarViewSta
                                                         label : "QC",
                                                         refKey : "QC",
                                                         body : (props : ToolBarViewProps) => (
-                                                            <QCView
-                                                                fastqs={props.fastqs}
-                                                                operations={props.operations}
-                                                            />
+                                                            <QCViewWebView />
                                                         )
                                                     }])
                                             });
