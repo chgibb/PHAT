@@ -64,7 +64,8 @@ export class ToolBarView extends React.Component<ToolBarViewProps,ToolBarViewSta
                         <GridWrapper>
                             <Grid container spacing={1} justify="flex-start">
                                 <Grid item>
-                                    <img 
+                                    <img
+                                        id="input" 
                                         src={tabInfo["Input"].imgURI()}
                                         className={`${activeHover} ${activeHoverButton} ${toolBarButton}`}
                                         onClick={() => 
@@ -112,6 +113,7 @@ export class ToolBarView extends React.Component<ToolBarViewProps,ToolBarViewSta
                                 </Grid>
                                 <Grid item>
                                     <img 
+                                        id="align"
                                         src={tabInfo["Align"].imgURI()}
                                         className={`${activeHover} ${activeHoverButton} ${toolBarButton}`} 
                                         onClick={()=>
