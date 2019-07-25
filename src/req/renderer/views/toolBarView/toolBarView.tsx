@@ -1,10 +1,8 @@
 import * as electron from "electron";
-const ipc = electron.ipcRenderer;
 import * as React from "react";
 
 
 import {AtomicOperation} from "../../../operations/atomicOperations";
-import formatByteString from "../../formatByteString";
 import {Typography} from "../../components/typography";
 import {GridWrapper} from "../../containers/gridWrapper";
 import {Grid} from "../../components/grid";
@@ -13,10 +11,7 @@ import {toolBarButton} from "../../styles/toolBarButton";
 import {Fastq} from "../../../fastq";
 import {Fasta} from "../../../fasta";
 import {AlignData} from "../../../alignData";
-import {InputView} from "../inputView/inputView";
 import {PHATView} from "../../phatView";
-import {AlignView} from "../alignView/alignView";
-import {QCView} from "../../QCRenderer/QCView";
 import {CircularGenomeBuilderView} from "../circularGenomeBuilderView/circularGenomeBuilderView";
 
 import {ToolBarTab, ToolBarTabs} from "./containers/toolBarTabs/toolBarTabs";
@@ -24,6 +19,7 @@ import {tabInfo} from "./tabInfo";
 import {OutputViewWebView} from "./views/outputViewWebView";
 import { InputViewWebView } from './views/inputViewWebView';
 import { QCViewWebView } from './views/QCViewWebView';
+import { AlignViewWebView } from './views/alignViewWebView';
 
 
 export interface ToolBarViewState
@@ -77,7 +73,7 @@ export class ToolBarView extends React.Component<ToolBarViewProps,ToolBarViewSta
                                                     {
                                                         label : "Input",
                                                         refKey : "Input",
-                                                        body : (props : ToolBarViewProps) => (
+                                                        body : () => (
                                                             <InputViewWebView />
                                                         )
                                                     }
@@ -97,7 +93,7 @@ export class ToolBarView extends React.Component<ToolBarViewProps,ToolBarViewSta
                                                     {
                                                         label : "QC",
                                                         refKey : "QC",
-                                                        body : (props : ToolBarViewProps) => (
+                                                        body : () => (
                                                             <QCViewWebView />
                                                         )
                                                     }])
@@ -117,12 +113,8 @@ export class ToolBarView extends React.Component<ToolBarViewProps,ToolBarViewSta
                                                     {
                                                         label : "Alignment",
                                                         refKey : "Align",
-                                                        body : (props : ToolBarViewProps) => (
-                                                            <AlignView
-                                                                fastqs={props.fastqs}
-                                                                fastas={props.fastas}
-                                                                operations={props.operations}
-                                                            />
+                                                        body : () => (
+                                                            <AlignViewWebView />
                                                         )
                                                     }
                                                 ])
@@ -141,7 +133,7 @@ export class ToolBarView extends React.Component<ToolBarViewProps,ToolBarViewSta
                                                     {
                                                         label : "Output",
                                                         refKey : "Output",
-                                                        body : (props : ToolBarViewProps) => (
+                                                        body : () => (
                                                             <OutputViewWebView />
                                                         )
                                                     }
@@ -161,7 +153,7 @@ export class ToolBarView extends React.Component<ToolBarViewProps,ToolBarViewSta
                                                     {
                                                         label : "Genome Builder",
                                                         refKey : "Genome Builder",
-                                                        body : (props : ToolBarViewProps) => (
+                                                        body : () => (
                                                             <CircularGenomeBuilderView />
                                                         )
                                                     }
