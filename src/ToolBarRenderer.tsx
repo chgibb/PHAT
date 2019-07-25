@@ -48,7 +48,7 @@ class ToolBarApp extends React.Component<{},ToolBarViewProps>
                 
                     if(arg.key == "operations")
                     {
-                        if(arg.key === undefined)
+                        if(arg.val === undefined)
                             return;
                         let ops : Array<AtomicOperation> = arg.val;
                         let runningOpNotification : HTMLElement = document.getElementById("runningOpNotification");
