@@ -3,12 +3,12 @@ import * as dataMgr from "../../../req/main/dataMgr";
 import {Fastq} from "../../../req/fastq";
 
 /**
- * Selects the fourth input on the page
+ * Selects the eighth input on the page
  * 
  * @export
  * @returns {Promise<void>} 
  */
-export async function clickFourthInput() : Promise<void>
+export async function clickEighthInput() : Promise<void>
 {
     return new Promise<void>(async (resolve,reject) => 
     {
@@ -22,7 +22,7 @@ export async function clickFourthInput() : Promise<void>
                 process.exit(1);
             }
             await align[0].executeJavaScript(`
-            document.getElementsByTagName("input")[4].click();
+            document.getElementsByTagName("input")[7].click();
             `);
             setTimeout(async function()
             {
