@@ -124,6 +124,7 @@ export class ToolBarView extends React.Component<ToolBarViewProps,ToolBarViewSta
                                 </Grid>
                                 <Grid item>
                                     <img 
+                                        id="output"
                                         src={tabInfo["Output"].imgURI()}
                                         className={`${activeHover} ${activeHoverButton} ${toolBarButton}`} 
                                         onClick={()=>
