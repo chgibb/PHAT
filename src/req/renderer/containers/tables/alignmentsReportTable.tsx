@@ -7,6 +7,7 @@ import {sweepToBottom} from "../../styles/sweepToBottom";
 import {Fasta} from "../../../fasta";
 import {AtomicOperationIPC} from "../../../atomicOperationsIPC";
 import {TableCellHover} from "../tableCellHover";
+import { Search } from '../../components/icons/search';
 
 const ipc = electron.ipcRenderer;
 
@@ -15,6 +16,7 @@ export interface AlignmentsReportTableProps
     aligns?: Array<AlignData>;
     fastas?: Array<Fasta>;
     onRowClick : (event: React.MouseEvent<HTMLElement>, rowData: AlignData) => void;
+    viewMore : (rowData : AlignData) => void;
 }
 
 export class AlignmentsReportTable extends React.Component<AlignmentsReportTableProps, {}>
@@ -251,6 +253,15 @@ export class AlignmentsReportTable extends React.Component<AlignmentsReportTable
                             field : "dateStampString",
                             hidden : true
                         },
+                    ]}
+                    actions={[
+                        (row : AlignData) => ({
+                            icon : Search as any,
+                            tooltip : "View More",
+                            onClick : () => {
+                                this.props.viewMore(row);
+                            }
+                        }),
                     ]}
                 />
             </TableCellHover>
