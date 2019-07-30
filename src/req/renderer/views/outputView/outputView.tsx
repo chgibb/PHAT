@@ -1,6 +1,7 @@
 import * as electron from "electron";
 const ipc = electron.ipcRenderer;
 import * as React from "react";
+import {DialogTitle} from "@material-ui/core";
 
 import {Fasta} from "../../../fasta";
 import {AlignData} from "../../../alignData";
@@ -8,13 +9,12 @@ import {Fastq} from "../../../fastq";
 import {AlignmentsReportTable} from "../../containers/tables/alignmentsReportTable";
 import {TableCellHover} from "../../containers/tableCellHover";
 import {AtomicOperationIPC} from "../../../atomicOperationsIPC";
-import { SNPPositionsTable } from '../../containers/tables/snpPositionsTable';
-import { Button } from '../../components/button';
-import { Dialog } from '../../components/dialog';
-import { DialogTitle } from '@material-ui/core';
-import { DialogActions } from '../../components/dialogActions';
-import { ReadsPerContigTable } from '../../containers/tables/readsPerContigTable';
-import { BLASTRunsTable } from '../../containers/tables/BLASTRunsTable';
+import {SNPPositionsTable} from "../../containers/tables/snpPositionsTable";
+import {Button} from "../../components/button";
+import {Dialog} from "../../components/dialog";
+import {DialogActions} from "../../components/dialogActions";
+import {ReadsPerContigTable} from "../../containers/tables/readsPerContigTable";
+import {BLASTRunsTable} from "../../containers/tables/BLASTRunsTable";
 
 export interface OutputViewState
 {
@@ -48,7 +48,8 @@ export class OutputView extends React.Component<OutputViewProps,OutputViewState>
                 {
                     <Dialog
                         open={this.state.viewMoreDialogOpen}
-                        onClose={() => {
+                        onClose={() => 
+                        {
                             this.setState({
                                 viewMoreDialogOpen : false
                             });
@@ -61,7 +62,8 @@ export class OutputView extends React.Component<OutputViewProps,OutputViewState>
                             <Button
                                 label="Reads Aligned Per Contig"
                                 type="advance"
-                                onClick={()=> {
+                                onClick={()=> 
+                                {
                                     this.setState({
                                         currentTable : "contigs",
                                         viewMoreDialogOpen : false
@@ -71,7 +73,8 @@ export class OutputView extends React.Component<OutputViewProps,OutputViewState>
                             <Button
                                 label="Predicted SNPs"
                                 type="advance"
-                                onClick={()=> {
+                                onClick={()=> 
+                                {
                                     this.setState({
                                         currentTable : "snps",
                                         viewMoreDialogOpen : false
@@ -81,7 +84,8 @@ export class OutputView extends React.Component<OutputViewProps,OutputViewState>
                             <Button
                                 label="BLAST Runs"
                                 type="advance"
-                                onClick={() => {
+                                onClick={() => 
+                                {
                                     this.setState({
                                         currentTable : "blastRuns",
                                         viewMoreDialogOpen : false
@@ -94,7 +98,8 @@ export class OutputView extends React.Component<OutputViewProps,OutputViewState>
                 {
                     this.state.currentTable == "reports" ? 
                         <AlignmentsReportTable
-                            viewMore={(rowData : AlignData) => {
+                            viewMore={(rowData : AlignData) => 
+                            {
                                 this.setState({
                                     viewMoreDialogOpen : true,
                                     clickedRow : rowData
@@ -175,44 +180,47 @@ export class OutputView extends React.Component<OutputViewProps,OutputViewState>
                                 <Button
                                     label="Go Back"
                                     type="retreat"
-                                    onClick={() => {
+                                    onClick={() => 
+                                    {
                                         this.setState({
                                             currentTable : "reports"
                                         });
                                     }}
                                 />
-                            <SNPPositionsTable
-                                align={this.state.clickedRow}
-                                fastas={this.props.fastas}
-                            />
+                                <SNPPositionsTable
+                                    align={this.state.clickedRow}
+                                    fastas={this.props.fastas}
+                                />
                             </div> : this.state.currentTable == "contigs" ? 
-                            <div>
-                                <Button
-                                    label="Go Back"
-                                    type="retreat"
-                                    onClick={() => {
-                                        this.setState({
-                                            currentTable : "reports"
-                                        });
-                                    }}
-                                />
-                            <ReadsPerContigTable
-                                align={this.state.clickedRow}
-                            />
-                                </div> : this.state.currentTable == "blastRuns" ?
                                 <div>
                                     <Button
-                                    label="Go Back"
-                                    type="retreat"
-                                    onClick={() => {
-                                        this.setState({
-                                            currentTable : "reports"
-                                        });
-                                    }}
-                                />
-                                    <BLASTRunsTable
+                                        label="Go Back"
+                                        type="retreat"
+                                        onClick={() => 
+                                        {
+                                            this.setState({
+                                                currentTable : "reports"
+                                            });
+                                        }}
+                                    />
+                                    <ReadsPerContigTable
                                         align={this.state.clickedRow}
                                     />
+                                </div> : this.state.currentTable == "blastRuns" ?
+                                    <div>
+                                        <Button
+                                            label="Go Back"
+                                            type="retreat"
+                                            onClick={() => 
+                                            {
+                                                this.setState({
+                                                    currentTable : "reports"
+                                                });
+                                            }}
+                                        />
+                                        <BLASTRunsTable
+                                            align={this.state.clickedRow}
+                                        />
                                     </div> : null 
                 }
             </div>

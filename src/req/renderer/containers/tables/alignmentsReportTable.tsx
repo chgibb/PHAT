@@ -7,7 +7,7 @@ import {sweepToBottom} from "../../styles/sweepToBottom";
 import {Fasta} from "../../../fasta";
 import {AtomicOperationIPC} from "../../../atomicOperationsIPC";
 import {TableCellHover} from "../tableCellHover";
-import { Search } from '../../components/icons/search';
+import {Search} from "../../components/icons/search";
 
 const ipc = electron.ipcRenderer;
 
@@ -48,54 +48,6 @@ export class AlignmentsReportTable extends React.Component<AlignmentsReportTable
                 <Table<AlignData>
                     title="Alignment Reports"
                     data={this.props.aligns}
-                    /*detailPanel={[
-                        {
-                            tooltip: "SNPs",
-                            render: (rowData: AlignData) => 
-                            {
-                                return (
-                                    <SNPPositionsTable
-                                        align={rowData}
-                                        fastas={this.props.fastas}
-                                        subTableProps={{
-                                            isSubTable : true,
-                                            nesting : 1
-                                        }}
-                                    />
-                                );
-                            }
-                        },
-                        {
-                            tooltip: "Reads Aligned Per Contig",
-                            render: (rowData : AlignData) => 
-                            {
-                                return (
-                                    <ReadsPerContigTable
-                                        align={rowData}
-                                        subTableProps={{
-                                            isSubTable : true,
-                                            nesting : 1
-                                        }}
-                                    />
-                                );
-                            }
-                        },
-                        {
-                            tooltip : "BLAST Runs",
-                            render : (rowData : AlignData) => 
-                            {
-                                return (
-                                    <BLASTRunsTable
-                                        align={rowData}
-                                        subTableProps={{
-                                            isSubTable : true,
-                                            nesting : 1
-                                        }}
-                                    />
-                                );
-                            }
-                        }
-                    ]}*/
                     onRowClick={(event,rowData) => 
                     {
                         this.props.onRowClick(event,rowData);
@@ -258,7 +210,8 @@ export class AlignmentsReportTable extends React.Component<AlignmentsReportTable
                         (row : AlignData) => ({
                             icon : Search as any,
                             tooltip : "View More",
-                            onClick : () => {
+                            onClick : () => 
+                            {
                                 this.props.viewMore(row);
                             }
                         }),
