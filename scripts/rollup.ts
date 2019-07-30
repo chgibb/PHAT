@@ -21,6 +21,9 @@
             "dom-helpers/class/addClass",
             "dom-helpers/class/removeClass",
             "react-beautiful-dnd",
+            "parse-unit",
+            "debounce",
+            "react-event-listener",
 
             "@material-ui/core/Button",
 
