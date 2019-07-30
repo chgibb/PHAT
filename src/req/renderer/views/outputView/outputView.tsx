@@ -8,10 +8,19 @@ import {Fastq} from "../../../fastq";
 import {AlignmentsReportTable} from "../../containers/tables/alignmentsReportTable";
 import {TableCellHover} from "../../containers/tableCellHover";
 import {AtomicOperationIPC} from "../../../atomicOperationsIPC";
+import { SNPPositionsTable } from '../../containers/tables/snpPositionsTable';
+import { Button } from '../../components/button';
+import { Dialog } from '../../components/dialog';
+import { DialogTitle } from '@material-ui/core';
+import { DialogActions } from '../../components/dialogActions';
+import { ReadsPerContigTable } from '../../containers/tables/readsPerContigTable';
+import { BLASTRunsTable } from '../../containers/tables/BLASTRunsTable';
 
 export interface OutputViewState
 {
     currentTable : "reports" | "snps" | "contigs" | "blastRuns";
+    clickedRow? : AlignData;
+    viewMoreDialogOpen : boolean;
 }
 
 export interface OutputViewProps
@@ -37,8 +46,60 @@ export class OutputView extends React.Component<OutputViewProps,OutputViewState>
         return (
             <div>
                 {
+                    <Dialog
+                        open={this.state.viewMoreDialogOpen}
+                        onClose={() => {
+                            this.setState({
+                                viewMoreDialogOpen : false
+                            });
+                        }}
+                    >
+                        <DialogTitle>
+                            View Other Reports For This Alignment
+                        </DialogTitle>
+                        <DialogActions>
+                            <Button
+                                label="Reads Aligned Per Contig"
+                                type="advance"
+                                onClick={()=> {
+                                    this.setState({
+                                        currentTable : "contigs",
+                                        viewMoreDialogOpen : false
+                                    });
+                                }}
+                            />
+                            <Button
+                                label="Predicted SNPs"
+                                type="advance"
+                                onClick={()=> {
+                                    this.setState({
+                                        currentTable : "snps",
+                                        viewMoreDialogOpen : false
+                                    });
+                                }}
+                            />
+                            <Button
+                                label="BLAST Runs"
+                                type="advance"
+                                onClick={() => {
+                                    this.setState({
+                                        currentTable : "blastRuns",
+                                        viewMoreDialogOpen : false
+                                    });
+                                }}
+                            />
+                        </DialogActions>
+                    </Dialog>
+                }
+                {
                     this.state.currentTable == "reports" ? 
                         <AlignmentsReportTable
+                            viewMore={(rowData : AlignData) => {
+                                this.setState({
+                                    viewMoreDialogOpen : true,
+                                    clickedRow : rowData
+                                });
+                            }}
                             aligns={this.props.aligns}
                             fastas={this.props.fastas}
                             onRowClick={(event: React.MouseEvent<HTMLElement>, rowData: AlignData) => 
@@ -49,7 +110,10 @@ export class OutputView extends React.Component<OutputViewProps,OutputViewState>
                                 {
                                     if (AlignmentsReportTable.SNPCellId(rowData) == el.id) 
                                     {
-                                    //toggleDetailPanel(0);
+                                        this.setState({
+                                            currentTable : "snps",
+                                            clickedRow : rowData
+                                        });
                                     }
     
                                     else if (AlignmentsReportTable.aliasCellId(rowData) == el.id) 
@@ -106,7 +170,50 @@ export class OutputView extends React.Component<OutputViewProps,OutputViewState>
                                     }
                                 }
                             }}
-                        /> : null
+                        /> : this.state.currentTable == "snps" ?
+                            <div>
+                                <Button
+                                    label="Go Back"
+                                    type="retreat"
+                                    onClick={() => {
+                                        this.setState({
+                                            currentTable : "reports"
+                                        });
+                                    }}
+                                />
+                            <SNPPositionsTable
+                                align={this.state.clickedRow}
+                                fastas={this.props.fastas}
+                            />
+                            </div> : this.state.currentTable == "contigs" ? 
+                            <div>
+                                <Button
+                                    label="Go Back"
+                                    type="retreat"
+                                    onClick={() => {
+                                        this.setState({
+                                            currentTable : "reports"
+                                        });
+                                    }}
+                                />
+                            <ReadsPerContigTable
+                                align={this.state.clickedRow}
+                            />
+                                </div> : this.state.currentTable == "blastRuns" ?
+                                <div>
+                                    <Button
+                                    label="Go Back"
+                                    type="retreat"
+                                    onClick={() => {
+                                        this.setState({
+                                            currentTable : "reports"
+                                        });
+                                    }}
+                                />
+                                    <BLASTRunsTable
+                                        align={this.state.clickedRow}
+                                    />
+                                    </div> : null 
                 }
             </div>
         );
