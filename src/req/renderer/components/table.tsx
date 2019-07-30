@@ -1,7 +1,6 @@
 import * as React from "react";
 
 import {tableCell} from "../../renderer/styles/tableCell";
-import {SubTableContainer} from "../containers/subTableContainer";
 
 import {tableIcons} from "./tableIcons";
 
@@ -20,12 +19,6 @@ type TableColumn<T> = Omit<typeof MuiTable.defaultProps.columns[number],"render"
     hidden : boolean;
 };
 
-export interface SubTableProps
-{
-    isSubTable : boolean;
-    nesting : number;
-}
-
 export interface TableProps<T>
 {
     title : typeof MuiTable.defaultProps.title;
@@ -36,7 +29,6 @@ export interface TableProps<T>
     onSelectionChange? : typeof MuiTable.defaultProps.onSelectionChange;
     pageSize? : typeof MuiTable.defaultProps.options.pageSize;
     pageSizeOptions? : typeof MuiTable.defaultProps.options.pageSizeOptions;
-    subTableProps? : SubTableProps;
     data? : Array<T>;
     columns : Array<TableColumn<T>>;
     onRowClick? : (
@@ -81,12 +73,6 @@ export class Table<T> extends React.Component<TableProps<T>,{}>
                     toolbarButtonAlignment : "left",
                     detailPanelColumnAlignment : "left"
                 }}
-                components={this.props.subTableProps && this.props.subTableProps.isSubTable ? {
-                    Container : (subProps) => 
-                    {
-                        return SubTableContainer(subProps,this.props.subTableProps);
-                    }
-                } : undefined}
                 actions={this.props.actions}
                 onSelectionChange={this.props.onSelectionChange}
                 icons={tableIcons}

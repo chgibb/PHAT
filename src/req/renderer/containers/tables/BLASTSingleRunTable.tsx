@@ -2,7 +2,7 @@ import * as React from "react";
 
 import {AlignData} from "../../../alignData";
 import {BLASTReadResult, BLASTFragmentResult, getBLASTReadResults, BLASTSegmentResult, getBLASTFragmentResults} from "../../../BLASTSegmentResult";
-import {Table, SubTableProps} from "../../components/table";
+import {Table} from "../../components/table";
 import {activeHover} from "../../styles/activeHover";
 import {BLASTSingleRunSequenceStyle} from "../../styles/BLASTSingleRunSequence";
 
@@ -10,7 +10,6 @@ export interface BLASTSingleRunTableProps
 {
     align : AlignData;
     BLASTuuid : string;
-    subTableProps? : SubTableProps;
 }
 
 export interface BLASTSingleRunTableState
@@ -175,7 +174,6 @@ export class BLASTSingleRunTable extends React.Component<BLASTSingleRunTableProp
         return (
             <Table<BLASTSingleRunTableLayout>
                 title=""
-                subTableProps={this.props.subTableProps}
                 data={tableData}
                 columns={[
                     {
