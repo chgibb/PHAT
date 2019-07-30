@@ -6,8 +6,8 @@ import {Fasta} from "../../../fasta";
 import {AlignData} from "../../../alignData";
 import {Fastq} from "../../../fastq";
 import {AlignmentsReportTable} from "../../containers/tables/alignmentsReportTable";
-import { TableCellHover } from '../../containers/tableCellHover';
-import { AtomicOperationIPC } from '../../../atomicOperationsIPC';
+import {TableCellHover} from "../../containers/tableCellHover";
+import {AtomicOperationIPC} from "../../../atomicOperationsIPC";
 
 export interface OutputViewState
 {
@@ -37,57 +37,57 @@ export class OutputView extends React.Component<OutputViewProps,OutputViewState>
         return (
             <div>
                 {
-                this.state.currentTable == "reports" ? 
-                <AlignmentsReportTable
-                    aligns={this.props.aligns}
-                    fastas={this.props.fastas}
-                    onRowClick={(event: React.MouseEvent<HTMLElement>, rowData: AlignData) => 
-                        {
-                            let el = TableCellHover.getClickedCell(event);
-    
-                            if (el) 
+                    this.state.currentTable == "reports" ? 
+                        <AlignmentsReportTable
+                            aligns={this.props.aligns}
+                            fastas={this.props.fastas}
+                            onRowClick={(event: React.MouseEvent<HTMLElement>, rowData: AlignData) => 
                             {
-                                if (AlignmentsReportTable.SNPCellId(rowData) == el.id) 
+                                let el = TableCellHover.getClickedCell(event);
+    
+                                if (el) 
                                 {
+                                    if (AlignmentsReportTable.SNPCellId(rowData) == el.id) 
+                                    {
                                     //toggleDetailPanel(0);
-                                }
-    
-                                else if (AlignmentsReportTable.aliasCellId(rowData) == el.id) 
-                                {
-                                    if (
-                                        rowData.isExternalAlignment ?
-                                            (rowData.flagStatReport && !rowData.flagStatReport.overallAlignmentRate) :
-                                            (rowData.summary && !rowData.summary.overallAlignmentRate)
-    
-                                    ) 
-                                    {
-                                        alert("Can't view an alignment with 0% alignment rate");
-                                        return;
                                     }
     
-                                    let fasta: Fasta | undefined;
-                                    
-                                    for (let k = 0; k != this.props.fastas.length; ++k) 
+                                    else if (AlignmentsReportTable.aliasCellId(rowData) == el.id) 
                                     {
+                                        if (
+                                            rowData.isExternalAlignment ?
+                                                (rowData.flagStatReport && !rowData.flagStatReport.overallAlignmentRate) :
+                                                (rowData.summary && !rowData.summary.overallAlignmentRate)
     
-                                        if (rowData.fasta && this.props.fastas[k].uuid == rowData.fasta.uuid) 
+                                        ) 
                                         {
-                                            fasta = this.props.fastas[k];
-                                            break;
+                                            alert("Can't view an alignment with 0% alignment rate");
+                                            return;
                                         }
-                                    }
-                                    if (!fasta) 
-                                    {
-                                        alert("You must link this alignment to a reference to visualize");
-                                        return;
-                                    }
-                                    if (!fasta.indexedForVisualization) 
-                                    {
-                                        alert("The reference for this alignment is not ready for visualization");
-                                        return;
-                                    }
-                                    ipc.send(
-                                        "runOperation",
+    
+                                        let fasta: Fasta | undefined;
+                                    
+                                        for (let k = 0; k != this.props.fastas.length; ++k) 
+                                        {
+    
+                                            if (rowData.fasta && this.props.fastas[k].uuid == rowData.fasta.uuid) 
+                                            {
+                                                fasta = this.props.fastas[k];
+                                                break;
+                                            }
+                                        }
+                                        if (!fasta) 
+                                        {
+                                            alert("You must link this alignment to a reference to visualize");
+                                            return;
+                                        }
+                                        if (!fasta.indexedForVisualization) 
+                                        {
+                                            alert("The reference for this alignment is not ready for visualization");
+                                            return;
+                                        }
+                                        ipc.send(
+                                            "runOperation",
                                         {
                                             opName: "openPileupViewer",
                                             pileupViewerParams: {
@@ -97,16 +97,16 @@ export class OutputView extends React.Component<OutputViewProps,OutputViewState>
                                                 stop: 100
                                             }
                                         } as AtomicOperationIPC
-                                    );
-                                }
+                                        );
+                                    }
     
-                                else if(AlignmentsReportTable.BLASTRunsCellId(rowData) == el.id)
-                                {
+                                    else if(AlignmentsReportTable.BLASTRunsCellId(rowData) == el.id)
+                                    {
                                     //toggleDetailPanel(2);
+                                    }
                                 }
-                            }
-                        }}
-                /> : null
+                            }}
+                        /> : null
                 }
             </div>
         );

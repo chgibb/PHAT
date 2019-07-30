@@ -94,7 +94,8 @@ export class AlignmentsReportTable extends React.Component<AlignmentsReportTable
                             }
                         }
                     ]}*/
-                    onRowClick={(event,rowData) => {
+                    onRowClick={(event,rowData) => 
+                    {
                         this.props.onRowClick(event,rowData);
                     }}
                     columns={[
