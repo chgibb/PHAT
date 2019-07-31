@@ -55,6 +55,9 @@ class ToolBarApp extends React.Component<{},ToolBarViewProps>
                         let foundRunning = false;
                         for(let i = 0; i != ops.length; ++i)
                         {
+                            if(!ops[i])
+                                continue;
+                                
                             if(ops[i].running)
                             {
                                 foundRunning = true;
