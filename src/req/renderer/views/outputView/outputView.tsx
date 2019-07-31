@@ -1,7 +1,6 @@
 import * as electron from "electron";
 const ipc = electron.ipcRenderer;
 import * as React from "react";
-import {DialogTitle} from "@material-ui/core";
 
 import {Fasta} from "../../../fasta";
 import {AlignData} from "../../../alignData";
@@ -12,6 +11,7 @@ import {AtomicOperationIPC} from "../../../atomicOperationsIPC";
 import {SNPPositionsTable} from "../../containers/tables/snpPositionsTable";
 import {Button} from "../../components/button";
 import {Dialog} from "../../components/dialog";
+import {DialogTitle} from "../../components/dialogTitle";
 import {DialogActions} from "../../components/dialogActions";
 import {ReadsPerContigTable} from "../../containers/tables/readsPerContigTable";
 import {BLASTRunsTable} from "../../containers/tables/BLASTRunsTable";
@@ -46,6 +46,7 @@ export class OutputView extends React.Component<OutputViewProps,OutputViewState>
         return (
             <div>
                 {
+                    
                     <Dialog
                         open={this.state.viewMoreDialogOpen}
                         onClose={() => 
@@ -57,7 +58,7 @@ export class OutputView extends React.Component<OutputViewProps,OutputViewState>
                     >
                         <DialogTitle>
                             View Other Reports For This Alignment
-                        </DialogTitle>
+                </DialogTitle>
                         <DialogActions>
                             <Button
                                 label="Reads Aligned Per Contig"
@@ -94,6 +95,7 @@ export class OutputView extends React.Component<OutputViewProps,OutputViewState>
                             />
                         </DialogActions>
                     </Dialog>
+                    
                 }
                 {
                     this.state.currentTable == "reports" ? 
