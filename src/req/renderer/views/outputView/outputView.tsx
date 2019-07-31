@@ -58,7 +58,7 @@ export class OutputView extends React.Component<OutputViewProps,OutputViewState>
                     >
                         <DialogTitle>
                             View Other Reports For This Alignment
-                </DialogTitle>
+                        </DialogTitle>
                         <DialogActions>
                             <Button
                                 label="Reads Aligned Per Contig"
