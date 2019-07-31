@@ -26,9 +26,9 @@ export class QCReport extends React.Component<QCReportProps,{}>
     {
         if(this.ref.current)
         {
-            let fastq = getReferenceFromUuid<Fastq>(this.props.fastqs,this.props.viewingFastq);
-
-            this.ref.current.innerHTML = fs.readFileSync(getQCReportHTML(fastq)).toString();
+            this.ref.current.innerHTML = `
+                <iframe src="${getQCReportHTML(getReferenceFromUuid<Fastq>(this.props.fastqs,this.props.viewingFastq))}" style="height:100%;width:100%;" />
+            `;
         }
     }
 
@@ -44,7 +44,7 @@ export class QCReport extends React.Component<QCReportProps,{}>
                     }}
                     label="Go Back"
                 />
-                <iframe src={getQCReportHTML(getReferenceFromUuid<Fastq>(this.props.fastqs,this.props.viewingFastq))}/>
+                <div ref={this.ref} style={{height: "100vh",width: "100%"}} />
             </div>
         );
     }
