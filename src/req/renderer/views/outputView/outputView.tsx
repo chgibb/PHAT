@@ -173,7 +173,10 @@ export class OutputView extends React.Component<OutputViewProps,OutputViewState>
     
                                     else if(AlignmentsReportTable.BLASTRunsCellId(rowData) == el.id)
                                     {
-                                    //toggleDetailPanel(2);
+                                        this.setState({
+                                            currentTable : "blastRuns",
+                                            clickedRow : rowData
+                                        });
                                     }
                                 }
                             }}
