@@ -61,7 +61,7 @@ export class OutputView extends React.Component<OutputViewProps,OutputViewState>
                         </DialogTitle>
                         <DialogActions>
                             <Button
-                            id="readsAlignedPerContig"
+                                id="readsAlignedPerContig"
                                 label="Reads Aligned Per Contig"
                                 type="advance"
                                 onClick={()=> 
@@ -73,7 +73,7 @@ export class OutputView extends React.Component<OutputViewProps,OutputViewState>
                                 }}
                             />
                             <Button
-                            id="predictedSnps"
+                                id="predictedSnps"
                                 label="Predicted SNPs"
                                 type="advance"
                                 onClick={()=> 
@@ -85,7 +85,7 @@ export class OutputView extends React.Component<OutputViewProps,OutputViewState>
                                 }}
                             />
                             <Button
-                            id="BlastRuns"
+                                id="BlastRuns"
                                 label="BLAST Runs"
                                 type="advance"
                                 onClick={() => 

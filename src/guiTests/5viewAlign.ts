@@ -13,8 +13,8 @@ import {indexRefsForVisualization} from "./req/input/indexRefsForVisualization";
 import {indexForVisualizationSuccess} from "./req/input/indexForVisualizationSuccess";
 import {closeAllTabs} from "./req/closeAllTabs";
 import {closeToolBar} from "./req/closeToolBar";
-import { openViewMoreDialogForFirstAlignment } from './req/output/openViewMoreDialogForFirstAlignment';
-import { clickPredictedSNPsButton } from './req/output/clickPredictedSNPsButton';
+import {openViewMoreDialogForFirstAlignment} from "./req/output/openViewMoreDialogForFirstAlignment";
+import {clickPredictedSNPsButton} from "./req/output/clickPredictedSNPsButton";
 
 async function runTest() : Promise<void>
 {

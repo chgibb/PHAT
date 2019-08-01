@@ -213,7 +213,8 @@ export class AlignmentsReportTable extends React.Component<AlignmentsReportTable
                     ]}
                     actions={[
                         (row : AlignData) => ({
-                            icon : (() => {
+                            icon : (() => 
+                            {
                                 return (
                                     <div className={AlignmentsReportTable.viewMoreId(row)}><Search /></div>
                                 );
