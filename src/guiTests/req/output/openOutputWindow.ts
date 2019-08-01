@@ -20,7 +20,7 @@ export async function openOutputWindow() : Promise<void>
                 document.getElementById("output").click();
                 `);
                 resolve();
-            },500);
-        },500);
+            },1500);
+        },1500);
     });
 }

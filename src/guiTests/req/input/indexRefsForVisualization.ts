@@ -1,4 +1,6 @@
 import * as winMgr from "./../../../req/main/winMgr";
+import { Fasta } from '../../../req/fasta';
+import { getKey } from '../../../req/main/dataMgr';
 
 /**
  * Triggers indexing for visualization for every ref seq in the first input window
@@ -19,21 +21,14 @@ export async function indexRefsForVisualization() : Promise<void>
                 console.log("Failed to open input window");
                 process.exit(1);
             }
-            input[0].executeJavaScript(`
-                let els = document.getElementsByTagName("div");
-                let isIndex = /IndexForVisualization/;
-                for(let i = 0; i != els.length; ++i)
-                {
-                    console.log(els[i]);
-                    if(els[i].className && isIndex.test(els[i].className))
-                    {
-                        console.log("clicked "+els[i]);
-                        els[i].click();
-                        break;
-                    }
-                }
-            `);
             resolve();
-        },500);
+            setTimeout(function(){
+            let firstRef : Fasta = getKey("input","fastaInputs")[0];
+            console.log(`${firstRef.uuid}IndexForVisualization`);
+            input[0].executeJavaScript(`
+            document.getElementsByClassName("${firstRef.uuid}IndexForVisualization")[0].click();
+            `);
+            },1500);
+        },2500);
     });
 }
