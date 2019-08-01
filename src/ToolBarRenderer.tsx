@@ -61,8 +61,6 @@ class ToolBarApp extends React.Component<{},ToolBarViewProps>
                             if(ops[i].running)
                             {
                                 foundRunning = true;
-                                if(runningOpNotification)
-                                {
                                     let text = "";
                                     if(ops[i].progressMessage)
                                     {
@@ -72,7 +70,6 @@ class ToolBarApp extends React.Component<{},ToolBarViewProps>
                                     this.setState({
                                         runningOpText : text
                                     });
-                                }
                             }
 
                             if(ops[i].name == "saveProject")
@@ -91,12 +88,11 @@ class ToolBarApp extends React.Component<{},ToolBarViewProps>
                         }
                         if(!foundRunning)
                         {
-                            if(runningOpNotification)
-                            {
+            
                                 this.setState({
                                     runningOpText : ""
                                 });
-                            }
+                            
                         }
 
                         this.setState({

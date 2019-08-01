@@ -166,7 +166,11 @@ export class ToolBarView extends React.Component<ToolBarViewProps,ToolBarViewSta
                                 </Grid>
                             </Grid>
                         </GridWrapper>
-                        
+                        <div style={{height: "2vh"}}>
+                        <Typography
+                            style={{color:"white"}}
+                        >{this.props.runningOpText}</Typography>
+                        </div>
                         <ToolBarTabs
                             onTabDelete={(tab : ToolBarTab<ToolBarViewProps>,i : number) => 
                             {
