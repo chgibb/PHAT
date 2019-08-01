@@ -41,6 +41,11 @@ export class AlignmentsReportTable extends React.Component<AlignmentsReportTable
         return `${row.uuid}ViewBLASTRuns`;
     }
 
+    public static viewMoreId(row : AlignData) : string
+    {
+        return `${row.uuid}ViewMore`;
+    }
+
     public render(): JSX.Element 
     {
         return (
@@ -208,7 +213,11 @@ export class AlignmentsReportTable extends React.Component<AlignmentsReportTable
                     ]}
                     actions={[
                         (row : AlignData) => ({
-                            icon : Search as any,
+                            icon : (() => {
+                                return (
+                                    <div className={AlignmentsReportTable.viewMoreId(row)}><Search /></div>
+                                );
+                            }) as any,
                             tooltip : "View More",
                             onClick : () => 
                             {
