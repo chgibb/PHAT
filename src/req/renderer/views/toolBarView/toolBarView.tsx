@@ -144,7 +144,8 @@ export class ToolBarView extends React.Component<ToolBarViewProps,ToolBarViewSta
                                     />
                                 </Grid>
                                 <Grid item>
-                                    <img 
+                                    <img
+                                        id="circularGenomeBuilder" 
                                         src={tabInfo["Genome Builder"].imgURI()}
                                         className={`${activeHover} ${activeHoverButton} ${toolBarButton}`} 
                                         onClick={()=>
