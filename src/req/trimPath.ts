@@ -1,3 +1,10 @@
+/**
+ * Trim file path
+ *
+ * @export
+ * @param {string} str - File path
+ * @returns {string}
+ */
 export default function trimPath(str : string) : string
 {
     let rev : string = "";

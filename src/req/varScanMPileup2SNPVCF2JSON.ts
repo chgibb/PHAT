@@ -13,6 +13,13 @@ export interface VCF2JSONRow
     consCovReads1Reads2FreqPValue2 : string;
 }
 
+/**
+ * Convert SNP VCF string to collection of rows
+ *
+ * @export
+ * @param {string} vcf - SNP VCF string
+ * @returns {Array<VCF2JSONRow>}
+ */
 export function varScanMPileup2SNPVCF2JSON(vcf : string) : Array<VCF2JSONRow>
 {
     let res : Array<VCF2JSONRow> = new Array<VCF2JSONRow>();

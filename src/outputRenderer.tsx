@@ -4,7 +4,6 @@ import * as React from "react";
 
 import {GetKeyEvent,KeySubEvent} from "./req/ipcEvents";
 import {makeWindowDockable} from "./req/renderer/dock";
-
 import "./req/renderer/styles/defaults";
 import "./req/renderer/commonBehaviour";
 import {OutputView, OutputViewProps} from "./req/renderer/views/outputView/outputView";

@@ -9,6 +9,13 @@ export interface varScanMPileup2SNPReport
     indelsReported : number;
 }
 
+/**
+ * Parse a report generated from Varscan
+ *
+ * @export
+ * @param {string} report - Generated report
+ * @returns {varScanMPileup2SNPReport}
+ */
 export function varScanMPileup2SNPReportParser(report : string) : varScanMPileup2SNPReport
 {
     let res : varScanMPileup2SNPReport = {
