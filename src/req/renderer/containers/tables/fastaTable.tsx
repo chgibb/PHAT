@@ -17,6 +17,13 @@ export interface FastaTableProps
     data : Array<Fasta>;
 }
 
+/**
+ * Table of reference sequences
+ *
+ * @export
+ * @param {FastaTableProps} props - Component properties
+ * @returns {JSX.Element}
+ */
 export function FastaTable(props : FastaTableProps) : JSX.Element
 {
     return (

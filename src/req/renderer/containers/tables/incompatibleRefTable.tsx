@@ -24,7 +24,7 @@ export interface IncompatibleRefTableRow
  *
  * @export
  * @param {Array<Fasta>} fastaInputs - Collection of reference sequences
- * @param {Array<LinkableRefSeq>} linkableRefSeqs - Collection linkable reference sequences
+ * @param {Array<LinkableRefSeq>} linkableRefSeqs - Collection of linkable reference sequences
  * @returns {Array<IncompatibleRefTableRow>}
  */
 export function composeIncompatibleRefTableRows(fastaInputs : Array<Fasta>,linkableRefSeqs : Array<LinkableRefSeq>) : Array<IncompatibleRefTableRow>

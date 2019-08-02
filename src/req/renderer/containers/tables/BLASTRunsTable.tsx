@@ -11,6 +11,13 @@ export interface BLASTRunsTableProps
     align : AlignData;
 }
 
+/**
+ * Table of completed BLAST runs
+ *
+ * @export
+ * @param {BLASTRunsTableProps} props - Component properties
+ * @returns {JSX.Element}
+ */
 export function BLASTRunsTable(props : BLASTRunsTableProps) : JSX.Element
 {
     return (

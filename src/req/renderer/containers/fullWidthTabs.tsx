@@ -19,6 +19,13 @@ export interface FullWidthTabsProps
     tabComponent : (el : FullWidthTab) => JSX.Element;
 }
 
+/**
+ * Tabs spanning their parent's full width
+ *
+ * @export
+ * @param {FullWidthTabsProps} {tabs,tabComponent} - Component properties
+ * @returns {JSX.Element}
+ */
 export function FullWidthTabs({tabs,tabComponent} : FullWidthTabsProps) : JSX.Element
 {
     const [value, setValue] = React.useState(0);
