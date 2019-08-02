@@ -22,6 +22,13 @@ export class Fastq extends File
     }
 }
 
+/**
+ * Parse sequence length from quality control report
+ *
+ * @export
+ * @param {Fastq} fastq - Fastq
+ * @returns {Promise<void>}
+ */
 export function parseSeqLengthFromQCReport(fastq : Fastq) : Promise<void>
 {
     return new Promise<void>((resolve,reject) => 

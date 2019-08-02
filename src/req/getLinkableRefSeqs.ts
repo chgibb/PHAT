@@ -47,8 +47,8 @@ export class CompareStatus
  * but are not present in idxStatsReport
  * 
  * @export
- * @param {Array<Contig>} contigs 
- * @param {Array<SamToolsIdxStatsReport>} idxStatsReport 
+ * @param {Array<Contig>} contigs - Collection of contigs
+ * @param {Array<SamToolsIdxStatsReport>} idxStatsReport - Collection of reports
  * @returns {CompareStatus} 
  */
 export function compareContigsToIdxStatReportExtra(contigs : Array<Contig>,idxStatsReport : Array<SamToolsIdxStatsReport>) : CompareStatus
@@ -96,8 +96,8 @@ export function compareContigsToIdxStatReportExtra(contigs : Array<Contig>,idxSt
  * but are not present in contigs
  * 
  * @export
- * @param {Array<Contig>} contigs 
- * @param {Array<SamToolsIdxStatsReport>} idxStatsReport 
+ * @param {Array<Contig>} contigs - Collection of contigs
+ * @param {Array<SamToolsIdxStatsReport>} idxStatsReport - Collection of reports
  * @returns {CompareStatus} 
  */
 export function compareContigsToIdxStatReportMissing(contigs : Array<Contig>,idxStatsReport : Array<SamToolsIdxStatsReport>) : CompareStatus
@@ -146,8 +146,8 @@ export function compareContigsToIdxStatReportMissing(contigs : Array<Contig>,idx
  * Returns a list of reference sequences which are potential link candidates for the given alignment
  * 
  * @export
- * @param {Array<Fasta>} fastaInputs 
- * @param {AlignData} align 
+ * @param {Array<Fasta>} fastaInputs - Collection of reference sequences
+ * @param {AlignData} align - Alignment map
  * @returns {Array<LinkableRefSeq>} 
  */
 export function getLinkableRefSeqs(fastaInputs : Array<Fasta>,align : AlignData) : Array<LinkableRefSeq>

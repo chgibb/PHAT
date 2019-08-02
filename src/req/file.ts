@@ -30,6 +30,13 @@ export class File implements UniquelyAddressable
     }
 }
 
+/**
+ * Copy given file into project
+ *
+ * @export
+ * @param {File} file - File
+ * @returns {(Promise<Error> | undefined)}
+ */
 export function importIntoProject(file : File) : Promise<Error> | undefined
 {
     const fse = require("fs-extra");
@@ -64,6 +71,13 @@ export function importIntoProject(file : File) : Promise<Error> | undefined
     });
 }
 
+/**
+ * Returns path to file
+ *
+ * @export
+ * @param {File} file - File
+ * @returns {string}
+ */
 export function getPath(file : File) : string
 {
     if(!file.imported)

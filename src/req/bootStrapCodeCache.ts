@@ -24,8 +24,8 @@ if(!(<any>global).require)
  * Returns 2 if the js source file at jsFile does not exist.
  * Returns 3 if the cached data was rejected by V8.
  * 
- * @param {string} jsFile 
- * @param {string} cdata 
+ * @param {string} jsFile - Path to Javascript file to load
+ * @param {string} cdata - Path to jsFile's cached data
  * @returns {number} 
  */
 function loadFromCache(jsFile : string,cdata : string) : number
@@ -78,8 +78,8 @@ function loadFromCache(jsFile : string,cdata : string) : number
  * Returns 2 if the js source file at jsFile does not exist.
  * Returns 3 if the compiled cached data for the js source file at jsFile could not be written to the path given by cdata.
  * 
- * @param {string} jsFile 
- * @param {string} cdata 
+ * @param {string} jsFile - Path to Javascript file to load
+ * @param {string} cdata - Path to save cached data to
  * @returns {number} 
  */
 function compileCache(jsFile : string,cdata : string) : number
@@ -133,9 +133,9 @@ function compileCache(jsFile : string,cdata : string) : number
  * On failure to compile, failure to write or failure to load compiled cached data, will fall back to requiring jsModule.
  * 
  * @export
- * @param {string} jsFile 
- * @param {string} jsModule 
- * @param {string} cdata 
+ * @param {string} jsFile - Path to Javascript file to bootstrap
+ * @param {string} jsModule - Fallback path for resolution algorithm
+ * @param {string} cdata - Path to save cached data to
  * @returns {void} 
  */
 export function bootStrapCodeCache(jsFile : string,jsModule : string,cdata : string) : void
