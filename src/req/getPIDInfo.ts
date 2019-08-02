@@ -7,7 +7,7 @@ import {PIDInfo} from "./PIDInfo";
  * Returns CPU % and RAM use (in bytes) for the specified pid
  * 
  * @export
- * @param {number} pid 
+ * @param {number} pid - Process Id
  * @returns {Promise<{cpu : number,memory : number}>} 
  */
 export async function getPIDUsage(pid : number) : Promise<{cpu : number,memory : number}>
@@ -39,7 +39,7 @@ export async function getPIDUsage(pid : number) : Promise<{cpu : number,memory :
  * Returns PIDInfo results for the specified pid detailing pid, ppid, command and args
  * 
  * @export
- * @param {number} pid 
+ * @param {number} pid - Process Id 
  * @returns {Promise<Array<PIDInfo>>} 
  */
 export async function getPIDInfo(pid : number) : Promise<Array<PIDInfo>>

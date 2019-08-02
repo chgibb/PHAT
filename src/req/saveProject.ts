@@ -12,8 +12,8 @@ const mkdirp = require("mkdirp");
  * Begins saving the project represented by proj. Incrementally calls cb with progress updates
  * 
  * @export
- * @param {ProjectManifest} proj 
- * @param {(totalBytesToSave : number, bytesSaved : number) => void} cb 
+ * @param {ProjectManifest} proj - Project manifest
+ * @param {(totalBytesToSave : number, bytesSaved : number) => void} cb - Progress callback
  * @returns {Promise<void>} 
  */
 export function saveProject(

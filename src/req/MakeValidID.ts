@@ -1,3 +1,12 @@
+/**
+ * Replace old token with new token and return result
+ *
+ * @export
+ * @param {string} str - Original string
+ * @param {string} oldt - Old token
+ * @param {string} newt - New token
+ * @returns {string}
+ */
 export function replace(str : string,oldt : string,newt : string) : string
 {
     let res = str;
@@ -5,6 +14,13 @@ export function replace(str : string,oldt : string,newt : string) : string
     return res;
 }
 
+/**
+ * Return valid HTML Id from given file path string
+ *
+ * @export
+ * @param {string} str - File path string
+ * @returns {string}
+ */
 export function makeValidID(str : string) : string
 {
     let res = str;
@@ -16,13 +32,4 @@ export function makeValidID(str : string) : string
     res = replace(res,"[(]","_");
     res = replace(res,"[)]","_");
     return res;
-}
-export function findOriginalInput(str : string,inputs : Array<any>) : string
-{
-    for(let i = 0; i != inputs.length; ++i)
-    {
-        if(makeValidID(inputs[i].name) === str)
-            return inputs[i].name;
-    }
-    return "";
 }

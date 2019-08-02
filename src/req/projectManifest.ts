@@ -12,10 +12,24 @@ export interface ProjectManifest
     externalPath : string;
 }
 
+/**
+ * Returns path to project manifest registry
+ *
+ * @export
+ * @returns {string}
+ */
 export function getProjectManifests() : string
 {
     return getReadableAndWritable("projectManifests.json");
 }
+
+/**
+ * Returns path to tarball for given project manifest
+ *
+ * @export
+ * @param {ProjectManifest} proj - Project manifest
+ * @returns
+ */
 export function getTarBallPath(proj : ProjectManifest)
 {
     if(!proj.isExternal)
