@@ -35,6 +35,11 @@ export interface ToolBarTabsState
     activeTabIndex : number;
 }
 
+/**
+ * Open the given tab reference name as a window
+ *
+ * @param {string} refName - Tab reference name
+ */
 function unDockActiveTab(refName : string) : void
 {
     ipc.send(

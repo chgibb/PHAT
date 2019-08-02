@@ -9,6 +9,13 @@ export interface ReadsPerContigTable
     align : AlignData;
 }
 
+/**
+ * Table of aligned reads per contig
+ *
+ * @export
+ * @param {ReadsPerContigTable} props - Component properties
+ * @returns {JSX.Element}
+ */
 export function ReadsPerContigTable(props : ReadsPerContigTable) : JSX.Element
 {
     return (

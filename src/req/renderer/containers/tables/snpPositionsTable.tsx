@@ -18,6 +18,13 @@ export interface SNPPositionsTableProps
     fastas : Array<Fasta>;
 }
 
+/**
+ * Table of SNP positions
+ *
+ * @export
+ * @param {SNPPositionsTableProps} props - Component properties
+ * @returns {JSX.Element}
+ */
 export function SNPPositionsTable(props : SNPPositionsTableProps) : JSX.Element
 {
     let snps : Array<VCF2JSONRow> | undefined;

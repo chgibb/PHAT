@@ -19,6 +19,14 @@ export interface IncompatibleRefTableRow
     longReason : string;
 }
 
+/**
+ * Compose rows of data for display
+ *
+ * @export
+ * @param {Array<Fasta>} fastaInputs - Collection of reference sequences
+ * @param {Array<LinkableRefSeq>} linkableRefSeqs - Collection linkable reference sequences
+ * @returns {Array<IncompatibleRefTableRow>}
+ */
 export function composeIncompatibleRefTableRows(fastaInputs : Array<Fasta>,linkableRefSeqs : Array<LinkableRefSeq>) : Array<IncompatibleRefTableRow>
 {
     let res = new Array<IncompatibleRefTableRow>();
@@ -42,6 +50,13 @@ export function composeIncompatibleRefTableRows(fastaInputs : Array<Fasta>,linka
     return res;
 }
 
+/**
+ * Table of references that are not compatible for linking
+ *
+ * @export
+ * @param {IncompatibleRefTableProps} props - Component properties
+ * @returns {JSX.Element}
+ */
 export function IncompatibleRefTable(props : IncompatibleRefTableProps) : JSX.Element
 {
     let rows = composeIncompatibleRefTableRows(props.fastaInputs,props.linkableRefSeqs);
