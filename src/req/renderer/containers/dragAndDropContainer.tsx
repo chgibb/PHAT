@@ -28,6 +28,14 @@ export interface DragAndDropContainerProps<T>
     data : Array<T>;
 }
 
+/**
+ * List of T supporting drag and drop
+ *
+ * @export
+ * @template T
+ * @param {DragAndDropContainerProps<T>} props- Component properties
+ * @returns {JSX.Element}
+ */
 export function DragAndDropContainer<T>(props : DragAndDropContainerProps<T>) : JSX.Element
 {
     return (

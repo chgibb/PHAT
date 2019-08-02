@@ -4,12 +4,10 @@ import * as React from "react";
 import {render} from "react-dom";
 
 import {makeWindowDockable} from "./req/renderer/dock";
-
 import "./req/renderer/commonBehaviour";
 import "./req/renderer/styles/defaults";
-import {QCView, QCViewState, QCViewProps} from "./req/renderer/QCRenderer/QCView";
+import {QCView, QCViewProps} from "./req/renderer/QCRenderer/QCView";
 import {KeySubEvent, GetKeyEvent} from "./req/ipcEvents";
-import {AtomicOperation} from "./req/operations/atomicOperations";
 
 class QCApp extends React.Component<{},QCViewProps>
 {
