@@ -9,7 +9,7 @@ const MuiTableDefault : typeof import("material-table").default = require("mater
 let MuiTable : NonNullable<typeof MuiTableDefault>;
 let MuiTableDefaultProps : NonNullable<typeof MuiTable["defaultProps"]>;
 let MuiTableDefaultPropsOptions : NonNullable<typeof MuiTableDefaultProps.options>;
-let MuiTableDefaultPropsColumns : NonNullable<typeof MuiTableDefaultProps.columns>;
+let MuiTableDefaultPropsColumns : NonNullable<typeof MuiTableDefaultProps.columns>[number];
 
 type Row<T> = T & {
     tableData : {
@@ -17,10 +17,10 @@ type Row<T> = T & {
     }
 };
 
-type TableColumn<T> = Omit<Omit<typeof MuiTableDefaultPropsColumns,"render">,"field"> & {
+type TableColumn<T> = Omit<typeof MuiTableDefaultPropsColumns,"render"|"searchable"|"field"|"hidden"> & {
     render? : (row : Row<T>) => string | number | boolean | JSX.Element;
     searchable : boolean;
-    field : keyof T | "" | undefined;
+    field : keyof T | "";
     hidden : boolean;
 };
 
