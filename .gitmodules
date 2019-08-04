@@ -1,0 +1,3 @@
+[submodule "src/req/ngplasmid"]
+	path = src/req/ngplasmid
+	url = https://github.com/chgibb/ngplasmid
