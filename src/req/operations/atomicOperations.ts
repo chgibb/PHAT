@@ -58,7 +58,7 @@ export abstract class AtomicOperation
      * @type {LogRecord}
      * @memberof AtomicOperation
      */
-    public logRecord : LogRecord;
+    public logRecord : LogRecord | undefined;
 
     /**
      * Whether the operation's log should be automatically closed upon failure
@@ -84,7 +84,7 @@ export abstract class AtomicOperation
      * @type {string}
      * @memberof AtomicOperation
      */
-    public name : string;
+    public name : string | undefined;
     
 
     /**
@@ -95,12 +95,12 @@ export abstract class AtomicOperation
      */
     public flags : CompletionFlags;
 
-    public update : () => void;
+    public update : () => void | undefined;
     
-    public spawnUpdate : SpawnRequestParams;
-    public progressMessage : string;
-    public step : number;
-    public totalSteps : number;
+    public spawnUpdate : SpawnRequestParams | undefined;
+    public progressMessage : string | undefined;
+    public step : number | undefined;
+    public totalSteps : number | undefined;
     public extraData : any;
 
     /**
@@ -293,7 +293,7 @@ export abstract class AtomicOperation
      */
     public logObject(obj : any) : void
     {
-        logString(this.logRecord,JSON.stringify(obj,undefined,4));
+        logString(this.logRecord!,JSON.stringify(obj,undefined,4));
     }
 }
 
@@ -403,11 +403,11 @@ export function handleForkFailures(logger? : ForkLogger,progressMessage? : strin
         if(logger !== undefined)
         {
             logger.logObject(failureObj);
-            closeLog(logger.logRecord,"failure");
+            closeLog(logger.logRecord!,"failure");
             failureObj.logRecord = logger.logRecord;
         }
 
-        process.send(failureObj);
+        process.send!(failureObj);
         exitFork(1);
 
     };
@@ -569,7 +569,7 @@ export function cleanDestinationArtifacts(op : AtomicOperation) : void
         }
     }
 }
-export let onComplete : (op : AtomicOperation) => void = undefined;
+export let onComplete : (op : AtomicOperation) => void | undefined;
 
 /**
  * Register a function to be called upon completion of any operation
@@ -611,22 +611,22 @@ export function addOperation(opName : string,data : any) : void
                         cleanDestinationArtifacts(op);
                         if(op.closeLogOnFailure)
                         {
-                            closeLog(op.logRecord,"failure");
-                            recordLogRecord(op.logRecord);
+                            closeLog(op.logRecord!,"failure");
+                            recordLogRecord(op.logRecord!);
                         }
                     }
                     else if(op.flags.success)
                     {
                         if(op.closeLogOnSuccess)
                         {
-                            closeLog(op.logRecord,"success");
-                            recordLogRecord(op.logRecord);
+                            closeLog(op.logRecord!,"success");
+                            recordLogRecord(op.logRecord!);
                         }
                     }
                     if(onComplete)
                         onComplete(op);
                 }
-                updates.emit(op.name,op);
+                updates.emit(op.name!,op);
             };
             operationsQueue.push(op);
             return;

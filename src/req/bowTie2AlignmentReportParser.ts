@@ -32,7 +32,7 @@ export function parseBowtie2AlignmentReport(report : string) : Bowtie2Report
     //prefixed to the text. Trim it off before we parse the report.
     //<hack>
     if(report.match(new RegExp("(undefined)","g")))
-        report = report.substring(9,tokens.length);
+        report = report.substring(9,tokens!.length);
     //</hack>
     tokens = report.split(new RegExp("\\s"));
     

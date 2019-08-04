@@ -3,9 +3,9 @@ import * as path from "path";
 
 import {getEdition} from "./getEdition";
 
-let readableBasePath : string = undefined;
-let writableBasePath : string = undefined;
-let readableAndWritableBasePath : string = undefined;
+let readableBasePath : string | undefined = undefined;
+let writableBasePath : string | undefined = undefined;
+let readableAndWritableBasePath : string | undefined = undefined;
 
 let isPortable = /(portable)/i;
 
@@ -50,7 +50,7 @@ export function setReadableAndWritableBasePath(path : string)
  *
  * @returns {string}
  */
-function getLinuxConfigDir() : string
+function getLinuxConfigDir() : string | undefined
 {
     if(process.env.HOME)
     {
@@ -64,7 +64,7 @@ function getLinuxConfigDir() : string
  *
  * @returns {string}
  */
-function getWin32ConfigDir() : string
+function getWin32ConfigDir() : string | undefined
 {
     if(process.env.APPDATA)
     {
@@ -78,7 +78,7 @@ function getWin32ConfigDir() : string
  *
  * @returns {string}
  */
-function getReadableDir() : string
+function getReadableDir() : string | undefined
 {
     let electronBaseDir = "";
     let CIBaseDir = "";
@@ -107,7 +107,7 @@ function getReadableDir() : string
  *
  * @returns {string}
  */
-function getConfigDir() : string
+function getConfigDir() : string | undefined
 {
     if(process.platform == "linux")
         return getLinuxConfigDir();
@@ -127,7 +127,7 @@ export function getReadable(relativePath : string) : string
 {
     if(!readableBasePath)
     {
-        setReadableBasePath(getReadableDir());
+        setReadableBasePath(getReadableDir()!);
         return path.resolve(path.normalize(readableBasePath+"/"+relativePath));
     }
     return path.resolve(path.normalize(readableBasePath+"/"+relativePath));
@@ -146,7 +146,7 @@ export function getWritable(relativePath : string) : string
         return getReadable(relativePath);
     if(!writableBasePath)
     {
-        setWritableBasePath(getConfigDir());
+        setWritableBasePath(getConfigDir()!);
         return path.resolve(path.normalize(writableBasePath+"/"+relativePath));
     }
     return path.resolve(path.normalize(writableBasePath+"/"+relativePath));

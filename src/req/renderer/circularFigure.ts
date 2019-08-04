@@ -227,7 +227,7 @@ export class SeqSelectionDisplayArrow
     public arrowEndWidth : number;
     public arrowType : string;
     public arrowClass : string;
-    public arrowText : string;
+    public arrowText : string | undefined;
 
     public constructor(start : number,end : number,radius : number)
     {
@@ -285,7 +285,7 @@ export function makeMapScope(cf : CircularFigure, seqSelectOptions? : {
 
 export class TrackMap extends Plasmid
 {
-    public $scope : MapScope;
+    public $scope : MapScope | undefined;
     public constructor()
     {
         super();
@@ -382,12 +382,12 @@ export class CircularFigure implements UniquelyAddressable
  */
 export abstract class FigureCanvas implements MapScope
 {
-    public genome : CircularFigure;
-    public seqSelectionLeftArm : SeqSelectionDisplayArm;
-    public seqSelectionRightArm : SeqSelectionDisplayArm;
-    public seqSelectionArrow : SeqSelectionDisplayArrow;
-    public showSeqSelector : boolean;
-    public scope : FigureCanvas;
+    public abstract genome : CircularFigure;
+    public abstract seqSelectionLeftArm : SeqSelectionDisplayArm;
+    public abstract seqSelectionRightArm : SeqSelectionDisplayArm;
+    public abstract seqSelectionArrow : SeqSelectionDisplayArrow;
+    public abstract showSeqSelector : boolean;
+    public abstract scope : FigureCanvas;
     public abstract markerOnClick($event : any,$marker : any,uuid : string) : void;
     public abstract figureNameOnClick() : void;
     public abstract updateScope(scope? : FigureCanvas) : void;
@@ -406,9 +406,9 @@ export abstract class FigureCanvas implements MapScope
 export function buildContigTemplate(figure : CircularFigure,contig : Contig,start : number = -1,end : number = -1) : string
 {
     if(start == -1)
-        start = contig.start;
+        start = contig.start!;
     if(end == -1)
-        end = contig.end;
+        end = contig.end!;
     let res = "";
     res += `
         ${trackMarker.add(
@@ -1378,7 +1378,7 @@ export function renderCoverageTrackToCanvas(
     
     //Assume fill is constant and uniform
     ctx.strokeStyle = parseCSS(
-        (<TrackMarker>map.tracks[0].children[0]).markerstyle,
+        (<TrackMarker>map.tracks[0].children[0]).markerstyle!,
         "fill",
         ";"
     );

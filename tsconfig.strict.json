@@ -16,9 +16,14 @@
         "jsx": "react",
         "outDir": ".buildCache/debug/",
         "incremental": true,
-        "strict": true
+        "strict": true,
+        "strictPropertyInitialization": true
     },
-    "include": ["src"],
+    "files":[
+        "src/req/renderer/components/table.tsx",
+        "src/req/renderer/components/tabContainer.tsx",
+        "src/req/renderer/QCRenderer/QCView.tsx"
+    ],
     "exclude": 
     [
         "node_modules"

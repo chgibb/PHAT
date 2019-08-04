@@ -24,13 +24,12 @@ export class Contig implements UniquelyAddressable
 }
 export class FastaContigLoader extends EventEmitter
 {
-    public refStream : readline.ReadLine;
+    public refStream : readline.ReadLine | undefined;
     public contigs : Array<Contig>;
     public contigIndex : number;
     public constructor()
     {
         super();
-        this.refStream;
         this.contigs = new Array<Contig>();
         this.contigIndex = -1;
     }

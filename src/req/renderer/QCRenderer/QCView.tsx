@@ -25,9 +25,9 @@ export interface QCViewProps
 export class QCView extends React.Component<QCViewProps,QCViewState>
 {
     public state: QCViewState;
-    public constructor() 
+    public constructor(props : QCViewProps) 
     {
-        super(undefined);
+        super(props);
         this.state = {
             shouldAllowTriggeringOps: true
         } as QCViewState;
@@ -63,7 +63,7 @@ export class QCView extends React.Component<QCViewProps,QCViewState>
             <React.Fragment>
                 {!this.state.viewingReport ? 
                     <QCReportsTable
-                        data={this.props.fastqs}
+                        data={this.props.fastqs ? this.props.fastqs : []}
                         shouldAllowTriggeringOps={true}
                         onGenerateClick={(event, data : Fastq) => 
                         {
@@ -82,7 +82,7 @@ export class QCView extends React.Component<QCViewProps,QCViewState>
                     : ""}
                 {this.state.viewingReport && this.state.viewUuid ? 
                     <QCReport
-                        fastqs={this.props.fastqs}
+                        fastqs={this.props.fastqs ? this.props.fastqs : []}
                         viewingFastq={this.state.viewUuid}
                         onGoBackClick={() => 
                         {
