@@ -11,7 +11,6 @@ import {openInputWindow} from "./req/input/openInputWindow";
 import {openRefSeqTab} from "./req/input/openRefSeqTab";
 import {indexRefsForVisualization} from "./req/input/indexRefsForVisualization";
 import {indexForVisualizationSuccess} from "./req/input/indexForVisualizationSuccess";
-import {closeAllTabs} from "./req/closeAllTabs";
 import {closeToolBar} from "./req/closeToolBar";
 import {openViewMoreDialogForFirstAlignment} from "./req/output/openViewMoreDialogForFirstAlignment";
 import {clickPredictedSNPsButton} from "./req/output/clickPredictedSNPsButton";
@@ -24,14 +23,10 @@ async function runTest() : Promise<void>
     await openOutputWindow();
     await openViewMoreDialogForFirstAlignment();
 
-    await closeAllTabs();
-
     await openInputWindow();
     await openRefSeqTab();
     await indexRefsForVisualization();
     await indexForVisualizationSuccess();
-
-    await closeAllTabs();
 
     await openOutputWindow();
     await openViewMoreDialogForFirstAlignment();
