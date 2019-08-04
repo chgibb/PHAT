@@ -1,18 +1,11 @@
-/// <reference path="../../../node_modules/@chgibb/ngplasmid/lib/html.ts" />
-/// <reference path="../../../node_modules/@chgibb/ngplasmid/lib/directives.ts" />
-/// <reference path="../../../node_modules/@chgibb/ngplasmid/lib/services.ts" />
-/// <reference path="../../../node_modules/@chgibb/ngplasmid/lib/interpolate.ts" />
-/// <reference path="../../../node_modules/@chgibb/ngplasmid/lib/directiveToPB.ts" />
-/// <reference path="../../../node_modules/@chgibb/ngplasmid/lib/pb/node.ts" />
-
 import * as fs from "fs";
 import * as readline from "readline";
 
 
-import * as html from "@chgibb/ngplasmid/lib/html";
-import * as ngDirectives from "@chgibb/ngplasmid/lib/directives";
-import * as pbDirectives from "@chgibb/ngplasmid/lib/pb/node";
-import {plasmidToPB} from "@chgibb/ngplasmid/lib/directiveToPB";
+import * as html from "./../ngplasmid/lib/html";
+import * as ngDirectives from "./../ngplasmid/lib/directives";
+import * as pbDirectives from "./../ngplasmid/lib/pb/node";
+import {plasmidToPB} from "./../ngplasmid/lib/directiveToPB";
 
 import {UniquelyAddressable} from "../uniquelyAddressable";
 
