@@ -13,22 +13,22 @@ export class AlignData implements UniquelyAddressable
 {
     public uuid : string;
     public fastqs : Array<Fastq>;
-    public size : number;
-    public sizeString : string;
+    public size : number | undefined;
+    public sizeString : string | undefined;
     public dateStampString : string;
     public dateStamp : string;
     public alias : string;
     public invokeString : string;
-    public alignerUsed : string;
-    public fasta : Fasta;
-    public summary : Bowtie2Report;
+    public alignerUsed : string | undefined;
+    public fasta : Fasta | undefined;
+    public summary : Bowtie2Report | undefined;
     public summaryText : string;
-    public varScanSNPSummary : varScanMPileup2SNPReport;
-    public varScanSNPReport : string;
-    public idxStatsReport : Array<SamToolsIdxStatsReport>;
-    public flagStatReport : SamToolsFlagStatReport;
-    public BLASTSegmentResults : Array<BLASTSegmentResult>;
-    public isExternalAlignment : boolean; 
+    public varScanSNPSummary : varScanMPileup2SNPReport | undefined;
+    public varScanSNPReport : string | undefined;
+    public idxStatsReport : Array<SamToolsIdxStatsReport> | undefined;
+    public flagStatReport : SamToolsFlagStatReport | undefined;
+    public BLASTSegmentResults : Array<BLASTSegmentResult> | undefined;
+    public isExternalAlignment : boolean | undefined; 
     public constructor()
     {
         const uuidv4 : () => string = require("uuid/v4");

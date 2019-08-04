@@ -18,7 +18,7 @@ export type QCReportType =
 export class QCData
 {
     public summary : Array<QCSummary>;
-    public validID : string;
+    public validID : string | undefined;
     public reportRun : boolean;
     public constructor()
     {

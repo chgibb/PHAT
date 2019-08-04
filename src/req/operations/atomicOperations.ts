@@ -95,7 +95,7 @@ export abstract class AtomicOperation
      */
     public flags : CompletionFlags;
 
-    public update : () => void | undefined;
+    public update : (() => void) | undefined;
     
     public spawnUpdate : SpawnRequestParams | undefined;
     public progressMessage : string | undefined;
