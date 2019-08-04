@@ -1,4 +1,4 @@
-import { getReadable } from '../../../getAppPath';
+import {getReadable} from "../../../getAppPath";
 
 export const tabInfo : {
     [index : string] : {

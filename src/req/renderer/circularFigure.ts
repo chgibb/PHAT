@@ -2,13 +2,13 @@ import * as fs from "fs";
 import * as readline from "readline";
 
 
-import * as html from "./../ngplasmid/lib/html";
+import {UniquelyAddressable} from "../uniquelyAddressable";
+import {Plasmid} from "../ngplasmid/lib/plasmid";
+import {TrackMarker} from "../ngplasmid/lib/trackMarker";
 
+import * as html from "./../ngplasmid/lib/html";
 import * as pbDirectives from "./../ngplasmid/lib/pb/node";
 import {plasmidToPB} from "./../ngplasmid/lib/directiveToPB";
-
-import {UniquelyAddressable} from "../uniquelyAddressable";
-
 import {getReadableAndWritable} from "./../getAppPath";
 import * as fastaContigLoader from "./../fastaContigLoader";
 import * as plasmidTrack from "./circularGenome/plasmidTrack";
@@ -20,8 +20,7 @@ import * as plasmid from "./circularGenome/plasmid";
 import {AlignData,getSNPsJSON} from "./../alignData";
 import {VCF2JSONRow} from "./../varScanMPileup2SNPVCF2JSON";
 import {parseCSS} from "./../parseCSS";
-import { Plasmid } from '../ngplasmid/lib/plasmid';
-import { TrackMarker } from '../ngplasmid/lib/trackMarker';
+
 
 const mkdirp = require("mkdirp");
 const uuidv4 : () => string = require("uuid/v4");
