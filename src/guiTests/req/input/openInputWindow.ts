@@ -20,7 +20,7 @@ export async function openInputWindow() : Promise<void>
                     document.getElementById("input").click();
                 `);
                 resolve();
-            },1500);
-        },1500);
+            },2500);
+        },2500);
     });
 }
