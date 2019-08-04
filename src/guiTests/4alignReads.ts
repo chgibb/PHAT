@@ -10,7 +10,7 @@ import {alignSuccess} from "./req/align/alignSuccess";
 import {closeToolBar} from "./req/closeToolBar";
 import {clickAdvanceZero} from "./req/align/clickAdvanceZero";
 import {clickAdvanceOne} from "./req/align/clickAdvanceOne";
-import {clickFourthInput} from "./req/align/clickFourthInput";
+import {clickEighthInput} from "./req/align/clickEighthInput";
 import {clickAdvanceTwo} from "./req/align/clickAdvanceTwo";
 import {clickAdvanceThree} from "./req/align/clickAdvanceThree";
 import {clickBowtie2Radio} from "./req/align/clickBowtie2Radio";
@@ -26,7 +26,7 @@ async function runTest() : Promise<void>
     await clickAdvanceZero();
     await clickAdvanceOne();
     await clickAdvanceTwo();
-    await clickFourthInput();
+    await clickEighthInput();
     await clickAdvanceTwo();
     await clickAdvanceThree();
     await clickBowtie2Radio();

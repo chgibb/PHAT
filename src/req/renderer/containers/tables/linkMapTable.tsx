@@ -12,11 +12,23 @@ export interface LinkMapTableProps
     linkMapOnClick : (data : AlignData) => void;
 }
 
+/**
+ * Returns true if the given alignment map has already been linked. False otherwise
+ *
+ * @param {AlignData} row - Alignment map to return link status on
+ * @returns {boolean}
+ */
 function alreadyLinked(row : AlignData) : boolean
 {
     return !!row.fasta; 
 }
 
+/**
+ * Returns true if there are no reference sequences given, false otherwise
+ *
+ * @param {Array<Fasta>} [fastaInputs] - Collection of reference sequences
+ * @returns {boolean}
+ */
 function noReferences(fastaInputs? : Array<Fasta>) : boolean
 {
     if(!fastaInputs)

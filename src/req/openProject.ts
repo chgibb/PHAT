@@ -5,6 +5,15 @@ import {ProjectManifest,getTarBallPath} from "./projectManifest";
 import {rebuildRTDirectory} from "./main/rebuildRTDirectory";
 import * as dataMgr from "./main/dataMgr";
 
+/**
+ * Unpack project given by project manifest
+ *
+ * @export
+ * @param {ProjectManifest} proj - Project manifes
+ * @param {(toUnpack : number,unPacked : number) => void} cb - Progress callback
+ * @param {string} [externalProjectPath] - Optional external path to project tarball
+ * @returns {Promise<undefined>}
+ */
 export function openProject(
     proj : ProjectManifest,
     cb : (toUnpack : number,unPacked : number) => void,

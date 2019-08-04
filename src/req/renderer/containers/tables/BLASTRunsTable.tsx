@@ -2,23 +2,28 @@ import * as React from "react";
 
 import {AlignData} from "../../../alignData";
 import {BLASTSegmentResult} from "../../../BLASTSegmentResult";
-import {Table, SubTableProps} from "../../components/table";
+import {Table} from "../../components/table";
 
 import {BLASTSingleRunTable} from "./BLASTSingleRunTable";
 
 export interface BLASTRunsTableProps
 {
     align : AlignData;
-    subTableProps : SubTableProps;
 }
 
+/**
+ * Table of completed BLAST runs
+ *
+ * @export
+ * @param {BLASTRunsTableProps} props - Component properties
+ * @returns {JSX.Element}
+ */
 export function BLASTRunsTable(props : BLASTRunsTableProps) : JSX.Element
 {
     return (
         <Table<BLASTSegmentResult>
             title=""
             data={props.align.BLASTSegmentResults}
-            subTableProps={props.subTableProps}
             detailPanel={[
                 {
                     tooltip : "View BLAST Run",
@@ -28,10 +33,6 @@ export function BLASTRunsTable(props : BLASTRunsTableProps) : JSX.Element
                             <BLASTSingleRunTable
                                 align={props.align}
                                 BLASTuuid={rowData.uuid}
-                                subTableProps={{
-                                    isSubTable : true,
-                                    nesting : 2
-                                }}
                             />
                         );
                     }

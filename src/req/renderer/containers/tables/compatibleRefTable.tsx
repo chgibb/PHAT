@@ -19,6 +19,14 @@ export interface CompatibleRefTableRow
     linkableRefSeq : LinkableRefSeq;
 }
 
+/**
+ * Compose rows of data for display
+ *
+ * @export
+ * @param {Array<Fasta>} fastaInputs - Collection of reference sequences
+ * @param {Array<LinkableRefSeq>} linkableRefSeqs - Collection of linkable reference sequences
+ * @returns {Array<CompatibleRefTableRow>}
+ */
 export function composeCompatibleRefTableRows(fastaInputs : Array<Fasta>,linkableRefSeqs : Array<LinkableRefSeq>) : Array<CompatibleRefTableRow>
 {
     let res = new Array<CompatibleRefTableRow>();
@@ -40,6 +48,13 @@ export function composeCompatibleRefTableRows(fastaInputs : Array<Fasta>,linkabl
     return res;
 }
 
+/**
+ * Table of references that are compatible for linking
+ *
+ * @export
+ * @param {CompatibleRefTableProps} props - Component properties
+ * @returns {JSX.Element}
+ */
 export function CompatibleRefTable(props : CompatibleRefTableProps) : JSX.Element
 {
     let rows = composeCompatibleRefTableRows(props.fastaInputs,props.linkableRefSeqs);
@@ -49,7 +64,7 @@ export function CompatibleRefTable(props : CompatibleRefTableProps) : JSX.Elemen
             columns={[
                 {
                     title: "Sample Name",
-                    field: "alias",
+                    field: "",
                     render : (row : CompatibleRefTableRow) => 
                     {
                         return row.fasta.alias;
@@ -59,7 +74,7 @@ export function CompatibleRefTable(props : CompatibleRefTableProps) : JSX.Elemen
                 },
                 {
                     title: "Size",
-                    field: "sizeString",
+                    field: "",
                     render : (row : CompatibleRefTableRow) => 
                     {
                         return row.fasta.sizeString;

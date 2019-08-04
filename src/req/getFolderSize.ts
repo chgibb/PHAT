@@ -2,6 +2,13 @@ import * as fs from "fs";
 import * as path from "path";
 
 //adapted from http://procbits.com/2011/10/29/a-node-js-experiment-thinking-asynchronously-recursion-calculate-file-size-directory
+/**
+ * Returns size of folder
+ *
+ * @export
+ * @param {string} dir - Path to folder
+ * @returns {number}
+ */
 export function getFolderSize(dir : string) : number
 {
     let size = 0;

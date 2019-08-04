@@ -10,6 +10,13 @@ interface Version
     beta : number;
 }
 
+/**
+ * Returns true if the given version string has a beta tag
+ *
+ * @export
+ * @param {string} version - Semver string
+ * @returns {boolean}
+ */
 export function isBeta(version : string) : boolean
 {
     if(getBetaTag.test(version))
@@ -21,6 +28,13 @@ export function isBeta(version : string) : boolean
     return false;
 }
 
+/**
+ * Split apart semver string and beta tag
+ *
+ * @export
+ * @param {string} version - Semver string
+ * @returns {Version}
+ */
 export function sepBaseAndBeta(version : string) : Version
 {
     if(isBeta(version))
@@ -38,6 +52,14 @@ export function sepBaseAndBeta(version : string) : Version
             beta : undefined
         };
 }
+/**
+ * Returns true if l is a highver version than r
+ *
+ * @export
+ * @param {string} l - Semver string
+ * @param {string} r - Semver string
+ * @returns {boolean}
+ */
 export function versionIsGreaterThan(l : string,r : string) : boolean
 {
     let lVersions = sepBaseAndBeta(l);

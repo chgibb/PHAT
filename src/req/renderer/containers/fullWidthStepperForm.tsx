@@ -32,6 +32,13 @@ export interface FullWidthStepperFormProps
     setFormState : (newState : any) => void;
 }
 
+/**
+ * Stepper form spanning it's parent's full width
+ *
+ * @export
+ * @param {FullWidthStepperFormProps} props - Component properties
+ * @returns {JSX.Element}
+ */
 export function FullWidthStepperForm(props : FullWidthStepperFormProps) : JSX.Element
 {
     const [value,setValue] = React.useState(0);

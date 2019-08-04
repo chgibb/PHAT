@@ -14,6 +14,13 @@ export interface ButtonProps
     onClick? : (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
 }
 
+/**
+ * Button with navigation intent animation
+ *
+ * @export
+ * @param {ButtonProps} props - Component properties
+ * @returns {JSX.Element}
+ */
 export function Button(props : ButtonProps) : JSX.Element 
 {
     return (

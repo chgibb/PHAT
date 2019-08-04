@@ -1,10 +1,10 @@
 import {ProjectManifest,getProjectManifests} from "./projectManifest";
 
 /**
- * Creates a new project in the project manifest with name name
+ * Creates a new project in the project manifest with name 
  * 
  * @export
- * @param {string} name 
+ * @param {string} name - Name
  * @returns {Promise<void>} 
  */
 export function newProject(name : string) : Promise<void>

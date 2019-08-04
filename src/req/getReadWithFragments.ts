@@ -9,10 +9,10 @@ import {ReadWithFragments} from "./readWithFragments";
  * mapped or unmapped fragment
  *
  * @export
- * @param {string} file
- * @param {number} start
- * @param {number} stop
- * @param {(parsedReads : number) => void} progress
+ * @param {string} file - File path
+ * @param {number} start - Start position
+ * @param {number} stop - End position
+ * @param {(parsedReads : number) => void} progress - Progress callback
  * @returns {Promise<Array<ReadWithFragments>>}
  */
 export function getReadWithFragments(

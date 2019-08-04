@@ -55,6 +55,12 @@ cssRaw(`
   
 `);
 
+/**
+ * Small, blue, spinning loader
+ *
+ * @export
+ * @returns {JSX.Element}
+ */
 export function ThreeQuartersLoader() : JSX.Element 
 {
     return (

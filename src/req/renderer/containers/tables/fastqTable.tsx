@@ -10,6 +10,13 @@ export interface FastqTableProps
     data : Array<Fastq>;
 }
 
+/**
+ * Table of given fastq files
+ *
+ * @export
+ * @param {FastqTableProps} props - Component properties
+ * @returns {JSX.Element}
+ */
 export function FastqTable(props : FastqTableProps) : JSX.Element
 {
     return (

@@ -14,6 +14,13 @@ export interface QCReportsTableProps
     data : Array<Fastq>;
 }
 
+/**
+ * Table of quality control test statuses for fastq files
+ *
+ * @export
+ * @param {QCReportsTableProps} props - Component properties
+ * @returns {JSX.Element}
+ */
 export function QCReportsTable(props : QCReportsTableProps) : JSX.Element
 {
     return (

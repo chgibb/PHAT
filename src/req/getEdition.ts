@@ -7,6 +7,12 @@ let editionString : string = undefined;
     reimplementation of algorithm in getAppPath.ts
     this is done in order to prevent a recursive dependence.
 */
+
+/**
+ * Determines edition source
+ *
+ * @returns {string}
+ */
 function getEditionSource() : string
 {
     let electronBaseDir = "";
@@ -40,6 +46,10 @@ function getEditionSource() : string
     throw new Error("Could not determine edition file path");
 } 
 
+/**
+ * Returns edition string from source
+ *
+ */
 function getEditionString()
 {
     if(!editionString)
@@ -48,6 +58,12 @@ function getEditionString()
     }
 }
 
+/**
+ * Determines application edition
+ *
+ * @export
+ * @returns {string}
+ */
 export function getEdition() : string
 {
     getEditionString();

@@ -22,10 +22,18 @@ export interface Status
     tag_name? : string;
 }
 
-//returns -1 on network/auth error
-//returns 0 on success, includes release object and tag name
-//returns 1 if a release is available but there is no update artifact for this platform
-//returns 2 if there is no release available whose version is greater than the version in package.json
+/**
+ * Retrieve update status. 
+ * Returns -1 on network or auth error
+ * Returns 0 on success
+ * Returns 1 if a release is available but no update artifact for this platform is available
+ * Returns 2 if no release is available whose version greater than that in package.json
+ *
+ * @export
+ * @param {string} userName - Github username
+ * @param {string} repo - Github repo
+ * @returns {Promise<Status>}
+ */
 export function getLatestUpdate(userName : string,repo : string) : Promise<Status>
 {
     let GitHubAPI = require("github-api");

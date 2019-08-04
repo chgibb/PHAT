@@ -16,20 +16,20 @@ export interface QCReportProps
 
 export class QCReport extends React.Component<QCReportProps,{}>
 {
-    private innerRefCB : (ref : HTMLDivElement | undefined) => void;
+    private ref = React.createRef<HTMLDivElement>();
     public constructor(props : QCReportProps)
     {
         super(props);
+    }
 
-        this.innerRefCB = (ref : HTMLDivElement | undefined) => 
+    public componentDidMount() : void
+    {
+        if(this.ref.current)
         {
-            if(ref)
-            {
-                let fastq = getReferenceFromUuid<Fastq>(this.props.fastqs,this.props.viewingFastq);
-
-                ref.innerHTML = fs.readFileSync(getQCReportHTML(fastq)).toString();
-            }
-        };
+            this.ref.current.innerHTML = `
+                <iframe src="${getQCReportHTML(getReferenceFromUuid<Fastq>(this.props.fastqs,this.props.viewingFastq))}" style="height:100%;width:100%;" />
+            `;
+        }
     }
 
     public render() : JSX.Element
@@ -44,7 +44,7 @@ export class QCReport extends React.Component<QCReportProps,{}>
                     }}
                     label="Go Back"
                 />
-                <div ref={this.innerRefCB} />
+                <div ref={this.ref} style={{height: "100vh",width: "100%"}} />
             </div>
         );
     }

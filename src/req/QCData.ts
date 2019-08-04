@@ -27,11 +27,25 @@ export class QCData
     }
 }
 
+/**
+ * Return path to the given fastq file's quality control report
+ *
+ * @export
+ * @param {Fastq} fastq - Fastq file
+ * @returns {string}
+ */
 export function getQCReportHTML(fastq : Fastq) : string
 {
     return getReadableAndWritable(`rt/QCReports/${fastq.uuid}/fastqc_report.html`);
 }
 
+/**
+ * Return path to the given fastq file's raw quality control data
+ *
+ * @export
+ * @param {Fastq} fastq - Fastq file
+ * @returns {string}
+ */
 export function getQCReportData(fastq : Fastq) : string
 {
     return getReadableAndWritable(`rt/QCReports/${fastq.uuid}/fastqc_data.txt`);
@@ -48,6 +62,15 @@ export class QCSummary
     }
 }
 
+/**
+ * Retrieve the given summary status of the quality control report in the given location in the given index
+ *
+ * @export
+ * @param {Array<Fastq>} fastqInputs - Collection of fastq files
+ * @param {number} index - Index to retrieve
+ * @param {QCReportType} summary - Summary to retrieve
+ * @returns {QCReportDisposition}
+ */
 export function getQCSummaryByNameOfReportByIndex(fastqInputs : Array<Fastq>,index : number,summary : QCReportType) : QCReportDisposition
 {
     try
@@ -68,6 +91,14 @@ export function getQCSummaryByNameOfReportByIndex(fastqInputs : Array<Fastq>,ind
     return "No Data";
 }
 
+/**
+ * Retrieve the given quality control report summary in the given fastq file
+ *
+ * @export
+ * @param {Fastq} fastq - Fastq file
+ * @param {QCReportType} summary - Quality control report summary
+ * @returns {QCReportDisposition}
+ */
 export function getQCSummaryByName(fastq : Fastq,summary : QCReportType) : QCReportDisposition
 {
     try

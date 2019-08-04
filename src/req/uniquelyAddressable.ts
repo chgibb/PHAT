@@ -8,8 +8,8 @@ export interface UniquelyAddressable
  *
  * @export
  * @template T
- * @param {(Array<T> | undefined)} arr
- * @param {(string | undefined)} uuid
+ * @param {(Array<T> | undefined)} arr - Collection of objects
+ * @param {(string | undefined)} uuid - Unique handle
  * @returns {(T | undefined)}
  */
 export function getReferenceFromUuid<T extends UniquelyAddressable>(
@@ -37,8 +37,8 @@ export function getReferenceFromUuid<T extends UniquelyAddressable>(
  *
  * @export
  * @template T
- * @param {(Array<T> | undefined)} arr
- * @param {(Array<string> | undefined)} uuids
+ * @param {(Array<T> | undefined)} arr - Collection of objects
+ * @param {(Array<string> | undefined)} uuids - Unique handle
  * @returns {(Array<T> | undefined)}
  */
 export function getReferencesFromUuids<T extends UniquelyAddressable>(
@@ -68,14 +68,14 @@ export function getReferencesFromUuids<T extends UniquelyAddressable>(
 
 
 /**
- * Retrive a collection of object properties from a collection of objects given a collection of their uniquq handles
+ * Retrive a collection of object properties from a collection of objects given a collection of their unique handles
  *
  * @export
  * @template T
  * @template K
- * @param {Array<T>} arr
- * @param {Array<string>} uuids
- * @param {K} prop
+ * @param {Array<T>} arr - Collection of objects
+ * @param {Array<string>} uuids - Unique handles
+ * @param {K} prop - Property to extract
  * @returns {(Array<T[K]> | undefined)}
  */
 export function getPropertiesOfReferencesFromUuids<T extends UniquelyAddressable,K extends keyof T>(

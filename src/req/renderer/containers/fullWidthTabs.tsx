@@ -16,9 +16,17 @@ export interface FullWidthTab
 export interface FullWidthTabsProps
 {
     tabs : Array<FullWidthTab>;
+    tabComponent : (el : FullWidthTab) => JSX.Element;
 }
 
-export function FullWidthTabs({tabs} : FullWidthTabsProps) : JSX.Element
+/**
+ * Tabs spanning their parent's full width
+ *
+ * @export
+ * @param {FullWidthTabsProps} {tabs,tabComponent} - Component properties
+ * @returns {JSX.Element}
+ */
+export function FullWidthTabs({tabs,tabComponent} : FullWidthTabsProps) : JSX.Element
 {
     const [value, setValue] = React.useState(0);
 
@@ -31,37 +39,39 @@ export function FullWidthTabs({tabs} : FullWidthTabsProps) : JSX.Element
     {
         setValue(index);
     };
-
-    return (
-        <div>
-            <AppBar position="static" color="default">
-                <Tabs
-                    value={value}
-                    onChange={handleChange}
-                    indicatorColor="primary"
-                    textColor="primary"
-                    variant="fullWidth"
+    
+    if(tabs && tabs.length != 0)
+    {
+        return (
+            <div>
+                <AppBar position="static" color="default">
+                    <Tabs
+                        value={value}
+                        onChange={handleChange}
+                        indicatorColor="primary"
+                        textColor="primary"
+                        variant="fullWidth"
+                    >
+                        {tabs.map((el) => 
+                        {
+                            return tabComponent(el);
+                        })}
+                    </Tabs>
+                </AppBar>
+                <SwipeableViews
+                    axis="x"
+                    index={value}
+                    onChangeIndex={handleChangeIndex}
                 >
                     {tabs.map((el) => 
                     {
                         return (
-                            <Tab className={el.className} label={el.label} />
+                            <TabContainer dir="rtl">{el.body}</TabContainer>
                         );
                     })}
-                </Tabs>
-            </AppBar>
-            <SwipeableViews
-                axis="x"
-                index={value}
-                onChangeIndex={handleChangeIndex}
-            >
-                {tabs.map((el) => 
-                {
-                    return (
-                        <TabContainer dir="rtl">{el.body}</TabContainer>
-                    );
-                })}
-            </SwipeableViews>
-        </div>
-    );
+                </SwipeableViews>
+            </div>
+        );
+    }
+    return null;
 }

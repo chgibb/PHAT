@@ -3,12 +3,12 @@ import * as React from "react";
 import {Fastq} from "../../../../fastq";
 import {Form, FullWidthFormStep, FullWidthStepperForm} from "../../fullWidthStepperForm";
 import {Fasta} from "../../../../fasta";
-import {DropResult, ResponderProvided, VerticalDnD} from "../../verticalDnD";
+import {DropResult, ResponderProvided, DragAndDropContainer} from "../../dragAndDropContainer";
 import {reOrder} from "../../../../reOrder";
 import {getPropertiesOfReferencesFromUuids, getReferencesFromUuids} from "../../../../uniquelyAddressable";
 import {FastqTable} from "../../tables/fastqTable";
 import {GridWrapper} from "../../gridWrapper";
-import {headingPadding} from "../../../AlignRenderer/styles/headingPadding";
+import {headingPadding} from "../../../views/alignView/styles/headingPadding";
 import {paperPadding} from "../../../styles/paperPadding";
 import {FastaTable} from "../../tables/fastaTable";
 import {ThreeQuartersLoader} from "../../../components/threeQuartersLoader";
@@ -217,7 +217,8 @@ export class RunAlignmentForm
                                         </Typography>
                                     </Grid>
                                     <Grid item>
-                                        <VerticalDnD<Fastq>
+                                        <DragAndDropContainer<Fastq>
+                                            direction="vertical"
                                             onDragEnd={this.onStepTwoDragEnd}
                                             droppableID="droppable"
                                             draggableKey={(el) => el.uuid}

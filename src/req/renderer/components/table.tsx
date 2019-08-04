@@ -1,7 +1,6 @@
 import * as React from "react";
 
 import {tableCell} from "../../renderer/styles/tableCell";
-import {SubTableContainer} from "../containers/subTableContainer";
 
 import {tableIcons} from "./tableIcons";
 
@@ -13,21 +12,12 @@ type Row<T> = T & {
     }
 };
 
-type TableColumn<T> = Omit<typeof MuiTable.defaultProps.columns[number],"render"> & {
+type TableColumn<T> = Omit<typeof MuiTable.defaultProps.columns[number],"render"|"field"> & {
     render? : (row : Row<T>) => string | number | boolean | JSX.Element;
-} & {
     searchable : boolean;
-} & {
-    field : string;
-} & {
+    field : keyof T | "";
     hidden : boolean;
 };
-
-export interface SubTableProps
-{
-    isSubTable : boolean;
-    nesting : number;
-}
 
 export interface TableProps<T>
 {
@@ -39,7 +29,6 @@ export interface TableProps<T>
     onSelectionChange? : typeof MuiTable.defaultProps.onSelectionChange;
     pageSize? : typeof MuiTable.defaultProps.options.pageSize;
     pageSizeOptions? : typeof MuiTable.defaultProps.options.pageSizeOptions;
-    subTableProps? : SubTableProps;
     data? : Array<T>;
     columns : Array<TableColumn<T>>;
     onRowClick? : (
@@ -48,41 +37,51 @@ export interface TableProps<T>
             toggleDetailPanel : (i : number) => void) => void;
 }
 
-export function Table<T>(props : TableProps<T>) : JSX.Element
+export class Table<T> extends React.Component<TableProps<T>,{}>
 {
-    let defaultPageSize : typeof props.pageSize = props.data ? props.data.length < 100 ? props.data.length : 100 : 5;
-    let defaultPageSizeOptions : typeof props.pageSizeOptions = [defaultPageSize,500,1000];
+    private renderKey = 0;
+    public constructor(props : TableProps<T>)
+    {
+        super(props);
+    }
 
-    return (
-        <MuiTable
-            title={props.title}
-            options={{
-                toolbar : true,
-                actionsColumnIndex : props.actionsColumnIndex ? props.actionsColumnIndex : 0,
-                headerStyle: tableCell as any,
-                rowStyle : tableCell as any,
-                selection : props.selection,
-                pageSize : props.pageSize ? props.pageSize : defaultPageSize,
-                pageSizeOptions : props.pageSizeOptions ? props.pageSizeOptions : defaultPageSizeOptions,
-                searchFieldAlignment : "left",
-                columnsButton : true,
-                toolbarButtonAlignment : "left",
-                detailPanelColumnAlignment : "left"
-            }}
-            components={props.subTableProps && props.subTableProps.isSubTable ? {
-                Container : (subProps) => 
-                {
-                    return SubTableContainer(subProps,props.subTableProps);
-                }
-            } : undefined}
-            actions={props.actions}
-            onSelectionChange={props.onSelectionChange}
-            icons={tableIcons}
-            columns={props.columns}
-            data={props.data}
-            onRowClick={props.onRowClick}
-            detailPanel={props.detailPanel} 
-        />
-    );
+    public componentDidUpdate()
+    {
+        this.renderKey += 1;
+    }
+
+    public render() : JSX.Element
+    {
+        let defaultPageSize = this.props.data ? this.props.data.length < 100 ? this.props.data.length : 100 : 5;
+        let defaultPageSizeOptions  = [defaultPageSize,500,1000];
+
+        return (
+            <MuiTable
+                key={this.renderKey}
+                title={this.props.title}
+                options={{
+                    showTextRowsSelected : false,
+                    toolbar : true,
+                    actionsColumnIndex : this.props.actionsColumnIndex ? this.props.actionsColumnIndex : 0,
+                    headerStyle: tableCell as any,
+                    rowStyle : tableCell as any,
+                    selection : this.props.selection,
+                    pageSize : this.props.pageSize ? this.props.pageSize : defaultPageSize,
+                    pageSizeOptions : this.props.pageSizeOptions ? this.props.pageSizeOptions : defaultPageSizeOptions,
+                    searchFieldAlignment : "left",
+                    columnsButton : true,
+                    toolbarButtonAlignment : "left",
+                    detailPanelColumnAlignment : "left"
+                }}
+                actions={this.props.actions}
+                onSelectionChange={this.props.onSelectionChange}
+                icons={tableIcons}
+                columns={this.props.columns}
+                data={this.props.data}
+                onRowClick={this.props.onRowClick}
+                detailPanel={this.props.detailPanel} 
+            />
+        );
+    }
 }
 

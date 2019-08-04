@@ -11,6 +11,7 @@
             "electron",
             "react",
             "react-dom",
+            "react-dom/server",
             "react-is",
             "prop-types",
             "typestyle",
@@ -20,8 +21,29 @@
             "dom-helpers/class/addClass",
             "dom-helpers/class/removeClass",
             "react-beautiful-dnd",
+            "parse-unit",
+            "debounce",
+            "react-event-listener",
+            "clsx",
 
             "@material-ui/core/Button",
+            "@material-ui/core/Dialog",
+            "@material-ui/core/DialogActions",
+            "@material-ui/core/DialogContent",
+            "@material-ui/core/DialogContent/DialogContent",
+            "@material-ui/core/DialogContentText",
+            "@material-ui/core/DialogTitle",
+
+            "@material-ui/core/styles/withStyles",
+
+            "@material-ui/styles/useTheme",
+            "@material-ui/styles",
+
+            "@material-ui/pickers",
+
+            "@material-ui/core/umd/material-ui.development.js",
+            "react-redux/dist/react-redux.js",
+            "react-transition-group/dist/react-transition-group.js",
 
             "@babel/runtime/helpers/extends",
             "@babel/runtime/helpers/objectWithoutProperties",
@@ -119,6 +141,19 @@
             resolve({
                 preferBuiltins : true
             }),
+            (() => {
+                return {
+                    name:"verbose",
+                    resolveId: (source : string) : void =>{
+                        console.log(source);
+                        return null;
+                    },
+                    load: (id : string) : void => {
+                        console.log(id);
+                        return null;
+                    }
+                }
+            })()
             //commonjs()
         ],
     };
