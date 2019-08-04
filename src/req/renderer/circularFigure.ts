@@ -3,7 +3,7 @@ import * as readline from "readline";
 
 
 import * as html from "./../ngplasmid/lib/html";
-import * as ngDirectives from "./../ngplasmid/lib/directives";
+
 import * as pbDirectives from "./../ngplasmid/lib/pb/node";
 import {plasmidToPB} from "./../ngplasmid/lib/directiveToPB";
 
@@ -20,6 +20,8 @@ import * as plasmid from "./circularGenome/plasmid";
 import {AlignData,getSNPsJSON} from "./../alignData";
 import {VCF2JSONRow} from "./../varScanMPileup2SNPVCF2JSON";
 import {parseCSS} from "./../parseCSS";
+import { Plasmid } from '../ngplasmid/lib/plasmid';
+import { TrackMarker } from '../ngplasmid/lib/trackMarker';
 
 const mkdirp = require("mkdirp");
 const uuidv4 : () => string = require("uuid/v4");
@@ -282,7 +284,7 @@ export function makeMapScope(cf : CircularFigure, seqSelectOptions? : {
     };
 }
 
-export class TrackMap extends ngDirectives.Plasmid
+export class TrackMap extends Plasmid
 {
     public $scope : MapScope;
     public constructor()
@@ -601,7 +603,7 @@ export function compileBaseFigureSVG(figure : CircularFigure) : Promise<string>
             assembleCompilableBaseFigureTemplates(figure)
         );
 
-        let plasmid : ngDirectives.Plasmid = new ngDirectives.Plasmid();
+        let plasmid : Plasmid = new Plasmid();
         plasmid.$scope = makeMapScope(figure);
 
         for(let i = 0; i != nodes.length; ++i)
@@ -871,9 +873,9 @@ export function getCoverageTrackPBFromCache(trackRecord : RenderedCoverageTrackR
  * 
  * @export
  * @param {RenderedCoverageTrackRecord} trackRecord 
- * @param {ngDirectives.Plasmid} plasmid 
+ * @param {Plasmid} plasmid 
  */
-export function cacheCoverageTrackPB(trackRecord : RenderedCoverageTrackRecord,plasmid : ngDirectives.Plasmid) : void
+export function cacheCoverageTrackPB(trackRecord : RenderedCoverageTrackRecord,plasmid : Plasmid) : void
 {
     let pb = pbDirectives.Node.create(plasmidToPB(plasmid));
     fs.writeFileSync(getCoverageTrackPBPath(trackRecord),pbDirectives.Node.encode(pb).finish());
@@ -1164,7 +1166,7 @@ export function compileTemplatesToSVG(templates : string,$scope : MapScope) : Pr
     {
         let nodes : Array<html.Node> = await html.loadFromString(templates);
 
-        let plasmid : ngDirectives.Plasmid = new ngDirectives.Plasmid();
+        let plasmid : Plasmid = new Plasmid();
         plasmid.$scope = $scope;
 
         for(let i = 0; i != nodes.length; ++i)
@@ -1296,7 +1298,7 @@ export function buildSingleSVG(figure : CircularFigure) : Promise<string>
         template += getBaseFigureTemplateFromCache(figure);
 
         let nodes : Array<html.Node> = await html.loadFromString(assembleCompilableTemplates(figure,template));
-        let plasmid : ngDirectives.Plasmid = new ngDirectives.Plasmid();
+        let plasmid : Plasmid = new Plasmid();
         plasmid.$scope = {
             genome : figure
         };
@@ -1377,7 +1379,7 @@ export function renderCoverageTrackToCanvas(
     
     //Assume fill is constant and uniform
     ctx.strokeStyle = parseCSS(
-        (<ngDirectives.TrackMarker>map.tracks[0].children[0]).markerstyle,
+        (<TrackMarker>map.tracks[0].children[0]).markerstyle,
         "fill",
         ";"
     );
