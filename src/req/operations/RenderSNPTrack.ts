@@ -3,8 +3,7 @@ import * as cp from "child_process";
 import * as atomic from "./atomicOperations";
 import {AtomicOperationForkEvent} from "./../atomicOperationsIPC";
 import {getReadable} from "./../getAppPath";
-
-import {AlignData} from "./../alignData"
+import {AlignData} from "./../alignData";
 import * as cf from "./../renderer/circularFigure";
 export class RenderSNPTrackForContig extends atomic.AtomicOperation
 {
@@ -42,7 +41,8 @@ export class RenderSNPTrackForContig extends atomic.AtomicOperation
                 circularFigure : self.circularFigure,
                 colour : self.colour
             }
-        },function(ev : AtomicOperationForkEvent){
+        },function(ev : AtomicOperationForkEvent)
+        {
             if(ev.finishedSettingData == true)
             {
                 self.renderSNPTrackProcess.send(

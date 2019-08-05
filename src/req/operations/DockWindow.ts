@@ -15,7 +15,8 @@ export class DockWindow extends atomic.AtomicOperation
     public setData(data : {
         toDock : string,
         dockTarget : string
-    }) : void {
+    }) : void 
+    {
         this.toDock = data.toDock;
         this.dockTarget = data.dockTarget;
     }

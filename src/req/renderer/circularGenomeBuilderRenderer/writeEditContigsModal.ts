@@ -12,9 +12,9 @@ export function writeEditContigsModal() : void
     let masterView = <masterView.View>viewMgr.getViewByName("masterView");
     let genomeView = <genomeView.GenomeView>viewMgr.getViewByName("genomeView",masterView.views);
 
-    let title = `Select Contig to Edit`;
+    let title = "Select Contig to Edit";
 
-    let body = ``;
+    let body = "";
     if(!genomeView.genome)
     {
         body = `
@@ -23,7 +23,7 @@ export function writeEditContigsModal() : void
     }
     else if(genomeView.genome)
     {
-        body += `<h5>Custom Contigs</h5>`;
+        body += "<h5>Custom Contigs</h5>";
         if(genomeView.genome.customContigs.length > 0)
         {
             for(let i = 0; i != genomeView.genome.customContigs.length; ++i)
@@ -33,10 +33,10 @@ export function writeEditContigsModal() : void
         }
         else
         {
-            body += `<p>No custom contigs</p>`;
+            body += "<p>No custom contigs</p>";
         }
 
-        body += `<h5>Reference Contigs</h5>`;
+        body += "<h5>Reference Contigs</h5>";
 
         for(let i = 0; i != genomeView.genome.contigs.length; ++i)
         {
@@ -44,7 +44,7 @@ export function writeEditContigsModal() : void
         }
     }
 
-    let footer = ``;
+    let footer = "";
 
     document.getElementById("modalTitle").innerHTML = title;
     document.getElementById("modalBody").innerHTML = body;
@@ -54,16 +54,18 @@ export function writeEditContigsModal() : void
     {
         for(let i = 0; i != genomeView.genome.customContigs.length; ++i)
         {
-            document.getElementById(`${genomeView.genome.customContigs[i].uuid}Edit`).onclick = function(this : HTMLElement,ev : MouseEvent){
+            document.getElementById(`${genomeView.genome.customContigs[i].uuid}Edit`).onclick = function(this : HTMLElement,ev : MouseEvent)
+            {
                 genomeView.markerOnClick(undefined,undefined,genomeView.genome.customContigs[i].uuid);
-            }
+            };
         }
     }
     
     for(let i = 0; i != genomeView.genome.contigs.length; ++i)
     {
-        document.getElementById(`${genomeView.genome.contigs[i].uuid}Edit`).onclick = function(this : HTMLElement,ev : MouseEvent){
+        document.getElementById(`${genomeView.genome.contigs[i].uuid}Edit`).onclick = function(this : HTMLElement,ev : MouseEvent)
+        {
             genomeView.markerOnClick(undefined,undefined,genomeView.genome.contigs[i].uuid);
-        }
+        };
     }
 }

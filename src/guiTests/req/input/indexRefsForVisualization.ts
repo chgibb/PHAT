@@ -1,4 +1,6 @@
 import * as winMgr from "./../../../req/main/winMgr";
+import { Fasta } from '../../../req/fasta';
+import { getKey } from '../../../req/main/dataMgr';
 
 /**
  * Triggers indexing for visualization for every ref seq in the first input window
@@ -8,8 +10,10 @@ import * as winMgr from "./../../../req/main/winMgr";
  */
 export async function indexRefsForVisualization() : Promise<void>
 {
-    return new Promise<void>((resolve,reject) => {
-        setTimeout(function(){
+    return new Promise<void>((resolve,reject) => 
+    {
+        setTimeout(function()
+        {
             console.log("indexing ref seqs for visualization");
             let input = winMgr.getFreeWebContents();
             if(!input || input.length == 0)
@@ -17,21 +21,14 @@ export async function indexRefsForVisualization() : Promise<void>
                 console.log("Failed to open input window");
                 process.exit(1);
             }
-            input[0].executeJavaScript(`
-                let els = document.getElementsByTagName("td");
-                let isIndex = /IndexForVisualization/;
-                for(let i = 0; i != els.length; ++i)
-                {
-                    console.log(els[i]);
-                    if(els[i].id && isIndex.test(els[i].id))
-                    {
-                        console.log("clicked "+els[i]);
-                        els[i].click();
-                        break;
-                    }
-                }
-            `);
             resolve();
-        },500);
+            setTimeout(function(){
+            let firstRef : Fasta = getKey("input","fastaInputs")[0];
+            console.log(`${firstRef.uuid}IndexForVisualization`);
+            input[0].executeJavaScript(`
+            document.getElementsByClassName("${firstRef.uuid}IndexForVisualization")[0].click();
+            `);
+            },1500);
+        },2500);
     });
 }

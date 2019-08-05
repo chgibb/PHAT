@@ -1,12 +1,10 @@
-import * as atomic from "./atomicOperations";
 import {Fasta,getFaiPath} from "../fasta";
 import {getContigsFromFastaFile} from "../fastaContigLoader";
 import {getPath} from "../file";
-
 import {getReadable,getReadableAndWritable} from "../getAppPath";
-
 import {Job} from "../main/Job";
 
+import * as atomic from "./atomicOperations";
 import {hisat2Build} from "./indexFasta/hisat2Build";
 import {samToolsFaidx} from "./indexFasta/samToolsFaidx";
 export class IndexFastaForHisat2Alignment extends atomic.AtomicOperation
@@ -36,11 +34,11 @@ export class IndexFastaForHisat2Alignment extends atomic.AtomicOperation
         //the size threshold between being 32-bit and being 64-bit
         this.hisat2SizeThreshold = 4294967096;
 
-        this.samToolsExe = getReadable('samtools');
+        this.samToolsExe = getReadable("samtools");
         if(process.platform == "linux")
-            this.hisat2BuildExe = getReadable('hisat2-build');
+            this.hisat2BuildExe = getReadable("hisat2-build");
         else if(process.platform == "win32")
-            this.hisat2BuildExe = getReadable('python/python.exe');
+            this.hisat2BuildExe = getReadable("python/python.exe");
     }
     public setData(data : Fasta) : void
     {
@@ -71,8 +69,10 @@ export class IndexFastaForHisat2Alignment extends atomic.AtomicOperation
         this.logRecord = atomic.openLog(this.name,"Index Fasta for Alignment");
 
         let self = this;
-        (async function(){
-            return new Promise<void>(async (resolve,reject) => {
+        (async function()
+        {
+            return new Promise<void>(async (resolve,reject) => 
+            {
                 try
                 {
                     self.progressMessage = "Building hisat2 index";

@@ -24,7 +24,8 @@ export class DownloadAndInstallUpdate extends atomic.AtomicOperation
             data : <AtomicOperationIPC>{
                 asset : self.asset
             }
-        },function(ev : AtomicOperationForkEvent){
+        },function(ev : AtomicOperationForkEvent)
+        {
             if(ev.finishedSettingData == true)
             {
                 self.downloadAndInstallUpdateProcess.send(

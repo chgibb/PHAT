@@ -3,7 +3,8 @@ const dialog = electron.remote.dialog;
 
 export function importProjectBrowseDialog() : Promise<string>
 {
-    return new Promise((resolve,reject) => {
+    return new Promise((resolve,reject) => 
+    {
         dialog.showOpenDialog(
             {
                 title : "Import PHAT Project",
@@ -28,6 +29,6 @@ export function importProjectBrowseDialog() : Promise<string>
                 else
                     resolve(undefined);
             }
-        )
+        );
     });
 }

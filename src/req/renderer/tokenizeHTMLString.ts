@@ -14,7 +14,7 @@ export default function tokenizeHTMLString(html : string) : Array<string>
         }
         if(html[i] == ">")
         {
-            str += html[i]
+            str += html[i];
             if(str != "")
                 res.push(str);
             str = "";

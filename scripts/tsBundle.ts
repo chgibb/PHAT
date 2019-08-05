@@ -48,27 +48,20 @@ interface BuildState
 
 function getJSFileExtension(fileName : string) : string
 {
-    return fileName.replace(/\.ts/,`.js`);
+    let res = fileName.replace(/\.ts/,`.js`);
+    res = res.replace(/\.jsx/,`.js`);
+    return res;
 }
 
-function build(file : string) : Promise<void>
+function build(file : string) : void
 {
-    return new Promise<void>((resolve,reject) => {
-        let job = cp.exec(`${arg.buildCmd} ${file}`,{},(error : Error, stdout : string, stderr : string) => {
-            if(error)
-            {
-                return reject(error);
-            }
-            if(stdout)
-                console.log(stdout);
-            if(stderr)
-                console.log(stderr);
-        });
-        return resolve();
-    }); 
-}
+    let res = cp.spawnSync(`${arg.buildCmd} ${file}`,{
+        shell : true
+    });
 
-let runningBuilds = new Array<Promise<void>>();
+    if(res.status !== 0)
+        throw new Error(`${res.stderr} ${res.error}`);
+}
 
 let oldBuild : BuildState;
 
@@ -83,7 +76,10 @@ else if(mode == "release" && fs.existsSync(".buildCache/release/oldBuild.json"))
 }
 
 
-const tsconfig = JSON.parse(fs.readFileSync("tsconfig.json").toString());
+//const tsconfig = JSON.parse(fs.readFileSync("tsconfig.json").toString());
+const tsconfig = {
+    jsx : ts.JsxEmit.React
+} as ts.CompilerOptions;
 
 let currentBuild : BuildState = <any>{};
 
@@ -133,7 +129,7 @@ for(let i = 0; i != currentBuild.entryPoints.length; ++i)
     if(rebuildEntryPoint)
     {
         changedTargets++;
-        runningBuilds.push(build(getJSFileExtension(currentBuild.entryPoints[i])));
+        build(getJSFileExtension(currentBuild.entryPoints[i]));
         updateProgress();
     }
 
@@ -142,7 +138,7 @@ for(let i = 0; i != currentBuild.entryPoints.length; ++i)
         //nothing has changed since last build, but there is also no cached build
         if(!fs.existsSync(`.buildCache/debug/${path.parse(getJSFileExtension(currentBuild.entryPoints[i])).base}`))
         {
-            runningBuilds.push(build(getJSFileExtension(currentBuild.entryPoints[i])));
+            build(getJSFileExtension(currentBuild.entryPoints[i]));
             newlyBuiltTargets++;
             updateProgress();
         }
@@ -157,7 +153,7 @@ for(let i = 0; i != currentBuild.entryPoints.length; ++i)
     {
         if(!fs.existsSync(`.buildCache/release/${path.parse(getJSFileExtension(currentBuild.entryPoints[i])).base}`))
         {
-            runningBuilds.push(build(getJSFileExtension(currentBuild.entryPoints[i])));
+            build(getJSFileExtension(currentBuild.entryPoints[i]));
             newlyBuiltTargets++;
             updateProgress();
         }
@@ -173,7 +169,5 @@ if(mode == "debug")
     fs.writeFileSync(".buildCache/debug/oldBuild.json",JSON.stringify(currentBuild,undefined,4));
 else if(mode == "release")
     fs.writeFileSync(".buildCache/release/oldBuild.json",JSON.stringify(currentBuild,undefined,4));
-
-Promise.all(runningBuilds);
 
 process.stdout.write("\n");

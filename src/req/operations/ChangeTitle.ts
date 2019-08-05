@@ -16,7 +16,8 @@ export class ChangeTitle extends atomic.AtomicOperation
     public setData(data : {
         id : number,
         newTitle : string
-    }) : void {
+    }) : void 
+    {
         this.id = data.id;
         this.newTitle = data.newTitle;
     }

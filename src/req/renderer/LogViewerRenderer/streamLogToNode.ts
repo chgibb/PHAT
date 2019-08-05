@@ -25,7 +25,8 @@ function scanForError(line : string) : boolean
 
 export async function streamLogToNode(logRecord : LogRecord,node : HTMLElement) : Promise<void>
 {
-    return new Promise<void>((resolve,reject) => {
+    return new Promise<void>((resolve,reject) => 
+    {
         let rl : readline.ReadLine = readline.createInterface(
             <readline.ReadLineOptions>{
                 input : fs.createReadStream(
@@ -34,7 +35,8 @@ export async function streamLogToNode(logRecord : LogRecord,node : HTMLElement) 
             }
         );
 
-        rl.on("line",function(line : string){
+        rl.on("line",function(line : string)
+        {
             if(logRecord.status != "failure")
                 node.innerHTML += `<pre>${line}</pre>`;
             else
@@ -48,7 +50,8 @@ export async function streamLogToNode(logRecord : LogRecord,node : HTMLElement) 
             }
         });
         
-        rl.on("close",function(){
+        rl.on("close",function()
+        {
             resolve();
         });
 

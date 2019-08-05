@@ -1,9 +1,9 @@
 import * as fs from "fs";
 
-import {getReadable} from "./../../getAppPath";
 import {IndexFastaForBowtie2Alignment} from "../indexFastaForBowtie2Alignment";
-import {getPath} from "./../../file";
 
+import {getReadable} from "./../../getAppPath";
+import {getPath} from "./../../file";
 import {SpawnRequestParams} from "./../../JobIPC";
 import {Job,JobCallBackObject} from "./../../main/Job";
 
@@ -16,7 +16,8 @@ import {Job,JobCallBackObject} from "./../../main/Job";
  */
 export function bowTie2Build(op : IndexFastaForBowtie2Alignment) : Promise<string | undefined>
 {
-    return new Promise((resolve,reject) => {
+    return new Promise((resolve,reject) => 
+    {
         let jobCallBack : JobCallBackObject = {
             send(channel : string,params : SpawnRequestParams)
             {
@@ -26,7 +27,8 @@ export function bowTie2Build(op : IndexFastaForBowtie2Alignment) : Promise<strin
                     if(params.retCode == 0)
                     {
                         setTimeout(
-                            function(){
+                            function()
+                            {
                                 try
                                 {
                                     for(let i : number = 0; i != op.bowtieIndices.length; ++i)
@@ -44,18 +46,18 @@ export function bowTie2Build(op : IndexFastaForBowtie2Alignment) : Promise<strin
                     }
                     else
                     {
-                        return reject(params.data)
+                        return reject(params.data);
                     }
                 }
             }
-        }
+        };
         let bowTieArgs : Array<string> = new Array<string>();
         if(process.platform == "linux")
             bowTieArgs = [getPath(op.fasta),op.bowTieIndexPath];
         else if(process.platform == "win32")
         {
             bowTieArgs = [
-                getReadable(`bowtie2-build`),
+                getReadable("bowtie2-build"),
                 `"${getPath(op.fasta)}"`,
                 `"${op.bowTieIndexPath}"`
             ];

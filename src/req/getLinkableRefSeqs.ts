@@ -2,6 +2,7 @@ import {Fasta} from "./fasta";
 import {Contig} from "./fastaContigLoader";
 import {AlignData} from "./alignData";
 import {SamToolsIdxStatsReport} from "./samToolsIdxStatsReport";
+import {UniquelyAddressable} from "./uniquelyAddressable";
 
 /**
  * Structure describing the linkability of a ref seq. If linkable is false, reason will give a short description, longReason
@@ -10,7 +11,7 @@ import {SamToolsIdxStatsReport} from "./samToolsIdxStatsReport";
  * @export
  * @interface LinkableRefSeq
  */
-export class LinkableRefSeq
+export class LinkableRefSeq implements UniquelyAddressable
 {
     public uuid : string;
     public linkable : boolean;
@@ -46,8 +47,8 @@ export class CompareStatus
  * but are not present in idxStatsReport
  * 
  * @export
- * @param {Array<Contig>} contigs 
- * @param {Array<SamToolsIdxStatsReport>} idxStatsReport 
+ * @param {Array<Contig>} contigs - Collection of contigs
+ * @param {Array<SamToolsIdxStatsReport>} idxStatsReport - Collection of reports
  * @returns {CompareStatus} 
  */
 export function compareContigsToIdxStatReportExtra(contigs : Array<Contig>,idxStatsReport : Array<SamToolsIdxStatsReport>) : CompareStatus
@@ -95,8 +96,8 @@ export function compareContigsToIdxStatReportExtra(contigs : Array<Contig>,idxSt
  * but are not present in contigs
  * 
  * @export
- * @param {Array<Contig>} contigs 
- * @param {Array<SamToolsIdxStatsReport>} idxStatsReport 
+ * @param {Array<Contig>} contigs - Collection of contigs
+ * @param {Array<SamToolsIdxStatsReport>} idxStatsReport - Collection of reports
  * @returns {CompareStatus} 
  */
 export function compareContigsToIdxStatReportMissing(contigs : Array<Contig>,idxStatsReport : Array<SamToolsIdxStatsReport>) : CompareStatus
@@ -145,8 +146,8 @@ export function compareContigsToIdxStatReportMissing(contigs : Array<Contig>,idx
  * Returns a list of reference sequences which are potential link candidates for the given alignment
  * 
  * @export
- * @param {Array<Fasta>} fastaInputs 
- * @param {AlignData} align 
+ * @param {Array<Fasta>} fastaInputs - Collection of reference sequences
+ * @param {AlignData} align - Alignment map
  * @returns {Array<LinkableRefSeq>} 
  */
 export function getLinkableRefSeqs(fastaInputs : Array<Fasta>,align : AlignData) : Array<LinkableRefSeq>
@@ -188,7 +189,7 @@ export function getLinkableRefSeqs(fastaInputs : Array<Fasta>,align : AlignData)
         {
             curr.linkable = false;
             curr.reason = "Not Indexed";
-            curr.reason = `Ref is not indexed for visualization or indexing`;
+            curr.reason = "Ref is not indexed for visualization or indexing";
             res.push(curr);
         }
     }

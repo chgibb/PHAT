@@ -1,4 +1,3 @@
-const fse = require("fs-extra");
 
 import {AtomicOperationForkEvent,CompletionFlags} from "./req/atomicOperationsIPC";
 import * as atomic from "./req/operations/atomicOperations";
@@ -6,12 +5,13 @@ import {AlignData,getUnSortedBam,getSam,getArtifactDir} from "./req/alignData";
 import trimPath from "./req/trimPath";
 import {getFolderSize} from "./req/getFolderSize";
 import formatByteString from "./req/renderer/formatByteString";
-
 import {samToolsView} from "./req/operations/RunAlignment/samToolsView";
 import {samToolsSort} from "./req/operations/RunAlignment/samToolsSort";
 import {samToolsFlagStat} from "./req/operations/InputBamFile/samToolsFlagStat";
 import {samToolsIndex} from "./req/operations/RunAlignment/samToolsIndex";
 import {samToolsIdxStats} from "./req/operations/RunAlignment/samToolsIdxStats";
+
+const fse = require("fs-extra");
 
 let flags : CompletionFlags = new CompletionFlags();
 let align : AlignData;
@@ -49,7 +49,8 @@ function update() : void
     process.send(update);
 }
 process.on(
-    "message",function(ev : AtomicOperationForkEvent){
+    "message",function(ev : AtomicOperationForkEvent)
+    {
         if(ev.setData == true)
         {
             logger.logRecord = atomic.openLog(ev.name,ev.description);
@@ -63,14 +64,16 @@ process.on(
         }
         if(ev.run == true)
         {
-            (async function(){
+            (async function()
+            {
                 let isSam = false;
                 if(bamPath.split(".").pop() == "sam")
                     isSam = true;
 
                 progressMessage = "Copying alignment map";
                 update();
-                await new Promise<void>((resolve,reject) => {
+                await new Promise<void>((resolve,reject) => 
+                {
                     if(!isSam)
                         fse.copySync(bamPath,getUnSortedBam(align));
                     else
@@ -105,7 +108,7 @@ process.on(
 
                 align.size = getFolderSize(getArtifactDir(align));
                 align.sizeString = formatByteString(align.size);
-                flags.done = true
+                flags.done = true;
                 flags.success = true;
                 update();
                 atomic.exitFork(0,false);

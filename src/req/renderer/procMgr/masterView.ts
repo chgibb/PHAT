@@ -19,7 +19,8 @@ export class View extends viewMgr.View
     {
         procView.addView(this.views,"procView");
     }
-    public onUnMount() : void{}
+    public onUnMount() : void
+    {}
     public renderView() : string
     {
         if(this.firstRender)
@@ -37,13 +38,15 @@ export class View extends viewMgr.View
             return undefined;
         }
     }
-    public postRender() : void{}
+    public postRender() : void
+    {}
     public dataChanged() : void
     {
         let procView = <procView.View>viewMgr.getViewByName("procView",this.views);
         procView.pids = this.pids;
     }
-    public divClickEvents(event : JQueryEventObject) : void{}
+    public divClickEvents(event : JQueryEventObject) : void
+    {}
 }
 export function addView(arr : Array<viewMgr.View>,div : string) : void
 {

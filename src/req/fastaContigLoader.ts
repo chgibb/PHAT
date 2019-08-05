@@ -2,7 +2,9 @@ import * as fs from "fs";
 import * as readline from "readline";
 import {EventEmitter} from "events";
 
-export class Contig
+import {UniquelyAddressable} from "./uniquelyAddressable";
+
+export class Contig implements UniquelyAddressable
 {
     public bp : number;
     public name : string;
@@ -38,7 +40,8 @@ export class FastaContigLoader extends EventEmitter
         self.refStream = readline.createInterface(<readline.ReadLineOptions>{
             input : fs.createReadStream(path)
         });
-        self.refStream.on("line",function(line : string){
+        self.refStream.on("line",function(line : string)
+        {
             if(line[0] == ">")
             {
                 self.contigs.push(new Contig());
@@ -63,7 +66,8 @@ export class FastaContigLoader extends EventEmitter
                 }
             }
         });
-        self.refStream.on("close",function(){
+        self.refStream.on("close",function()
+        {
             console.log("done loading contigs");
             self.contigs[self.contigIndex].loaded = true;
             self.emit("loadedContig",self.contigs[self.contigIndex]);
@@ -75,10 +79,12 @@ export class FastaContigLoader extends EventEmitter
 //Promise wrapper for existing EventEmitter based implementation
 export function getContigsFromFastaFile(path : string) : Promise<Array<Contig>>
 {
-    return new Promise<Array<Contig>>((resolve,reject) => {
+    return new Promise<Array<Contig>>((resolve,reject) => 
+    {
         const contigLoader = new FastaContigLoader();
         contigLoader.on(
-            "doneLoadingContigs",function(){
+            "doneLoadingContigs",function()
+            {
                 resolve(contigLoader.contigs);
             }
         );

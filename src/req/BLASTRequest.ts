@@ -17,7 +17,7 @@ export type QueryStatus = "searching" | "failed" | "unknown" | "ready" | "nohits
  */
 export function getRID(src : string) : RID
 {   
-    let line : RegExpExecArray | null = /^    RID = (.*$)/m.exec(src);
+    let line : RegExpExecArray | null = /^ {4}RID = (.*$)/m.exec(src);
     let split = line![0].split(/\s/);
     return split[split.length - 1];
 }
@@ -31,7 +31,7 @@ export function getRID(src : string) : RID
  */
 export function getRTOE(src : string) : number
 {
-    let line : RegExpExecArray | null = /^    RTOE = (.*$)/m.exec(src);
+    let line : RegExpExecArray | null = /^ {4}RTOE = (.*$)/m.exec(src);
     let split = line![0].split(/\s/);
     return parseInt(split[split.length - 1]);
 }
@@ -44,8 +44,9 @@ export function getRTOE(src : string) : number
  */
 export function sleep(seconds : number) : void
 {
-	let stop = new Date(new Date().getTime() + seconds * 1000);
-	while(stop > new Date()){}
+    let stop = new Date(new Date().getTime() + seconds * 1000);
+    while(stop > new Date())
+    {}
 }
 
 
@@ -77,17 +78,19 @@ export function makeQuery(seq : string,dataBase : BLASTDatabase) : Promise<{rid 
     return new Promise<{rid : RID,rtoe : number}>(async (
         resolve : (value : {rid : RID,rtoe : number}) => void,
         reject : (reason : any) => void
-    ) => {
+    ) => 
+    {
         if(seq.length < BLASTLENGTHCUTOFF)
             reject(`Attempting to BLAST sequence smaller than ${BLASTLENGTHCUTOFF}`);
 
-        let url : string = `https://blast.ncbi.nlm.nih.gov/blast/Blast.cgi?`;
+        let url : string = "https://blast.ncbi.nlm.nih.gov/blast/Blast.cgi?";
         request.post({
             url : url+`CMD=Put&PROGRAM=blastn&MEGABLAST=on&DATABASE=${dataBase}&QUERY=${seq}`,
             headers : {
                 "Content-Type" : "application/x-www-form-urlencoded"
             }
-        },function(error : any,response : any,body : any){
+        },function(error : any,response : any,body : any)
+        {
             if(error)
                 return reject(error);
             return resolve({
@@ -112,11 +115,13 @@ export function getQueryStatus(rid : RID) : Promise<QueryStatus>
     return new Promise<QueryStatus>(async (
         resolve : (value : QueryStatus) => void,
         reject : (reason : string) => void
-    ) => {
+    ) => 
+    {
         let url : string = `https://blast.ncbi.nlm.nih.gov/blast/Blast.cgi?CMD=Get&FORMAT_OBJECT=SearchInfo&RID=${rid}`;
         request.get({
             url : url
-        },function(error : any,response : any,body : any){
+        },function(error : any,response : any,body : any)
+        {
             if(/\s+Status=WAITING/m.exec(response.body))
             {
                 return resolve("searching");
@@ -159,13 +164,15 @@ export function retrieveQuery(
     rid : RID,
     delay : number,
     progressCB : (status : QueryStatus) => void
-) : Promise<string | undefined> {
+) : Promise<string | undefined> 
+{
     const request = require("request");
 
     return new Promise<string | undefined>(async (
         resolve : (value : string | undefined) => void,
         reject : (reason : any) => void
-    ) => {
+    ) => 
+    {
         let status = await getQueryStatus(rid);
         while(status == "searching")
         {
@@ -179,7 +186,8 @@ export function retrieveQuery(
             let url : string = `https://blast.ncbi.nlm.nih.gov/blast/Blast.cgi?CMD=Get&FORMAT_TYPE=XML&RID=${rid}`;
             request.get({
                 url : url
-            },function(error : any,response : any,body : any){
+            },function(error : any,response : any,body : any)
+            {
                 resolve(body);
             });
         }
@@ -203,16 +211,20 @@ export function performQuery(
     seq : string,
     dataBase : BLASTDatabase,
     progressCB : (status : QueryStatus) => void
-) : Promise<BLASTOutputRawJSON> {
+) : Promise<BLASTOutputRawJSON> 
+{
     const xml = require("xml2js");
     return new Promise<BLASTOutputRawJSON>(async (
         resolve : (value : BLASTOutputRawJSON) => void,
         reject : (reason : any) => void
-    ) => {
+    ) => 
+    {
         let {rid,rtoe} = await makeQuery(seq,dataBase);
 
-        setTimeout(async function(){
-            let result = await retrieveQuery(rid,5,function(status : QueryStatus){
+        setTimeout(async function()
+        {
+            let result = await retrieveQuery(rid,5,function(status : QueryStatus)
+            {
                 progressCB(status);
                 if(status == "failed")
                     return reject(status);
@@ -225,7 +237,8 @@ export function performQuery(
                 });
             }
             
-            xml.parseString(cleanBLASTXML(result),function(err : Error,result : BLASTOutputRawJSON){
+            xml.parseString(cleanBLASTXML(result),function(err : Error,result : BLASTOutputRawJSON)
+            {
                 if(err)
                     return reject(err);
                 

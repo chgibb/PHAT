@@ -1,4 +1,4 @@
-import {ProjectManifest} from "./projectManifest"
+import {ProjectManifest} from "./projectManifest";
 import {Fasta} from "./fasta";
 import {Fastq} from "./fastq";
 import {AlignData} from "./alignData";

@@ -15,12 +15,14 @@ export class NewProject extends atomic.AtomicOperation
     {
         this.logRecord = atomic.openLog(this.name,"Create New Project");
         let self = this;
-        newProject(this.proj).then(() => {
+        newProject(this.proj).then(() => 
+        {
 
             self.setSuccess(self.flags);
             self.update();
 
-        }).catch((err) => {
+        }).catch((err) => 
+        {
 
             self.abortOperationWithMessage(err);
             self.update();

@@ -42,7 +42,8 @@ export class InputBamFile extends atomic.AtomicOperation
             },
             name : self.name,
             description : "Input Bam File"
-        },function(ev : AtomicOperationForkEvent){
+        },function(ev : AtomicOperationForkEvent)
+        {
             if(ev.finishedSettingData == true)
             {
                 self.inputBamFileProcess.send(

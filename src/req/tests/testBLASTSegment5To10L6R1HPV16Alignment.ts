@@ -4,8 +4,10 @@ import {getBLASTReadResults,getBLASTFragmentResults} from "./../BLASTSegmentResu
 
 export async function testBLASTSegment5To10L6R1HPV16Alignment() : Promise<void>
 {
-    return new Promise<void>((resolve,reject) => {
-        atomic.updates.on("BLASTSegment",async function(op : BLASTSegment){
+    return new Promise<void>((resolve,reject) => 
+    {
+        atomic.updates.on("BLASTSegment",async function(op : BLASTSegment)
+        {
             if(op.progressMessage && !/x/.exec(op.progressMessage))
                 console.log(op.progressMessage);
 
@@ -20,7 +22,7 @@ export async function testBLASTSegment5To10L6R1HPV16Alignment() : Promise<void>
             {
                 let readResults = await getBLASTReadResults(op.blastSegmentResult);
                 if(readResults.length == 0)
-                    console.log(`BLAST segment has correct number of read results in whole file`);
+                    console.log("BLAST segment has correct number of read results in whole file");
                 else
                 {
                     console.log(await atomic.getLogContent(op.logRecord)); 
@@ -29,7 +31,7 @@ export async function testBLASTSegment5To10L6R1HPV16Alignment() : Promise<void>
                 
                 let fragmentResults = await getBLASTFragmentResults(op.blastSegmentResult);
                 if(fragmentResults.length == 0)
-                    console.log(`BLAST segment has correct number of fragment results`);
+                    console.log("BLAST segment has correct number of fragment results");
                 else
                 {
                     console.log(await atomic.getLogContent(op.logRecord)); 

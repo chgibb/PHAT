@@ -9,22 +9,47 @@ let readableAndWritableBasePath : string = undefined;
 
 let isPortable = /(portable)/i;
 
+/**
+ * Sets readable base path
+ *
+ * @export
+ * @param {string} path - Path
+ */
 export function setReadableBasePath(path : string)
 {
     readableBasePath = path;
     console.log(`Readable base path set to: ${path}`);
 } 
+
+/**
+ * Sets writable base path
+ *
+ * @export
+ * @param {string} path - Path
+ */
 export function setWritableBasePath(path : string)
 {
     writableBasePath = path;
     console.log(`Writable base path set to: ${path}`);
 }
+
+/**
+ * Sets readable and writable base path
+ *
+ * @export
+ * @param {string} path - Path
+ */
 export function setReadableAndWritableBasePath(path : string)
 {
     readableAndWritableBasePath = path;
     console.log(`Readable and writable base path set to: ${path}`);
 }
 
+/**
+ * Returns configuration directory on Linux
+ *
+ * @returns {string}
+ */
 function getLinuxConfigDir() : string
 {
     if(process.env.HOME)
@@ -34,6 +59,11 @@ function getLinuxConfigDir() : string
     return undefined;
 }
 
+/**
+ * Returns configuration directory on Windows
+ *
+ * @returns {string}
+ */
 function getWin32ConfigDir() : string
 {
     if(process.env.APPDATA)
@@ -42,10 +72,18 @@ function getWin32ConfigDir() : string
     }
     return undefined;
 }
+
+/**
+ * Returns readable directory
+ *
+ * @returns {string}
+ */
 function getReadableDir() : string
 {
     let electronBaseDir = "";
     let CIBaseDir = "";
+    let devBasedir = "";
+
     electronBaseDir = path.dirname(process.execPath)+"/resources/app";
 
     if(fs.existsSync(electronBaseDir))
@@ -56,18 +94,35 @@ function getReadableDir() : string
     if(fs.existsSync(CIBaseDir))
         return CIBaseDir;
     
+    devBasedir = path.resolve(path.normalize(""));
+
+    if(fs.existsSync(devBasedir))
+        return devBasedir;
+    
     return undefined;
 }
 
+/**
+ * Returns configuration directory
+ *
+ * @returns {string}
+ */
 function getConfigDir() : string
 {
     if(process.platform == "linux")
         return getLinuxConfigDir();
     else if(process.platform == "win32")
         return getWin32ConfigDir();
-    return undefined
+    return undefined;
 }
 
+/**
+ * Returns fully qualified path to readable directory for relative path
+ *
+ * @export
+ * @param {string} relativePath - Relative path
+ * @returns {string}
+ */
 export function getReadable(relativePath : string) : string
 {
     if(!readableBasePath)
@@ -78,6 +133,13 @@ export function getReadable(relativePath : string) : string
     return path.resolve(path.normalize(readableBasePath+"/"+relativePath));
 }
 
+/**
+ * Returns fully qualified path to writable directory for relative path
+ *
+ * @export
+ * @param {string} relativePath - Relative path
+ * @returns {string}
+ */
 export function getWritable(relativePath : string) : string
 {
     if(isPortable.test(getEdition()))
@@ -90,6 +152,13 @@ export function getWritable(relativePath : string) : string
     return path.resolve(path.normalize(writableBasePath+"/"+relativePath));
 }
 
+/**
+ * Returns fully qualified path to readable and writable directory for relative path
+ *
+ * @export
+ * @param {string} relativePath - Relative path
+ * @returns {string}
+ */
 export function getReadableAndWritable(relativePath : string) : string
 {
     return getWritable(relativePath);

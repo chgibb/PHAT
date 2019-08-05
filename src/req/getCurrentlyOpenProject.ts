@@ -7,7 +7,7 @@ export function getCurrentlyOpenProject() : ProjectManifest | undefined
     let rt : any;
     try
     {
-        rt = jsonFile.readFileSync(getReadableAndWritable(`rt/rt.json`));
+        rt = jsonFile.readFileSync(getReadableAndWritable("rt/rt.json"));
         return rt.application.project;
     }
     catch(err)

@@ -16,8 +16,9 @@ import {Job,JobCallBackObject} from "./../../main/Job";
  */
 export function samToolsView(alignData : AlignData,logger : atomic.AtomicOperation,fastaPath? : string) : Promise<void>
 {
-    return new Promise<void>((resolve,reject) => {
-        let samToolsExe = getReadable('samtools');
+    return new Promise<void>((resolve,reject) => 
+    {
+        let samToolsExe = getReadable("samtools");
 
         let jobCallBack : JobCallBackObject = {
             send(channel : string,params : SpawnRequestParams)
@@ -38,12 +39,12 @@ export function samToolsView(alignData : AlignData,logger : atomic.AtomicOperati
                     }
                 }
             }
-        }
+        };
 
         let samToolsViewJob : Job;
         if(!fastaPath)
         {
-             samToolsViewJob = new Job(
+            samToolsViewJob = new Job(
                 samToolsExe,
                 <string[]>[
                     "view",

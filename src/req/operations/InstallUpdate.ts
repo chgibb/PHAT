@@ -20,7 +20,8 @@ export class InstallUpdate extends atomic.AtomicOperation
         let self = this;
         try
         {
-            this.installUpdateJob = atomic.makeFork("installUpdate.js",{},function(data : any){
+            this.installUpdateJob = atomic.makeFork("installUpdate.js",{},function(data : any)
+            {
                 if(data.totalFiles)
                 {
                     self.filesInUpdate = data.totalFiles;

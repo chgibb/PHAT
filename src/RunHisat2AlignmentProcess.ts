@@ -3,7 +3,6 @@ import * as atomic from "./req/operations/atomicOperations";
 import {AlignData,getArtifactDir} from "./req/alignData";
 import {getFolderSize} from "./req/getFolderSize";
 import formatByteString from "./req/renderer/formatByteString";
-
 import {hisat2Align} from "./req/operations/RunAlignment/hisat2Align";
 import {samToolsDepth} from "./req/operations/RunAlignment/samToolsDepth";
 import {samToolsIndex} from "./req/operations/RunAlignment/samToolsIndex";
@@ -12,8 +11,8 @@ import {samToolsView} from "./req/operations/RunAlignment/samToolsView";
 import {samToolsFaidx} from "./req/operations/indexFasta/samToolsFaidx";
 import {samToolsMPileup} from "./req/operations/RunAlignment/samToolsMPileup";
 import {samToolsIdxStats} from "./req/operations/RunAlignment/samToolsIdxStats";
-import {varScanMPileup2SNP} from "./req/operations/RunAlignment/varScanMPileup2SNP"
-import {parseBowtie2AlignmentReport} from './req/bowTie2AlignmentReportParser';
+import {varScanMPileup2SNP} from "./req/operations/RunAlignment/varScanMPileup2SNP";
+import {parseBowtie2AlignmentReport} from "./req/bowTie2AlignmentReportParser";
 
 let flags : CompletionFlags = new CompletionFlags();
 let align : AlignData;
@@ -53,7 +52,8 @@ function update() : void
 
 
 process.on(
-    "message",async function(ev : AtomicOperationForkEvent){
+    "message",async function(ev : AtomicOperationForkEvent)
+    {
         if(ev.setData == true)
         {
             logger.logRecord = atomic.openLog(ev.name,ev.description);
@@ -108,7 +108,7 @@ process.on(
             progressMessage = "Getting mapped reads";
             step++;
             update();
-            await samToolsIdxStats(align,logger)
+            await samToolsIdxStats(align,logger);
 
             step++;
             align.size = getFolderSize(getArtifactDir(align));

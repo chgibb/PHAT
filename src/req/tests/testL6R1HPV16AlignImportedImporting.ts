@@ -9,11 +9,13 @@ import {getUnSortedBam,getSortedBam,getSortBamIndex,} from "./../alignData";
 import {getLinkableRefSeqs} from "./../getLinkableRefSeqs";
 export async function testL6R1HPV16AlignImportedImporting() : Promise<void>
 {
-    return new Promise<void>((resolve,reject) => {
-        atomic.updates.removeAllListeners().on("inputBamFile",async function(op : InputBamFile){
+    return new Promise<void>((resolve,reject) => 
+    {
+        atomic.updates.removeAllListeners().on("inputBamFile",async function(op : InputBamFile)
+        {
             if(op.flags.failure)
             {
-                console.log(`Failed to input bam`);
+                console.log("Failed to input bam");
                 console.log(await atomic.getLogContent(op.logRecord)); 
                 return reject();
             }

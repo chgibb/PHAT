@@ -27,11 +27,12 @@ export function writeSeqSelectionActionModal() : void
     document.getElementById("modalBody").innerHTML = body;
     document.getElementById("modalFooter").innerHTML = footer;
 
-    document.getElementById("BLASTAlignment").onclick = function(this : HTMLElement,ev : Event){
+    document.getElementById("BLASTAlignment").onclick = function(this : HTMLElement,ev : Event)
+    {
         masterView.seqSelectionActionModalOpen = false;
         masterView.willBLASTAlignment = true;
         masterView.alignsModalOpen = true;
 
         writeAlignsModal();
-    }
+    };
 }

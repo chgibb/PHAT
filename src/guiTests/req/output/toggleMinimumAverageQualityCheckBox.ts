@@ -8,9 +8,11 @@ import * as winMgr from "./../../../req/main/winMgr";
  */
 export async function toggleMinimumAverageQualityCheckBox() : Promise<void>
 {
-    return new Promise<void>((resolve,reject) => {
-        setTimeout(function(){
-            console.log("toggling minimum average quality checkbox")
+    return new Promise<void>((resolve,reject) => 
+    {
+        setTimeout(function()
+        {
+            console.log("toggling minimum average quality checkbox");
             let output = winMgr.getFreeWebContents();
             if(!output || output.length == 0)
             {

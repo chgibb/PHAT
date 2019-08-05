@@ -15,10 +15,9 @@ function progressCallBack(toUnpack : number,unPacked : number) : void
             flags : flags,
             data : {toUnpack : toUnpack,unPacked : unPacked}
         }
-    )
+    );
 }
-process.on
-(
+process.on(
     "message",function(ev : AtomicOperationForkEvent)
     {
         if(ev.setData == true)
@@ -31,7 +30,8 @@ process.on
 
         if(ev.run == true)
         {
-            openProject(proj,progressCallBack,externalProjectPath).then(() => {
+            openProject(proj,progressCallBack,externalProjectPath).then(() => 
+            {
                 flags.done = true;
                 flags.failure = false;
                 flags.success = true;
@@ -42,7 +42,8 @@ process.on
                     }
                 );
                 atomic.exitFork(0);
-            }).catch((err) => {
+            }).catch((err) => 
+            {
                 flags.done = true;
                 flags.failure = true;
                 flags.success = false;
@@ -58,7 +59,8 @@ process.on
         }
     }  
 );
-(process as NodeJS.EventEmitter).on("uncaughtException",function(err : string){
+(process as NodeJS.EventEmitter).on("uncaughtException",function(err : string)
+{
     console.log(err);
     flags.done = true;
     flags.failure = true;
@@ -73,7 +75,8 @@ process.on
     atomic.exitFork(1);
 });
 
-process.on("unhandledRejection",function(err : string){
+process.on("unhandledRejection",function(err : string)
+{
     console.log(err);
     flags.done = true;
     flags.failure = true;

@@ -4,6 +4,7 @@ import * as readline from "readline";
 import {ReadWithFragments} from "./readWithFragments";
 import {BLASTOutputRawJSON} from "./BLASTOutput";
 import {getReadableAndWritable} from "./getAppPath";
+import {UniquelyAddressable} from "./uniquelyAddressable";
 
 /**
  * The results of all SAM reads BLASTed in a given run
@@ -11,7 +12,7 @@ import {getReadableAndWritable} from "./getAppPath";
  * @export
  * @class BLASTReadResult
  */
-export class BLASTReadResult
+export class BLASTReadResult implements UniquelyAddressable
 {
     public readonly resultType : string = "read";
     public readonly uuid : string;
@@ -33,7 +34,7 @@ export class BLASTReadResult
  * @export
  * @class BLASTFragmentResult
  */
-export class BLASTFragmentResult
+export class BLASTFragmentResult implements UniquelyAddressable
 {
     public readonly resultType : string = "fragment";
     public readonly uuid : string;
@@ -58,7 +59,7 @@ export class BLASTFragmentResult
  * @export
  * @class BLASTSegmentResult
  */
-export class BLASTSegmentResult
+export class BLASTSegmentResult implements UniquelyAddressable
 {
     public uuid : string;
     public start : number;
@@ -101,7 +102,8 @@ export function getBLASTFragmentResultsStore(blastResult : BLASTSegmentResult) :
  */
 export function getBLASTReadResults(blastResult : BLASTSegmentResult) : Promise<Array<BLASTReadResult>> 
 {
-    return new Promise<Array<BLASTReadResult>>(async (resolve : (value : Array<BLASTReadResult>) => void,reject) => {
+    return new Promise<Array<BLASTReadResult>>(async (resolve : (value : Array<BLASTReadResult>) => void,reject) => 
+    {
         let res = new Array<BLASTReadResult>();
 
         if(blastResult.readsBLASTed == 0)
@@ -113,7 +115,8 @@ export function getBLASTReadResults(blastResult : BLASTSegmentResult) : Promise<
             }
         );
 
-        rl.on("line",function(line : string){
+        rl.on("line",function(line : string)
+        {
             let result : BLASTReadResult = JSON.parse(line);
 
             if(result)
@@ -123,9 +126,10 @@ export function getBLASTReadResults(blastResult : BLASTSegmentResult) : Promise<
             }
         });
 
-        rl.on("close",function(){
+        rl.on("close",function()
+        {
             return resolve(res);
-        })
+        });
     });
 }
 
@@ -138,7 +142,8 @@ export function getBLASTReadResults(blastResult : BLASTSegmentResult) : Promise<
  */
 export function getBLASTFragmentResults(blastResult : BLASTSegmentResult) : Promise<Array<BLASTFragmentResult>> 
 {
-    return new Promise<Array<BLASTFragmentResult>>(async (resolve : (value : Array<BLASTFragmentResult>) => void) => {
+    return new Promise<Array<BLASTFragmentResult>>(async (resolve : (value : Array<BLASTFragmentResult>) => void) => 
+    {
         let res = new Array<BLASTFragmentResult>();
 
         if(blastResult.readsBLASTed == 0)
@@ -153,7 +158,8 @@ export function getBLASTFragmentResults(blastResult : BLASTSegmentResult) : Prom
             }
         );
 
-        rl.on("line",function(line : string){
+        rl.on("line",function(line : string)
+        {
             let result : BLASTFragmentResult = JSON.parse(line);
 
             if(result)
@@ -162,8 +168,9 @@ export function getBLASTFragmentResults(blastResult : BLASTSegmentResult) : Prom
             }
         });
 
-        rl.on("close",function(){
+        rl.on("close",function()
+        {
             return resolve(res);
-        })
+        });
     });
 }
