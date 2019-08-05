@@ -272,7 +272,8 @@ export class RunAlignmentForm
                         <Grid container spacing={4} justify="center">
                             <Grid item>
                                 <FormControl component="fieldset">
-                                    <RadioGroup onChange={(event : React.ChangeEvent<{}>,value : string) => {
+                                    <RadioGroup onChange={(event : React.ChangeEvent<{}>,value : string) => 
+                                    {
                                         if(value == "bowtie2" || value == "hisat2")
                                             this.onStepThreeRadioChange(event,value);
                                     }}>

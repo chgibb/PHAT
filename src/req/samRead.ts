@@ -30,7 +30,8 @@ export class SAMRead
         TLEN : number,
         SEQ : string,
         QUAL : string
-    }) {
+    }) 
+    {
         this.QNAME = opt.QNAME;
         this.FLAG = opt.FLAG;
         this.RNAME = opt.RNAME;
@@ -62,15 +63,15 @@ export function parseSAMRead(line : string) : SAMRead | undefined
 
     return new SAMRead({
         QNAME : cols[0],
-    FLAG :parseInt(cols[1]),
-    RNAME: cols[2],
-    POS :parseInt(cols[3]),
-    MAPQ :parseInt(cols[4]),
-    CIGAR: cols[5],
-    RNEXT: cols[6],
-    PNEXT: parseInt(cols[7]),
-    TLEN :parseInt(cols[8]),
-    SEQ :cols[9],
-    QUAL :cols[10],
+        FLAG :parseInt(cols[1]),
+        RNAME: cols[2],
+        POS :parseInt(cols[3]),
+        MAPQ :parseInt(cols[4]),
+        CIGAR: cols[5],
+        RNEXT: cols[6],
+        PNEXT: parseInt(cols[7]),
+        TLEN :parseInt(cols[8]),
+        SEQ :cols[9],
+        QUAL :cols[10],
     });
 }

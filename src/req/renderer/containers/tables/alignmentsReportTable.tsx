@@ -35,22 +35,25 @@ export class AlignmentsReportTable extends React.Component<AlignmentsReportTable
     }
 
     public static aliasCellId(row: AlignData | undefined): string 
-    {if(!row)
+    {
+        if(!row)
             return "";
             
         return `${row.uuid}ViewAlignment`;
     }
 
     public static BLASTRunsCellId(row : AlignData | undefined) : string
-    {if(!row)
-        return "";
+    {
+        if(!row)
+            return "";
         
         return `${row.uuid}ViewBLASTRuns`;
     }
 
     public static viewMoreId(row : AlignData | undefined) : string
-    {if(!row)
-        return "";
+    {
+        if(!row)
+            return "";
         
         return `${row.uuid}ViewMore`;
     }

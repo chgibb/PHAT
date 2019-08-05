@@ -55,8 +55,9 @@ export function getReferencesFromUuids<T extends UniquelyAddressable>(
 
     uuids.map((uuid) => 
     {
-        let item = arr.find((el) => {
-            return el.uuid == uuid
+        let item = arr.find((el) => 
+        {
+            return el.uuid == uuid;
         });
 
         if(item)
@@ -97,8 +98,9 @@ export function getPropertiesOfReferencesFromUuids<T extends UniquelyAddressable
 
     uuids.map((uuid) => 
     {
-        let item = arr.find((el) => {
-            return el.uuid == uuid
+        let item = arr.find((el) => 
+        {
+            return el.uuid == uuid;
         });
 
         if(item)

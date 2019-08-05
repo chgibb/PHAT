@@ -2,7 +2,8 @@
 
 import {evaluateCIGAR} from "./../req/cigar";
 
-it(`should correctly extract CIGAR fragments 1`,() => {
+it("should correctly extract CIGAR fragments 1",() => 
+{
     let seq = "ATCGATCGATCG";
     let res = evaluateCIGAR(
         seq,
@@ -29,7 +30,8 @@ it(`should correctly extract CIGAR fragments 1`,() => {
     expect(joined).toEqual(seq);
 }); 
 
-it(`should correctly extract CIGAR fragments 2`,() => {
+it("should correctly extract CIGAR fragments 2",() => 
+{
     let seq = "AACACCTGCAGAAACTGGAGGGCATTTTACACTTTCATCATCCACTATTAGTACACATAATTATGAAGAAATTCCTATGGATACATTTATTGTTAGCACAAACCCTAACACAGTAACTAGTAGCACACCCATACCAGGGTCTCGCCCAGTG";
     let res = evaluateCIGAR(
         seq,
@@ -49,7 +51,8 @@ it(`should correctly extract CIGAR fragments 2`,() => {
     expect(joined).toEqual(seq);
 });
 
-it(`should correctly extract CIGAR fragments 3`,() => {
+it("should correctly extract CIGAR fragments 3",() => 
+{
     let seq = "CGATCTGAAACTAGTTTTATTGATGCTGGTGCACCAACATCTGTACCTTCCATTCCCCCAGATGTATCAGGATTTAGTATTACTACTTCAACTGATACCACACCTGCTATATTAGATATTAATAATACTGTTACTACTGTTACTACACATA";
     let res = evaluateCIGAR(
         seq,
@@ -70,7 +73,8 @@ it(`should correctly extract CIGAR fragments 3`,() => {
     expect(joined).toEqual(seq);
 });
 
-it(`should correctly extract CIGAR fragments 4`,() => {
+it("should correctly extract CIGAR fragments 4",() => 
+{
     let seq = "GAAACTAGTTTTATTGATGCTGGTGCACCAACATCTGTACCTTCCATTCCCCCAGATGTATCAGGATTTAGTATTACTACTTCAACTGATACCACACCTGCTATATTAGATATTAATAATACTGTTACTACTGTTACTACACATAAGATCG";
     let res = evaluateCIGAR(
         seq,
@@ -86,14 +90,16 @@ it(`should correctly extract CIGAR fragments 4`,() => {
     expect(joined).toEqual(seq);
 });
 
-it(`should correctly extract CIGAR fragments 5`,() => {
+it("should correctly extract CIGAR fragments 5",() => 
+{
     let res = evaluateCIGAR(
         "GAAACTAGTTTTATTGATGCTGGTGCACCAACATCTGTACCTTCCATTCCCCCAGATGTATCAGGATTTAGTATTACTACTTCAACTGATACCACACCTGCTATATTAGATATTAATAATACTGTTACTACTGTTACTACACATAAGATCG","*");
 
     expect(res).toBeUndefined();
 });
 
-it(`should correctly extract CIGAR fragments 6`,() => {
+it("should correctly extract CIGAR fragments 6",() => 
+{
     let res = evaluateCIGAR(
         "GAAACTAGTTTTATTGATGCTGGTGCACCAACATCTGTACCTTCCATTCCCCCAGATGTATCAGGATTTAGTATTACTACTTCAACTGATACCACACCTGCTATATTAGATATTAATAATACTGTTACTACTGTTACTACACATAAGATCG",
         "0"
@@ -102,7 +108,8 @@ it(`should correctly extract CIGAR fragments 6`,() => {
     expect(res).toBeUndefined();
 });
 
-it(`should correctly extract CIGAR fragments 7`,() => {
+it("should correctly extract CIGAR fragments 7",() => 
+{
     function evaluate()
     {
         evaluateCIGAR(

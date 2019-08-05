@@ -31,12 +31,12 @@ export function BLASTRunsTable(props : BLASTRunsTableProps) : JSX.Element
                     {
                         if(props.align && props.align.BLASTSegmentResults)
                         {
-                        return (
-                            <BLASTSingleRunTable
-                                align={props.align}
-                                BLASTuuid={rowData.uuid}
-                            />
-                        );
+                            return (
+                                <BLASTSingleRunTable
+                                    align={props.align}
+                                    BLASTuuid={rowData.uuid}
+                                />
+                            );
                         }
 
                         return null;

@@ -1,7 +1,7 @@
 import * as fs from "fs";
 import * as readline from "readline";
 
-import { parseSAMRead, SAMRead } from './samRead';
+import {parseSAMRead, SAMRead} from "./samRead";
 
 /**
  * Represents a single section of a CIGAR string
@@ -137,8 +137,10 @@ export function getReads(
     start : number,
     end : number,
     cb : (read : SAMRead,fragments : Array<ReadFragment> | undefined) => void
-) : Promise<number> {
-    return new Promise<number>(async (resolve) => {
+) : Promise<number> 
+{
+    return new Promise<number>(async (resolve) => 
+    {
         let retrieved = 0;
         let rl : readline.ReadLine = readline.createInterface(
             <readline.ReadLineOptions>{
@@ -146,7 +148,8 @@ export function getReads(
             }
         );
 
-        rl.on("line",function(line : string){
+        rl.on("line",function(line : string)
+        {
             let read = parseSAMRead(line);
             if(read)
             {
@@ -158,7 +161,8 @@ export function getReads(
             }
         });
 
-        rl.on("close",function(){
+        rl.on("close",function()
+        {
             resolve(retrieved);
         });
     });
