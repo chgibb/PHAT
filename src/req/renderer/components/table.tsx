@@ -18,7 +18,7 @@ type Row<T> = T & {
 };
 
 type TableColumn<T> = Omit<typeof MuiTableDefaultPropsColumns,"render"|"searchable"|"field"|"hidden"> & {
-    render? : (row : Row<T>) => string | number | boolean | JSX.Element;
+    render? : (row : Row<T>) => string | number | boolean | JSX.Element | null;
     searchable : boolean;
     field : keyof T | "";
     hidden : boolean;

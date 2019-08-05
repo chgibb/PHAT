@@ -53,9 +53,15 @@ export class BLASTSingleRunTable extends React.Component<BLASTSingleRunTableProp
         });
     }
 
-    public render() : JSX.Element
+    public render() : JSX.Element | null
     {
-        let resultsHandle : BLASTSegmentResult = this.props.align.BLASTSegmentResults.find(x => x.uuid == this.props.BLASTuuid);
+        if(!this.props.align.BLASTSegmentResults)
+            return null;
+
+        let resultsHandle : BLASTSegmentResult | undefined = this.props.align.BLASTSegmentResults.find(x => x.uuid == this.props.BLASTuuid);
+
+        if(!resultsHandle)
+            return null;
         
         if(!this.state.readResults && this.props.align)
         {
@@ -93,7 +99,7 @@ export class BLASTSingleRunTable extends React.Component<BLASTSingleRunTableProp
                                     </span>);
                             }
 
-                            else if(fragment.type == "unmapped")
+                            else if(fragment.type == "unmapped" && this.state.fragmentResults && this.state.readResults)
                             {
                                 let hoverText = "";
                                 for(let k = 0; k != this.state.fragmentResults.length; ++k)

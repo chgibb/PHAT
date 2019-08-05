@@ -7,7 +7,7 @@ export class CircularGenomeBuilderView extends React.Component<{},{}>
     private ref = React.createRef<HTMLDivElement>();
     public constructor()
     {
-        super(undefined);
+        super({});
     }
 
     public componentDidMount()

@@ -42,12 +42,15 @@ export class AlignView extends React.Component<AlignViewProps,AlignViewState>
         let linkableRefSeqs : Array<LinkableRefSeq> | undefined;
         if(showingCompatibleTables)
         {
-            linkableRefSeqs = getLinkableRefSeqs(
-                this.props.fastaInputs.filter((x) => 
-                {
-                    return x.indexedForVisualization;
-                }),getReferenceFromUuid(this.props.aligns,this.state.mapToLinkUuid)
-            );
+            let fastas = this.props.fastaInputs.filter((x) => 
+            {
+                return x.indexedForVisualization;
+            });
+
+            let align : AlignData | undefined = getReferenceFromUuid(this.props.aligns,this.state.mapToLinkUuid);
+            
+            if(align)
+                linkableRefSeqs = getLinkableRefSeqs(fastas,align);
         }
 
         return (
@@ -89,13 +92,14 @@ export class AlignView extends React.Component<AlignViewProps,AlignViewState>
                             />
                             <CompatibleRefTable
                                 fastaInputs={this.props.fastaInputs}
-                                linkableRefSeqs={linkableRefSeqs}
+                                linkableRefSeqs={linkableRefSeqs ? linkableRefSeqs : []}
                                 linkActionClick={(row : CompatibleRefTableRow) => 
                                 {
-                                    linkRefSeqToAlignment(
-                                        getReferenceFromUuid(this.props.fastaInputs,row.fasta.uuid),
-                                        getReferenceFromUuid(this.props.aligns,this.state.mapToLinkUuid)
-                                    );
+                                    let fasta = getReferenceFromUuid(this.props.fastaInputs,row.fasta.uuid);
+                                    let align = getReferenceFromUuid(this.props.aligns,this.state.mapToLinkUuid);
+                                    
+                                    if(fasta && align)
+                                        linkRefSeqToAlignment(fasta,align);
 
                                     this.setState({
                                         tryingToLinkRef : false,
@@ -105,7 +109,7 @@ export class AlignView extends React.Component<AlignViewProps,AlignViewState>
                             />
                             <IncompatibleRefTable
                                 fastaInputs={this.props.fastaInputs}
-                                linkableRefSeqs={linkableRefSeqs}
+                                linkableRefSeqs={linkableRefSeqs ? linkableRefSeqs : []}
                             />
                         </React.Fragment> : ""}
             </React.Fragment>

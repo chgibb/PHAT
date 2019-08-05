@@ -15,7 +15,7 @@ export interface AlignmentsReportTableProps
 {
     aligns?: Array<AlignData>;
     fastas?: Array<Fasta>;
-    onRowClick : (event: React.MouseEvent, rowData: AlignData) => void;
+    onRowClick : (event: React.MouseEvent | undefined, rowData: AlignData | undefined) => void;
     viewMore : (rowData : AlignData) => void;
 }
 
@@ -26,23 +26,32 @@ export class AlignmentsReportTable extends React.Component<AlignmentsReportTable
         super(props);
     }
 
-    public static SNPCellId(row: AlignData): string 
+    public static SNPCellId(row: AlignData | undefined): string 
     {
+        if(!row)
+            return "";
+
         return `${row.uuid}SNP`;
     }
 
-    public static aliasCellId(row: AlignData): string 
-    {
+    public static aliasCellId(row: AlignData | undefined): string 
+    {if(!row)
+            return "";
+            
         return `${row.uuid}ViewAlignment`;
     }
 
-    public static BLASTRunsCellId(row : AlignData) : string
-    {
+    public static BLASTRunsCellId(row : AlignData | undefined) : string
+    {if(!row)
+        return "";
+        
         return `${row.uuid}ViewBLASTRuns`;
     }
 
-    public static viewMoreId(row : AlignData) : string
-    {
+    public static viewMoreId(row : AlignData | undefined) : string
+    {if(!row)
+        return "";
+        
         return `${row.uuid}ViewMore`;
     }
 
@@ -52,7 +61,7 @@ export class AlignmentsReportTable extends React.Component<AlignmentsReportTable
             <TableCellHover>
                 <Table<AlignData>
                     title="Alignment Reports"
-                    data={this.props.aligns}
+                    data={this.props.aligns ? this.props.aligns : []}
                     onRowClick={(event,rowData) => 
                     {
                         this.props.onRowClick(event,rowData);
@@ -72,7 +81,7 @@ export class AlignmentsReportTable extends React.Component<AlignmentsReportTable
                             title: "Aligner",
                             render: (row: AlignData) => 
                             {
-                                return row.alignerUsed;
+                                return row.alignerUsed ? row.alignerUsed : "";
                             },
                             searchable : true,
                             field : "alignerUsed",
@@ -82,7 +91,7 @@ export class AlignmentsReportTable extends React.Component<AlignmentsReportTable
                             title: "Size In Bytes",
                             render: (row: AlignData) => 
                             {
-                                return row.size;
+                                return row.size ? row.size : null;
                             },
                             searchable : true,
                             field : "size",
@@ -92,7 +101,7 @@ export class AlignmentsReportTable extends React.Component<AlignmentsReportTable
                             title: "Formatted Size",
                             render: (row: AlignData) => 
                             {
-                                return row.sizeString;
+                                return row.sizeString ? row.sizeString : null;
                             },
                             searchable : true,
                             field : "sizeString",
@@ -102,7 +111,7 @@ export class AlignmentsReportTable extends React.Component<AlignmentsReportTable
                             title: "Reads",
                             render: (row: AlignData) => 
                             {
-                                return !row.isExternalAlignment ? row.summary.reads : row.flagStatReport.reads;
+                                return !row.isExternalAlignment ? row.summary!.reads : row.flagStatReport!.reads;
                             },
                             searchable : true
                             ,
@@ -113,7 +122,7 @@ export class AlignmentsReportTable extends React.Component<AlignmentsReportTable
                             title: "Mates",
                             render: (row: AlignData) => 
                             {
-                                return !row.isExternalAlignment ? row.summary.mates : "Unknown";
+                                return !row.isExternalAlignment ? row.summary!.mates : "Unknown";
                             },
                             searchable : true,
                             field : "",
@@ -123,7 +132,7 @@ export class AlignmentsReportTable extends React.Component<AlignmentsReportTable
                             title: "Overall Alignment Rate %",
                             render: (row: AlignData) => 
                             {
-                                return !row.isExternalAlignment ? row.summary.overallAlignmentRate : row.flagStatReport.overallAlignmentRate;
+                                return !row.isExternalAlignment ? row.summary!.overallAlignmentRate : row.flagStatReport!.overallAlignmentRate;
                             },
                             searchable : true,
                             field : "",

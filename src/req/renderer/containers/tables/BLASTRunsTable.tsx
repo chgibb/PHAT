@@ -8,7 +8,7 @@ import {BLASTSingleRunTable} from "./BLASTSingleRunTable";
 
 export interface BLASTRunsTableProps
 {
-    align : AlignData;
+    align? : AlignData;
 }
 
 /**
@@ -23,18 +23,23 @@ export function BLASTRunsTable(props : BLASTRunsTableProps) : JSX.Element
     return (
         <Table<BLASTSegmentResult>
             title=""
-            data={props.align.BLASTSegmentResults}
+            data={props.align ? props.align.BLASTSegmentResults ? props.align.BLASTSegmentResults : [] : []}
             detailPanel={[
                 {
                     tooltip : "View BLAST Run",
                     render : (rowData : BLASTSegmentResult) => 
                     {
+                        if(props.align && props.align.BLASTSegmentResults)
+                        {
                         return (
                             <BLASTSingleRunTable
                                 align={props.align}
                                 BLASTuuid={rowData.uuid}
                             />
                         );
+                        }
+
+                        return null;
                     }
                 }
             ]}
@@ -43,7 +48,7 @@ export function BLASTRunsTable(props : BLASTRunsTableProps) : JSX.Element
                     title : "Start",
                     render : (row) => 
                     {
-                        return row.start;
+                        return row.start!;
                     },
                     searchable : true,
                     field : "start",
@@ -53,7 +58,7 @@ export function BLASTRunsTable(props : BLASTRunsTableProps) : JSX.Element
                     title : "Stop",
                     render : (row) => 
                     {
-                        return row.stop;
+                        return row.stop!;
                     },
                     searchable : true,
                     field : "stop",
@@ -63,7 +68,7 @@ export function BLASTRunsTable(props : BLASTRunsTableProps) : JSX.Element
                     title : "Reads BLASTed",
                     render : (row) => 
                     {
-                        return row.readsBLASTed;
+                        return row.readsBLASTed!;
                     },
                     searchable : true,
                     field : "readsBLASTed",
@@ -83,7 +88,7 @@ export function BLASTRunsTable(props : BLASTRunsTableProps) : JSX.Element
                     title : "Date Ran",
                     render : (row) => 
                     {
-                        return row.dateStampString;
+                        return row.dateStampString!;
                     },
                     searchable : true,
                     field : "dateStampString",

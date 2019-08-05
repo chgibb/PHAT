@@ -82,7 +82,7 @@ export class ToolBarTabs<T> extends React.Component<ToolBarTabsProps<T>,ToolBarT
         }
     }
     
-    public render() : JSX.Element
+    public render() : JSX.Element | null
     {
         if(this.props.tabs && this.props.tabs.length != 0)
         {

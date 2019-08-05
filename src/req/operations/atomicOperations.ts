@@ -282,7 +282,7 @@ export abstract class AtomicOperation
     {
         this.setFailure(this.flags);
         this.extraData = msg;
-        this.update();
+        this.update!();
     }
 
     /**

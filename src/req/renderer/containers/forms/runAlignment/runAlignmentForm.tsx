@@ -132,7 +132,7 @@ export class RunAlignmentForm
             return;
         this.setState({
             selectedFastqUuids : reOrder(
-                this.state.selectedFastqUuids,
+                this.state.selectedFastqUuids!,
                 result.source.index,
                 result.destination.index
             )});
@@ -179,12 +179,12 @@ export class RunAlignmentForm
         let steps : Array<FullWidthFormStep> = new Array();
 
         steps.push({
-            label : !this.state.selectedFastqUuids || this.state.selectedFastqUuids.length == 0 ? "Select fastq(s) to align" : `Selected${"\n"}${selectedFastqsAliases.join(",\n")}`,
+            label : !this.state.selectedFastqUuids || this.state.selectedFastqUuids.length == 0 ? "Select fastq(s) to align" : `Selected${"\n"}${selectedFastqsAliases!.join(",\n")}`,
             body : (
                 <FastqTable
                     selection={true}
                     onSelectionChange={this.onFastqSelectionChange}
-                    data={this.props.fastqs}
+                    data={this.props.fastqs ? this.props.fastqs : []}
                 />
             )
         });
@@ -237,7 +237,7 @@ export class RunAlignmentForm
                                                 );
                                             }}
                                             portal={this.portal}
-                                            data={selectedFastqsObjs}
+                                            data={selectedFastqsObjs ? selectedFastqsObjs : []}
                                         />
                                     </Grid>
                                 </Grid>
@@ -254,7 +254,7 @@ export class RunAlignmentForm
                 <div>
                     <FastaTable
                         actions={false}
-                        data={this.props.fastas}
+                        data={this.props.fastas ? this.props.fastas : []}
                         shouldAllowTriggeringOps={true}
                         onIndexForVizClick={()=>null}
                         selection={true}
@@ -272,7 +272,10 @@ export class RunAlignmentForm
                         <Grid container spacing={4} justify="center">
                             <Grid item>
                                 <FormControl component="fieldset">
-                                    <RadioGroup onChange={this.onStepThreeRadioChange}>
+                                    <RadioGroup onChange={(event : React.ChangeEvent<{}>,value : string) => {
+                                        if(value == "bowtie2" || value == "hisat2")
+                                            this.onStepThreeRadioChange(event,value);
+                                    }}>
                                         <FormControlLabel
                                             checked={this.state.selectedAligner == "bowtie2"} 
                                             value="bowtie2"
@@ -323,18 +326,18 @@ export class RunAlignmentForm
                                                                 if(this.state.selectedAligner == "bowtie2")
                                                                 {
                                                                     triggerBowtie2Alignment(
-                                                                        selectedFastaObjs[0],
-                                                                        selectedFastqsObjs[0],
-                                                                        selectedFastqsObjs[1]
+                                                                        selectedFastaObjs![0],
+                                                                        selectedFastqsObjs![0],
+                                                                        selectedFastqsObjs![1]
                                                                     );
                                                                 }
 
                                                                 if(this.state.selectedAligner == "hisat2")
                                                                 {
                                                                     triggerHisat2Alignment(
-                                                                        selectedFastaObjs[0],
-                                                                        selectedFastqsObjs[0],
-                                                                        selectedFastqsObjs[1]
+                                                                        selectedFastaObjs![0],
+                                                                        selectedFastqsObjs![0],
+                                                                        selectedFastqsObjs![1]
                                                                     );
                                                                 }
                                                             }}

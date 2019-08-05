@@ -9,7 +9,7 @@ import {inputFastaDialog} from "./inputFastaDialog";
 
 export interface FastaViewProps
 {
-    fastaInputs : Array<Fasta>;
+    fastaInputs? : Array<Fasta>;
     shouldAllowTriggeringOps : boolean;
 }
 
@@ -34,7 +34,7 @@ export class FastaView extends React.Component<FastaViewProps,{}>
                 />
                 <FastaTable
                     actions={true} 
-                    data={this.props.fastaInputs} 
+                    data={this.props.fastaInputs ? this.props.fastaInputs : []} 
                     shouldAllowTriggeringOps={this.props.shouldAllowTriggeringOps}
                     onIndexForVizClick={(event,data) => 
                     {
@@ -48,7 +48,8 @@ export class FastaView extends React.Component<FastaViewProps,{}>
                             type="remain"
                             onClick={() => 
                             {
-                                pub.importSelectedFastas(this.props.fastaInputs);
+                                if(this.props.fastaInputs)
+                                    pub.importSelectedFastas(this.props.fastaInputs);
                             }}
                             label="Import All"
                         /> : "" : ""

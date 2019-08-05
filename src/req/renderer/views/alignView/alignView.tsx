@@ -62,7 +62,7 @@ export class AlignView  extends React.Component<AlignViewProps,AlignViewState>
                 <RunAlignmentForm
                     fastas={this.props.fastas}
                     fastqs={this.props.fastqs}
-                    shouldAllowTriggeringOps={this.state.shouldAllowTriggeringOps}
+                    shouldAllowTriggeringOps={this.state.shouldAllowTriggeringOps ? this.state.shouldAllowTriggeringOps : true}
                 />
             </div>
         );
