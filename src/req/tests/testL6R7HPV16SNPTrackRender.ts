@@ -23,7 +23,7 @@ export async function testL6R7HPV16SNPTrackRenderer() : Promise<void>
             else if(op.flags.failure)
             {
                 console.log(`Failed to render SNP track for ${op.circularFigure.name}`);
-                console.log(await atomic.getLogContent(op.logRecord)); 
+                console.log(await atomic.getLogContent(op.logRecord!)); 
                 return reject();
             }
         });
