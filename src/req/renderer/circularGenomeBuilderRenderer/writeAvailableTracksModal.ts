@@ -52,12 +52,12 @@ export function writeAvailableTracksModal() : void
     {
         if(genomeView.genome.renderedCoverageTracks[i].uuidAlign == selectedAlign.uuid)
         {
-            for(let j = 0; j != selectedAlign.fasta.contigs.length; ++j)
+            for(let j = 0; j != selectedAlign.fasta!.contigs.length; ++j)
             {
-                if(genomeView.genome.renderedCoverageTracks[i].uuidContig == selectedAlign.fasta.contigs[j].uuid)
+                if(genomeView.genome.renderedCoverageTracks[i].uuidContig == selectedAlign.fasta!.contigs[j].uuid)
                 {
                     body += `
-                    <b>Scaled by ${genomeView.genome.renderedCoverageTracks[i].scaleFactor}</b><p id="${genomeView.genome.renderedCoverageTracks[i].uuid}Available" class="activeHover" style="color:${genomeView.genome.renderedCoverageTracks[i].colour}">${selectedAlign.fasta.contigs[j].name}</p>
+                    <b>Scaled by ${genomeView.genome.renderedCoverageTracks[i].scaleFactor}</b><p id="${genomeView.genome.renderedCoverageTracks[i].uuid}Available" class="activeHover" style="color:${genomeView.genome.renderedCoverageTracks[i].colour}">${selectedAlign.fasta!.contigs[j].name}</p>
                     `;
                     foundTrack = true;
                 }
@@ -79,12 +79,12 @@ export function writeAvailableTracksModal() : void
     {
         if(genomeView.genome.renderedSNPTracks[i].uuidAlign == selectedAlign.uuid)
         {
-            for(let j = 0; j != selectedAlign.fasta.contigs.length; ++j)
+            for(let j = 0; j != selectedAlign.fasta!.contigs.length; ++j)
             {
-                if(genomeView.genome.renderedSNPTracks[i].uuidContig == selectedAlign.fasta.contigs[j].uuid)
+                if(genomeView.genome.renderedSNPTracks[i].uuidContig == selectedAlign.fasta!.contigs[j].uuid)
                 {
                     body += `
-                        <p id="${genomeView.genome.renderedSNPTracks[i].uuid}Available" class="activeHover" style="color:${genomeView.genome.renderedSNPTracks[i].colour}" >${selectedAlign.fasta.contigs[j].name}</p>
+                        <p id="${genomeView.genome.renderedSNPTracks[i].uuid}Available" class="activeHover" style="color:${genomeView.genome.renderedSNPTracks[i].colour}" >${selectedAlign.fasta!.contigs[j].name}</p>
                     `;
                     foundTrack = true;
                 }
@@ -145,12 +145,12 @@ export function writeAvailableTracksModal() : void
         `;                          
     
 
-    document.getElementById("modalTitle").innerHTML = title;
-    document.getElementById("modalBody").innerHTML = body;
-    document.getElementById("modalFooter").innerHTML = footer;
+    document.getElementById("modalTitle")!.innerHTML = title;
+    document.getElementById("modalBody")!.innerHTML = body;
+    document.getElementById("modalFooter")!.innerHTML = footer;
 
     let colourPicker = document.getElementById("colourPicker");
-    (<any>$(colourPicker)).minicolors({
+    (<any>$(colourPicker!)).minicolors({
         control : "hue",
         defaultValue : "",
         format : "rgb",
@@ -162,11 +162,11 @@ export function writeAvailableTracksModal() : void
         {}
     });
 
-    document.getElementById("footerClose").onclick = function(this : HTMLElement,ev : MouseEvent)
+    document.getElementById("footerClose")!.onclick = function(this : GlobalEventHandlers,ev : MouseEvent)
     {
         masterView.availableTracksModalOpen = false;
     };
-    document.getElementById("footerSave").onclick = function(this : HTMLElement,ev : MouseEvent)
+    document.getElementById("footerSave")!.onclick = function(this : GlobalEventHandlers,ev : MouseEvent)
     {
         for(let i = 0; i != genomeView.genome.renderedCoverageTracks.length; ++i)
         {
@@ -206,7 +206,7 @@ export function writeAvailableTracksModal() : void
         //this will throw for the filler contig that doesn't not get a control rendered for it
         try
         {
-            document.getElementById(`${genomeView.genome.contigs[i].uuid}GenCoverage`).onclick = function(this : HTMLElement,ev : MouseEvent)
+            document.getElementById(`${genomeView.genome.contigs[i].uuid}GenCoverage`)!.onclick = function(this : GlobalEventHandlers,ev : MouseEvent)
             {
                 ipc.send(
                     "runOperation",
@@ -215,13 +215,13 @@ export function writeAvailableTracksModal() : void
                         figureuuid : genomeView.genome.uuid,
                         alignuuid : selectedAlign.uuid,
                         uuid : genomeView.genome.contigs[i].uuid,
-                        colour : (<string>(<any>$(document.getElementById("colourPicker"))).minicolors("rgbString")),
+                        colour : (<string>(<any>$(document.getElementById("colourPicker")!)).minicolors("rgbString")),
                         scaleFactor : parseFloat((<HTMLInputElement>document.getElementById("scaleFactor")).value)
                     }
                 );
             };
 
-            document.getElementById(`${genomeView.genome.contigs[i].uuid}GenSNPs`).onclick = function(this : HTMLElement,ev : MouseEvent)
+            document.getElementById(`${genomeView.genome.contigs[i].uuid}GenSNPs`)!.onclick = function(this : GlobalEventHandlers,ev : MouseEvent)
             {
                 ipc.send(
                     "runOperation",
@@ -230,7 +230,7 @@ export function writeAvailableTracksModal() : void
                         figureuuid : genomeView.genome.uuid,
                         alignuuid : selectedAlign.uuid,
                         uuid : genomeView.genome.contigs[i].uuid,
-                        colour : (<string>(<any>$(document.getElementById("colourPicker"))).minicolors("rgbString"))
+                        colour : (<string>(<any>$(document.getElementById("colourPicker")!)).minicolors("rgbString"))
                     }
                 );
             };
@@ -250,12 +250,12 @@ export function writeAvailableTracksModal() : void
             {
                 el.classList.add("selected");
             }
-            el.onclick = function(this : HTMLElement,ev : MouseEvent)
+            el!.onclick = function(this : GlobalEventHandlers,ev : MouseEvent)
             {
-                if(el.classList.contains("selected"))
-                    el.classList.remove("selected");
+                if(el!.classList.contains("selected"))
+                    el!.classList.remove("selected");
                 else
-                    el.classList.add("selected");
+                    el!.classList.add("selected");
             };
         }
     }
@@ -270,12 +270,12 @@ export function writeAvailableTracksModal() : void
             {
                 el.classList.add("selected");
             }
-            el.onclick = function(this : HTMLElement,ev : MouseEvent)
+            el!.onclick = function(this : GlobalEventHandlers,ev : MouseEvent)
             {
-                if(el.classList.contains("selected"))
-                    el.classList.remove("selected");
+                if(el!.classList.contains("selected"))
+                    el!.classList.remove("selected");
                 else
-                    el.classList.add("selected");
+                    el!.classList.add("selected");
             };
         }
     }

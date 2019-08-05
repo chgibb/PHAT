@@ -53,11 +53,11 @@ export function writeSequenceSelectionModal() : void
         `;
     }
 
-    document.getElementById("modalTitle").innerHTML = title;
-    document.getElementById("modalBody").innerHTML = body;
-    document.getElementById("modalFooter").innerHTML = footer;
+    document.getElementById("modalTitle")!.innerHTML = title;
+    document.getElementById("modalBody")!.innerHTML = body;
+    document.getElementById("modalFooter")!.innerHTML = footer;
 
-    document.getElementById("selectSequence").onclick = function(this : HTMLElement,ev : MouseEvent)
+    document.getElementById("selectSequence")!.onclick = function(this : GlobalEventHandlers,ev : MouseEvent)
     {
         masterView.seqSelectionModalOpen = false;
         masterView.seqSelectionActionModalOpen = true;
@@ -66,7 +66,7 @@ export function writeSequenceSelectionModal() : void
 
     if(genomeView.genome.isInteractive)
     {
-        document.getElementById("seqSelectionStart").oninput = function(this : HTMLElement,ev : Event)
+        document.getElementById("seqSelectionStart")!.oninput = function(this : GlobalEventHandlers,ev : Event)
         {
             valSelectionStartAndEnd();
             updateSeqSelectionOnFigure(parseInt((<HTMLInputElement>document.getElementById("seqSelectionStart")).value),undefined);
@@ -92,7 +92,7 @@ export function writeSequenceSelectionModal() : void
 
 }
 
-function updateSeqSelectionOnFigure(start : number,end : number)
+function updateSeqSelectionOnFigure(start : number,end : number | undefined)
 {
     let masterView = <masterView.View>viewMgr.getViewByName("masterView");
     let genomeView = <genomeView.GenomeView>viewMgr.getViewByName("genomeView",masterView.views);

@@ -24,7 +24,7 @@ export async function testL6R1HPV18CoverageTrackRenderer() : Promise<void>
             else if(op.flags.failure)
             {
                 console.log(`Failed to render coverage track for ${op.circularFigure.name}`);
-                console.log(await atomic.getLogContent(op.logRecord)); 
+                console.log(await atomic.getLogContent(op.logRecord!)); 
                 return reject();
             }
         });

@@ -92,20 +92,20 @@ export function writeContigEditorModal() : void
         <button type="button" class="btn btn-primary" id="footerSave">Save changes</button>
     `;
 
-    document.getElementById("modalTitle").innerHTML = title;
-    document.getElementById("modalBody").innerHTML = body;
-    document.getElementById("modalFooter").innerHTML = footer;
+    document.getElementById("modalTitle")!.innerHTML = title;
+    document.getElementById("modalBody")!.innerHTML = body;
+    document.getElementById("modalFooter")!.innerHTML = footer;
 
-    document.getElementById("footerClose").onclick = function(this : HTMLElement,ev : MouseEvent)
+    document.getElementById("footerClose")!.onclick = function(this : GlobalEventHandlers,ev : MouseEvent)
     {
         masterView.contigEditorModalOpen = false;
     };
 
-    document.getElementById("footerSave").onclick = function(this : HTMLElement,ev : MouseEvent)
+    document.getElementById("footerSave")!.onclick = function(this : GlobalEventHandlers,ev : MouseEvent)
     {
         contig.alias = editedAlias;
-        let colour : string = (<string>(<any>$(document.getElementById("fillColourPicker"))).minicolors("rgbString"));
-        let fontColour : string = (<string>(<any>$(document.getElementById("fontColourPicker"))).minicolors("rgbString"));
+        let colour : string = (<string>(<any>$(document.getElementById("fillColourPicker")!)).minicolors("rgbString"));
+        let fontColour : string = (<string>(<any>$(document.getElementById("fontColourPicker")!)).minicolors("rgbString"));
         contig.color = colour;
         contig.fontFill = fontColour;
         if(contig.allowPositionChange)
@@ -126,7 +126,7 @@ export function writeContigEditorModal() : void
     
     };
 
-    document.getElementById("contigAlias").onclick = function(this : HTMLElement,ev : MouseEvent)
+    document.getElementById("contigAlias")!.onclick = function(this : GlobalEventHandlers,ev : MouseEvent)
     {
         masterView.dismissModal();
         dialogs.prompt("Contig Name",editedAlias,function(text : string)
@@ -139,7 +139,7 @@ export function writeContigEditorModal() : void
     };
     if(contig.allowPositionChange)
     {
-        document.getElementById("deleteContig").onclick = function(this : HTMLElement,ev : MouseEvent)
+        document.getElementById("deleteContig")!.onclick = function(this : GlobalEventHandlers,ev : MouseEvent)
         {
             masterView.dismissModal();
             dialogs.confirm("This cannot be undone",function(ok : boolean)
@@ -151,7 +151,7 @@ export function writeContigEditorModal() : void
                         if(genomeView.genome.customContigs[i].uuid == contig.uuid)
                         {
                             genomeView.genome.customContigs.splice(i,1);
-                            document.getElementById("footerSave").click();
+                            document.getElementById("footerSave")!.click();
                         }
                     }
                 }
@@ -159,7 +159,7 @@ export function writeContigEditorModal() : void
         };
     }
     let colourPicker = document.getElementById("fillColourPicker");
-    (<any>$(colourPicker)).minicolors({
+    (<any>$(colourPicker!)).minicolors({
         control : "hue",
         defaultValue : "",
         format : "rgb",
@@ -171,7 +171,7 @@ export function writeContigEditorModal() : void
         {}
     });
     let fontColourPicker = document.getElementById("fontColourPicker");
-    (<any>$(fontColourPicker)).minicolors({
+    (<any>$(fontColourPicker!)).minicolors({
         control : "hue",
         defaultValue : "",
         format : "rgb",

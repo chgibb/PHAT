@@ -23,11 +23,11 @@ export function writeSeqSelectionActionModal() : void
         <button type="button" class="btn btn-secondary" data-dismiss="modal" id="footerClose">Cancel</button>
     `;
 
-    document.getElementById("modalTitle").innerHTML = title;
-    document.getElementById("modalBody").innerHTML = body;
-    document.getElementById("modalFooter").innerHTML = footer;
+    document.getElementById("modalTitle")!.innerHTML = title;
+    document.getElementById("modalBody")!.innerHTML = body;
+    document.getElementById("modalFooter")!.innerHTML = footer;
 
-    document.getElementById("BLASTAlignment").onclick = function(this : HTMLElement,ev : Event)
+    document.getElementById("BLASTAlignment")!.onclick = function(this : GlobalEventHandlers,ev : Event)
     {
         masterView.seqSelectionActionModalOpen = false;
         masterView.willBLASTAlignment = true;

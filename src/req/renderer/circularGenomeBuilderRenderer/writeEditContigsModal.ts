@@ -46,15 +46,15 @@ export function writeEditContigsModal() : void
 
     let footer = "";
 
-    document.getElementById("modalTitle").innerHTML = title;
-    document.getElementById("modalBody").innerHTML = body;
-    document.getElementById("modalFooter").innerHTML = footer;
+    document.getElementById("modalTitle")!.innerHTML = title;
+    document.getElementById("modalBody")!.innerHTML = body;
+    document.getElementById("modalFooter")!.innerHTML = footer;
 
     if(genomeView.genome.customContigs.length > 0)
     {
         for(let i = 0; i != genomeView.genome.customContigs.length; ++i)
         {
-            document.getElementById(`${genomeView.genome.customContigs[i].uuid}Edit`).onclick = function(this : HTMLElement,ev : MouseEvent)
+            document.getElementById(`${genomeView.genome.customContigs[i].uuid}Edit`)!.onclick = function(this : GlobalEventHandlers,ev : MouseEvent)
             {
                 genomeView.markerOnClick(undefined,undefined,genomeView.genome.customContigs[i].uuid);
             };
@@ -63,7 +63,7 @@ export function writeEditContigsModal() : void
     
     for(let i = 0; i != genomeView.genome.contigs.length; ++i)
     {
-        document.getElementById(`${genomeView.genome.contigs[i].uuid}Edit`).onclick = function(this : HTMLElement,ev : MouseEvent)
+        document.getElementById(`${genomeView.genome.contigs[i].uuid}Edit`)!.onclick = function(this : GlobalEventHandlers,ev : MouseEvent)
         {
             genomeView.markerOnClick(undefined,undefined,genomeView.genome.contigs[i].uuid);
         };

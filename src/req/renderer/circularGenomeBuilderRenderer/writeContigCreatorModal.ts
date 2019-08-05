@@ -38,18 +38,18 @@ export function writeContigCreatorModal() : void
         `;
     }
 
-    document.getElementById("modalTitle").innerHTML = title;
-    document.getElementById("modalBody").innerHTML = body;
-    document.getElementById("modalFooter").innerHTML = footer;
+    document.getElementById("modalTitle")!.innerHTML = title;
+    document.getElementById("modalBody")!.innerHTML = body;
+    document.getElementById("modalFooter")!.innerHTML = footer;
 
-    document.getElementById("footerClose").onclick = function(this : HTMLElement,ev : MouseEvent)
+    document.getElementById("footerClose")!.onclick = function(this : GlobalEventHandlers,ev : MouseEvent)
     {
         masterView.contigCreatorModalOpen = false;
     };
 
     if(genomeView.genome)
     {
-        document.getElementById("footerSave").onclick = function(this : HTMLElement,ev : MouseEvent)
+        document.getElementById("footerSave")!.onclick = function(this : GlobalEventHandlers,ev : MouseEvent)
         {
 
             let contig : cf.Contig = new cf.Contig();

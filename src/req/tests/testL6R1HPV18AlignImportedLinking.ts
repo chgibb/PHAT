@@ -15,7 +15,7 @@ export async function testL6R1HPV18AlignImportedLinking() : Promise<void>
             if(op.flags.failure)
             {
                 console.log("Failure to link bam");
-                console.log(await atomic.getLogContent(op.logRecord)); 
+                console.log(await atomic.getLogContent(op.logRecord!)); 
                 return reject();
             }
             else if(op.flags.success)
@@ -27,51 +27,51 @@ export async function testL6R1HPV18AlignImportedLinking() : Promise<void>
                 fs.accessSync(getSNPsJSON(op.alignData));
                 fs.accessSync(getSNPsVCF(op.alignData));
 
-                if(op.alignData.varScanSNPSummary.minVarFreq == 0.2)
+                if(op.alignData.varScanSNPSummary!.minVarFreq == 0.2)
                     console.log(`${op.alignData.alias} has correct minimum variable frequency`);
                 else
                 {
-                    console.log(await atomic.getLogContent(op.logRecord)); 
+                    console.log(await atomic.getLogContent(op.logRecord!)); 
                     return reject();
                 }
 
-                if(op.alignData.varScanSNPSummary.minCoverage == 8)
+                if(op.alignData.varScanSNPSummary!.minCoverage == 8)
                     console.log(`${op.alignData.alias} has correct minimum coverage`);
                 else
                 {
-                    console.log(await atomic.getLogContent(op.logRecord)); 
+                    console.log(await atomic.getLogContent(op.logRecord!)); 
                     return reject();
                 }
 
-                if(op.alignData.varScanSNPSummary.minAvgQual == 15)
+                if(op.alignData.varScanSNPSummary!.minAvgQual == 15)
                     console.log(`${op.alignData.alias} has correct minimum average quality`);
                 else
                 {
-                    console.log(await atomic.getLogContent(op.logRecord)); 
+                    console.log(await atomic.getLogContent(op.logRecord!)); 
                     return reject();
                 }
 
-                if(op.alignData.varScanSNPSummary.pValueThresh == 0.01)
+                if(op.alignData.varScanSNPSummary!.pValueThresh == 0.01)
                     console.log(`${op.alignData.alias} has correct p-value threshold`);
                 else
                 {
-                    console.log(await atomic.getLogContent(op.logRecord)); 
+                    console.log(await atomic.getLogContent(op.logRecord!)); 
                     return reject();
                 }
                 
-                if(op.alignData.varScanSNPSummary.SNPsReported == 0)
+                if(op.alignData.varScanSNPSummary!.SNPsReported == 0)
                     console.log(`${op.alignData.alias} has correct predicted SNPs`);
                 else
                 {
-                    console.log(await atomic.getLogContent(op.logRecord)); 
+                    console.log(await atomic.getLogContent(op.logRecord!)); 
                     return reject();
                 }
                 
-                if(op.alignData.varScanSNPSummary.indelsReported == 0)
+                if(op.alignData.varScanSNPSummary!.indelsReported == 0)
                     console.log(`${op.alignData.alias} has correct indels reported`);
                 else
                 {
-                    console.log(await atomic.getLogContent(op.logRecord)); 
+                    console.log(await atomic.getLogContent(op.logRecord!)); 
                     return reject();
                 }
 
