@@ -13,7 +13,7 @@ export async function testFastQCReportGeneration() : Promise<void>
             {
                 if(op.flags.failure)
                 {
-                    console.log(await atomic.getLogContent(op.logRecord)); 
+                    console.log(await atomic.getLogContent(op.logRecord!)); 
                     return reject();
                 }
                 else if(op.flags.success)
@@ -22,7 +22,7 @@ export async function testFastQCReportGeneration() : Promise<void>
                     if(op.fastq.seqLength != 151)
                     {
                         console.log(`Seq length for ${op.fastq.alias} should not be ${op.fastq.seqLength}`);
-                        console.log(await atomic.getLogContent(op.logRecord)); 
+                        console.log(await atomic.getLogContent(op.logRecord!)); 
                         return reject();
                     }
                     return resolve();

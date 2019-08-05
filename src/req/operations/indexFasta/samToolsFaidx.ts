@@ -66,7 +66,7 @@ export function samToolsFaidx(fasta : Fasta,logger : atomic.AtomicOperation) : P
         try
         {
             faiJob.Run();
-            logger.addPIDFromFork(faiJob.pid);
+            logger.addPIDFromFork(faiJob.pid!);
         }
         catch(err)
         {

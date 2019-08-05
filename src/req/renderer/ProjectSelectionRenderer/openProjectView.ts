@@ -15,8 +15,8 @@ const jsonFile = require("jsonfile");
 
 export class OpenProjectView extends viewMgr.View
 {
-    public projects : Array<ProjectManifest>;
-    public currentlyOpenProject : ProjectManifest;
+    public projects : Array<ProjectManifest> | undefined;
+    public currentlyOpenProject : ProjectManifest | undefined;
     public constructor(div : string)
     {
         super("openProjectView",div);
@@ -33,7 +33,7 @@ export class OpenProjectView extends viewMgr.View
             projects = new Array<ProjectManifest>();
         }
         this.projects = projects;
-        this.currentlyOpenProject = getCurrentlyOpenProject();
+        this.currentlyOpenProject = getCurrentlyOpenProject()!;
     }
     public onUnMount() : void
     {}
@@ -144,7 +144,7 @@ export class OpenProjectView extends viewMgr.View
                 if(event.target.id == `${this.projects[i].uuid}Open`)
                 {
                     this.projects[i].lastOpened = Date.now();
-                    document.getElementById(this.div).innerHTML = "Preparing";
+                    document.getElementById(this.div)!.innerHTML = "Preparing";
                     jsonFile.writeFileSync(getProjectManifests(),this.projects);
                     ipc.send(
                         "runOperation",
@@ -157,7 +157,7 @@ export class OpenProjectView extends viewMgr.View
                 }
                 if(event.target.id == `${this.projects[i].uuid}Export`)
                 {
-                    document.getElementById(this.div).innerHTML = `<h3>Exporting ${this.projects[i].alias}</h3>`;
+                    document.getElementById(this.div)!.innerHTML = `<h3>Exporting ${this.projects[i].alias}</h3>`;
                     exportProjectBrowseDialog(this.projects[i]).then(() => 
                     {
                         viewMgr.render();

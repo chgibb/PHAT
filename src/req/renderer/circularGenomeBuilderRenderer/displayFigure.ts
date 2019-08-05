@@ -17,7 +17,7 @@ import {centreInteractiveFigure,centreNonInteractiveFigure} from "./centreFigure
  */
 export async function displayFigure(self : GenomeView) : Promise<void>
 {
-    if(!self.genome.isInteractive)
+    if(!self.genome!.isInteractive)
         await displayNonInteractiveFigure(self);
     else
         await displayInteractiveFigure(self);
@@ -37,7 +37,7 @@ export async function displayNonInteractiveFigure(self : GenomeView) : Promise<v
 {
     return new Promise<void>(async (resolve,reject) => 
     {
-        await tc.refreshCache(self.genome);
+        await tc.refreshCache(self.genome!);
         
         cleanCanvas(self);
 
@@ -52,12 +52,12 @@ export async function displayNonInteractiveFigure(self : GenomeView) : Promise<v
             document.body.insertAdjacentHTML("beforeend",$div);
             canvas = <HTMLCanvasElement>document.getElementById("nonInteractiveFigureCanvas");
         }
-        console.log(`canvas width ${self.genome.width}`);
-        console.log(`canvas height ${self.genome.height}`);
-        canvas.setAttribute("width",`${self.genome.width}`);
-        canvas.setAttribute("height",`${self.genome.height}`);
-        centreNonInteractiveFigure(self.genome);
-        await tc.renderToCanvas(canvas.getContext("2d"),self);
+        console.log(`canvas width ${self.genome!.width}`);
+        console.log(`canvas height ${self.genome!.height}`);
+        canvas.setAttribute("width",`${self.genome!.width}`);
+        canvas.setAttribute("height",`${self.genome!.height}`);
+        centreNonInteractiveFigure(self.genome!);
+        await tc.renderToCanvas(canvas.getContext("2d")!,self);
         resolve();
     });
 }
@@ -85,22 +85,22 @@ export async function displayInteractiveFigure(self : GenomeView) : Promise<void
 
         cleanCanvas(self);
         if(document.getElementById("canvasWrapper"))
-            document.getElementById("canvasWrapper").outerHTML = "";
+            document.getElementById("canvasWrapper")!.outerHTML = "";
         
-        for(let i = 0; i != self.genome.contigs.length; ++i)
+        for(let i = 0; i != self.genome!.contigs.length; ++i)
         {
-            totalBP += self.genome.contigs[i].bp;
+            totalBP += self.genome!.contigs[i].bp;
         }
-        await tc.refreshCache(self.genome);
+        await tc.refreshCache(self.genome!);
         let templates = cf.assembleCompilableTemplates(
-            self.genome,
+            self.genome!,
             `
-                ${cf.getBaseFigureTemplateFromCache(self.genome)}
+                ${cf.getBaseFigureTemplateFromCache(self.genome!)}
                 ${self.showSeqSelector ? cf.buildSequenceSelectorTemplate(
-        self.genome,
-        self.seqSelectionLeftArm,
-        self.seqSelectionRightArm,
-        self.seqSelectionArrow
+        self.genome!,
+        self.seqSelectionLeftArm!,
+        self.seqSelectionRightArm!,
+        self.seqSelectionArrow!
     ) : ""}
             `
         );
@@ -118,10 +118,10 @@ export async function displayInteractiveFigure(self : GenomeView) : Promise<void
                 </div>
         `;
         document.body.insertAdjacentHTML("beforeend",$div);
-        centreInteractiveFigure(document.getElementById(self.div),self.genome);
+        centreInteractiveFigure(document.getElementById(self.div)!,self.genome!);
         console.log("appended div");
 
-        let divToCompile : HTMLElement = document.getElementById("toCompile");
+        let divToCompile : HTMLElement = document.getElementById("toCompile")!;
         angular.element(divToCompile).injector().invoke(function($compile : any)
         {
             //This should probably be done with an actual angular scope instead 
@@ -180,23 +180,23 @@ export function cleanCanvas(self : GenomeView) : void
 export function getSelectedDataTrackSVGsFromCache(self : GenomeView) : string
 {
     let res = "";
-    for(let i = 0; i != self.genome.renderedCoverageTracks.length; ++i)
+    for(let i = 0; i != self.genome!.renderedCoverageTracks.length; ++i)
     {
-        if(self.genome.renderedCoverageTracks[i].checked)
+        if(self.genome!.renderedCoverageTracks[i].checked)
         {
-            let map = tc.getCoverageTrack(self.genome.renderedCoverageTracks[i]);
-            map.$scope = cf.makeMapScope(self.genome);
+            let map = tc.getCoverageTrack(self.genome!.renderedCoverageTracks[i]);
+            map.$scope = cf.makeMapScope(self.genome!);
             res += "<div style=\"position:absolute;z-index:-99;\">";
             res += map.renderStart() + map.renderEnd();
             res += "</div>";
         }
     }
-    for(let i = 0; i != self.genome.renderedSNPTracks.length; ++i)
+    for(let i = 0; i != self.genome!.renderedSNPTracks.length; ++i)
     {
-        if(self.genome.renderedSNPTracks[i].checked)
+        if(self.genome!.renderedSNPTracks[i].checked)
         {
-            let map = tc.getSNPTrack(self.genome.renderedSNPTracks[i]);
-            map.$scope = cf.makeMapScope(self.genome);
+            let map = tc.getSNPTrack(self.genome!.renderedSNPTracks[i]);
+            map.$scope = cf.makeMapScope(self.genome!);
             res += "<div style=\"position:absolute;z-index:-99;\">";
             res += map.renderStart() + map.renderEnd();
             res += "</div>";

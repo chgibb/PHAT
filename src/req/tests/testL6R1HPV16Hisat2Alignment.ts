@@ -16,96 +16,96 @@ export async function testL6R1HPV16Hisat2Alignment() : Promise<void>
             if(op.flags.failure)
             {
                 console.log("Failed to align");
-                console.log(await atomic.getLogContent(op.logRecord)); 
+                console.log(await atomic.getLogContent(op.logRecord!)); 
                 return reject();
             }
             else if(op.flags.success)
             {
-                if(op.alignData.summary.reads == 2689)
+                if(op.alignData.summary!.reads == 2689)
                     console.log(`${op.alignData.alias} has correct number of reads`);
                 else
                 {
-                    console.log(await atomic.getLogContent(op.logRecord)); 
+                    console.log(await atomic.getLogContent(op.logRecord!)); 
                     return reject();
                 }
 
-                if(op.alignData.summary.mates == 4714)
+                if(op.alignData.summary!.mates == 4714)
                     console.log(`${op.alignData.alias} has correct number of mates`);
                 else
                 {
-                    console.log(await atomic.getLogContent(op.logRecord)); 
+                    console.log(await atomic.getLogContent(op.logRecord!)); 
                     return reject();
                 }
                 
-                if(op.alignData.summary.overallAlignmentRate == 12.61)
+                if(op.alignData.summary!.overallAlignmentRate == 12.61)
                     console.log(`${op.alignData.alias} has correct overall alignment rate`);
                 else
                 {
-                    console.log(await atomic.getLogContent(op.logRecord)); 
+                    console.log(await atomic.getLogContent(op.logRecord!)); 
                     return reject();
                 }
 
-                if(op.alignData.varScanSNPSummary.minVarFreq == 0.2)
+                if(op.alignData.varScanSNPSummary!.minVarFreq == 0.2)
                     console.log(`${op.alignData.alias} has correct minimum variable frequency`);
                 else
                 {
-                    console.log(await atomic.getLogContent(op.logRecord)); 
+                    console.log(await atomic.getLogContent(op.logRecord!)); 
                     return reject();
                 }
 
-                if(op.alignData.varScanSNPSummary.minCoverage == 8)
+                if(op.alignData.varScanSNPSummary!.minCoverage == 8)
                     console.log(`${op.alignData.alias} has correct minimum coverage`);
                 else
                 {
-                    console.log(await atomic.getLogContent(op.logRecord)); 
+                    console.log(await atomic.getLogContent(op.logRecord!)); 
                     return reject();
                 }
 
-                if(op.alignData.varScanSNPSummary.minAvgQual == 15)
+                if(op.alignData.varScanSNPSummary!.minAvgQual == 15)
                     console.log(`${op.alignData.alias} has correct minimum average quality`);
                 else
                 {
-                    console.log(await atomic.getLogContent(op.logRecord));
+                    console.log(await atomic.getLogContent(op.logRecord!));
                     return reject();
                 }
 
-                if(op.alignData.varScanSNPSummary.pValueThresh == 0.01)
+                if(op.alignData.varScanSNPSummary!.pValueThresh == 0.01)
                     console.log(`${op.alignData.alias} has correct p-value threshold`);
                 else
                 {
-                    console.log(await atomic.getLogContent(op.logRecord));
+                    console.log(await atomic.getLogContent(op.logRecord!));
                     return reject();
                 }
                 
-                if(op.alignData.varScanSNPSummary.SNPsReported == 11)
+                if(op.alignData.varScanSNPSummary!.SNPsReported == 11)
                     console.log(`${op.alignData.alias} has correct predicted SNPs`);
                 else
                 {
-                    console.log(await atomic.getLogContent(op.logRecord));
+                    console.log(await atomic.getLogContent(op.logRecord!));
                     return reject();
                 }
                 
-                if(op.alignData.varScanSNPSummary.indelsReported == 0)
+                if(op.alignData.varScanSNPSummary!.indelsReported == 0)
                     console.log(`${op.alignData.alias} has correct indels reported`);
                 else
                 {
-                    console.log(await atomic.getLogContent(op.logRecord));
+                    console.log(await atomic.getLogContent(op.logRecord!));
                     return reject();
                 }
 
-                if(op.alignData.idxStatsReport[0].mappedReads == 678)
+                if(op.alignData.idxStatsReport![0].mappedReads == 678)
                     console.log(`${op.alignData.alias} has correct number of mapped reads`);
                 else
                 {
-                    console.log(await atomic.getLogContent(op.logRecord));
+                    console.log(await atomic.getLogContent(op.logRecord!));
                     return reject();
                 }
                 
-                if(op.alignData.idxStatsReport[0].unMappedReads == 12)
+                if(op.alignData.idxStatsReport![0].unMappedReads == 12)
                     console.log(`${op.alignData.alias} has correct number of unmapped reads`);
                 else
                 {
-                    console.log(await atomic.getLogContent(op.logRecord));
+                    console.log(await atomic.getLogContent(op.logRecord!));
                     return reject();
                 }
                 
@@ -113,7 +113,7 @@ export async function testL6R1HPV16Hisat2Alignment() : Promise<void>
                     console.log(`${op.alignData.alias} coverage depth wrote succesffully`);
                 else
                 {
-                    console.log(await atomic.getLogContent(op.logRecord));
+                    console.log(await atomic.getLogContent(op.logRecord!));
                     return reject();
                 }
 

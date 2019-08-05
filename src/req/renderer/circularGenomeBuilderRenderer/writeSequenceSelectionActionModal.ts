@@ -13,10 +13,10 @@ export function writeSeqSelectionActionModal() : void
     let masterView = <masterView.View>viewMgr.getViewByName("masterView");
     let genomeView = <genomeView.GenomeView>viewMgr.getViewByName("genomeView",masterView.views);
 
-    let title = `Selected ${genomeView.seqSelectionLeftArm.armStart} to ${genomeView.seqSelectionRightArm.armStart}`;
+    let title = `Selected ${genomeView.seqSelectionLeftArm!.armStart} to ${genomeView.seqSelectionRightArm!.armStart}`;
 
     let body = `
-        <button type="button" class="btn btn-primary" id="BLASTAlignment">BLAST an Alignment from ${genomeView.seqSelectionLeftArm.armStart} to ${genomeView.seqSelectionRightArm.armStart}</button>
+        <button type="button" class="btn btn-primary" id="BLASTAlignment">BLAST an Alignment from ${genomeView.seqSelectionLeftArm!.armStart} to ${genomeView.seqSelectionRightArm!.armStart}</button>
     `;
 
     let footer = `

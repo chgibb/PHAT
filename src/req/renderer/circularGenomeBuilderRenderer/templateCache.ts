@@ -16,8 +16,8 @@ let figure : cf.CircularFigure;
 
 class CoverageTrackMap
 {
-    public trackRecord : cf.RenderedCoverageTrackRecord;
-    public map : cf.CoverageTrackMap;
+    public trackRecord : cf.RenderedCoverageTrackRecord | undefined;
+    public map : cf.CoverageTrackMap | undefined;
     public async build(trackRecord : cf.RenderedCoverageTrackRecord,figure : cf.CircularFigure)
     {
         this.trackRecord = trackRecord;
@@ -27,8 +27,8 @@ class CoverageTrackMap
 
 class SNPTrackMap
 {
-    public trackRecord : cf.RenderedSNPTrackRecord;
-    public map : cf.SNPTrackMap;
+    public trackRecord : cf.RenderedSNPTrackRecord | undefined;
+    public map : cf.SNPTrackMap | undefined;
     public async build(trackRecord : cf.RenderedSNPTrackRecord,figure : cf.CircularFigure)
     {
         this.trackRecord = trackRecord;
@@ -79,7 +79,7 @@ export async function refreshCache(newFigure : cf.CircularFigure)
         found = false;
         for(let k = 0; k != coverageTrackMaps.length; ++k)
         {
-            if(newFigure.renderedCoverageTracks[i].uuid == coverageTrackMaps[k].trackRecord.uuid)
+            if(newFigure.renderedCoverageTracks[i].uuid == coverageTrackMaps[k].trackRecord!.uuid)
             {
                 found = true;
                 break;
@@ -99,7 +99,7 @@ export async function refreshCache(newFigure : cf.CircularFigure)
         found = false;
         for(let k = 0; k != SNPTrackMaps.length; ++k)
         {
-            if(newFigure.renderedSNPTracks[i].uuid == SNPTrackMaps[k].trackRecord.uuid)
+            if(newFigure.renderedSNPTracks[i].uuid == SNPTrackMaps[k].trackRecord!.uuid)
             {
                 found = true;
                 break;
@@ -124,9 +124,9 @@ export function getCoverageTrack(trackRecord : cf.RenderedCoverageTrackRecord) :
 {
     for(let i = 0; i != coverageTrackMaps.length; ++i)
     {
-        if(coverageTrackMaps[i].trackRecord.uuid == trackRecord.uuid)
+        if(coverageTrackMaps[i].trackRecord!.uuid == trackRecord.uuid)
         {
-            return coverageTrackMaps[i].map;
+            return coverageTrackMaps[i].map!;
         }
     }
     throw new Error(`Could not fetch ${trackRecord.uuid} from cache`);
@@ -143,9 +143,9 @@ export function getSNPTrack(trackRecord : cf.RenderedSNPTrackRecord) : cf.SNPTra
 {
     for(let i = 0; i != SNPTrackMaps.length; ++i)
     {
-        if(SNPTrackMaps[i].trackRecord.uuid == trackRecord.uuid)
+        if(SNPTrackMaps[i].trackRecord!.uuid == trackRecord.uuid)
         {
-            return SNPTrackMaps[i].map;
+            return SNPTrackMaps[i].map!;
         }
     }
     throw new Error(`Could not fetch ${trackRecord.uuid} from cache`);
@@ -168,15 +168,15 @@ export function renderToCanvas(ctx : CanvasRenderingContext2D,canv : cf.FigureCa
         await cf.renderSVGToCanvas(
             await cf.compileTemplatesToSVG(
                 cf.assembleCompilableTemplates(
-                    canv.genome,
+                    canv.genome!,
                     `
-                        ${cf.getBaseFigureTemplateFromCache(canv.genome)}
+                        ${cf.getBaseFigureTemplateFromCache(canv.genome!)}
                         ${canv.showSeqSelector ? 
         cf.buildSequenceSelectorTemplate(
             figure,
-            canv.seqSelectionLeftArm,
-            canv.seqSelectionRightArm,
-            canv.seqSelectionArrow
+            canv.seqSelectionLeftArm!,
+            canv.seqSelectionRightArm!,
+            canv.seqSelectionArrow!
         )
         : ""}
                     `,

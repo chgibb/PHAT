@@ -16,7 +16,7 @@ export async function testL6R1HPV16AlignImportedImporting() : Promise<void>
             if(op.flags.failure)
             {
                 console.log("Failed to input bam");
-                console.log(await atomic.getLogContent(op.logRecord)); 
+                console.log(await atomic.getLogContent(op.logRecord!)); 
                 return reject();
             }
             else if(op.flags.success)
@@ -25,25 +25,25 @@ export async function testL6R1HPV16AlignImportedImporting() : Promise<void>
                 fs.accessSync(getSortedBam(op.alignData));
                 fs.accessSync(getSortBamIndex(op.alignData));
 
-                if(op.alignData.flagStatReport.overallAlignmentRate == 15.15)
+                if(op.alignData.flagStatReport!.overallAlignmentRate == 15.15)
                     console.log(`${op.alignData.alias} has correct overall alignment rate`);
                 else
                 {
-                    console.log(await atomic.getLogContent(op.logRecord)); 
+                    console.log(await atomic.getLogContent(op.logRecord!)); 
                     return reject();
                 }
-                if(op.alignData.idxStatsReport[0].mappedReads == 815)
+                if(op.alignData.idxStatsReport![0].mappedReads == 815)
                     console.log(`${op.alignData.alias} has correct number of mapped reads`);
                 else
                 {
-                    console.log(await atomic.getLogContent(op.logRecord));
+                    console.log(await atomic.getLogContent(op.logRecord!));
                     return reject();
                 }
-                if(op.alignData.idxStatsReport[0].unMappedReads == 1)
+                if(op.alignData.idxStatsReport![0].unMappedReads == 1)
                     console.log(`${op.alignData.alias} has correct number of unmapped reads`);
                 else
                 {
-                    console.log(await atomic.getLogContent(op.logRecord));
+                    console.log(await atomic.getLogContent(op.logRecord!));
                     return reject();
                 }
 
@@ -52,7 +52,7 @@ export async function testL6R1HPV16AlignImportedImporting() : Promise<void>
                 if(!res)
                 {
                     console.log(`Failed to determine link status for ${op.alignData.alias}`);
-                    console.log(await atomic.getLogContent(op.logRecord)); 
+                    console.log(await atomic.getLogContent(op.logRecord!)); 
                     return reject();
                 }
                 if(res[0].linkable == true && res[0].uuid == hpv16Ref.get().uuid)
@@ -60,7 +60,7 @@ export async function testL6R1HPV16AlignImportedImporting() : Promise<void>
                 else
                 {
                     console.log(`${op.alignData.alias} is not linkable to HPV16`);
-                    console.log(await atomic.getLogContent(op.logRecord)); 
+                    console.log(await atomic.getLogContent(op.logRecord!)); 
                     return reject();
                 }
 

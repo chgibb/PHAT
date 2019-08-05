@@ -12,17 +12,17 @@ export async function testHPV18IndexForVisualization() : Promise<void>
         {
             if(op.flags.failure)
             {
-                console.log(`Failed to index ${op.fasta.alias} for visualization`);
-                console.log(await atomic.getLogContent(op.logRecord)); 
+                console.log(`Failed to index ${op.fasta!.alias} for visualization`);
+                console.log(await atomic.getLogContent(op.logRecord!)); 
                 return reject();
             }
             else if(op.flags.success)
             {
                 if(hpv18Ref.get().indexedForVisualization)
-                    console.log(`${op.fasta.alias} was indexed for visualization`);
+                    console.log(`${op.fasta!.alias} was indexed for visualization`);
                 else
                 {
-                    console.log(await atomic.getLogContent(op.logRecord)); 
+                    console.log(await atomic.getLogContent(op.logRecord!)); 
                     return reject();
                 }
                 
@@ -34,7 +34,7 @@ export async function testHPV18IndexForVisualization() : Promise<void>
                 catch(err)
                 {
                     console.log("Failed to access 2bit archive for hpv18 ref");
-                    console.log(await atomic.getLogContent(op.logRecord)); 
+                    console.log(await atomic.getLogContent(op.logRecord!)); 
                     return reject();
                 }
 

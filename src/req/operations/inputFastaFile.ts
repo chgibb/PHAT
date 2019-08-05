@@ -2,8 +2,8 @@ import * as atomic from "./atomicOperations";
 import {Fasta} from "./../fasta";
 export class InputFastaFile extends atomic.AtomicOperation
 {
-    public filePath : string;
-    public fasta : Fasta;
+    public filePath : string | undefined;
+    public fasta : Fasta | undefined;
     public constructor()
     {
         super();
@@ -15,10 +15,10 @@ export class InputFastaFile extends atomic.AtomicOperation
     }
     public run() : void
     {
-        this.logRecord = atomic.openLog(this.name,"Input Fasta File");
+        this.logRecord = atomic.openLog(this.name!,"Input Fasta File");
         try
         {
-            this.fasta = new Fasta(this.filePath);
+            this.fasta = new Fasta(this.filePath!);
             this.fasta.checked = true;
         }
         catch(err)
@@ -26,6 +26,6 @@ export class InputFastaFile extends atomic.AtomicOperation
             this.abortOperationWithMessage(err);
         }
         this.setSuccess(this.flags);
-        this.update();
+        this.update!();
     }
 }

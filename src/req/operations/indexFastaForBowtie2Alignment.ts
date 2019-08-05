@@ -9,17 +9,17 @@ import {bowTie2Build} from "./indexFasta/bowTie2Build";
 import {samToolsFaidx} from "./indexFasta/samToolsFaidx";
 export class IndexFastaForBowtie2Alignment extends atomic.AtomicOperation
 {
-    public fasta : Fasta;
+    public fasta : Fasta | undefined;
 
     public samToolsExe : string;
-    public bowtie2BuildExe : string;
+    public bowtie2BuildExe : string | undefined;
 
-    public faiPath : string;
-    public faiJob : Job;
+    public faiPath : string | undefined;
+    public faiJob : Job | undefined;
     public faiFlags : atomic.CompletionFlags;
 
-    public bowTieIndexPath : string;
-    public bowtieJob : Job;
+    public bowTieIndexPath : string | undefined;
+    public bowtieJob : Job | undefined;
     public bowtieFlags : atomic.CompletionFlags;
     public bowtieSizeThreshold : number;
     public bowtieIndices : Array<string>;
@@ -68,7 +68,7 @@ export class IndexFastaForBowtie2Alignment extends atomic.AtomicOperation
     //bowTie2Build -> samTools faidx
     public run() : void
     {
-        this.logRecord = atomic.openLog(this.name,"Index Fasta for Alignment");
+        this.logRecord = atomic.openLog(this.name!,"Index Fasta for Alignment");
 
         let self = this;
         (async function()
@@ -78,33 +78,33 @@ export class IndexFastaForBowtie2Alignment extends atomic.AtomicOperation
                 try
                 {
                     self.progressMessage = "Building bowtie2 index";
-                    self.update();
+                    self.update!();
                     await bowTie2Build(self);
                     self.setSuccess(self.bowtieFlags);
-                    self.update();
+                    self.update!();
 
                     self.progressMessage = "Building fai index";
-                    self.update();
+                    self.update!();
 
-                    await samToolsFaidx(self.fasta,self);
+                    await samToolsFaidx(self.fasta!,self);
                     self.setSuccess(self.faiFlags);
-                    self.update();
+                    self.update!();
 
                     self.progressMessage = "Reading contigs";
-                    self.update();
+                    self.update!();
 
                     //don't reparse contigs if we don't have to
                     //contigs are parsed during viz indexing as well
                     //if we reparse, we will clobber contig uuids and all references which point to them
-                    if(!self.fasta.contigs || self.fasta.contigs.length == 0)
+                    if(!self.fasta!.contigs || self.fasta!.contigs.length == 0)
                     {
                         //contig information is required by the coverage distillation step of aligning
-                        self.fasta.contigs = await getContigsFromFastaFile(getPath(self.fasta));
+                        self.fasta!.contigs = await getContigsFromFastaFile(getPath(self.fasta!));
                     }
 
                     self.setSuccess(self.flags);
-                    self.fasta.indexed = true;
-                    self.update();
+                    self.fasta!.indexed = true;
+                    self.update!();
 
                     return resolve();
                 }

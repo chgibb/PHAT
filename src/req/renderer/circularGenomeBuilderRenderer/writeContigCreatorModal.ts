@@ -59,7 +59,7 @@ export function writeContigCreatorModal() : void
 
             contig.alias = "New Contig";
             contig.name = "Custom Contig";
-            genomeView.genome.customContigs.push(contig);
+            genomeView.genome!.customContigs.push(contig);
 
             masterView.contigCreatorModalOpen = false;
             masterView.dismissModal();
@@ -68,7 +68,7 @@ export function writeContigCreatorModal() : void
             showGenericLoadingSpinnerInNavBar();
             setTimeout(function()
             {
-                reCacheBaseFigure(genomeView.genome);
+                reCacheBaseFigure(genomeView.genome!);
                 hideSpinnerInNavBar();
                 genomeView.firstRender = true;
                 viewMgr.render();

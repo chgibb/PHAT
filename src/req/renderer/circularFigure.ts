@@ -251,10 +251,10 @@ export class SeqSelectionDisplayArrow
 
 export interface MapScope
 {
-    genome : CircularFigure;
-    seqSelectionLeftArm : SeqSelectionDisplayArm;
-    seqSelectionRightArm : SeqSelectionDisplayArm;
-    seqSelectionArrow : SeqSelectionDisplayArrow;
+    genome : CircularFigure | undefined;
+    seqSelectionLeftArm : SeqSelectionDisplayArm | undefined;
+    seqSelectionRightArm : SeqSelectionDisplayArm | undefined;
+    seqSelectionArrow : SeqSelectionDisplayArrow | undefined;
 }
 
 export function makeMapScope(cf : CircularFigure, seqSelectOptions? : {
@@ -382,10 +382,10 @@ export class CircularFigure implements UniquelyAddressable
  */
 export abstract class FigureCanvas implements MapScope
 {
-    public abstract genome : CircularFigure;
-    public abstract seqSelectionLeftArm : SeqSelectionDisplayArm;
-    public abstract seqSelectionRightArm : SeqSelectionDisplayArm;
-    public abstract seqSelectionArrow : SeqSelectionDisplayArrow;
+    public abstract genome : CircularFigure | undefined;
+    public abstract seqSelectionLeftArm : SeqSelectionDisplayArm | undefined;
+    public abstract seqSelectionRightArm : SeqSelectionDisplayArm | undefined;
+    public abstract seqSelectionArrow : SeqSelectionDisplayArrow | undefined;
     public abstract showSeqSelector : boolean;
     public abstract scope : FigureCanvas;
     public abstract markerOnClick($event : any,$marker : any,uuid : string) : void;

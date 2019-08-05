@@ -38,7 +38,7 @@ export function hisat2Build(op : IndexFastaForHisat2Alignment) : Promise<string 
                                 }
                                 catch(err)
                                 {
-                                    reject(`Failed to write all hisat2 indices for ${op.fasta.alias}${"\n"}${err}`);
+                                    reject(`Failed to write all hisat2 indices for ${op.fasta!.alias}${"\n"}${err}`);
                                 }
                                 resolve();
                             },5000
@@ -53,20 +53,20 @@ export function hisat2Build(op : IndexFastaForHisat2Alignment) : Promise<string 
         };
         let hisat2Args : Array<string> = new Array<string>();
         if(process.platform == "linux")
-            hisat2Args = [getPath(op.fasta),op.hisat2IndexPath];
+            hisat2Args = [getPath(op.fasta!),op.hisat2IndexPath!];
         else if(process.platform == "win32")
         {
             hisat2Args = [
                 getReadable("hisat2-build"),
-                `"${getPath(op.fasta)}"`,
+                `"${getPath(op.fasta!)}"`,
                 `"${op.hisat2IndexPath}"`
             ];
         }
-        op.hisat2Job = new Job(op.hisat2BuildExe,hisat2Args,"",true,jobCallBack,{});
+        op.hisat2Job = new Job(op.hisat2BuildExe!,hisat2Args,"",true,jobCallBack,{});
         try
         {
-            op.hisat2Job.Run();
-            op.addPIDFromFork(op.hisat2Job.pid);
+            op.hisat2Job!.Run();
+            op.addPIDFromFork(op.hisat2Job.pid!);
         }
         catch(err)
         {

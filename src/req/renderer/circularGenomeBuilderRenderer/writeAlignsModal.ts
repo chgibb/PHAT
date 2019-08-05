@@ -69,9 +69,9 @@ export function writeAlignsModal() : void
     })()}
                         <td>${aligns[i].alias}</td>
                         <td>${aligns[i].alignerUsed ? aligns[i].alignerUsed : "bowtie2"}</td>
-                        <td>${!aligns[i].isExternalAlignment ? aligns[i].summary.reads : aligns[i].flagStatReport.reads}</td>
-                        <td>${!aligns[i].isExternalAlignment ? aligns[i].summary.mates : "Unknown"}</td>
-                        <td>${!aligns[i].isExternalAlignment ? aligns[i].summary.overallAlignmentRate : aligns[i].flagStatReport.overallAlignmentRate}</td>
+                        <td>${!aligns[i].isExternalAlignment ? aligns[i].summary!.reads : aligns[i].flagStatReport!.reads}</td>
+                        <td>${!aligns[i].isExternalAlignment ? aligns[i].summary!.mates : "Unknown"}</td>
+                        <td>${!aligns[i].isExternalAlignment ? aligns[i].summary!.overallAlignmentRate : aligns[i].flagStatReport!.overallAlignmentRate}</td>
                         <td>${aligns[i].dateStampString}</td>
                     </tr>
                 `;
@@ -95,10 +95,10 @@ export function writeAlignsModal() : void
         `;
     }
 
-    document.getElementById("modalTitle").innerHTML = title;
-    document.getElementById("modalBody").innerHTML = body;
-    document.getElementById("modalFooter").innerHTML = footer;
-    document.getElementById("footerClose").onclick = function(this : HTMLElement,ev : MouseEvent)
+    document.getElementById("modalTitle")!.innerHTML = title;
+    document.getElementById("modalBody")!.innerHTML = body;
+    document.getElementById("modalFooter")!.innerHTML = footer;
+    document.getElementById("footerClose")!.onclick = function(this : GlobalEventHandlers,ev : MouseEvent)
     {
         masterView.alignsModalOpen = false;
     };
@@ -106,7 +106,7 @@ export function writeAlignsModal() : void
     {
         if(!masterView.willBLASTAlignment)
         {
-            document.getElementById("footerSave").onclick = function(this : HTMLElement,ev : MouseEvent)
+            document.getElementById("footerSave")!.onclick = function(this : GlobalEventHandlers,ev : MouseEvent)
             {
                 masterView.alignsModalOpen = false;
                 masterView.dismissModal();
@@ -117,7 +117,7 @@ export function writeAlignsModal() : void
     {
         for(let i = 0; i != aligns.length; ++i)
         {
-            document.getElementById(`${aligns[i].uuid}View`).onclick = function(this : HTMLElement,ev : MouseEvent)
+            document.getElementById(`${aligns[i].uuid}View`)!.onclick = function(this : GlobalEventHandlers,ev : MouseEvent)
             {
                 if(masterView.willBLASTAlignment)
                 {
@@ -125,9 +125,9 @@ export function writeAlignsModal() : void
                         "runOperation",
                         <AtomicOperationIPC>{
                             opName : "BLASTSegment",
-                            align : aligns[i],
-                            start : genomeView.seqSelectionArrow.arrowStart,
-                            stop : genomeView.seqSelectionArrow.arrowEnd
+                            align : aligns![i],
+                            start : genomeView.seqSelectionArrow!.arrowStart,
+                            stop : genomeView.seqSelectionArrow!.arrowEnd
                         }
                     );
                     masterView.alignsModalOpen = false;
@@ -136,7 +136,7 @@ export function writeAlignsModal() : void
                 }
                 masterView.alignsModalOpen = false;
                 masterView.availableTracksModalOpen = true;
-                setSelectedAlign(aligns[i]);
+                setSelectedAlign(aligns![i]);
                 writeAvailableTracksModal();
             };
         }
