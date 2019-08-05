@@ -131,6 +131,8 @@
     },
     "jest": {
         "testURL": "http://localhost/",
-        "testPathIgnorePatterns": ["ngplasmid"]
+        "testPathIgnorePatterns": [
+            "ngplasmid"
+        ]
     }
 }
