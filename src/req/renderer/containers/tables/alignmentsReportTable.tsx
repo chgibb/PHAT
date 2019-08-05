@@ -15,7 +15,7 @@ export interface AlignmentsReportTableProps
 {
     aligns?: Array<AlignData>;
     fastas?: Array<Fasta>;
-    onRowClick : (event: React.MouseEvent<HTMLElement>, rowData: AlignData) => void;
+    onRowClick : (event: React.MouseEvent, rowData: AlignData) => void;
     viewMore : (rowData : AlignData) => void;
 }
 
