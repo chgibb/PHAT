@@ -1,9 +1,10 @@
 /// <reference types="jest" />
 
-import {getReads,SAMRead,ReadFragment} from "./../lib/lib";
+import { SAMRead } from "../req/samRead";
+import { ReadFragment, getReads } from '../req/cigar';
 
 it(`should extract fragments 1`,async () => {
-    let total = await getReads("__tests__/data/L6R1HPV16.sam",0,7800,function(read : SAMRead,fragments : Array<ReadFragment> | undefined){
+    let total = await getReads("testData/L6R1HPV16.sam",0,7800,function(read : SAMRead,fragments : Array<ReadFragment> | undefined){
         if(read.SEQ == "TTGATCCTGCAGAAGAAATAGAATTACAAACTATAACACCTTCTACATATACTACCACTTCACATGCAGCCTCACCTACTTCTATTAATAATGGCTTATATGATATTTATGCAGATGACTTTATTACAGATACTTCTACAACCCCGGTACC")
         {
             expect(fragments).toBeDefined();

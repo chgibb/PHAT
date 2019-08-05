@@ -1,6 +1,6 @@
 /// <reference types="jest" />
 
-import {evaluateCIGAR} from "./../lib/lib";
+import {evaluateCIGAR} from "./../req/cigar";
 
 it(`should correctly extract CIGAR fragments 1`,() => {
     let seq = "ATCGATCGATCG";

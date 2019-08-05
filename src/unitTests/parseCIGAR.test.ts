@@ -1,6 +1,6 @@
 /// <reference types="jest" />
 
-import {parseCIGARSections} from "./../lib/lib";
+import {parseCIGARSections} from "./../req/cigar";
 
 it(`should not parse CIGAR 1`,() => {
     let res = parseCIGARSections("");
