@@ -23,13 +23,6 @@ async function runTest() : Promise<void>
     await openOutputWindow();
     await openViewMoreDialogForFirstAlignment();
 
-    await openInputWindow();
-    await openRefSeqTab();
-    await indexRefsForVisualization();
-    await indexForVisualizationSuccess();
-
-    await openOutputWindow();
-    await openViewMoreDialogForFirstAlignment();
     await clickPredictedSNPsButton();
     await viewSNP(0);
     await viewSNP(1);
