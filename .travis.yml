@@ -12,6 +12,7 @@ addons:
     - fakeroot
     - gtk2.0
     - rpm
+    - libgconf-2-4
 before_install:
 - npm install -g greenkeeper-lockfile
 install:

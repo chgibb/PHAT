@@ -356,7 +356,8 @@ ipc.on(
 						contiguuid : arg.uuid,
 						alignData : alignData,
 						colour : arg.colour,
-						scaleFactor : arg.scaleFactor
+						scaleFactor : arg.scaleFactor,
+						log10Scale : arg.log10Scale
 					}
 				);
 			}
