@@ -61,7 +61,7 @@ export class Table<T> extends React.Component<TableProps<T>,{}>
         let defaultPageSizeOptions  = [defaultPageSize,500,1000];
 
         return (
-            <MuiTable
+            <MuiTableDefault
                 key={this.renderKey}
                 title={this.props.title}
                 options={{
