@@ -28,7 +28,7 @@ if(arg.debug)
     mode = "debug";
 if(arg.release)
     mode = "release";
-if(!mode)
+if(!mode!)
 {
     console.error("No build mode given");
     process.exit(1);
@@ -65,12 +65,12 @@ function build(file : string) : void
 
 let oldBuild : BuildState;
 
-if(mode == "debug" && fs.existsSync(".buildCache/debug/oldBuild.json"))
+if(mode! == "debug" && fs.existsSync(".buildCache/debug/oldBuild.json"))
 {
     oldBuild = JSON.parse(fs.readFileSync(".buildCache/debug/oldBuild.json").toString());
 }
 
-else if(mode == "release" && fs.existsSync(".buildCache/release/oldBuild.json"))
+else if(mode! == "release" && fs.existsSync(".buildCache/release/oldBuild.json"))
 {
     oldBuild = JSON.parse(fs.readFileSync(".buildCache/release/oldBuild.json").toString());
 }
@@ -91,15 +91,15 @@ let changedTargets = 0;
 let newlyBuiltTargets = 0;
 let upToDate = 0;
 
-if(mode == "debug")
+if(mode! == "debug")
     console.log(`${currentBuild.entryPoints.length} Debug Targets`);
-if(mode == "release")
+if(mode! == "release")
     console.log(`${currentBuild.entryPoints.length} Release Targets`);
 
 function updateProgress() : void
 {
     readline.clearLine(process.stdout,0);
-    readline.cursorTo(process.stdout,0,null);
+    readline.cursorTo(process.stdout,0);
     process.stdout.write(`${changedTargets} changed targets, ${upToDate} up-to-date targets, ${newlyBuiltTargets} newly built targets`);
 }
 
@@ -119,7 +119,7 @@ for(let i = 0; i != currentBuild.entryPoints.length; ++i)
         }
 
         //file has been modified since the last build
-        if(oldBuild && oldBuild.files[sources[k].fileName] != currentBuild.files[sources[k].fileName])
+        if(oldBuild! && oldBuild!.files[sources[k].fileName] != currentBuild.files[sources[k].fileName])
         {
             rebuildEntryPoint = true;
         }
@@ -133,7 +133,7 @@ for(let i = 0; i != currentBuild.entryPoints.length; ++i)
         updateProgress();
     }
 
-    else if(mode == "debug")
+    else if(mode! == "debug")
     {
         //nothing has changed since last build, but there is also no cached build
         if(!fs.existsSync(`.buildCache/debug/${path.parse(getJSFileExtension(currentBuild.entryPoints[i])).base}`))
@@ -149,7 +149,7 @@ for(let i = 0; i != currentBuild.entryPoints.length; ++i)
         }
     }
 
-    else if(mode == "release")
+    else if(mode! == "release")
     {
         if(!fs.existsSync(`.buildCache/release/${path.parse(getJSFileExtension(currentBuild.entryPoints[i])).base}`))
         {
@@ -165,9 +165,9 @@ for(let i = 0; i != currentBuild.entryPoints.length; ++i)
     }
 }
 
-if(mode == "debug")
+if(mode! == "debug")
     fs.writeFileSync(".buildCache/debug/oldBuild.json",JSON.stringify(currentBuild,undefined,4));
-else if(mode == "release")
+else if(mode! == "release")
     fs.writeFileSync(".buildCache/release/oldBuild.json",JSON.stringify(currentBuild,undefined,4));
 
 process.stdout.write("\n");
