@@ -6,7 +6,9 @@ console.log(
             //We preserve a list of used services when mangling the genome builder
             "minify-mangle-names",{
                 exclude : {
-                    "$compile" : true
+                    "$compile" : true,
+                    "Component" : true,
+                    "React" : true
                 }
             },
             "minify-type-constructors",

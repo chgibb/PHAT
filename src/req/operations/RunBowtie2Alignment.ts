@@ -1,12 +1,13 @@
 import * as cp from "child_process";
 
-import * as atomic from "./atomicOperations";
 import {AtomicOperationForkEvent} from "../atomicOperationsIPC";
 import {getReadable} from "../getAppPath";
 import {Fasta,getFaiPath} from "../fasta";
 import {Fastq} from "../fastq";
 import {getPath} from "../file";
-import {AlignData,getArtifactDir} from "../alignData"
+import {AlignData,getArtifactDir} from "../alignData";
+
+import * as atomic from "./atomicOperations";
 
 export class RunBowtie2Alignment extends atomic.AtomicOperation
 {
@@ -26,17 +27,17 @@ export class RunBowtie2Alignment extends atomic.AtomicOperation
             fastq1 : Fastq,
             fastq2 : Fastq
         }) : void
-        {
-            this.fasta = data.fasta;
-            this.fastq1 = data.fastq1;
-            this.fastq2 = data.fastq2;
+    {
+        this.fasta = data.fasta;
+        this.fastq1 = data.fastq1;
+        this.fastq2 = data.fastq2;
 
-            this.alignData = new AlignData();
-            this.alignData.fasta = this.fasta;
-            this.alignData.fastqs.push(this.fastq1,this.fastq2);
-            this.generatedArtifacts.push(`${getPath(this.fasta)}.fai`);
-            this.destinationArtifactsDirectories.push(getArtifactDir(this.alignData));
-        }
+        this.alignData = new AlignData();
+        this.alignData.fasta = this.fasta;
+        this.alignData.fastqs.push(this.fastq1,this.fastq2);
+        this.generatedArtifacts.push(`${getPath(this.fasta)}.fai`);
+        this.destinationArtifactsDirectories.push(getArtifactDir(this.alignData));
+    }
 
     public run() : void
     {
@@ -50,7 +51,8 @@ export class RunBowtie2Alignment extends atomic.AtomicOperation
             },
             name : self.name,
             description : "Run Bowtie2 Alignment"
-        },function(ev : AtomicOperationForkEvent){
+        },function(ev : AtomicOperationForkEvent)
+        {
             if(ev.finishedSettingData == true)
             {
                 self.runBowtie2AlignmentProcess.send(

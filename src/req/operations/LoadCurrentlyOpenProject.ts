@@ -8,7 +8,8 @@ export class LoadCurrentlyOpenProject extends atomic.AtomicOperation
         super();
     }
 
-    public setData(data : any) : void{}
+    public setData(data : any) : void
+    {}
 
     public run() : void
     {

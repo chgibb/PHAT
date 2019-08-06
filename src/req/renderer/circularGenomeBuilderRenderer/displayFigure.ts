@@ -35,7 +35,8 @@ export async function displayFigure(self : GenomeView) : Promise<void>
  */
 export async function displayNonInteractiveFigure(self : GenomeView) : Promise<void>
 {
-    return new Promise<void>(async (resolve,reject) => {
+    return new Promise<void>(async (resolve,reject) => 
+    {
         await tc.refreshCache(self.genome);
         
         cleanCanvas(self);
@@ -75,7 +76,8 @@ export async function displayInteractiveFigure(self : GenomeView) : Promise<void
     //We remove the div this view is bound to, recreate it and re render the angular template into it
     //Then we pass the div into angular to compile the templates and then finally inject it all back into
     //the page.
-    return new Promise<void>(async (resolve,reject) => {
+    return new Promise<void>(async (resolve,reject) => 
+    {
 
         let masterView = <masterView.View>viewMgr.getViewByName("masterView");
         let totalBP = 0;
@@ -95,11 +97,11 @@ export async function displayInteractiveFigure(self : GenomeView) : Promise<void
             `
                 ${cf.getBaseFigureTemplateFromCache(self.genome)}
                 ${self.showSeqSelector ? cf.buildSequenceSelectorTemplate(
-                    self.genome,
-                    self.seqSelectionLeftArm,
-                    self.seqSelectionRightArm,
-                    self.seqSelectionArrow
-                ) : ""}
+        self.genome,
+        self.seqSelectionLeftArm,
+        self.seqSelectionRightArm,
+        self.seqSelectionArrow
+    ) : ""}
             `
         );
 
@@ -120,7 +122,8 @@ export async function displayInteractiveFigure(self : GenomeView) : Promise<void
         console.log("appended div");
 
         let divToCompile : HTMLElement = document.getElementById("toCompile");
-        angular.element(divToCompile).injector().invoke(function($compile : any){
+        angular.element(divToCompile).injector().invoke(function($compile : any)
+        {
             //This should probably be done with an actual angular scope instead 
             //of mutating the existing scope
             let scope = angular.element(divToCompile).scope();
@@ -136,7 +139,8 @@ export async function displayInteractiveFigure(self : GenomeView) : Promise<void
             else
             {
                 console.log("Scope was undefined. Deferring rerender");
-                setTimeout(function(){
+                setTimeout(function()
+                {
                     self.firstRender = true;
                     viewMgr.render();
                 },1000);
@@ -182,9 +186,9 @@ export function getSelectedDataTrackSVGsFromCache(self : GenomeView) : string
         {
             let map = tc.getCoverageTrack(self.genome.renderedCoverageTracks[i]);
             map.$scope = cf.makeMapScope(self.genome);
-            res += `<div style="position:absolute;z-index:-99;">`;
+            res += "<div style=\"position:absolute;z-index:-99;\">";
             res += map.renderStart() + map.renderEnd();
-            res += `</div>`;
+            res += "</div>";
         }
     }
     for(let i = 0; i != self.genome.renderedSNPTracks.length; ++i)
@@ -193,9 +197,9 @@ export function getSelectedDataTrackSVGsFromCache(self : GenomeView) : string
         {
             let map = tc.getSNPTrack(self.genome.renderedSNPTracks[i]);
             map.$scope = cf.makeMapScope(self.genome);
-            res += `<div style="position:absolute;z-index:-99;">`;
+            res += "<div style=\"position:absolute;z-index:-99;\">";
             res += map.renderStart() + map.renderEnd();
-            res += `</div>`;
+            res += "</div>";
         }
     }
     return res;

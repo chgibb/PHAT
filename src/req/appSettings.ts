@@ -1,6 +1,6 @@
 import {getReadableAndWritable} from "./getAppPath";
 
-const appSettingsPath = getReadableAndWritable(`appSettings.json`);
+const appSettingsPath = getReadableAndWritable("appSettings.json");
 
 export class AppSettings
 {

@@ -1,9 +1,9 @@
 import * as fs from "fs";
 
-import {getReadable} from "./../../getAppPath";
 import {IndexFastaForHisat2Alignment} from "../indexFastaForHisat2Alignment";
-import {getPath} from "./../../file";
 
+import {getReadable} from "./../../getAppPath";
+import {getPath} from "./../../file";
 import {SpawnRequestParams} from "./../../JobIPC";
 import {Job,JobCallBackObject} from "./../../main/Job";
 
@@ -16,7 +16,8 @@ import {Job,JobCallBackObject} from "./../../main/Job";
  */
 export function hisat2Build(op : IndexFastaForHisat2Alignment) : Promise<string | undefined>
 {
-    return new Promise((resolve,reject) => {
+    return new Promise((resolve,reject) => 
+    {
         let jobCallBack : JobCallBackObject = {
             send(channel : string,params : SpawnRequestParams)
             {
@@ -26,7 +27,8 @@ export function hisat2Build(op : IndexFastaForHisat2Alignment) : Promise<string 
                     if(params.retCode == 0)
                     {
                         setTimeout(
-                            function(){
+                            function()
+                            {
                                 try
                                 {
                                     for(let i : number = 0; i != op.hisat2Indices.length; ++i)
@@ -48,14 +50,14 @@ export function hisat2Build(op : IndexFastaForHisat2Alignment) : Promise<string 
                     }
                 }
             }
-        }
+        };
         let hisat2Args : Array<string> = new Array<string>();
         if(process.platform == "linux")
             hisat2Args = [getPath(op.fasta),op.hisat2IndexPath];
         else if(process.platform == "win32")
         {
             hisat2Args = [
-                getReadable(`hisat2-build`),
+                getReadable("hisat2-build"),
                 `"${getPath(op.fasta)}"`,
                 `"${op.hisat2IndexPath}"`
             ];

@@ -20,12 +20,13 @@ export function bowtie2Align(alignData : AlignData,logger : atomic.AtomicOperati
     return new Promise<void>((
         resolve : (value? : void) => void,
         reject : (reason : any) => void
-    ) => {
+    ) => 
+    {
         let bowtie2Exe = "";
         if(process.platform == "linux")
-            bowtie2Exe = getReadable('bowtie2');
+            bowtie2Exe = getReadable("bowtie2");
         else if(process.platform == "win32")
-            bowtie2Exe = getReadable('perl/perl/bin/perl.exe');
+            bowtie2Exe = getReadable("perl/perl/bin/perl.exe");
 
         let jobCallBack : JobCallBackObject = {
             send(channel : string,params : SpawnRequestParams)
@@ -39,8 +40,9 @@ export function bowtie2Align(alignData : AlignData,logger : atomic.AtomicOperati
                     {
                         if(params.retCode == 0)
                         {
-                            setTimeout(function(){
-                                return resolve()
+                            setTimeout(function()
+                            {
+                                return resolve();
                             },2000);
                         }
                         else

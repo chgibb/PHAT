@@ -1,5 +1,4 @@
 import {IndexFastaForVisualization} from "./../indexFastaForVisualization";
-
 import {SpawnRequestParams} from "./../../JobIPC";
 import {Job,JobCallBackObject} from "./../../main/Job";
 import {getPath} from "./../../file";
@@ -13,7 +12,8 @@ import {getPath} from "./../../file";
  */
 export function faToTwoBit(op : IndexFastaForVisualization) : Promise<void>
 {
-    return new Promise<void>((resolve,reject) => {
+    return new Promise<void>((resolve,reject) => 
+    {
         let jobCallBack : JobCallBackObject = {
             send(channel : string,params : SpawnRequestParams)
             {
@@ -30,7 +30,7 @@ export function faToTwoBit(op : IndexFastaForVisualization) : Promise<void>
                     }
                 }
             }
-        }
+        };
         op.twoBitJob = new Job(
             op.faToTwoBitExe,
             <Array<string>>[

@@ -2,7 +2,6 @@ import * as electron from "electron";
 const ipc = electron.ipcRenderer;
 
 import * as viewMgr from "./../viewMgr";
-
 import {AtomicOperationIPC} from "./../../atomicOperationsIPC";
 import {Fasta} from "./../../fasta";
 import {InputBamFile} from "./../../operations/InputBamFile";
@@ -19,9 +18,12 @@ export class View extends viewMgr.View
         super("masterView",div);
         this.fastaInputs = new Array<Fasta>();
     }
-    public onMount() : void{}
-    public onUnMount() : void{}
-    public dataChanged() : void{}
+    public onMount() : void
+    {}
+    public onUnMount() : void
+    {}
+    public dataChanged() : void
+    {}
     public renderView() : string
     {
         let res = "";
@@ -38,26 +40,28 @@ export class View extends viewMgr.View
                     <th>Directory</th>
                     <th>Size</th>
                 </tr>
-                ${(()=>{
-                    let res = "";
-                    for(let i = 0; i != this.fastaInputs.length; ++i)
-                    {
-                        res += `
+                ${(()=>
+    {
+        let res = "";
+        for(let i = 0; i != this.fastaInputs.length; ++i)
+        {
+            res += `
                             <tr class="activeHover ${this.fastaInputs[i].uuid}Class" id="${this.fastaInputs[i].uuid}Row">
                                 <td class="${this.fastaInputs[i].uuid}Class">${this.fastaInputs[i].alias}</td>
                                 <td class="${this.fastaInputs[i].uuid}Class">${this.fastaInputs[i].imported ? "In Project" : this.fastaInputs[i].path}</td>
                                 <td class="${this.fastaInputs[i].uuid}Class">${this.fastaInputs[i].sizeString}</td>
                             </tr>
                         `;
-                    }
-                    return res;
-                })()}
+        }
+        return res;
+    })()}
             </table>
             </div>
         `;
         return res;
     }
-    public postRender() : void{}
+    public postRender() : void
+    {}
     public divClickEvents(event : JQueryEventObject) : void
     {
         for(let i = 0; i != this.fastaInputs.length; ++i)
@@ -67,8 +71,9 @@ export class View extends viewMgr.View
                 let self = this;
                 dialogs.confirm(
                     `Use ${this.fastaInputs[i].alias} for header information?`,
-                    `Build header`,
-                    (ok : boolean) => {
+                    "Build header",
+                    (ok : boolean) => 
+                    {
                         if(ok)
                         {
                             ipc.send(

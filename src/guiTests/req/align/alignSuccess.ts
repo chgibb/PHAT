@@ -1,5 +1,6 @@
-import * as atomicOp from "./../../../req/operations/atomicOperations";
 import {RunBowtie2Alignment} from "../../../req/operations/RunBowtie2Alignment";
+
+import * as atomicOp from "./../../../req/operations/atomicOperations";
 
 /**
  * Resolves when runBowtie2Alignment completes successfully, crashes the process 
@@ -10,8 +11,10 @@ import {RunBowtie2Alignment} from "../../../req/operations/RunBowtie2Alignment";
  */
 export async function alignSuccess() : Promise<void>
 {
-    return new Promise<void>((resolve,reject) => {
-        atomicOp.updates.on("runBowtie2Alignment",function(op : RunBowtie2Alignment){
+    return new Promise<void>((resolve,reject) => 
+    {
+        atomicOp.updates.on("runBowtie2Alignment",function(op : RunBowtie2Alignment)
+        {
             if(op.flags.done && op.flags.failure)
             {
                 console.log("Failed to align");

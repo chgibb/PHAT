@@ -14,7 +14,7 @@ mkdir tests/resources
 
 if [[ "$OSTYPE" == "linux-gnu" ]]; then
     cp -r phat-linux-x64/resources/* tests/resources
-    cp phat-linux-x64/resources/app/tests.js tests
+    cp .buildCache/release/tests.js tests
 
 	echo portable > tests/edition
 fi

@@ -9,8 +9,10 @@ import * as winMgr from "./../../../req/main/winMgr";
  */
 export async function closeAllPileupWindows() : Promise<void>
 {
-    return new Promise<void>((resolve,reject) => {
-        setTimeout(function(){
+    return new Promise<void>((resolve,reject) => 
+    {
+        setTimeout(function()
+        {
             let viewers = winMgr.getWindowsByName("pileup");
             if(!viewers || viewers.length == 0)
             {

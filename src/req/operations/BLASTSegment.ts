@@ -1,9 +1,10 @@
 import * as cp from "child_process";
 
-import * as atomic from "./atomicOperations";
 import {AtomicOperationForkEvent,AtomicOperationIPC} from "../atomicOperationsIPC";
-import {BLASTSegmentResult,getArtifactDir} from "./../BLASTSegmentResult";
 import {AlignData} from "../alignData";
+
+import * as atomic from "./atomicOperations";
+import {BLASTSegmentResult,getArtifactDir} from "./../BLASTSegmentResult";
 import * as dFormat from "./../dateFormat";
 
 export class BLASTSegment extends atomic.AtomicOperation
@@ -22,7 +23,8 @@ export class BLASTSegment extends atomic.AtomicOperation
         align : AlignData,
         start : number,
         stop : number
-    }) : void {
+    }) : void 
+    {
         this.blastSegmentResult = new BLASTSegmentResult();
         this.blastSegmentResult.start = data.start;
         this.blastSegmentResult.stop = data.stop;
@@ -47,7 +49,8 @@ export class BLASTSegment extends atomic.AtomicOperation
             },
             name : self.name,
             description : "BLAST Segment"
-        },function(ev : AtomicOperationForkEvent){
+        },function(ev : AtomicOperationForkEvent)
+        {
 
             if(ev.finishedSettingData == true)
             {

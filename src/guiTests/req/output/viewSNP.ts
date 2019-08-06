@@ -12,8 +12,10 @@ import {openPileupViewerSucess} from "./openPileupViewerSuccess";
  */
 export async function viewSNP(n : number) : Promise<void>
 {
-    return new Promise<void>((resolve,reject) => {
-        setTimeout(function(){
+    return new Promise<void>((resolve,reject) => 
+    {
+        setTimeout(function()
+        {
             console.log(`opening pileup viewer for SNP ${n}`);
             let output = winMgr.getFreeWebContents();
             if(!output || output.length == 0)
@@ -21,7 +23,8 @@ export async function viewSNP(n : number) : Promise<void>
                 console.log("failed to open output window");
                 process.exit(1);
             }
-            openPileupViewerSucess().then(() => {
+            openPileupViewerSucess().then(() => 
+            {
                 return resolve();
             });
             output[0].executeJavaScript(`

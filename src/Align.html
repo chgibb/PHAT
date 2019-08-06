@@ -1,22 +1,36 @@
 <!DOCTYPE html>
-<html>	
-	<head>
-        <script>
-			var startUp = performance.now();
-		</script>
-		<meta charset="UTF-8">
-		<title>Alignment</title>
-        <link rel="stylesheet" type="text/css" href="styles/Align.css">
-        <link rel="stylesheet" type="text/css" href="styles/three-quarters.css">
-    </head>
-    <body>
-        <script>
+<html>
+
+<head>
+	<script>
+		var startUp = performance.now();
+	</script>
+	<link rel="stylesheet" type="text/css" href="styles/large-spinner.css">
+	<meta charset="UTF-8">
+	<title>Alignment</title>
+</head>
+
+<body>
+	<div id="app">
+		<section class="wrapper">
+			<div class="spinner">
+				<i></i>
+				<i></i>
+				<i></i>
+				<i></i>
+				<i></i>
+				<i></i>
+				<i></i>
+			</div>
+		</section>
+	</div>
+	<script defer>
+		setTimeout(() => {
 			require("./Align");
-		</script>
-        <div id="container" style="width:100%;">
-        </div>
-        <script>
-			console.log("Start up took "+(performance.now()-startUp+"ms"));
-		</script>
-    </body>
+		}, 100);
+	</script>
+	<script>
+		console.log("Start up took " + (performance.now() - startUp + "ms"));
+	</script>
+</body>
 </html>

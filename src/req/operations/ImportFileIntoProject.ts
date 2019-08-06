@@ -19,10 +19,12 @@ export class ImportFileIntoProject extends atomic.AtomicOperation
     {
         this.logRecord = atomic.openLog(this.name,"Import File Into Project");
         let self = this;
-        importIntoProject(this.file).then(() => {
+        importIntoProject(this.file).then(() => 
+        {
             self.setSuccess(self.flags);
             self.update();
-        }).catch((err : Error) => {
+        }).catch((err : Error) => 
+        {
             self.abortOperationWithMessage(err.message);
         });
         this.update();

@@ -2,29 +2,26 @@ import * as electron from "electron";
 const ipc = electron.ipcRenderer;
 const remote = electron.remote;
 
-const jsonFile = require("jsonfile");
-const Dialogs = require("dialogs");
-const dialogs = Dialogs();
-
 import {ProjectManifest,getProjectManifests} from "./req/projectManifest";
-
-import {AtomicOperation} from "./req/operations/atomicOperations"
+import {AtomicOperation} from "./req/operations/atomicOperations";
 import {AtomicOperationIPC} from "./req/atomicOperationsIPC";
 import {KeySubEvent,SaveKeyEvent} from "./req/ipcEvents";
 import formatByteString from "./req/renderer/formatByteString";
-
 import * as viewMgr from "./req/renderer/viewMgr";
-
 import * as splashView from "./req/renderer/ProjectSelectionRenderer/splashView";
 import * as openProjectView from "./req/renderer/ProjectSelectionRenderer/openProjectView";
 import * as helpView from "./req/renderer/ProjectSelectionRenderer/helpView";
 
+const Dialogs = require("dialogs");
+const jsonFile = require("jsonfile");
 const $ = require("jquery");
-(<any>window).$ = $;
+
 import "./req/renderer/commonBehaviour";
 
-$
-(
+(<any>window).$ = $;
+const dialogs = Dialogs();
+
+$(
     function()
     {
         document.body.innerHTML += `
@@ -46,7 +43,7 @@ $
                 replyChannel : "projectSelection"
             }
         );
-        splashView.addView(viewMgr.views,"view")
+        splashView.addView(viewMgr.views,"view");
         openProjectView.addView(viewMgr.views,"view");
         helpView.addView(viewMgr.views,"view");
         viewMgr.changeView("splashView");
@@ -72,8 +69,9 @@ $
                             {
                                 dialogs.confirm(
                                     `PHAT ${ops[i].extraData.tag_name} is available. Download and install?`,
-                                    `More PHATness`,
-                                    (ok : boolean) => {
+                                    "More PHATness",
+                                    (ok : boolean) => 
+                                    {
                                         if(ok)
                                         {
                                             ipc.send(
@@ -101,8 +99,9 @@ $
                 }
             }
         );
-        document.getElementById("citeLink").onclick = function(this : HTMLElement,ev : MouseEvent){
+        document.getElementById("citeLink").onclick = function(this : HTMLElement,ev : MouseEvent)
+        {
             remote.shell.openExternal("https://doi.org/10.1093/bioinformatics/bty1003");
-        }
+        };
     }
 );

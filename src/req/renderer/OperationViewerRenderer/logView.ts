@@ -3,8 +3,7 @@ const ipc = electron.ipcRenderer;
 
 import {AtomicOperationIPC} from "./../../atomicOperationsIPC";
 import * as viewMgr from "./../viewMgr";
-
-import {LogRecord,getLogRecords} from "./../../operations/atomicOperations" 
+import {LogRecord,getLogRecords} from "./../../operations/atomicOperations"; 
 
 export class View extends viewMgr.View
 {
@@ -20,34 +19,37 @@ export class View extends viewMgr.View
     {
         this.dataChanged();
     }
-    public onUnMount() : void{}
-    public postRender() : void{}
+    public onUnMount() : void
+    {}
+    public postRender() : void
+    {}
     public dataChanged() : void
     {
         let self = this;
         console.log("fetching log records");
         this.recordDepth = parseInt((<HTMLInputElement>document.getElementById("recordDepth")).value);
-        getLogRecords(this.recordDepth).then((records : Array<LogRecord>) => {
-            self.logRecords = records
+        getLogRecords(this.recordDepth).then((records : Array<LogRecord>) => 
+        {
+            self.logRecords = records;
             console.log("got records");
         });
     }
     public divClickEvents(event : JQueryEventObject) : void
     {
         for(let i = 0; i != this.logRecords.length; ++i)
+        {
+            let classList = event.target.classList;
+            if(event.target.classList.contains(`${this.logRecords[i].uuid}Class`))
             {
-                let classList = event.target.classList;
-                if(event.target.classList.contains(`${this.logRecords[i].uuid}Class`))
-                {
-                    ipc.send(
-                        "runOperation",
+                ipc.send(
+                    "runOperation",
                         <AtomicOperationIPC>{
                             opName : "openLogViewer",
                             logRecord : this.logRecords[i]
                         }
-                    );
-                }
+                );
             }
+        }
     }
     public renderView() : string
     {
@@ -60,13 +62,14 @@ export class View extends viewMgr.View
                     <th>Runtime (ms)</th>
                     <th>Time Started</th>
                 </tr>
-                ${(()=>{
-                    let res = "";
-                    if(this.logRecords.length == 0)
-                        res += `<p>Loading...</p>`;
-                    for(let i = 0; i != this.logRecords.length; ++i)
-                    {
-                        res += `
+                ${(()=>
+    {
+        let res = "";
+        if(this.logRecords.length == 0)
+            res += "<p>Loading...</p>";
+        for(let i = 0; i != this.logRecords.length; ++i)
+        {
+            res += `
                             <tr class="activeHover ${this.logRecords[i].uuid}Class id="${this.logRecords[i].uuid}Row">
                                 <td class="${this.logRecords[i].uuid}Class">${this.logRecords[i].name}</td>
                                 <td class="${this.logRecords[i].uuid}Class">${this.logRecords[i].description}</td>
@@ -75,10 +78,10 @@ export class View extends viewMgr.View
                                 <td class="${this.logRecords[i].uuid}Class">${new Date(this.logRecords[i].startEpoch)}</td>
                             </tr>
                         `;
-                    }
+        }
 
-                    return res;
-                })()}
+        return res;
+    })()}
 
             </table>
         `;

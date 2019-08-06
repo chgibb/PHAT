@@ -10,8 +10,10 @@ import {AlignData} from "./../../../req/alignData";
  */
 export async function openSNPTableForFirstAlignment() : Promise<void>
 {
-    return new Promise<void>((resolve,reject) => {
-        setTimeout(function(){
+    return new Promise<void>((resolve,reject) => 
+    {
+        setTimeout(function()
+        {
             console.log("opening SNP table for first alignment");
             let output = winMgr.getFreeWebContents();
             if(!output || output.length == 0)
@@ -19,7 +21,8 @@ export async function openSNPTableForFirstAlignment() : Promise<void>
                 console.log("failed to open output window");
                 process.exit(1);
             }
-            setTimeout(function(){
+            setTimeout(function()
+            {
                 let firstAlign : AlignData = dataMgr.getKey("align","aligns")[0];
                 output[0].executeJavaScript(`
                     document.getElementById("${firstAlign.uuid}ViewSNPs").click();

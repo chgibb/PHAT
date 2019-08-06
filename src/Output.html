@@ -1,28 +1,36 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<script>
-			var startUp = performance.now();
-		</script>
-		<meta charset="UTF-8">
-		<title>Output</title>
-        <link rel="stylesheet" type="text/css" href="styles/Output.css">
-  	</head>
-	<body>
-		<img src="img/options.png" id="rightPanel" class="rightSlideOutPanel activeHover activeHoverButton" style="float:right;" />
-        <div id="rightSlideOutPanel" class="rightSlideOutPanel">
-        	<div id="rightSlideOutPanelView">
-            </div>
-        </div>
-		<div id="reportView">
-        </div>
-		<div id="masterView">
-		</div>
-		<script>
+
+<head>
+	<script>
+		var startUp = performance.now();
+	</script>
+	<link rel="stylesheet" type="text/css" href="styles/large-spinner.css">
+	<meta charset="UTF-8">
+	<title>Output</title>
+</head>
+
+<body>
+	<div id="app">
+		<section class="wrapper">
+			<div class="spinner">
+				<i></i>
+				<i></i>
+				<i></i>
+				<i></i>
+				<i></i>
+				<i></i>
+				<i></i>
+			</div>
+		</section>
+	</div>
+	<script defer>
+		setTimeout(() => {
 			require("./Output");
-		</script>
-		<script>
-			console.log("Start up took "+(performance.now()-startUp+"ms"));
-		</script>
-    </body>
+		}, 100);
+	</script>
+	<script>
+		console.log("Start up took " + (performance.now() - startUp + "ms"));
+	</script>
+</body>
 </html>

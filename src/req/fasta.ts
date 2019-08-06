@@ -35,11 +35,25 @@ export class Fasta extends File
     }
 }
 
+/**
+ * Returns path to fai for given reference sequence
+ *
+ * @export
+ * @param {Fasta} fasta - Reference sequence
+ * @returns {string}
+ */
 export function getFaiPath(fasta : Fasta) : string
 {
     return getReadableAndWritable(`rt/indexes/${fasta.uuid}.fai`);
 }
 
+/**
+ * Returns path to 2bit for given reference sequence
+ *
+ * @export
+ * @param {Fasta} fasta - Reference sequence
+ * @returns {string}
+ */
 export function get2BitPath(fasta : Fasta) : string
 {
     return getReadableAndWritable(`rt/indexes/${fasta.uuid}.2bit`);

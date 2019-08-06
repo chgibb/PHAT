@@ -1,8 +1,9 @@
-const fse = require("fs-extra");
 
 import * as atomic from "./atomicOperations";
 import * as cf from "./../renderer/circularFigure";
 import {getReadableAndWritable} from "./../getAppPath";
+
+const fse = require("fs-extra");
 export class DeleteCircularFigure extends atomic.AtomicOperation
 {
     public figure : cf.CircularFigure;
@@ -22,7 +23,8 @@ export class DeleteCircularFigure extends atomic.AtomicOperation
             let self = this;
             fse.remove(
                 getReadableAndWritable(`rt/circularFigures/${this.figure.uuid}`),
-                function(err : Error){
+                function(err : Error)
+                {
                     if(err)
                         self.abortOperationWithMessage(err.message);
                     self.setSuccess(self.flags);

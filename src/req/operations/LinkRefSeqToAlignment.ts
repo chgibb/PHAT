@@ -1,9 +1,10 @@
 import * as cp from "child_process";
 
+import {getPath} from "../file";
+
 import * as atomic from "./atomicOperations";
 import {AtomicOperationForkEvent} from "./../atomicOperationsIPC";
 import {getReadable} from "./../getAppPath";
-import {getPath} from "../file";
 import {AlignData} from "./../alignData";
 import {Fasta} from "./../fasta";
 export class LinkRefSeqToAlignment extends atomic.AtomicOperation
@@ -34,7 +35,8 @@ export class LinkRefSeqToAlignment extends atomic.AtomicOperation
             },
             name : self.name,
             description : "Link Ref Seq To Alignment"
-        },function(ev : AtomicOperationForkEvent){
+        },function(ev : AtomicOperationForkEvent)
+        {
             if(ev.finishedSettingData == true)
             {
                 self.linkRefSeqToAlignmentProcess.send(

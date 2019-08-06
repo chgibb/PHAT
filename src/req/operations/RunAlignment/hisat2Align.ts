@@ -20,10 +20,11 @@ export function hisat2Align(alignData : AlignData,logger : atomic.AtomicOperatio
     return new Promise<void>((
         resolve : (value? : void) => void,
         reject : (reason : any) => void
-    ) => {
+    ) => 
+    {
         let hisat2Exe = "";
         if(process.platform == "linux")
-            hisat2Exe = getReadable('hisat2');
+            hisat2Exe = getReadable("hisat2");
         else if(process.platform == "win32")
             hisat2Exe = getReadable("hisat2-align-s.exe");  
 
@@ -39,8 +40,9 @@ export function hisat2Align(alignData : AlignData,logger : atomic.AtomicOperatio
                     {
                         if(params.retCode == 0)
                         {
-                            setTimeout(function(){
-                                return resolve()
+                            setTimeout(function()
+                            {
+                                return resolve();
                             },2000);
                         }
                         else

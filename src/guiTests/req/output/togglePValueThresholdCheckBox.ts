@@ -8,9 +8,11 @@ import * as winMgr from "./../../../req/main/winMgr";
  */
 export async function togglePValueThresholdCheckBox() : Promise<void>
 {
-    return new Promise<void>((resolve,reject) => {
-        setTimeout(function(){
-            console.log("toggling P-value threshold checkbox")
+    return new Promise<void>((resolve,reject) => 
+    {
+        setTimeout(function()
+        {
+            console.log("toggling P-value threshold checkbox");
             let output = winMgr.getFreeWebContents();
             if(!output || output.length == 0)
             {

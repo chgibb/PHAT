@@ -30,7 +30,7 @@ export abstract class View
      */
     public releaseDivEvents() : void
     {
-        $('#'+this.div).off();
+        $("#"+this.div).off();
     }
     /**
      * Adds event handlers for this view to its div
@@ -39,7 +39,7 @@ export abstract class View
     {
         var obj = this;
 
-        $('#'+this.div).click
+        $("#"+this.div).click
         (
             function(event)
             {

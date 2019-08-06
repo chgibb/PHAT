@@ -1,5 +1,8 @@
 import {versionIsGreaterThan,isBeta,sepBaseAndBeta} from "./versionIsGreaterThan";
 import {getAppSettings,writeAppSettings} from "./appSettings";
+import {getReadable} from "./getAppPath";
+
+const jsonFile = require("jsonfile");
 
 let isRightOS : RegExp;
 if(process.platform == "linux")
@@ -19,27 +22,38 @@ export interface Status
     tag_name? : string;
 }
 
-//returns -1 on network/auth error
-//returns 0 on success, includes release object and tag name
-//returns 1 if a release is available but there is no update artifact for this platform
-//returns 2 if there is no release available whose version is greater than the version in package.json
+/**
+ * Retrieve update status. 
+ * Returns -1 on network or auth error
+ * Returns 0 on success
+ * Returns 1 if a release is available but no update artifact for this platform is available
+ * Returns 2 if no release is available whose version greater than that in package.json
+ *
+ * @export
+ * @param {string} userName - Github username
+ * @param {string} repo - Github repo
+ * @returns {Promise<Status>}
+ */
 export function getLatestUpdate(userName : string,repo : string) : Promise<Status>
 {
     let GitHubAPI = require("github-api");
-    const pjson = require("./package.json");
+    const pjson = jsonFile.readFileSync(getReadable("package.json"));
     
-    return new Promise<Status>((resolve,reject) => {
+    return new Promise<Status>((resolve,reject) => 
+    {
         let ghapi = new GitHubAPI();
         ghapi.getRepo(userName,repo).listReleases(
-            (error : string,result : any,request : any) => {
+            (error : string,result : any,request : any) => 
+            {
                 if(error)
                     return reject(<Status>{status : -1,msg : error});
             }
-        ).then((arg : any) => {
+        ).then((arg : any) => 
+        {
             let updateChannel = getAppSettings().updateChannel;
             for(let i = arg.data.length-1; i != -1; i--)
             {
-                let greaterThan = versionIsGreaterThan(arg.data[i].tag_name,pjson.version)
+                let greaterThan = versionIsGreaterThan(arg.data[i].tag_name,pjson.version);
             
                 if(!greaterThan && updateChannel == "beta")
                 {
@@ -77,7 +91,8 @@ export function getLatestUpdate(userName : string,repo : string) : Promise<Statu
                 }
             }
             return reject(<Status>{status : 2,msg : "No valid release"});
-        }).catch((arg : any) => {
+        }).catch((arg : any) => 
+        {
             return reject(arg);
         });
     });

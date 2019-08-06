@@ -18,7 +18,8 @@ import {varScanMPileup2SNPVCF2JSON} from "./../../varScanMPileup2SNPVCF2JSON";
  */
 export function varScanMPileup2SNP(alignData : AlignData,logger : atomic.AtomicOperation) : Promise<void>
 {
-    return new Promise<void>((resolve,reject) => {
+    return new Promise<void>((resolve,reject) => 
+    {
         let varScanExe = getReadable("varscan.jar");
 
         let varScanMPileup2SNPStdOutStream : fs.WriteStream = fs.createWriteStream(getSNPsVCF(alignData));
@@ -43,7 +44,8 @@ export function varScanMPileup2SNP(alignData : AlignData,logger : atomic.AtomicO
                     if(params.retCode == 0)
                     {
                         setTimeout(
-                            function(){
+                            function()
+                            {
                                 varScanMPileup2SNPStdOutStream.end();
                                 alignData.varScanSNPSummary = varScanMPileup2SNPReportParser(alignData.varScanSNPReport);
                                 fs.writeFileSync(
@@ -66,7 +68,7 @@ export function varScanMPileup2SNP(alignData : AlignData,logger : atomic.AtomicO
                     }
                 }
             }
-        }
+        };
         let varScanMPileup2SNPJob = new Job(
             "java",
             <Array<string>>[

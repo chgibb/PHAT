@@ -5,13 +5,15 @@ import * as hpv16Figure from "./hpv16Figure";
 import * as L6R1HPV16Align from "./L6R1HPV16Align";
 export async function testL6R1HPV16SNPTrackRenderer() : Promise<void>
 {
-    return new Promise<void>((resolve,reject) => {
+    return new Promise<void>((resolve,reject) => 
+    {
         atomic.addOperation("renderSNPTrackForContig",{
             circularFigure : hpv16Figure.get(),
             contiguuid : hpv16Figure.get().contigs[0].uuid,
             alignData : L6R1HPV16Align.get()
         });
-        atomic.updates.removeAllListeners().on("renderSNPTrackForContig",async function(op : RenderSNPTrackForContig){
+        atomic.updates.removeAllListeners().on("renderSNPTrackForContig",async function(op : RenderSNPTrackForContig)
+        {
             if(op.flags.success)
             {
                 console.log(`Successfully rendered SNP track for ${op.circularFigure.name}`);

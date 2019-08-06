@@ -1,4 +1,4 @@
-import * as winMgr from "./../../../req/main/winMgr"
+import * as winMgr from "./../../../req/main/winMgr";
 
 /**
  * Switches to the openProject view in the projectSelection window
@@ -8,14 +8,17 @@ import * as winMgr from "./../../../req/main/winMgr"
  */
 export async function openProjectsView() : Promise<void>
 {
-    return new Promise<void>(async (resolve,reject) => {
-        setTimeout(async function(){
+    return new Promise<void>(async (resolve,reject) => 
+    {
+        setTimeout(async function()
+        {
             console.log("opening projects view");
             let projSelection = winMgr.getWindowsByName("projectSelection");
             await projSelection[0].webContents.executeJavaScript(`
                 document.getElementById("openProject").click();
             `);
-            setTimeout(function(){
+            setTimeout(function()
+            {
                 resolve();
             },3000);
         },500);

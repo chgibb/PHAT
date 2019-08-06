@@ -1,7 +1,7 @@
 import * as electron from "electron";
 const ipc = electron.ipcMain;
 
-import * as winMgr from "./../../../req/main/winMgr"
+import * as winMgr from "./../../../req/main/winMgr";
 
 /**
  * Opens the currently open project from the GUI of the projectSelection window
@@ -11,7 +11,8 @@ import * as winMgr from "./../../../req/main/winMgr"
  */
 export async function openFirstProject() : Promise<void>
 {
-    return new Promise<void>(async (resolve,reject) => {
+    return new Promise<void>(async (resolve,reject) => 
+    {
         console.log("opening first project");
         let projSelection = winMgr.getWindowsByName("projectSelection");
         await projSelection[0].webContents.executeJavaScript(`
@@ -26,8 +27,10 @@ export async function openFirstProject() : Promise<void>
                 }
             }
         `);
-        setImmediate(function(){
-            setTimeout(function(){
+        setImmediate(function()
+        {
+            setTimeout(function()
+            {
                 resolve();
             },5500);
         });
