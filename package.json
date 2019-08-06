@@ -132,7 +132,8 @@
     "jest": {
         "testURL": "http://localhost/",
         "testPathIgnorePatterns": [
-            "ngplasmid"
+            "ngplasmid",
+            "resources/app"
         ]
     }
 }
