@@ -9,10 +9,10 @@ import * as dFormat from "./../dateFormat";
 
 export class BLASTSegment extends atomic.AtomicOperation
 {
-    public blastSegmentResult : BLASTSegmentResult;
-    public alignData : AlignData;
+    public blastSegmentResult : BLASTSegmentResult | undefined;
+    public alignData : AlignData | undefined;
 
-    public blastSegment : cp.ChildProcess;
+    public blastSegment : cp.ChildProcess | undefined;
 
     public constructor()
     {
@@ -26,16 +26,16 @@ export class BLASTSegment extends atomic.AtomicOperation
     }) : void 
     {
         this.blastSegmentResult = new BLASTSegmentResult();
-        this.blastSegmentResult.start = data.start;
-        this.blastSegmentResult.stop = data.stop;
+        this.blastSegmentResult!.start = data.start;
+        this.blastSegmentResult!.stop = data.stop;
         this.alignData = data.align;
         this.destinationArtifactsDirectories.push(getArtifactDir(this.blastSegmentResult));
     }
 
     public run() : void
     {
-        this.blastSegmentResult.dateStamp = dFormat.generateFixedSizeDateStamp();
-        this.blastSegmentResult.dateStampString = dFormat.formatDateStamp(this.blastSegmentResult.dateStamp);
+        this.blastSegmentResult!.dateStamp = dFormat.generateFixedSizeDateStamp();
+        this.blastSegmentResult!.dateStampString = dFormat.formatDateStamp(this.blastSegmentResult!.dateStamp);
         
         this.closeLogOnFailure = false;
         this.closeLogOnSuccess = false;
@@ -54,7 +54,7 @@ export class BLASTSegment extends atomic.AtomicOperation
 
             if(ev.finishedSettingData == true)
             {
-                self.blastSegment.send(
+                self.blastSegment!.send(
                     <AtomicOperationForkEvent>{
                         run : true
                     }
@@ -65,18 +65,18 @@ export class BLASTSegment extends atomic.AtomicOperation
             {
                 self.progressMessage = ev.progressMessage;
                 self.extraData = ev.data;
-                self.flags = ev.flags;
-                if(ev.flags.done)
+                self.flags = ev.flags!;
+                if(ev.flags!.done)
                 {
                     self.logRecord = ev.logRecord;
-                    atomic.recordLogRecord(ev.logRecord);
-                    if(ev.flags.success === true)
+                    atomic.recordLogRecord(ev.logRecord!);
+                    if(ev.flags!.success === true)
                     {
                         self.blastSegmentResult = ev.data.blastSegmentResult;
                     }
                 }
             }
-            self.update();
+            self.update!();
         });
 
         this.addPID(this.blastSegment.pid);                                                

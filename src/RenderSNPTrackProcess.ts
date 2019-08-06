@@ -19,7 +19,7 @@ process.on
             contiguuid = ev.data.contiguuid;
             circularFigure = ev.data.circularFigure;
             colour = ev.data.colour;
-            process.send(<AtomicOperationForkEvent>{finishedSettingData : true});
+            process.send!(<AtomicOperationForkEvent>{finishedSettingData : true});
             return;
         }
 
@@ -29,7 +29,7 @@ process.on
             {
                 flags.done = true;
                 flags.success = true;
-                process.send(
+                process.send!(
                     <AtomicOperationForkEvent>{
                         update : true,
                         flags : flags,
@@ -52,7 +52,7 @@ process.on
     flags.done = true;
     flags.failure = true;
     flags.success = false;
-    process.send(
+    process.send!(
         <AtomicOperationForkEvent>{
             update : true,
             flags : flags,
@@ -68,7 +68,7 @@ process.on("unhandledRejection",function(err : string)
     flags.done = true;
     flags.failure = true;
     flags.success = false;
-    process.send(
+    process.send!(
         <AtomicOperationForkEvent>{
             update : true,
             flags : flags,

@@ -20,7 +20,7 @@ export async function testBLASTSegment5To10L6R1HPV16Alignment() : Promise<void>
 
             else if(op.flags.success)
             {
-                let readResults = await getBLASTReadResults(op.blastSegmentResult);
+                let readResults = await getBLASTReadResults(op.blastSegmentResult!);
                 if(readResults.length == 0)
                     console.log("BLAST segment has correct number of read results in whole file");
                 else
@@ -29,7 +29,7 @@ export async function testBLASTSegment5To10L6R1HPV16Alignment() : Promise<void>
                     return reject();
                 }
                 
-                let fragmentResults = await getBLASTFragmentResults(op.blastSegmentResult);
+                let fragmentResults = await getBLASTFragmentResults(op.blastSegmentResult!);
                 if(fragmentResults.length == 0)
                     console.log("BLAST segment has correct number of fragment results");
                 else

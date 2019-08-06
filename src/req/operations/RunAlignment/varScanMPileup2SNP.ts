@@ -47,7 +47,7 @@ export function varScanMPileup2SNP(alignData : AlignData,logger : atomic.AtomicO
                             function()
                             {
                                 varScanMPileup2SNPStdOutStream.end();
-                                alignData.varScanSNPSummary = varScanMPileup2SNPReportParser(alignData.varScanSNPReport);
+                                alignData.varScanSNPSummary = varScanMPileup2SNPReportParser(alignData.varScanSNPReport!);
                                 fs.writeFileSync(
                                     getSNPsJSON(alignData),
                                     JSON.stringify(
@@ -81,7 +81,7 @@ export function varScanMPileup2SNP(alignData : AlignData,logger : atomic.AtomicO
         try
         {
             varScanMPileup2SNPJob.Run();
-            logger.addPIDFromFork(varScanMPileup2SNPJob.pid);
+            logger.addPIDFromFork(varScanMPileup2SNPJob.pid!);
         }
         catch(err)
         {

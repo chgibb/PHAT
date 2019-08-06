@@ -3,7 +3,7 @@ import {File,importIntoProject} from "./../file";
 import {getReadableAndWritable} from "./../getAppPath";
 export class ImportFileIntoProject extends atomic.AtomicOperation
 {
-    public file : File;
+    public file : File | undefined;
     constructor()
     {
         super();
@@ -17,16 +17,16 @@ export class ImportFileIntoProject extends atomic.AtomicOperation
     }
     public run() : void
     {
-        this.logRecord = atomic.openLog(this.name,"Import File Into Project");
+        this.logRecord = atomic.openLog(this.name!,"Import File Into Project");
         let self = this;
-        importIntoProject(this.file).then(() => 
+        importIntoProject(this.file!)!.then(() => 
         {
             self.setSuccess(self.flags);
-            self.update();
+            self.update!();
         }).catch((err : Error) => 
         {
             self.abortOperationWithMessage(err.message);
         });
-        this.update();
+        this.update!();
     }
 }

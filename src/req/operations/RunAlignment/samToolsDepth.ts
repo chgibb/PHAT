@@ -57,14 +57,14 @@ export function samToolsDepth(alignData: AlignData,logger : atomic.AtomicOperati
                                     {
                                         //distill output from samtools depth into individual contig coverage files identified by uuid and without the contig name.
                                         let coverageTokens = line.split(/\s/g);
-                                        for(let i = 0; i != alignData.fasta.contigs.length; ++i)
+                                        for(let i = 0; i != alignData.fasta!.contigs.length; ++i)
                                         {
-                                            let contigTokens = alignData.fasta.contigs[i].name.split(/\s/g);
+                                            let contigTokens = alignData.fasta!.contigs[i].name.split(/\s/g);
                                             for(let k = 0; k != coverageTokens.length; ++k)
                                             {
                                                 if(coverageTokens[k] == contigTokens[0])
                                                 {
-                                                    fs.appendFileSync(getCoverageForContig(alignData,alignData.fasta.contigs[i].uuid),`${coverageTokens[k+1]} ${coverageTokens[k+2]}\n`);
+                                                    fs.appendFileSync(getCoverageForContig(alignData,alignData.fasta!.contigs[i].uuid),`${coverageTokens[k+1]} ${coverageTokens[k+2]}\n`);
                                                 }
                                             }
                                         }
@@ -94,7 +94,7 @@ export function samToolsDepth(alignData: AlignData,logger : atomic.AtomicOperati
         try
         {
             samToolsDepthJob.Run();
-            logger.addPIDFromFork(samToolsDepthJob.pid);
+            logger.addPIDFromFork(samToolsDepthJob.pid!);
         }
         catch(err)
         {

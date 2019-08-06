@@ -4,8 +4,8 @@ import * as dataMgr from "./../main/dataMgr";
 import {DockIpc} from "./../renderer/dock";
 export class DockWindow extends atomic.AtomicOperation
 {
-    public toDock : string;
-    public dockTarget : string;
+    public toDock : string | undefined;
+    public dockTarget : string | undefined;
 
     public constructor()
     {
@@ -23,16 +23,16 @@ export class DockWindow extends atomic.AtomicOperation
 
     public run() : void
     {
-        this.logRecord = atomic.openLog(this.name,"Dock Window");
+        this.logRecord = atomic.openLog(this.name!,"Dock Window");
 
-        let target = winMgr.getWindowsByName(this.dockTarget)[0];
+        let target = winMgr.getWindowsByName(this.dockTarget!)[0];
         target.webContents.send(
             "dockWindow",
             <DockIpc>{refName : this.toDock}
         );
 
         //if the dock target is smaller than the window we're docking, expand the target to fit
-        let newWindowOptions = dataMgr.getKey(this.toDock,"windowOptions");
+        let newWindowOptions = dataMgr.getKey(this.toDock!,"windowOptions");
         if(newWindowOptions)
         {
             let bounds = target.getBounds();
@@ -45,6 +45,6 @@ export class DockWindow extends atomic.AtomicOperation
         }
         this.flags.success = true;
         this.flags.done = true;
-        this.update();
+        this.update!();
     }
 }

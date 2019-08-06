@@ -306,7 +306,7 @@ ipc.on(
         winMgr.publishChangeForKey("application","operations");
         if(arg.opName =="indexFastaForBowtie2Alignment" || arg.opName == "indexFastaForHisat2Alignment" || arg.opName == "indexFastaForVisualization" || arg.opName == "generateFastQCReport")
         {
-            let list : Array<File> = dataMgr.getKey(arg.channel,arg.key);
+            let list : Array<File> = dataMgr.getKey(arg.channel!,arg.key!);
             for(let i : number = 0; i != list.length; ++i)
             {
                 if(list[i].uuid == arg.uuid)
@@ -618,7 +618,7 @@ atomicOp.updates.on(
         winMgr.publishChangeForKey("application","operations");
         if(op.flags.success)
         {
-            let fasta : Fasta = op.fasta;
+            let fasta : Fasta = op.fasta!;
             let fastaInputs : Array<Fasta> = dataMgr.getKey("input","fastaInputs");
             for(let i = 0; i != fastaInputs.length; ++i)
             {
@@ -643,7 +643,7 @@ atomicOp.updates.on(
         winMgr.publishChangeForKey("application","operations");
         if(op.flags.success)
         {
-            let fasta : Fasta = op.fasta;
+            let fasta : Fasta = op.fasta!;
             let fastaInputs : Array<Fasta> = dataMgr.getKey("input","fastaInputs");
             for(let i = 0; i != fastaInputs.length; ++i)
             {
@@ -668,7 +668,7 @@ atomicOp.updates.on(
         winMgr.publishChangeForKey("application","operations");
         if(op.flags.success)
         {
-            let fasta : Fasta = op.fasta;
+            let fasta : Fasta = op.fasta!;
             let fastaInputs : Array<Fasta> = dataMgr.getKey("input","fastaInputs");
             for(let i = 0; i != fastaInputs.length; ++i)
             {
@@ -693,7 +693,7 @@ atomicOp.updates.on(
         winMgr.publishChangeForKey("application","operations");
         if(op.flags.success)
         {
-            let fastq : File = (<GenerateQCReport>op).fastq;
+            let fastq : File = (<GenerateQCReport>op).fastq!;
             let fastqInputs : Array<File> = dataMgr.getKey("input","fastqInputs");
             for(let i = 0; i != fastqInputs.length; ++i)
             {
@@ -717,12 +717,12 @@ atomicOp.updates.on(
         winMgr.publishChangeForKey("application","operations");
         if(op.flags.success)
         {
-            op.alignData.alignerUsed = "bowtie2";
+            op.alignData!.alignerUsed = "bowtie2";
             let aligns : Array<AlignData> = dataMgr.getKey("align","aligns");
             if(aligns == undefined)
                 aligns = new Array<AlignData>();
 
-            aligns.push(op.alignData);
+            aligns.push(op.alignData!);
             dataMgr.setKey("align","aligns",aligns);
             winMgr.publishChangeForKey("align","aligns");
         }
@@ -736,12 +736,12 @@ atomicOp.updates.on(
         winMgr.publishChangeForKey("application","operations");
         if(op.flags.success)
         {
-            op.alignData.alignerUsed = "hisat2";
+            op.alignData!.alignerUsed = "hisat2";
             let aligns : Array<AlignData> = dataMgr.getKey("align","aligns");
             if(aligns == undefined)
                 aligns = new Array<AlignData>();
 
-            aligns.push(op.alignData);
+            aligns.push(op.alignData!);
             dataMgr.setKey("align","aligns",aligns);
             winMgr.publishChangeForKey("align","aligns");
         }
@@ -758,9 +758,9 @@ atomicOp.updates.on(
             let circularFigures : Array<CircularFigure> = dataMgr.getKey("circularGenomeBuilder","circularFigures");
             for(let i = 0; i != circularFigures.length; ++i)
             {
-                if(circularFigures[i].uuid == op.circularFigure.uuid)
+                if(circularFigures[i].uuid == op.circularFigure!.uuid)
                 {
-                    circularFigures[i].renderedCoverageTracks.push(op.circularFigure.renderedCoverageTracks[op.circularFigure.renderedCoverageTracks.length - 1]);
+                    circularFigures[i].renderedCoverageTracks.push(op.circularFigure!.renderedCoverageTracks[op.circularFigure!.renderedCoverageTracks.length - 1]);
                     dataMgr.setKey("circularGenomeBuilder","circularFigures",circularFigures);
                     winMgr.publishChangeForKey("circularGenomeBuilder","circularFigures");
                     break;
@@ -780,9 +780,9 @@ atomicOp.updates.on(
             let circularFigures : Array<CircularFigure> = dataMgr.getKey("circularGenomeBuilder","circularFigures");
             for(let i = 0; i != circularFigures.length; ++i)
             {
-                if(circularFigures[i].uuid == op.circularFigure.uuid)
+                if(circularFigures[i].uuid == op.circularFigure!.uuid)
                 {
-                    circularFigures[i].renderedSNPTracks.push(op.circularFigure.renderedSNPTracks[op.circularFigure.renderedSNPTracks.length - 1]);
+                    circularFigures[i].renderedSNPTracks.push(op.circularFigure!.renderedSNPTracks[op.circularFigure!.renderedSNPTracks.length - 1]);
                     dataMgr.setKey("circularGenomeBuilder","circularFigures",circularFigures);
                     winMgr.publishChangeForKey("circularGenomeBuilder","circularFigures");
                     break;
@@ -802,7 +802,7 @@ atomicOp.updates.on(
             let fastqs : Array<Fastq> = dataMgr.getKey("input","fastqInputs");
             if(!fastqs)
                 fastqs = new Array<Fastq>();
-            fastqs.push(op.fastq);
+            fastqs.push(op.fastq!);
             dataMgr.setKey("input","fastqInputs",fastqs);
             winMgr.publishChangeForKey("input","fastqInputs");
         }
@@ -819,7 +819,7 @@ atomicOp.updates.on(
             let fastas : Array<Fasta> = dataMgr.getKey("input","fastaInputs");
             if(!fastas)
                 fastas = new Array<Fasta>();
-            fastas.push(op.fasta);
+            fastas.push(op.fasta!);
             dataMgr.setKey("input","fastaInputs",fastas);
             winMgr.publishChangeForKey("input","fastaInputs");
         }
@@ -836,7 +836,7 @@ atomicOp.updates.on(
             let aligns : Array<AlignData> = dataMgr.getKey("align","aligns");
             if(aligns == undefined)
                 aligns = new Array<AlignData>();
-            aligns.push(op.alignData);
+            aligns.push(op.alignData!);
             dataMgr.setKey("align","aligns",aligns);
             winMgr.publishChangeForKey("align","aligns");
         }
@@ -859,9 +859,9 @@ atomicOp.updates.on(
                 aligns = new Array<AlignData>();
             for(let i = 0; i != aligns.length; ++i)
             {
-                if(aligns[i].uuid == op.alignData.uuid)
+                if(aligns[i].uuid == op.alignData!.uuid)
                 {
-                    aligns[i] = op.alignData;
+                    aligns[i] = op.alignData!;
                     dataMgr.setKey("align","aligns",aligns);
                     winMgr.publishChangeForKey("align","aligns");
                     return;
@@ -884,7 +884,7 @@ atomicOp.updates.on(
             {
                 for(let i = 0; i != fastqInputs.length; ++i)
                 {
-                    if(fastqInputs[i].uuid == op.file.uuid)
+                    if(fastqInputs[i].uuid == op.file!.uuid)
                     {
                         fastqInputs[i] = <Fastq>op.file;
                         dataMgr.setKey("input","fastqInputs",fastqInputs);
@@ -898,7 +898,7 @@ atomicOp.updates.on(
             {
                 for(let i = 0; i != fastaInputs.length; ++i)
                 {
-                    if(fastaInputs[i].uuid == op.file.uuid)
+                    if(fastaInputs[i].uuid == op.file!.uuid)
                     {
                         fastaInputs[i] = <Fasta>op.file;
                         dataMgr.setKey("input","fastaInputs",fastaInputs);
@@ -936,7 +936,7 @@ atomicOp.updates.on(
             let circularFigures : Array<CircularFigure> = dataMgr.getKey("circularGenomeBuilder","circularFigures");
             for(let i = circularFigures.length - 1; i != -1; i--)
             {
-                if(circularFigures[i].uuid == op.figure.uuid)
+                if(circularFigures[i].uuid == op.figure!.uuid)
                 {
                     circularFigures.splice(i,1);
                     dataMgr.setKey("circularGenomeBuilder","circularFigures",circularFigures);
@@ -989,7 +989,7 @@ atomicOp.updates.on(
         winMgr.publishChangeForKey("application","operations");
         if(op.flags.done && op.flags.success)
         {
-            finishLoadingProject(op.proj);
+            finishLoadingProject(op.proj!);
         }
     }
 );
@@ -1044,11 +1044,11 @@ atomicOp.updates.on(
             let aligns : Array<AlignData> = dataMgr.getKey("align","aligns");
             for(let i = 0; i != aligns.length; ++i)
             {
-                if(aligns[i].uuid == op.alignData.uuid)
+                if(aligns[i].uuid == op.alignData!.uuid)
                 {
                     if(!aligns[i].BLASTSegmentResults)
                         aligns[i].BLASTSegmentResults = new Array<BLASTSegmentResult>();
-                    aligns[i].BLASTSegmentResults.push(op.blastSegmentResult);
+                    aligns[i].BLASTSegmentResults!.push(op.blastSegmentResult!);
                     dataMgr.setKey("align","aligns",aligns);
                     winMgr.publishChangeForKey("align","aligns");
                     return;

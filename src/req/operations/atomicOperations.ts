@@ -234,7 +234,7 @@ export abstract class AtomicOperation
         //running forked
         if(process.send)
         {
-            process.send(
+            process.send!(
                 <AtomicOperationForkEvent>{
                     pid : pid
                 }

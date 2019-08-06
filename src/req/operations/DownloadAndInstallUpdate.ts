@@ -6,7 +6,7 @@ import {getReadable} from "./../getAppPath";
 export class DownloadAndInstallUpdate extends atomic.AtomicOperation
 {
     public asset : any;
-    public downloadAndInstallUpdateProcess : cp.ChildProcess;
+    public downloadAndInstallUpdateProcess : cp.ChildProcess | undefined;
     constructor()
     {
         super();
@@ -17,7 +17,7 @@ export class DownloadAndInstallUpdate extends atomic.AtomicOperation
     }
     public run() : void
     {
-        this.logRecord = atomic.openLog(this.name,"Download and Install Update");
+        this.logRecord = atomic.openLog(this.name!,"Download and Install Update");
         let self = this;
         this.downloadAndInstallUpdateProcess = atomic.makeFork("DownloadAndInstallUpdate.js",<AtomicOperationForkEvent>{
             setData : true,
@@ -28,7 +28,7 @@ export class DownloadAndInstallUpdate extends atomic.AtomicOperation
         {
             if(ev.finishedSettingData == true)
             {
-                self.downloadAndInstallUpdateProcess.send(
+                self.downloadAndInstallUpdateProcess!.send(
                     <AtomicOperationForkEvent>{
                         run : true
                     }
@@ -37,8 +37,8 @@ export class DownloadAndInstallUpdate extends atomic.AtomicOperation
             if(ev.update == true)
             {
                 self.extraData = ev.data;
-                self.flags = ev.flags;
-                self.update();
+                self.flags = ev.flags!;
+                self.update!();
             }    
         });
         this.addPID(this.downloadAndInstallUpdateProcess.pid);

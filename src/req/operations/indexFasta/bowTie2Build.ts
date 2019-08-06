@@ -38,7 +38,7 @@ export function bowTie2Build(op : IndexFastaForBowtie2Alignment) : Promise<strin
                                 }
                                 catch(err)
                                 {
-                                    reject(`Failed to write all bowtie2 indices for ${op.fasta.alias}`);
+                                    reject(`Failed to write all bowtie2 indices for ${op.fasta!.alias}`);
                                 }
                                 resolve();
                             },5000
@@ -53,20 +53,20 @@ export function bowTie2Build(op : IndexFastaForBowtie2Alignment) : Promise<strin
         };
         let bowTieArgs : Array<string> = new Array<string>();
         if(process.platform == "linux")
-            bowTieArgs = [getPath(op.fasta),op.bowTieIndexPath];
+            bowTieArgs = [getPath(op.fasta!),op.bowTieIndexPath!];
         else if(process.platform == "win32")
         {
             bowTieArgs = [
                 getReadable("bowtie2-build"),
-                `"${getPath(op.fasta)}"`,
+                `"${getPath(op.fasta!)}"`,
                 `"${op.bowTieIndexPath}"`
             ];
         }
-        op.bowtieJob = new Job(op.bowtie2BuildExe,bowTieArgs,"",true,jobCallBack,{});
+        op.bowtieJob = new Job(op.bowtie2BuildExe!,bowTieArgs,"",true,jobCallBack,{});
         try
         {
-            op.bowtieJob.Run();
-            op.addPIDFromFork(op.bowtieJob.pid);
+            op.bowtieJob!.Run();
+            op.addPIDFromFork(op.bowtieJob!.pid!);
         }
         catch(err)
         {

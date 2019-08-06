@@ -21,50 +21,50 @@ export async function testL6R1HPV18AlignImportedImporting() : Promise<void>
             }
             else if(op.flags.success)
             {
-                fs.accessSync(getUnSortedBam(op.alignData));
-                fs.accessSync(getSortedBam(op.alignData));
-                fs.accessSync(getSortBamIndex(op.alignData));
+                fs.accessSync(getUnSortedBam(op.alignData!));
+                fs.accessSync(getSortedBam(op.alignData!));
+                fs.accessSync(getSortBamIndex(op.alignData!));
 
-                if(op.alignData.flagStatReport!.overallAlignmentRate == 0.04)
-                    console.log(`${op.alignData.alias} has correct overall alignment rate`);
+                if(op.alignData!.flagStatReport!.overallAlignmentRate == 0.04)
+                    console.log(`${op.alignData!.alias} has correct overall alignment rate`);
                 else
                 {
                     console.log(await atomic.getLogContent(op.logRecord!)); 
                     return reject();
                 }
-                if(op.alignData.idxStatsReport![0].mappedReads == 2)
-                    console.log(`${op.alignData.alias} has correct number of mapped reads`);
+                if(op.alignData!.idxStatsReport![0].mappedReads == 2)
+                    console.log(`${op.alignData!.alias} has correct number of mapped reads`);
                 else
                 {
                     console.log(await atomic.getLogContent(op.logRecord!)); 
                     return reject();
                 }
-                if(op.alignData.idxStatsReport![0].unMappedReads == 0)
-                    console.log(`${op.alignData.alias} has correct number of unmapped reads`);
+                if(op.alignData!.idxStatsReport![0].unMappedReads == 0)
+                    console.log(`${op.alignData!.alias} has correct number of unmapped reads`);
                 else
                 {
                     console.log(await atomic.getLogContent(op.logRecord!)); 
                     return reject();
                 }
 
-                let res = getLinkableRefSeqs(<Array<Fasta>>[hpv18Ref.get()],op.alignData);
+                let res = getLinkableRefSeqs(<Array<Fasta>>[hpv18Ref.get()],op.alignData!);
 
                 if(!res)
                 {
-                    console.log(`Failed to determine link status for ${op.alignData.alias}`);
+                    console.log(`Failed to determine link status for ${op.alignData!.alias}`);
                     console.log(await atomic.getLogContent(op.logRecord!)); 
                     return reject();
                 }
                 if(res[0].linkable == true && res[0].uuid == hpv18Ref.get().uuid)
-                    console.log(`Successfully determined link status to HPV18 for ${op.alignData.alias}`);
+                    console.log(`Successfully determined link status to HPV18 for ${op.alignData!.alias}`);
                 else
                 {
-                    console.log(`${op.alignData.alias} is not linkable to HPV18`);
+                    console.log(`${op.alignData!.alias} is not linkable to HPV18`);
                     console.log(await atomic.getLogContent(op.logRecord!)); 
                     return reject();
                 }
 
-                L6R1HPV18AlignImported.set(op.alignData);
+                L6R1HPV18AlignImported.set(op.alignData!);
 
                 return resolve();
             }

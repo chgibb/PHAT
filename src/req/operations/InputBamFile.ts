@@ -8,10 +8,10 @@ import {Fasta,getFaiPath} from "./../fasta";
 import {getPath} from "./../file";
 export class InputBamFile extends atomic.AtomicOperation
 {
-    public bamPath : string;
-    public fasta : Fasta;
-    public alignData : AlignData;
-    public inputBamFileProcess : cp.ChildProcess;
+    public bamPath : string | undefined;
+    public fasta : Fasta | undefined;
+    public alignData : AlignData | undefined;
+    public inputBamFileProcess : cp.ChildProcess | undefined;
     constructor()
     {
         super();
@@ -46,7 +46,7 @@ export class InputBamFile extends atomic.AtomicOperation
         {
             if(ev.finishedSettingData == true)
             {
-                self.inputBamFileProcess.send(
+                self.inputBamFileProcess!.send(
                     <AtomicOperationForkEvent>{
                         run : true
                     }
@@ -54,16 +54,16 @@ export class InputBamFile extends atomic.AtomicOperation
             }
             if(ev.update == true)
             {
-                self.flags = ev.flags;
-                if(ev.flags.done)
+                self.flags = ev.flags!;
+                if(ev.flags!.done)
                 {
                     if(ev.data.alignData)
                         self.alignData = ev.data.alignData;
                     self.logRecord = ev.logRecord;
-                    atomic.recordLogRecord(ev.logRecord);
+                    atomic.recordLogRecord(ev.logRecord!);
                 }
                 self.progressMessage = ev.progressMessage;
-                self.update();
+                self.update!();
             }    
         });
         this.addPID(this.inputBamFileProcess.pid);

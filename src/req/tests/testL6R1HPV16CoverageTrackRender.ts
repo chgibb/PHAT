@@ -17,13 +17,13 @@ export async function  testL6R1HPV16CoverageTrackRenderer() : Promise<void>
         {
             if(op.flags.success)
             {
-                console.log(`Successfully rendered coverage track for ${op.circularFigure.name}`);
-                hpv16Figure.set(op.circularFigure);
+                console.log(`Successfully rendered coverage track for ${op.circularFigure!.name}`);
+                hpv16Figure.set(op.circularFigure!);
                 return resolve();
             }
             else if(op.flags.failure)
             {
-                console.log(`Failed to render coverage track for ${op.circularFigure.name}`);
+                console.log(`Failed to render coverage track for ${op.circularFigure!.name}`);
                 console.log(await atomic.getLogContent(op.logRecord!)); 
                 return reject();
             }

@@ -6,9 +6,9 @@ import {getReadable,getWritable,getReadableAndWritable} from "./../getAppPath";
 import {ProjectManifest} from "./../projectManifest";
 export class OpenProject extends atomic.AtomicOperation
 {
-    public proj : ProjectManifest;
-    public externalProjectPath : string;
-    public openProjectProcess : cp.ChildProcess;
+    public proj : ProjectManifest | undefined;
+    public externalProjectPath : string | undefined;
+    public openProjectProcess : cp.ChildProcess | undefined;
     constructor()
     {
         super();
@@ -23,7 +23,7 @@ export class OpenProject extends atomic.AtomicOperation
     }
     public run() : void
     {
-        this.logRecord = atomic.openLog(this.name,"Open Project");
+        this.logRecord = atomic.openLog(this.name!,"Open Project");
         let self = this;
         this.openProjectProcess = atomic.makeFork("OpenProject.js",<AtomicOperationForkEvent>{
             setData : true,
@@ -40,7 +40,7 @@ export class OpenProject extends atomic.AtomicOperation
             self.logObject(ev);
             if(ev.finishedSettingData == true)
             {
-                self.openProjectProcess.send(
+                self.openProjectProcess!.send(
                     <AtomicOperationForkEvent>{
                         run : true
                     }
@@ -49,12 +49,12 @@ export class OpenProject extends atomic.AtomicOperation
             if(ev.update == true)
             {
                 self.extraData = ev.data;
-                self.flags = ev.flags;
-                if(ev.flags.success == true)
+                self.flags = ev.flags!;
+                if(ev.flags!.success == true)
                 {
                     self.setSuccess(self.flags);
                 }
-                self.update();
+                self.update!();
             }
         });
         this.addPID(this.openProjectProcess.pid);

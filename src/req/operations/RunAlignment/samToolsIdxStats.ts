@@ -68,7 +68,7 @@ export function samToolsIdxStats(alignData : AlignData,logger : atomic.AtomicOpe
         try
         {
             samToolsIdxStatsJob.Run();
-            logger.addPIDFromFork(samToolsIdxStatsJob.pid);
+            logger.addPIDFromFork(samToolsIdxStatsJob.pid!);
         }
         catch(err)
         {

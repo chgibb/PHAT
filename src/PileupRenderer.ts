@@ -25,5 +25,5 @@ ipc.on(
 
 window.addEventListener("resize",function()
 {
-    document.getElementById("view").style.height = window.innerHeight+"px";
+    document.getElementById("view")!.style.height = window.innerHeight+"px";
 }, false);

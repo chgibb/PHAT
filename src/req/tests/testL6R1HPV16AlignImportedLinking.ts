@@ -20,12 +20,12 @@ export async function testL6R1HPV16AlignImportedLinking() : Promise<void>
             }
             else if(op.flags.success)
             {
-                fs.accessSync(getCoverage(op.alignData));
-                fs.accessSync(getCoverageDir(op.alignData));
-                fs.accessSync(getFlagStats(op.alignData));
-                fs.accessSync(getMPileup(op.alignData));
-                fs.accessSync(getSNPsJSON(op.alignData));
-                fs.accessSync(getSNPsVCF(op.alignData));
+                fs.accessSync(getCoverage(op.alignData!));
+                fs.accessSync(getCoverageDir(op.alignData!));
+                fs.accessSync(getFlagStats(op.alignData!));
+                fs.accessSync(getMPileup(op.alignData!));
+                fs.accessSync(getSNPsJSON(op.alignData!));
+                fs.accessSync(getSNPsVCF(op.alignData!));
 
                 if(op.alignData!.varScanSNPSummary!.minVarFreq == 0.2)
                     console.log(`${op.alignData!.alias} has correct minimum variable frequency`);
@@ -75,7 +75,7 @@ export async function testL6R1HPV16AlignImportedLinking() : Promise<void>
                     return reject();
                 }
 
-                L6R1HPV16AlignImported.set(op.alignData);
+                L6R1HPV16AlignImported.set(op.alignData!);
 
                 return resolve();
             }

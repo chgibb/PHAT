@@ -7,7 +7,7 @@ const uuidv4 : () => string = require("uuid/v4");
 const fse = require("fs-extra");
 export class CopyCircularFigure extends atomic.AtomicOperation
 {
-    public origFigure : cf.CircularFigure;
+    public origFigure : cf.CircularFigure | undefined;
     public newFigure : cf.CircularFigure;
     public constructor()
     {
@@ -20,21 +20,21 @@ export class CopyCircularFigure extends atomic.AtomicOperation
     }
     public run() : void
     {
-        this.logRecord = atomic.openLog(this.name,"Copy Circular Figure");
+        this.logRecord = atomic.openLog(this.name!,"Copy Circular Figure");
         try
         {
             Object.assign(this.newFigure,this.origFigure);
             this.newFigure.uuid = uuidv4();
             let self = this;
             fse.copy(
-                getReadableAndWritable(`rt/circularFigures/${this.origFigure.uuid}`),
+                getReadableAndWritable(`rt/circularFigures/${this.origFigure!.uuid}`),
                 getReadableAndWritable(`rt/circularFigures/${this.newFigure.uuid}`),
                 function(err : Error)
                 {
                     if(err)
                         self.abortOperationWithMessage(err.message);
                     self.setSuccess(self.flags);
-                    self.update();
+                    self.update!();
                 }
             );
         }
