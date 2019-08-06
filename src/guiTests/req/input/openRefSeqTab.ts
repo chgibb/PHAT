@@ -23,6 +23,6 @@ export async function openRefSeqTab() : Promise<void>
                 document.getElementsByClassName("refSeqViewButton")[0].click();
             `);
             resolve();
-        },2500);
+        },10500);
     });
 }

@@ -141,16 +141,19 @@ export class RenderedTrackRecord implements UniquelyAddressable
  */
 export class RenderedCoverageTrackRecord extends RenderedTrackRecord
 {
-    scaleFactor : number;
+    public scaleFactor : number;
+    public log10Scaled : boolean;
     public constructor(
         uuidAlign : string,
         uuidContig : string,
         uuidFigure : string,
         colour : string,
-        scaleFactor : number)
+        scaleFactor : number,
+        log10Scaled : boolean)
     {
         super(uuidAlign,uuidContig,uuidFigure,colour);
         this.scaleFactor = scaleFactor;
+        this.log10Scaled = log10Scaled;
     }
 }
 
@@ -672,7 +675,8 @@ export async function buildCoverageTrackTemplate(
     contiguuid : string,
     align : AlignData,
     colour : string = "rgb(64,64,64)",
-    scaleFactor : number = 1
+    scaleFactor : number = 1,
+    log10Scale : boolean = false
 ) : Promise<string>
 {
     return new Promise<string>((resolve,reject) => 
@@ -696,6 +700,10 @@ export async function buildCoverageTrackTemplate(
         {
             let tokens = line.split(/\s/g);
             let depth = parseInt(tokens[1]);
+            
+            if(log10Scale)
+                depth = Math.log10(depth);
+
             let found = false;
             for(let i = 0; i != depths.length; ++i)
             {
@@ -778,7 +786,8 @@ export async function cacheCoverageTrackTemplate(
     contiguuid : string,
     align : AlignData,
     colour : string = "rgb(64,64,64)",
-    scaleFactor : number = 1
+    scaleFactor : number = 1,
+    log10Scale : boolean = false
 ) : Promise<void>
 {
     return new Promise<void>(async (resolve,reject) => 
@@ -790,8 +799,8 @@ export async function cacheCoverageTrackTemplate(
         catch(err)
         {}
     
-        let coverageTracks = await buildCoverageTrackTemplate(figure,contiguuid,align,colour,scaleFactor);
-        let trackRecord = new RenderedCoverageTrackRecord(align.uuid,contiguuid,figure.uuid,colour,scaleFactor);
+        let coverageTracks = await buildCoverageTrackTemplate(figure,contiguuid,align,colour,scaleFactor,log10Scale);
+        let trackRecord = new RenderedCoverageTrackRecord(align.uuid,contiguuid,figure.uuid,colour,scaleFactor,log10Scale);
         fs.writeFileSync(getCachedCoverageTrackTemplatePath(trackRecord),coverageTracks);
         figure.renderedCoverageTracks.push(trackRecord);
         resolve();
