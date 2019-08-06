@@ -1,27 +1,27 @@
 {
-    "compilerOptions" : 
-    {
-        "module" : "commonjs",
+    "compilerOptions": {
+        "module": "commonjs",
         "moduleResolution": "node",
         "allowSyntheticDefaultImports": true,
-        "target" : "es6",
+        "target": "es6",
         "noEmitOnError": true,
-        "noImplicitAny" : true,
-        "noImplicitReturns" : true,
+        "noImplicitAny": true,
+        "noImplicitReturns": true,
         "noImplicitThis": true,
         "removeComments": true,
-        "sourceMap" : false,
-        "listFiles" : false,
+        "sourceMap": false,
+        "listFiles": false,
         "importHelpers": true,
         "jsx": "react",
-        "outDir": ".buildCache/debug/",
+        "outDir": ".buildCache/debug/src",
         "incremental": true,
-        "strict": true
+        "strict": true,
+        "strictPropertyInitialization": true
     },
-    "include": ["src"],
-    "exclude": 
-    [
+    "include": [
+        "src"
+    ],
+    "exclude": [
         "node_modules"
     ],
-    
 }

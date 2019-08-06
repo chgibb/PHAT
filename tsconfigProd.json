@@ -6,14 +6,16 @@
         "allowSyntheticDefaultImports": true,
         "target" : "es6",
         "noEmitOnError": true,
-        "noImplicitAny" : true,
-        "noImplicitReturns" : true,
+        "noImplicitAny": true,
+        "noImplicitReturns": true,
         "noImplicitThis": true,
         "removeComments": true,
-        "sourceMap" : false,
-        "listFiles" : false,
+        "sourceMap": false,
+        "listFiles": false,
         "importHelpers": true,
-        "jsx": "react"
+        "jsx": "react",
+        "strict": true,
+        "strictPropertyInitialization": true
     },
     "exclude": 
     [
