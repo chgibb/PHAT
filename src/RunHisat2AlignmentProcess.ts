@@ -47,7 +47,7 @@ function update() : void
         }
     }
     logger.logObject(update);
-    !(update);
+    process.send!(update);
 }
 
 
