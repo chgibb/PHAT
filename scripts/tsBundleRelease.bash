@@ -33,7 +33,7 @@ fi
 mv $1.tmp $1
 
 if [ "$1" != "src/PileupRenderer.js" ]; then
-    ./node_modules/uglify-es/bin/uglifyjs --compress -- $1 > $1.tmp
+    ./node_modules/uglify-es/bin/uglifyjs --compress inline=false,reduce_vars=0,reduce_funcs=0 -- $1 > $1.tmp
     if [ $? != 0 ]; then
         rm $1.tmp
         exit $?
