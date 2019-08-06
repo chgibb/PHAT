@@ -306,7 +306,7 @@ ipc.on(
 		winMgr.publishChangeForKey("application","operations");
 		if(arg.opName =="indexFastaForBowtie2Alignment" || arg.opName == "indexFastaForHisat2Alignment" || arg.opName == "indexFastaForVisualization" || arg.opName == "generateFastQCReport")
 		{
-			let list : Array<File> = dataMgr.getKey(arg.channel!,arg.key);
+			let list : Array<File> = dataMgr.getKey(arg.channel!,arg.key!);
 			for(let i : number = 0; i != list.length; ++i)
 			{
 				if(list[i].uuid == arg.uuid)
