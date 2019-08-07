@@ -4,7 +4,6 @@ const ipc = electron.ipcRenderer;
 import {Fasta} from "../../../fasta";
 import {AtomicOperationIPC} from "../../../atomicOperationsIPC";
 import {AlignData} from "../../../alignData";
-
 import {SaveKeyEvent} from "../../../ipcEvents";
 import {Fastq} from "../../../fastq";
 

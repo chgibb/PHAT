@@ -7,13 +7,13 @@ import {AlignData} from "./../alignData";
 import * as cf from "./../renderer/circularFigure";
 export class RenderCoverageTrackForContig extends atomic.AtomicOperation
 {
-    public alignData : AlignData;
-    public contiguuid : string;
-    public circularFigure : cf.CircularFigure;
-    public colour : string;
-    public scaleFactor : number;
-    public log10Scale : boolean;
-    public renderCoverageTrackProcess : cp.ChildProcess;
+    public alignData : AlignData | undefined;
+    public contiguuid : string | undefined;
+    public circularFigure : cf.CircularFigure | undefined;
+    public colour : string | undefined;
+    public scaleFactor : number | undefined;
+    public log10Scale : boolean | undefined;
+    public renderCoverageTrackProcess : cp.ChildProcess | undefined;
     constructor()
     {
         super();
@@ -36,7 +36,7 @@ export class RenderCoverageTrackForContig extends atomic.AtomicOperation
     }
     public run() : void
     {
-        this.logRecord = atomic.openLog(this.name,"Render Coverage Track");
+        this.logRecord = atomic.openLog(this.name!,"Render Coverage Track");
         let self = this;
 
         atomic.logString(this.logRecord,JSON.stringify(this,undefined,4));
@@ -55,7 +55,7 @@ export class RenderCoverageTrackForContig extends atomic.AtomicOperation
         {
             if(ev.finishedSettingData == true)
             {
-                self.renderCoverageTrackProcess.send(
+                self.renderCoverageTrackProcess!.send(
                     <AtomicOperationForkEvent>{
                         run : true
                     }
@@ -65,15 +65,15 @@ export class RenderCoverageTrackForContig extends atomic.AtomicOperation
             if(ev.update == true)
             {
                 self.extraData = ev.data;
-                self.flags = ev.flags;
-                if(ev.flags.success == true)
+                self.flags = ev.flags!;
+                if(ev.flags!.success == true)
                 {
                     self.circularFigure = ev.data.circularFigure;
                     self.contiguuid = ev.data.contiguuid;
                     self.alignData = ev.data.alignData;
                     self.colour = ev.data.colour;
                 }
-                self.update();
+                self.update!();
             }
         });
         this.addPID(this.renderCoverageTrackProcess.pid);

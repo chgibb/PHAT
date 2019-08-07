@@ -4,8 +4,8 @@ const webContents = electron.webContents;
 import * as atomic from "./atomicOperations";
 export class ChangeTitle extends atomic.AtomicOperation
 {
-    public id : number;
-    public newTitle : string;
+    public id : number | undefined;
+    public newTitle : string | undefined;
 
     public constructor()
     {
@@ -24,7 +24,7 @@ export class ChangeTitle extends atomic.AtomicOperation
 
     public run() : void
     {
-        this.logRecord = atomic.openLog(this.name,"Change Title");
+        this.logRecord = atomic.openLog(this.name!,"Change Title");
 
         let allWCs : Array<Electron.WebContents> = webContents.getAllWebContents();
 
@@ -38,6 +38,6 @@ export class ChangeTitle extends atomic.AtomicOperation
 
         this.flags.success = true;
         this.flags.done = true;
-        this.update();
+        this.update!();
     }
 }

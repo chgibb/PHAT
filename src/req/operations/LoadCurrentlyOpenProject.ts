@@ -13,16 +13,16 @@ export class LoadCurrentlyOpenProject extends atomic.AtomicOperation
 
     public run() : void
     {
-        this.logRecord = atomic.openLog(this.name,"Load Currently Open Project");
+        this.logRecord = atomic.openLog(this.name!,"Load Currently Open Project");
         try
         {
-            finishLoadingProject(getCurrentlyOpenProject());
+            finishLoadingProject(getCurrentlyOpenProject()!);
             this.setSuccess(this.flags);
         }
         catch(err)
         {
             this.abortOperationWithMessage(err);
         }
-        this.update();
+        this.update!();
     }
 }

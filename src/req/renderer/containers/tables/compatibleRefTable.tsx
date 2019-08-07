@@ -77,7 +77,7 @@ export function CompatibleRefTable(props : CompatibleRefTableProps) : JSX.Elemen
                     field: "",
                     render : (row : CompatibleRefTableRow) => 
                     {
-                        return row.fasta.sizeString;
+                        return row.fasta.sizeString ? row.fasta.sizeString : null;
                     },
                     searchable : true,
                     hidden : false

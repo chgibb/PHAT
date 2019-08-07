@@ -63,7 +63,7 @@ $(
                     let logView = <logView.View>viewMgr.getViewByName("logView",masterView.views);
                     let runningView = <runningView.View>viewMgr.getViewByName("runningView",masterView.views);
                     logView.dataChanged();
-                    runningView.ops = null;
+                    runningView.ops = [];
                     if(arg.key == "operations" && arg.val !== undefined && Array.isArray(arg.val))
                     {
                         runningView.ops = new Array<AtomicOperation>();

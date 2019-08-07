@@ -45,7 +45,7 @@ export class View extends viewMgr.View
 {
     public views : Array<viewMgr.View>;
     public circularFigures : Array<CircularFigure>;
-    public alignData : Array<AlignData>;
+    public alignData : Array<AlignData> | undefined;
     public fastaInputs : Array<Fasta>;
     public alignsModalOpen : boolean;
     public availableTracksModalOpen : boolean;
@@ -87,7 +87,7 @@ export class View extends viewMgr.View
             return undefined;
         for(let i = 0; i != this.alignData.length; ++i)
         {
-            if(this.alignData[i].fasta && this.alignData[i].fasta.uuid == genomeView.genome.uuidFasta)
+            if(this.alignData[i].fasta && this.alignData[i]!.fasta!.uuid == genomeView.genome!.uuidFasta)
             {
                 res.push(this.alignData[i]);
             }
@@ -161,11 +161,11 @@ export class View extends viewMgr.View
             return;
         for(let i = 0; i != this.circularFigures.length; ++i)
         {
-            if(genomeView.genome.uuid == this.circularFigures[i].uuid)
+            if(genomeView.genome!.uuid == this.circularFigures[i].uuid)
             {
                 try
                 {
-                    document.getElementById(`${this.circularFigures[i].uuid}Open`).classList.add("selectedFigureInDropDown");
+                    document.getElementById(`${this.circularFigures[i].uuid}Open`)!.classList.add("selectedFigureInDropDown");
                 }
                 catch(err)
                 {}
@@ -185,7 +185,7 @@ export class View extends viewMgr.View
         if(!genomeView.genome)
             el.value = "";
         else
-            el.value = genomeView.genome.radius.toString();
+            el.value = genomeView.genome!.radius.toString();
     }
 
     /**
@@ -200,7 +200,7 @@ export class View extends viewMgr.View
         if(!genomeView.genome)
             el.value = "";
         else
-            el.value = genomeView.genome.circularFigureBPTrackOptions.interval.toString();
+            el.value = genomeView.genome!.circularFigureBPTrackOptions.interval.toString();
     }
 
     /**
@@ -215,9 +215,9 @@ export class View extends viewMgr.View
         if(!genomeView.genome)
             return;
         let checkbox = (<HTMLInputElement>document.getElementById("showBPIntervalCheckBox"));
-        if(genomeView.genome.circularFigureBPTrackOptions.showLabels == 0)
+        if(genomeView.genome!.circularFigureBPTrackOptions.showLabels == 0)
             checkbox.checked = false;
-        else if(genomeView.genome.circularFigureBPTrackOptions.showLabels == 1)
+        else if(genomeView.genome!.circularFigureBPTrackOptions.showLabels == 1)
             checkbox.checked = true;
     }
 
@@ -239,7 +239,7 @@ export class View extends viewMgr.View
         {
             self.saveFigureChanges();
         };
-        document.getElementById("figures").onclick = function(this : HTMLElement,ev : MouseEvent)
+        document.getElementById("figures")!.onclick = function(this : GlobalEventHandlers,ev : MouseEvent)
         {
             for(let i = 0; i != self.fastaInputs.length; ++i)
             {
@@ -252,7 +252,7 @@ export class View extends viewMgr.View
                     ));
                     self.saveFigureChanges();
                     genomeView.loadFigure(self.circularFigures[self.circularFigures.length - 1]);
-                    changeWindowTitle(genomeView.genome.name);
+                    changeWindowTitle(genomeView.genome!.name);
                     genomeView.firstRender = true;
                     viewMgr.render();
                     self.setSelectedFigureInDropDown();
@@ -264,7 +264,7 @@ export class View extends viewMgr.View
                 if((<any>ev.target).id == `${self.circularFigures[i].uuid}Open`)
                 {
                     genomeView.loadFigure(self.circularFigures[i]);
-                    changeWindowTitle(genomeView.genome.name);
+                    changeWindowTitle(genomeView.genome!.name);
                     genomeView.firstRender = true;
                     viewMgr.render();
                     self.setSelectedFigureInDropDown();
@@ -272,23 +272,23 @@ export class View extends viewMgr.View
                 }
             }
         };
-        document.getElementById("figureOptions").onclick = async function(this : HTMLElement,ev : MouseEvent)
+        document.getElementById("figureOptions")!.onclick = async function(this : GlobalEventHandlers,ev : MouseEvent)
         {
-            if((<any>event.target).id == `${genomeView.genome.uuid}ToggleInteractivity`)
+            if((<any>event!.target).id == `${genomeView.genome!.uuid}ToggleInteractivity`)
             {
-                genomeView.genome.isInteractive = !genomeView.genome.isInteractive;
+                genomeView.genome!.isInteractive = !genomeView.genome!.isInteractive;
                 self.saveFigureChanges();
             }
-            if((<any>event.target).id == `${genomeView.genome.uuid}ToggleContigNames`)
+            if((<any>event!.target).id == `${genomeView.genome!.uuid}ToggleContigNames`)
             {
-                genomeView.genome.showContigNames = !genomeView.genome.showContigNames;
+                genomeView.genome!.showContigNames = !genomeView.genome!.showContigNames;
                 self.saveFigureChanges();
             }
-            if((<any>event.target).id == "EditFigureName")
+            if((<any>event!.target).id == "EditFigureName")
             {
                 genomeView.figureNameOnClick();
             }
-            if((<any>event.target).id =="EditContigs")
+            if((<any>event!.target).id =="EditContigs")
             {
                 self.editContigsModalOpen = true;
                 writeEditContigsModal();
@@ -297,26 +297,26 @@ export class View extends viewMgr.View
             }
         };
 
-        document.getElementById("showBPIntervalCheckBox").onclick = function(this : HTMLElement,ev : MouseEvent)
+        document.getElementById("showBPIntervalCheckBox")!.onclick = function(this : GlobalEventHandlers,ev : MouseEvent)
         {
-            document.getElementById("updateNavBarButton").click();
+            document.getElementById("updateNavBarButton")!.click();
         };
 
-        document.getElementById("openModalAligns").onclick = function(this : HTMLElement,ev : MouseEvent)
+        document.getElementById("openModalAligns")!.onclick = function(this : GlobalEventHandlers,ev : MouseEvent)
         {
             self.alignsModalOpen = true;
             writeAlignsModal();
             self.showModal();
         };
 
-        document.getElementById("openContigCreator").onclick = function(this : HTMLElement,ev : MouseEvent)
+        document.getElementById("openContigCreator")!.onclick = function(this : GlobalEventHandlers,ev : MouseEvent)
         {
             self.contigCreatorModalOpen = true;
             writeContigCreatorModal();
             self.showModal();
         };
 
-        document.getElementById("selectSequence").onclick = function(this : HTMLElement,ev : MouseEvent)
+        document.getElementById("selectSequence")!.onclick = function(this : GlobalEventHandlers,ev : MouseEvent)
         {
             if(!genomeView.genome)
             {
@@ -331,7 +331,7 @@ export class View extends viewMgr.View
             genomeView.showSeqSelectorOnChange();
         };
 
-        document.getElementById("exportToSVG").onclick = function(this : HTMLElement,ev : MouseEvent)
+        document.getElementById("exportToSVG")!.onclick = function(this : GlobalEventHandlers,ev : MouseEvent)
         {
             if(!genomeView.genome)
             {
@@ -341,7 +341,7 @@ export class View extends viewMgr.View
             genomeView.exportSVG();
         };
 
-        document.getElementById("copyFigure").onclick = function(this : HTMLElement,ev : MouseEvent)
+        document.getElementById("copyFigure")!.onclick = function(this : GlobalEventHandlers,ev : MouseEvent)
         {
             if(!genomeView.genome)
             {
@@ -352,12 +352,12 @@ export class View extends viewMgr.View
                 "runOperation",
                 <AtomicOperationIPC>{
                     opName : "copyCircularFigure",
-                    figureuuid : genomeView.genome.uuid
+                    figureuuid : genomeView.genome!.uuid
                 }
             );
         };
 
-        document.getElementById("deleteFigure").onclick = function(this : HTMLElement,ev : MouseEvent)
+        document.getElementById("deleteFigure")!.onclick = function(this : GlobalEventHandlers,ev : MouseEvent)
         {
             if(!genomeView.genome)
             {
@@ -368,12 +368,12 @@ export class View extends viewMgr.View
                 "runOperation",
                 <AtomicOperationIPC>{
                     opName : "deleteCircularFigure",
-                    figureuuid : genomeView.genome.uuid
+                    figureuuid : genomeView.genome!.uuid
                 }
             );
         };
 
-        document.getElementById("updateNavBarButton").onclick = async function(this : HTMLElement,ev : MouseEvent)
+        document.getElementById("updateNavBarButton")!.onclick = async function(this : GlobalEventHandlers,ev : MouseEvent)
         {
             let radiusHasChanged = false;
             let trackIntervalChanged = false;
@@ -383,28 +383,28 @@ export class View extends viewMgr.View
             let radius = parseInt((<HTMLInputElement>document.getElementById("figureRadiusInput")).value);
             if(radius)
             {
-                if(radius != genomeView.genome.radius)
+                if(radius != genomeView.genome!.radius)
                     radiusHasChanged = true;
-                genomeView.genome.radius = radius;
+                genomeView.genome!.radius = radius;
             }
 
             let trackInterval = parseInt((<HTMLInputElement>document.getElementById("figureBPIntervalInput")).value);
             if(trackInterval)
             {
-                if(trackInterval != genomeView.genome.circularFigureBPTrackOptions.interval)
+                if(trackInterval != genomeView.genome!.circularFigureBPTrackOptions.interval)
                     trackIntervalChanged = true;
-                genomeView.genome.circularFigureBPTrackOptions.interval = trackInterval;
+                genomeView.genome!.circularFigureBPTrackOptions.interval = trackInterval;
             }
 
             let showInterval = ((<HTMLInputElement>document.getElementById("showBPIntervalCheckBox")).checked);
             if(showInterval !== undefined)
             {
-                if((showInterval === true && genomeView.genome.circularFigureBPTrackOptions.showLabels == 0) || (showInterval === false && genomeView.genome.circularFigureBPTrackOptions.showLabels == 1))
+                if((showInterval === true && genomeView.genome!.circularFigureBPTrackOptions.showLabels == 0) || (showInterval === false && genomeView.genome!.circularFigureBPTrackOptions.showLabels == 1))
                     showIntervalChanged = true;
                 if(showInterval === true)
-                    genomeView.genome.circularFigureBPTrackOptions.showLabels = 1;
+                    genomeView.genome!.circularFigureBPTrackOptions.showLabels = 1;
                 else
-                    genomeView.genome.circularFigureBPTrackOptions.showLabels = 0;
+                    genomeView.genome!.circularFigureBPTrackOptions.showLabels = 0;
             }
             if(radiusHasChanged || trackIntervalChanged || showIntervalChanged)
             {
@@ -454,7 +454,7 @@ export class View extends viewMgr.View
      * @returns {string} 
      * @memberof View
      */
-    public renderView() : string
+    public renderView() : string | undefined
     {
         let genomeView = <GenomeView.GenomeView>viewMgr.getViewByName("genomeView",this.views);
         let res = "";
@@ -480,17 +480,17 @@ export class View extends viewMgr.View
                 res += "<li role=\"separator\" class=\"divider\"></li>";
             }
         }
-        document.getElementById("figures").innerHTML = res;
+        document.getElementById("figures")!.innerHTML = res;
 
         res = "";
         if(genomeView.genome)
         {
-            res += `<li><a href="#" id="${genomeView.genome.uuid}ToggleInteractivity">${genomeView.genome.isInteractive ? "Disable Interactivity" : "Enable Interactivity"}</a></li>`;
-            res += `<li><a href="#" id="${genomeView.genome.uuid}ToggleContigNames">${genomeView.genome.showContigNames ? "Don't Show Contig Names" : "Show Contig Names"}</a></li>`;
+            res += `<li><a href="#" id="${genomeView.genome!.uuid}ToggleInteractivity">${genomeView.genome!.isInteractive ? "Disable Interactivity" : "Enable Interactivity"}</a></li>`;
+            res += `<li><a href="#" id="${genomeView.genome!.uuid}ToggleContigNames">${genomeView.genome!.showContigNames ? "Don't Show Contig Names" : "Show Contig Names"}</a></li>`;
             res += "<li><a href=\"#\" id=\"EditFigureName\">Edit Figure Name</a></li>";
             res += "<li><a href=\"#\" id=\"EditContigs\">Edit Contigs</a></li>";
         }
-        document.getElementById("figureOptions").innerHTML = res;
+        document.getElementById("figureOptions")!.innerHTML = res;
 
         for(let i = 0; i != this.views.length; ++i)
         {

@@ -16,14 +16,14 @@ export async function testL6R7HPV16SNPTrackRenderer() : Promise<void>
         {
             if(op.flags.success)
             {
-                console.log(`Successfully rendered SNP track for ${op.circularFigure.name}`);
-                hpv16Figure.set(op.circularFigure);
+                console.log(`Successfully rendered SNP track for ${op.circularFigure!.name}`);
+                hpv16Figure.set(op.circularFigure!);
                 return resolve();
             }
             else if(op.flags.failure)
             {
-                console.log(`Failed to render SNP track for ${op.circularFigure.name}`);
-                console.log(await atomic.getLogContent(op.logRecord)); 
+                console.log(`Failed to render SNP track for ${op.circularFigure!.name}`);
+                console.log(await atomic.getLogContent(op.logRecord!)); 
                 return reject();
             }
         });

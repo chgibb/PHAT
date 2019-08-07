@@ -6,7 +6,7 @@ import {Table} from "../../components/table";
 
 export interface ReadsPerContigTable
 {
-    align : AlignData;
+    align? : AlignData;
 }
 
 /**
@@ -21,7 +21,7 @@ export function ReadsPerContigTable(props : ReadsPerContigTable) : JSX.Element
     return (
         <Table<SamToolsIdxStatsReport>
             title=""
-            data={props.align.idxStatsReport}
+            data={props.align ? props.align.idxStatsReport ? props.align.idxStatsReport : [] : []}
             columns={[
                 {
                     title: "Contig Name",

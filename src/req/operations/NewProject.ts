@@ -2,7 +2,7 @@ import * as atomic from "./atomicOperations";
 import {newProject} from "./../newProject";
 export class NewProject extends atomic.AtomicOperation
 {
-    public proj : string;
+    public proj : string | undefined;
     constructor()
     {
         super();
@@ -13,19 +13,19 @@ export class NewProject extends atomic.AtomicOperation
     }
     public run() : void
     {
-        this.logRecord = atomic.openLog(this.name,"Create New Project");
+        this.logRecord = atomic.openLog(this.name!,"Create New Project");
         let self = this;
-        newProject(this.proj).then(() => 
+        newProject(this.proj!).then(() => 
         {
 
             self.setSuccess(self.flags);
-            self.update();
+            self.update!();
 
         }).catch((err) => 
         {
 
             self.abortOperationWithMessage(err);
-            self.update();
+            self.update!();
 
         });
     }

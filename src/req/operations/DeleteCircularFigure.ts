@@ -6,7 +6,7 @@ import {getReadableAndWritable} from "./../getAppPath";
 const fse = require("fs-extra");
 export class DeleteCircularFigure extends atomic.AtomicOperation
 {
-    public figure : cf.CircularFigure;
+    public figure : cf.CircularFigure | undefined;
     public constructor()
     {
         super();
@@ -17,18 +17,18 @@ export class DeleteCircularFigure extends atomic.AtomicOperation
     }
     public run() : void
     {
-        this.logRecord = atomic.openLog(this.name,"Delete Circular Figure");
+        this.logRecord = atomic.openLog(this.name!,"Delete Circular Figure");
         try
         {
             let self = this;
             fse.remove(
-                getReadableAndWritable(`rt/circularFigures/${this.figure.uuid}`),
+                getReadableAndWritable(`rt/circularFigures/${this.figure!.uuid}`),
                 function(err : Error)
                 {
                     if(err)
                         self.abortOperationWithMessage(err.message);
                     self.setSuccess(self.flags);
-                    self.update();
+                    self.update!();
                 }
             );
         }

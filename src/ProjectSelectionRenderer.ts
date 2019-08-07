@@ -99,7 +99,7 @@ $(
                 }
             }
         );
-        document.getElementById("citeLink").onclick = function(this : HTMLElement,ev : MouseEvent)
+        document.getElementById("citeLink")!.onclick = function(this : GlobalEventHandlers,ev : MouseEvent)
         {
             remote.shell.openExternal("https://doi.org/10.1093/bioinformatics/bty1003");
         };

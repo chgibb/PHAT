@@ -4,8 +4,8 @@ import * as atomic from "./atomicOperations";
 import {getReadable} from "./../getAppPath";
 export class InstallUpdate extends atomic.AtomicOperation
 {
-    public installUpdateJob : cp.ChildProcess;
-    public installUpdateFlags : atomic.CompletionFlags;
+    public installUpdateJob : cp.ChildProcess | undefined;
+    public installUpdateFlags : atomic.CompletionFlags | undefined;
     public filesInUpdate : number = 0;
     constructor()
     {
@@ -25,7 +25,7 @@ export class InstallUpdate extends atomic.AtomicOperation
                 if(data.totalFiles)
                 {
                     self.filesInUpdate = data.totalFiles;
-                    self.update();
+                    self.update!();
                     self.setSuccess(self.flags);
                 }
             });

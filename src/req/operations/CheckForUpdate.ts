@@ -5,10 +5,10 @@ import {AtomicOperationForkEvent,AtomicOperationIPC} from "./../atomicOperations
 import {getReadable} from "./../getAppPath";
 export class CheckForUpdate extends atomic.AtomicOperation
 {
-    public availableUpdate : boolean;
-    public updateTagName : string;
+    public availableUpdate : boolean | undefined;
+    public updateTagName : string | undefined;
 
-    public checkForUpdateProcess : cp.ChildProcess;
+    public checkForUpdateProcess : cp.ChildProcess | undefined;
     constructor()
     {
         super();
@@ -21,7 +21,7 @@ export class CheckForUpdate extends atomic.AtomicOperation
     {
         this.closeLogOnFailure = true;
         this.closeLogOnSuccess = true;
-        this.logRecord = atomic.openLog(this.name,"Check for Update");
+        this.logRecord = atomic.openLog(this.name!,"Check for Update");
         let self = this;
         this.checkForUpdateProcess = atomic.makeFork("CheckForUpdate.js",<AtomicOperationForkEvent>{
             setData : true,
@@ -31,7 +31,7 @@ export class CheckForUpdate extends atomic.AtomicOperation
             self.logObject(ev);
             if(ev.finishedSettingData == true)
             {
-                self.checkForUpdateProcess.send(
+                self.checkForUpdateProcess!.send(
                     <AtomicOperationForkEvent>{
                         run : true
                     }
@@ -40,8 +40,8 @@ export class CheckForUpdate extends atomic.AtomicOperation
             if(ev.update == true)
             {
                 self.extraData = ev.data;
-                self.flags = ev.flags;
-                self.update();
+                self.flags = ev.flags!;
+                self.update!();
             }    
         });
         this.addPID(this.checkForUpdateProcess.pid);

@@ -18,7 +18,7 @@ export type QCReportType =
 export class QCData
 {
     public summary : Array<QCSummary>;
-    public validID : string;
+    public validID : string | undefined;
     public reportRun : boolean;
     public constructor()
     {
@@ -54,7 +54,7 @@ export function getQCReportData(fastq : Fastq) : string
 export class QCSummary
 {
     public name : QCReportType;
-    public status : QCReportDisposition;
+    public status : QCReportDisposition | undefined;
     public constructor(name : QCReportType,status : QCReportDisposition)
     {
         this.name = name;
@@ -79,7 +79,7 @@ export function getQCSummaryByNameOfReportByIndex(fastqInputs : Array<Fastq>,ind
         {
             if(fastqInputs[index].QCData.summary[i].name == summary)
             {
-                return fastqInputs[index].QCData.summary[i].status;
+                return fastqInputs[index].QCData.summary[i].status!;
             }
         }
     }
@@ -107,7 +107,7 @@ export function getQCSummaryByName(fastq : Fastq,summary : QCReportType) : QCRep
         {
             if(fastq.QCData.summary[i].name == summary)
             {
-                return fastq.QCData.summary[i].status;
+                return fastq.QCData.summary[i].status!;
             }
         }
     }

@@ -5,8 +5,8 @@ import * as winMgr from "./../main/winMgr";
 
 export class UnDockWindow extends atomic.AtomicOperation
 {
-    public refName : string;
-    public guestinstance : number;
+    public refName : string | undefined;
+    public guestinstance : number | undefined;
 
     public constructor()
     {
@@ -25,12 +25,12 @@ export class UnDockWindow extends atomic.AtomicOperation
 
     public async run()
     {
-        this.logRecord = atomic.openLog(this.name,"UnDock Window");
+        this.logRecord = atomic.openLog(this.name!,"UnDock Window");
 
-        winMgr.windowCreators[this.refName].Create();
+        winMgr.windowCreators[this.refName!].Create();
 
         this.flags.success = true;
         this.flags.done = true;
-        this.update();
+        this.update!();
     }
 }

@@ -68,7 +68,7 @@ export function samToolsFlagStat(alignData : AlignData,logger : atomic.AtomicOpe
         try
         {
             samToolsFlagStatJob.Run();
-            logger.addPIDFromFork(samToolsFlagStatJob.pid);
+            logger.addPIDFromFork(samToolsFlagStatJob.pid!);
         }
         catch(err)
         {

@@ -11,12 +11,12 @@ import * as atomic from "./atomicOperations";
 
 export class RunBowtie2Alignment extends atomic.AtomicOperation
 {
-    public alignData : AlignData;
-    public fasta : Fasta;
-    public fastq1 : Fastq;
-    public fastq2 : Fastq;
+    public alignData : AlignData | undefined;
+    public fasta : Fasta | undefined;
+    public fastq1 : Fastq | undefined;
+    public fastq2 : Fastq | undefined;
 
-    public runBowtie2AlignmentProcess : cp.ChildProcess;
+    public runBowtie2AlignmentProcess : cp.ChildProcess | undefined;
     constructor()
     {
         super();
@@ -55,7 +55,7 @@ export class RunBowtie2Alignment extends atomic.AtomicOperation
         {
             if(ev.finishedSettingData == true)
             {
-                self.runBowtie2AlignmentProcess.send(
+                self.runBowtie2AlignmentProcess!.send(
                     <AtomicOperationForkEvent>{
                         run : true
                     }
@@ -68,20 +68,20 @@ export class RunBowtie2Alignment extends atomic.AtomicOperation
             }
             if(ev.update == true)
             {
-                self.flags = ev.flags;
-                if(ev.flags.success == true)
+                self.flags = ev.flags!;
+                if(ev.flags!.success == true)
                 {
                     self.alignData = ev.data.alignData;
                 }
-                if(ev.flags.done)
+                if(ev.flags!.done)
                 {
                     self.logRecord = ev.logRecord;
-                    atomic.recordLogRecord(ev.logRecord);
+                    atomic.recordLogRecord(ev.logRecord!);
                 }
                 self.step = ev.step;
                 self.progressMessage = ev.progressMessage;
                 console.log(self.step+" "+self.progressMessage);
-                self.update();
+                self.update!();
             }
         });
         this.addPID(this.runBowtie2AlignmentProcess.pid);

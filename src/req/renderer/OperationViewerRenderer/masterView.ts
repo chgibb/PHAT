@@ -25,7 +25,7 @@ export class View extends viewMgr.View
             this.views[i].unMount();
         }
     }
-    public renderView() : string
+    public renderView() : string | undefined
     {
         for(let i = 0; i != this.views.length; ++i)
         {

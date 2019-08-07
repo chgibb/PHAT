@@ -3,10 +3,10 @@ import * as winMgr from "./../main/winMgr";
 import {AlignData} from "./../alignData";
 export class OpenPileupViewer extends atomic.AtomicOperation
 {
-    public align : AlignData;
-    public contig : string;
-    public start : number;
-    public stop : number;
+    public align : AlignData | undefined;
+    public contig : string | undefined;
+    public start : number | undefined;
+    public stop : number | undefined;
     constructor()
     {
         super();
@@ -46,6 +46,6 @@ export class OpenPileupViewer extends atomic.AtomicOperation
         );
 
         this.setSuccess(this.flags);
-        this.update();
+        this.update!();
     }
 }

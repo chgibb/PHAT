@@ -19,7 +19,7 @@ import {dockThisWindow} from "./dock";
  user1398498
  http://stackoverflow.com/questions/2604976/javascript-how-to-display-script-errors-in-a-popup-alert
 */
-window.onerror = function(message : string,file : string,line : number,col : number,error : Error)
+window.onerror = function(message : string | Event,file : string | undefined,line : number | undefined,col : number | undefined,error : Error | undefined)
 {
     if(message)
     {

@@ -7,11 +7,11 @@ import {Job} from "./../main/Job";
 import {faToTwoBit} from "./indexFasta/faToTwoBit";
 export class IndexFastaForVisualization extends atomic.AtomicOperation
 {
-    public fasta : Fasta;
+    public fasta : Fasta | undefined;
     public faToTwoBitExe : string;
 
-    public twoBitPath : string;
-    public twoBitJob : Job;
+    public twoBitPath : string | undefined;
+    public twoBitJob : Job | undefined;
     public twoBitFlags : atomic.CompletionFlags;
     constructor()
     {
@@ -28,7 +28,7 @@ export class IndexFastaForVisualization extends atomic.AtomicOperation
     }
     public run() : void
     {
-        this.logRecord = atomic.openLog(this.name,"Index Fasta for Visualization");
+        this.logRecord = atomic.openLog(this.name!,"Index Fasta for Visualization");
 
         let self = this;
         (async function()
@@ -38,23 +38,23 @@ export class IndexFastaForVisualization extends atomic.AtomicOperation
                 try
                 {
                     self.progressMessage = "Building 2bit archive";
-                    self.update();
+                    self.update!();
                     await faToTwoBit(self);
                     self.setSuccess(self.twoBitFlags);
                     
                     self.progressMessage = "Reading contigs";
-                    self.update();
+                    self.update!();
 
                     //don't reparse contigs if we don't have to
                     //contigs are parsed during viz indexing as well
                     //if we reparse, we will clobber contig uuids and all references which point to them
-                    if(!self.fasta.contigs || self.fasta.contigs.length == 0)
+                    if(!self.fasta!.contigs || self.fasta!.contigs.length == 0)
                     {
-                        self.fasta.contigs = await getContigsFromFastaFile(getPath(self.fasta));
+                        self.fasta!.contigs = await getContigsFromFastaFile(getPath(self.fasta!));
                     }
-                    self.fasta.indexedForVisualization = true;
+                    self.fasta!.indexedForVisualization = true;
                     self.setSuccess(self.flags);
-                    self.update();
+                    self.update!();
                 }
                 catch(err)
                 {

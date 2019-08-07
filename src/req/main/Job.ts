@@ -25,8 +25,8 @@ export class Job
      * @param {any} callBackObj - some object with a method send(string) : void.
      * @param {any} extraData - JSON object to be forwarded to originator on every callback
      */
-    private process : spawn.ChildProcess;
-    public pid : number;
+    private process : spawn.ChildProcess | undefined;
+    public pid : number | undefined;
     public processName : string;
     public args : Array<string>;
     public callBackChannel : string;
@@ -36,8 +36,8 @@ export class Job
     public running : boolean;
     public extraData : any;
     public retCode : number | undefined;
-    public stdout : stream.Readable;
-    public stderr : stream.Readable;
+    public stdout : stream.Readable | undefined;
+    public stderr : stream.Readable | undefined;
     public constructor(
         processName : string,
         args : Array<string>,
@@ -109,7 +109,7 @@ export class Job
             if(out && !err)
                 obj.stdout = true;
         }
-        this.callBackObj.send(this.callBackChannel,obj);
+        this.callBackObj.send(this.callBackChannel,obj!);
     }
     OnOut(data : Buffer) : void
     {

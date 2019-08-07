@@ -35,7 +35,7 @@ export function writeSequenceSelectionModal() : void
 
     let body = `
         <h5>End</h5>
-        <input type="number" id="seqSelectionEnd" value="${genomeView.seqSelectionRightArm.armStart}" />
+        <input type="number" id="seqSelectionEnd" value="${genomeView.seqSelectionRightArm!.armStart}" />
         <br />
         <br />
         <h5>Start</h5>
@@ -46,41 +46,41 @@ export function writeSequenceSelectionModal() : void
         <button type="button" class="btn btn-secondary" data-dismiss="modal" id="footerClose">Cancel</button>
         <button type="button" class="btn btn-primary" id="selectSequence">Select Sequence</button>
     `;
-    if(!genomeView.genome.isInteractive)
+    if(!genomeView.genome!.isInteractive)
     {
         footer += `
         <button type="button" class="btn btn-primary" id="updateSeqSelection">Update Range on Figure</button>
         `;
     }
 
-    document.getElementById("modalTitle").innerHTML = title;
-    document.getElementById("modalBody").innerHTML = body;
-    document.getElementById("modalFooter").innerHTML = footer;
+    document.getElementById("modalTitle")!.innerHTML = title;
+    document.getElementById("modalBody")!.innerHTML = body;
+    document.getElementById("modalFooter")!.innerHTML = footer;
 
-    document.getElementById("selectSequence").onclick = function(this : HTMLElement,ev : MouseEvent)
+    document.getElementById("selectSequence")!.onclick = function(this : GlobalEventHandlers,ev : MouseEvent)
     {
         masterView.seqSelectionModalOpen = false;
         masterView.seqSelectionActionModalOpen = true;
         writeSeqSelectionActionModal();
     };
 
-    if(genomeView.genome.isInteractive)
+    if(genomeView.genome!.isInteractive)
     {
-        document.getElementById("seqSelectionStart").oninput = function(this : HTMLElement,ev : Event)
+        document.getElementById("seqSelectionStart")!.oninput = function(this : GlobalEventHandlers,ev : Event)
         {
             valSelectionStartAndEnd();
             updateSeqSelectionOnFigure(parseInt((<HTMLInputElement>document.getElementById("seqSelectionStart")).value),undefined);
         };
 
-        document.getElementById("seqSelectionEnd").oninput = function(this : HTMLElement,ev : Event)
+        document.getElementById("seqSelectionEnd")!.oninput = function(this : GlobalEventHandlers,ev : Event)
         {
             valSelectionStartAndEnd();
             updateSeqSelectionOnFigure(undefined,parseInt((<HTMLInputElement>document.getElementById("seqSelectionEnd")).value));
         };
     }
-    if(!genomeView.genome.isInteractive)
+    if(!genomeView.genome!.isInteractive)
     {
-        document.getElementById("updateSeqSelection").onclick = function(this : HTMLElement,ev : MouseEvent)
+        document.getElementById("updateSeqSelection")!.onclick = function(this : GlobalEventHandlers,ev : MouseEvent)
         {
             valSelectionStartAndEnd();
             updateSeqSelectionOnFigure(
@@ -92,50 +92,50 @@ export function writeSequenceSelectionModal() : void
 
 }
 
-function updateSeqSelectionOnFigure(start : number,end : number)
+function updateSeqSelectionOnFigure(start : number | undefined,end : number | undefined)
 {
     let masterView = <masterView.View>viewMgr.getViewByName("masterView");
     let genomeView = <genomeView.GenomeView>viewMgr.getViewByName("genomeView",masterView.views);
 
-    if(genomeView.genome.isInteractive)
+    if(genomeView.genome!.isInteractive)
     {
         if(start !== undefined)
         {
             if(start < 0)
                 return;
-            if(start > genomeView.seqSelectionRightArm.armStart)
+            if(start > genomeView.seqSelectionRightArm!.armStart)
                 return;
-            genomeView.seqSelectionLeftArm.armStart = start;
-            genomeView.seqSelectionArrow.arrowStart = start;
+            genomeView.seqSelectionLeftArm!.armStart = start;
+            genomeView.seqSelectionArrow!.arrowStart = start;
         }
         if(end !== undefined)
         {
-            if(end < genomeView.seqSelectionLeftArm.armStart)
+            if(end < genomeView.seqSelectionLeftArm!.armStart)
                 return;
-            genomeView.seqSelectionRightArm.armStart = end;
-            genomeView.seqSelectionArrow.arrowEnd = end;
+            genomeView.seqSelectionRightArm!.armStart = end;
+            genomeView.seqSelectionArrow!.arrowEnd = end;
         }
 
-        genomeView.seqSelectionArrow.updateText();
+        genomeView.seqSelectionArrow!.updateText();
    
         //get div controlled by Angular
-        let divToCompile : HTMLElement = document.getElementById("toCompile");
+        let divToCompile : HTMLElement = document.getElementById("toCompile")!;
         let scope = angular.element(divToCompile).scope();
         //apply changes to update selection
         scope.$apply();
     }
 
-    if(!genomeView.genome.isInteractive)
+    if(!genomeView.genome!.isInteractive)
     {
-        if(start > end)
+        if(start! > end!)
             return;
 
-        genomeView.seqSelectionLeftArm.armStart = start;
-        genomeView.seqSelectionArrow.arrowStart = start;
-        genomeView.seqSelectionRightArm.armStart = end;
-        genomeView.seqSelectionArrow.arrowEnd = end;
+        genomeView.seqSelectionLeftArm!.armStart = start!;
+        genomeView.seqSelectionArrow!.arrowStart = start!;
+        genomeView.seqSelectionRightArm!.armStart = end!;
+        genomeView.seqSelectionArrow!.arrowEnd = end!;
 
-        genomeView.seqSelectionArrow.updateText();
+        genomeView.seqSelectionArrow!.updateText();
         
         genomeView.firstRender = true;
         viewMgr.render();

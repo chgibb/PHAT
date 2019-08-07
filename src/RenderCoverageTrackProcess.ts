@@ -23,7 +23,7 @@ process.on(
             colour = ev.data.colour;
             scaleFactor = ev.data.scaleFactor;
             log10Scale = ev.data.log10Scale;
-            process.send(<AtomicOperationForkEvent>{finishedSettingData : true});
+            process.send!(<AtomicOperationForkEvent>{finishedSettingData : true});
             return;
         }
 
@@ -35,7 +35,7 @@ process.on(
             cf.cacheCoverageTrackPB(trackRecord,map);
             flags.done = true;
             flags.success = true;
-            process.send(
+            process.send!(
                 <AtomicOperationForkEvent>{
                     update : true,
                     flags : flags,
@@ -56,7 +56,7 @@ process.on(
     flags.done = true;
     flags.failure = true;
     flags.success = false;
-    process.send(
+    process.send!(
         <AtomicOperationForkEvent>{
             update : true,
             flags : flags,

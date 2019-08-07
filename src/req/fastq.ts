@@ -6,11 +6,11 @@ import {QCData,getQCReportData} from "./QCData";
 import {makeValidID} from "./MakeValidID";
 export class Fastq extends File
 {
-    public sizeString : string;
+    public sizeString : string | undefined;
     public sequences : number;
     public validID : string;
     public checked : boolean;
-    public seqLength : number;
+    public seqLength : number | undefined;
     public QCData : QCData;
     public constructor(path : string)
     {

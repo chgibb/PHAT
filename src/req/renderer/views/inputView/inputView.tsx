@@ -77,7 +77,7 @@ export class InputView extends React.Component<InputViewProps,InputViewState> im
                             label : "Fastqs",
                             body : (
                                 <FastqView 
-                                    fastqInputs={this.props.fastqs} 
+                                    fastqInputs={this.props.fastqs ? this.props.fastqs : []} 
                                 />
                             )
                         },
@@ -95,8 +95,8 @@ export class InputView extends React.Component<InputViewProps,InputViewState> im
                             label : "Alignment Maps",
                             body : (
                                 <AlignView 
-                                    aligns={this.props.aligns}
-                                    fastaInputs={this.props.fastas}
+                                    aligns={this.props.aligns ? this.props.aligns : []}
+                                    fastaInputs={this.props.fastas ? this.props.fastas : []}
                                 />
                             )
                         }

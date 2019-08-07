@@ -73,10 +73,10 @@ export abstract class View
      */
     public render() : void
     {
-        let html : string = this.renderView();
+        let html : string = this.renderView()!;
         if(html)
         {
-            document.getElementById(this.div).innerHTML = html;
+            document.getElementById(this.div)!.innerHTML = html;
             this.postRender();
 
         }
@@ -133,11 +133,11 @@ export function getViewByName(name : string,targetArr? : Array<View>) : View
         arr = targetArr;
     else
         arr = views;
-    return arr[getIndexOfViewByName(name,targetArr)];
+    return arr[getIndexOfViewByName(name,targetArr!)];
 }
 
-export let preRender : (view : View) => void = null;
-export let postRender : (view : View) => void = null;
+export let preRender : (view : View) => void | null;
+export let postRender : (view : View) => void | null;
 
 export function setPreRender(
     func : (view : View) => void
@@ -158,7 +158,7 @@ export function render(preRenderArg? : (view : View) => void,postRenderArg? : (v
     if(targetArr)
         views = targetArr;
     else
-        views = views;
+        views = views!;
 
     let currViewRef = getViewByName(currView,views);
     if(!preRender)

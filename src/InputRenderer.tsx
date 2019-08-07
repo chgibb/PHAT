@@ -14,7 +14,7 @@ class InputApp extends React.Component<{},InputViewProps>
     public state : InputViewProps;
     public constructor()
     {
-        super(undefined);
+        super({});
 
         this.state = {
 

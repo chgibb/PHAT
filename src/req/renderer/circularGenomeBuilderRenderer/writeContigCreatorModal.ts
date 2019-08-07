@@ -38,18 +38,18 @@ export function writeContigCreatorModal() : void
         `;
     }
 
-    document.getElementById("modalTitle").innerHTML = title;
-    document.getElementById("modalBody").innerHTML = body;
-    document.getElementById("modalFooter").innerHTML = footer;
+    document.getElementById("modalTitle")!.innerHTML = title;
+    document.getElementById("modalBody")!.innerHTML = body;
+    document.getElementById("modalFooter")!.innerHTML = footer;
 
-    document.getElementById("footerClose").onclick = function(this : HTMLElement,ev : MouseEvent)
+    document.getElementById("footerClose")!.onclick = function(this : GlobalEventHandlers,ev : MouseEvent)
     {
         masterView.contigCreatorModalOpen = false;
     };
 
     if(genomeView.genome)
     {
-        document.getElementById("footerSave").onclick = function(this : HTMLElement,ev : MouseEvent)
+        document.getElementById("footerSave")!.onclick = function(this : GlobalEventHandlers,ev : MouseEvent)
         {
 
             let contig : cf.Contig = new cf.Contig();
@@ -59,7 +59,7 @@ export function writeContigCreatorModal() : void
 
             contig.alias = "New Contig";
             contig.name = "Custom Contig";
-            genomeView.genome.customContigs.push(contig);
+            genomeView.genome!.customContigs.push(contig);
 
             masterView.contigCreatorModalOpen = false;
             masterView.dismissModal();
@@ -68,7 +68,7 @@ export function writeContigCreatorModal() : void
             showGenericLoadingSpinnerInNavBar();
             setTimeout(function()
             {
-                reCacheBaseFigure(genomeView.genome);
+                reCacheBaseFigure(genomeView.genome!);
                 hideSpinnerInNavBar();
                 genomeView.firstRender = true;
                 viewMgr.render();

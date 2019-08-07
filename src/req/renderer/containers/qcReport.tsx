@@ -26,9 +26,14 @@ export class QCReport extends React.Component<QCReportProps,{}>
     {
         if(this.ref.current)
         {
-            this.ref.current.innerHTML = `
-                <iframe src="${getQCReportHTML(getReferenceFromUuid<Fastq>(this.props.fastqs,this.props.viewingFastq))}" style="height:100%;width:100%;" />
-            `;
+            let fastq = getReferenceFromUuid<Fastq>(this.props.fastqs,this.props.viewingFastq);
+
+            if(fastq)
+            {
+                this.ref.current.innerHTML = `
+                    <iframe src="${getQCReportHTML(fastq)}" style="height:100%;width:100%;" />
+                `;
+            }
         }
     }
 

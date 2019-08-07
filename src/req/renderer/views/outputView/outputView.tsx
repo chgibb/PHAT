@@ -112,8 +112,11 @@ export class OutputView extends React.Component<OutputViewProps,OutputViewState>
                             }}
                             aligns={this.props.aligns}
                             fastas={this.props.fastas}
-                            onRowClick={(event: React.MouseEvent<HTMLElement>, rowData: AlignData) => 
+                            onRowClick={(event: React.MouseEvent | undefined, rowData: AlignData | undefined) => 
                             {
+                                if(!rowData)
+                                    return;
+                                    
                                 let el = TableCellHover.getClickedCell(event);
     
                                 if (el) 
@@ -141,12 +144,12 @@ export class OutputView extends React.Component<OutputViewProps,OutputViewState>
     
                                         let fasta: Fasta | undefined;
                                     
-                                        for (let k = 0; k != this.props.fastas.length; ++k) 
+                                        for (let k = 0; k != this.props.fastas!.length; ++k) 
                                         {
     
-                                            if (rowData.fasta && this.props.fastas[k].uuid == rowData.fasta.uuid) 
+                                            if (rowData.fasta && this.props.fastas![k].uuid == rowData.fasta.uuid) 
                                             {
-                                                fasta = this.props.fastas[k];
+                                                fasta = this.props.fastas![k];
                                                 break;
                                             }
                                         }
@@ -197,7 +200,7 @@ export class OutputView extends React.Component<OutputViewProps,OutputViewState>
                                 />
                                 <SNPPositionsTable
                                     align={this.state.clickedRow}
-                                    fastas={this.props.fastas}
+                                    fastas={this.props.fastas ? this.props.fastas : []}
                                 />
                             </div> : this.state.currentTable == "contigs" ? 
                                 <div>

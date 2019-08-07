@@ -14,7 +14,7 @@ export interface IncompatibleRefTableProps
 export interface IncompatibleRefTableRow
 {
     alias : string;
-    sizeString : string;
+    sizeString : string | undefined;
     reason : string;
     longReason : string;
 }

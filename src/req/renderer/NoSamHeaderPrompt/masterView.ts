@@ -12,7 +12,7 @@ const dialogs = Dialogs();
 export class View extends viewMgr.View
 {
     public fastaInputs : Array<Fasta>;
-    public inputBamFile : InputBamFile;
+    public inputBamFile : InputBamFile | undefined;
     public constructor(div : string)
     {
         super("masterView",div);
@@ -24,7 +24,7 @@ export class View extends viewMgr.View
     {}
     public dataChanged() : void
     {}
-    public renderView() : string
+    public renderView() : string | undefined
     {
         let res = "";
         if(!this.inputBamFile)
@@ -80,7 +80,7 @@ export class View extends viewMgr.View
                                 "runOperation",
                                 <AtomicOperationIPC>{
                                     opName : "inputBamFile",
-                                    filePath : self.inputBamFile.bamPath,
+                                    filePath : self.inputBamFile!.bamPath,
                                     fasta : self.fastaInputs[i]
                                 }
                             );

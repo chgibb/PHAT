@@ -1,7 +1,7 @@
 import * as fs from "fs";
 import * as path from "path";
 
-let editionString : string = undefined;
+let editionString : string | undefined = undefined;
 
 /*
     reimplementation of algorithm in getAppPath.ts
@@ -67,5 +67,5 @@ function getEditionString()
 export function getEdition() : string
 {
     getEditionString();
-    return editionString;
+    return editionString!;
 }
