@@ -16,7 +16,7 @@ const fse = require("fs-extra");
  * @param {atomic.AtomicOperation} logger 
  * @returns {Promise<void>} 
  */
-export function samToolsFaidx(fasta : Fasta,logger : atomic.AtomicOperation) : Promise<void>
+export function samToolsFaidx(fasta : Fasta,logger : atomic.AtomicOperation<any>) : Promise<void>
 {
     return new Promise<void>((resolve,reject) => 
     {

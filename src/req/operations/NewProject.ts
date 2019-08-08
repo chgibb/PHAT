@@ -1,7 +1,8 @@
 import * as atomic from "./atomicOperations";
 import {newProject} from "./../newProject";
-export class NewProject extends atomic.AtomicOperation
+export class NewProject extends atomic.AtomicOperation<string>
 {
+    public readonly operationName = "newProject";
     public proj : string | undefined;
     constructor()
     {
@@ -13,7 +14,7 @@ export class NewProject extends atomic.AtomicOperation
     }
     public run() : void
     {
-        this.logRecord = atomic.openLog(this.name!,"Create New Project");
+        this.logRecord = atomic.openLog(this.operationName,"Create New Project");
         let self = this;
         newProject(this.proj!).then(() => 
         {

@@ -4,8 +4,12 @@ import * as atomic from "./atomicOperations";
 import {AtomicOperationForkEvent} from "./../atomicOperationsIPC";
 import {getReadable,getWritable,getReadableAndWritable} from "./../getAppPath";
 import {ProjectManifest} from "./../projectManifest";
-export class OpenProject extends atomic.AtomicOperation
+export class OpenProject extends atomic.AtomicOperation<{
+    proj : ProjectManifest,
+    externalProjectPath : string
+}>
 {
+    public readonly operationName = "openProject";
     public proj : ProjectManifest | undefined;
     public externalProjectPath : string | undefined;
     public openProjectProcess : cp.ChildProcess | undefined;
@@ -23,7 +27,7 @@ export class OpenProject extends atomic.AtomicOperation
     }
     public run() : void
     {
-        this.logRecord = atomic.openLog(this.name!,"Open Project");
+        this.logRecord = atomic.openLog(this.operationName,"Open Project");
         let self = this;
         this.openProjectProcess = atomic.makeFork("OpenProject.js",<AtomicOperationForkEvent>{
             setData : true,

@@ -1,8 +1,14 @@
 import * as atomic from "./atomicOperations";
 import * as winMgr from "./../main/winMgr";
 import {AlignData} from "./../alignData";
-export class OpenPileupViewer extends atomic.AtomicOperation
+export class OpenPileupViewer extends atomic.AtomicOperation<{
+    align : AlignData,
+    contig : string,
+    start : number,
+    stop : number
+}>
 {
+    public readonly operationName = "openPileupViewer";
     public align : AlignData | undefined;
     public contig : string | undefined;
     public start : number | undefined;

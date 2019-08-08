@@ -15,7 +15,7 @@ import {samToolsFlagStatReportParser} from "./../../samToolsFlagStatReport";
  * @param {atomic.AtomicOperation} logger 
  * @returns {Promise<void>} 
  */
-export function samToolsFlagStat(alignData : AlignData,logger : atomic.AtomicOperation) : Promise<void>
+export function samToolsFlagStat(alignData : AlignData,logger : atomic.AtomicOperation<any>) : Promise<void>
 {
     return new Promise<void>((resolve,reject) => 
     {

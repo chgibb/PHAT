@@ -2,29 +2,30 @@ import * as electron from "electron";
 const webContents = electron.webContents;
 
 import * as atomic from "./atomicOperations";
-export class ChangeTitle extends atomic.AtomicOperation
+
+export interface ChangeTitleData {
+    operationName : "ChangeTitle";
+    id : number
+    newTitle : string;
+}
+
+export class ChangeTitle extends atomic.AtomicOperation<ChangeTitleData>
 {
+    public readonly operationName = "changeTitle";
     public id : number | undefined;
     public newTitle : string | undefined;
 
-    public constructor()
+    public constructor(data : ChangeTitleData)
     {
-        super();
+        super(data);
         this.ignoreScheduler = true;
-    }
-
-    public setData(data : {
-        id : number,
-        newTitle : string
-    }) : void 
-    {
         this.id = data.id;
         this.newTitle = data.newTitle;
     }
 
     public run() : void
     {
-        this.logRecord = atomic.openLog(this.name!,"Change Title");
+        this.logRecord = atomic.openLog(this.operationName,"Change Title");
 
         let allWCs : Array<Electron.WebContents> = webContents.getAllWebContents();
 

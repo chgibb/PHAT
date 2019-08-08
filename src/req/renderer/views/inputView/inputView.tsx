@@ -25,7 +25,7 @@ export interface InputViewProps
     fastqs? : Array<Fastq>;
     fastas? : Array<Fasta>;
     aligns? : Array<AlignData>;
-    operations? : Array<AtomicOperation>;
+    operations? : Array<AtomicOperation<any>>;
     
 }
 
@@ -47,9 +47,9 @@ export class InputView extends React.Component<InputViewProps,InputViewState> im
         let found = false;
         for(let i = 0; i != this.props.operations.length; ++i)
         {
-            if(this.props.operations[i].name == "inputBamFile" || this.props.operations[i].name == "linkRefSeqToAlignment" ||
-                            this.props.operations[i].name == "indexFastaForVisualization" || this.props.operations[i].name == "indexFastaForBowtie2Alignment" ||
-                            this.props.operations[i].name == "linkRefSeqToAlignment" || this.props.operations[i].name == "importFileIntoProject")
+            if(this.props.operations[i].operationName == "inputBamFile" || this.props.operations[i].operationName == "linkRefSeqToAlignment" ||
+                            this.props.operations[i].operationName == "indexFastaForVisualization" || this.props.operations[i].operationName == "indexFastaForBowtie2Alignment" ||
+                            this.props.operations[i].operationName == "linkRefSeqToAlignment" || this.props.operations[i].operationName == "importFileIntoProject")
             {
                 found = true;
                 break;

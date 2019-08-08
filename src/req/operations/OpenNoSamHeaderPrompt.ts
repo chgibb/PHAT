@@ -1,8 +1,9 @@
 import * as atomic from "./atomicOperations";
 import * as winMgr from "./../main/winMgr";
 import {InputBamFile} from "./InputBamFile";
-export class OpenNoSamHeaderPrompt extends atomic.AtomicOperation
+export class OpenNoSamHeaderPrompt extends atomic.AtomicOperation<InputBamFile>
 {
+    public readonly operationName = "openNoSamHeaderPrompt";
     public inputBamFile : InputBamFile | undefined;
     constructor()
     {

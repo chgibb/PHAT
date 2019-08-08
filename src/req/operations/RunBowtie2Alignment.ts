@@ -9,8 +9,13 @@ import {AlignData,getArtifactDir} from "../alignData";
 
 import * as atomic from "./atomicOperations";
 
-export class RunBowtie2Alignment extends atomic.AtomicOperation
+export class RunBowtie2Alignment extends atomic.AtomicOperation<{
+    fasta : Fasta,
+    fastq1 : Fastq,
+    fastq2 : Fastq
+}>
 {
+    public readonly operationName = "runBowtie2Alignment";
     public alignData : AlignData | undefined;
     public fasta : Fasta | undefined;
     public fastq1 : Fastq | undefined;
@@ -49,7 +54,7 @@ export class RunBowtie2Alignment extends atomic.AtomicOperation
             data : {
                 alignData : self.alignData
             },
-            name : self.name,
+            name : self.operationName,
             description : "Run Bowtie2 Alignment"
         },function(ev : AtomicOperationForkEvent)
         {

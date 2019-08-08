@@ -1,26 +1,24 @@
 import * as atomic from "./atomicOperations";
-import {finishLoadingProject} from "./../main/finishLoadingProject";
-import {getCurrentlyOpenProject} from "./../getCurrentlyOpenProject";
-export class LoadCurrentlyOpenProject extends atomic.AtomicOperation
+import { finishLoadingProject } from "./../main/finishLoadingProject";
+import { getCurrentlyOpenProject } from "./../getCurrentlyOpenProject";
+
+export interface LoadCurrentlyOpenProjectData {
+    operationName: "loadCurrentlyOpenProject";
+}
+
+export class LoadCurrentlyOpenProject extends atomic.AtomicOperation<LoadCurrentlyOpenProjectData>
 {
-    public constructor()
-    {
-        super();
+    public constructor(data: LoadCurrentlyOpenProjectData) {
+        super(data);
     }
 
-    public setData(data : any) : void
-    {}
-
-    public run() : void
-    {
-        this.logRecord = atomic.openLog(this.name!,"Load Currently Open Project");
-        try
-        {
+    public run(): void {
+        this.logRecord = atomic.openLog(this.operationName, "Load Currently Open Project");
+        try {
             finishLoadingProject(getCurrentlyOpenProject()!);
             this.setSuccess(this.flags);
         }
-        catch(err)
-        {
+        catch (err) {
             this.abortOperationWithMessage(err);
         }
         this.update!();

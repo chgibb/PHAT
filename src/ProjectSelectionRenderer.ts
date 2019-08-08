@@ -55,17 +55,17 @@ $(
                 {
                     if(arg.key == "operations" && arg.val !== undefined)
                     {
-                        let ops : Array<AtomicOperation> = <Array<AtomicOperation>>arg.val;
+                        let ops : Array<AtomicOperation<any>> = <Array<AtomicOperation<any>>>arg.val;
                         for(let i = 0; i != ops.length; ++i)
                         {
-                            if(ops[i].name == "openProject" && ops[i].extraData !== undefined)
+                            if(ops[i].operationName == "openProject" && ops[i].extraData !== undefined)
                             {
                                 document.body.innerHTML = `
                                     <h1>Unpacked ${ops[i].extraData.unPacked} of ${ops[i].extraData.toUnpack}</h1>
                                 `;
                                 return;
                             }
-                            if(ops[i].flags.done && ops[i].flags.success && ops[i].name == "checkForUpdate")
+                            if(ops[i].flags.done && ops[i].flags.success && ops[i].operationName == "checkForUpdate")
                             {
                                 dialogs.confirm(
                                     `PHAT ${ops[i].extraData.tag_name} is available. Download and install?`,
@@ -84,7 +84,7 @@ $(
                                     }
                                 );
                             }
-                            if(ops[i].name == "downloadAndInstallUpdate" && ops[i].extraData !== undefined)
+                            if(ops[i].operationName == "downloadAndInstallUpdate" && ops[i].extraData !== undefined)
                             {
                                 document.body.innerHTML = `
                                     <h1>Downloaded: ${formatByteString(ops[i].extraData.downloadProgress)}</h1><br />

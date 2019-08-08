@@ -85,45 +85,10 @@ app.on(
         );
 
         winMgr.windowCreators["projectSelection"].Create();
-        
-        atomicOp.register("generateFastQCReport",GenerateQCReport);
-        atomicOp.register("indexFastaForBowtie2Alignment",IndexFastaForBowtie2Alignment);
-        atomicOp.register("indexFastaForHisat2Alignment",IndexFastaForHisat2Alignment);
-        atomicOp.register("indexFastaForVisualization",IndexFastaForVisualization);
-        atomicOp.register("runBowtie2Alignment",RunBowtie2Alignment);
-        atomicOp.register("runHisat2Alignment",RunHisat2Alignment);
-        atomicOp.register("renderCoverageTrackForContig",RenderCoverageTrackForContig);
-        atomicOp.register("renderSNPTrackForContig",RenderSNPTrackForContig);
-
-        atomicOp.register("checkForUpdate",CheckForUpdate);
-        atomicOp.register("downloadAndInstallUpdate",DownloadAndInstallUpdate);
-
-        atomicOp.register("newProject",NewProject);
-        atomicOp.register("openProject",OpenProject);
-        atomicOp.register("saveProject",SaveProject);
-        atomicOp.register("loadCurrentlyOpenProject",LoadCurrentlyOpenProject);
-
-        atomicOp.register("openPileupViewer",OpenPileupViewer);
-        atomicOp.register("openLogViewer",OpenLogViewer);
-        atomicOp.register("openNoSamHeaderPrompt",OpenNoSamHeaderPrompt);
-        atomicOp.register("inputFastqFile",InputFastqFile);
-        atomicOp.register("inputFastaFile",InputFastaFile);
-        atomicOp.register("inputBamFile",InputBamFile);
-        atomicOp.register("linkRefSeqToAlignment",LinkRefSeqToAlignment);
-        atomicOp.register("importFileIntoProject",ImportFileIntoProject);
-        atomicOp.register("BLASTSegment",BLASTSegment);
-
-        atomicOp.register("copyCircularFigure",CopyCircularFigure);
-        atomicOp.register("deleteCircularFigure",DeleteCircularFigure);
-
-        atomicOp.register("dockWindow",DockWindow);
-        atomicOp.register("unDockWindow",UnDockWindow);
-
-        atomicOp.register("changeTitle",ChangeTitle);
 
         //on completion of any operation, wait and then broadcast the queue to listening windows
         atomicOp.setOnComplete(
-            function(op : atomicOp.AtomicOperation)
+            function(op : atomicOp.AtomicOperation<any>)
             {
                 dataMgr.saveData();
                 setTimeout(function()
@@ -688,7 +653,7 @@ atomicOp.updates.on(
 );
 
 atomicOp.updates.on(
-    "generateFastQCReport",function(op : atomicOp.AtomicOperation)
+    "generateFastQCReport",function(op : atomicOp.AtomicOperation<any>)
     {
         dataMgr.setKey("application","operations",atomicOp.operationsQueue);
         winMgr.publishChangeForKey("application","operations");

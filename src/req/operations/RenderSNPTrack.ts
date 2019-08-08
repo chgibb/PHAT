@@ -5,8 +5,14 @@ import {AtomicOperationForkEvent} from "./../atomicOperationsIPC";
 import {getReadable} from "./../getAppPath";
 import {AlignData} from "./../alignData";
 import * as cf from "./../renderer/circularFigure";
-export class RenderSNPTrackForContig extends atomic.AtomicOperation
+export class RenderSNPTrackForContig extends atomic.AtomicOperation<{
+    circularFigure : cf.CircularFigure,
+    contiguuid : string,
+    alignData : AlignData,
+    colour : string
+}>
 {
+    public readonly operationName = "renderSNPTrackForContig";
     public alignData : AlignData | undefined;
     public contiguuid : string | undefined;
     public circularFigure : cf.CircularFigure | undefined;
@@ -31,7 +37,7 @@ export class RenderSNPTrackForContig extends atomic.AtomicOperation
     }
     public run() : void
     {
-        this.logRecord = atomic.openLog(this.name!,"Render SNP Track");
+        this.logRecord = atomic.openLog(this.operationName,"Render SNP Track");
         let self = this;
         this.renderSNPTrackProcess = atomic.makeFork("RenderSNPTrack.js",<AtomicOperationForkEvent>{
             setData : true,

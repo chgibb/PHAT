@@ -1,30 +1,29 @@
 import * as cp from "child_process";
 
-import {AtomicOperationForkEvent,AtomicOperationIPC} from "../atomicOperationsIPC";
-import {AlignData} from "../alignData";
+import { AtomicOperationForkEvent, AtomicOperationIPC } from "../atomicOperationsIPC";
+import { AlignData } from "../alignData";
 
 import * as atomic from "./atomicOperations";
-import {BLASTSegmentResult,getArtifactDir} from "./../BLASTSegmentResult";
+import { BLASTSegmentResult, getArtifactDir } from "./../BLASTSegmentResult";
 import * as dFormat from "./../dateFormat";
 
-export class BLASTSegment extends atomic.AtomicOperation
+export interface BLASTSegmentData {
+    operationName: "BLASTSegment";
+    align: AlignData,
+    start: number,
+    stop: number
+}
+
+export class BLASTSegment extends atomic.AtomicOperation<BLASTSegmentData>
 {
-    public blastSegmentResult : BLASTSegmentResult | undefined;
-    public alignData : AlignData | undefined;
+    public readonly operationName = "BLASTSegment";
+    public blastSegmentResult: BLASTSegmentResult | undefined;
+    public alignData: AlignData | undefined;
 
-    public blastSegment : cp.ChildProcess | undefined;
+    public blastSegment: cp.ChildProcess | undefined;
 
-    public constructor()
-    {
-        super();
-    }
-
-    public setData(data : {
-        align : AlignData,
-        start : number,
-        stop : number
-    }) : void 
-    {
+    public constructor(data: BLASTSegmentData) {
+        super(data);
         this.blastSegmentResult = new BLASTSegmentResult();
         this.blastSegmentResult!.start = data.start;
         this.blastSegmentResult!.stop = data.stop;
@@ -32,53 +31,47 @@ export class BLASTSegment extends atomic.AtomicOperation
         this.destinationArtifactsDirectories.push(getArtifactDir(this.blastSegmentResult));
     }
 
-    public run() : void
-    {
+    public run(): void {
         this.blastSegmentResult!.dateStamp = dFormat.generateFixedSizeDateStamp();
         this.blastSegmentResult!.dateStampString = dFormat.formatDateStamp(this.blastSegmentResult!.dateStamp);
-        
+
         this.closeLogOnFailure = false;
         this.closeLogOnSuccess = false;
-        
+
         let self = this;
-        this.blastSegment = atomic.makeFork("BLASTSegment.js",<AtomicOperationForkEvent>{
-            setData : true,
-            data : <AtomicOperationIPC>{
-                align : self.alignData,
-                blastSegmentResult : self.blastSegmentResult
+        this.blastSegment = atomic.makeFork("BLASTSegment.js", <AtomicOperationForkEvent>{
+            setData: true,
+            data: <AtomicOperationIPC>{
+                align: self.alignData,
+                blastSegmentResult: self.blastSegmentResult
             },
-            name : self.name,
-            description : "BLAST Segment"
-        },function(ev : AtomicOperationForkEvent)
-        {
+            name: self.operationName,
+            description: "BLAST Segment"
+        }, function (ev: AtomicOperationForkEvent) {
 
-            if(ev.finishedSettingData == true)
-            {
-                self.blastSegment!.send(
-                    <AtomicOperationForkEvent>{
-                        run : true
-                    }
-                );
-            }
+                if (ev.finishedSettingData == true) {
+                    self.blastSegment!.send(
+                        <AtomicOperationForkEvent>{
+                            run: true
+                        }
+                    );
+                }
 
-            if(ev.update == true)
-            {
-                self.progressMessage = ev.progressMessage;
-                self.extraData = ev.data;
-                self.flags = ev.flags!;
-                if(ev.flags!.done)
-                {
-                    self.logRecord = ev.logRecord;
-                    atomic.recordLogRecord(ev.logRecord!);
-                    if(ev.flags!.success === true)
-                    {
-                        self.blastSegmentResult = ev.data.blastSegmentResult;
+                if (ev.update == true) {
+                    self.progressMessage = ev.progressMessage;
+                    self.extraData = ev.data;
+                    self.flags = ev.flags!;
+                    if (ev.flags!.done) {
+                        self.logRecord = ev.logRecord;
+                        atomic.recordLogRecord(ev.logRecord!);
+                        if (ev.flags!.success === true) {
+                            self.blastSegmentResult = ev.data.blastSegmentResult;
+                        }
                     }
                 }
-            }
-            self.update!();
-        });
+                self.update!();
+            });
 
-        this.addPID(this.blastSegment.pid);                                                
+        this.addPID(this.blastSegment.pid);
     }
 }

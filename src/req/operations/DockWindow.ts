@@ -2,28 +2,31 @@ import * as atomic from "./atomicOperations";
 import * as winMgr from "./../main/winMgr";
 import * as dataMgr from "./../main/dataMgr";
 import {DockIpc} from "./../renderer/dock";
-export class DockWindow extends atomic.AtomicOperation
-{
-    public toDock : string | undefined;
-    public dockTarget : string | undefined;
 
-    public constructor()
+export interface DockWindowData
+{
+    operationName : "dockWindow";
+    toDock : string,
+    dockTarget : string
+}
+
+export class DockWindow extends atomic.AtomicOperation<DockWindowData>
+{
+    public toDock : string;
+    public dockTarget : string;
+
+    public constructor(data : DockWindowData)
     {
-        super();
+        super(data);
         this.ignoreScheduler = true;
-    }
-    public setData(data : {
-        toDock : string,
-        dockTarget : string
-    }) : void 
-    {
+
         this.toDock = data.toDock;
         this.dockTarget = data.dockTarget;
     }
 
     public run() : void
     {
-        this.logRecord = atomic.openLog(this.name!,"Dock Window");
+        this.logRecord = atomic.openLog(this.operationName,"Dock Window");
 
         let target = winMgr.getWindowsByName(this.dockTarget!)[0];
         target.webContents.send(

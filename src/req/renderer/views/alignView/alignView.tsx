@@ -16,7 +16,7 @@ export interface AlignViewProps
 {
     fastqs? : Array<Fastq>;
     fastas? : Array<Fasta>;
-    operations? : Array<AtomicOperation>;
+    operations? : Array<AtomicOperation<any>>;
 }
 
 export class AlignView  extends React.Component<AlignViewProps,AlignViewState>
@@ -39,7 +39,7 @@ export class AlignView  extends React.Component<AlignViewProps,AlignViewState>
         let found = false;
         for(let i = 0; i != this.props.operations.length; ++i)
         {
-            if(this.props.operations[i].name == "indexFastaForBowtie2" || this.props.operations[i].name == "runBowtie2Alignment" || this.props.operations[i].name == "indexFastaForHisat2" || this.props.operations[i].name == "runHisat2Alignment")
+            if(this.props.operations[i].operationName == "indexFastaForBowtie2" || this.props.operations[i].operationName == "runBowtie2Alignment" || this.props.operations[i].operationName == "indexFastaForHisat2" || this.props.operations[i].operationName == "runHisat2Alignment")
             {
                 found = true;
                 break;

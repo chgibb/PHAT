@@ -20,7 +20,7 @@ import {BLASTSegment} from "./../operations//BLASTSegment";
 
 export function registerOperations() : void
 {
-    atomic.register("generateFastQCReport",GenerateQCReport);
+    /*atomic.register("generateFastQCReport",GenerateQCReport);
     atomic.register("indexFastaForHisat2Alignment",IndexFastaForHisat2Alignment);
     atomic.register("indexFastaForBowtie2Alignment",IndexFastaForBowtie2Alignment);
     atomic.register("indexFastaForVisualization",IndexFastaForVisualization);
@@ -37,5 +37,5 @@ export function registerOperations() : void
 
     atomic.register("newProject",NewProject);
     atomic.register("openProject",OpenProject);
-    atomic.register("saveProject",SaveProject);
+    atomic.register("saveProject",SaveProject);*/
 }

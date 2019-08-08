@@ -71,10 +71,10 @@ export class SplashView extends viewMgr.View
                             {
                                 if(arg.key == "operations" && arg.val !== undefined)
                                 {
-                                    let ops : Array<AtomicOperation> = <Array<AtomicOperation>>arg.val;
+                                    let ops : Array<AtomicOperation<any>> = <Array<AtomicOperation<any>>>arg.val;
                                     for(let i = 0 ; i != ops.length; ++i)
                                     {
-                                        if(ops[i].name == "newProject")
+                                        if(ops[i].operationName == "newProject")
                                         {
                                             if(ops[i].flags.done)
                                             {

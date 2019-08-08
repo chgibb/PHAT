@@ -1,39 +1,39 @@
 
 import * as atomic from "./atomicOperations";
 import * as cf from "./../renderer/circularFigure";
-import {getReadableAndWritable} from "./../getAppPath";
+import { getReadableAndWritable } from "./../getAppPath";
 
 const fse = require("fs-extra");
-export class DeleteCircularFigure extends atomic.AtomicOperation
+
+export interface DeleteCircularFigureData {
+    operationName: "deleteCircularFigure";
+    data: cf.CircularFigure;
+}
+
+export class DeleteCircularFigure extends atomic.AtomicOperation<DeleteCircularFigureData>
 {
-    public figure : cf.CircularFigure | undefined;
-    public constructor()
-    {
-        super();
+    public figure: cf.CircularFigure;
+    public constructor(data: DeleteCircularFigureData) {
+        super(data);
+
+        this.figure = data.data;
     }
-    public setData(data : cf.CircularFigure) : void
-    {
-        this.figure = data;
-    }
-    public run() : void
-    {
-        this.logRecord = atomic.openLog(this.name!,"Delete Circular Figure");
-        try
-        {
+
+    public run(): void {
+        this.logRecord = atomic.openLog(this.operationName, "Delete Circular Figure");
+        try {
             let self = this;
             fse.remove(
-                getReadableAndWritable(`rt/circularFigures/${this.figure!.uuid}`),
-                function(err : Error)
-                {
-                    if(err)
+                getReadableAndWritable(`rt/circularFigures/${this.figure.uuid}`),
+                function (err: Error) {
+                    if (err)
                         self.abortOperationWithMessage(err.message);
                     self.setSuccess(self.flags);
                     self.update!();
                 }
             );
         }
-        catch(err)
-        {
+        catch (err) {
             this.abortOperationWithMessage(err);
         }
     }

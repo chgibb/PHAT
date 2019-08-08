@@ -16,7 +16,7 @@ import {varScanMPileup2SNPVCF2JSON} from "./../../varScanMPileup2SNPVCF2JSON";
  * @param {atomic.AtomicOperation} logger 
  * @returns {Promise<void>} 
  */
-export function varScanMPileup2SNP(alignData : AlignData,logger : atomic.AtomicOperation) : Promise<void>
+export function varScanMPileup2SNP(alignData : AlignData,logger : atomic.AtomicOperation<any>) : Promise<void>
 {
     return new Promise<void>((resolve,reject) => 
     {

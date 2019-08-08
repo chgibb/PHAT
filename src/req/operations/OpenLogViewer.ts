@@ -1,7 +1,8 @@
 import * as atomic from "./atomicOperations";
 import * as winMgr from "./../main/winMgr";
-export class OpenLogViewer extends atomic.AtomicOperation
+export class OpenLogViewer extends atomic.AtomicOperation<any>
 {
+    public readonly operationName = "openLogViewer";
     public logRecordToOpen : atomic.LogRecord | undefined;
     constructor()
     {
@@ -13,7 +14,7 @@ export class OpenLogViewer extends atomic.AtomicOperation
     }
     public run() : void
     {
-        this.logRecord = atomic.openLog(this.name!,"Open Log Viewer");
+        this.logRecord = atomic.openLog(this.operationName,"Open Log Viewer");
         winMgr.windowCreators["logViewer"].Create();
 
         let viewers = winMgr.getWindowsByName("logViewer");

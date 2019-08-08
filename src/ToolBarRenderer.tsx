@@ -52,7 +52,7 @@ class ToolBarApp extends React.Component<{},ToolBarViewProps>
                     {
                         if(arg.val === undefined)
                             return;
-                        let ops : Array<AtomicOperation> = arg.val;
+                        let ops : Array<AtomicOperation<any>> = arg.val;
 
                         let foundRunning = false;
                         for(let i = 0; i != ops.length; ++i)
@@ -74,7 +74,7 @@ class ToolBarApp extends React.Component<{},ToolBarViewProps>
                                 });
                             }
 
-                            if(ops[i].name == "saveProject")
+                            if(ops[i].operationName == "saveProject")
                             {
                                 let savingMessage = "";
                                 if(ops[i].extraData !== undefined)

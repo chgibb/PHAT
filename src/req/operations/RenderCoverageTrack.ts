@@ -5,8 +5,16 @@ import {AtomicOperationForkEvent} from "./../atomicOperationsIPC";
 import {getReadable} from "./../getAppPath";
 import {AlignData} from "./../alignData";
 import * as cf from "./../renderer/circularFigure";
-export class RenderCoverageTrackForContig extends atomic.AtomicOperation
+export class RenderCoverageTrackForContig extends atomic.AtomicOperation<{
+    circularFigure : cf.CircularFigure,
+    contiguuid : string,
+    alignData : AlignData,
+    colour : string,
+    scaleFactor : number,
+    log10Scale : boolean
+}>
 {
+    public readonly operationName = "renderCoverageTrackForContig";
     public alignData : AlignData | undefined;
     public contiguuid : string | undefined;
     public circularFigure : cf.CircularFigure | undefined;
@@ -36,7 +44,7 @@ export class RenderCoverageTrackForContig extends atomic.AtomicOperation
     }
     public run() : void
     {
-        this.logRecord = atomic.openLog(this.name!,"Render Coverage Track");
+        this.logRecord = atomic.openLog(this.operationName,"Render Coverage Track");
         let self = this;
 
         atomic.logString(this.logRecord,JSON.stringify(this,undefined,4));

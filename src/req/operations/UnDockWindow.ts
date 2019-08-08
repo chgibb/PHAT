@@ -3,8 +3,12 @@ import * as electron from "electron";
 import * as atomic from "./atomicOperations";
 import * as winMgr from "./../main/winMgr";
 
-export class UnDockWindow extends atomic.AtomicOperation
+export class UnDockWindow extends atomic.AtomicOperation<{
+    refName : string,
+    guestinstance : number
+}>
 {
+    public readonly operationName = "unDockWindow";
     public refName : string | undefined;
     public guestinstance : number | undefined;
 
@@ -25,7 +29,7 @@ export class UnDockWindow extends atomic.AtomicOperation
 
     public async run()
     {
-        this.logRecord = atomic.openLog(this.name!,"UnDock Window");
+        this.logRecord = atomic.openLog(this.operationName,"UnDock Window");
 
         winMgr.windowCreators[this.refName!].Create();
 
