@@ -16,7 +16,6 @@ export interface LinkRefSeqToAlignmentData {
 
 export class LinkRefSeqToAlignment extends atomic.AtomicOperation<LinkRefSeqToAlignmentData>
 {
-    public readonly opName = "";
     public alignData: AlignData;
     public fasta: Fasta;
     public linkRefSeqToAlignmentProcess: cp.ChildProcess | undefined;

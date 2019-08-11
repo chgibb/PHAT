@@ -16,7 +16,6 @@ export interface BLASTSegmentData {
 
 export class BLASTSegment extends atomic.AtomicOperation<BLASTSegmentData>
 {
-    public readonly opName = "BLASTSegment";
     public blastSegmentResult: BLASTSegmentResult | undefined;
     public alignData: AlignData | undefined;
 

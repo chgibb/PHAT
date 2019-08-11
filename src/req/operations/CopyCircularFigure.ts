@@ -13,7 +13,6 @@ export interface CopyCircularFigureData {
 
 export class CopyCircularFigure extends atomic.AtomicOperation<CopyCircularFigureData>
 {
-    public readonly opName = "copyCircularFigure";
     public origFigure: cf.CircularFigure | undefined;
     public newFigure: cf.CircularFigure;
     public constructor(data: CopyCircularFigureData) 

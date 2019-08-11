@@ -19,7 +19,6 @@ export interface RunBowtie2AlignmentData
 
 export class RunBowtie2Alignment extends atomic.AtomicOperation<RunBowtie2AlignmentData>
 {
-    public readonly opName = "";
     public alignData : AlignData;
     public fasta : Fasta;
     public fastq1 : Fastq;
