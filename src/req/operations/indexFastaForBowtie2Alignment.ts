@@ -1,31 +1,37 @@
-import {Fasta,getFaiPath} from "../fasta";
+import {Fasta, getFaiPath} from "../fasta";
 import {getContigsFromFastaFile} from "../fastaContigLoader";
 import {getPath} from "../file";
-import {getReadable,getReadableAndWritable} from "../getAppPath";
+import {getReadable, getReadableAndWritable} from "../getAppPath";
 import {Job} from "../main/Job";
 
 import * as atomic from "./atomicOperations";
 import {bowTie2Build} from "./indexFasta/bowTie2Build";
 import {samToolsFaidx} from "./indexFasta/samToolsFaidx";
-export class IndexFastaForBowtie2Alignment extends atomic.AtomicOperation
+
+export interface IndexFastaForBowtie2AlignmentData {
+    opName: "indexFastaForBowtie2Alignment";
+    data: Fasta;
+}
+
+export class IndexFastaForBowtie2Alignment extends atomic.AtomicOperation<IndexFastaForBowtie2AlignmentData>
 {
-    public fasta : Fasta | undefined;
+    public fasta: Fasta;
 
-    public samToolsExe : string;
-    public bowtie2BuildExe : string | undefined;
+    public samToolsExe: string;
+    public bowtie2BuildExe: string | undefined;
 
-    public faiPath : string | undefined;
-    public faiJob : Job | undefined;
-    public faiFlags : atomic.CompletionFlags;
+    public faiPath: string;
+    public faiJob: Job | undefined;
+    public faiFlags: atomic.CompletionFlags;
 
-    public bowTieIndexPath : string | undefined;
-    public bowtieJob : Job | undefined;
-    public bowtieFlags : atomic.CompletionFlags;
-    public bowtieSizeThreshold : number;
-    public bowtieIndices : Array<string>;
-    constructor()
+    public bowTieIndexPath: string;
+    public bowtieJob: Job | undefined;
+    public bowtieFlags: atomic.CompletionFlags;
+    public bowtieSizeThreshold: number;
+    public bowtieIndices: Array<string>;
+    constructor(data: IndexFastaForBowtie2AlignmentData) 
     {
-        super();
+        super(data);
         this.faiFlags = new atomic.CompletionFlags();
         this.bowtieFlags = new atomic.CompletionFlags();
 
@@ -35,14 +41,12 @@ export class IndexFastaForBowtie2Alignment extends atomic.AtomicOperation
         this.bowtieSizeThreshold = 4294967096;
 
         this.samToolsExe = getReadable("samtools");
-        if(process.platform == "linux")
+        if (process.platform == "linux")
             this.bowtie2BuildExe = getReadable("bowtie2-build");
-        else if(process.platform == "win32")
+        else if (process.platform == "win32")
             this.bowtie2BuildExe = getReadable("python/python.exe");
-    }
-    public setData(data : Fasta) : void
-    {
-        this.fasta = data;
+
+        this.fasta = data.data;
 
         this.faiPath = getFaiPath(this.fasta);
         this.destinationArtifacts.push(this.faiPath);
@@ -53,7 +57,7 @@ export class IndexFastaForBowtie2Alignment extends atomic.AtomicOperation
         this.bowTieIndexPath = getReadableAndWritable(`rt/indexes/${this.fasta.uuid}`);
 
         //if 64-bit, add a 1 to the file extension
-        let x64 : string = (this.fasta.size > this.bowtieSizeThreshold ? "1" : "");
+        let x64: string = (this.fasta.size > this.bowtieSizeThreshold ? "1" : "");
 
         this.bowtieIndices.push(`${this.bowTieIndexPath}.1.bt2${x64}`);
         this.bowtieIndices.push(`${this.bowTieIndexPath}.2.bt2${x64}`);
@@ -63,19 +67,18 @@ export class IndexFastaForBowtie2Alignment extends atomic.AtomicOperation
         this.bowtieIndices.push(`${this.bowTieIndexPath}.rev.2.bt2${x64}`);
 
         this.destinationArtifacts.concat(this.bowtieIndices);
-        
     }
     //bowTie2Build -> samTools faidx
-    public run() : void
+    public run(): void 
     {
-        this.logRecord = atomic.openLog(this.name!,"Index Fasta for Alignment");
+        this.logRecord = atomic.openLog(this.opName, "Index Fasta for Alignment");
 
         let self = this;
-        (async function()
+        (async function () 
         {
-            return new Promise<void>(async (resolve,reject) => 
+            return new Promise<void>(async (resolve, reject) => 
             {
-                try
+                try 
                 {
                     self.progressMessage = "Building bowtie2 index";
                     self.update!();
@@ -86,7 +89,7 @@ export class IndexFastaForBowtie2Alignment extends atomic.AtomicOperation
                     self.progressMessage = "Building fai index";
                     self.update!();
 
-                    await samToolsFaidx(self.fasta!,self);
+                    await samToolsFaidx(self.fasta!, self);
                     self.setSuccess(self.faiFlags);
                     self.update!();
 
@@ -96,7 +99,7 @@ export class IndexFastaForBowtie2Alignment extends atomic.AtomicOperation
                     //don't reparse contigs if we don't have to
                     //contigs are parsed during viz indexing as well
                     //if we reparse, we will clobber contig uuids and all references which point to them
-                    if(!self.fasta!.contigs || self.fasta!.contigs.length == 0)
+                    if (!self.fasta!.contigs || self.fasta!.contigs.length == 0) 
                     {
                         //contig information is required by the coverage distillation step of aligning
                         self.fasta!.contigs = await getContigsFromFastaFile(getPath(self.fasta!));
@@ -108,7 +111,7 @@ export class IndexFastaForBowtie2Alignment extends atomic.AtomicOperation
 
                     return resolve();
                 }
-                catch(err)
+                catch (err) 
                 {
                     self.abortOperationWithMessage(err);
                     return reject(err);

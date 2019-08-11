@@ -1,6 +1,6 @@
 import {ReadWithFragments} from "./readWithFragments";
-import { getReads, ReadFragment } from './cigar';
-import { SAMRead } from './samRead';
+import {getReads, ReadFragment} from "./cigar";
+import {SAMRead} from "./samRead";
 
 /**
  * Returns all reads which aligned starting between start and stop and which contain one or more 

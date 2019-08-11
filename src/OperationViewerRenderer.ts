@@ -66,7 +66,7 @@ $(
                     runningView.ops = [];
                     if(arg.key == "operations" && arg.val !== undefined && Array.isArray(arg.val))
                     {
-                        runningView.ops = new Array<AtomicOperation>();
+                        runningView.ops = new Array<AtomicOperation<any>>();
                         runningView.ops = runningView.ops.concat(arg.val);
                     }
                     viewMgr.render();

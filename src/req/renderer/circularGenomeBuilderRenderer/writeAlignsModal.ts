@@ -1,6 +1,8 @@
 import * as electron from "electron";
 const ipc = electron.ipcRenderer;
 
+import {enQueueOperation} from "../enQueueOperation";
+
 import * as viewMgr from "./../viewMgr";
 import * as masterView from "./masterView";
 import * as genomeView from "./genomeView";
@@ -121,15 +123,13 @@ export function writeAlignsModal() : void
             {
                 if(masterView.willBLASTAlignment)
                 {
-                    ipc.send(
-                        "runOperation",
-                        <AtomicOperationIPC>{
-                            opName : "BLASTSegment",
-                            align : aligns![i],
-                            start : genomeView.seqSelectionArrow!.arrowStart,
-                            stop : genomeView.seqSelectionArrow!.arrowEnd
-                        }
-                    );
+                    enQueueOperation({
+                        opName : "BLASTSegment",
+                        align : aligns![i],
+                        start : genomeView.seqSelectionArrow!.arrowStart,
+                        stop : genomeView.seqSelectionArrow!.arrowEnd
+                    });
+
                     masterView.alignsModalOpen = false;
                     masterView.dismissModal();
                     return;

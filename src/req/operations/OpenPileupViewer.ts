@@ -1,29 +1,32 @@
 import * as atomic from "./atomicOperations";
 import * as winMgr from "./../main/winMgr";
 import {AlignData} from "./../alignData";
-export class OpenPileupViewer extends atomic.AtomicOperation
+
+export interface OpenPileupViewerData
 {
-    public align : AlignData | undefined;
-    public contig : string | undefined;
-    public start : number | undefined;
-    public stop : number | undefined;
-    constructor()
+    opName : "openPileupViewer";
+    align : AlignData;
+    contig : string;
+    start : number;
+    stop : number;
+}
+export class OpenPileupViewer extends atomic.AtomicOperation<OpenPileupViewerData>
+{
+    public align : AlignData ;
+    public contig : string ;
+    public start : number ;
+    public stop : number ;
+    constructor(data : OpenPileupViewerData)
     {
-        super();
+        super(data);
         this.ignoreScheduler = true;
-    }
-    public setData(data : {
-        align : AlignData,
-        contig : string,
-        start : number,
-        stop : number
-    }) : void
-    {
+
         this.align = data.align;
         this.contig = data.contig;
         this.start = data.start;
         this.stop = data.stop;
     }
+
     public run() : void
     {
         this.logRecord = atomic.openLog("openPileupViewer","Open Pileup Viewer");

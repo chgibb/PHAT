@@ -9,23 +9,28 @@ import {getReadable,getReadableAndWritable} from "./../getAppPath";
 import {Job,JobCallBackObject} from "./../main/Job";
 
 const fse = require("fs-extra");
-export class GenerateQCReport extends atomic.AtomicOperation
+
+export interface GenerateQCReportData
+{
+    opName : "generateQCReport";
+    data : Fastq;
+}
+
+export class GenerateQCReport extends atomic.AtomicOperation<GenerateQCReportData>
 {
     public hasJVMCrashed : boolean = false;
     public fastQCPath : string | undefined;
     public fastQCJob : Job | undefined;
     public fastQCFlags : atomic.CompletionFlags | undefined;
-    public fastq : Fastq | undefined;
-    public destDir : string | undefined;
-    public srcDir : string | undefined;
-    constructor()
+    public fastq : Fastq;
+    public destDir : string;
+    public srcDir : string;
+    constructor(data : GenerateQCReportData)
     {
-        super();
+        super(data);
         this.fastQCFlags = new atomic.CompletionFlags();
-    }
-    public setData(data : Fastq) : void
-    {
-        this.fastq = data;
+
+        this.fastq = data.data;
 
         let trimmed : string = trimPath(getPath(this.fastq));
 
@@ -37,13 +42,14 @@ export class GenerateQCReport extends atomic.AtomicOperation
         this.generatedArtifacts.push(remainder+trimmed+".zip");
 
         this.srcDir = remainder+trimmed;
-        this.destDir = getReadableAndWritable("rt/QCReports/"+data.uuid);
+        this.destDir = getReadableAndWritable("rt/QCReports/"+data.data.uuid);
 
         this.destinationArtifactsDirectories.push(this.destDir);
     }
+
     public run() : void
     {
-        this.logRecord = atomic.openLog(this.name!,"FastQC Report Generation");
+        this.logRecord = atomic.openLog(this.opName,"FastQC Report Generation");
         //Set path to fastqc entry file
         if(process.platform == "linux")
             this.fastQCPath = getReadable("FastQC/fastqc");

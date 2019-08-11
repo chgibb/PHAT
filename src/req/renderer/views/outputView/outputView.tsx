@@ -15,6 +15,7 @@ import {DialogTitle} from "../../components/dialogTitle";
 import {DialogActions} from "../../components/dialogActions";
 import {ReadsPerContigTable} from "../../containers/tables/readsPerContigTable";
 import {BLASTRunsTable} from "../../containers/tables/BLASTRunsTable";
+import {enQueueOperation} from "../../enQueueOperation";
 
 export interface OutputViewState
 {
@@ -163,18 +164,16 @@ export class OutputView extends React.Component<OutputViewProps,OutputViewState>
                                             alert("The reference for this alignment is not ready for visualization");
                                             return;
                                         }
-                                        ipc.send(
-                                            "runOperation",
-                                        {
+                                        
+                                        enQueueOperation({
                                             opName: "openPileupViewer",
-                                            pileupViewerParams: {
-                                                align: rowData,
-                                                contig: fasta.contigs[0].name.split(" ")[0],
-                                                start: 0,
-                                                stop: 100
-                                            }
-                                        } as AtomicOperationIPC
-                                        );
+
+                                            align: rowData,
+                                            contig: fasta.contigs[0].name.split(" ")[0],
+                                            start: 0,
+                                            stop: 100
+                                            
+                                        });
                                     }
     
                                     else if(AlignmentsReportTable.BLASTRunsCellId(rowData) == el.id)

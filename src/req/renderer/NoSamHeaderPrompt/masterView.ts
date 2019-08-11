@@ -1,6 +1,8 @@
 import * as electron from "electron";
 const ipc = electron.ipcRenderer;
 
+import {enQueueOperation} from "../enQueueOperation";
+
 import * as viewMgr from "./../viewMgr";
 import {AtomicOperationIPC} from "./../../atomicOperationsIPC";
 import {Fasta} from "./../../fasta";
@@ -76,14 +78,11 @@ export class View extends viewMgr.View
                     {
                         if(ok)
                         {
-                            ipc.send(
-                                "runOperation",
-                                <AtomicOperationIPC>{
-                                    opName : "inputBamFile",
-                                    filePath : self.inputBamFile!.bamPath,
-                                    fasta : self.fastaInputs[i]
-                                }
-                            );
+                            enQueueOperation({
+                                opName : "inputBamFile",
+                                bamPath : self.inputBamFile!.bamPath,
+                                fasta : self.fastaInputs[i]
+                            });
                             electron.remote.getCurrentWindow().close();
                         }
                     }

@@ -3,15 +3,19 @@ import {RenderCoverageTrackForContig} from "./../operations/RenderCoverageTrack"
 import {CircularFigure} from "./../renderer/circularFigure";
 import * as hpv18Figure from "./hpv18Figure";
 import * as L6R1HPV18Align from "./L6R1HPV18Align";
+import { addOperation } from '../operations/atomicOperations/addOperation';
 export async function testL6R1HPV18CoverageTrackRenderer() : Promise<void>
 {
     return new Promise<void>((resolve,reject) => 
     {
         hpv18Figure.init();
-        atomic.addOperation("renderCoverageTrackForContig",{
+        addOperation({
+            opName:"renderCoverageTrackForContig",
             circularFigure : hpv18Figure.get(),
             contiguuid : hpv18Figure.get().contigs[0].uuid,
-            alignData : L6R1HPV18Align.get()
+            alignData : L6R1HPV18Align.get(),
+            scaleFactor:1,
+            log10Scale:false
         });
         atomic.updates.removeAllListeners().on("renderCoverageTrackForContig",async function(op : RenderCoverageTrackForContig)
         {

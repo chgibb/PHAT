@@ -29,7 +29,7 @@ export interface ToolBarViewState
 
 export interface ToolBarViewProps
 {
-    operations? : Array<AtomicOperation>;
+    operations? : Array<AtomicOperation<any>>;
     fastqs? : Array<Fastq>;
     fastas? : Array<Fasta>;
     aligns? : Array<AlignData>;

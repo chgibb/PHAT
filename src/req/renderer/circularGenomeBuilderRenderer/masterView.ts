@@ -3,6 +3,8 @@
 import * as electron from "electron";
 const ipc = electron.ipcRenderer;
 
+import {enQueueOperation} from "../enQueueOperation";
+
 import {SaveKeyEvent} from "./../../ipcEvents";
 import {AtomicOperationIPC} from "./../../atomicOperationsIPC";
 import * as viewMgr from "./../viewMgr";
@@ -348,13 +350,8 @@ export class View extends viewMgr.View
                 dialogs.alert("You must open a figure before you can copy it");
                 return;
             }
-            ipc.send(
-                "runOperation",
-                <AtomicOperationIPC>{
-                    opName : "copyCircularFigure",
-                    figureuuid : genomeView.genome!.uuid
-                }
-            );
+            enQueueOperation({opName : "copyCircularFigure",
+                data : genomeView.genome});
         };
 
         document.getElementById("deleteFigure")!.onclick = function(this : GlobalEventHandlers,ev : MouseEvent)
@@ -364,13 +361,8 @@ export class View extends viewMgr.View
                 dialogs.alert("You must open a figure before you can delete it");
                 return;
             }
-            ipc.send(
-                "runOperation",
-                <AtomicOperationIPC>{
-                    opName : "deleteCircularFigure",
-                    figureuuid : genomeView.genome!.uuid
-                }
-            );
+            enQueueOperation({opName : "deleteCircularFigure",
+                data : genomeView.genome});
         };
 
         document.getElementById("updateNavBarButton")!.onclick = async function(this : GlobalEventHandlers,ev : MouseEvent)

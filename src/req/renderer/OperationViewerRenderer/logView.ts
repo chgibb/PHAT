@@ -1,6 +1,8 @@
 import * as electron from "electron";
 const ipc = electron.ipcRenderer;
 
+import {enQueueOperation} from "../enQueueOperation";
+
 import {AtomicOperationIPC} from "./../../atomicOperationsIPC";
 import * as viewMgr from "./../viewMgr";
 import {LogRecord,getLogRecords} from "./../../operations/atomicOperations"; 
@@ -41,13 +43,10 @@ export class View extends viewMgr.View
             let classList = event.target.classList;
             if(event.target.classList.contains(`${this.logRecords[i].uuid}Class`))
             {
-                ipc.send(
-                    "runOperation",
-                        <AtomicOperationIPC>{
-                            opName : "openLogViewer",
-                            logRecord : this.logRecords[i]
-                        }
-                );
+                enQueueOperation({
+                    opName : "openLogViewer",
+                    logRecordToOpen : this.logRecords[i]
+                });
             }
         }
     }

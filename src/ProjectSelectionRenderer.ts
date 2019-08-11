@@ -17,6 +17,7 @@ const jsonFile = require("jsonfile");
 const $ = require("jquery");
 
 import "./req/renderer/commonBehaviour";
+import {enQueueOperation} from "./req/renderer/enQueueOperation";
 
 (<any>window).$ = $;
 const dialogs = Dialogs();
@@ -28,12 +29,10 @@ $(
             <br />
             <a id="citeLink" style="color:black;" class="activeHover">Gibb et al., 2018 (Bioinformatics)</a>
         `;
-        ipc.send(
-            "runOperation",
-            <AtomicOperationIPC>{
-                opName : "checkForUpdate"
-            }
-        );
+        enQueueOperation({
+            opName:"checkForUpdate",
+        });
+
         ipc.send(
             "keySub",
             <KeySubEvent>{
@@ -55,17 +54,17 @@ $(
                 {
                     if(arg.key == "operations" && arg.val !== undefined)
                     {
-                        let ops : Array<AtomicOperation> = <Array<AtomicOperation>>arg.val;
+                        let ops : Array<AtomicOperation<any>> = <Array<AtomicOperation<any>>>arg.val;
                         for(let i = 0; i != ops.length; ++i)
                         {
-                            if(ops[i].name == "openProject" && ops[i].extraData !== undefined)
+                            if(ops[i].opName == "openProject" && ops[i].extraData !== undefined)
                             {
                                 document.body.innerHTML = `
                                     <h1>Unpacked ${ops[i].extraData.unPacked} of ${ops[i].extraData.toUnpack}</h1>
                                 `;
                                 return;
                             }
-                            if(ops[i].flags.done && ops[i].flags.success && ops[i].name == "checkForUpdate")
+                            if(ops[i].flags.done && ops[i].flags.success && ops[i].opName == "checkForUpdate")
                             {
                                 dialogs.confirm(
                                     `PHAT ${ops[i].extraData.tag_name} is available. Download and install?`,
@@ -74,17 +73,12 @@ $(
                                     {
                                         if(ok)
                                         {
-                                            ipc.send(
-                                                "runOperation",
-                                                    <AtomicOperationIPC>{
-                                                        opName : "downloadAndInstallUpdate"
-                                                    }
-                                            );
+                                            enQueueOperation({opName : "downloadAndInstallUpdate",data:{asset:{}}});
                                         }
                                     }
                                 );
                             }
-                            if(ops[i].name == "downloadAndInstallUpdate" && ops[i].extraData !== undefined)
+                            if(ops[i].opName == "downloadAndInstallUpdate" && ops[i].extraData !== undefined)
                             {
                                 document.body.innerHTML = `
                                     <h1>Downloaded: ${formatByteString(ops[i].extraData.downloadProgress)}</h1><br />

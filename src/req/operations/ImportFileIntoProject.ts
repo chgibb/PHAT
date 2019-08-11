@@ -1,23 +1,28 @@
 import * as atomic from "./atomicOperations";
 import {File,importIntoProject} from "./../file";
 import {getReadableAndWritable} from "./../getAppPath";
-export class ImportFileIntoProject extends atomic.AtomicOperation
+
+export interface ImportFileIntoProjectData
 {
-    public file : File | undefined;
-    constructor()
+    opName : "importFileIntoProject";
+    data : File;
+}
+
+export class ImportFileIntoProject extends atomic.AtomicOperation<ImportFileIntoProjectData>
+{
+    public file : File;
+    constructor(data : ImportFileIntoProjectData)
     {
-        super();
-    }
-    public setData(data : File) : void
-    {
-        this.file = data;
+        super(data);
+
+        this.file = data.data;
         this.destinationArtifactsDirectories.push(
             getReadableAndWritable(`rt/imported/${this.file.uuid}`)
         );
     }
     public run() : void
     {
-        this.logRecord = atomic.openLog(this.name!,"Import File Into Project");
+        this.logRecord = atomic.openLog(this.opName,"Import File Into Project");
         let self = this;
         importIntoProject(this.file!)!.then(() => 
         {

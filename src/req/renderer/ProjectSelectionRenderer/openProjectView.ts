@@ -3,6 +3,8 @@ import {ipcRenderer} from "electron";
 let ipc = ipcRenderer;
 
 
+import {enQueueOperation} from "../enQueueOperation";
+
 import {ProjectManifest,getProjectManifests} from "./../../projectManifest";
 import {getCurrentlyOpenProject} from "./../../getCurrentlyOpenProject";
 import {exportProjectBrowseDialog} from "./exportProjectBrowseDialog";
@@ -115,13 +117,12 @@ export class OpenProjectView extends viewMgr.View
             {
                 if(!path)
                     return;
-                ipc.send(
-                    "runOperation",
-                    <AtomicOperationIPC>{
-                        opName : "openProject",
-                        externalProjectPath : path
-                    }
-                );
+                
+                enQueueOperation({
+                    opName : "openProject",
+                    proj : undefined,
+                    externalProjectPath : path
+                });
             }).catch((err) => 
             {
                 throw err;
@@ -129,12 +130,9 @@ export class OpenProjectView extends viewMgr.View
         }
         if(event.target.id == "currentlyOpen")
         {
-            ipc.send(
-                "runOperation",
-                <AtomicOperationIPC>{
-                    opName : "loadCurrentlyOpenProject"
-                }
-            );
+            enQueueOperation({
+                opName : "loadCurrentlyOpenProject"
+            });
             return;
         }
         if(this.projects)
@@ -146,13 +144,12 @@ export class OpenProjectView extends viewMgr.View
                     this.projects[i].lastOpened = Date.now();
                     document.getElementById(this.div)!.innerHTML = "Preparing";
                     jsonFile.writeFileSync(getProjectManifests(),this.projects);
-                    ipc.send(
-                        "runOperation",
-                        <AtomicOperationIPC>{
-                            opName : "openProject",
-                            proj : this.projects[i]
-                        }
-                    );
+                    
+                    enQueueOperation({
+                        opName : "openProject",
+                        proj : this.projects[i],
+                        externalProjectPath : undefined
+                    });
                     return;
                 }
                 if(event.target.id == `${this.projects[i].uuid}Export`)

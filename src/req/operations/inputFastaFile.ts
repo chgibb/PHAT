@@ -1,27 +1,32 @@
 import * as atomic from "./atomicOperations";
 import {Fasta} from "./../fasta";
-export class InputFastaFile extends atomic.AtomicOperation
+
+export interface InputFastaFileData {
+    opName: "inputFastaFile";
+    data: string;
+}
+
+export class InputFastaFile extends atomic.AtomicOperation<InputFastaFileData>
 {
-    public filePath : string | undefined;
-    public fasta : Fasta | undefined;
-    public constructor()
+    public filePath: string;
+    public fasta: Fasta | undefined;
+    public constructor(data: InputFastaFileData) 
     {
-        super();
+        super(data);
         this.ignoreScheduler = true;
+
+        this.filePath = data.data;
     }
-    public setData(data : string) : void
+
+    public run(): void 
     {
-        this.filePath = data;
-    }
-    public run() : void
-    {
-        this.logRecord = atomic.openLog(this.name!,"Input Fasta File");
-        try
+        this.logRecord = atomic.openLog(this.opName, "Input Fasta File");
+        try 
         {
-            this.fasta = new Fasta(this.filePath!);
+            this.fasta = new Fasta(this.filePath);
             this.fasta.checked = true;
         }
-        catch(err)
+        catch (err) 
         {
             this.abortOperationWithMessage(err);
         }

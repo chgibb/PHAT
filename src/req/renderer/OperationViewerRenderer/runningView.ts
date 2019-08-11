@@ -3,11 +3,11 @@ import {AtomicOperation} from "./../../operations/atomicOperations";
 
 export class View extends viewMgr.View
 {
-    public ops : Array<AtomicOperation>;
+    public ops : Array<AtomicOperation<any>>;
     public constructor(div : string)
     {
         super("runningView",div);
-        this.ops = new Array<AtomicOperation>();
+        this.ops = new Array<AtomicOperation<any>>();
 
     }
     public onMount() : void
@@ -40,7 +40,7 @@ export class View extends viewMgr.View
                 continue;
             res += `
                             <tr>
-                                <td>${this.ops[i].name}</td>
+                                <td>${this.ops[i].opName}</td>
                                 <td>${this.ops[i].running === true ? "Running" : "Queued"}</td>
                                 <td></td>
                             

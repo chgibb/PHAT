@@ -14,7 +14,7 @@ import {Job,JobCallBackObject} from "./../../main/Job";
  * @param {string} [fastaPath] 
  * @returns {Promise<void>} 
  */
-export function samToolsView(alignData : AlignData,logger : atomic.AtomicOperation,fastaPath? : string) : Promise<void>
+export function samToolsView(alignData : AlignData,logger : atomic.AtomicOperation<any>,fastaPath? : string) : Promise<void>
 {
     return new Promise<void>((resolve,reject) => 
     {

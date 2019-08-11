@@ -9,7 +9,7 @@ export async function testFastQCReportGeneration() : Promise<void>
     {
 
         atomic.updates.removeAllListeners().on(
-            "generateFastQCReport",async function(op : GenerateQCReport)
+            "generateQCReport",async function(op : GenerateQCReport)
             {
                 if(op.flags.failure)
                 {

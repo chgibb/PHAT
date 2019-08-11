@@ -21,7 +21,7 @@ export async function createNewProject() : Promise<void>
                     "runOperation",
                     {
                         opName : "newProject",
-                        name : "New Project Test"
+                        projName : "New Project Test"
                     }
                 );
             `);

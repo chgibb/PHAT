@@ -3,68 +3,72 @@ import * as cp from "child_process";
 import * as atomic from "./atomicOperations";
 import {AtomicOperationForkEvent} from "./../atomicOperationsIPC";
 import {getReadable} from "./../getAppPath";
-import {AlignData,getArtifactDir} from "./../alignData";
-import {Fasta,getFaiPath} from "./../fasta";
+import {AlignData, getArtifactDir} from "./../alignData";
+import {Fasta, getFaiPath} from "./../fasta";
 import {getPath} from "./../file";
-export class InputBamFile extends atomic.AtomicOperation
+
+export interface InputBamFileData {
+    opName: "inputBamFile";
+    bamPath: string;
+    fasta?: Fasta;
+}
+
+export class InputBamFile extends atomic.AtomicOperation<InputBamFileData>
 {
-    public bamPath : string | undefined;
-    public fasta : Fasta | undefined;
-    public alignData : AlignData | undefined;
-    public inputBamFileProcess : cp.ChildProcess | undefined;
-    constructor()
+    public bamPath: string;
+    public fasta: Fasta | undefined;
+    public alignData: AlignData;
+    public inputBamFileProcess: cp.ChildProcess | undefined;
+    constructor(data: InputBamFileData) 
     {
-        super();
-    }
-    public setData(data : {
-        bamPath : string,fasta? : Fasta
-    }) : void
-    {
+        super(data);
+
         this.bamPath = data.bamPath;
         this.fasta = data.fasta;
-        if(this.fasta)
+        if (this.fasta)
             this.generatedArtifacts.push(`${getPath(this.fasta)}.fai`);
         this.alignData = new AlignData();
         this.alignData.isExternalAlignment = true;
         this.destinationArtifactsDirectories.push(getArtifactDir(this.alignData));
     }
-    public run() : void
+
+    public run(): void 
     {
         this.closeLogOnFailure = false;
         this.closeLogOnSuccess = false;
         let self = this;
-        this.inputBamFileProcess = atomic.makeFork("InputBamFile.js",<AtomicOperationForkEvent>{
-            setData : true,
-            data : {
-                bamPath : self.bamPath,
-                fastaPath : self.fasta ? getPath(self.fasta) : "",
-                align : self.alignData
+        this.inputBamFileProcess = atomic.makeFork("InputBamFile.js", <AtomicOperationForkEvent>{
+            setData: true,
+            data: {
+                bamPath: self.bamPath,
+                fastaPath: self.fasta ? getPath(self.fasta) : "",
+                align: self.alignData
             },
-            name : self.name,
-            description : "Input Bam File"
-        },function(ev : AtomicOperationForkEvent)
+            name: self.opName,
+            description: "Input Bam File"
+        }, function (ev: AtomicOperationForkEvent) 
         {
-            if(ev.finishedSettingData == true)
+            if (ev.finishedSettingData == true) 
             {
-                self.inputBamFileProcess!.send(
-                    <AtomicOperationForkEvent>{
-                        run : true
-                    }
-                );
+                    self.inputBamFileProcess!.send(
+                        <AtomicOperationForkEvent>{
+                            run: true
+                        }
+                    );
             }
-            if(ev.update == true)
+            if (ev.update == true) 
             {
                 self.flags = ev.flags!;
-                if(ev.flags!.done)
+                if (ev.flags!.done) 
                 {
-                    if(ev.data.alignData)
+                    if (ev.data.alignData)
                         self.alignData = ev.data.alignData;
                     self.logRecord = ev.logRecord;
                     atomic.recordLogRecord(ev.logRecord!);
                 }
                 self.progressMessage = ev.progressMessage;
-                self.update!();
-            }    
+                    self.update!();
+            }
         });
         this.addPID(this.inputBamFileProcess.pid);
     }

@@ -15,7 +15,7 @@ import {samToolsIdxStatsReportParser} from "./../../samToolsIdxStatsReport";
  * @param {atomic.AtomicOperation} logger 
  * @returns {Promise<void>} 
  */
-export function samToolsIdxStats(alignData : AlignData,logger : atomic.AtomicOperation) : Promise<void>
+export function samToolsIdxStats(alignData : AlignData,logger : atomic.AtomicOperation<any>) : Promise<void>
 {
     return new Promise<void>((resolve,reject) => 
     {

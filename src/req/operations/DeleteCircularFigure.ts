@@ -4,35 +4,40 @@ import * as cf from "./../renderer/circularFigure";
 import {getReadableAndWritable} from "./../getAppPath";
 
 const fse = require("fs-extra");
-export class DeleteCircularFigure extends atomic.AtomicOperation
+
+export interface DeleteCircularFigureData {
+    opName: "deleteCircularFigure";
+    data: cf.CircularFigure;
+}
+
+export class DeleteCircularFigure extends atomic.AtomicOperation<DeleteCircularFigureData>
 {
-    public figure : cf.CircularFigure | undefined;
-    public constructor()
+    public figure: cf.CircularFigure;
+    public constructor(data: DeleteCircularFigureData) 
     {
-        super();
+        super(data);
+
+        this.figure = data.data;
     }
-    public setData(data : cf.CircularFigure) : void
+
+    public run(): void 
     {
-        this.figure = data;
-    }
-    public run() : void
-    {
-        this.logRecord = atomic.openLog(this.name!,"Delete Circular Figure");
-        try
+        this.logRecord = atomic.openLog(this.opName, "Delete Circular Figure");
+        try 
         {
             let self = this;
             fse.remove(
-                getReadableAndWritable(`rt/circularFigures/${this.figure!.uuid}`),
-                function(err : Error)
+                getReadableAndWritable(`rt/circularFigures/${this.figure.uuid}`),
+                function (err: Error) 
                 {
-                    if(err)
+                    if (err)
                         self.abortOperationWithMessage(err.message);
                     self.setSuccess(self.flags);
                     self.update!();
                 }
             );
         }
-        catch(err)
+        catch (err) 
         {
             this.abortOperationWithMessage(err);
         }

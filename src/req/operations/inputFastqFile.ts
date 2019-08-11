@@ -1,27 +1,31 @@
 import * as atomic from "./atomicOperations";
 import {Fastq} from "./../fastq";
-export class InputFastqFile extends atomic.AtomicOperation
+
+export interface InputFastqFileData {
+    opName: "inputFastqFile";
+    data: string;
+}
+export class InputFastqFile extends atomic.AtomicOperation<InputFastqFileData>
 {
-    public filePath : string | undefined;
-    public fastq : Fastq | undefined;
-    public constructor()
+    public filePath: string;
+    public fastq: Fastq | undefined;
+    public constructor(data: InputFastqFileData) 
     {
-        super();
+        super(data);
         this.ignoreScheduler = true;
+
+        this.filePath = data.data;
     }
-    public setData(data : string) : void
+
+    public run(): void 
     {
-        this.filePath = data;
-    }
-    public run() : void
-    {
-        this.logRecord = atomic.openLog(this.name!,"Input Fastq File");
-        try
+        this.logRecord = atomic.openLog(this.opName, "Input Fastq File");
+        try 
         {
             this.fastq = new Fastq(this.filePath!);
             this.fastq.checked = true;
         }
-        catch(err)
+        catch (err) 
         {
             this.abortOperationWithMessage(err);
         }

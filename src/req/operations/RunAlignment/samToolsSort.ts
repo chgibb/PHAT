@@ -12,7 +12,7 @@ import {Job,JobCallBackObject} from "./../../main/Job";
  * @param {atomic.AtomicOperation} logger 
  * @returns {Promise<void>} 
  */
-export function samToolsSort(alignData : AlignData,logger : atomic.AtomicOperation) : Promise<void>
+export function samToolsSort(alignData : AlignData,logger : atomic.AtomicOperation<any>) : Promise<void>
 {
     return new Promise<void>((resolve,reject) => 
     {

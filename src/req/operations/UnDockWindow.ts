@@ -3,29 +3,30 @@ import * as electron from "electron";
 import * as atomic from "./atomicOperations";
 import * as winMgr from "./../main/winMgr";
 
-export class UnDockWindow extends atomic.AtomicOperation
+export interface UnDockWindowData
 {
-    public refName : string | undefined;
+    opName : "unDockWindow";
+    refName : string,
+    guestinstance? : number
+}
+
+export class UnDockWindow extends atomic.AtomicOperation<UnDockWindowData>
+{
+    public refName : string;
     public guestinstance : number | undefined;
 
-    public constructor()
+    public constructor(data : UnDockWindowData)
     {
-        super();
+        super(data);
         this.ignoreScheduler = true;
-    }
 
-    public setData(data : {
-        refName : string,
-        guestinstance : number
-    }) : void 
-    {
         this.refName = data.refName;
         this.guestinstance = data.guestinstance;
     }
-
+    
     public async run()
     {
-        this.logRecord = atomic.openLog(this.name!,"UnDock Window");
+        this.logRecord = atomic.openLog(this.opName,"UnDock Window");
 
         winMgr.windowCreators[this.refName!].Create();
 
