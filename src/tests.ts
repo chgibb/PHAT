@@ -1,6 +1,5 @@
 import * as atomic from "./req/operations/atomicOperations";
 import * as addOperation from "./req/operations/atomicOperations/addOperation";
-import {registerOperations} from "./req/tests/registerOperations";
 import {rebuildRTDirectory} from "./req/main/rebuildRTDirectory";
 import {getUnSortedBam,getSam} from "./req/alignData";
 import * as L6R1R1 from "./req/tests/L6R1R1";
@@ -564,7 +563,6 @@ setTimeout(function()
     (async function()
     {
         rebuildRTDirectory();
-        registerOperations();
 
         L6R1R1.loadNoSpaces();
         L6R1R2.loadNoSpaces();
