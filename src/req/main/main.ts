@@ -265,7 +265,7 @@ ipc.on(
 );
 
 ipc.on(
-	"runOperation",function(event : Electron.IpcMessageEvent,arg : AtomicOperationIPC)
+	"runOperation",function(event : Electron.IpcMessageEvent,arg : atomicOp.AddOperationType)
 	{
 		console.log(arg);
 		dataMgr.setKey("application","operations",atomicOp.operationsQueue);
@@ -309,7 +309,12 @@ ipc.on(
 			{
 				//Electron.shell.openExternal("https://github.com/chgibb/PHAT/releases");
 			}
-		}
+        }
+        
+        else
+        {
+            addOperation.addOperation(arg);
+        }
 
 		dataMgr.setKey("application","operations",atomicOp.operationsQueue);
 		winMgr.publishChangeForKey("application","operations");
@@ -392,7 +397,7 @@ atomicOp.updates.on(
 );
 
 atomicOp.updates.on(
-    "generateFastQCReport",function(op : atomicOp.AtomicOperation<any>)
+    "generateQCReport",function(op : atomicOp.AtomicOperation<any>)
     {
         dataMgr.setKey("application","operations",atomicOp.operationsQueue);
         winMgr.publishChangeForKey("application","operations");
