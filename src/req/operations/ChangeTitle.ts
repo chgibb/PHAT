@@ -1,6 +1,3 @@
-import * as electron from "electron";
-const webContents = electron.webContents;
-
 import * as atomic from "./atomicOperations";
 
 export interface ChangeTitleData {
@@ -24,6 +21,8 @@ export class ChangeTitle extends atomic.AtomicOperation<ChangeTitleData>
 
     public run() : void
     {
+        const electron = require("electron");
+        const webContents = electron.webContents;
         this.logRecord = atomic.openLog(this.opName,"Change Title");
 
         let allWCs : Array<Electron.WebContents> = webContents.getAllWebContents();
