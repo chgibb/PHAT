@@ -2,10 +2,11 @@
  * Shared window management objects and methods.
  * @module req/main/window
  */
+import {getReadable} from "../getAppPath";
+
 import * as dataMgr from "./dataMgr";
 import {GetKeyEvent,KeyChangeEvent} from "./../ipcEvents";
 
-import {getReadable} from "../getAppPath";
 
 
 export class WindowRef

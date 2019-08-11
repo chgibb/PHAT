@@ -1,9 +1,10 @@
+import {addOperation} from "../operations/atomicOperations/addOperation";
+
 import * as winMgr from "./winMgr";
 import {getReadable} from "./../getAppPath";
 import * as dataMgr from "./dataMgr";
 import * as atomicOp from "./../operations/atomicOperations";
 import {add} from "./afterProjectLoad";
-import {addOperation} from '../operations/atomicOperations/addOperation';
 
 add(function()
 {

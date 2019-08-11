@@ -1,9 +1,10 @@
+import {addOperation} from "../operations/atomicOperations/addOperation";
+
 import * as atomic from "./../operations/atomicOperations";
 import {RenderCoverageTrackForContig} from "./../operations/RenderCoverageTrack";
 import {CircularFigure,getCoverageTrackSVGFromCache} from "./../renderer/circularFigure";
 import * as hpv16Figure from "./hpv16Figure";
 import * as L6R7HPV16Align from "./L6R7HPV16Align";
-import { addOperation } from '../operations/atomicOperations/addOperation';
 export async function  testL6R7HPV16CoverageTrackRenderer() : Promise<void>
 {
     return new Promise<void>((resolve,reject) => 
