@@ -307,9 +307,10 @@ export abstract class AtomicOperation<InputData extends OperationData>
  */
 export class ForkLogger extends AtomicOperation<any>
 {
-    public readonly opName = "forkLogger";
     public constructor() {
-        super(undefined);
+        super({
+            opName : "forkLoger"
+        });
     }
 
     public run() { }
