@@ -1,11 +1,11 @@
 import * as cp from "child_process";
 
 import * as atomic from "./atomicOperations";
-import { AtomicOperationForkEvent } from "./../atomicOperationsIPC";
-import { getReadable } from "./../getAppPath";
-import { AlignData, getArtifactDir } from "./../alignData";
-import { Fasta, getFaiPath } from "./../fasta";
-import { getPath } from "./../file";
+import {AtomicOperationForkEvent} from "./../atomicOperationsIPC";
+import {getReadable} from "./../getAppPath";
+import {AlignData, getArtifactDir} from "./../alignData";
+import {Fasta, getFaiPath} from "./../fasta";
+import {getPath} from "./../file";
 
 export interface InputBamFileData {
     opName: "inputBamFile";
@@ -19,7 +19,8 @@ export class InputBamFile extends atomic.AtomicOperation<InputBamFileData>
     public fasta: Fasta | undefined;
     public alignData: AlignData;
     public inputBamFileProcess: cp.ChildProcess | undefined;
-    constructor(data: InputBamFileData) {
+    constructor(data: InputBamFileData) 
+    {
         super(data);
 
         this.bamPath = data.bamPath;
@@ -31,7 +32,8 @@ export class InputBamFile extends atomic.AtomicOperation<InputBamFileData>
         this.destinationArtifactsDirectories.push(getArtifactDir(this.alignData));
     }
 
-    public run(): void {
+    public run(): void 
+    {
         this.closeLogOnFailure = false;
         this.closeLogOnSuccess = false;
         let self = this;
@@ -44,26 +46,30 @@ export class InputBamFile extends atomic.AtomicOperation<InputBamFileData>
             },
             name: self.opName,
             description: "Input Bam File"
-        }, function (ev: AtomicOperationForkEvent) {
-                if (ev.finishedSettingData == true) {
+        }, function (ev: AtomicOperationForkEvent) 
+        {
+            if (ev.finishedSettingData == true) 
+            {
                     self.inputBamFileProcess!.send(
                         <AtomicOperationForkEvent>{
                             run: true
                         }
                     );
+            }
+            if (ev.update == true) 
+            {
+                self.flags = ev.flags!;
+                if (ev.flags!.done) 
+                {
+                    if (ev.data.alignData)
+                        self.alignData = ev.data.alignData;
+                    self.logRecord = ev.logRecord;
+                    atomic.recordLogRecord(ev.logRecord!);
                 }
-                if (ev.update == true) {
-                    self.flags = ev.flags!;
-                    if (ev.flags!.done) {
-                        if (ev.data.alignData)
-                            self.alignData = ev.data.alignData;
-                        self.logRecord = ev.logRecord;
-                        atomic.recordLogRecord(ev.logRecord!);
-                    }
-                    self.progressMessage = ev.progressMessage;
+                self.progressMessage = ev.progressMessage;
                     self.update!();
-                }
-            });
+            }
+        });
         this.addPID(this.inputBamFileProcess.pid);
     }
 }

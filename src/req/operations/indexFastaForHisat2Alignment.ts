@@ -1,12 +1,12 @@
-import { Fasta, getFaiPath } from "../fasta";
-import { getContigsFromFastaFile } from "../fastaContigLoader";
-import { getPath } from "../file";
-import { getReadable, getReadableAndWritable } from "../getAppPath";
-import { Job } from "../main/Job";
+import {Fasta, getFaiPath} from "../fasta";
+import {getContigsFromFastaFile} from "../fastaContigLoader";
+import {getPath} from "../file";
+import {getReadable, getReadableAndWritable} from "../getAppPath";
+import {Job} from "../main/Job";
 
 import * as atomic from "./atomicOperations";
-import { hisat2Build } from "./indexFasta/hisat2Build";
-import { samToolsFaidx } from "./indexFasta/samToolsFaidx";
+import {hisat2Build} from "./indexFasta/hisat2Build";
+import {samToolsFaidx} from "./indexFasta/samToolsFaidx";
 
 export interface IndexFastaForHisat2AlignmentData {
     opName: "indexFastaForHisat2Alignment";
@@ -29,7 +29,8 @@ export class IndexFastaForHisat2Alignment extends atomic.AtomicOperation<IndexFa
     public hisat2Flags: atomic.CompletionFlags;
     public hisat2SizeThreshold: number;
     public hisat2Indices: Array<string>;
-    constructor(data: IndexFastaForHisat2AlignmentData) {
+    constructor(data: IndexFastaForHisat2AlignmentData) 
+    {
         super(data);
         this.faiFlags = new atomic.CompletionFlags();
         this.hisat2Flags = new atomic.CompletionFlags();
@@ -67,13 +68,17 @@ export class IndexFastaForHisat2Alignment extends atomic.AtomicOperation<IndexFa
     }
 
     //hisat2Build -> samTools faidx
-    public run(): void {
+    public run(): void 
+    {
         this.logRecord = atomic.openLog(this.opName, "Index Fasta for Alignment");
 
         let self = this;
-        (async function () {
-            return new Promise<void>(async (resolve, reject) => {
-                try {
+        (async function () 
+        {
+            return new Promise<void>(async (resolve, reject) => 
+            {
+                try 
+                {
                     self.progressMessage = "Building hisat2 index";
                     self.update!();
                     await hisat2Build(self);
@@ -93,7 +98,8 @@ export class IndexFastaForHisat2Alignment extends atomic.AtomicOperation<IndexFa
                     //don't reparse contigs if we don't have to
                     //contigs are parsed during viz indexing as well
                     //if we reparse, we will clobber contig uuids and all references which point to them
-                    if (!self.fasta!.contigs || self.fasta!.contigs.length == 0) {
+                    if (!self.fasta!.contigs || self.fasta!.contigs.length == 0) 
+                    {
                         //contig information is required by the coverage distillation step of aligning
                         self.fasta!.contigs = await getContigsFromFastaFile(getPath(self.fasta!));
                     }
@@ -102,7 +108,8 @@ export class IndexFastaForHisat2Alignment extends atomic.AtomicOperation<IndexFa
                     self.fasta!.indexed = true;
                     self.update!();
                 }
-                catch (err) {
+                catch (err) 
+                {
                     self.abortOperationWithMessage(err);
                 }
             });

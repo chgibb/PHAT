@@ -1,5 +1,5 @@
 import * as atomic from "./atomicOperations";
-import { Fastq } from "./../fastq";
+import {Fastq} from "./../fastq";
 
 export interface InputFastqFileData {
     opName: "inputFastqFile";
@@ -9,20 +9,24 @@ export class InputFastqFile extends atomic.AtomicOperation<InputFastqFileData>
 {
     public filePath: string;
     public fastq: Fastq | undefined;
-    public constructor(data: InputFastqFileData) {
+    public constructor(data: InputFastqFileData) 
+    {
         super(data);
         this.ignoreScheduler = true;
 
         this.filePath = data.data;
     }
 
-    public run(): void {
+    public run(): void 
+    {
         this.logRecord = atomic.openLog(this.opName, "Input Fastq File");
-        try {
+        try 
+        {
             this.fastq = new Fastq(this.filePath!);
             this.fastq.checked = true;
         }
-        catch (err) {
+        catch (err) 
+        {
             this.abortOperationWithMessage(err);
         }
         this.setSuccess(this.flags);

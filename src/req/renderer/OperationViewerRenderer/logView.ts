@@ -1,10 +1,11 @@
 import * as electron from "electron";
 const ipc = electron.ipcRenderer;
 
+import {enQueueOperation} from "../enQueueOperation";
+
 import {AtomicOperationIPC} from "./../../atomicOperationsIPC";
 import * as viewMgr from "./../viewMgr";
 import {LogRecord,getLogRecords} from "./../../operations/atomicOperations"; 
-import { enQueueOperation } from '../enQueueOperation';
 
 export class View extends viewMgr.View
 {
@@ -45,7 +46,7 @@ export class View extends viewMgr.View
                 enQueueOperation({
                     opName : "openLogViewer",
                     logRecordToOpen : this.logRecords[i]
-                })
+                });
             }
         }
     }

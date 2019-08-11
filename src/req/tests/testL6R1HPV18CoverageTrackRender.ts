@@ -1,15 +1,15 @@
 import * as atomic from "./../operations/atomicOperations";
-import * as addOperation from "../operations/atomicOperations/addOperation";
 import {RenderCoverageTrackForContig} from "./../operations/RenderCoverageTrack";
 import {CircularFigure} from "./../renderer/circularFigure";
 import * as hpv18Figure from "./hpv18Figure";
 import * as L6R1HPV18Align from "./L6R1HPV18Align";
+import { addOperation } from '../operations/atomicOperations/addOperation';
 export async function testL6R1HPV18CoverageTrackRenderer() : Promise<void>
 {
     return new Promise<void>((resolve,reject) => 
     {
         hpv18Figure.init();
-        addOperation.addOperation({
+        addOperation({
             opName:"renderCoverageTrackForContig",
             circularFigure : hpv18Figure.get(),
             contiguuid : hpv18Figure.get().contigs[0].uuid,

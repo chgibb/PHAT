@@ -1,10 +1,10 @@
 import * as atomic from "./atomicOperations";
-import { Fasta, get2BitPath } from "./../fasta";
-import { getContigsFromFastaFile } from "./../fastaContigLoader";
-import { getPath } from "./../file";
-import { getReadable, getReadableAndWritable } from "./../getAppPath";
-import { Job } from "./../main/Job";
-import { faToTwoBit } from "./indexFasta/faToTwoBit";
+import {Fasta, get2BitPath} from "./../fasta";
+import {getContigsFromFastaFile} from "./../fastaContigLoader";
+import {getPath} from "./../file";
+import {getReadable, getReadableAndWritable} from "./../getAppPath";
+import {Job} from "./../main/Job";
+import {faToTwoBit} from "./indexFasta/faToTwoBit";
 
 export interface IndexFastaForVisualizationData {
     opName: "indexFastaForVisualization";
@@ -19,7 +19,8 @@ export class IndexFastaForVisualization extends atomic.AtomicOperation<IndexFast
     public twoBitPath: string;
     public twoBitJob: Job | undefined;
     public twoBitFlags: atomic.CompletionFlags;
-    constructor(data: IndexFastaForVisualizationData) {
+    constructor(data: IndexFastaForVisualizationData) 
+    {
         super(data);
         this.twoBitFlags = new atomic.CompletionFlags();
 
@@ -30,13 +31,17 @@ export class IndexFastaForVisualization extends atomic.AtomicOperation<IndexFast
         this.destinationArtifacts.push(this.twoBitPath);
     }
 
-    public run(): void {
+    public run(): void 
+    {
         this.logRecord = atomic.openLog(this.opName, "Index Fasta for Visualization");
 
         let self = this;
-        (async function () {
-            return new Promise<void>(async (resolve, reject) => {
-                try {
+        (async function () 
+        {
+            return new Promise<void>(async (resolve, reject) => 
+            {
+                try 
+                {
                     self.progressMessage = "Building 2bit archive";
                     self.update!();
                     await faToTwoBit(self);
@@ -48,14 +53,16 @@ export class IndexFastaForVisualization extends atomic.AtomicOperation<IndexFast
                     //don't reparse contigs if we don't have to
                     //contigs are parsed during viz indexing as well
                     //if we reparse, we will clobber contig uuids and all references which point to them
-                    if (!self.fasta!.contigs || self.fasta!.contigs.length == 0) {
+                    if (!self.fasta!.contigs || self.fasta!.contigs.length == 0) 
+                    {
                         self.fasta!.contigs = await getContigsFromFastaFile(getPath(self.fasta!));
                     }
                     self.fasta!.indexedForVisualization = true;
                     self.setSuccess(self.flags);
                     self.update!();
                 }
-                catch (err) {
+                catch (err) 
+                {
                     self.abortOperationWithMessage(err);
                 }
             });

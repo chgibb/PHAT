@@ -4,7 +4,7 @@ const ipc = electron.ipcRenderer;
 
 import {AtomicOperationIPC} from "./../atomicOperationsIPC";
 import {getReadable} from "./../getAppPath";
-import { enQueueOperation } from './enQueueOperation';
+import {enQueueOperation} from "./enQueueOperation";
 
 let electronTabs : any = undefined;
 let tabGroup : any = undefined;

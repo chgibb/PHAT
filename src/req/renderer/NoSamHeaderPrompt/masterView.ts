@@ -1,11 +1,12 @@
 import * as electron from "electron";
 const ipc = electron.ipcRenderer;
 
+import {enQueueOperation} from "../enQueueOperation";
+
 import * as viewMgr from "./../viewMgr";
 import {AtomicOperationIPC} from "./../../atomicOperationsIPC";
 import {Fasta} from "./../../fasta";
 import {InputBamFile} from "./../../operations/InputBamFile";
-import { enQueueOperation } from '../enQueueOperation';
 
 const Dialogs = require("dialogs");
 const dialogs = Dialogs();
@@ -81,7 +82,7 @@ export class View extends viewMgr.View
                                 opName : "inputBamFile",
                                 bamPath : self.inputBamFile!.bamPath,
                                 fasta : self.fastaInputs[i]
-                            })
+                            });
                             electron.remote.getCurrentWindow().close();
                         }
                     }

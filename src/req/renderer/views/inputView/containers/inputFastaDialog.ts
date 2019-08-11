@@ -3,7 +3,7 @@ const dialog = electron.remote.dialog;
 const ipc = electron.ipcRenderer;
 
 import {AtomicOperationIPC} from "../../../../atomicOperationsIPC";
-import { enQueueOperation } from '../../../enQueueOperation';
+import {enQueueOperation} from "../../../enQueueOperation";
 
 let fastaExtensions = [
     "fasta",

@@ -17,7 +17,7 @@ const jsonFile = require("jsonfile");
 const $ = require("jquery");
 
 import "./req/renderer/commonBehaviour";
-import { enQueueOperation } from './req/renderer/enQueueOperation';
+import {enQueueOperation} from "./req/renderer/enQueueOperation";
 
 (<any>window).$ = $;
 const dialogs = Dialogs();

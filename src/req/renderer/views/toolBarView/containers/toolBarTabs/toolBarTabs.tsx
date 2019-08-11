@@ -10,9 +10,9 @@ import {Avatar} from "../../../../components/avatar";
 import {tabInfo} from "../../tabInfo";
 import {AtomicOperationIPC} from "../../../../../atomicOperationsIPC";
 import {Tabs} from "../../../../components/tabs";
+import {enQueueOperation} from "../../../../enQueueOperation";
 
 import {wrapperBGColour} from "./styles/wrapperBGColour";
-import { enQueueOperation } from '../../../../enQueueOperation';
 
 const ipc = electron.ipcRenderer;
 

@@ -1,6 +1,6 @@
 import * as atomic from "./atomicOperations";
-import { finishLoadingProject } from "./../main/finishLoadingProject";
-import { getCurrentlyOpenProject } from "./../getCurrentlyOpenProject";
+import {finishLoadingProject} from "./../main/finishLoadingProject";
+import {getCurrentlyOpenProject} from "./../getCurrentlyOpenProject";
 
 export interface LoadCurrentlyOpenProjectData {
     opName: "loadCurrentlyOpenProject";
@@ -8,17 +8,21 @@ export interface LoadCurrentlyOpenProjectData {
 
 export class LoadCurrentlyOpenProject extends atomic.AtomicOperation<LoadCurrentlyOpenProjectData>
 {
-    public constructor(data: LoadCurrentlyOpenProjectData) {
+    public constructor(data: LoadCurrentlyOpenProjectData) 
+    {
         super(data);
     }
 
-    public run(): void {
+    public run(): void 
+    {
         this.logRecord = atomic.openLog(this.opName, "Load Currently Open Project");
-        try {
+        try 
+        {
             finishLoadingProject(getCurrentlyOpenProject()!);
             this.setSuccess(this.flags);
         }
-        catch (err) {
+        catch (err) 
+        {
             this.abortOperationWithMessage(err);
         }
         this.update!();

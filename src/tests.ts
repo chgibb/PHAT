@@ -199,11 +199,11 @@ async function runTests() : Promise<void>
 
         console.log("Starting to align L6R1R1, L6R1R2 against hpv16 using hisat2");
         addOperation.addOperation({
-                opName:"runHisat2Alignment",
-                fasta : hpv16Ref.get(),
-                fastq1 : L6R1R1.get(),
-                fastq2 : L6R1R2.get()
-            }
+            opName:"runHisat2Alignment",
+            fasta : hpv16Ref.get(),
+            fastq1 : L6R1R1.get(),
+            fastq2 : L6R1R2.get()
+        }
         );
         try
         {
@@ -495,11 +495,11 @@ async function runTests() : Promise<void>
 
         console.log("Starting to align L6R7R1, L6R7R2 against hpv16");
         addOperation.addOperation({
-                opName:"runBowtie2Alignment",
-                fasta : hpv16Ref.get(),
-                fastq1 : L6R7R1.get(),
-                fastq2 : L6R7R2.get()
-            }
+            opName:"runBowtie2Alignment",
+            fasta : hpv16Ref.get(),
+            fastq1 : L6R7R1.get(),
+            fastq2 : L6R7R2.get()
+        }
         );
         try
         {

@@ -1,42 +1,42 @@
-import { EventEmitter } from "events";
+import {EventEmitter} from "events";
 import * as fs from "fs";
 import * as readline from "readline";
 import * as cp from "child_process";
 
 import * as rimraf from "rimraf";
 
-import { AtomicOperationForkEvent } from "./../atomicOperationsIPC";
-import { SpawnRequestParams } from "./../JobIPC";
-import { getReadableAndWritable, getReadable } from "./../getAppPath";
-import { BLASTSegmentData } from './BLASTSegment';
-import { CheckForUpdateData } from './CheckForUpdate';
-import { ChangeTitleData } from './ChangeTitle';
-import { CopyCircularFigureData } from './CopyCircularFigure';
-import { DeleteCircularFigureData } from './DeleteCircularFigure';
-import { DockWindowData } from './DockWindow';
-import { DownloadAndInstallUpdateData } from './DownloadAndInstallUpdate';
-import { GenerateQCReportData } from './GenerateQCReport';
-import { ImportFileIntoProjectData } from './ImportFileIntoProject';
-import { IndexFastaForBowtie2AlignmentData } from './indexFastaForBowtie2Alignment';
-import { IndexFastaForHisat2AlignmentData } from './indexFastaForHisat2Alignment';
-import { IndexFastaForVisualizationData } from './indexFastaForVisualization';
-import { InputBamFileData } from './InputBamFile';
-import { InputFastaFileData } from './inputFastaFile';
-import { InputFastqFileData } from './inputFastqFile';
-import { InstallUpdateData } from './InstallUpdate';
-import { LinkRefSeqToAlignmentData } from './LinkRefSeqToAlignment';
-import { LoadCurrentlyOpenProjectData } from './LoadCurrentlyOpenProject';
-import { NewProjectData } from './NewProject';
-import { OpenLogViewerData } from './OpenLogViewer';
-import { OpenNoSamHeaderPromptData } from './OpenNoSamHeaderPrompt';
-import { OpenPileupViewerData } from './OpenPileupViewer';
-import { OpenProjectData } from './OpenProject';
-import { RenderCoverageTrackForContigData } from './RenderCoverageTrack';
-import { RenderSNPTrackForContigData } from './RenderSNPTrack';
-import { RunBowtie2AlignmentData } from './RunBowtie2Alignment';
-import { RunHisat2AlignmentData } from './RunHisat2Alignment';
-import { SaveProjectData } from './SaveProject';
-import { UnDockWindowData } from './UnDockWindow';
+import {AtomicOperationForkEvent} from "./../atomicOperationsIPC";
+import {SpawnRequestParams} from "./../JobIPC";
+import {getReadableAndWritable, getReadable} from "./../getAppPath";
+import {BLASTSegmentData} from "./BLASTSegment";
+import {CheckForUpdateData} from "./CheckForUpdate";
+import {ChangeTitleData} from "./ChangeTitle";
+import {CopyCircularFigureData} from "./CopyCircularFigure";
+import {DeleteCircularFigureData} from "./DeleteCircularFigure";
+import {DockWindowData} from "./DockWindow";
+import {DownloadAndInstallUpdateData} from "./DownloadAndInstallUpdate";
+import {GenerateQCReportData} from "./GenerateQCReport";
+import {ImportFileIntoProjectData} from "./ImportFileIntoProject";
+import {IndexFastaForBowtie2AlignmentData} from "./indexFastaForBowtie2Alignment";
+import {IndexFastaForHisat2AlignmentData} from "./indexFastaForHisat2Alignment";
+import {IndexFastaForVisualizationData} from "./indexFastaForVisualization";
+import {InputBamFileData} from "./InputBamFile";
+import {InputFastaFileData} from "./inputFastaFile";
+import {InputFastqFileData} from "./inputFastqFile";
+import {InstallUpdateData} from "./InstallUpdate";
+import {LinkRefSeqToAlignmentData} from "./LinkRefSeqToAlignment";
+import {LoadCurrentlyOpenProjectData} from "./LoadCurrentlyOpenProject";
+import {NewProjectData} from "./NewProject";
+import {OpenLogViewerData} from "./OpenLogViewer";
+import {OpenNoSamHeaderPromptData} from "./OpenNoSamHeaderPrompt";
+import {OpenPileupViewerData} from "./OpenPileupViewer";
+import {OpenProjectData} from "./OpenProject";
+import {RenderCoverageTrackForContigData} from "./RenderCoverageTrack";
+import {RenderSNPTrackForContigData} from "./RenderSNPTrack";
+import {RunBowtie2AlignmentData} from "./RunBowtie2Alignment";
+import {RunHisat2AlignmentData} from "./RunHisat2Alignment";
+import {SaveProjectData} from "./SaveProject";
+import {UnDockWindowData} from "./UnDockWindow";
 
 export interface OperationData {
     opName: string;
@@ -156,7 +156,8 @@ export abstract class AtomicOperation<InputData extends OperationData>
     public ignoreScheduler: boolean;
 
 
-    public constructor(data: InputData) {
+    public constructor(data: InputData) 
+    {
         this.generatedArtifacts = new Array<string>();
         this.destinationArtifacts = new Array<string>();
         this.generatedArtifactsDirectories = new Array<string>();
@@ -175,28 +176,36 @@ export abstract class AtomicOperation<InputData extends OperationData>
 
         this.opName = data.opName;
     }
-    public getGeneratedArtifacts(): Array<string> {
+    public getGeneratedArtifacts(): Array<string> 
+    {
         return this.generatedArtifacts;
     }
-    public setGeneratedArtifacts(artifacts: Array<string>): void {
+    public setGeneratedArtifacts(artifacts: Array<string>): void 
+    {
         this.generatedArtifacts = artifacts;
     }
-    public getDestinationArtifacts(): Array<string> {
+    public getDestinationArtifacts(): Array<string> 
+    {
         return this.destinationArtifacts;
     }
-    public setDestinationArtifacts(artifacts: Array<string>): void {
+    public setDestinationArtifacts(artifacts: Array<string>): void 
+    {
         this.destinationArtifacts = artifacts;
     }
-    public getGeneratedArtifactsDirectories(): Array<string> {
+    public getGeneratedArtifactsDirectories(): Array<string> 
+    {
         return this.generatedArtifactsDirectories;
     }
-    public setGeneratedArtifactsDirectories(artifacts: Array<string>): void {
+    public setGeneratedArtifactsDirectories(artifacts: Array<string>): void 
+    {
         this.generatedArtifactsDirectories = artifacts;
     }
-    public getDestinationArtifactsDirectories(): Array<string> {
+    public getDestinationArtifactsDirectories(): Array<string> 
+    {
         return this.destinationArtifactsDirectories;
     }
-    public setDestinationArtifactsDirectories(artifacts: Array<string>): void {
+    public setDestinationArtifactsDirectories(artifacts: Array<string>): void 
+    {
         this.destinationArtifactsDirectories = artifacts;
     }
 
@@ -208,7 +217,8 @@ export abstract class AtomicOperation<InputData extends OperationData>
      * @param {CompletionFlags} flags 
      * @memberof AtomicOperation
      */
-    public setFailure(flags: CompletionFlags): void {
+    public setFailure(flags: CompletionFlags): void 
+    {
         flags.done = true;
         flags.success = false;
         flags.failure = true;
@@ -220,7 +230,8 @@ export abstract class AtomicOperation<InputData extends OperationData>
      * @param {CompletionFlags} flags 
      * @memberof AtomicOperation
      */
-    public setSuccess(flags: CompletionFlags): void {
+    public setSuccess(flags: CompletionFlags): void 
+    {
         flags.done = true;
         flags.success = true;
         flags.failure = false;
@@ -233,7 +244,8 @@ export abstract class AtomicOperation<InputData extends OperationData>
      * @param {number} pid 
      * @memberof AtomicOperation
      */
-    public addPID(pid: number): void {
+    public addPID(pid: number): void 
+    {
         this.pids.push(pid);
     }
 
@@ -244,9 +256,11 @@ export abstract class AtomicOperation<InputData extends OperationData>
      * @param {number} pid 
      * @memberof AtomicOperation
      */
-    public addPIDFromFork(pid: number): void {
+    public addPIDFromFork(pid: number): void 
+    {
         //running forked
-        if (process.send) {
+        if (process.send) 
+        {
             process.send!(
                 <AtomicOperationForkEvent>{
                     pid: pid
@@ -263,7 +277,8 @@ export abstract class AtomicOperation<InputData extends OperationData>
      * @returns {Array<number>} 
      * @memberof AtomicOperation
      */
-    public getPIDs(): Array<number> {
+    public getPIDs(): Array<number> 
+    {
         return this.pids;
     }
 
@@ -281,7 +296,8 @@ export abstract class AtomicOperation<InputData extends OperationData>
      * @param {string} msg 
      * @memberof AtomicOperation
      */
-    public abortOperationWithMessage(msg: string): void {
+    public abortOperationWithMessage(msg: string): void 
+    {
         this.setFailure(this.flags);
         this.extraData = msg;
         this.update!();
@@ -293,7 +309,8 @@ export abstract class AtomicOperation<InputData extends OperationData>
      * @param {*} obj 
      * @memberof AtomicOperation
      */
-    public logObject(obj: any): void {
+    public logObject(obj: any): void 
+    {
         logString(this.logRecord!, JSON.stringify(obj, undefined, 4));
     }
 }
@@ -307,13 +324,15 @@ export abstract class AtomicOperation<InputData extends OperationData>
  */
 export class ForkLogger extends AtomicOperation<any>
 {
-    public constructor() {
+    public constructor() 
+    {
         super({
             opName : "forkLoger"
         });
     }
 
-    public run() { }
+    public run() 
+    { }
 }
 
 
@@ -327,31 +346,37 @@ export class ForkLogger extends AtomicOperation<any>
  * @param {(ev : any) => void} cb 
  * @returns {cp.ChildProcess} 
  */
-export function makeFork(target: string, data: any, cb: (ev: any) => void): cp.ChildProcess {
+export function makeFork(target: string, data: any, cb: (ev: any) => void): cp.ChildProcess 
+{
     let res = cp.fork(
         getReadable(target), [], <cp.ForkOptions>{
             silent: true
         }
     );
 
-    res.stdout.on("data", function (data: Buffer) {
+    res.stdout.on("data", function (data: Buffer) 
+    {
         console.log(data.toString());
     });
 
-    res.stderr.on("data", function (data: Buffer) {
+    res.stderr.on("data", function (data: Buffer) 
+    {
         console.error(data.toString());
     });
 
-    res.on("message", function (ev: any) {
+    res.on("message", function (ev: any) 
+    {
         cb(ev);
     });
 
-    res.on("exit", function (code: number) {
+    res.on("exit", function (code: number) 
+    {
         console.log(`${target} exited with ${code}`);
     });
 
     setTimeout(
-        function () {
+        function () 
+        {
             res.send(data);
         }, 10
     );
@@ -365,7 +390,8 @@ export function makeFork(target: string, data: any, cb: (ev: any) => void): cp.C
  * @export
  * @param {number} retCode 
  */
-export function exitFork(retCode: number, disconnect = true): void {
+export function exitFork(retCode: number, disconnect = true): void 
+{
     if (disconnect)
         process.disconnect();
     process.exitCode = retCode;
@@ -378,8 +404,10 @@ export function exitFork(retCode: number, disconnect = true): void {
  * @param {ForkLogger} [logger] 
  * @param {string} [progressMessage] 
  */
-export function handleForkFailures(logger?: ForkLogger, progressMessage?: string) {
-    let signalFailure = function (err: string) {
+export function handleForkFailures(logger?: ForkLogger, progressMessage?: string) 
+{
+    let signalFailure = function (err: string) 
+    {
         let flags: CompletionFlags = new CompletionFlags();
         flags.done = true;
         flags.failure = true;
@@ -391,7 +419,8 @@ export function handleForkFailures(logger?: ForkLogger, progressMessage?: string
             data: err,
             progressMessage: progressMessage
         };
-        if (logger !== undefined) {
+        if (logger !== undefined) 
+        {
             logger.logObject(failureObj);
             closeLog(logger.logRecord!, "failure");
             failureObj.logRecord = logger.logRecord;
@@ -401,19 +430,23 @@ export function handleForkFailures(logger?: ForkLogger, progressMessage?: string
         exitFork(1);
 
     };
-    (process as NodeJS.EventEmitter).on("uncaughtException", function (err: Error) {
+    (process as NodeJS.EventEmitter).on("uncaughtException", function (err: Error) 
+    {
         let errString = `Uncaught exception ${err}`;
         console.log(errString);
-        if (logger !== undefined) {
+        if (logger !== undefined) 
+        {
             logger.logObject(err);
         }
         signalFailure(`${err.toString()} ${err.stack}`);
     });
 
-    process.on("unhandledRejection", function (reason: Error) {
+    process.on("unhandledRejection", function (reason: Error) 
+    {
         let errString = `Unhandled rejection ${reason}`;
         console.log(errString);
-        if (logger !== undefined) {
+        if (logger !== undefined) 
+        {
             logger.logObject(errString);
         }
         signalFailure(`${reason.toString()} ${reason.stack}`);
@@ -426,11 +459,13 @@ export function handleForkFailures(logger?: ForkLogger, progressMessage?: string
  * @export
  * @class CompletionFlags
  */
-export class CompletionFlags {
+export class CompletionFlags 
+{
     public done: boolean;
     public success: boolean;
     public failure: boolean;
-    public constructor() {
+    public constructor() 
+    {
         this.done = false;
         this.success = false;
         this.failure = false;
@@ -446,7 +481,8 @@ export let updates: EventEmitter = new EventEmitter();
  * 
  * @export
  */
-export function clearOperationsQueue() {
+export function clearOperationsQueue() 
+{
     operationsQueue = new Array<AtomicOperation<any>>();
 }
 
@@ -456,20 +492,27 @@ export function clearOperationsQueue() {
  * @export
  * @param {AtomicOperation} op 
  */
-export function cleanGeneratedArtifacts(op: AtomicOperation<any>): void {
-    for (let i = 0; i != op.generatedArtifacts.length; ++i) {
-        try {
+export function cleanGeneratedArtifacts(op: AtomicOperation<any>): void 
+{
+    for (let i = 0; i != op.generatedArtifacts.length; ++i) 
+    {
+        try 
+        {
             fs.unlinkSync(op.generatedArtifacts[i]);
         }
-        catch (err) {
+        catch (err) 
+        {
             err;
         }
     }
-    for (let i = 0; i != op.generatedArtifactsDirectories.length; ++i) {
-        try {
+    for (let i = 0; i != op.generatedArtifactsDirectories.length; ++i) 
+    {
+        try 
+        {
             rimraf.sync(op.generatedArtifactsDirectories[i]);
         }
-        catch (err) {
+        catch (err) 
+        {
             err;
         }
     }
@@ -481,20 +524,27 @@ export function cleanGeneratedArtifacts(op: AtomicOperation<any>): void {
  * @export
  * @param {AtomicOperation} op 
  */
-export function cleanDestinationArtifacts(op: AtomicOperation<any>): void {
-    for (let i = 0; i != op.destinationArtifacts.length; ++i) {
-        try {
+export function cleanDestinationArtifacts(op: AtomicOperation<any>): void 
+{
+    for (let i = 0; i != op.destinationArtifacts.length; ++i) 
+    {
+        try 
+        {
             fs.unlinkSync(op.destinationArtifacts[i]);
         }
-        catch (err) {
+        catch (err) 
+        {
             err;
         }
     }
-    for (let i = 0; i != op.destinationArtifactsDirectories.length; ++i) {
-        try {
+    for (let i = 0; i != op.destinationArtifactsDirectories.length; ++i) 
+    {
+        try 
+        {
             rimraf.sync(op.destinationArtifactsDirectories[i]);
         }
-        catch (err) {
+        catch (err) 
+        {
             err;
         }
     }
@@ -507,7 +557,8 @@ export let onComplete: (op: AtomicOperation<any>) => void | undefined;
  * @export
  * @param {(op : AtomicOperation<any>) => void} func 
  */
-export function setOnComplete(func: (op: AtomicOperation<any>) => void): void {
+export function setOnComplete(func: (op: AtomicOperation<any>) => void): void 
+{
     onComplete = func;
 }
 
@@ -549,31 +600,40 @@ UnDockWindowData;
  * @export
  * @param {number} maxRunning 
  */
-export function runOperations(maxRunning: number): void {
-    for (let i = 0; i != operationsQueue.length; ++i) {
-        if (operationsQueue[i].ignoreScheduler && !operationsQueue[i].running) {
+export function runOperations(maxRunning: number): void 
+{
+    for (let i = 0; i != operationsQueue.length; ++i) 
+    {
+        if (operationsQueue[i].ignoreScheduler && !operationsQueue[i].running) 
+        {
             operationsQueue[i].running = true;
             operationsQueue[i].run();
         }
     }
     //console.log(operationsQueue);
     let currentRunning: number = 0;
-    for (let i = 0; i != operationsQueue.length; ++i) {
-        if (operationsQueue[i] !== undefined) {
+    for (let i = 0; i != operationsQueue.length; ++i) 
+    {
+        if (operationsQueue[i] !== undefined) 
+        {
             if (operationsQueue[i].running)
                 currentRunning++;
             if (currentRunning >= maxRunning)
                 break;
-            if (!operationsQueue[i].running) {
+            if (!operationsQueue[i].running) 
+            {
                 operationsQueue[i].running = true;
                 currentRunning++;
                 operationsQueue[i].run();
             }
         }
     }
-    for (let i = operationsQueue.length - 1; i >= 0; --i) {
-        if (operationsQueue[i].flags.done) {
-            if (operationsQueue[i].flags.success || operationsQueue[i].flags.failure) {
+    for (let i = operationsQueue.length - 1; i >= 0; --i) 
+    {
+        if (operationsQueue[i].flags.done) 
+        {
+            if (operationsQueue[i].flags.success || operationsQueue[i].flags.failure) 
+            {
                 operationsQueue.splice(i, 1);
             }
         }
@@ -590,7 +650,8 @@ export let logRecordFile = getReadableAndWritable("logs/logRecords");
  * @export
  * @class LogRecord
  */
-export class LogRecord {
+export class LogRecord 
+{
     name: string = "";
     description: string = "";
     status: string = "";
@@ -607,7 +668,8 @@ export class LogRecord {
  * @param {LogRecord} logRecord 
  * @returns {string} 
  */
-export function getLogDirectory(logRecord: LogRecord): string {
+export function getLogDirectory(logRecord: LogRecord): string 
+{
     return getReadableAndWritable(`logs/${logRecord.uuid}`);
 }
 
@@ -618,7 +680,8 @@ export function getLogDirectory(logRecord: LogRecord): string {
  * @param {LogRecord} logRecord 
  * @returns {string} 
  */
-export function getLogFile(logRecord: LogRecord): string {
+export function getLogFile(logRecord: LogRecord): string 
+{
     return getReadableAndWritable(`logs/${logRecord.uuid}/log`);
 }
 
@@ -630,7 +693,8 @@ export function getLogFile(logRecord: LogRecord): string {
  * @param {string} description 
  * @returns {LogRecord} 
  */
-export function openLog(name: string, description: string): LogRecord {
+export function openLog(name: string, description: string): LogRecord 
+{
     const mkdirp = require("mkdirp");
     const uuidv4: () => string = require("uuid/v4");
 
@@ -655,7 +719,8 @@ export function openLog(name: string, description: string): LogRecord {
  * @param {LogRecord} logRecord 
  * @param {string} status 
  */
-export function closeLog(logRecord: LogRecord, status: string): void {
+export function closeLog(logRecord: LogRecord, status: string): void 
+{
     if (!logRecord || !logRecord.uuid)
         throw new Error(`Failed to close log with status ${status} which does not exist`);
     logRecord.endEpoch = Date.now();
@@ -674,7 +739,8 @@ export function closeLog(logRecord: LogRecord, status: string): void {
  * @export
  * @param {LogRecord} record 
  */
-export function recordLogRecord(record: LogRecord): void {
+export function recordLogRecord(record: LogRecord): void 
+{
     const mkdirp = require("mkdirp");
 
     if (record === undefined)
@@ -690,7 +756,8 @@ export function recordLogRecord(record: LogRecord): void {
  * @param {LogRecord} logRecord 
  * @param {string} data 
  */
-export function logString(logRecord: LogRecord, data: string): void {
+export function logString(logRecord: LogRecord, data: string): void 
+{
     if (!logRecord || !logRecord.uuid)
         throw new Error("Cannot write string to log which does not exist");
 
@@ -705,21 +772,28 @@ export function logString(logRecord: LogRecord, data: string): void {
  * @param {number} last 
  * @returns {Promise<Array<LogRecord>>} 
  */
-export async function getLogRecords(last: number): Promise<Array<LogRecord>> {
-    return new Promise<Array<LogRecord>>((resolve, reject) => {
+export async function getLogRecords(last: number): Promise<Array<LogRecord>> 
+{
+    return new Promise<Array<LogRecord>>((resolve, reject) => 
+    {
         let lines: Array<string> = new Array<string>();
         let res: Array<LogRecord> = new Array<LogRecord>();
-        try {
+        try 
+        {
             let rl: readline.ReadLine = readline.createInterface(<readline.ReadLineOptions>{
                 input: fs.createReadStream(logRecordFile)
             });
-            rl.on("line", function (line: string) {
+            rl.on("line", function (line: string) 
+            {
                 lines.push(line);
             });
-            rl.on("close", function () {
+            rl.on("close", function () 
+            {
                 lines = lines.reverse();
-                for (let i = 0; i != last; ++i) {
-                    if (i == lines.length) {
+                for (let i = 0; i != last; ++i) 
+                {
+                    if (i == lines.length) 
+                    {
                         return resolve(res);
                     }
                     res.push(JSON.parse(lines[i]));
@@ -727,7 +801,8 @@ export async function getLogRecords(last: number): Promise<Array<LogRecord>> {
                 resolve(res);
             });
         }
-        catch (err) {
+        catch (err) 
+        {
             err;
         }
     });
@@ -740,8 +815,10 @@ export async function getLogRecords(last: number): Promise<Array<LogRecord>> {
  * @param {LogRecord} logRecord
  * @returns {Promise<string>}
  */
-export async function getLogContent(logRecord: LogRecord): Promise<string> {
-    return new Promise<string>((resolve: (value: string) => void) => {
+export async function getLogContent(logRecord: LogRecord): Promise<string> 
+{
+    return new Promise<string>((resolve: (value: string) => void) => 
+    {
         let res = "";
 
         let rl: readline.ReadLine = readline.createInterface(
@@ -752,12 +829,14 @@ export async function getLogContent(logRecord: LogRecord): Promise<string> {
             }
         );
 
-        rl.on("line", function (line: string) {
+        rl.on("line", function (line: string) 
+        {
             res += line;
             res += "\n";
         });
 
-        rl.on("close", function () {
+        rl.on("close", function () 
+        {
             resolve(res);
         });
     });

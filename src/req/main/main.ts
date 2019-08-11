@@ -251,48 +251,48 @@ ipc.on(
 );
 
 ipc.on(
-	"runOperation",function(event : Electron.IpcMessageEvent,arg : atomicOp.AddOperationType)
-	{
-		console.log(arg);
-		dataMgr.setKey("application","operations",atomicOp.operationsQueue);
-		winMgr.publishChangeForKey("application","operations");
+    "runOperation",function(event : Electron.IpcMessageEvent,arg : atomicOp.AddOperationType)
+    {
+        console.log(arg);
+        dataMgr.setKey("application","operations",atomicOp.operationsQueue);
+        winMgr.publishChangeForKey("application","operations");
 
-		if(arg.opName == "checkForUpdate")
-		{
-			let token = "";
-			let auth = dataMgr.getKey("application","auth");
-			if(auth && auth.token)
-				token = auth.token
-				console.log("token: "+token);
-			addOperation({
+        if(arg.opName == "checkForUpdate")
+        {
+            let token = "";
+            let auth = dataMgr.getKey("application","auth");
+            if(auth && auth.token)
+                token = auth.token;
+            console.log("token: "+token);
+            addOperation({
                 opName:"checkForUpdate",
             });
-		}
+        }
 	    if(arg.opName == "downloadAndInstallUpdate")
-		{
-			let asset : any = undefined;
-			let auth = dataMgr.getKey("application","auth");
-			if(auth && auth.token)
-			//if checkForUpdate was not successful, this will not be set
-			asset = dataMgr.getKey("application","availableUpdate");
+        {
+            let asset : any = undefined;
+            let auth = dataMgr.getKey("application","auth");
+            if(auth && auth.token)
+            //if checkForUpdate was not successful, this will not be set
+                asset = dataMgr.getKey("application","availableUpdate");
 
-			//If we're running a portable edition then we can use our auto updater
-			let isPortable = /(portable)/i;
-			if(isPortable.test(getEdition()))
-			{
-				if(!asset)
-					return;
-				addOperation(
-				{
-                    opName:"downloadAndInstallUpdate",
-					data:{asset : asset},
-				});
-				winMgr.closeAllExcept("projectSelection");
-			}
-			else
-			{
-				//Electron.shell.openExternal("https://github.com/chgibb/PHAT/releases");
-			}
+            //If we're running a portable edition then we can use our auto updater
+            let isPortable = /(portable)/i;
+            if(isPortable.test(getEdition()))
+            {
+                if(!asset)
+                    return;
+                addOperation(
+                    {
+                        opName:"downloadAndInstallUpdate",
+                        data:{asset : asset},
+                    });
+                winMgr.closeAllExcept("projectSelection");
+            }
+            else
+            {
+                //Electron.shell.openExternal("https://github.com/chgibb/PHAT/releases");
+            }
         }
         
         else
@@ -300,9 +300,9 @@ ipc.on(
             addOperation(arg);
         }
 
-		dataMgr.setKey("application","operations",atomicOp.operationsQueue);
-		winMgr.publishChangeForKey("application","operations");
-	}
+        dataMgr.setKey("application","operations",atomicOp.operationsQueue);
+        winMgr.publishChangeForKey("application","operations");
+    }
 );
 
 atomicOp.updates.on(

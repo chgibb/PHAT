@@ -2,12 +2,13 @@
 import {ipcRenderer} from "electron";
 let ipc = ipcRenderer;
 
+import {enQueueOperation} from "../enQueueOperation";
+
 import {AtomicOperationIPC} from "./../../atomicOperationsIPC";
 import {AtomicOperation} from "./../../operations/atomicOperations";
 import {getReadable} from "./../../getAppPath";
 import {ProjectManifest,getProjectManifests} from "./../../projectManifest";
 import * as viewMgr from "./../viewMgr";
-import { enQueueOperation } from '../enQueueOperation';
 
 const jsonFile = require("jsonfile");
 const Dialogs = require("dialogs");

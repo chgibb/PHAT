@@ -46,19 +46,20 @@ export function samToolsDepth(alignData: AlignData,logger : atomic.AtomicOperati
                     {
                         if(params.retCode == 0)
                         {
-                            atomic.logString(logger.logRecord!,`Finished samtools`);
+                            atomic.logString(logger.logRecord!,"Finished samtools");
                             setTimeout(
                                 function()
                                 {
                                     samToolsCoverageFileStream.end();
-                                    atomic.logString(logger.logRecord!,`Starting distillation`);
+                                    atomic.logString(logger.logRecord!,"Starting distillation");
                                     let rl : readline.ReadLine = readline.createInterface(<readline.ReadLineOptions>{
                                         input : fs.createReadStream(getCoverage(alignData))
                                     });
 
                                     atomic.logString(logger.logRecord!,`Path is ${getCoverage(alignData)}`);
-                                    rl.on("line",function(line){
-                                        atomic.logString(logger.logRecord!,`Got a line`);
+                                    rl.on("line",function(line)
+                                    {
+                                        atomic.logString(logger.logRecord!,"Got a line");
                                         
                                         //distill output from samtools depth into individual contig coverage files identified by uuid and without the contig name.
                                         let coverageTokens = line.split(/\s/g);
@@ -76,12 +77,14 @@ export function samToolsDepth(alignData: AlignData,logger : atomic.AtomicOperati
                                         }
                                     });
 
-                                    rl.on("close",function(){
-                                        atomic.logString(logger.logRecord!,`Distillation closed`);
+                                    rl.on("close",function()
+                                    {
+                                        atomic.logString(logger.logRecord!,"Distillation closed");
                                         resolve();
                                     });
 
-                                    rl.on("error",function(err){
+                                    rl.on("error",function(err)
+                                    {
                                         atomic.logString(logger.logRecord!,`Distillation threw error ${err}`);
                                         reject(err);
                                     });

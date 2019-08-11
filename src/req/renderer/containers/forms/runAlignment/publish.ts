@@ -3,7 +3,7 @@ import * as electron from "electron";
 import {Fastq} from "../../../../fastq";
 import {Fasta} from "../../../../fasta";
 import {AtomicOperationIPC} from "../../../../atomicOperationsIPC";
-import { enQueueOperation } from '../../../enQueueOperation';
+import {enQueueOperation} from "../../../enQueueOperation";
 const ipc = electron.ipcRenderer;
 
 export function triggerHisat2Alignment(fasta : Fasta,fastq1 : Fastq,fastq2 : Fastq | undefined) : void
@@ -19,9 +19,9 @@ export function triggerHisat2Alignment(fasta : Fasta,fastq1 : Fastq,fastq2 : Fas
     enQueueOperation({
         opName : "runHisat2Alignment",
 
-            fasta : fasta,
-            fastq1 : fastq1,
-            fastq2 : fastq2
+        fasta : fasta,
+        fastq1 : fastq1,
+        fastq2 : fastq2
         
     });
 }
@@ -40,9 +40,9 @@ export function triggerBowtie2Alignment(fasta : Fasta,fastq1 : Fastq,fastq2 : Fa
     enQueueOperation({
         opName : "runBowtie2Alignment",
 
-            fasta : fasta,
-            fastq1 : fastq1,
-            fastq2 : fastq2
+        fasta : fasta,
+        fastq1 : fastq1,
+        fastq2 : fastq2
         
-    })
+    });
 }

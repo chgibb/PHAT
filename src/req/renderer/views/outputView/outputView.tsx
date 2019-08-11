@@ -15,7 +15,7 @@ import {DialogTitle} from "../../components/dialogTitle";
 import {DialogActions} from "../../components/dialogActions";
 import {ReadsPerContigTable} from "../../containers/tables/readsPerContigTable";
 import {BLASTRunsTable} from "../../containers/tables/BLASTRunsTable";
-import { enQueueOperation } from '../../enQueueOperation';
+import {enQueueOperation} from "../../enQueueOperation";
 
 export interface OutputViewState
 {
@@ -168,10 +168,10 @@ export class OutputView extends React.Component<OutputViewProps,OutputViewState>
                                         enQueueOperation({
                                             opName: "openPileupViewer",
 
-                                                align: rowData,
-                                                contig: fasta.contigs[0].name.split(" ")[0],
-                                                start: 0,
-                                                stop: 100
+                                            align: rowData,
+                                            contig: fasta.contigs[0].name.split(" ")[0],
+                                            start: 0,
+                                            stop: 100
                                             
                                         });
                                     }

@@ -9,7 +9,7 @@ import {Table} from "../../components/table";
 import {Fasta} from "../../../fasta";
 import {AtomicOperationIPC} from "../../../atomicOperationsIPC";
 import {TableCellHover} from "../tableCellHover";
-import { enQueueOperation } from '../../enQueueOperation';
+import {enQueueOperation} from "../../enQueueOperation";
 
 const ipc = electron.ipcRenderer;
 
@@ -89,12 +89,12 @@ export function SNPPositionsTable(props : SNPPositionsTableProps) : JSX.Element
                         enQueueOperation({
                             opName : "openPileupViewer",
                    
-                                align : props.align!,
-                                contig : contig,
-                                start : start,
-                                stop : stop
+                            align : props.align!,
+                            contig : contig,
+                            start : start,
+                            stop : stop
                             
-                        })
+                        });
                     }
                 }}
                 columns={[

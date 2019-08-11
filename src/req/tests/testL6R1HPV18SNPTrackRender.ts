@@ -1,14 +1,14 @@
 import * as atomic from "./../operations/atomicOperations";
-import * as addOperation from "../operations/atomicOperations/addOperation";
 import {RenderSNPTrackForContig} from "./../operations/RenderSNPTrack";
 import {CircularFigure} from "./../renderer/circularFigure";
 import * as hpv18Figure from "./hpv18Figure";
 import * as L6R1HPV18Align from "./L6R1HPV18Align";
+import { addOperation } from '../operations/atomicOperations/addOperation';
 export async function testL6R1HPV18SNPTrackRenderer() : Promise<void>
 {
     return new Promise<void>((resolve,reject) => 
     {
-        addOperation.addOperation({
+        addOperation({
             opName:"renderSNPTrackForContig",
             circularFigure : hpv18Figure.get(),
             contiguuid : hpv18Figure.get().contigs[0].uuid,

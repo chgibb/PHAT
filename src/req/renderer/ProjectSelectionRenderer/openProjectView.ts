@@ -3,6 +3,8 @@ import {ipcRenderer} from "electron";
 let ipc = ipcRenderer;
 
 
+import {enQueueOperation} from "../enQueueOperation";
+
 import {ProjectManifest,getProjectManifests} from "./../../projectManifest";
 import {getCurrentlyOpenProject} from "./../../getCurrentlyOpenProject";
 import {exportProjectBrowseDialog} from "./exportProjectBrowseDialog";
@@ -10,7 +12,6 @@ import {importProjectBrowseDialog} from "./importProjectBrowseDialog";
 import {AtomicOperationIPC} from "./../../atomicOperationsIPC";
 import {getReadable} from "./../../getAppPath";
 import * as viewMgr from "./../viewMgr";
-import { enQueueOperation } from '../enQueueOperation';
 
 const jsonFile = require("jsonfile");
 
@@ -121,7 +122,7 @@ export class OpenProjectView extends viewMgr.View
                     opName : "openProject",
                     proj : undefined,
                     externalProjectPath : path
-                })
+                });
             }).catch((err) => 
             {
                 throw err;

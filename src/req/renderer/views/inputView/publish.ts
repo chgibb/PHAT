@@ -6,7 +6,7 @@ import {AtomicOperationIPC} from "../../../atomicOperationsIPC";
 import {AlignData} from "../../../alignData";
 import {SaveKeyEvent} from "../../../ipcEvents";
 import {Fastq} from "../../../fastq";
-import { enQueueOperation } from '../../enQueueOperation';
+import {enQueueOperation} from "../../enQueueOperation";
 
 let channel = "input";
 
@@ -65,7 +65,7 @@ export function importSelectedFastas(val : Array<Fasta>) : void
             enQueueOperation({
                 opName : "importFileIntoProject",
                 data : val[i]
-            })
+            });
         }
     }
 }
@@ -75,7 +75,7 @@ export function indexFastaForVisualization(val : Fasta) : void
     enQueueOperation({
         opName : "indexFastaForVisualization",
         data : val
-    })
+    });
 }
 
 export function linkRefSeqToAlignment(fasta : Fasta,align : AlignData) : void

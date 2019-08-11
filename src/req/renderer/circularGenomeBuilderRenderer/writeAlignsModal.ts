@@ -1,13 +1,14 @@
 import * as electron from "electron";
 const ipc = electron.ipcRenderer;
 
+import {enQueueOperation} from "../enQueueOperation";
+
 import * as viewMgr from "./../viewMgr";
 import * as masterView from "./masterView";
 import * as genomeView from "./genomeView";
 import {AtomicOperationIPC} from "./../../atomicOperationsIPC";
 import {writeAvailableTracksModal,setSelectedAlign} from "./writeAvailableTracksModal";
 import {getReadable} from "./../../getAppPath";
-import { enQueueOperation } from '../enQueueOperation';
 /**
  * Writes the alignment selection menu into the modal
  * 

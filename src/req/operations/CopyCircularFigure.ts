@@ -1,7 +1,7 @@
 
 import * as atomic from "./atomicOperations";
 import * as cf from "./../renderer/circularFigure";
-import { getReadableAndWritable } from "./../getAppPath";
+import {getReadableAndWritable} from "./../getAppPath";
 
 const uuidv4: () => string = require("uuid/v4");
 const fse = require("fs-extra");
@@ -16,23 +16,27 @@ export class CopyCircularFigure extends atomic.AtomicOperation<CopyCircularFigur
     public readonly opName = "copyCircularFigure";
     public origFigure: cf.CircularFigure | undefined;
     public newFigure: cf.CircularFigure;
-    public constructor(data: CopyCircularFigureData) {
+    public constructor(data: CopyCircularFigureData) 
+    {
         super(data);
         this.newFigure = <any>{};
 
         this.origFigure = data.data;
     }
 
-    public run(): void {
+    public run(): void 
+    {
         this.logRecord = atomic.openLog(this.opName, "Copy Circular Figure");
-        try {
+        try 
+        {
             Object.assign(this.newFigure, this.origFigure);
             this.newFigure.uuid = uuidv4();
             let self = this;
             fse.copy(
                 getReadableAndWritable(`rt/circularFigures/${this.origFigure!.uuid}`),
                 getReadableAndWritable(`rt/circularFigures/${this.newFigure.uuid}`),
-                function (err: Error) {
+                function (err: Error) 
+                {
                     if (err)
                         self.abortOperationWithMessage(err.message);
                     self.setSuccess(self.flags);
@@ -40,7 +44,8 @@ export class CopyCircularFigure extends atomic.AtomicOperation<CopyCircularFigur
                 }
             );
         }
-        catch (err) {
+        catch (err) 
+        {
             this.abortOperationWithMessage(err);
         }
     }

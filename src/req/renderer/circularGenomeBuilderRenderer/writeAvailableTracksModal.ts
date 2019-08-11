@@ -1,6 +1,8 @@
 import * as electron from "electron";
 const ipc = electron.ipcRenderer;
 
+import {enQueueOperation} from "../enQueueOperation";
+
 import * as viewMgr from "./../viewMgr";
 import * as masterView from "./masterView";
 import * as genomeView from "./genomeView";
@@ -8,7 +10,6 @@ import * as cf from "./../circularFigure";
 import {AlignData} from "./../../alignData";
 import {AtomicOperationIPC} from "./../../atomicOperationsIPC";
 import {getReadable} from "./../../getAppPath";
-import { enQueueOperation } from '../enQueueOperation';
 
 require("@claviska/jquery-minicolors");
 let selectedAlign : AlignData;
@@ -227,10 +228,10 @@ export function writeAvailableTracksModal() : void
             document.getElementById(`${genomeView.genome!.contigs[i].uuid}GenSNPs`)!.onclick = function(this : GlobalEventHandlers,ev : MouseEvent)
             {
                 enQueueOperation({opName : "renderSNPTrackForContig",
-                circularFigure : genomeView.genome!,
-                alignData : selectedAlign,
-                contiguuid : genomeView.genome!.contigs[i].uuid,
-                colour : (<string>(<any>$(document.getElementById("colourPicker")!)).minicolors("rgbString"))})
+                    circularFigure : genomeView.genome!,
+                    alignData : selectedAlign,
+                    contiguuid : genomeView.genome!.contigs[i].uuid,
+                    colour : (<string>(<any>$(document.getElementById("colourPicker")!)).minicolors("rgbString"))});
             };
         }
         catch(err)
