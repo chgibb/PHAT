@@ -1,5 +1,5 @@
 import * as atomic from "./req/operations/atomicOperations";
-import * as addOperation from "./req/operations/addOperation";
+import * as addOperation from "./req/operations/atomicOperations/addOperation";
 import {registerOperations} from "./req/tests/registerOperations";
 import {rebuildRTDirectory} from "./req/main/rebuildRTDirectory";
 import {getUnSortedBam,getSam} from "./req/alignData";

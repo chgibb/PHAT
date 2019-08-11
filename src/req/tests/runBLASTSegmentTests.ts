@@ -1,5 +1,5 @@
 import * as atomic from "./../operations/atomicOperations";
-import * as addOperation from "./../operations/addOperation";
+import * as addOperation from "../operations/atomicOperations/addOperation";
 import * as L6R1HPV16Align from "./L6R1HPV16Align";
 import * as L6R7HPV16Align from "./L6R7HPV16Align";
 import {testBLASTSegment5795To5805L6R7HPV16Alignment} from "./testBLASTSegment5795To5805L6R7HPV16Alignment";

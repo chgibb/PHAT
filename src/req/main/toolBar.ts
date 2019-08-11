@@ -2,7 +2,7 @@ import * as winMgr from "./winMgr";
 import {getReadable} from "./../getAppPath";
 import * as dataMgr from "./dataMgr";
 import * as atomicOp from "./../operations/atomicOperations";
-import * as addOperation from "./../operations/addOperation";
+import * as addOperation from "../operations/atomicOperations/addOperation";
 import {add} from "./afterProjectLoad";
 
 add(function()

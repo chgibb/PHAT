@@ -1,5 +1,5 @@
 import * as atomic from "./../operations/atomicOperations";
-import * as addOperation from "./../operations/addOperation";
+import * as addOperation from "../operations/atomicOperations/addOperation";
 import {RenderCoverageTrackForContig} from "./../operations/RenderCoverageTrack";
 import {CircularFigure,getCoverageTrackSVGFromCache} from "./../renderer/circularFigure";
 import * as hpv16Figure from "./hpv16Figure";

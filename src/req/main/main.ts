@@ -25,7 +25,7 @@ import {getEdition} from "./../getEdition";
 import {appMenu} from "./appMenu";
 import * as dataMgr from "./dataMgr";
 import * as atomicOp from "./../operations/atomicOperations";
-import * as addOperation from "./../operations/addOperation";
+import * as addOperation from "../operations/atomicOperations/addOperation";
 import {AtomicOperationIPC} from "./../atomicOperationsIPC";
 import {GenerateQCReport} from "./../operations/GenerateQCReport";
 import {IndexFastaForVisualization} from "./../operations/indexFastaForVisualization";

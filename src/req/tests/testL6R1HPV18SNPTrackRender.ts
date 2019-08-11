@@ -1,5 +1,5 @@
 import * as atomic from "./../operations/atomicOperations";
-import * as addOperation from "./../operations/addOperation";
+import * as addOperation from "../operations/atomicOperations/addOperation";
 import {RenderSNPTrackForContig} from "./../operations/RenderSNPTrack";
 import {CircularFigure} from "./../renderer/circularFigure";
 import * as hpv18Figure from "./hpv18Figure";
