@@ -9,7 +9,7 @@ import { bowTie2Build } from "./indexFasta/bowTie2Build";
 import { samToolsFaidx } from "./indexFasta/samToolsFaidx";
 
 export interface IndexFastaForBowtie2AlignmentData {
-    operationName: "indexFastaForBowtie2Alignment";
+    opName: "indexFastaForBowtie2Alignment";
     data: Fasta;
 }
 
@@ -69,7 +69,7 @@ export class IndexFastaForBowtie2Alignment extends atomic.AtomicOperation<IndexF
     }
     //bowTie2Build -> samTools faidx
     public run(): void {
-        this.logRecord = atomic.openLog(this.operationName, "Index Fasta for Alignment");
+        this.logRecord = atomic.openLog(this.opName, "Index Fasta for Alignment");
 
         let self = this;
         (async function () {

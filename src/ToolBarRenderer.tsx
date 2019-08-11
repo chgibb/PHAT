@@ -74,7 +74,7 @@ class ToolBarApp extends React.Component<{},ToolBarViewProps>
                                 });
                             }
 
-                            if(ops[i].operationName == "saveProject")
+                            if(ops[i].opName == "saveProject")
                             {
                                 let savingMessage = "";
                                 if(ops[i].extraData !== undefined)

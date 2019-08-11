@@ -9,7 +9,7 @@ import { hisat2Build } from "./indexFasta/hisat2Build";
 import { samToolsFaidx } from "./indexFasta/samToolsFaidx";
 
 export interface IndexFastaForHisat2AlignmentData {
-    operationName: "indexFastaForHisat2Alignment";
+    opName: "indexFastaForHisat2Alignment";
     data: Fasta;
 }
 
@@ -68,7 +68,7 @@ export class IndexFastaForHisat2Alignment extends atomic.AtomicOperation<IndexFa
 
     //hisat2Build -> samTools faidx
     public run(): void {
-        this.logRecord = atomic.openLog(this.operationName, "Index Fasta for Alignment");
+        this.logRecord = atomic.openLog(this.opName, "Index Fasta for Alignment");
 
         let self = this;
         (async function () {

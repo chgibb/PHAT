@@ -2,6 +2,7 @@ import * as winMgr from "./winMgr";
 import {getReadable} from "./../getAppPath";
 import * as dataMgr from "./dataMgr";
 import * as atomicOp from "./../operations/atomicOperations";
+import * as addOperation from "./../operations/addOperation";
 import {add} from "./afterProjectLoad";
 
 add(function()
@@ -37,7 +38,9 @@ winMgr.windowCreators["toolBar"] =
                     if(!dataMgr.getKey("application","downloadedUpdate") && !dataMgr.getKey("application","finishedSavingProject"))
                     {
                         dataMgr.saveData();
-                        atomicOp.addOperation("saveProject",dataMgr.getKey("application","project"));
+                        addOperation.addOperation({
+                            opName:"saveProject",
+                            manifest:dataMgr.getKey("application","project")});
                         dataMgr.setKey("application","operations",atomicOp.operationsQueue);
                         winMgr.publishChangeForKey("application","operations");
                         winMgr.closeAllExcept("toolBar");

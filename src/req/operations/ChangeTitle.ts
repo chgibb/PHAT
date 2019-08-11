@@ -4,16 +4,15 @@ const webContents = electron.webContents;
 import * as atomic from "./atomicOperations";
 
 export interface ChangeTitleData {
-    operationName : "ChangeTitle";
+    opName : "changeTitle";
     id : number
     newTitle : string;
 }
 
 export class ChangeTitle extends atomic.AtomicOperation<ChangeTitleData>
 {
-    public readonly operationName = "changeTitle";
-    public id : number | undefined;
-    public newTitle : string | undefined;
+    public id : number;
+    public newTitle : string;
 
     public constructor(data : ChangeTitleData)
     {
@@ -25,7 +24,7 @@ export class ChangeTitle extends atomic.AtomicOperation<ChangeTitleData>
 
     public run() : void
     {
-        this.logRecord = atomic.openLog(this.operationName,"Change Title");
+        this.logRecord = atomic.openLog(this.opName,"Change Title");
 
         let allWCs : Array<Electron.WebContents> = webContents.getAllWebContents();
 

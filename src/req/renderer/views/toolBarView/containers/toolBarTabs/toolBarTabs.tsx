@@ -12,6 +12,7 @@ import {AtomicOperationIPC} from "../../../../../atomicOperationsIPC";
 import {Tabs} from "../../../../components/tabs";
 
 import {wrapperBGColour} from "./styles/wrapperBGColour";
+import { enQueueOperation } from '../../../../enQueueOperation';
 
 const ipc = electron.ipcRenderer;
 
@@ -42,13 +43,10 @@ export interface ToolBarTabsState
  */
 function unDockActiveTab(refName : string) : void
 {
-    ipc.send(
-        "runOperation",
-        {
-            opName : "unDockWindow",
-            refName : refName
-        } as AtomicOperationIPC
-    );
+    enQueueOperation({
+        opName : "unDockWindow",
+        refName : refName
+    });
 }
 
 export class ToolBarTabs<T> extends React.Component<ToolBarTabsProps<T>,ToolBarTabsState>

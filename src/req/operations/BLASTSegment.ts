@@ -8,7 +8,7 @@ import { BLASTSegmentResult, getArtifactDir } from "./../BLASTSegmentResult";
 import * as dFormat from "./../dateFormat";
 
 export interface BLASTSegmentData {
-    operationName: "BLASTSegment";
+    opName: "BLASTSegment";
     align: AlignData,
     start: number,
     stop: number
@@ -16,7 +16,7 @@ export interface BLASTSegmentData {
 
 export class BLASTSegment extends atomic.AtomicOperation<BLASTSegmentData>
 {
-    public readonly operationName = "BLASTSegment";
+    public readonly opName = "BLASTSegment";
     public blastSegmentResult: BLASTSegmentResult | undefined;
     public alignData: AlignData | undefined;
 
@@ -45,7 +45,7 @@ export class BLASTSegment extends atomic.AtomicOperation<BLASTSegmentData>
                 align: self.alignData,
                 blastSegmentResult: self.blastSegmentResult
             },
-            name: self.operationName,
+            name: self.opName,
             description: "BLAST Segment"
         }, function (ev: AtomicOperationForkEvent) {
 

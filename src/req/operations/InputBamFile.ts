@@ -8,7 +8,7 @@ import { Fasta, getFaiPath } from "./../fasta";
 import { getPath } from "./../file";
 
 export interface InputBamFileData {
-    operationName: "inputBamFile";
+    opName: "inputBamFile";
     bamPath: string;
     fasta?: Fasta;
 }
@@ -42,7 +42,7 @@ export class InputBamFile extends atomic.AtomicOperation<InputBamFileData>
                 fastaPath: self.fasta ? getPath(self.fasta) : "",
                 align: self.alignData
             },
-            name: self.operationName,
+            name: self.opName,
             description: "Input Bam File"
         }, function (ev: AtomicOperationForkEvent) {
                 if (ev.finishedSettingData == true) {

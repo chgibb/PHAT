@@ -39,7 +39,7 @@ export class AlignView  extends React.Component<AlignViewProps,AlignViewState>
         let found = false;
         for(let i = 0; i != this.props.operations.length; ++i)
         {
-            if(this.props.operations[i].operationName == "indexFastaForBowtie2" || this.props.operations[i].operationName == "runBowtie2Alignment" || this.props.operations[i].operationName == "indexFastaForHisat2" || this.props.operations[i].operationName == "runHisat2Alignment")
+            if(this.props.operations[i].opName == "indexFastaForBowtie2" || this.props.operations[i].opName == "runBowtie2Alignment" || this.props.operations[i].opName == "indexFastaForHisat2" || this.props.operations[i].opName == "runHisat2Alignment")
             {
                 found = true;
                 break;

@@ -9,37 +9,36 @@ import {AlignData,getArtifactDir} from "../alignData";
 
 import * as atomic from "./atomicOperations";
 
-export class RunBowtie2Alignment extends atomic.AtomicOperation<{
-    fasta : Fasta,
-    fastq1 : Fastq,
-    fastq2 : Fastq
-}>
+export interface RunBowtie2AlignmentData
 {
-    public readonly operationName = "runBowtie2Alignment";
-    public alignData : AlignData | undefined;
-    public fasta : Fasta | undefined;
-    public fastq1 : Fastq | undefined;
+    opName : "runBowtie2Alignment";
+    fasta : Fasta;
+    fastq1 : Fastq;
+    fastq2 : Fastq | undefined;
+}
+
+export class RunBowtie2Alignment extends atomic.AtomicOperation<RunBowtie2AlignmentData>
+{
+    public readonly opName = "";
+    public alignData : AlignData;
+    public fasta : Fasta;
+    public fastq1 : Fastq;
     public fastq2 : Fastq | undefined;
 
     public runBowtie2AlignmentProcess : cp.ChildProcess | undefined;
-    constructor()
+    constructor(data : RunBowtie2AlignmentData)
     {
-        super();
-    }
-    public setData(
-        data : {
-            fasta : Fasta,
-            fastq1 : Fastq,
-            fastq2 : Fastq
-        }) : void
-    {
+        super(data);
+
         this.fasta = data.fasta;
         this.fastq1 = data.fastq1;
         this.fastq2 = data.fastq2;
 
         this.alignData = new AlignData();
         this.alignData.fasta = this.fasta;
-        this.alignData.fastqs.push(this.fastq1,this.fastq2);
+        this.alignData.fastqs.push(this.fastq1);
+        if(this.fastq2)
+            this.alignData.fastqs.push(this.fastq2);
         this.generatedArtifacts.push(`${getPath(this.fasta)}.fai`);
         this.destinationArtifactsDirectories.push(getArtifactDir(this.alignData));
     }
@@ -54,7 +53,7 @@ export class RunBowtie2Alignment extends atomic.AtomicOperation<{
             data : {
                 alignData : self.alignData
             },
-            name : self.operationName,
+            name : self.opName,
             description : "Run Bowtie2 Alignment"
         },function(ev : AtomicOperationForkEvent)
         {

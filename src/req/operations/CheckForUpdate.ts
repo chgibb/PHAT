@@ -6,8 +6,7 @@ import {getReadable} from "./../getAppPath";
 
 export interface CheckForUpdateData
 {
-    operationName : "checkForUpdate";
-    data : AtomicOperationIPC;
+    opName : "checkForUpdate";
 }
 
 export class CheckForUpdate extends atomic.AtomicOperation<CheckForUpdateData>
@@ -25,7 +24,7 @@ export class CheckForUpdate extends atomic.AtomicOperation<CheckForUpdateData>
     {
         this.closeLogOnFailure = true;
         this.closeLogOnSuccess = true;
-        this.logRecord = atomic.openLog(this.operationName,"Check for Update");
+        this.logRecord = atomic.openLog(this.opName,"Check for Update");
         let self = this;
         this.checkForUpdateProcess = atomic.makeFork("CheckForUpdate.js",<AtomicOperationForkEvent>{
             setData : true,

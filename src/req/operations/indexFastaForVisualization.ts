@@ -7,7 +7,7 @@ import { Job } from "./../main/Job";
 import { faToTwoBit } from "./indexFasta/faToTwoBit";
 
 export interface IndexFastaForVisualizationData {
-    operationName: "indexFastaForVisualization";
+    opName: "indexFastaForVisualization";
     data: Fasta;
 }
 
@@ -31,7 +31,7 @@ export class IndexFastaForVisualization extends atomic.AtomicOperation<IndexFast
     }
 
     public run(): void {
-        this.logRecord = atomic.openLog(this.operationName, "Index Fasta for Visualization");
+        this.logRecord = atomic.openLog(this.opName, "Index Fasta for Visualization");
 
         let self = this;
         (async function () {

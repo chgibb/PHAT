@@ -6,7 +6,7 @@ import { getReadableAndWritable } from "./../getAppPath";
 const fse = require("fs-extra");
 
 export interface DeleteCircularFigureData {
-    operationName: "deleteCircularFigure";
+    opName: "deleteCircularFigure";
     data: cf.CircularFigure;
 }
 
@@ -20,7 +20,7 @@ export class DeleteCircularFigure extends atomic.AtomicOperation<DeleteCircularF
     }
 
     public run(): void {
-        this.logRecord = atomic.openLog(this.operationName, "Delete Circular Figure");
+        this.logRecord = atomic.openLog(this.opName, "Delete Circular Figure");
         try {
             let self = this;
             fse.remove(

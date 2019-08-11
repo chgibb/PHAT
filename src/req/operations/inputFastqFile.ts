@@ -2,7 +2,7 @@ import * as atomic from "./atomicOperations";
 import { Fastq } from "./../fastq";
 
 export interface InputFastqFileData {
-    operationName: "inputFastqFile";
+    opName: "inputFastqFile";
     data: string;
 }
 export class InputFastqFile extends atomic.AtomicOperation<InputFastqFileData>
@@ -17,7 +17,7 @@ export class InputFastqFile extends atomic.AtomicOperation<InputFastqFileData>
     }
 
     public run(): void {
-        this.logRecord = atomic.openLog(this.operationName, "Input Fastq File");
+        this.logRecord = atomic.openLog(this.opName, "Input Fastq File");
         try {
             this.fastq = new Fastq(this.filePath!);
             this.fastq.checked = true;

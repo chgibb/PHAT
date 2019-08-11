@@ -9,6 +9,7 @@ import {Table} from "../../components/table";
 import {Fasta} from "../../../fasta";
 import {AtomicOperationIPC} from "../../../atomicOperationsIPC";
 import {TableCellHover} from "../tableCellHover";
+import { enQueueOperation } from '../../enQueueOperation';
 
 const ipc = electron.ipcRenderer;
 
@@ -84,18 +85,16 @@ export function SNPPositionsTable(props : SNPPositionsTableProps) : JSX.Element
                         //offset end by 40 to center SNP in viewer
                         let stop = start+40;
                         let contig = snps![snpPos].chrom;
-                        ipc.send(
-                            "runOperation",
-                            {
-                                opName : "openPileupViewer",
-                                pileupViewerParams : {
-                                    align : props.align,
-                                    contig : contig,
-                                    start : start,
-                                    stop : stop
-                                }
-                            } as AtomicOperationIPC
-                        );
+                        
+                        enQueueOperation({
+                            opName : "openPileupViewer",
+                   
+                                align : props.align!,
+                                contig : contig,
+                                start : start,
+                                stop : stop
+                            
+                        })
                     }
                 }}
                 columns={[

@@ -7,6 +7,7 @@ import {AtomicOperation} from "./../../operations/atomicOperations";
 import {getReadable} from "./../../getAppPath";
 import {ProjectManifest,getProjectManifests} from "./../../projectManifest";
 import * as viewMgr from "./../viewMgr";
+import { enQueueOperation } from '../enQueueOperation';
 
 const jsonFile = require("jsonfile");
 const Dialogs = require("dialogs");
@@ -55,13 +56,10 @@ export class SplashView extends viewMgr.View
             {
                 if(text)
                 {
-                    ipc.send(
-                        "runOperation",
-                        <AtomicOperationIPC>{
-                            opName : "newProject",
-                            name : text
-                        }
-                    );
+                    enQueueOperation({
+                        opName : "newProject",
+                        projName : text
+                    });
                     //wait for the response from newProject and then open the newly created project from the manifest
                     new Promise<void>((resolve,reject) => 
                     {
@@ -74,7 +72,7 @@ export class SplashView extends viewMgr.View
                                     let ops : Array<AtomicOperation<any>> = <Array<AtomicOperation<any>>>arg.val;
                                     for(let i = 0 ; i != ops.length; ++i)
                                     {
-                                        if(ops[i].operationName == "newProject")
+                                        if(ops[i].opName == "newProject")
                                         {
                                             if(ops[i].flags.done)
                                             {
@@ -93,13 +91,11 @@ export class SplashView extends viewMgr.View
                     }).then(() =>
                     {
                         let projects : Array<ProjectManifest> = (<Array<ProjectManifest>>jsonFile.readFileSync(getProjectManifests()));
-                        ipc.send(
-                            "runOperation",
-                            <AtomicOperationIPC>{
-                                opName : "openProject",
-                                proj : projects[projects.length - 1]
-                            }
-                        );
+                        enQueueOperation({
+                            opName : "openProject",
+                            proj : projects[projects.length - 1],
+                            externalProjectPath : undefined
+                        });
                     }).catch(() => 
                     {
                         alert("There was an error creating your project");

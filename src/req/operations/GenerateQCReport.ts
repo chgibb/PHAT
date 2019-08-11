@@ -12,7 +12,7 @@ const fse = require("fs-extra");
 
 export interface GenerateQCReportData
 {
-    operationName : "generateFastQCReport";
+    opName : "generateQCReport";
     data : Fastq;
 }
 
@@ -49,7 +49,7 @@ export class GenerateQCReport extends atomic.AtomicOperation<GenerateQCReportDat
 
     public run() : void
     {
-        this.logRecord = atomic.openLog(this.operationName,"FastQC Report Generation");
+        this.logRecord = atomic.openLog(this.opName,"FastQC Report Generation");
         //Set path to fastqc entry file
         if(process.platform == "linux")
             this.fastQCPath = getReadable("FastQC/fastqc");

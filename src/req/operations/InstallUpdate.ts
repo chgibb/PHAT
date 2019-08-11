@@ -4,7 +4,7 @@ import * as atomic from "./atomicOperations";
 import { getReadable } from "./../getAppPath";
 
 export interface InstallUpdateData {
-    operationName: "installUpdate";
+    opName: "installUpdate";
 }
 
 export class InstallUpdate extends atomic.AtomicOperation<InstallUpdateData>

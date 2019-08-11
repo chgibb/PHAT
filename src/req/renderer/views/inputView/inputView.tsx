@@ -47,9 +47,9 @@ export class InputView extends React.Component<InputViewProps,InputViewState> im
         let found = false;
         for(let i = 0; i != this.props.operations.length; ++i)
         {
-            if(this.props.operations[i].operationName == "inputBamFile" || this.props.operations[i].operationName == "linkRefSeqToAlignment" ||
-                            this.props.operations[i].operationName == "indexFastaForVisualization" || this.props.operations[i].operationName == "indexFastaForBowtie2Alignment" ||
-                            this.props.operations[i].operationName == "linkRefSeqToAlignment" || this.props.operations[i].operationName == "importFileIntoProject")
+            if(this.props.operations[i].opName == "inputBamFile" || this.props.operations[i].opName == "linkRefSeqToAlignment" ||
+                            this.props.operations[i].opName == "indexFastaForVisualization" || this.props.operations[i].opName == "indexFastaForBowtie2Alignment" ||
+                            this.props.operations[i].opName == "linkRefSeqToAlignment" || this.props.operations[i].opName == "importFileIntoProject")
             {
                 found = true;
                 break;

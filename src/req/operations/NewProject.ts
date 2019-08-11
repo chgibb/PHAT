@@ -1,20 +1,25 @@
 import * as atomic from "./atomicOperations";
 import {newProject} from "./../newProject";
-export class NewProject extends atomic.AtomicOperation<string>
+
+export interface NewProjectData
 {
-    public readonly operationName = "newProject";
-    public proj : string | undefined;
-    constructor()
+    opName : "newProject";
+    projName : string;
+}
+
+export class NewProject extends atomic.AtomicOperation<NewProjectData>
+{
+    public proj : string;
+    constructor(data : NewProjectData)
     {
-        super();
+        super(data);
+
+        this.proj = data.projName;
     }
-    public setData(data : string) : void
-    {
-        this.proj = data;
-    }
+
     public run() : void
     {
-        this.logRecord = atomic.openLog(this.operationName,"Create New Project");
+        this.logRecord = atomic.openLog(this.opName,"Create New Project");
         let self = this;
         newProject(this.proj!).then(() => 
         {

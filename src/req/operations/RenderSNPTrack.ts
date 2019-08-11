@@ -5,39 +5,36 @@ import {AtomicOperationForkEvent} from "./../atomicOperationsIPC";
 import {getReadable} from "./../getAppPath";
 import {AlignData} from "./../alignData";
 import * as cf from "./../renderer/circularFigure";
-export class RenderSNPTrackForContig extends atomic.AtomicOperation<{
-    circularFigure : cf.CircularFigure,
-    contiguuid : string,
-    alignData : AlignData,
-    colour : string
-}>
+
+export interface RenderSNPTrackForContigData
 {
-    public readonly operationName = "renderSNPTrackForContig";
-    public alignData : AlignData | undefined;
-    public contiguuid : string | undefined;
-    public circularFigure : cf.CircularFigure | undefined;
+    opName : "renderSNPTrackForContig";
+    circularFigure : cf.CircularFigure;
+    contiguuid : string;
+    alignData : AlignData;
+    colour? : string;
+}
+export class RenderSNPTrackForContig extends atomic.AtomicOperation<RenderSNPTrackForContigData>
+{
+    public alignData : AlignData ;
+    public contiguuid : string;
+    public circularFigure : cf.CircularFigure;
     public colour : string | undefined;
 
     public renderSNPTrackProcess : cp.ChildProcess | undefined;
-    constructor()
+    constructor(data : RenderSNPTrackForContigData)
     {
-        super();
-    }
-    public setData(data : {
-        circularFigure : cf.CircularFigure,
-        contiguuid : string,
-        alignData : AlignData,
-        colour : string
-    }) : void
-    {
+        super(data);
+
         this.circularFigure = data.circularFigure;
         this.contiguuid = data.contiguuid;
         this.alignData = data.alignData;
         this.colour = data.colour;
     }
+
     public run() : void
     {
-        this.logRecord = atomic.openLog(this.operationName,"Render SNP Track");
+        this.logRecord = atomic.openLog(this.opName,"Render SNP Track");
         let self = this;
         this.renderSNPTrackProcess = atomic.makeFork("RenderSNPTrack.js",<AtomicOperationForkEvent>{
             setData : true,

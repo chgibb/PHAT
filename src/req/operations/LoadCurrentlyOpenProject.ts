@@ -3,7 +3,7 @@ import { finishLoadingProject } from "./../main/finishLoadingProject";
 import { getCurrentlyOpenProject } from "./../getCurrentlyOpenProject";
 
 export interface LoadCurrentlyOpenProjectData {
-    operationName: "loadCurrentlyOpenProject";
+    opName: "loadCurrentlyOpenProject";
 }
 
 export class LoadCurrentlyOpenProject extends atomic.AtomicOperation<LoadCurrentlyOpenProjectData>
@@ -13,7 +13,7 @@ export class LoadCurrentlyOpenProject extends atomic.AtomicOperation<LoadCurrent
     }
 
     public run(): void {
-        this.logRecord = atomic.openLog(this.operationName, "Load Currently Open Project");
+        this.logRecord = atomic.openLog(this.opName, "Load Currently Open Project");
         try {
             finishLoadingProject(getCurrentlyOpenProject()!);
             this.setSuccess(this.flags);

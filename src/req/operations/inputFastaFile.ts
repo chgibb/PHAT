@@ -2,7 +2,7 @@ import * as atomic from "./atomicOperations";
 import { Fasta } from "./../fasta";
 
 export interface InputFastaFileData {
-    operationName: "inputFastaFile";
+    opName: "inputFastaFile";
     data: string;
 }
 
@@ -18,9 +18,9 @@ export class InputFastaFile extends atomic.AtomicOperation<InputFastaFileData>
     }
 
     public run(): void {
-        this.logRecord = atomic.openLog(this.operationName, "Input Fasta File");
+        this.logRecord = atomic.openLog(this.opName, "Input Fasta File");
         try {
-            this.fasta = new Fasta(this.filePath!);
+            this.fasta = new Fasta(this.filePath);
             this.fasta.checked = true;
         }
         catch (err) {

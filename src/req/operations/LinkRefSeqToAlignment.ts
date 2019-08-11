@@ -9,14 +9,14 @@ import { AlignData } from "./../alignData";
 import { Fasta } from "./../fasta";
 
 export interface LinkRefSeqToAlignmentData {
-    operationName: "linkRefSeqToAlignment";
+    opName: "linkRefSeqToAlignment";
     align: AlignData;
     fasta: Fasta;
 }
 
 export class LinkRefSeqToAlignment extends atomic.AtomicOperation<LinkRefSeqToAlignmentData>
 {
-    public readonly operationName = "";
+    public readonly opName = "";
     public alignData: AlignData;
     public fasta: Fasta;
     public linkRefSeqToAlignmentProcess: cp.ChildProcess | undefined;
@@ -38,7 +38,7 @@ export class LinkRefSeqToAlignment extends atomic.AtomicOperation<LinkRefSeqToAl
                 align: self.alignData,
                 fasta: self.fasta
             },
-            name: self.operationName,
+            name: self.opName,
             description: "Link Ref Seq To Alignment"
         }, function (ev: AtomicOperationForkEvent) {
                 if (ev.finishedSettingData == true) {

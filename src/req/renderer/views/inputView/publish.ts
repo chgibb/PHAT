@@ -6,6 +6,7 @@ import {AtomicOperationIPC} from "../../../atomicOperationsIPC";
 import {AlignData} from "../../../alignData";
 import {SaveKeyEvent} from "../../../ipcEvents";
 import {Fastq} from "../../../fastq";
+import { enQueueOperation } from '../../enQueueOperation';
 
 let channel = "input";
 
@@ -47,13 +48,10 @@ export function importSelectedFastqs(val : Array<Fastq>) : void
     {
         if(val[i].checked)
         {
-            ipc.send(
-                "runOperation",
-                {
-                    opName : "importFileIntoProject",
-                    uuid : val[i].uuid
-                } as AtomicOperationIPC
-            );
+            enQueueOperation({
+                opName : "importFileIntoProject",
+                data : val[i]
+            });
         }
     }
 }
@@ -64,38 +62,27 @@ export function importSelectedFastas(val : Array<Fasta>) : void
     {
         if(val[i].checked)
         {
-            ipc.send(
-                "runOperation",
-                {
-                    opName : "importFileIntoProject",
-                    uuid : val[i].uuid
-                } as AtomicOperationIPC
-            );
+            enQueueOperation({
+                opName : "importFileIntoProject",
+                data : val[i]
+            })
         }
     }
 }
 
 export function indexFastaForVisualization(val : Fasta) : void
 {
-    ipc.send(
-        "runOperation",
-        {
-            opName : "indexFastaForVisualization",
-            channel : "input",
-            key : "fastaInputs",
-            uuid : val.uuid
-        } as AtomicOperationIPC
-    );
+    enQueueOperation({
+        opName : "indexFastaForVisualization",
+        data : val
+    })
 }
 
 export function linkRefSeqToAlignment(fasta : Fasta,align : AlignData) : void
 {
-    ipc.send(
-        "runOperation",
-        {
-            opName : "linkRefSeqToAlignment",
-            fasta : fasta,
-            align : align
-        } as AtomicOperationIPC
-    );
+    enQueueOperation({
+        opName : "linkRefSeqToAlignment",
+        fasta : fasta,
+        align : align
+    });
 }

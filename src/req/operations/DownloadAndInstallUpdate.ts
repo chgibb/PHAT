@@ -5,8 +5,10 @@ import { AtomicOperationForkEvent, AtomicOperationIPC } from "./../atomicOperati
 import { getReadable } from "./../getAppPath";
 
 export interface DownloadAndInstallUpdateData {
-    operationName: "downloadAndInstallUpdate";
-    data: any;
+    opName: "downloadAndInstallUpdate";
+    data :{
+        asset : any;
+    };
 }
 
 export class DownloadAndInstallUpdate extends atomic.AtomicOperation<DownloadAndInstallUpdateData>
@@ -20,7 +22,7 @@ export class DownloadAndInstallUpdate extends atomic.AtomicOperation<DownloadAnd
     }
 
     public run(): void {
-        this.logRecord = atomic.openLog(this.operationName, "Download and Install Update");
+        this.logRecord = atomic.openLog(this.opName, "Download and Install Update");
         let self = this;
         this.downloadAndInstallUpdateProcess = atomic.makeFork("DownloadAndInstallUpdate.js", <AtomicOperationForkEvent>{
             setData: true,

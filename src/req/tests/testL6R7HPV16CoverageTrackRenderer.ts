@@ -1,4 +1,5 @@
 import * as atomic from "./../operations/atomicOperations";
+import * as addOperation from "./../operations/addOperation";
 import {RenderCoverageTrackForContig} from "./../operations/RenderCoverageTrack";
 import {CircularFigure,getCoverageTrackSVGFromCache} from "./../renderer/circularFigure";
 import * as hpv16Figure from "./hpv16Figure";
@@ -8,10 +9,13 @@ export async function  testL6R7HPV16CoverageTrackRenderer() : Promise<void>
     return new Promise<void>((resolve,reject) => 
     {
         hpv16Figure.init();
-        atomic.addOperation("renderCoverageTrackForContig",{
+        addOperation.addOperation({
+            opName:"renderCoverageTrackForContig",
             circularFigure : hpv16Figure.get(),
             contiguuid : hpv16Figure.get().contigs[0].uuid,
-            alignData : L6R7HPV16Align.get()
+            alignData : L6R7HPV16Align.get(),
+            scaleFactor:1,
+            log10Scale:false
         });
         atomic.updates.removeAllListeners().on("renderCoverageTrackForContig",async function(op : RenderCoverageTrackForContig)
         {

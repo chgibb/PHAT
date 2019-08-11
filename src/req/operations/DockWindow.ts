@@ -5,7 +5,7 @@ import {DockIpc} from "./../renderer/dock";
 
 export interface DockWindowData
 {
-    operationName : "dockWindow";
+    opName : "dockWindow";
     toDock : string,
     dockTarget : string
 }
@@ -26,7 +26,7 @@ export class DockWindow extends atomic.AtomicOperation<DockWindowData>
 
     public run() : void
     {
-        this.logRecord = atomic.openLog(this.operationName,"Dock Window");
+        this.logRecord = atomic.openLog(this.opName,"Dock Window");
 
         let target = winMgr.getWindowsByName(this.dockTarget!)[0];
         target.webContents.send(

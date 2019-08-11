@@ -41,7 +41,7 @@ export class QCView extends React.Component<QCViewProps,QCViewState>
         let found = false;
         for (let i: number = 0; i != this.props.operations.length; ++i) 
         {
-            if (this.props.operations[i].operationName == "generateFastQCReport") 
+            if (this.props.operations[i].opName == "generateFastQCReport") 
             {
                 found = true;
                 break;

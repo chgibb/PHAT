@@ -7,6 +7,7 @@ import * as genomeView from "./genomeView";
 import {AtomicOperationIPC} from "./../../atomicOperationsIPC";
 import {writeAvailableTracksModal,setSelectedAlign} from "./writeAvailableTracksModal";
 import {getReadable} from "./../../getAppPath";
+import { enQueueOperation } from '../enQueueOperation';
 /**
  * Writes the alignment selection menu into the modal
  * 
@@ -121,15 +122,13 @@ export function writeAlignsModal() : void
             {
                 if(masterView.willBLASTAlignment)
                 {
-                    ipc.send(
-                        "runOperation",
-                        <AtomicOperationIPC>{
-                            opName : "BLASTSegment",
-                            align : aligns![i],
-                            start : genomeView.seqSelectionArrow!.arrowStart,
-                            stop : genomeView.seqSelectionArrow!.arrowEnd
-                        }
-                    );
+                    enQueueOperation({
+                        opName : "BLASTSegment",
+                        align : aligns![i],
+                        start : genomeView.seqSelectionArrow!.arrowStart,
+                        stop : genomeView.seqSelectionArrow!.arrowEnd
+                    });
+
                     masterView.alignsModalOpen = false;
                     masterView.dismissModal();
                     return;

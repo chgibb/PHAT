@@ -21,6 +21,7 @@ import {writeEditContigsModal} from "./writeEditContigsModal";
 import {writeSequenceSelectionModal} from "./writeSequenceSelectionModal";
 import {writeSeqSelectionActionModal} from "./writeSequenceSelectionActionModal";
 import {showGenericLoadingSpinnerInNavBar} from "./loadingSpinner";
+import { enQueueOperation } from '../enQueueOperation';
 
 const Dialogs = require("dialogs");
 const $ = require("jquery");
@@ -348,13 +349,8 @@ export class View extends viewMgr.View
                 dialogs.alert("You must open a figure before you can copy it");
                 return;
             }
-            ipc.send(
-                "runOperation",
-                <AtomicOperationIPC>{
-                    opName : "copyCircularFigure",
-                    figureuuid : genomeView.genome!.uuid
-                }
-            );
+            enQueueOperation({opName : "copyCircularFigure",
+            data : genomeView.genome});
         };
 
         document.getElementById("deleteFigure")!.onclick = function(this : GlobalEventHandlers,ev : MouseEvent)
@@ -364,13 +360,8 @@ export class View extends viewMgr.View
                 dialogs.alert("You must open a figure before you can delete it");
                 return;
             }
-            ipc.send(
-                "runOperation",
-                <AtomicOperationIPC>{
-                    opName : "deleteCircularFigure",
-                    figureuuid : genomeView.genome!.uuid
-                }
-            );
+            enQueueOperation({opName : "deleteCircularFigure",
+            data : genomeView.genome});
         };
 
         document.getElementById("updateNavBarButton")!.onclick = async function(this : GlobalEventHandlers,ev : MouseEvent)

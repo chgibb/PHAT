@@ -8,6 +8,7 @@ import * as cf from "./../circularFigure";
 import {AlignData} from "./../../alignData";
 import {AtomicOperationIPC} from "./../../atomicOperationsIPC";
 import {getReadable} from "./../../getAppPath";
+import { enQueueOperation } from '../enQueueOperation';
 
 require("@claviska/jquery-minicolors");
 let selectedAlign : AlignData;
@@ -212,32 +213,24 @@ export function writeAvailableTracksModal() : void
         {
             document.getElementById(`${genomeView.genome!.contigs[i].uuid}GenCoverage`)!.onclick = function(this : GlobalEventHandlers,ev : MouseEvent)
             {
-                ipc.send(
-                    "runOperation",
-                    <AtomicOperationIPC>{
-                        opName : "renderCoverageTrackForContig",
-                        figureuuid : genomeView.genome!.uuid,
-                        alignuuid : selectedAlign.uuid,
-                        uuid : genomeView.genome!.contigs[i].uuid,
-                        colour : (<string>(<any>$(document.getElementById("colourPicker")!)).minicolors("rgbString")),
-                        scaleFactor : parseFloat((<HTMLInputElement>document.getElementById("scaleFactor")).value),
-                        log10Scale : (<HTMLInputElement>document.getElementById("log10scale")).checked
-                    }
-                );
+                enQueueOperation({
+                    opName : "renderCoverageTrackForContig",
+                    circularFigure : genomeView.genome!,
+                    alignData : selectedAlign,
+                    contiguuid : genomeView.genome!.contigs[i].uuid,
+                    colour : (<string>(<any>$(document.getElementById("colourPicker")!)).minicolors("rgbString")),
+                    scaleFactor : parseFloat((<HTMLInputElement>document.getElementById("scaleFactor")).value),
+                    log10Scale : (<HTMLInputElement>document.getElementById("log10scale")).checked
+                });
             };
 
             document.getElementById(`${genomeView.genome!.contigs[i].uuid}GenSNPs`)!.onclick = function(this : GlobalEventHandlers,ev : MouseEvent)
             {
-                ipc.send(
-                    "runOperation",
-                    <AtomicOperationIPC>{
-                        opName : "renderSNPTrackForContig",
-                        figureuuid : genomeView.genome!.uuid,
-                        alignuuid : selectedAlign.uuid,
-                        uuid : genomeView.genome!.contigs[i].uuid,
-                        colour : (<string>(<any>$(document.getElementById("colourPicker")!)).minicolors("rgbString"))
-                    }
-                );
+                enQueueOperation({opName : "renderSNPTrackForContig",
+                circularFigure : genomeView.genome!,
+                alignData : selectedAlign,
+                contiguuid : genomeView.genome!.contigs[i].uuid,
+                colour : (<string>(<any>$(document.getElementById("colourPicker")!)).minicolors("rgbString"))})
             };
         }
         catch(err)

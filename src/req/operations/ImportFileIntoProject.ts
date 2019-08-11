@@ -4,7 +4,7 @@ import {getReadableAndWritable} from "./../getAppPath";
 
 export interface ImportFileIntoProjectData
 {
-    operationName : "importFileIntoProject";
+    opName : "importFileIntoProject";
     data : File;
 }
 
@@ -22,7 +22,7 @@ export class ImportFileIntoProject extends atomic.AtomicOperation<ImportFileInto
     }
     public run() : void
     {
-        this.logRecord = atomic.openLog(this.operationName,"Import File Into Project");
+        this.logRecord = atomic.openLog(this.opName,"Import File Into Project");
         let self = this;
         importIntoProject(this.file!)!.then(() => 
         {

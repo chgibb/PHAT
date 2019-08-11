@@ -7,13 +7,13 @@ const uuidv4: () => string = require("uuid/v4");
 const fse = require("fs-extra");
 
 export interface CopyCircularFigureData {
-    operationName: "copyCircularFigure";
+    opName: "copyCircularFigure";
     data: cf.CircularFigure;
 }
 
 export class CopyCircularFigure extends atomic.AtomicOperation<CopyCircularFigureData>
 {
-    public readonly operationName = "copyCircularFigure";
+    public readonly opName = "copyCircularFigure";
     public origFigure: cf.CircularFigure | undefined;
     public newFigure: cf.CircularFigure;
     public constructor(data: CopyCircularFigureData) {
@@ -24,7 +24,7 @@ export class CopyCircularFigure extends atomic.AtomicOperation<CopyCircularFigur
     }
 
     public run(): void {
-        this.logRecord = atomic.openLog(this.operationName, "Copy Circular Figure");
+        this.logRecord = atomic.openLog(this.opName, "Copy Circular Figure");
         try {
             Object.assign(this.newFigure, this.origFigure);
             this.newFigure.uuid = uuidv4();

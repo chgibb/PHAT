@@ -1,4 +1,5 @@
 import * as atomic from "./req/operations/atomicOperations";
+import * as addOperation from "./req/operations/addOperation";
 import {registerOperations} from "./req/tests/registerOperations";
 import {rebuildRTDirectory} from "./req/main/rebuildRTDirectory";
 import {getUnSortedBam,getSam} from "./req/alignData";
@@ -77,7 +78,10 @@ async function runTests() : Promise<void>
         }
 
         console.log("Generating FastQC report for L6R1R1");
-        atomic.addOperation("generateFastQCReport",L6R1R1.get());
+        addOperation.addOperation({
+            opName:"generateQCReport",
+            data: L6R1R1.get()
+        });
         try
         {
             await testFastQCReportGeneration();
@@ -89,7 +93,9 @@ async function runTests() : Promise<void>
         }
 
         console.log("Generating FastQC report for L6R1R2");
-        atomic.addOperation("generateFastQCReport",L6R1R2.get());
+        addOperation.addOperation({
+            opName: "generateQCReport",
+            data:L6R1R2.get()});
         try
         {
             await testFastQCReportGeneration();
@@ -101,7 +107,10 @@ async function runTests() : Promise<void>
         }
 
         console.log("Starting to index hpv16 for bowtie2");
-        atomic.addOperation("indexFastaForBowtie2Alignment",hpv16Ref.get());
+        addOperation.addOperation({
+            opName:"indexFastaForBowtie2Alignment",
+            data :hpv16Ref.get()
+        });
         try
         {
             await testHPV16Bowtie2Index();
@@ -113,7 +122,10 @@ async function runTests() : Promise<void>
         }
 
         console.log("Starting to index hpv18 for bowtie2");
-        atomic.addOperation("indexFastaForBowtie2Alignment",hpv18Ref.get());
+        addOperation.addOperation({
+            opName:"indexFastaForBowtie2Alignment",
+            data:hpv18Ref.get()
+        });
         try
         {
             await testHPV18Bowtie2Index();
@@ -126,7 +138,10 @@ async function runTests() : Promise<void>
         }
 
         console.log("Starting to index hpv16 for hisat2");
-        atomic.addOperation("indexFastaForHisat2Alignment",hpv16Ref.get());
+        addOperation.addOperation({
+            opName:"indexFastaForHisat2Alignment",
+            data:hpv16Ref.get()
+        });
         try
         {
             await testHPV16Hisat2Index();
@@ -138,7 +153,10 @@ async function runTests() : Promise<void>
         }
 
         console.log("Starting to index hpv18 for hisat2");
-        atomic.addOperation("indexFastaForHisat2Alignment",hpv18Ref.get());
+        addOperation.addOperation({
+            opName:"indexFastaForHisat2Alignment",
+            data:hpv18Ref.get()
+        });
         try
         {
             await testHPV18Hisat2Index();
@@ -150,7 +168,10 @@ async function runTests() : Promise<void>
         }
 
         console.log("Starting to index hpv16 for visualization");
-        atomic.addOperation("indexFastaForVisualization",hpv16Ref.get());
+        addOperation.addOperation({
+            opName:"indexFastaForVisualization",
+            data:hpv16Ref.get()
+        });
         try
         {
             await testHPV16IndexForVisualization();
@@ -162,7 +183,10 @@ async function runTests() : Promise<void>
         }
 
         console.log("Starting to index hpv18 for visualization");
-        atomic.addOperation("indexFastaForVisualization",hpv18Ref.get());
+        addOperation.addOperation({
+            opName:"indexFastaForVisualization",
+            data:hpv18Ref.get()
+        });
         try
         {
             await testHPV18IndexForVisualization();
@@ -174,9 +198,8 @@ async function runTests() : Promise<void>
         }
 
         console.log("Starting to align L6R1R1, L6R1R2 against hpv16 using hisat2");
-        atomic.addOperation(
-            "runHisat2Alignment",
-            {
+        addOperation.addOperation({
+                opName:"runHisat2Alignment",
                 fasta : hpv16Ref.get(),
                 fastq1 : L6R1R1.get(),
                 fastq2 : L6R1R2.get()
@@ -193,9 +216,9 @@ async function runTests() : Promise<void>
         }
 
         console.log("Starting to align L6R1R1, L6R1R2 against hpv18 using hisat2");
-        atomic.addOperation(
-            "runHisat2Alignment",
+        addOperation.addOperation(
             {
+                opName:"runHisat2Alignment",
                 fasta : hpv18Ref.get(),
                 fastq1 : L6R1R1.get(),
                 fastq2 : L6R1R2.get()
@@ -212,9 +235,10 @@ async function runTests() : Promise<void>
         }
 
         console.log("Starting to align L6R1R1, L6R1R2 against hpv16 using bowtie2");
-        atomic.addOperation(
-            "runBowtie2Alignment",
+        addOperation.addOperation(
+            
             {
+                opName:"runBowtie2Alignment",
                 fasta : hpv16Ref.get(),
                 fastq1 : L6R1R1.get(),
                 fastq2 : L6R1R2.get()
@@ -231,9 +255,10 @@ async function runTests() : Promise<void>
         }
 
         console.log("Starting to align L6R1R1, L6R1R2 against hpv18 using bowtie2");
-        atomic.addOperation(
-            "runBowtie2Alignment",
+        addOperation.addOperation(
+            
             {
+                opName:"runBowtie2Alignment",
                 fasta : hpv18Ref.get(),
                 fastq1 : L6R1R1.get(),
                 fastq2 : L6R1R2.get()
@@ -316,7 +341,8 @@ async function runTests() : Promise<void>
         }
 
         console.log("Importing binary alignment map from L6R1 HPV16 alignment");
-        atomic.addOperation("inputBamFile",{
+        addOperation.addOperation({
+            opName:"inputBamFile",
             bamPath : getUnSortedBam(L6R1HPV16Align.get())});
         try
         {
@@ -329,7 +355,8 @@ async function runTests() : Promise<void>
         }
 
         console.log("Linking imported L6R1 HPV16 binary alignment map to HPV16");
-        atomic.addOperation("linkRefSeqToAlignment",{
+        addOperation.addOperation({
+            opName:"linkRefSeqToAlignment",
             align : L6R1HPV16AlignImported.get(),
             fasta : hpv16Ref.get()
         });
@@ -344,7 +371,8 @@ async function runTests() : Promise<void>
         }
 
         console.log("Importing binary alignment map from L6R1 HPV18 alignment");
-        atomic.addOperation("inputBamFile",{
+        addOperation.addOperation({
+            opName:"inputBamFile",
             bamPath : getUnSortedBam(L6R1HPV18Align.get())
         });
         try
@@ -358,7 +386,8 @@ async function runTests() : Promise<void>
         }
 
         console.log("Linking imported L6R1 HPV18 binary alignment map to HPv18");
-        atomic.addOperation("linkRefSeqToAlignment",{
+        addOperation.addOperation({
+            opName:"linkRefSeqToAlignment",
             align : L6R1HPV18AlignImported.get(),
             fasta : hpv18Ref.get()
         });
@@ -373,7 +402,8 @@ async function runTests() : Promise<void>
         }
 
         console.log("Importing sequence alignment map from L6R1 HPV16 alignment");
-        atomic.addOperation("inputBamFile",{
+        addOperation.addOperation({
+            opName:"inputBamFile",
             bamPath : getSam(L6R1HPV16Align.get())
         });
         try
@@ -387,7 +417,8 @@ async function runTests() : Promise<void>
         }
 
         console.log("Linking imported L6R1 HPV16 sequence alignment map to HPV16");
-        atomic.addOperation("linkRefSeqToAlignment",{
+        addOperation.addOperation({
+            opName:"linkRefSeqToAlignment",
             align : L6R1HPV16AlignImported.get(),
             fasta : hpv16Ref.get()
         });
@@ -402,7 +433,8 @@ async function runTests() : Promise<void>
         }
 
         console.log("Importing sequence alignment map from L6R1 HPV18 alignment");
-        atomic.addOperation("inputBamFile",{
+        addOperation.addOperation({
+            opName:"inputBamFile",
             bamPath : getSam(L6R1HPV18Align.get())
         });
         try
@@ -416,7 +448,8 @@ async function runTests() : Promise<void>
         }
 
         console.log("Linking imported L6R1 HPV18 sequence alignment map to HPv18");
-        atomic.addOperation("linkRefSeqToAlignment",{
+        addOperation.addOperation({
+            opName:"linkRefSeqToAlignment",
             align : L6R1HPV18AlignImported.get(),
             fasta : hpv18Ref.get()
         });
@@ -431,7 +464,8 @@ async function runTests() : Promise<void>
         }
 
         console.log("Importing headerless sequence alignment map");
-        atomic.addOperation("inputBamFile",{
+        addOperation.addOperation({
+            opName:"inputBamFile",
             bamPath : "data/L6R1HPV16NoHeader.sam"
         });
         try
@@ -444,7 +478,8 @@ async function runTests() : Promise<void>
         }
 
         console.log("Importing headerless sequence aligment map with ref seq");
-        atomic.addOperation("inputBamFile",{
+        addOperation.addOperation({
+            opName:"inputBamFile",
             bamPath : "data/L6R1HPV16NoHeader.sam",
             fasta : hpv16Ref.get()
         });
@@ -459,9 +494,8 @@ async function runTests() : Promise<void>
         }
 
         console.log("Starting to align L6R7R1, L6R7R2 against hpv16");
-        atomic.addOperation(
-            "runBowtie2Alignment",
-            {
+        addOperation.addOperation({
+                opName:"runBowtie2Alignment",
                 fasta : hpv16Ref.get(),
                 fastq1 : L6R7R1.get(),
                 fastq2 : L6R7R2.get()
