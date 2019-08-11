@@ -289,8 +289,8 @@ export function initWindowOptions(
         let display = electron.screen.getPrimaryDisplay();
         if(refName == "toolBar")
         {
-            width = display.workArea.width/4;
-            height = display.workArea.height/8;
+            width = display.workArea.width/2;
+            height = display.workArea.height/2;
         }
         let x = (display.workArea.width/2)-(width/2);
         let y = 0;
