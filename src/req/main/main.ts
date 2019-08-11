@@ -17,25 +17,20 @@ if(require("electron-squirrel-startup")) app.quit();
 import {IndexFastaForBowtie2Alignment} from "../operations/indexFastaForBowtie2Alignment";
 import {IndexFastaForHisat2Alignment} from "../operations/indexFastaForHisat2Alignment";
 import {RunBowtie2Alignment} from "../operations/RunBowtie2Alignment";
-import {RunHisat2Alignment} from "../operations/RunHisat2Alignment";
 import {BLASTSegmentResult} from "../BLASTSegmentResult";
 
-import {getReadable,getWritable,getReadableAndWritable} from "./../getAppPath";
+import {getReadableAndWritable} from "./../getAppPath";
 import {getEdition} from "./../getEdition";
 import {appMenu} from "./appMenu";
 import * as dataMgr from "./dataMgr";
 import * as atomicOp from "./../operations/atomicOperations";
-import * as addOperation from "../operations/atomicOperations/addOperation";
-import {AtomicOperationIPC} from "./../atomicOperationsIPC";
+import {addOperation} from "./../operations/atomicOperations/addOperation";
 import {GenerateQCReport} from "./../operations/GenerateQCReport";
 import {IndexFastaForVisualization} from "./../operations/indexFastaForVisualization";
 import {RenderCoverageTrackForContig} from "./../operations/RenderCoverageTrack";
 import {RenderSNPTrackForContig} from "./../operations/RenderSNPTrack";
 import {CheckForUpdate} from "./../operations/CheckForUpdate";
 import {DownloadAndInstallUpdate} from "./../operations/DownloadAndInstallUpdate";
-import {OpenPileupViewer} from "./../operations/OpenPileupViewer";
-import {OpenLogViewer} from "./../operations/OpenLogViewer";
-import {OpenNoSamHeaderPrompt} from "./../operations/OpenNoSamHeaderPrompt";
 import {InputFastqFile} from "./../operations/inputFastqFile";
 import {InputFastaFile} from "./../operations/inputFastaFile";
 import {InputBamFile} from "./../operations/InputBamFile";
@@ -44,15 +39,10 @@ import {ImportFileIntoProject} from "./../operations/ImportFileIntoProject";
 import {BLASTSegment} from "./../operations/BLASTSegment";
 import {CopyCircularFigure} from "./../operations/CopyCircularFigure";
 import {DeleteCircularFigure} from "./../operations/DeleteCircularFigure";
-import {NewProject} from "./../operations/NewProject";
 import {OpenProject} from "./../operations/OpenProject";
 import {SaveProject} from "./../operations/SaveProject";
-import {LoadCurrentlyOpenProject} from "./../operations/LoadCurrentlyOpenProject";
-import {DockWindow} from "./../operations/DockWindow";
-import {UnDockWindow} from "./../operations/UnDockWindow";
-import {ChangeTitle} from "./../operations/ChangeTitle";
 import * as winMgr from "./winMgr";
-import {File,getPath} from "./../file";
+import {File} from "./../file";
 import {Fastq} from "./../fastq";
 import {Fasta} from "./../fasta";
 import {AlignData} from "./../alignData";
@@ -60,10 +50,6 @@ import {CircularFigure} from "./../renderer/circularFigure";
 import {PIDInfo} from "./../PIDInfo";
 import {finishLoadingProject} from "./finishLoadingProject";
 import {GetKeyEvent,SaveKeyEvent,KeySubEvent} from "./../ipcEvents";
-
-const jsonFile = require("jsonfile");
-
-var pjson = jsonFile.readFileSync(getReadable("package.json"));
 
 import "./ProjectSelection";
 import "./toolBar";
@@ -89,7 +75,7 @@ app.on(
 
         //on completion of any operation, wait and then broadcast the queue to listening windows
         atomicOp.setOnComplete(
-            function(op : atomicOp.AtomicOperation<any>)
+            function()
             {
                 dataMgr.saveData();
                 setTimeout(function()
@@ -113,19 +99,19 @@ app.on(
             fs.rename(
                 getReadableAndWritable("newCSharpCode.SharpZipLib.dll"),
                 getReadableAndWritable("ICSharpCode.SharpZipLib.dll"),
-                function(err : NodeJS.ErrnoException)
+                function()
                 {}
             );
             fs.rename(
                 getReadableAndWritable("newinstallUpdateProcess.exe"),
                 getReadableAndWritable("installUpdateProcess.exe"),
-                function(err : NodeJS.ErrnoException)
+                function()
                 {}
             );
             fs.rename(
                 getReadableAndWritable("newinstallUpdateNotificationWin32.exe"),
                 getReadableAndWritable("installUpdateNotificationWin32.exe"),
-                function(err : NodeJS.ErrnoException)
+                function()
                 {}
             );
         }
@@ -134,23 +120,23 @@ app.on(
             fs.rename(
                 getReadableAndWritable("newinstallUpdateNotificationLinux"),
                 getReadableAndWritable("installUpdateNotificationLinux"),
-                function(err : NodeJS.ErrnoException)
+                function()
                 {}
             );
             fs.rename(
                 getReadableAndWritable("newinstallUpdateProcess"),
                 getReadableAndWritable("installUpdateProcess"),
-                function(err : NodeJS.ErrnoException)
+                function()
                 {}
             );
             fs.rename(
                 getReadableAndWritable("newinstallUpdateProcess.py"),
                 getReadableAndWritable("installUpdateProcess.py"),
-                function(err : NodeJS.ErrnoException)
+                function()
                 {}
             );
         }
-        fs.unlink("phat.update",function(err : NodeJS.ErrnoException)
+        fs.unlink("phat.update",function()
         {});
     }
 );
@@ -278,17 +264,15 @@ ipc.on(
 			if(auth && auth.token)
 				token = auth.token
 				console.log("token: "+token);
-			addOperation.addOperation({
+			addOperation({
                 opName:"checkForUpdate",
             });
 		}
 	    if(arg.opName == "downloadAndInstallUpdate")
 		{
-			let token = "";
 			let asset : any = undefined;
 			let auth = dataMgr.getKey("application","auth");
 			if(auth && auth.token)
-				token = auth.token
 			//if checkForUpdate was not successful, this will not be set
 			asset = dataMgr.getKey("application","availableUpdate");
 
@@ -298,7 +282,7 @@ ipc.on(
 			{
 				if(!asset)
 					return;
-				addOperation.addOperation(
+				addOperation(
 				{
                     opName:"downloadAndInstallUpdate",
 					data:{asset : asset},
@@ -313,7 +297,7 @@ ipc.on(
         
         else
         {
-            addOperation.addOperation(arg);
+            addOperation(arg);
         }
 
 		dataMgr.setKey("application","operations",atomicOp.operationsQueue);
@@ -552,7 +536,7 @@ atomicOp.updates.on(
         }
         else if(op.flags.failure)
         {
-            addOperation.addOperation({
+            addOperation({
                 opName:"openNoSamHeaderPrompt",
                 data : op
             });
@@ -688,7 +672,7 @@ atomicOp.updates.on(
 );
 
 atomicOp.updates.on(
-    "newProject",function(op : NewProject)
+    "newProject",function()
     {
         dataMgr.setKey("application","operations",atomicOp.operationsQueue);
         winMgr.publishChangeForKey("application","operations");
@@ -723,7 +707,7 @@ atomicOp.updates.on(
 );
 
 atomicOp.updates.on(
-    "loadCurrentlyOpenProject",function(op : LoadCurrentlyOpenProject)
+    "loadCurrentlyOpenProject",function()
     {
         dataMgr.setKey("application","operations",atomicOp.operationsQueue);
         winMgr.publishChangeForKey("application","operations");
@@ -731,7 +715,7 @@ atomicOp.updates.on(
 );
 
 atomicOp.updates.on(
-    "unDockWindow",function(op : UnDockWindow)
+    "unDockWindow",function()
     {
         dataMgr.setKey("application","operations",atomicOp.operationsQueue);
         winMgr.publishChangeForKey("application","operations");
@@ -739,7 +723,7 @@ atomicOp.updates.on(
 );
 
 atomicOp.updates.on(
-    "changeTitle",function(op : ChangeTitle)
+    "changeTitle",function()
     {
         dataMgr.setKey("application","operations",atomicOp.operationsQueue);
         winMgr.publishChangeForKey("application","operations");
