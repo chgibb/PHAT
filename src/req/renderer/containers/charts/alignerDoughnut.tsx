@@ -53,30 +53,30 @@ export class AlignerDoughnut extends React.Component<AlignerDoughnutProps,{}>
                 if(!this.chart)
                 {
                     this.chart = new Chart(this.chartRef.current.getContext("2d")!,{
-                    type: "doughnut",
-                options : {
-                    animation : {
-                        animateRotate : true
-                    }
-                }});
-                }
-                    let data = {
-                        datasets: [
-                            {
-                                data : [numBowtie2,numHisat2,numUnknown],
-                                backgroundColor : [
-                                    this.colour1,
-                                    this.colour2,
-                                    this.colour3
-                                ]
+                        type: "doughnut",
+                        options : {
+                            animation : {
+                                animateRotate : true
                             }
-                        ],
-                        labels : [
-                            "Bowtie2",
-                            "Hisat2",
-                            "Unknown"
-                        ]
-                    };
+                        }});
+                }
+                let data = {
+                    datasets: [
+                        {
+                            data : [numBowtie2,numHisat2,numUnknown],
+                            backgroundColor : [
+                                this.colour1,
+                                this.colour2,
+                                this.colour3
+                            ]
+                        }
+                    ],
+                    labels : [
+                        "Bowtie2",
+                        "Hisat2",
+                        "Unknown"
+                    ]
+                };
   
                 this.chart.data = data;
                 this.chart.update();
