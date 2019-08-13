@@ -1,5 +1,3 @@
-import * as electron from "electron";
-const ipc = electron.ipcRenderer;
 import * as React from "react";
 
 import {Fasta} from "../../../fasta";
@@ -7,7 +5,6 @@ import {AlignData} from "../../../alignData";
 import {Fastq} from "../../../fastq";
 import {AlignmentsReportTable} from "../../containers/tables/alignmentsReportTable";
 import {TableCellHover} from "../../containers/tableCellHover";
-import {AtomicOperationIPC} from "../../../atomicOperationsIPC";
 import {SNPPositionsTable} from "../../containers/tables/snpPositionsTable";
 import {Button} from "../../components/button";
 import {Dialog} from "../../components/dialog";
@@ -16,9 +13,9 @@ import {DialogActions} from "../../components/dialogActions";
 import {ReadsPerContigTable} from "../../containers/tables/readsPerContigTable";
 import {BLASTRunsTable} from "../../containers/tables/BLASTRunsTable";
 import {enQueueOperation} from "../../enQueueOperation";
-import { GridWrapper } from '../../containers/gridWrapper';
-import { Grid } from '../../components/grid';
-import { AlignerDoughnut } from '../../containers/charts/alignerDoughnut';
+import {GridWrapper} from "../../containers/gridWrapper";
+import {Grid} from "../../components/grid";
+import {AlignerDoughnut} from "../../containers/charts/alignerDoughnut";
 
 export interface OutputViewState
 {
@@ -36,8 +33,6 @@ export interface OutputViewProps
 
 export class OutputView extends React.Component<OutputViewProps,OutputViewState>
 {
-    private alignerChartRef = React.createRef<HTMLCanvasElement>();
-    private alignerChart : Chart | undefined;
     public constructor(props : OutputViewProps)
     {
         super(props);
@@ -108,104 +103,104 @@ export class OutputView extends React.Component<OutputViewProps,OutputViewState>
                 }
                 {
                     this.state.currentTable == "reports" ? 
-                    <div>
-                        {this.props.aligns && this.props.aligns.length > 0 ?
-                        <GridWrapper>
-                            <Grid container spacing={1} justify="center">
-                                <AlignerDoughnut
-                                    aligns={this.props.aligns}
-                                    height="50%"
-                                    width="50%"
-                                    marginBottom="15vh"
-                                />
-                            </Grid>
-                        </GridWrapper>
-                        :''}
-                        <AlignmentsReportTable
-                            viewMore={(rowData : AlignData) => 
-                            {
-                                this.setState({
-                                    viewMoreDialogOpen : true,
-                                    clickedRow : rowData
-                                });
-                            }}
-                            aligns={this.props.aligns}
-                            fastas={this.props.fastas}
-                            onRowClick={(event: React.MouseEvent | undefined, rowData: AlignData | undefined) => 
-                            {
-                                if(!rowData)
-                                    return;
-                                    
-                                let el = TableCellHover.getClickedCell(event);
-    
-                                if (el) 
+                        <div>
+                            {this.props.aligns && this.props.aligns.length > 0 ?
+                                <GridWrapper>
+                                    <Grid container spacing={1} justify="center">
+                                        <AlignerDoughnut
+                                            aligns={this.props.aligns}
+                                            height="50%"
+                                            width="50%"
+                                            marginBottom="15vh"
+                                        />
+                                    </Grid>
+                                </GridWrapper>
+                                :""}
+                            <AlignmentsReportTable
+                                viewMore={(rowData : AlignData) => 
                                 {
-                                    if (AlignmentsReportTable.SNPCellId(rowData) == el.id) 
-                                    {
-                                        this.setState({
-                                            currentTable : "snps",
-                                            clickedRow : rowData
-                                        });
-                                    }
-    
-                                    else if (AlignmentsReportTable.aliasCellId(rowData) == el.id) 
-                                    {
-                                        if (
-                                            rowData.isExternalAlignment ?
-                                                (rowData.flagStatReport && !rowData.flagStatReport.overallAlignmentRate) :
-                                                (rowData.summary && !rowData.summary.overallAlignmentRate)
-    
-                                        ) 
-                                        {
-                                            alert("Can't view an alignment with 0% alignment rate");
-                                            return;
-                                        }
-    
-                                        let fasta: Fasta | undefined;
+                                    this.setState({
+                                        viewMoreDialogOpen : true,
+                                        clickedRow : rowData
+                                    });
+                                }}
+                                aligns={this.props.aligns}
+                                fastas={this.props.fastas}
+                                onRowClick={(event: React.MouseEvent | undefined, rowData: AlignData | undefined) => 
+                                {
+                                    if(!rowData)
+                                        return;
                                     
-                                        for (let k = 0; k != this.props.fastas!.length; ++k) 
-                                        {
+                                    let el = TableCellHover.getClickedCell(event);
     
-                                            if (rowData.fasta && this.props.fastas![k].uuid == rowData.fasta.uuid) 
-                                            {
-                                                fasta = this.props.fastas![k];
-                                                break;
-                                            }
-                                        }
-                                        if (!fasta) 
-                                        {
-                                            alert("You must link this alignment to a reference to visualize");
-                                            return;
-                                        }
-                                        if (!fasta.indexedForVisualization) 
-                                        {
-                                            alert("The reference for this alignment is not ready for visualization");
-                                            return;
-                                        }
-                                        
-                                        enQueueOperation({
-                                            opName: "openPileupViewer",
-
-                                            align: rowData,
-                                            contig: fasta.contigs[0].name.split(" ")[0],
-                                            start: 0,
-                                            stop: 100
-                                            
-                                        });
-                                    }
-    
-                                    else if(AlignmentsReportTable.BLASTRunsCellId(rowData) == el.id)
+                                    if (el) 
                                     {
-                                        this.setState({
-                                            currentTable : "blastRuns",
-                                            clickedRow : rowData
-                                        });
+                                        if (AlignmentsReportTable.SNPCellId(rowData) == el.id) 
+                                        {
+                                            this.setState({
+                                                currentTable : "snps",
+                                                clickedRow : rowData
+                                            });
+                                        }
+    
+                                        else if (AlignmentsReportTable.aliasCellId(rowData) == el.id) 
+                                        {
+                                            if (
+                                                rowData.isExternalAlignment ?
+                                                    (rowData.flagStatReport && !rowData.flagStatReport.overallAlignmentRate) :
+                                                    (rowData.summary && !rowData.summary.overallAlignmentRate)
+    
+                                            ) 
+                                            {
+                                                alert("Can't view an alignment with 0% alignment rate");
+                                                return;
+                                            }
+    
+                                            let fasta: Fasta | undefined;
+                                    
+                                            for (let k = 0; k != this.props.fastas!.length; ++k) 
+                                            {
+    
+                                                if (rowData.fasta && this.props.fastas![k].uuid == rowData.fasta.uuid) 
+                                                {
+                                                    fasta = this.props.fastas![k];
+                                                    break;
+                                                }
+                                            }
+                                            if (!fasta) 
+                                            {
+                                                alert("You must link this alignment to a reference to visualize");
+                                                return;
+                                            }
+                                            if (!fasta.indexedForVisualization) 
+                                            {
+                                                alert("The reference for this alignment is not ready for visualization");
+                                                return;
+                                            }
+                                        
+                                            enQueueOperation({
+                                                opName: "openPileupViewer",
+
+                                                align: rowData,
+                                                contig: fasta.contigs[0].name.split(" ")[0],
+                                                start: 0,
+                                                stop: 100
+                                            
+                                            });
+                                        }
+    
+                                        else if(AlignmentsReportTable.BLASTRunsCellId(rowData) == el.id)
+                                        {
+                                            this.setState({
+                                                currentTable : "blastRuns",
+                                                clickedRow : rowData
+                                            });
+                                        }
                                     }
-                                }
                                 
-                            }
-                        }
-                        /></div> : this.state.currentTable == "snps" ?
+                                }
+                                }
+                            /></div> : this.state.currentTable == "snps" ?
                             <div>
                                 <Button
                                     label="Go Back"

@@ -1,7 +1,7 @@
 import * as React from "react";
 import {Chart} from "chart.js";
 
-import { VCF2JSONRow } from '../../../varScanMPileup2SNPVCF2JSON';
+import {VCF2JSONRow} from "../../../varScanMPileup2SNPVCF2JSON";
 
 export interface RefToVarSNPsDoughnutProps
 {
@@ -44,7 +44,8 @@ export class RefToVarSNPsDoughnut extends React.Component<RefToVarSNPsDoughnutPr
                 {
                     let label = `${this.props.snps[i].ref} to ${this.props.snps[i].var}`;
                 
-                    let item = data.find((x) => {
+                    let item = data.find((x) => 
+                    {
                         return x.label == label;
                     });
 
@@ -56,7 +57,7 @@ export class RefToVarSNPsDoughnut extends React.Component<RefToVarSNPsDoughnutPr
                     else 
                         data.push({label : label,num : 1});
             
-                    }
+                }
             }
             if(this.chartRef.current)
             {
@@ -68,13 +69,15 @@ export class RefToVarSNPsDoughnut extends React.Component<RefToVarSNPsDoughnutPr
                     data : {
                         datasets: [
                             {
-                                data : data.map((x) => {
-                                    return x.num
+                                data : data.map((x) => 
+                                {
+                                    return x.num;
                                 }),
                                 backgroundColor : this.colours
                             }
                         ],
-                        labels : data.map((x) => {
+                        labels : data.map((x) => 
+                        {
                             return x.label;
                         })
                     },

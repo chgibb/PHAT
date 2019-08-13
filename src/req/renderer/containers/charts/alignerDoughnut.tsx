@@ -1,7 +1,7 @@
 import * as React from "react";
 import {Chart} from "chart.js";
 
-import { AlignData } from '../../../alignData';
+import {AlignData} from "../../../alignData";
 
 export interface AlignerDoughnutProps
 {
