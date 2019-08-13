@@ -1,7 +1,6 @@
 import * as electron from "electron";
 const ipc = electron.ipcRenderer;
 import * as React from "react";
-import {Chart} from "chart.js";
 
 import {Fasta} from "../../../fasta";
 import {AlignData} from "../../../alignData";
@@ -19,6 +18,7 @@ import {BLASTRunsTable} from "../../containers/tables/BLASTRunsTable";
 import {enQueueOperation} from "../../enQueueOperation";
 import { GridWrapper } from '../../containers/gridWrapper';
 import { Grid } from '../../components/grid';
+import { AlignerDoughnut } from '../../containers/charts/alignerDoughnut';
 
 export interface OutputViewState
 {
@@ -45,44 +45,6 @@ export class OutputView extends React.Component<OutputViewProps,OutputViewState>
         this.state = {
             currentTable : "reports"
         } as OutputViewState;
-    }
-
-  /*  public componentDidUpdate()
-    {
-        this.componentDidMount();
-    }*/
-
-    public componentDidUpdate()
-    {
-        const randomColour = require("randomcolor");
-        if(this.alignerChartRef.current && !this.alignerChart){
-         this.alignerChart = new Chart(this.alignerChartRef.current.getContext("2d")!,{
-            type: "doughnut",
-            data : {
-                datasets:[
-                    {
-                        data:[10,20,30],
-                        backgroundColor:[
-                            randomColour(),
-                            randomColour(),
-                            randomColour()
-                        ]
-                    }
-                ],
-                labels:[
-                    "Red",
-                    "Yellow",
-                    "Blue"
-                ]
-            },
-            options:{
-                animation:{
-                    animateRotate:true,
-                    
-                }
-            }
-        });
-    }
     }
 
     public render() : JSX.Element
@@ -150,14 +112,12 @@ export class OutputView extends React.Component<OutputViewProps,OutputViewState>
                         {this.props.aligns && this.props.aligns.length > 0 ?
                         <GridWrapper>
                             <Grid container spacing={1} justify="center">
-                                <div style={{
-                                    position:"relative",
-                                    height:"50%",
-                                    width:"50%",
-                                    marginBottom:"15vh"
-                                }}>
-                                    <canvas ref={this.alignerChartRef}></canvas>
-                                    </div>
+                                <AlignerDoughnut
+                                    aligns={this.props.aligns}
+                                    height="50%"
+                                    width="50%"
+                                    marginBottom="15vh"
+                                />
                             </Grid>
                         </GridWrapper>
                         :''}
