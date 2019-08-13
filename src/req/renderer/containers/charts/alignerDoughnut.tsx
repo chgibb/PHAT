@@ -50,12 +50,17 @@ export class AlignerDoughnut extends React.Component<AlignerDoughnutProps,{}>
             }
             if(this.chartRef.current)
             {
-                if(this.chart)
-                    this.chart.destroy();
-
-                this.chart = new Chart(this.chartRef.current.getContext("2d")!,{
+                if(!this.chart)
+                {
+                    this.chart = new Chart(this.chartRef.current.getContext("2d")!,{
                     type: "doughnut",
-                    data : {
+                options : {
+                    animation : {
+                        animateRotate : true
+                    }
+                }});
+                }
+                    let data = {
                         datasets: [
                             {
                                 data : [numBowtie2,numHisat2,numUnknown],
@@ -71,13 +76,10 @@ export class AlignerDoughnut extends React.Component<AlignerDoughnutProps,{}>
                             "Hisat2",
                             "Unknown"
                         ]
-                    },
-                    options : {
-                        animation : {
-                            animateRotate : true
-                        }
-                    }
-                });
+                    };
+  
+                this.chart.data = data;
+                this.chart.update();
             }
         }
     }
