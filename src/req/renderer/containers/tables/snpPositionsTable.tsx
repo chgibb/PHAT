@@ -10,6 +10,9 @@ import {Fasta} from "../../../fasta";
 import {AtomicOperationIPC} from "../../../atomicOperationsIPC";
 import {TableCellHover} from "../tableCellHover";
 import {enQueueOperation} from "../../enQueueOperation";
+import { GridWrapper } from '../gridWrapper';
+import { Grid } from '../../components/grid';
+import { RefToVarSNPsDoughnut } from '../charts/refToVarSNPsDoughnut';
 
 const ipc = electron.ipcRenderer;
 
@@ -40,6 +43,18 @@ export function SNPPositionsTable(props : SNPPositionsTableProps) : JSX.Element
     }
 
     return (
+        <React.Fragment>
+            {snps && snps.length > 0 ?
+            <GridWrapper>
+            <Grid container spacing={1} justify="center">
+                <RefToVarSNPsDoughnut
+                    snps={snps}
+                    height="50%"
+                    width="50%"
+                    marginBottom="15vh"
+                />
+            </Grid>
+        </GridWrapper> : ''}
         <TableCellHover>
             <Table<VCF2JSONRow>
                 title=""
@@ -214,5 +229,6 @@ export function SNPPositionsTable(props : SNPPositionsTableProps) : JSX.Element
                 ]}
             />
         </TableCellHover>
+        </React.Fragment>
     );
 }
