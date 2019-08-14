@@ -5,7 +5,7 @@ import * as React from "react";
 import {Fastq} from "../../../fastq";
 import {Fasta} from "../../../fasta";
 import {AtomicOperation} from "../../../operations/atomicOperations";
-import {RunAlignmentForm} from "../../containers/forms/runAlignment/runAlignmentForm";
+import {RunAlignmentForm} from "../../containers/forms/runAlignmentForm/runAlignmentForm";
 
 export interface AlignViewState
 {
