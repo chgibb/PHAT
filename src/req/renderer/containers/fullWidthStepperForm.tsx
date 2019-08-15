@@ -19,6 +19,7 @@ export interface FullWidthFormStep
 export interface Form
 {
     onAdvance : (step : number) => Promise<boolean>;
+    onRetreat : (step : number) => Promise<boolean>;
     state : {
         errors : Array<string>;
         currentStep : number;
@@ -30,6 +31,7 @@ export interface FullWidthStepperFormProps
     steps : Array<FullWidthFormStep>;
     form : Form;
     setFormState : (newState : any) => void;
+    disableNavigation? : boolean;
 }
 
 /**
@@ -86,18 +88,23 @@ export function FullWidthStepperForm(props : FullWidthStepperFormProps) : JSX.El
                                         }) : ""}
                                     </Grid>
                                     <Grid item>
+                                        {!props.disableNavigation ?
                                         <Button
                                             type="retreat"
                                             label="Previous"
-                                            onClick={() => 
+                                            onClick={async () => 
                                             {
+                                                if(await props.form.onRetreat(value))
+                                                {
                                                 if(value > 0)
                                                     handleChangeIndex(value - 1);
+                                                }
                                             }}
                                             id={`previous${viewIndex}`}
-                                        />
+                                        /> :""}
                                     </Grid>
                                     <Grid item>
+                                        {!props.disableNavigation ?
                                         <Button
                                             type="advance"
                                             label="Next"
@@ -110,7 +117,7 @@ export function FullWidthStepperForm(props : FullWidthStepperFormProps) : JSX.El
                                                 }
                                             }}
                                             id={`next${viewIndex}`}
-                                        />
+                                        /> :""}
                                     </Grid>
                                     <Grid item />
                                 </Grid>

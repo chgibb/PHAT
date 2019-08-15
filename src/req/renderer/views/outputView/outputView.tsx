@@ -16,10 +16,12 @@ import {enQueueOperation} from "../../enQueueOperation";
 import {GridWrapper} from "../../containers/gridWrapper";
 import {Grid} from "../../components/grid";
 import {AlignerDoughnut} from "../../containers/charts/alignerDoughnut";
+import { BLASTRunForm } from '../../containers/forms/BLASTRunForm';
 
 export interface OutputViewState
 {
     currentTable : "reports" | "snps" | "contigs" | "blastRuns";
+    showBLASTForm : true | false;
     clickedRow? : AlignData;
     viewMoreDialogOpen : boolean;
 }
@@ -38,7 +40,8 @@ export class OutputView extends React.Component<OutputViewProps,OutputViewState>
         super(props);
 
         this.state = {
-            currentTable : "reports"
+            currentTable : "reports",
+            showBLASTForm : true,
         } as OutputViewState;
     }
 
@@ -239,13 +242,28 @@ export class OutputView extends React.Component<OutputViewProps,OutputViewState>
                                             onClick={() => 
                                             {
                                                 this.setState({
-                                                    currentTable : "reports"
+                                                    currentTable : "reports",
+                                                    showBLASTForm : false
                                                 });
                                             }}
                                         />
+                                        <Button
+                                            label="New BLAST Run"
+                                            type="advance"
+                                            onClick={()=>{
+                                                this.setState({
+                                                    showBLASTForm : true
+                                                })
+                                            }}
+                                        />
+                                        {this.state.showBLASTForm ? 
+                                            <BLASTRunForm
+                                                align={this.state.clickedRow}
+                                            />    
+                                        : 
                                         <BLASTRunsTable
                                             align={this.state.clickedRow}
-                                        />
+                                        />}
                                     </div> : null 
                 }
             </div>
