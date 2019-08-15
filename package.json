@@ -45,7 +45,7 @@
         "@chgibb/electron-tabs": "^0.8.0",
         "@chgibb/ng-node-compile": "^1.0.6",
         "@claviska/jquery-minicolors": "^2.2.6",
-        "@material-ui/core": "^4.0.2",
+        "@material-ui/core": "^4.3.2",
         "@material-ui/icons": "^4.0.1",
         "@types/chart.js": "2.7.56",
         "@types/fs-extra": "0.0.37",
