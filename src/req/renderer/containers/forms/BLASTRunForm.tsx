@@ -2,8 +2,9 @@ import * as React from "react";
 import { Form, FullWidthStepperForm, FullWidthFormStep } from '../fullWidthStepperForm';
 import { step1 } from './BLASTRunForm/step1';
 import { step2 } from './BLASTRunForm/step2';
-import { AlignData } from '../../../alignData';
+import { AlignData, getSam } from '../../../alignData';
 import { ReadWithFragments } from '../../../readWithFragments';
+import { getReadWithFragments } from '../../../getReadWithFragments';
 
 export interface BLASTRunFormProps
 {
@@ -15,7 +16,9 @@ export interface BLASTRunFormState
     start? : number;
     stop? : number;
     readsWithFragments? : Array<ReadWithFragments> | undefined;
-    searchForReadsWithFragments? : Promise<void> | undefined;
+    readsScanned? : number;
+    searchForReadsWithFragmentsPromise? : Promise<void> | undefined;
+    searchingForReadsWithFragments : boolean;
     errors : Array<string>;
     currentStep : number;
 }
@@ -29,7 +32,8 @@ export class BLASTRunForm extends React.Component<BLASTRunFormProps,BLASTRunForm
 
         this.state = {
             errors : [],
-            currentStep : 0
+            currentStep : 0,
+            searchingForReadsWithFragments : false
         };
 
         this.validateSelectedRange = this.validateSelectedRange.bind(this);
@@ -37,6 +41,34 @@ export class BLASTRunForm extends React.Component<BLASTRunFormProps,BLASTRunForm
         this.onStepOneEndChange = this.onStepOneEndChange.bind(this);
 
         this.setState = this.setState.bind(this);
+    }
+
+    private searchForReadsWithFragments() : Promise<void>
+    {
+        return new Promise<void>(async () => {
+            if(!this.props.align || this.state.start === undefined || this.state.stop === undefined)
+            {
+                this.setState({
+                    searchingForReadsWithFragments : false,
+                });
+                return resolve();
+            }
+            let readsWithFragments = await getReadWithFragments(
+                getSam(this.props.align),
+                this.state.start,
+                this.state.stop,
+                (readsScanned : number) => {
+                    this.setState({
+                        readsScanned : readsScanned
+                    });
+                }
+            );
+
+            this.setState({
+                searchingForReadsWithFragments : false,
+                readsWithFragments : readsWithFragments
+            })
+        });
     }
 
     public onAdvance(step : number) : Promise<boolean>
@@ -51,6 +83,11 @@ export class BLASTRunForm extends React.Component<BLASTRunFormProps,BLASTRunForm
                     });
                     return resolve(false);
                 }
+                
+                this.setState({
+                    searchingForReadsWithFragments : true,
+                    searchForReadsWithFragmentsPromise : this.searchForReadsWithFragments()
+                });
             }
 
             this.setState({
@@ -63,6 +100,14 @@ export class BLASTRunForm extends React.Component<BLASTRunFormProps,BLASTRunForm
     public onRetreat(step :  number) : Promise<boolean>
     {
         return new Promise<boolean>((resolve : (val : boolean) => void) : void => {
+            if(step == 1)
+            {
+                this.setState({
+                    searchingForReadsWithFragments : false,
+                    searchForReadsWithFragmentsPromise : undefined,
+                    readsWithFragments : undefined
+                });
+            }
             return resolve(true);
         });
     }
@@ -120,7 +165,7 @@ export class BLASTRunForm extends React.Component<BLASTRunFormProps,BLASTRunForm
                         form={this}
                         setFormState={this.setState}
                         steps={steps}
-                        disableNavigation={this.state.currentStep == 1 && this.state.searchForReadsWithFragments ? this.state.searchForReadsWithFragments}
+                        disableNavigation={this.state.currentStep == 1 && this.state.searchingForReadsWithFragments}
                     />
                 </div>
             </div>
