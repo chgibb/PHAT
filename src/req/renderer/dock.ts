@@ -4,6 +4,7 @@ const ipc = electron.ipcRenderer;
 
 import {AtomicOperationIPC} from "./../atomicOperationsIPC";
 import {getReadable} from "./../getAppPath";
+import {enQueueOperation} from "./enQueueOperation";
 
 let electronTabs : any = undefined;
 let tabGroup : any = undefined;
@@ -205,14 +206,11 @@ export function dockThisWindow(target = "toolBar") : void
  */
 export function dockWindow(refName : string,target : string) : void
 {
-    ipc.send(
-        "runOperation",
-        <AtomicOperationIPC>{
-            opName : "dockWindow",
-            toDock : refName,
-            dockTarget : target
-        }
-    );
+    enQueueOperation({
+        opName : "dockWindow",
+        toDock : refName,
+        dockTarget : target
+    });
 }
 
 /**
@@ -224,14 +222,11 @@ export function unDockActiveTab() : void
 {
     //mutate a property onto the active tab object to indicate it is being moved into a new window
     tabGroup.getActiveTab().unDocked = true;
-    ipc.send(
-        "runOperation",
-        <AtomicOperationIPC>{
-            opName : "unDockWindow",
-            refName : tabGroup.getActiveTab().refName,
-            guestinstance : tabGroup.getActiveTab().webview.guestinstance
-        }
-    );
+    enQueueOperation({
+        opName : "unDockWindow",
+        refName : tabGroup.getActiveTab().refName,
+        guestinstance : tabGroup.getActiveTab().webview.guestinstance
+    });
 }
 
 /**

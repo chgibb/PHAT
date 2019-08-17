@@ -21,7 +21,7 @@ export function showPileup(
     let bai : string;
     let bamName : string;
     
-    twoBit = get2BitPath(align.fasta);
+    twoBit = get2BitPath(align.fasta!);
 
     bam = getReadableAndWritable("rt/AlignmentArtifacts/"+align.uuid+"/out.sorted.bam");
     bai = getReadableAndWritable("rt/AlignmentArtifacts/"+align.uuid+"/out.sorted.bam.bai");
@@ -44,7 +44,7 @@ export function showPileup(
                             url : path.resolve(twoBit)
                         }
                     ),
-                    name : refName
+                    name : refName!
                 },
                 {
                     viz : pileup.viz.pileup(),

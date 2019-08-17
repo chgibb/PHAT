@@ -7,7 +7,7 @@ let getBaseVersion = /[\d]+\.[\d]+\.[\d]+/;
 interface Version
 {
     base : string;
-    beta : number;
+    beta : number | undefined;
 }
 
 /**
@@ -39,9 +39,9 @@ export function sepBaseAndBeta(version : string) : Version
 {
     if(isBeta(version))
     {
-        let baseVersion = getBaseVersion.exec(version)[0];
-        let betaTag = getBetaTag.exec(version)[0];
-        let betaVersion = getBetaVersion.exec(betaTag)[0];
+        let baseVersion = getBaseVersion.exec(version)!![0];
+        let betaTag = getBetaTag.exec(version)![0];
+        let betaVersion = getBetaVersion.exec(betaTag)![0];
         return <Version>{
             base : baseVersion,
             beta : parseInt(betaVersion)};
@@ -67,7 +67,7 @@ export function versionIsGreaterThan(l : string,r : string) : boolean
 
     let isLBaseLarger = semver.satisfies(`${lVersions.base}`,`>${rVersions.base}`);
     let isLBaseSame = semver.satisfies(`${lVersions.base}`,`>=${rVersions.base}`);
-    let isLBetaLarger = lVersions.beta > rVersions.beta;
+    let isLBetaLarger = lVersions.beta! > rVersions.beta!;
 
     //l is a beta but r is not
     if(rVersions.beta === undefined && lVersions.beta !== undefined)

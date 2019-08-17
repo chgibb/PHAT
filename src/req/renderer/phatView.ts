@@ -1,8 +1,8 @@
-import { AtomicOperation } from '../operations/atomicOperations';
+import {AtomicOperation} from "../operations/atomicOperations";
 
 export interface PHATView
 {
     props : {
-        operations? : Array<AtomicOperation>;
+        operations? : Array<AtomicOperation<any>>;
     }
 }

@@ -21,7 +21,7 @@ export class View extends viewMgr.View
     }
     public onUnMount() : void
     {}
-    public renderView() : string
+    public renderView() : string | undefined
     {
         if(this.firstRender)
         {

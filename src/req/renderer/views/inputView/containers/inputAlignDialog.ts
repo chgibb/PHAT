@@ -3,6 +3,7 @@ const dialog = electron.remote.dialog;
 const ipc = electron.ipcRenderer;
 
 import {AtomicOperationIPC} from "../../../../atomicOperationsIPC";
+import {enQueueOperation} from "../../../enQueueOperation";
 
 export function inputAlignDialog() : void
 {
@@ -26,13 +27,10 @@ export function inputAlignDialog() : void
             {
                 for(let i = 0; i != files.length; ++i)
                 {
-                    ipc.send(
-                        "runOperation",
-                        <AtomicOperationIPC>{
-                            opName : "inputBamFile",
-                            filePath : files[i]
-                        }
-                    );
+                    enQueueOperation({
+                        opName : "inputBamFile",
+                        bamPath : files[i]
+                    });
                 }
             }
         }

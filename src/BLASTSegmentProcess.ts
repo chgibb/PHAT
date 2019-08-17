@@ -35,17 +35,17 @@ function update(updateLog = true) : void
     {
         if(flags.success)
         {
-            atomic.closeLog(logger.logRecord,"success");
+            atomic.closeLog(logger.logRecord!,"success");
             update.logRecord = logger.logRecord;
         }
         else if(flags.failure)
         {   
-            atomic.closeLog(logger.logRecord,"failure");
+            atomic.closeLog(logger.logRecord!,"failure");
             update.logRecord = logger.logRecord;
         }
     }
 
-    process.send(update);
+    process.send!(update);
     if(updateLog)
         logger.logObject(update);
 }
@@ -54,7 +54,7 @@ process.on("message",async function(ev : AtomicOperationForkEvent)
 {
     if(ev.setData == true)
     {
-        logger.logRecord = atomic.openLog(ev.name,ev.description);
+        logger.logRecord = atomic.openLog(ev.name!,ev.description!);
         
         align = ev.data.align;
         blastSegmentResult = ev.data.blastSegmentResult;
@@ -62,7 +62,7 @@ process.on("message",async function(ev : AtomicOperationForkEvent)
         mkdirp.sync(getArtifactDir(blastSegmentResult));
 
         logger.logObject(ev);
-        process.send(<AtomicOperationForkEvent>{finishedSettingData : true});
+        process.send!(<AtomicOperationForkEvent>{finishedSettingData : true});
         return;
     }
 
@@ -72,8 +72,8 @@ process.on("message",async function(ev : AtomicOperationForkEvent)
         update();
         let readsWithFragments : Array<ReadWithFragments> = await getReadWithFragments(
             getSam(align),
-            blastSegmentResult.start,
-            blastSegmentResult.stop,
+            blastSegmentResult.start!,
+            blastSegmentResult.stop!,
             function()
             {}
         );

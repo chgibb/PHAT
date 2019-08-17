@@ -4,26 +4,29 @@ import * as atomic from "./atomicOperations";
 import {AtomicOperationForkEvent} from "./../atomicOperationsIPC";
 import {getReadable,getWritable,getReadableAndWritable} from "./../getAppPath";
 import {ProjectManifest} from "./../projectManifest";
-export class OpenProject extends atomic.AtomicOperation
+
+export interface OpenProjectData
 {
-    public proj : ProjectManifest;
-    public externalProjectPath : string;
-    public openProjectProcess : cp.ChildProcess;
-    constructor()
+    opName : "openProject";
+    proj : ProjectManifest | undefined;
+    externalProjectPath : string | undefined;
+}
+export class OpenProject extends atomic.AtomicOperation<atomic.OperationData>
+{
+    public proj : ProjectManifest | undefined;
+    public externalProjectPath : string | undefined;
+    public openProjectProcess : cp.ChildProcess | undefined;
+    constructor(data : OpenProjectData)
     {
-        super();
-    }
-    public setData(data : {
-        proj : ProjectManifest,
-        externalProjectPath : string
-    }) : void
-    {
+        super(data);
+
         this.proj = data.proj;
         this.externalProjectPath = data.externalProjectPath;
     }
+
     public run() : void
     {
-        this.logRecord = atomic.openLog(this.name,"Open Project");
+        this.logRecord = atomic.openLog(this.opName,"Open Project");
         let self = this;
         this.openProjectProcess = atomic.makeFork("OpenProject.js",<AtomicOperationForkEvent>{
             setData : true,
@@ -40,7 +43,7 @@ export class OpenProject extends atomic.AtomicOperation
             self.logObject(ev);
             if(ev.finishedSettingData == true)
             {
-                self.openProjectProcess.send(
+                self.openProjectProcess!.send(
                     <AtomicOperationForkEvent>{
                         run : true
                     }
@@ -49,12 +52,12 @@ export class OpenProject extends atomic.AtomicOperation
             if(ev.update == true)
             {
                 self.extraData = ev.data;
-                self.flags = ev.flags;
-                if(ev.flags.success == true)
+                self.flags = ev.flags!;
+                if(ev.flags!.success == true)
                 {
                     self.setSuccess(self.flags);
                 }
-                self.update();
+                self.update!();
             }
         });
         this.addPID(this.openProjectProcess.pid);

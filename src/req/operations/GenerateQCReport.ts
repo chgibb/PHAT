@@ -9,23 +9,28 @@ import {getReadable,getReadableAndWritable} from "./../getAppPath";
 import {Job,JobCallBackObject} from "./../main/Job";
 
 const fse = require("fs-extra");
-export class GenerateQCReport extends atomic.AtomicOperation
+
+export interface GenerateQCReportData
+{
+    opName : "generateQCReport";
+    data : Fastq;
+}
+
+export class GenerateQCReport extends atomic.AtomicOperation<GenerateQCReportData>
 {
     public hasJVMCrashed : boolean = false;
-    public fastQCPath : string;
-    public fastQCJob : Job;
-    public fastQCFlags : atomic.CompletionFlags;
+    public fastQCPath : string | undefined;
+    public fastQCJob : Job | undefined;
+    public fastQCFlags : atomic.CompletionFlags | undefined;
     public fastq : Fastq;
     public destDir : string;
     public srcDir : string;
-    constructor()
+    constructor(data : GenerateQCReportData)
     {
-        super();
+        super(data);
         this.fastQCFlags = new atomic.CompletionFlags();
-    }
-    public setData(data : Fastq) : void
-    {
-        this.fastq = data;
+
+        this.fastq = data.data;
 
         let trimmed : string = trimPath(getPath(this.fastq));
 
@@ -37,13 +42,14 @@ export class GenerateQCReport extends atomic.AtomicOperation
         this.generatedArtifacts.push(remainder+trimmed+".zip");
 
         this.srcDir = remainder+trimmed;
-        this.destDir = getReadableAndWritable("rt/QCReports/"+data.uuid);
+        this.destDir = getReadableAndWritable("rt/QCReports/"+data.data.uuid);
 
         this.destinationArtifactsDirectories.push(this.destDir);
     }
+
     public run() : void
     {
-        this.logRecord = atomic.openLog(this.name,"FastQC Report Generation");
+        this.logRecord = atomic.openLog(this.opName,"FastQC Report Generation");
         //Set path to fastqc entry file
         if(process.platform == "linux")
             this.fastQCPath = getReadable("FastQC/fastqc");
@@ -53,9 +59,9 @@ export class GenerateQCReport extends atomic.AtomicOperation
         //figure out arg ordering based on platform
         let args : Array<string>;
         if(process.platform == "linux")
-            args = [getPath(this.fastq)];
+            args = [getPath(this.fastq!)];
         else if(process.platform == "win32")
-            args = [getReadable("FastQC/fastqc"),getPath(this.fastq)];
+            args = [getReadable("FastQC/fastqc"),getPath(this.fastq!)];
 
         //Running FastQC with certain versions of OpenJDK occasionally crash it.
         //One of the first things in the stdout when this happens is "fatal error"
@@ -84,7 +90,7 @@ export class GenerateQCReport extends atomic.AtomicOperation
                 {
                     //FastQC exited correctly
                     if(params.retCode == 0)
-                        self.setSuccess(self.fastQCFlags);
+                        self.setSuccess(self.fastQCFlags!);
                     //FastQC failed. Mark the entire operation as failed
                     else
                     {
@@ -93,13 +99,13 @@ export class GenerateQCReport extends atomic.AtomicOperation
                     }
                 }
                 //If this a regular update from FastQC or something has went wrong
-                if(!self.fastQCFlags.success)
+                if(!self.fastQCFlags!.success)
                 {
                     //Forward data through normally
                     self.progressMessage = params.unBufferedData;
-                    self.update();
+                    self.update!();
                 }
-                else if(self.fastQCFlags.success)
+                else if(self.fastQCFlags!.success)
                 {
                     //Wait a second before attempting to copy out what we need
                     setTimeout(
@@ -118,8 +124,8 @@ export class GenerateQCReport extends atomic.AtomicOperation
                             }
                             try
                             {
-                                self.fastq.QCData.summary = getQCReportSummaries(`${self.destDir}/fastqc_data.txt`);
-                                self.fastq.QCData.reportRun = true;
+                                self.fastq!.QCData.summary = getQCReportSummaries(`${self.destDir}/fastqc_data.txt`);
+                                self.fastq!.QCData.reportRun = true;
                             }
                             catch(err)
                             {
@@ -127,19 +133,19 @@ export class GenerateQCReport extends atomic.AtomicOperation
                                     ${err}`);
                                 return;
                             }
-                            await parseSeqLengthFromQCReport(self.fastq);
+                            await parseSeqLengthFromQCReport(self.fastq!);
                             self.setSuccess(self.flags);
-                            self.update();
+                            self.update!();
                         },1000
                     );
                 }
             }
         };
-        this.fastQCJob = new Job(this.fastQCPath,args,"",true,fastQCCallBack,{});
+        this.fastQCJob = new Job(this.fastQCPath!,args!,"",true,fastQCCallBack,{});
         try
         {
             this.fastQCJob.Run();
-            this.addPID(this.fastQCJob.pid);
+            this.addPID(this.fastQCJob.pid!);
         }
         //Failed to spawn job
         catch(err)

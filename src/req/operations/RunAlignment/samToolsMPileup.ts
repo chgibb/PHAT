@@ -15,7 +15,7 @@ import {getPath} from "./../../file";
  * @param {atomic.AtomicOperation} logger 
  * @returns {Promise<void>} 
  */
-export function samToolsMPileup(alignData : AlignData,logger : atomic.AtomicOperation) : Promise<void>
+export function samToolsMPileup(alignData : AlignData,logger : atomic.AtomicOperation<any>) : Promise<void>
 {
     return new Promise<void>((resolve,reject) => 
     {
@@ -58,14 +58,14 @@ export function samToolsMPileup(alignData : AlignData,logger : atomic.AtomicOper
             <Array<string>>[
                 "mpileup",
                 "-f",
-                getPath(alignData.fasta),
+                getPath(alignData.fasta!),
                 getSortedBam(alignData)
             ],"",true,jobCallBack,{}
         );
         try
         {
             samToolsMPileupJob.Run();
-            logger.addPIDFromFork(samToolsMPileupJob.pid);
+            logger.addPIDFromFork(samToolsMPileupJob.pid!);
         }
         catch(err)
         {

@@ -14,7 +14,7 @@ export class File implements UniquelyAddressable
     public uuid : string;
     public reachable : boolean;
     public size : number;
-    public sizeString : string;
+    public sizeString : string | undefined;
     public constructor(path : string)
     {
         const uuidv4 : () => string = require("uuid/v4");

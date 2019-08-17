@@ -3,6 +3,8 @@ import {ipcRenderer} from "electron";
 let ipc = ipcRenderer;
 
 
+import {enQueueOperation} from "../enQueueOperation";
+
 import {ProjectManifest,getProjectManifests} from "./../../projectManifest";
 import {getCurrentlyOpenProject} from "./../../getCurrentlyOpenProject";
 import {exportProjectBrowseDialog} from "./exportProjectBrowseDialog";
@@ -15,8 +17,8 @@ const jsonFile = require("jsonfile");
 
 export class OpenProjectView extends viewMgr.View
 {
-    public projects : Array<ProjectManifest>;
-    public currentlyOpenProject : ProjectManifest;
+    public projects : Array<ProjectManifest> | undefined;
+    public currentlyOpenProject : ProjectManifest | undefined;
     public constructor(div : string)
     {
         super("openProjectView",div);
@@ -33,7 +35,7 @@ export class OpenProjectView extends viewMgr.View
             projects = new Array<ProjectManifest>();
         }
         this.projects = projects;
-        this.currentlyOpenProject = getCurrentlyOpenProject();
+        this.currentlyOpenProject = getCurrentlyOpenProject()!;
     }
     public onUnMount() : void
     {}
@@ -115,13 +117,12 @@ export class OpenProjectView extends viewMgr.View
             {
                 if(!path)
                     return;
-                ipc.send(
-                    "runOperation",
-                    <AtomicOperationIPC>{
-                        opName : "openProject",
-                        externalProjectPath : path
-                    }
-                );
+                
+                enQueueOperation({
+                    opName : "openProject",
+                    proj : undefined,
+                    externalProjectPath : path
+                });
             }).catch((err) => 
             {
                 throw err;
@@ -129,12 +130,9 @@ export class OpenProjectView extends viewMgr.View
         }
         if(event.target.id == "currentlyOpen")
         {
-            ipc.send(
-                "runOperation",
-                <AtomicOperationIPC>{
-                    opName : "loadCurrentlyOpenProject"
-                }
-            );
+            enQueueOperation({
+                opName : "loadCurrentlyOpenProject"
+            });
             return;
         }
         if(this.projects)
@@ -144,20 +142,19 @@ export class OpenProjectView extends viewMgr.View
                 if(event.target.id == `${this.projects[i].uuid}Open`)
                 {
                     this.projects[i].lastOpened = Date.now();
-                    document.getElementById(this.div).innerHTML = "Preparing";
+                    document.getElementById(this.div)!.innerHTML = "Preparing";
                     jsonFile.writeFileSync(getProjectManifests(),this.projects);
-                    ipc.send(
-                        "runOperation",
-                        <AtomicOperationIPC>{
-                            opName : "openProject",
-                            proj : this.projects[i]
-                        }
-                    );
+                    
+                    enQueueOperation({
+                        opName : "openProject",
+                        proj : this.projects[i],
+                        externalProjectPath : undefined
+                    });
                     return;
                 }
                 if(event.target.id == `${this.projects[i].uuid}Export`)
                 {
-                    document.getElementById(this.div).innerHTML = `<h3>Exporting ${this.projects[i].alias}</h3>`;
+                    document.getElementById(this.div)!.innerHTML = `<h3>Exporting ${this.projects[i].alias}</h3>`;
                     exportProjectBrowseDialog(this.projects[i]).then(() => 
                     {
                         viewMgr.render();

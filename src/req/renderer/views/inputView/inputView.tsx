@@ -25,7 +25,7 @@ export interface InputViewProps
     fastqs? : Array<Fastq>;
     fastas? : Array<Fasta>;
     aligns? : Array<AlignData>;
-    operations? : Array<AtomicOperation>;
+    operations? : Array<AtomicOperation<any>>;
     
 }
 
@@ -47,9 +47,9 @@ export class InputView extends React.Component<InputViewProps,InputViewState> im
         let found = false;
         for(let i = 0; i != this.props.operations.length; ++i)
         {
-            if(this.props.operations[i].name == "inputBamFile" || this.props.operations[i].name == "linkRefSeqToAlignment" ||
-                            this.props.operations[i].name == "indexFastaForVisualization" || this.props.operations[i].name == "indexFastaForBowtie2Alignment" ||
-                            this.props.operations[i].name == "linkRefSeqToAlignment" || this.props.operations[i].name == "importFileIntoProject")
+            if(this.props.operations[i].opName == "inputBamFile" || this.props.operations[i].opName == "linkRefSeqToAlignment" ||
+                            this.props.operations[i].opName == "indexFastaForVisualization" || this.props.operations[i].opName == "indexFastaForBowtie2Alignment" ||
+                            this.props.operations[i].opName == "linkRefSeqToAlignment" || this.props.operations[i].opName == "importFileIntoProject")
             {
                 found = true;
                 break;
@@ -77,7 +77,7 @@ export class InputView extends React.Component<InputViewProps,InputViewState> im
                             label : "Fastqs",
                             body : (
                                 <FastqView 
-                                    fastqInputs={this.props.fastqs} 
+                                    fastqInputs={this.props.fastqs ? this.props.fastqs : []} 
                                 />
                             )
                         },
@@ -95,8 +95,8 @@ export class InputView extends React.Component<InputViewProps,InputViewState> im
                             label : "Alignment Maps",
                             body : (
                                 <AlignView 
-                                    aligns={this.props.aligns}
-                                    fastaInputs={this.props.fastas}
+                                    aligns={this.props.aligns ? this.props.aligns : []}
+                                    fastaInputs={this.props.fastas ? this.props.fastas : []}
                                 />
                             )
                         }

@@ -145,12 +145,12 @@ $(
                     {
                         if(arg.val !== undefined)
                         {
-                            let ops : Array<AtomicOperation> = arg.val;
+                            let ops : Array<AtomicOperation<any>> = arg.val;
                             try
                             {
                                 for(let i = 0; i != ops.length; ++i)
                                 {
-                                    if(ops[i].name == "renderCoverageTrackForContig" || ops[i].name == "renderSNPTrackForContig" || ops[i].name == "BLASTSegment")
+                                    if(ops[i].opName == "renderCoverageTrackForContig" || ops[i].opName == "renderSNPTrackForContig" || ops[i].opName == "BLASTSegment")
                                     {
                                         genomeView.shouldAllowTriggeringOps = false;
                                         found = true;

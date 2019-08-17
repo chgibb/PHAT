@@ -9,12 +9,13 @@ import {Table} from "../../components/table";
 import {Fasta} from "../../../fasta";
 import {AtomicOperationIPC} from "../../../atomicOperationsIPC";
 import {TableCellHover} from "../tableCellHover";
+import {enQueueOperation} from "../../enQueueOperation";
 
 const ipc = electron.ipcRenderer;
 
 export interface SNPPositionsTableProps
 {
-    align : AlignData;
+    align? : AlignData;
     fastas : Array<Fasta>;
 }
 
@@ -31,7 +32,7 @@ export function SNPPositionsTable(props : SNPPositionsTableProps) : JSX.Element
 
     try
     {
-        snps = JSON.parse(fs.readFileSync(getSNPsJSON(props.align)).toString());
+        snps = JSON.parse(fs.readFileSync(getSNPsJSON(props.align!)).toString());
     }
     catch(err)
     {
@@ -42,9 +43,12 @@ export function SNPPositionsTable(props : SNPPositionsTableProps) : JSX.Element
         <TableCellHover>
             <Table<VCF2JSONRow>
                 title=""
-                data={snps}
-                onRowClick={(event : React.MouseEvent<HTMLElement>,rowData) => 
+                data={snps ? snps : []}
+                onRowClick={(event? : React.MouseEvent,rowData?) => 
                 {
+                    if(!event)
+                        return;
+
                     console.log(rowData);
                     
                     let el = TableCellHover.getClickedCell(event);
@@ -55,7 +59,7 @@ export function SNPPositionsTable(props : SNPPositionsTableProps) : JSX.Element
 
                         for(let i = 0; i != props.fastas.length; ++i)
                         {
-                            if(props.fastas[i].uuid == props.align.fasta.uuid)
+                            if(props.fastas[i].uuid == props.align!.fasta!.uuid)
                             {
                                 fasta = props.fastas[i];
                                 break;
@@ -77,22 +81,20 @@ export function SNPPositionsTable(props : SNPPositionsTableProps) : JSX.Element
                         //trim off leading text
                         let snpPos = parseInt(el.id.replace(/(viewSNP)/,""));
                         //set beginning position in viewer offset by 20
-                        let start = parseInt(snps[snpPos].position)-20;
+                        let start = parseInt(snps![snpPos].position)-20;
                         //offset end by 40 to center SNP in viewer
                         let stop = start+40;
-                        let contig = snps[snpPos].chrom;
-                        ipc.send(
-                            "runOperation",
-                            {
-                                opName : "openPileupViewer",
-                                pileupViewerParams : {
-                                    align : props.align,
-                                    contig : contig,
-                                    start : start,
-                                    stop : stop
-                                }
-                            } as AtomicOperationIPC
-                        );
+                        let contig = snps![snpPos].chrom;
+                        
+                        enQueueOperation({
+                            opName : "openPileupViewer",
+                   
+                            align : props.align!,
+                            contig : contig,
+                            start : start,
+                            stop : stop
+                            
+                        });
                     }
                 }}
                 columns={[

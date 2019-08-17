@@ -37,17 +37,17 @@ function update() : void
     {
         if(flags.success)
         {
-            atomic.closeLog(logger.logRecord,"success");
+            atomic.closeLog(logger.logRecord!,"success");
             update.logRecord = logger.logRecord;
         }
         else if(flags.failure)
         {   
-            atomic.closeLog(logger.logRecord,"failure");
+            atomic.closeLog(logger.logRecord!,"failure");
             update.logRecord = logger.logRecord;
         }
     }
     logger.logObject(update);
-    process.send(update);
+    process.send!(update);
 }
 
 
@@ -56,10 +56,10 @@ process.on(
     {
         if(ev.setData == true)
         {
-            logger.logRecord = atomic.openLog(ev.name,ev.description);
+            logger.logRecord = atomic.openLog(ev.name!,ev.description!);
 
             align = ev.data.alignData;
-            process.send(<AtomicOperationForkEvent>{
+            process.send!(<AtomicOperationForkEvent>{
                 finishedSettingData : true
             });
         }
@@ -93,7 +93,7 @@ process.on(
             progressMessage = "Creating temporary reference index";
             step++;
             update();
-            await samToolsFaidx(align.fasta,logger);
+            await samToolsFaidx(align.fasta!,logger);
 
             progressMessage = "Generating pileup";
             step++;

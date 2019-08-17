@@ -14,7 +14,7 @@ class QCApp extends React.Component<{},QCViewProps>
     public state : QCViewProps;
     public constructor()
     {
-        super(undefined);
+        super({});
 
         this.state = {
 

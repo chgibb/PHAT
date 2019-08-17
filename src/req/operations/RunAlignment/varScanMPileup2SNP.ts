@@ -16,7 +16,7 @@ import {varScanMPileup2SNPVCF2JSON} from "./../../varScanMPileup2SNPVCF2JSON";
  * @param {atomic.AtomicOperation} logger 
  * @returns {Promise<void>} 
  */
-export function varScanMPileup2SNP(alignData : AlignData,logger : atomic.AtomicOperation) : Promise<void>
+export function varScanMPileup2SNP(alignData : AlignData,logger : atomic.AtomicOperation<any>) : Promise<void>
 {
     return new Promise<void>((resolve,reject) => 
     {
@@ -47,7 +47,7 @@ export function varScanMPileup2SNP(alignData : AlignData,logger : atomic.AtomicO
                             function()
                             {
                                 varScanMPileup2SNPStdOutStream.end();
-                                alignData.varScanSNPSummary = varScanMPileup2SNPReportParser(alignData.varScanSNPReport);
+                                alignData.varScanSNPSummary = varScanMPileup2SNPReportParser(alignData.varScanSNPReport!);
                                 fs.writeFileSync(
                                     getSNPsJSON(alignData),
                                     JSON.stringify(
@@ -81,7 +81,7 @@ export function varScanMPileup2SNP(alignData : AlignData,logger : atomic.AtomicO
         try
         {
             varScanMPileup2SNPJob.Run();
-            logger.addPIDFromFork(varScanMPileup2SNPJob.pid);
+            logger.addPIDFromFork(varScanMPileup2SNPJob.pid!);
         }
         catch(err)
         {

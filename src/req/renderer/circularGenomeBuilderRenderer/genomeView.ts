@@ -42,7 +42,7 @@ export class GenomeView extends viewMgr.View implements cf.FigureCanvas
      * @type {cf.CircularFigure}
      * @memberof GenomeView
      */
-    public genome : cf.CircularFigure;
+    public genome : cf.CircularFigure | undefined;
 
     /**
      * Reconstruct the figure using cached data
@@ -58,7 +58,7 @@ export class GenomeView extends viewMgr.View implements cf.FigureCanvas
      * @type {Array<AlignData>}
      * @memberof GenomeView
      */
-    public alignData : Array<AlignData>;
+    public alignData : Array<AlignData> | undefined;
 
     /**
      * Bound Angular scope for genome
@@ -70,9 +70,9 @@ export class GenomeView extends viewMgr.View implements cf.FigureCanvas
 
     public shouldAllowTriggeringOps : boolean;
     public showSeqSelector : boolean;
-    public seqSelectionLeftArm : cf.SeqSelectionDisplayArm;
-    public seqSelectionRightArm : cf.SeqSelectionDisplayArm;
-    public seqSelectionArrow : cf.SeqSelectionDisplayArrow;
+    public seqSelectionLeftArm : cf.SeqSelectionDisplayArm | undefined;
+    public seqSelectionRightArm : cf.SeqSelectionDisplayArm | undefined;
+    public seqSelectionArrow : cf.SeqSelectionDisplayArrow | undefined;
 
     public constructor(name : string,div : string)
     {
@@ -108,7 +108,7 @@ export class GenomeView extends viewMgr.View implements cf.FigureCanvas
      */
     public updateScope(scope? : cf.FigureCanvas) : void
     {
-        if(!this.genome.isInteractive)
+        if(!this.genome!.isInteractive)
             return;
         if(scope)
             this.scope = scope;
@@ -167,7 +167,7 @@ export class GenomeView extends viewMgr.View implements cf.FigureCanvas
                     resetCaches();
                     (<any>global).gc();
 
-                    let svg = await cf.buildSingleSVG(currentlyOpenFigure);
+                    let svg = await cf.buildSingleSVG(currentlyOpenFigure!);
 
                     fs.writeFileSync(fileName,svg);
 
@@ -203,19 +203,19 @@ export class GenomeView extends viewMgr.View implements cf.FigureCanvas
     public figureNameOnClick() : void
     {
         let self = this;
-        dialogs.prompt("Figure Name",this.genome.name,function(text : string)
+        dialogs.prompt("Figure Name",this.genome!.name,function(text : string)
         {
             if(text)
             {
-                self.genome.name = text;
+                self.genome!.name = text;
                 //Overwrite old template cache for figure
-                cf.cacheBaseFigureTemplate(self.genome);
+                cf.cacheBaseFigureTemplate(self.genome!);
                 let masterView = <masterView.View>viewMgr.getViewByName("masterView");
                 let genomeView = <GenomeView>viewMgr.getViewByName("genomeView",masterView.views);
                 
                 //Save changes
                 masterView.saveFigureChanges();
-                changeWindowTitle(self.genome.name);
+                changeWindowTitle(self.genome!.name);
                 //Re render
                 genomeView.firstRender = true;
                 viewMgr.render();
@@ -223,17 +223,17 @@ export class GenomeView extends viewMgr.View implements cf.FigureCanvas
         });
     }
     /**
-     * Should be called when genome.radius changes
+     * Should be called when genome!.radius changes
      * 
      * @memberof GenomeView
      */
     public inputRadiusOnChange() : void
     {
-        this.genome.height = 1200+this.genome.radius*10;
-        this.genome.width = 1200+this.genome.radius*10;
-        this.seqSelectionLeftArm.armRadius = this.genome.radius;
-        this.seqSelectionRightArm.armRadius = this.genome.radius;
-        this.seqSelectionArrow.arrowTrackRadius = this.genome.radius;
+        this.genome!.height = 1200+this.genome!.radius*10;
+        this.genome!.width = 1200+this.genome!.radius*10;
+        this.seqSelectionLeftArm!.armRadius = this.genome!.radius;
+        this.seqSelectionRightArm!.armRadius = this.genome!.radius;
+        this.seqSelectionArrow!.arrowTrackRadius = this.genome!.radius;
        
     }
     /**
@@ -264,7 +264,7 @@ export class GenomeView extends viewMgr.View implements cf.FigureCanvas
         viewMgr.render();
     }
 
-    public renderView() : string
+    public renderView() : string | undefined
     {
         let masterView = <masterView.View>viewMgr.getViewByName("masterView");
         let self = this;
@@ -307,8 +307,8 @@ export class GenomeView extends viewMgr.View implements cf.FigureCanvas
     {
         if(this.genome !== undefined)
         {
-            if(this.genome.isInteractive)
-                centreInteractiveFigure(document.getElementById(this.div),this.genome);
+            if(this.genome!.isInteractive)
+                centreInteractiveFigure(document.getElementById(this.div)!,this.genome);
             else
                 centreNonInteractiveFigure(this.genome);
         }
@@ -334,7 +334,7 @@ export class GenomeView extends viewMgr.View implements cf.FigureCanvas
             console.log(`Figure multiplied to ${found.length}`);
             for(let i = 0; i != found.length; ++i)
             {
-                found[i].parentNode.removeChild(found[i]);
+                found[i].parentNode!.removeChild(found[i]);
             }
             this.firstRender = true;
             viewMgr.render();

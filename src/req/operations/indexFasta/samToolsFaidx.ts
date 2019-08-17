@@ -16,7 +16,7 @@ const fse = require("fs-extra");
  * @param {atomic.AtomicOperation} logger 
  * @returns {Promise<void>} 
  */
-export function samToolsFaidx(fasta : Fasta,logger : atomic.AtomicOperation) : Promise<void>
+export function samToolsFaidx(fasta : Fasta,logger : atomic.AtomicOperation<any>) : Promise<void>
 {
     return new Promise<void>((resolve,reject) => 
     {
@@ -66,7 +66,7 @@ export function samToolsFaidx(fasta : Fasta,logger : atomic.AtomicOperation) : P
         try
         {
             faiJob.Run();
-            logger.addPIDFromFork(faiJob.pid);
+            logger.addPIDFromFork(faiJob.pid!);
         }
         catch(err)
         {

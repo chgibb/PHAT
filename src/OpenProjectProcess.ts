@@ -9,7 +9,7 @@ let flags : CompletionFlags = new CompletionFlags();
 
 function progressCallBack(toUnpack : number,unPacked : number) : void
 {
-    process.send(
+    process.send!(
         <AtomicOperationForkEvent>{
             update : true,
             flags : flags,
@@ -24,7 +24,7 @@ process.on(
         {
             proj = ev.data.proj;
             externalProjectPath = ev.data.externalProjectPath;
-            process.send(<AtomicOperationForkEvent>{finishedSettingData : true});
+            process.send!(<AtomicOperationForkEvent>{finishedSettingData : true});
             return;
         }
 
@@ -35,7 +35,7 @@ process.on(
                 flags.done = true;
                 flags.failure = false;
                 flags.success = true;
-                process.send(
+                process.send!(
                     <AtomicOperationForkEvent>{
                         update : true,
                         flags : flags,
@@ -47,7 +47,7 @@ process.on(
                 flags.done = true;
                 flags.failure = true;
                 flags.success = false;
-                process.send(
+                process.send!(
                     <AtomicOperationForkEvent>{
                         update : true,
                         flags : flags,
@@ -65,7 +65,7 @@ process.on(
     flags.done = true;
     flags.failure = true;
     flags.success = false;
-    process.send(
+    process.send!(
         <AtomicOperationForkEvent>{
             update : true,
             flags : flags,
@@ -81,7 +81,7 @@ process.on("unhandledRejection",function(err : string)
     flags.done = true;
     flags.failure = true;
     flags.success = false;
-    process.send(
+    process.send!(
         <AtomicOperationForkEvent>{
             update : true,
             flags : flags,

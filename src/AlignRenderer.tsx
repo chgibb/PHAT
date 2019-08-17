@@ -16,7 +16,7 @@ class AlignApp extends React.Component<{},AlignViewProps>
 
     public constructor()
     {
-        super(undefined);
+        super({});
 
         this.state = {
 

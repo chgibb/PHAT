@@ -1,19 +1,24 @@
 import * as atomic from "./atomicOperations";
 import * as winMgr from "./../main/winMgr";
-export class OpenLogViewer extends atomic.AtomicOperation
+
+export interface OpenLogViewerData
+{
+    opName : "openLogViewer";
+    logRecordToOpen : atomic.LogRecord;
+}
+
+export class OpenLogViewer extends atomic.AtomicOperation<OpenLogViewerData>
 {
     public logRecordToOpen : atomic.LogRecord;
-    constructor()
+    constructor(data : OpenLogViewerData)
     {
-        super();
-    }
-    public setData(data : any) : void
-    {
-        this.logRecordToOpen = data;
+        super(data);
+
+        this.logRecordToOpen = data.logRecordToOpen;
     }
     public run() : void
     {
-        this.logRecord = atomic.openLog(this.name,"Open Log Viewer");
+        this.logRecord = atomic.openLog(this.opName,"Open Log Viewer");
         winMgr.windowCreators["logViewer"].Create();
 
         let viewers = winMgr.getWindowsByName("logViewer");
@@ -30,11 +35,11 @@ export class OpenLogViewer extends atomic.AtomicOperation
         }).then(() => 
         {
             self.setSuccess(self.flags);
-            self.update();
+            self.update!();
         }).catch((err) => 
         {
             self.abortOperationWithMessage(err);
-            self.update();
+            self.update!();
         });
     }
 }

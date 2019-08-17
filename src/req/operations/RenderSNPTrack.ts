@@ -5,33 +5,36 @@ import {AtomicOperationForkEvent} from "./../atomicOperationsIPC";
 import {getReadable} from "./../getAppPath";
 import {AlignData} from "./../alignData";
 import * as cf from "./../renderer/circularFigure";
-export class RenderSNPTrackForContig extends atomic.AtomicOperation
+
+export interface RenderSNPTrackForContigData
 {
-    public alignData : AlignData;
+    opName : "renderSNPTrackForContig";
+    circularFigure : cf.CircularFigure;
+    contiguuid : string;
+    alignData : AlignData;
+    colour? : string;
+}
+export class RenderSNPTrackForContig extends atomic.AtomicOperation<RenderSNPTrackForContigData>
+{
+    public alignData : AlignData ;
     public contiguuid : string;
     public circularFigure : cf.CircularFigure;
-    public colour : string;
+    public colour : string | undefined;
 
-    public renderSNPTrackProcess : cp.ChildProcess;
-    constructor()
+    public renderSNPTrackProcess : cp.ChildProcess | undefined;
+    constructor(data : RenderSNPTrackForContigData)
     {
-        super();
-    }
-    public setData(data : {
-        circularFigure : cf.CircularFigure,
-        contiguuid : string,
-        alignData : AlignData,
-        colour : string
-    }) : void
-    {
+        super(data);
+
         this.circularFigure = data.circularFigure;
         this.contiguuid = data.contiguuid;
         this.alignData = data.alignData;
         this.colour = data.colour;
     }
+
     public run() : void
     {
-        this.logRecord = atomic.openLog(this.name,"Render SNP Track");
+        this.logRecord = atomic.openLog(this.opName,"Render SNP Track");
         let self = this;
         this.renderSNPTrackProcess = atomic.makeFork("RenderSNPTrack.js",<AtomicOperationForkEvent>{
             setData : true,
@@ -45,7 +48,7 @@ export class RenderSNPTrackForContig extends atomic.AtomicOperation
         {
             if(ev.finishedSettingData == true)
             {
-                self.renderSNPTrackProcess.send(
+                self.renderSNPTrackProcess!.send(
                     <AtomicOperationForkEvent>{
                         run : true
                     }
@@ -54,15 +57,15 @@ export class RenderSNPTrackForContig extends atomic.AtomicOperation
             if(ev.update == true)
             {
                 self.extraData = ev.data;
-                self.flags = ev.flags;
-                if(ev.flags.success == true)
+                self.flags = ev.flags!;
+                if(ev.flags!.success == true)
                 {
                     self.circularFigure = ev.data.circularFigure;
                     self.contiguuid = ev.data.contiguuid;
                     self.alignData = ev.data.alignData;
                     self.colour = ev.data.colour;
                 }
-                self.update();
+                self.update!();
             }
         });
         this.addPID(this.renderSNPTrackProcess.pid);

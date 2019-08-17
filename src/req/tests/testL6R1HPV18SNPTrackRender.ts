@@ -1,3 +1,5 @@
+import {addOperation} from "../operations/atomicOperations/addOperation";
+
 import * as atomic from "./../operations/atomicOperations";
 import {RenderSNPTrackForContig} from "./../operations/RenderSNPTrack";
 import {CircularFigure} from "./../renderer/circularFigure";
@@ -7,7 +9,8 @@ export async function testL6R1HPV18SNPTrackRenderer() : Promise<void>
 {
     return new Promise<void>((resolve,reject) => 
     {
-        atomic.addOperation("renderSNPTrackForContig",{
+        addOperation({
+            opName:"renderSNPTrackForContig",
             circularFigure : hpv18Figure.get(),
             contiguuid : hpv18Figure.get().contigs[0].uuid,
             alignData : L6R1HPV18Align.get()
@@ -16,14 +19,14 @@ export async function testL6R1HPV18SNPTrackRenderer() : Promise<void>
         {
             if(op.flags.success)
             {
-                console.log(`Successfully rendered SNP track fpr ${op.circularFigure.name}`);
-                hpv18Figure.set(op.circularFigure);
+                console.log(`Successfully rendered SNP track fpr ${op.circularFigure!.name}`);
+                hpv18Figure.set(op.circularFigure!);
                 return resolve();
             }
             else if(op.flags.failure)
             {
-                console.log(`Failed to render SNP track for ${op.circularFigure.name}`);
-                console.log(await atomic.getLogContent(op.logRecord)); 
+                console.log(`Failed to render SNP track for ${op.circularFigure!.name}`);
+                console.log(await atomic.getLogContent(op.logRecord!)); 
                 return reject();
             }
         });

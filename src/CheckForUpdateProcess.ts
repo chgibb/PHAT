@@ -14,7 +14,7 @@ process.on(
     {
         if(ev.setData == true)
         {
-            process.send(<AtomicOperationForkEvent>{finishedSettingData : true});
+            process.send!(<AtomicOperationForkEvent>{finishedSettingData : true});
             return;
         }
         if(ev.run == true)
@@ -24,7 +24,7 @@ process.on(
                 clearTimeout(connectivityTimeout);
                 flags.done = true;
                 flags.success = true;
-                process.send(
+                process.send!(
                     <AtomicOperationForkEvent>{
                         update : true,
                         flags : flags,
@@ -39,7 +39,7 @@ process.on(
                 flags.done = true;
                 flags.success = false;
                 flags.failure = true;
-                process.send(
+                process.send!(
                     <AtomicOperationForkEvent>{
                         update : true,
                         flags : flags,
@@ -58,7 +58,7 @@ process.on(
     flags.done = true;
     flags.failure = true;
     flags.success = false;
-    process.send(
+    process.send!(
         <AtomicOperationForkEvent>{
             update : true,
             flags : flags,
@@ -74,7 +74,7 @@ process.on("unhandledRejection",function(err : Error)
     flags.done = true;
     flags.failure = true;
     flags.success = false;
-    process.send(
+    process.send!(
         <AtomicOperationForkEvent>{
             update : true,
             flags : flags,

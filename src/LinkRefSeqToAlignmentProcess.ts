@@ -34,17 +34,17 @@ function update() : void
     {
         if(flags.success)
         {
-            atomic.closeLog(logger.logRecord,"success");
+            atomic.closeLog(logger.logRecord!,"success");
             update.logRecord = logger.logRecord;
         }
         else if(flags.failure)
         {   
-            atomic.closeLog(logger.logRecord,"failure");
+            atomic.closeLog(logger.logRecord!,"failure");
             update.logRecord = logger.logRecord;
         }
     }
     logger.logObject(update);
-    process.send(update);
+    process.send!(update);
 }
 
 process.on(
@@ -52,10 +52,10 @@ process.on(
     {
         if(ev.setData == true)
         {
-            logger.logRecord = atomic.openLog(ev.name,ev.description);
+            logger.logRecord = atomic.openLog(ev.name!,ev.description!);
             align = ev.data.align;
             fasta = ev.data.fasta;
-            process.send(<AtomicOperationForkEvent>{
+            process.send!(<AtomicOperationForkEvent>{
                 finishedSettingData : true
             });
         }
@@ -68,7 +68,7 @@ process.on(
                 {
                     if(linkableRefSeqs[i].linkable && linkableRefSeqs[i].uuid == fasta.uuid)
                     {
-                        atomic.logString(logger.logRecord,"Ref and alignment are linkable");
+                        atomic.logString(logger.logRecord!,"Ref and alignment are linkable");
                         align.fasta = fasta;
                         break;
                     }
@@ -83,7 +83,7 @@ process.on(
 
                 progressMessage = "Creating temporary reference index";
                 update();
-                await samToolsFaidx(align.fasta,logger);
+                await samToolsFaidx(align.fasta!,logger);
 
                 progressMessage = "Generating pileup";
                 update();

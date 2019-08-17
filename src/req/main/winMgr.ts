@@ -2,13 +2,11 @@
  * Shared window management objects and methods.
  * @module req/main/window
  */
-const electron = require("electron");
-const BrowserWindow = electron.BrowserWindow;
+import {getReadable} from "../getAppPath";
 
 import * as dataMgr from "./dataMgr";
 import {GetKeyEvent,KeyChangeEvent} from "./../ipcEvents";
 
-import {getReadable} from "../getAppPath";
 
 
 export class WindowRef
@@ -77,6 +75,7 @@ export function getWindowPIDs() : Array<number>
  */
 export function getFreeWebContents() : Array<Electron.WebContents>
 {
+    const electron = require("electron");
     for(let i : number = windows.length - 1; i >= 0; --i)
     {
         try
@@ -283,14 +282,15 @@ export function initWindowOptions(
     minHeight? : number
 ) : void 
 {
+    const electron = require("electron");
     let windowOptions : Electron.BrowserWindowConstructorOptions = dataMgr.getKey(refName,"windowOptions");
     if(!windowOptions)
     {
         let display = electron.screen.getPrimaryDisplay();
         if(refName == "toolBar")
         {
-            width = display.workArea.width/4;
-            height = display.workArea.height/8;
+            width = display.workArea.width/2;
+            height = display.workArea.height/2;
         }
         let x = (display.workArea.width/2)-(width/2);
         let y = 0;
@@ -337,9 +337,10 @@ export function createFromOptions(
     debug : boolean
 ) : Electron.BrowserWindow
 {
+    const electron = require("electron");
     let windowOptions : Electron.BrowserWindowConstructorOptions = dataMgr.getKey(refName,"windowOptions");
 
-    let ref = new BrowserWindow(windowOptions);
+    let ref = new electron.BrowserWindow(windowOptions);
 
     ref.loadURL(html);
     if(debug)
@@ -375,11 +376,12 @@ export function createFromOptions(
  */
 export function createWCHost(refName : string) : Promise<void>
 {
+    const electron = require("electron");
     return new Promise<void>((resolve,reject) => 
     {
         let windowOptions : Electron.BrowserWindowConstructorOptions = dataMgr.getKey(refName,"windowOptions");
 
-        let ref = new BrowserWindow(windowOptions);
+        let ref = new electron.BrowserWindow(windowOptions);
         ref.loadURL(`file://${getReadable("wcHost.html")}`);
 
         ref.on("close",function()

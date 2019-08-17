@@ -10,31 +10,31 @@ export async function testHPV16Hisat2Index() : Promise<void>
         {
             if(op.flags.failure)
             {
-                console.log(`Failed to index ${op.fasta.alias}`);
-                console.log(await atomic.getLogContent(op.logRecord)); 
+                console.log(`Failed to index ${op.fasta!.alias}`);
+                console.log(await atomic.getLogContent(op.logRecord!)); 
                 return reject();
             }
             else if(op.flags.success)
             {
                 if(hpv16Ref.get().indexed)
-                    console.log(`${op.fasta.alias} was indexed`);
+                    console.log(`${op.fasta!.alias} was indexed`);
                 else
                 {
-                    console.log(await atomic.getLogContent(op.logRecord)); 
+                    console.log(await atomic.getLogContent(op.logRecord!)); 
                     return reject();
                 }
                 if(hpv16Ref.get().contigs.length == 1)
-                    console.log(`${op.fasta.alias} has correct number of contigs`);
+                    console.log(`${op.fasta!.alias} has correct number of contigs`);
                 else
                 {
-                    console.log(await atomic.getLogContent(op.logRecord)); 
+                    console.log(await atomic.getLogContent(op.logRecord!)); 
                     return reject();
                 }
                 if(hpv16Ref.get().contigs[0].bp == 7906)
-                    console.log(`${op.fasta.alias} has correct base pairs`);
+                    console.log(`${op.fasta!.alias} has correct base pairs`);
                 else
                 {
-                    console.log(await atomic.getLogContent(op.logRecord)); 
+                    console.log(await atomic.getLogContent(op.logRecord!)); 
                     return reject();
                 }
                 return resolve();

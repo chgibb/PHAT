@@ -5,9 +5,9 @@
  */
 export function showGenericLoadingSpinnerInNavBar() : void
 {
-    if(!document.getElementById("navBarLoadingSpinner").classList.contains("spinner-loader"))
+    if(!document.getElementById("navBarLoadingSpinner")!.classList.contains("spinner-loader"))
     {
-        document.getElementById("navBarLoadingSpinner").classList.add("spinner-loader");
+        document.getElementById("navBarLoadingSpinner")!.classList.add("spinner-loader");
     }
 }
 
@@ -18,8 +18,8 @@ export function showGenericLoadingSpinnerInNavBar() : void
  */
 export function hideSpinnerInNavBar() : void
 {
-    if(document.getElementById("navBarLoadingSpinner").classList.contains("spinner-loader"))
+    if(document.getElementById("navBarLoadingSpinner")!.classList.contains("spinner-loader"))
     {
-        document.getElementById("navBarLoadingSpinner").classList.remove("spinner-loader");
+        document.getElementById("navBarLoadingSpinner")!.classList.remove("spinner-loader");
     }
 }

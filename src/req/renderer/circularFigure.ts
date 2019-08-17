@@ -1,21 +1,14 @@
-/// <reference path="../../../node_modules/@chgibb/ngplasmid/lib/html.ts" />
-/// <reference path="../../../node_modules/@chgibb/ngplasmid/lib/directives.ts" />
-/// <reference path="../../../node_modules/@chgibb/ngplasmid/lib/services.ts" />
-/// <reference path="../../../node_modules/@chgibb/ngplasmid/lib/interpolate.ts" />
-/// <reference path="../../../node_modules/@chgibb/ngplasmid/lib/directiveToPB.ts" />
-/// <reference path="../../../node_modules/@chgibb/ngplasmid/lib/pb/node.ts" />
-
 import * as fs from "fs";
 import * as readline from "readline";
 
 
-import * as html from "@chgibb/ngplasmid/lib/html";
-import * as ngDirectives from "@chgibb/ngplasmid/lib/directives";
-import * as pbDirectives from "@chgibb/ngplasmid/lib/pb/node";
-import {plasmidToPB} from "@chgibb/ngplasmid/lib/directiveToPB";
-
 import {UniquelyAddressable} from "../uniquelyAddressable";
+import {Plasmid} from "../ngplasmid/lib/plasmid";
+import {TrackMarker} from "../ngplasmid/lib/trackMarker";
 
+import * as html from "./../ngplasmid/lib/html";
+import * as pbDirectives from "./../ngplasmid/lib/pb/node";
+import {plasmidToPB} from "./../ngplasmid/lib/directiveToPB";
 import {getReadableAndWritable} from "./../getAppPath";
 import * as fastaContigLoader from "./../fastaContigLoader";
 import * as plasmidTrack from "./circularGenome/plasmidTrack";
@@ -27,6 +20,7 @@ import * as plasmid from "./circularGenome/plasmid";
 import {AlignData,getSNPsJSON} from "./../alignData";
 import {VCF2JSONRow} from "./../varScanMPileup2SNPVCF2JSON";
 import {parseCSS} from "./../parseCSS";
+
 
 const mkdirp = require("mkdirp");
 const uuidv4 : () => string = require("uuid/v4");
@@ -236,7 +230,7 @@ export class SeqSelectionDisplayArrow
     public arrowEndWidth : number;
     public arrowType : string;
     public arrowClass : string;
-    public arrowText : string;
+    public arrowText : string | undefined;
 
     public constructor(start : number,end : number,radius : number)
     {
@@ -260,10 +254,10 @@ export class SeqSelectionDisplayArrow
 
 export interface MapScope
 {
-    genome : CircularFigure;
-    seqSelectionLeftArm : SeqSelectionDisplayArm;
-    seqSelectionRightArm : SeqSelectionDisplayArm;
-    seqSelectionArrow : SeqSelectionDisplayArrow;
+    genome : CircularFigure | undefined;
+    seqSelectionLeftArm : SeqSelectionDisplayArm | undefined;
+    seqSelectionRightArm : SeqSelectionDisplayArm | undefined;
+    seqSelectionArrow : SeqSelectionDisplayArrow | undefined;
 }
 
 export function makeMapScope(cf : CircularFigure, seqSelectOptions? : {
@@ -292,9 +286,9 @@ export function makeMapScope(cf : CircularFigure, seqSelectOptions? : {
     };
 }
 
-export class TrackMap extends ngDirectives.Plasmid
+export class TrackMap extends Plasmid
 {
-    public $scope : MapScope;
+    public $scope : MapScope | undefined;
     public constructor()
     {
         super();
@@ -391,12 +385,12 @@ export class CircularFigure implements UniquelyAddressable
  */
 export abstract class FigureCanvas implements MapScope
 {
-    public genome : CircularFigure;
-    public seqSelectionLeftArm : SeqSelectionDisplayArm;
-    public seqSelectionRightArm : SeqSelectionDisplayArm;
-    public seqSelectionArrow : SeqSelectionDisplayArrow;
-    public showSeqSelector : boolean;
-    public scope : FigureCanvas;
+    public abstract genome : CircularFigure | undefined;
+    public abstract seqSelectionLeftArm : SeqSelectionDisplayArm | undefined;
+    public abstract seqSelectionRightArm : SeqSelectionDisplayArm | undefined;
+    public abstract seqSelectionArrow : SeqSelectionDisplayArrow | undefined;
+    public abstract showSeqSelector : boolean;
+    public abstract scope : FigureCanvas;
     public abstract markerOnClick($event : any,$marker : any,uuid : string) : void;
     public abstract figureNameOnClick() : void;
     public abstract updateScope(scope? : FigureCanvas) : void;
@@ -415,9 +409,9 @@ export abstract class FigureCanvas implements MapScope
 export function buildContigTemplate(figure : CircularFigure,contig : Contig,start : number = -1,end : number = -1) : string
 {
     if(start == -1)
-        start = contig.start;
+        start = contig.start!;
     if(end == -1)
-        end = contig.end;
+        end = contig.end!;
     let res = "";
     res += `
         ${trackMarker.add(
@@ -611,7 +605,7 @@ export function compileBaseFigureSVG(figure : CircularFigure) : Promise<string>
             assembleCompilableBaseFigureTemplates(figure)
         );
 
-        let plasmid : ngDirectives.Plasmid = new ngDirectives.Plasmid();
+        let plasmid : Plasmid = new Plasmid();
         plasmid.$scope = makeMapScope(figure);
 
         for(let i = 0; i != nodes.length; ++i)
@@ -887,9 +881,9 @@ export function getCoverageTrackPBFromCache(trackRecord : RenderedCoverageTrackR
  * 
  * @export
  * @param {RenderedCoverageTrackRecord} trackRecord 
- * @param {ngDirectives.Plasmid} plasmid 
+ * @param {Plasmid} plasmid 
  */
-export function cacheCoverageTrackPB(trackRecord : RenderedCoverageTrackRecord,plasmid : ngDirectives.Plasmid) : void
+export function cacheCoverageTrackPB(trackRecord : RenderedCoverageTrackRecord,plasmid : Plasmid) : void
 {
     let pb = pbDirectives.Node.create(plasmidToPB(plasmid));
     fs.writeFileSync(getCoverageTrackPBPath(trackRecord),pbDirectives.Node.encode(pb).finish());
@@ -1180,7 +1174,7 @@ export function compileTemplatesToSVG(templates : string,$scope : MapScope) : Pr
     {
         let nodes : Array<html.Node> = await html.loadFromString(templates);
 
-        let plasmid : ngDirectives.Plasmid = new ngDirectives.Plasmid();
+        let plasmid : Plasmid = new Plasmid();
         plasmid.$scope = $scope;
 
         for(let i = 0; i != nodes.length; ++i)
@@ -1312,7 +1306,7 @@ export function buildSingleSVG(figure : CircularFigure) : Promise<string>
         template += getBaseFigureTemplateFromCache(figure);
 
         let nodes : Array<html.Node> = await html.loadFromString(assembleCompilableTemplates(figure,template));
-        let plasmid : ngDirectives.Plasmid = new ngDirectives.Plasmid();
+        let plasmid : Plasmid = new Plasmid();
         plasmid.$scope = {
             genome : figure
         };
@@ -1393,7 +1387,7 @@ export function renderCoverageTrackToCanvas(
     
     //Assume fill is constant and uniform
     ctx.strokeStyle = parseCSS(
-        (<ngDirectives.TrackMarker>map.tracks[0].children[0]).markerstyle,
+        (<TrackMarker>map.tracks[0].children[0]).markerstyle!,
         "fill",
         ";"
     );
