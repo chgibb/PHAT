@@ -89,35 +89,35 @@ export function FullWidthStepperForm(props : FullWidthStepperFormProps) : JSX.El
                                     </Grid>
                                     <Grid item>
                                         {!props.disableNavigation ?
-                                        <Button
-                                            type="retreat"
-                                            label="Previous"
-                                            onClick={async () => 
-                                            {
-                                                if(await props.form.onRetreat(value))
+                                            <Button
+                                                type="retreat"
+                                                label="Previous"
+                                                onClick={async () => 
                                                 {
-                                                if(value > 0)
-                                                    handleChangeIndex(value - 1);
-                                                }
-                                            }}
-                                            id={`previous${viewIndex}`}
-                                        /> :""}
+                                                    if(await props.form.onRetreat(value))
+                                                    {
+                                                        if(value > 0)
+                                                            handleChangeIndex(value - 1);
+                                                    }
+                                                }}
+                                                id={`previous${viewIndex}`}
+                                            /> :""}
                                     </Grid>
                                     <Grid item>
                                         {!props.disableNavigation ?
-                                        <Button
-                                            type="advance"
-                                            label="Next"
-                                            onClick={async () => 
-                                            {
-                                                if(await props.form.onAdvance(value))
+                                            <Button
+                                                type="advance"
+                                                label="Next"
+                                                onClick={async () => 
                                                 {
-                                                    if(value < props.steps.length - 1)
-                                                        handleChangeIndex(value + 1);
-                                                }
-                                            }}
-                                            id={`next${viewIndex}`}
-                                        /> :""}
+                                                    if(await props.form.onAdvance(value))
+                                                    {
+                                                        if(value < props.steps.length - 1)
+                                                            handleChangeIndex(value + 1);
+                                                    }
+                                                }}
+                                                id={`next${viewIndex}`}
+                                            /> :""}
                                     </Grid>
                                     <Grid item />
                                 </Grid>

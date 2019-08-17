@@ -1,6 +1,7 @@
 import * as React from "react";
-import { FormControl } from './formControl';
-import { InputLabel } from './inputLabel';
+
+import {FormControl} from "./formControl";
+import {InputLabel} from "./inputLabel";
 
 const MuiOutlinedInput: typeof import("@material-ui/core/OutlinedInput").default = require("@material-ui/core/OutlinedInput").default;
 
@@ -11,12 +12,13 @@ export interface OutlinedInputProps {
     inputProps: Omit<MuiOutlinedInputProps, "labelWidth">;
 }
 
-export function OutlinedInput(props: OutlinedInputProps
-): JSX.Element {
+export function OutlinedInput(props: OutlinedInputProps): JSX.Element 
+{
     const [labelWidth, setLabelWidth] = React.useState(0);
     const labelRef = React.useRef<HTMLLabelElement>(null);
 
-    React.useEffect(() => {
+    React.useEffect(() => 
+    {
         setLabelWidth(labelRef.current!.offsetWidth);
     }, []);
 

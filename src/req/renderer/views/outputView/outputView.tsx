@@ -16,7 +16,7 @@ import {enQueueOperation} from "../../enQueueOperation";
 import {GridWrapper} from "../../containers/gridWrapper";
 import {Grid} from "../../components/grid";
 import {AlignerDoughnut} from "../../containers/charts/alignerDoughnut";
-import { BLASTRunForm } from '../../containers/forms/BLASTRunForm';
+import {BLASTRunForm} from "../../containers/forms/BLASTRunForm";
 
 export interface OutputViewState
 {
@@ -250,20 +250,21 @@ export class OutputView extends React.Component<OutputViewProps,OutputViewState>
                                         <Button
                                             label="New BLAST Run"
                                             type="advance"
-                                            onClick={()=>{
+                                            onClick={()=>
+                                            {
                                                 this.setState({
                                                     showBLASTForm : true
-                                                })
+                                                });
                                             }}
                                         />
                                         {this.state.showBLASTForm ? 
                                             <BLASTRunForm
                                                 align={this.state.clickedRow}
                                             />    
-                                        : 
-                                        <BLASTRunsTable
-                                            align={this.state.clickedRow}
-                                        />}
+                                            : 
+                                            <BLASTRunsTable
+                                                align={this.state.clickedRow}
+                                            />}
                                     </div> : null 
                 }
             </div>

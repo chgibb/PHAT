@@ -1,27 +1,30 @@
 import * as React from "react";
 
-import { BLASTRunForm } from '../BLASTRunForm';
-import { FullWidthFormStep } from '../../fullWidthStepperForm';
-import { GridWrapper } from '../../gridWrapper';
-import { Grid } from '../../../components/grid';
-import { FormControl } from '../../../components/formControl';
-import { InputLabel } from '../../../components/inputLabel';
-import { OutlinedInput } from '../../../components/outlinedInput';
+import {BLASTRunForm} from "../BLASTRunForm";
+import {FullWidthFormStep} from "../../fullWidthStepperForm";
+import {GridWrapper} from "../../gridWrapper";
+import {Grid} from "../../../components/grid";
+import {FormControl} from "../../../components/formControl";
+import {InputLabel} from "../../../components/inputLabel";
+import {OutlinedInput} from "../../../components/outlinedInput";
 
-export function step1(form: BLASTRunForm): FullWidthFormStep {
+export function step1(form: BLASTRunForm): FullWidthFormStep 
+{
     let label = "Select Range to BLAST";
 
-    if (form.validateSelectedRange()) {
+    if (form.validateSelectedRange()) 
+    {
         label = `Search From ${form.state.start} to ${form.state.stop}`;
     }
 
-    if (form.props.align && form.props.align.fasta) {
+    if (form.props.align && form.props.align.fasta) 
+    {
         return {
             label: label,
             body: (<div>
                 <GridWrapper>
                     <React.Fragment>
-                        <div style={{ marginBottom: "10vh" }} />
+                        <div style={{marginBottom: "10vh"}} />
                         <Grid container spacing={4} justify="center">
                             <Grid item>
                                 <OutlinedInput

@@ -1,10 +1,12 @@
 import * as React from "react";
-import { Form, FullWidthStepperForm, FullWidthFormStep } from '../fullWidthStepperForm';
-import { step1 } from './BLASTRunForm/step1';
-import { step2 } from './BLASTRunForm/step2';
-import { AlignData, getSam } from '../../../alignData';
-import { ReadWithFragments } from '../../../readWithFragments';
-import { getReadWithFragments } from '../../../getReadWithFragments';
+
+import {Form, FullWidthStepperForm, FullWidthFormStep} from "../fullWidthStepperForm";
+import {AlignData, getSam} from "../../../alignData";
+import {ReadWithFragments} from "../../../readWithFragments";
+import {getReadWithFragments} from "../../../getReadWithFragments";
+
+import {step2} from "./BLASTRunForm/step2";
+import {step1} from "./BLASTRunForm/step1";
 
 export interface BLASTRunFormProps
 {
@@ -45,7 +47,8 @@ export class BLASTRunForm extends React.Component<BLASTRunFormProps,BLASTRunForm
 
     private searchForReadsWithFragments() : Promise<void>
     {
-        return new Promise<void>(async () => {
+        return new Promise<void>(async () => 
+        {
             if(!this.props.align || this.state.start === undefined || this.state.stop === undefined)
             {
                 this.setState({
@@ -57,7 +60,8 @@ export class BLASTRunForm extends React.Component<BLASTRunFormProps,BLASTRunForm
                 getSam(this.props.align),
                 this.state.start,
                 this.state.stop,
-                (readsScanned : number) => {
+                (readsScanned : number) => 
+                {
                     this.setState({
                         readsScanned : readsScanned
                     });
@@ -67,13 +71,14 @@ export class BLASTRunForm extends React.Component<BLASTRunFormProps,BLASTRunForm
             this.setState({
                 searchingForReadsWithFragments : false,
                 readsWithFragments : readsWithFragments
-            })
+            });
         });
     }
 
     public onAdvance(step : number) : Promise<boolean>
     {
-        return new Promise<boolean>((resolve : (val : boolean) => void) : void => {
+        return new Promise<boolean>((resolve : (val : boolean) => void) : void => 
+        {
             if(step == 0)
             {
                 if(!this.validateSelectedRange())
@@ -92,14 +97,15 @@ export class BLASTRunForm extends React.Component<BLASTRunFormProps,BLASTRunForm
 
             this.setState({
                 errors:[]
-            })
+            });
             return resolve(true);
-        })
+        });
     }
 
     public onRetreat(step :  number) : Promise<boolean>
     {
-        return new Promise<boolean>((resolve : (val : boolean) => void) : void => {
+        return new Promise<boolean>((resolve : (val : boolean) => void) : void => 
+        {
             if(step == 1)
             {
                 this.setState({
@@ -138,14 +144,14 @@ export class BLASTRunForm extends React.Component<BLASTRunFormProps,BLASTRunForm
     {
         this.setState({
             start : parseInt(event.target.value)
-        })
+        });
     }
 
     public onStepOneEndChange(event : React.ChangeEvent<HTMLInputElement>) : void
     {
         this.setState({
             stop : parseInt(event.target.value)
-        })
+        });
     }
 
     public render() : JSX.Element | null
@@ -169,6 +175,6 @@ export class BLASTRunForm extends React.Component<BLASTRunFormProps,BLASTRunForm
                     />
                 </div>
             </div>
-        )
+        );
     }
 }
