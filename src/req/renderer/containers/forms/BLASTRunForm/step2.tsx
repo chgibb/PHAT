@@ -52,6 +52,7 @@ export function step2(form: BLASTRunForm): FullWidthFormStep {
                                                     <Button
                                                         type="remain"
                                                         label="Start BLASTing"
+                                                        onClick={form.onStepTwoStartBLASTingOnClick}
                                                     /> : <ThreeQuartersLoader />}
                                                 </Grid>
                                             </Grid>

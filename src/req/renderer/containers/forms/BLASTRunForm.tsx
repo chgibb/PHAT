@@ -7,6 +7,7 @@ import {getReadWithFragments} from "../../../getReadWithFragments";
 
 import {step2} from "./BLASTRunForm/step2";
 import {step1} from "./BLASTRunForm/step1";
+import { enQueueOperation } from '../../enQueueOperation';
 
 export interface BLASTRunFormProps
 {
@@ -42,6 +43,7 @@ export class BLASTRunForm extends React.Component<BLASTRunFormProps,BLASTRunForm
         this.validateSelectedRange = this.validateSelectedRange.bind(this);
         this.onStepOneStartChange = this.onStepOneStartChange.bind(this);
         this.onStepOneEndChange = this.onStepOneEndChange.bind(this);
+        this.onStepTwoStartBLASTingOnClick = this.onStepTwoStartBLASTingOnClick.bind(this);
 
         this.setState = this.setState.bind(this);
     }
@@ -152,6 +154,16 @@ export class BLASTRunForm extends React.Component<BLASTRunFormProps,BLASTRunForm
     {
         this.setState({
             stop : parseInt(event.target.value)
+        });
+    }
+
+    public onStepTwoStartBLASTingOnClick() : void
+    {
+        enQueueOperation({
+            opName : "BLASTSegment",
+            align : this.props.align!,
+            start : this.state.start!,
+            stop : this.state.stop!
         });
     }
 
