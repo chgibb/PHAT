@@ -20,6 +20,7 @@ export function step2(form: BLASTRunForm): FullWidthFormStep
                         <Grid item>
                             <Paper>
                                 <GridWrapper>
+                                    <div style={{marginTop:"1vh"}}>
                                     <Grid container spacing={4} justify="center">
                                         <Grid item>
                                             <Typography>
@@ -27,9 +28,11 @@ export function step2(form: BLASTRunForm): FullWidthFormStep
                                             </Typography>
                                         </Grid>
                                     </Grid>
+                                    </div>
                                 </GridWrapper>
                                 {form.state.readsWithFragments ?
                                     <GridWrapper>
+                                        <div style={{marginRight:"1vh",marginLeft:"1vh",marginBottom:"1vh"}}>
                                         <Grid container spacing={4} justify="center">
                                             <Grid item>
                                                 <Typography variant="h5" component="h3">
@@ -37,6 +40,7 @@ export function step2(form: BLASTRunForm): FullWidthFormStep
                                                 </Typography>
                                             </Grid>
                                         </Grid>
+                                        </div>
                                     </GridWrapper> : ""}
                             </Paper>
                         </Grid>
