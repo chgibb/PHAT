@@ -236,6 +236,9 @@ export class OutputView extends React.Component<OutputViewProps,OutputViewState>
                                     />
                                 </div> : this.state.currentTable == "blastRuns" ?
                                     <div>
+                                        <GridWrapper>
+                                            <Grid container spacing={4} justify="flex-start">
+                                                <Grid item>
                                         <Button
                                             label="Go Back"
                                             type="retreat"
@@ -247,6 +250,8 @@ export class OutputView extends React.Component<OutputViewProps,OutputViewState>
                                                 });
                                             }}
                                         />
+                                        </Grid>
+                                        <Grid item>
                                         <Button
                                             label="New BLAST Run"
                                             type="advance"
@@ -257,6 +262,9 @@ export class OutputView extends React.Component<OutputViewProps,OutputViewState>
                                                 });
                                             }}
                                         />
+                                        </Grid>
+                                        </Grid>
+                                        </GridWrapper>
                                         {this.state.showBLASTForm ? 
                                             <BLASTRunForm
                                                 align={this.state.clickedRow}
