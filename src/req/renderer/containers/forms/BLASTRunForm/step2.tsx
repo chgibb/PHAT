@@ -7,6 +7,7 @@ import { Grid } from "../../../components/grid";
 import { Paper } from "../../../components/paper";
 import { Typography } from "../../../components/typography";
 import { Button } from '../../../components/button';
+import { ThreeQuartersLoader } from '../../../components/threeQuartersLoader';
 
 export function step2(form: BLASTRunForm): FullWidthFormStep {
     let label = "Identify Reads and Fragments to BLAST";
@@ -46,10 +47,12 @@ export function step2(form: BLASTRunForm): FullWidthFormStep {
                                         <GridWrapper>
                                             <Grid container spacing={4} justify="center">
                                                 <Grid item>
+                                                    {
+                                                        form.props.shouldAllowTriggeringOps ? 
                                                     <Button
                                                         type="remain"
                                                         label="Start BLASTing"
-                                                    />
+                                                    /> : <ThreeQuartersLoader />}
                                                 </Grid>
                                             </Grid>
                                         </GridWrapper>

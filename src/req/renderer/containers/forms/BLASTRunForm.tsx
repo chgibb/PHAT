@@ -11,6 +11,7 @@ import {step1} from "./BLASTRunForm/step1";
 export interface BLASTRunFormProps
 {
     align? : AlignData;
+    shouldAllowTriggeringOps : boolean;
 }
 
 export interface BLASTRunFormState
