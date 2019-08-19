@@ -41,7 +41,7 @@ export class OutputView extends React.Component<OutputViewProps,OutputViewState>
 
         this.state = {
             currentTable : "reports",
-            showBLASTForm : true,
+            showBLASTForm : false,
         } as OutputViewState;
     }
 
