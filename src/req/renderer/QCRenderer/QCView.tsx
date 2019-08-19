@@ -8,6 +8,9 @@ import {QCReportsTable} from "../containers/tables/qCReportsTable";
 import {QCReport} from "../containers/qcReport";
 
 import {generateFastQCReport} from "./publish";
+import { QCStatusDoughnut } from '../containers/charts/QCStatusDoughnut';
+import { GridWrapper } from '../containers/gridWrapper';
+import { Grid } from '../components/grid';
 
 export interface QCViewState
 {
@@ -61,7 +64,20 @@ export class QCView extends React.Component<QCViewProps,QCViewState>
 
         return (
             <React.Fragment>
-                {!this.state.viewingReport ? 
+                {!this.state.viewingReport ?
+                <React.Fragment> 
+                    {
+                        this.props.fastqs !== undefined && this.props.fastqs.length > 0 ?
+                        <GridWrapper>
+                                    <Grid container spacing={1} justify="center">
+                    <QCStatusDoughnut
+                        fastqs={this.props.fastqs}
+                        height="50%"
+                        width="50%"
+                        marginBottom="15vh"
+                    /> 
+                    </Grid>
+                    </GridWrapper>: ""}
                     <QCReportsTable
                         data={this.props.fastqs ? this.props.fastqs : []}
                         shouldAllowTriggeringOps={this.state.shouldAllowTriggeringOps}
@@ -79,6 +95,7 @@ export class QCView extends React.Component<QCViewProps,QCViewState>
                             });
                         }}
                     />
+                    </React.Fragment>
                     : ""}
                 {this.state.viewingReport && this.state.viewUuid ? 
                     <QCReport
