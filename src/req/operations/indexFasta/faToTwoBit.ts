@@ -26,7 +26,7 @@ export function faToTwoBit(op : IndexFastaForVisualization) : Promise<void>
                     }
                     else
                     {
-                        return reject(`Failed to create 2bit index for ${op.fasta.alias}`);
+                        return reject(`Failed to create 2bit index for ${op.fasta!.alias}`);
                     }
                 }
             }
@@ -34,14 +34,14 @@ export function faToTwoBit(op : IndexFastaForVisualization) : Promise<void>
         op.twoBitJob = new Job(
             op.faToTwoBitExe,
             <Array<string>>[
-                getPath(op.fasta),
+                getPath(op.fasta!),
                 op.twoBitPath
             ],"",true,jobCallBack,{}
         );
         try
         {
             op.twoBitJob.Run();
-            op.addPIDFromFork(op.twoBitJob.pid);
+            op.addPIDFromFork(op.twoBitJob.pid!);
         }
         catch(err)
         {

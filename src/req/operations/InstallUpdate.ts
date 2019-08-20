@@ -2,37 +2,40 @@ import * as cp from "child_process";
 
 import * as atomic from "./atomicOperations";
 import {getReadable} from "./../getAppPath";
-export class InstallUpdate extends atomic.AtomicOperation
+
+export interface InstallUpdateData {
+    opName: "installUpdate";
+}
+
+export class InstallUpdate extends atomic.AtomicOperation<InstallUpdateData>
 {
-    public installUpdateJob : cp.ChildProcess;
-    public installUpdateFlags : atomic.CompletionFlags;
-    public filesInUpdate : number = 0;
-    constructor()
+    public installUpdateJob: cp.ChildProcess | undefined;
+    public installUpdateFlags: atomic.CompletionFlags | undefined;
+    public filesInUpdate: number = 0;
+    constructor(data: InstallUpdateData) 
     {
-        super();
-    }
-    public setData(data : any)
-    {
+        super(data);
         this.generatedArtifacts.push("phat-linux-x64.tar.gz");
     }
-    public run() : void
+
+    public run(): void 
     {
         let self = this;
-        try
+        try 
         {
-            this.installUpdateJob = atomic.makeFork("installUpdate.js",{},function(data : any)
+            this.installUpdateJob = atomic.makeFork("installUpdate.js", {}, function (data: any) 
             {
-                if(data.totalFiles)
+                if (data.totalFiles) 
                 {
                     self.filesInUpdate = data.totalFiles;
-                    self.update();
+                    self.update!();
                     self.setSuccess(self.flags);
                 }
             });
             this.addPID(this.installUpdateJob.pid);
 
         }
-        catch(err)
+        catch (err) 
         {
             this.abortOperationWithMessage(err);
             return;

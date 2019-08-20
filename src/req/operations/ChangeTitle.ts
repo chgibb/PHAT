@@ -1,30 +1,29 @@
-import * as electron from "electron";
-const webContents = electron.webContents;
-
 import * as atomic from "./atomicOperations";
-export class ChangeTitle extends atomic.AtomicOperation
+
+export interface ChangeTitleData {
+    opName : "changeTitle";
+    id : number
+    newTitle : string;
+}
+
+export class ChangeTitle extends atomic.AtomicOperation<ChangeTitleData>
 {
     public id : number;
     public newTitle : string;
 
-    public constructor()
+    public constructor(data : ChangeTitleData)
     {
-        super();
+        super(data);
         this.ignoreScheduler = true;
-    }
-
-    public setData(data : {
-        id : number,
-        newTitle : string
-    }) : void 
-    {
         this.id = data.id;
         this.newTitle = data.newTitle;
     }
 
     public run() : void
     {
-        this.logRecord = atomic.openLog(this.name,"Change Title");
+        const electron = require("electron");
+        const webContents = electron.webContents;
+        this.logRecord = atomic.openLog(this.opName,"Change Title");
 
         let allWCs : Array<Electron.WebContents> = webContents.getAllWebContents();
 
@@ -38,6 +37,6 @@ export class ChangeTitle extends atomic.AtomicOperation
 
         this.flags.success = true;
         this.flags.done = true;
-        this.update();
+        this.update!();
     }
 }

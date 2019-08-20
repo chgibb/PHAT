@@ -44,9 +44,9 @@ export class HelpView extends viewMgr.View
     }
     public postRender() : void
     {
-        if(getAppSettings().updateChannel == "stable")
+        if(getAppSettings()!.updateChannel == "stable")
             (<HTMLInputElement>document.getElementById("stableChannel")).checked = true;
-        else if(getAppSettings().updateChannel == "beta")
+        else if(getAppSettings()!.updateChannel == "beta")
             (<HTMLInputElement>document.getElementById("betaChannel")).checked = true;
     }
     public dataChanged() : void
@@ -71,16 +71,16 @@ export class HelpView extends viewMgr.View
         if(event.target.id == "stableChannel")
         {
             let appSettings = getAppSettings();
-            appSettings.updateChannel = "stable";
-            writeAppSettings(appSettings);
+            appSettings!.updateChannel = "stable";
+            writeAppSettings(appSettings!);
             viewMgr.render();
             return;
         }
         if(event.target.id == "betaChannel")
         {
             let appSettings = getAppSettings();
-            appSettings.updateChannel = "beta";
-            writeAppSettings(appSettings);
+            appSettings!.updateChannel = "beta";
+            writeAppSettings(appSettings!);
             viewMgr.render();
             return;
         }

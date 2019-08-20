@@ -8,14 +8,25 @@ if [ $? != 0 ]; then
     printf "Could not rollup"
 	exit 1
 fi
-
-NODE_ENV=production node scripts/replaceEnv $1 > $1.tmp
-if [ $? != 0 ]; then
-    printf "Could not replace env"
-    rm $1.tmp
-    exit 1
+if [ "$1" != "src/PileupRenderer.js" ]; then
+    NODE_ENV=production node scripts/replaceEnv $1 > $1.tmp
+    if [ $? != 0 ]; then
+        printf "Could not replace env"
+        rm $1.tmp
+        exit 1
+    fi
+    mv $1.tmp $1
 fi
-mv $1.tmp $1
+
+if [ "$1" != "src/PileupRenderer.js" ]; then
+    node scripts/babelDCE $1 > $1.tmp
+    if [ $? != 0 ]; then
+        printf "Could not run DCE"
+        rm $1.tmp
+        exit 1
+    fi
+    mv $1.tmp $1
+fi
 
 ./node_modules/.bin/browserify $1 --node --debug -o $1.tmp  --exclude electron --ignore-missing --noparse=jquery 
 if [ $? != 0 ]; then
@@ -24,6 +35,26 @@ if [ $? != 0 ]; then
 	exit 1
 fi
 mv $1.tmp $1
+
+if [ "$1" != "src/PileupRenderer.js" ]; then
+    NODE_ENV=production node scripts/replaceEnv $1 > $1.tmp
+    if [ $? != 0 ]; then
+        printf "Could not replace env"
+        rm $1.tmp
+        exit 1
+    fi
+    mv $1.tmp $1
+fi
+
+if [ "$1" != "src/PileupRenderer.js" ]; then
+    node scripts/babelDCE $1 > $1.tmp
+    if [ $? != 0 ]; then
+        printf "Could not run DCE"
+        rm $1.tmp
+        exit 1
+    fi
+    mv $1.tmp $1
+fi
 
 if [ "$1" != "src/PileupRenderer.js" ]; then
     ./node_modules/.bin/bundle-collapser $1 > $1.tmp

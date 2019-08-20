@@ -26,7 +26,7 @@ export interface FullWidthTabsProps
  * @param {FullWidthTabsProps} {tabs,tabComponent} - Component properties
  * @returns {JSX.Element}
  */
-export function FullWidthTabs({tabs,tabComponent} : FullWidthTabsProps) : JSX.Element
+export function FullWidthTabs({tabs,tabComponent} : FullWidthTabsProps) : JSX.Element | null
 {
     const [value, setValue] = React.useState(0);
 

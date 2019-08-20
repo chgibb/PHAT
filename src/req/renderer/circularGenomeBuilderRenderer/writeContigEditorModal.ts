@@ -22,21 +22,21 @@ export function setSelectedContigByUUID(uuid : string) : void
     let masterView = <masterView.View>viewMgr.getViewByName("masterView");
     let genomeView = <genomeView.GenomeView>viewMgr.getViewByName("genomeView",masterView.views);
 
-    for(let i = 0; i != genomeView.genome.contigs.length; ++i)
+    for(let i = 0; i != genomeView.genome!.contigs.length; ++i)
     {
-        if(genomeView.genome.contigs[i].uuid == uuid)
+        if(genomeView.genome!.contigs[i].uuid == uuid)
         {
-            contig = genomeView.genome.contigs[i];
+            contig = genomeView.genome!.contigs[i];
             editedAlias = contig.alias;
             return;
         }
     }
 
-    for(let i = 0; i != genomeView.genome.customContigs.length; ++i)
+    for(let i = 0; i != genomeView.genome!.customContigs.length; ++i)
     {
-        if(genomeView.genome.customContigs[i].uuid == uuid)
+        if(genomeView.genome!.customContigs[i].uuid == uuid)
         {
-            contig = genomeView.genome.customContigs[i];
+            contig = genomeView.genome!.customContigs[i];
             editedAlias = contig.alias;
             return;
         }
@@ -92,20 +92,20 @@ export function writeContigEditorModal() : void
         <button type="button" class="btn btn-primary" id="footerSave">Save changes</button>
     `;
 
-    document.getElementById("modalTitle").innerHTML = title;
-    document.getElementById("modalBody").innerHTML = body;
-    document.getElementById("modalFooter").innerHTML = footer;
+    document.getElementById("modalTitle")!.innerHTML = title;
+    document.getElementById("modalBody")!.innerHTML = body;
+    document.getElementById("modalFooter")!.innerHTML = footer;
 
-    document.getElementById("footerClose").onclick = function(this : HTMLElement,ev : MouseEvent)
+    document.getElementById("footerClose")!.onclick = function(this : GlobalEventHandlers,ev : MouseEvent)
     {
         masterView.contigEditorModalOpen = false;
     };
 
-    document.getElementById("footerSave").onclick = function(this : HTMLElement,ev : MouseEvent)
+    document.getElementById("footerSave")!.onclick = function(this : GlobalEventHandlers,ev : MouseEvent)
     {
         contig.alias = editedAlias;
-        let colour : string = (<string>(<any>$(document.getElementById("fillColourPicker"))).minicolors("rgbString"));
-        let fontColour : string = (<string>(<any>$(document.getElementById("fontColourPicker"))).minicolors("rgbString"));
+        let colour : string = (<string>(<any>$(document.getElementById("fillColourPicker")!)).minicolors("rgbString"));
+        let fontColour : string = (<string>(<any>$(document.getElementById("fontColourPicker")!)).minicolors("rgbString"));
         contig.color = colour;
         contig.fontFill = fontColour;
         if(contig.allowPositionChange)
@@ -126,7 +126,7 @@ export function writeContigEditorModal() : void
     
     };
 
-    document.getElementById("contigAlias").onclick = function(this : HTMLElement,ev : MouseEvent)
+    document.getElementById("contigAlias")!.onclick = function(this : GlobalEventHandlers,ev : MouseEvent)
     {
         masterView.dismissModal();
         dialogs.prompt("Contig Name",editedAlias,function(text : string)
@@ -139,19 +139,19 @@ export function writeContigEditorModal() : void
     };
     if(contig.allowPositionChange)
     {
-        document.getElementById("deleteContig").onclick = function(this : HTMLElement,ev : MouseEvent)
+        document.getElementById("deleteContig")!.onclick = function(this : GlobalEventHandlers,ev : MouseEvent)
         {
             masterView.dismissModal();
             dialogs.confirm("This cannot be undone",function(ok : boolean)
             {
                 if(ok)
                 {
-                    for(let i = genomeView.genome.customContigs.length - 1; i != -1; i--)
+                    for(let i = genomeView.genome!.customContigs.length - 1; i != -1; i--)
                     {
-                        if(genomeView.genome.customContigs[i].uuid == contig.uuid)
+                        if(genomeView.genome!.customContigs[i].uuid == contig.uuid)
                         {
-                            genomeView.genome.customContigs.splice(i,1);
-                            document.getElementById("footerSave").click();
+                            genomeView.genome!.customContigs.splice(i,1);
+                            document.getElementById("footerSave")!.click();
                         }
                     }
                 }
@@ -159,7 +159,7 @@ export function writeContigEditorModal() : void
         };
     }
     let colourPicker = document.getElementById("fillColourPicker");
-    (<any>$(colourPicker)).minicolors({
+    (<any>$(colourPicker!)).minicolors({
         control : "hue",
         defaultValue : "",
         format : "rgb",
@@ -171,7 +171,7 @@ export function writeContigEditorModal() : void
         {}
     });
     let fontColourPicker = document.getElementById("fontColourPicker");
-    (<any>$(fontColourPicker)).minicolors({
+    (<any>$(fontColourPicker!)).minicolors({
         control : "hue",
         defaultValue : "",
         format : "rgb",

@@ -4,7 +4,12 @@ import {tableCell} from "../../renderer/styles/tableCell";
 
 import {tableIcons} from "./tableIcons";
 
-export const MuiTable : typeof import("material-table").default = require("material-table").default;
+const MuiTableDefault : typeof import("material-table").default = require("material-table").default;
+
+let MuiTable : NonNullable<typeof MuiTableDefault>;
+let MuiTableDefaultProps : NonNullable<typeof MuiTable["defaultProps"]>;
+let MuiTableDefaultPropsOptions : NonNullable<typeof MuiTableDefaultProps.options>;
+let MuiTableDefaultPropsColumns : NonNullable<typeof MuiTableDefaultProps.columns>[number];
 
 type Row<T> = T & {
     tableData : {
@@ -12,8 +17,8 @@ type Row<T> = T & {
     }
 };
 
-type TableColumn<T> = Omit<typeof MuiTable.defaultProps.columns[number],"render"|"field"> & {
-    render? : (row : Row<T>) => string | number | boolean | JSX.Element;
+type TableColumn<T> = Omit<typeof MuiTableDefaultPropsColumns,"render"|"searchable"|"field"|"hidden"> & {
+    render? : (row : Row<T>) => string | number | boolean | JSX.Element | null;
     searchable : boolean;
     field : keyof T | "";
     hidden : boolean;
@@ -21,20 +26,20 @@ type TableColumn<T> = Omit<typeof MuiTable.defaultProps.columns[number],"render"
 
 export interface TableProps<T>
 {
-    title : typeof MuiTable.defaultProps.title;
-    actions? : typeof MuiTable.defaultProps.actions;
-    actionsColumnIndex? : typeof MuiTable.defaultProps.options.actionsColumnIndex;
-    selection? : typeof MuiTable.defaultProps.options.selection;
-    detailPanel? : typeof MuiTable.defaultProps.detailPanel;
-    onSelectionChange? : typeof MuiTable.defaultProps.onSelectionChange;
-    pageSize? : typeof MuiTable.defaultProps.options.pageSize;
-    pageSizeOptions? : typeof MuiTable.defaultProps.options.pageSizeOptions;
-    data? : Array<T>;
+    title : typeof MuiTableDefaultProps.title;
+    actions? : typeof MuiTableDefaultProps.actions;
+    actionsColumnIndex? : typeof MuiTableDefaultPropsOptions.actionsColumnIndex;
+    selection? : typeof MuiTableDefaultPropsOptions.selection;
+    detailPanel? : typeof MuiTableDefaultProps.detailPanel;
+    onSelectionChange? : typeof MuiTableDefaultProps.onSelectionChange;
+    pageSize? : typeof MuiTableDefaultPropsOptions.pageSize;
+    pageSizeOptions? : typeof MuiTableDefaultPropsOptions.pageSizeOptions;
+    data : Array<T>;
     columns : Array<TableColumn<T>>;
     onRowClick? : (
-            event : React.MouseEvent<HTMLElement>,
-            row : Row<T>,
-            toggleDetailPanel : (i : number) => void) => void;
+            event? : React.MouseEvent,
+            row? : Row<T>,
+            toggleDetailPanel? : (i : number) => void) => void | undefined;
 }
 
 export class Table<T> extends React.Component<TableProps<T>,{}>
@@ -56,7 +61,7 @@ export class Table<T> extends React.Component<TableProps<T>,{}>
         let defaultPageSizeOptions  = [defaultPageSize,500,1000];
 
         return (
-            <MuiTable
+            <MuiTableDefault
                 key={this.renderKey}
                 title={this.props.title}
                 options={{
@@ -76,7 +81,7 @@ export class Table<T> extends React.Component<TableProps<T>,{}>
                 actions={this.props.actions}
                 onSelectionChange={this.props.onSelectionChange}
                 icons={tableIcons}
-                columns={this.props.columns}
+                columns={this.props.columns as any}
                 data={this.props.data}
                 onRowClick={this.props.onRowClick}
                 detailPanel={this.props.detailPanel} 

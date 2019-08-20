@@ -1,7 +1,5 @@
-/// <reference path="./../../node_modules/@chgibb/unmappedcigarfragments/lib/lib.ts" />
-
-import {SAMRead,ReadFragment} from "@chgibb/unmappedcigarfragments/lib/lib";
-
+import {SAMRead} from "./samRead";
+import {ReadFragment} from "./cigar";
 
 /**
  * A SAM read with each of its mapped and unmapped fragments

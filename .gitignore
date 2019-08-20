@@ -34,5 +34,6 @@ scripts/rollup.js
 scripts/tsBundle.js
 scripts/babelMinify.js
 scripts/replaceEnv.js
+scripts/babelDCE.js
 .buildCache
 .eslintcache

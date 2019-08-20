@@ -12,7 +12,7 @@ import {Job,JobCallBackObject} from "./../../main/Job";
  * @param {atomic.AtomicOperation} logger 
  * @returns {Promise<void>} 
  */
-export function samToolsIndex(alignData : AlignData,logger : atomic.AtomicOperation) : Promise<void>
+export function samToolsIndex(alignData : AlignData,logger : atomic.AtomicOperation<any>) : Promise<void>
 {
     return new Promise<void>((resolve,reject) => 
     {
@@ -49,7 +49,7 @@ export function samToolsIndex(alignData : AlignData,logger : atomic.AtomicOperat
         try
         {
             samToolsIndexJob.Run();
-            logger.addPIDFromFork(samToolsIndexJob.pid);
+            logger.addPIDFromFork(samToolsIndexJob.pid!);
         }
         catch(err)
         {

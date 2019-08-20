@@ -24,12 +24,12 @@ import {AlignViewWebView} from "./views/alignViewWebView";
 
 export interface ToolBarViewState
 {
-    views? : Array<ToolBarTab<ToolBarViewProps>>;
+    views : Array<ToolBarTab<ToolBarViewProps>>;
 }
 
 export interface ToolBarViewProps
 {
-    operations? : Array<AtomicOperation>;
+    operations? : Array<AtomicOperation<any>>;
     fastqs? : Array<Fastq>;
     fastas? : Array<Fasta>;
     aligns? : Array<AlignData>;
@@ -174,10 +174,13 @@ export class ToolBarView extends React.Component<ToolBarViewProps,ToolBarViewSta
                         <ToolBarTabs
                             onTabDelete={(tab : ToolBarTab<ToolBarViewProps>,i : number) => 
                             {
+                                if(!this.state.views)
+                                    return;
+
                                 this.state.views.splice(i,1); 
                                 this.setState({});
                             }}
-                            tabs={this.state.views}
+                            tabs={this.state.views ? this.state.views : []}
                             propPack={this.props}
                         />
                     </div>

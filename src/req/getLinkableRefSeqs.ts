@@ -22,6 +22,7 @@ export class LinkableRefSeq implements UniquelyAddressable
         this.linkable = false;
         this.reason = "";
         this.longReason = "";
+        this.uuid = "";
     }
 }
 
@@ -162,8 +163,8 @@ export function getLinkableRefSeqs(fastaInputs : Array<Fasta>,align : AlignData)
         
         if(fasta.contigs && fasta.contigs.length > 0)
         {
-            let extraStatus = compareContigsToIdxStatReportExtra(fasta.contigs,align.idxStatsReport);
-            let missingStatus = compareContigsToIdxStatReportMissing(fasta.contigs,align.idxStatsReport);
+            let extraStatus = compareContigsToIdxStatReportExtra(fasta.contigs,align.idxStatsReport!);
+            let missingStatus = compareContigsToIdxStatReportMissing(fasta.contigs,align.idxStatsReport!);
 
             if(extraStatus.linkable && missingStatus.linkable)
                 curr.linkable = true;

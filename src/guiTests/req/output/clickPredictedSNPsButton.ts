@@ -1,6 +1,6 @@
-import { getFreeWebContents } from '../../../req/main/winMgr';
-import { getKey } from '../../../req/main/dataMgr';
-import { AlignData } from '../../../req/alignData';
+import {getFreeWebContents} from "../../../req/main/winMgr";
+import {getKey} from "../../../req/main/dataMgr";
+import {AlignData} from "../../../req/alignData";
 
 export async function clickPredictedSNPsButton() : Promise<void>
 {

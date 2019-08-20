@@ -5,7 +5,7 @@ import {getReadableAndWritable} from "./getAppPath";
 export class Fasta extends File
 {
     public checked : boolean;
-    public sizeString : string;
+    public sizeString : string | undefined;
     public sequences : number;
     public validID : string;
 
@@ -16,10 +16,10 @@ export class Fasta extends File
      * @memberof Fasta
      */
     public indexed : boolean;
-    public indexedForHisat2 : boolean;
-    public indexedForVisualization : boolean;
+    public indexedForHisat2 : boolean | undefined;
+    public indexedForVisualization : boolean | undefined;
     public indexing : boolean;
-    public indexingForVisualization : boolean;
+    public indexingForVisualization : boolean | undefined;
     public indexes : Array<any>;
     public contigs : Array<Contig>;
     public constructor(path : string)

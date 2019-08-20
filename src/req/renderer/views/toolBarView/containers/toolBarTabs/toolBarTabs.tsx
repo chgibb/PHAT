@@ -10,6 +10,7 @@ import {Avatar} from "../../../../components/avatar";
 import {tabInfo} from "../../tabInfo";
 import {AtomicOperationIPC} from "../../../../../atomicOperationsIPC";
 import {Tabs} from "../../../../components/tabs";
+import {enQueueOperation} from "../../../../enQueueOperation";
 
 import {wrapperBGColour} from "./styles/wrapperBGColour";
 
@@ -42,13 +43,10 @@ export interface ToolBarTabsState
  */
 function unDockActiveTab(refName : string) : void
 {
-    ipc.send(
-        "runOperation",
-        {
-            opName : "unDockWindow",
-            refName : refName
-        } as AtomicOperationIPC
-    );
+    enQueueOperation({
+        opName : "unDockWindow",
+        refName : refName
+    });
 }
 
 export class ToolBarTabs<T> extends React.Component<ToolBarTabsProps<T>,ToolBarTabsState>
@@ -82,7 +80,7 @@ export class ToolBarTabs<T> extends React.Component<ToolBarTabsProps<T>,ToolBarT
         }
     }
     
-    public render() : JSX.Element
+    public render() : JSX.Element | null
     {
         if(this.props.tabs && this.props.tabs.length != 0)
         {

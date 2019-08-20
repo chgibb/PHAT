@@ -49,8 +49,8 @@ export class TableCellHover extends React.Component<TableCellHoverProps,{}>
             //any cell with the special cellHoveClass applied will have it's parent styled as hoverable
             for (let i = 0; i != selectableCells.length; ++i) 
             {
-                selectableCells[i].parentElement.classList.add(sweepToBottom);
-                selectableCells[i].parentElement.style.cursor = "pointer";
+                selectableCells[i].parentElement!.classList.add(sweepToBottom);
+                selectableCells[i].parentElement!.style.cursor = "pointer";
             }
 
         }
@@ -64,8 +64,11 @@ export class TableCellHover extends React.Component<TableCellHoverProps,{}>
      * @returns {(HTMLElement | undefined)}
      * @memberof TableCellHover
      */
-    public static getClickedCell(event : React.MouseEvent<HTMLElement>) : HTMLElement | undefined
+    public static getClickedCell(event : React.MouseEvent | undefined) : HTMLElement | undefined
     {
+        if(!event)
+            return;
+            
         event.persist();
 
         let el : HTMLElement | undefined;

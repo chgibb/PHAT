@@ -1,22 +1,28 @@
 import * as atomic from "./atomicOperations";
 import * as winMgr from "./../main/winMgr";
 import {InputBamFile} from "./InputBamFile";
-export class OpenNoSamHeaderPrompt extends atomic.AtomicOperation
+
+export interface OpenNoSamHeaderPromptData
+{
+    opName : "openNoSamHeaderPrompt";
+    data : InputBamFile
+}
+
+export class OpenNoSamHeaderPrompt extends atomic.AtomicOperation<OpenNoSamHeaderPromptData>
 {
     public inputBamFile : InputBamFile;
-    constructor()
+    constructor(data : OpenNoSamHeaderPromptData)
     {
-        super();
+        super(data);
         this.ignoreScheduler = true;
+
+        this.inputBamFile = data.data;
     }
-    public setData(data : InputBamFile)
-    {
-        this.inputBamFile = data;
-    }
+
     public run() : void
     {
         this.logRecord = atomic.openLog("openNoSamHeaderPrompt","Open No Sam Header Prompt");
-        this.logObject(this.inputBamFile.bamPath);
+        this.logObject(this.inputBamFile!.bamPath);
         winMgr.windowCreators["noSamHeaderPrompt"].Create();
 
         let prompts = winMgr.getWindowsByName("noSamHeaderPrompt");
@@ -33,6 +39,6 @@ export class OpenNoSamHeaderPrompt extends atomic.AtomicOperation
             },500
         );
         this.setSuccess(this.flags);
-        this.update();
+        this.update!();
     }
 }

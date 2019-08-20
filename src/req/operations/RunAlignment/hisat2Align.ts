@@ -15,7 +15,7 @@ import {getPath} from "./../../file";
  * @param {atomic.AtomicOperation} logger 
  * @returns {Promise<void>} 
  */
-export function hisat2Align(alignData : AlignData,logger : atomic.AtomicOperation) : Promise<void>
+export function hisat2Align(alignData : AlignData,logger : atomic.AtomicOperation<any>) : Promise<void>
 {
     return new Promise<void>((
         resolve : (value? : void) => void,
@@ -59,9 +59,9 @@ export function hisat2Align(alignData : AlignData,logger : atomic.AtomicOperatio
             
         args.push("-x");
         if(process.platform == "linux")
-            args.push("\""+getReadableAndWritable(`rt/indexes/${alignData.fasta.uuid}`)+"\"");
+            args.push("\""+getReadableAndWritable(`rt/indexes/${alignData.fasta!.uuid}`)+"\"");
         else if(process.platform == "win32")
-            args.push(getReadableAndWritable(`rt/indexes/${alignData.fasta.uuid}`));
+            args.push(getReadableAndWritable(`rt/indexes/${alignData.fasta!.uuid}`));
         if(alignData.fastqs[1])
         {
             args.push("-1");
@@ -95,15 +95,15 @@ export function hisat2Align(alignData : AlignData,logger : atomic.AtomicOperatio
         }
         alignData.invokeString = invokeString;
         if(alignData.fastqs[1])
-            alignData.alias = `${alignData.fastqs[0].alias}, ${alignData.fastqs[1].alias}; ${alignData.fasta.alias}`;
+            alignData.alias = `${alignData.fastqs[0].alias}, ${alignData.fastqs[1].alias}; ${alignData.fasta!.alias}`;
         else
-            alignData.alias = `${alignData.fastqs[0].alias}; ${alignData.fasta.alias}`;
+            alignData.alias = `${alignData.fastqs[0].alias}; ${alignData.fasta!.alias}`;
         fs.mkdirSync(getArtifactDir(alignData));
         let hisatJob = new Job(hisat2Exe,args,"",true,jobCallBack,{});
         try
         {
             hisatJob.Run();
-            logger.addPIDFromFork(hisatJob.pid);
+            logger.addPIDFromFork(hisatJob.pid!);
         }
         catch(err)
         {

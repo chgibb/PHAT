@@ -4,21 +4,28 @@ import * as atomic from "./atomicOperations";
 import {AtomicOperationForkEvent} from "./../atomicOperationsIPC";
 import {getReadable} from "./../getAppPath";
 import {ProjectManifest} from "./../projectManifest";
-export class SaveProject extends atomic.AtomicOperation
+
+export interface SaveProjectData
+{
+    opName : "saveProject";
+
+    manifest : ProjectManifest;
+}
+
+export class SaveProject extends atomic.AtomicOperation<SaveProjectData>
 {
     public proj : ProjectManifest;
-    public saveProjectProcess : cp.ChildProcess;
-    constructor()
+    public saveProjectProcess : cp.ChildProcess | undefined;
+    constructor(data : SaveProjectData)
     {
-        super();
+        super(data);
+
+        this.proj = data.manifest;
     }
-    public setData(data : ProjectManifest)
-    {
-        this.proj = data;
-    }
+
     public run() : void
     {
-        this.logRecord = atomic.openLog(this.name,"Save Project");
+        this.logRecord = atomic.openLog(this.opName,"Save Project");
         let self = this;
         this.saveProjectProcess = atomic.makeFork("SaveProject.js",<AtomicOperationForkEvent>{
             setData : true,
@@ -28,7 +35,7 @@ export class SaveProject extends atomic.AtomicOperation
             self.logObject(ev);
             if(ev.finishedSettingData == true)
             {
-                self.saveProjectProcess.send(
+                self.saveProjectProcess!.send(
                     <AtomicOperationForkEvent>{
                         run : true
                     }
@@ -37,12 +44,12 @@ export class SaveProject extends atomic.AtomicOperation
             if(ev.update == true)
             {
                 self.extraData = ev.data;
-                self.flags = ev.flags;
-                if(ev.flags.success == true)
+                self.flags = ev.flags!;
+                if(ev.flags!.success == true)
                 {
                     self.setSuccess(self.flags);
                 }
-                self.update();
+                self.update!();
             }
         });
         this.addPID(this.saveProjectProcess.pid);

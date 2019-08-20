@@ -62,14 +62,14 @@ export class BLASTFragmentResult implements UniquelyAddressable
 export class BLASTSegmentResult implements UniquelyAddressable
 {
     public uuid : string;
-    public start : number;
-    public stop : number;
-    public readsBLASTed : number;
-    public avgSeqLength : number;
+    public start : number | undefined;
+    public stop : number | undefined;
+    public readsBLASTed : number | undefined;
+    public avgSeqLength : number | undefined;
     public readonly program = "blastn";
     public readonly MEGABLAST = true;
-    public dateStampString : string;
-    public dateStamp : string;
+    public dateStampString : string | undefined;
+    public dateStamp : string | undefined;
 
     public constructor()
     {

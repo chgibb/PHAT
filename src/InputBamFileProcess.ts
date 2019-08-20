@@ -36,29 +36,29 @@ function update() : void
     {
         if(flags.success)
         {
-            atomic.closeLog(logger.logRecord,"success");
+            atomic.closeLog(logger.logRecord!,"success");
             update.logRecord = logger.logRecord;
         }
         else if(flags.failure)
         {   
-            atomic.closeLog(logger.logRecord,"failure");
+            atomic.closeLog(logger.logRecord!,"failure");
             update.logRecord = logger.logRecord;
         }
     }
     logger.logObject(update);
-    process.send(update);
+    process.send!(update);
 }
 process.on(
     "message",function(ev : AtomicOperationForkEvent)
     {
         if(ev.setData == true)
         {
-            logger.logRecord = atomic.openLog(ev.name,ev.description);
+            logger.logRecord = atomic.openLog(ev.name!,ev.description!);
             bamPath = ev.data.bamPath;
             fastaPath = ev.data.fastaPath;
             align = ev.data.align;
             align.alias = trimPath(bamPath);
-            process.send(<AtomicOperationForkEvent>{
+            process.send!(<AtomicOperationForkEvent>{
                 finishedSettingData : true
             });
         }
@@ -81,7 +81,7 @@ process.on(
                     resolve();
                 });
 
-                atomic.logString(logger.logRecord,`isSam: ${isSam}  ${"\n"}`);
+                atomic.logString(logger.logRecord!,`isSam: ${isSam}  ${"\n"}`);
                 if(isSam)
                 {
                     progressMessage = "Converting SAM to BAM";

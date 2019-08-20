@@ -2,6 +2,8 @@
 import {ipcRenderer} from "electron";
 let ipc = ipcRenderer;
 
+import {enQueueOperation} from "../enQueueOperation";
+
 import {AtomicOperationIPC} from "./../../atomicOperationsIPC";
 import {AtomicOperation} from "./../../operations/atomicOperations";
 import {getReadable} from "./../../getAppPath";
@@ -55,13 +57,10 @@ export class SplashView extends viewMgr.View
             {
                 if(text)
                 {
-                    ipc.send(
-                        "runOperation",
-                        <AtomicOperationIPC>{
-                            opName : "newProject",
-                            name : text
-                        }
-                    );
+                    enQueueOperation({
+                        opName : "newProject",
+                        projName : text
+                    });
                     //wait for the response from newProject and then open the newly created project from the manifest
                     new Promise<void>((resolve,reject) => 
                     {
@@ -71,10 +70,10 @@ export class SplashView extends viewMgr.View
                             {
                                 if(arg.key == "operations" && arg.val !== undefined)
                                 {
-                                    let ops : Array<AtomicOperation> = <Array<AtomicOperation>>arg.val;
+                                    let ops : Array<AtomicOperation<any>> = <Array<AtomicOperation<any>>>arg.val;
                                     for(let i = 0 ; i != ops.length; ++i)
                                     {
-                                        if(ops[i].name == "newProject")
+                                        if(ops[i].opName == "newProject")
                                         {
                                             if(ops[i].flags.done)
                                             {
@@ -93,13 +92,11 @@ export class SplashView extends viewMgr.View
                     }).then(() =>
                     {
                         let projects : Array<ProjectManifest> = (<Array<ProjectManifest>>jsonFile.readFileSync(getProjectManifests()));
-                        ipc.send(
-                            "runOperation",
-                            <AtomicOperationIPC>{
-                                opName : "openProject",
-                                proj : projects[projects.length - 1]
-                            }
-                        );
+                        enQueueOperation({
+                            opName : "openProject",
+                            proj : projects[projects.length - 1],
+                            externalProjectPath : undefined
+                        });
                     }).catch(() => 
                     {
                         alert("There was an error creating your project");

@@ -59,7 +59,7 @@ export function FastaTable(props : FastaTableProps) : JSX.Element
                     {
                         return row.indexedForVisualization ? <img src={getReadable("img/pass.png")} /> : 
                             props.shouldAllowTriggeringOps ? "Not Ready" : 
-                                !props.shouldAllowTriggeringOps ? <ThreeQuartersLoader /> : undefined;
+                                !props.shouldAllowTriggeringOps ? <ThreeQuartersLoader /> : null;
                     },
                     searchable : true,
                     hidden : false

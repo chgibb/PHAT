@@ -15,7 +15,7 @@ import {getPath} from "../../file";
  * @param {atomic.AtomicOperation} logger 
  * @returns {Promise<void>} 
  */
-export function bowtie2Align(alignData : AlignData,logger : atomic.AtomicOperation) : Promise<void>
+export function bowtie2Align(alignData : AlignData,logger : atomic.AtomicOperation<any>) : Promise<void>
 {
     return new Promise<void>((
         resolve : (value? : void) => void,
@@ -61,7 +61,7 @@ export function bowtie2Align(alignData : AlignData,logger : atomic.AtomicOperati
             args.push(getReadable("bowtie2"));
         args.push("--sensitive-local");
         args.push("-x");
-        args.push("\""+getReadableAndWritable(`rt/indexes/${alignData.fasta.uuid}`)+"\"");
+        args.push("\""+getReadableAndWritable(`rt/indexes/${alignData.fasta!.uuid}`)+"\"");
         if(alignData.fastqs[1])
         {
             args.push("-1");
@@ -85,15 +85,15 @@ export function bowtie2Align(alignData : AlignData,logger : atomic.AtomicOperati
         }
         alignData.invokeString = invokeString;
         if(alignData.fastqs[1])
-            alignData.alias = `${alignData.fastqs[0].alias}, ${alignData.fastqs[1].alias}; ${alignData.fasta.alias}`;
+            alignData.alias = `${alignData.fastqs[0].alias}, ${alignData.fastqs[1].alias}; ${alignData.fasta!.alias}`;
         else
-            alignData.alias = `${alignData.fastqs[0].alias}; ${alignData.fasta.alias}`;
+            alignData.alias = `${alignData.fastqs[0].alias}; ${alignData.fasta!.alias}`;
         fs.mkdirSync(getArtifactDir(alignData));
         let bowtieJob = new Job(bowtie2Exe,args,"",true,jobCallBack,{});
         try
         {
             bowtieJob.Run();
-            logger.addPIDFromFork(bowtieJob.pid);
+            logger.addPIDFromFork(bowtieJob.pid!);
         }
         catch(err)
         {

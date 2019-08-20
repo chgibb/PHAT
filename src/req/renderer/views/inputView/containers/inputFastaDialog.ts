@@ -3,6 +3,7 @@ const dialog = electron.remote.dialog;
 const ipc = electron.ipcRenderer;
 
 import {AtomicOperationIPC} from "../../../../atomicOperationsIPC";
+import {enQueueOperation} from "../../../enQueueOperation";
 
 let fastaExtensions = [
     "fasta",
@@ -35,13 +36,10 @@ export function inputFastaDialog() : void
             {
                 for(let i = 0; i != files.length; ++i)
                 {
-                    ipc.send(
-                        "runOperation",
-                        <AtomicOperationIPC>{
-                            opName : "inputFastaFile",
-                            filePath : files[i]
-                        }
-                    );
+                    enQueueOperation({
+                        opName : "inputFastaFile",
+                        data : files[i]
+                    });
                 }
             }
         }

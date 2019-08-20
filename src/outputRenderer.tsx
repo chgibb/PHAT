@@ -15,7 +15,7 @@ class OutputApp extends React.Component<{},OutputViewProps>
 
     public constructor()
     {
-        super(undefined);
+        super({});
 
         this.state = {
 

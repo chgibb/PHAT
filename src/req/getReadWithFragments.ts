@@ -1,8 +1,6 @@
-/// <reference path="./../../node_modules/@chgibb/unmappedcigarfragments/lib/lib.ts" />
-
-import {getReads,SAMRead,ReadFragment} from "@chgibb/unmappedcigarfragments/lib/lib";
-
 import {ReadWithFragments} from "./readWithFragments";
+import {getReads, ReadFragment} from "./cigar";
+import {SAMRead} from "./samRead";
 
 /**
  * Returns all reads which aligned starting between start and stop and which contain one or more 
@@ -28,7 +26,7 @@ export function getReadWithFragments(
     {
         let res : Array<ReadWithFragments> = new Array<ReadWithFragments>();
         let parsedReads = 0;
-        await getReads(file,start,stop,function(read : SAMRead,fragments : Array<ReadFragment>)
+        await getReads(file,start,stop,function(read : SAMRead,fragments : Array<ReadFragment> | undefined)
         {
             parsedReads++;
             progress(parsedReads);

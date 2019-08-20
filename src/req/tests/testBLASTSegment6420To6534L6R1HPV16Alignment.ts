@@ -14,18 +14,18 @@ export async function testBLASTSegment6420To6534L6R1HPV16Alignment() : Promise<v
             if(op.flags.failure)
             {
                 console.log("failed to BLAST segment");
-                console.log(await atomic.getLogContent(op.logRecord)); 
+                console.log(await atomic.getLogContent(op.logRecord!)); 
                 return reject();
             }
 
             else if(op.flags.success)
             {
-                let readResults = await getBLASTReadResults(op.blastSegmentResult);
+                let readResults = await getBLASTReadResults(op.blastSegmentResult!);
                 if(readResults.length == 1)
                     console.log("BLAST segment has correct number of results in whole file");
                 else
                 {
-                    console.log(await atomic.getLogContent(op.logRecord));
+                    console.log(await atomic.getLogContent(op.logRecord!));
                     return reject();
                 }
                 
@@ -33,7 +33,7 @@ export async function testBLASTSegment6420To6534L6R1HPV16Alignment() : Promise<v
                     console.log("First read has correct sequence");
                 else
                 {
-                    console.log(await atomic.getLogContent(op.logRecord)); 
+                    console.log(await atomic.getLogContent(op.logRecord!)); 
                     return reject();
                 }
                 
@@ -41,7 +41,7 @@ export async function testBLASTSegment6420To6534L6R1HPV16Alignment() : Promise<v
                     console.log("First read has correct start position");
                 else
                 {
-                    console.log(await atomic.getLogContent(op.logRecord)); 
+                    console.log(await atomic.getLogContent(op.logRecord!)); 
                     return reject();
                 }
                 
@@ -49,7 +49,7 @@ export async function testBLASTSegment6420To6534L6R1HPV16Alignment() : Promise<v
                     console.log("First read had hits");
                 else
                 {
-                    console.log(await atomic.getLogContent(op.logRecord)); 
+                    console.log(await atomic.getLogContent(op.logRecord!)); 
                     return reject();
                 }
                 
@@ -57,7 +57,7 @@ export async function testBLASTSegment6420To6534L6R1HPV16Alignment() : Promise<v
                     console.log("First read has correct number of fragments");
                 else
                 {
-                    console.log(await atomic.getLogContent(op.logRecord)); 
+                    console.log(await atomic.getLogContent(op.logRecord!)); 
                     return reject();
                 }
                 
@@ -65,7 +65,7 @@ export async function testBLASTSegment6420To6534L6R1HPV16Alignment() : Promise<v
                     console.log("First read, first fragment has correct type");
                 else
                 {
-                    console.log(await atomic.getLogContent(op.logRecord)); 
+                    console.log(await atomic.getLogContent(op.logRecord!)); 
                     return reject();
                 }
                 
@@ -73,7 +73,7 @@ export async function testBLASTSegment6420To6534L6R1HPV16Alignment() : Promise<v
                     console.log("First read, first fragment has correct sequence");
                 else
                 {
-                    console.log(await atomic.getLogContent(op.logRecord)); 
+                    console.log(await atomic.getLogContent(op.logRecord!)); 
                     return reject();
                 }
                 
@@ -81,7 +81,7 @@ export async function testBLASTSegment6420To6534L6R1HPV16Alignment() : Promise<v
                     console.log("First read, second fragment has correct type");
                 else
                 {
-                    console.log(await atomic.getLogContent(op.logRecord)); 
+                    console.log(await atomic.getLogContent(op.logRecord!)); 
                     return reject();
                 }
                 
@@ -89,18 +89,18 @@ export async function testBLASTSegment6420To6534L6R1HPV16Alignment() : Promise<v
                     console.log("First read, second fragment has correct sequence");
                 else
                 {
-                    console.log(await atomic.getLogContent(op.logRecord)); 
+                    console.log(await atomic.getLogContent(op.logRecord!)); 
                     return reject();
                 }
 
 
-                let fragmentResults = await getBLASTFragmentResults(op.blastSegmentResult);
+                let fragmentResults = await getBLASTFragmentResults(op.blastSegmentResult!);
                 
                 if(fragmentResults.length == 1)
                     console.log("BLAST segment has correct number of fragments");
                 else
                 {
-                    console.log(await atomic.getLogContent(op.logRecord)); 
+                    console.log(await atomic.getLogContent(op.logRecord!)); 
                     return reject();
                 }
                 
@@ -108,7 +108,7 @@ export async function testBLASTSegment6420To6534L6R1HPV16Alignment() : Promise<v
                     console.log("First fragment has correct sequence");
                 else 
                 {
-                    console.log(await atomic.getLogContent(op.logRecord)); 
+                    console.log(await atomic.getLogContent(op.logRecord!)); 
                     return reject();
                 }
                 
@@ -116,7 +116,7 @@ export async function testBLASTSegment6420To6534L6R1HPV16Alignment() : Promise<v
                     console.log("First fragment had hits");
                 else
                 {
-                    console.log(await atomic.getLogContent(op.logRecord)); 
+                    console.log(await atomic.getLogContent(op.logRecord!)); 
                     return reject();
                 }
                 
@@ -124,7 +124,7 @@ export async function testBLASTSegment6420To6534L6R1HPV16Alignment() : Promise<v
                     console.log("First fragment is from first read");
                 else
                 {
-                    console.log(await atomic.getLogContent(op.logRecord)); 
+                    console.log(await atomic.getLogContent(op.logRecord!)); 
                     return reject();
                 }
 

@@ -50,7 +50,7 @@ export function getLatestUpdate(userName : string,repo : string) : Promise<Statu
             }
         ).then((arg : any) => 
         {
-            let updateChannel = getAppSettings().updateChannel;
+            let updateChannel = getAppSettings()!.updateChannel;
             for(let i = arg.data.length-1; i != -1; i--)
             {
                 let greaterThan = versionIsGreaterThan(arg.data[i].tag_name,pjson.version);

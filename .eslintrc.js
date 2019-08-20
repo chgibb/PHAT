@@ -65,6 +65,7 @@ module.exports = {
         "import/no-duplicates": [
             "error"
         ],
+        "import/no-unused-modules":[1, {"unusedExports": true}],
 
         "jsdoc/require-jsdoc": 1, 
         "jsdoc/require-param-description": 1, 

@@ -17,7 +17,7 @@ process.on(
         if(ev.setData == true)
         {
             asset = ev.data.asset;
-            process.send(<AtomicOperationForkEvent>{finishedSettingData : true});
+            process.send!(<AtomicOperationForkEvent>{finishedSettingData : true});
             return;
         }
         if(ev.run == true)
@@ -31,7 +31,7 @@ process.on(
                 istream.on("data",(chunk : Buffer) => 
                 {
                     progress += chunk.length;
-                    process.send(
+                    process.send!(
                         <AtomicOperationForkEvent>{
                             update : true,
                             data : {downloadProgress:progress},
@@ -55,7 +55,7 @@ process.on(
                     flags.done = true;
                     flags.success = true;
                     flags.failure = false;
-                    process.send(
+                    process.send!(
                         <AtomicOperationForkEvent>{
                             update : true,
                             flags : flags,
@@ -94,7 +94,7 @@ process.on(
     flags.done = true;
     flags.failure = true;
     flags.success = false;
-    process.send(
+    !(
         <AtomicOperationForkEvent>{
             update : true,
             flags : flags,
@@ -109,7 +109,7 @@ process.on("unhandledRejection",function(err : string)
     flags.done = true;
     flags.failure = true;
     flags.success = false;
-    process.send(
+    process.send!(
         <AtomicOperationForkEvent>{
             update : true,
             flags : flags,
