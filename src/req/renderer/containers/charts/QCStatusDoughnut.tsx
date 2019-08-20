@@ -1,7 +1,7 @@
 import * as React from "react";
-import { Chart } from "chart.js";
+import {Chart} from "chart.js";
 
-import { Fastq } from '../../../fastq';
+import {Fastq} from "../../../fastq";
 
 export interface QCStatusDoughnutProps {
     fastqs: Array<Fastq>;
@@ -20,7 +20,8 @@ export class QCStatusDoughnut extends React.Component<QCStatusDoughnutProps, {}>
     public colour3: string;
     public colour4: string;
 
-    public constructor(props: QCStatusDoughnutProps) {
+    public constructor(props: QCStatusDoughnutProps) 
+    {
         super(props);
 
         const randomColour = require("randomcolor");
@@ -31,17 +32,22 @@ export class QCStatusDoughnut extends React.Component<QCStatusDoughnutProps, {}>
         this.colour4 = randomColour();
     }
 
-    public updateChart() {
+    public updateChart() 
+    {
         let numPass = 0;
         let numWarn = 0;
         let numFail = 0;
         let numNoData = 0;
 
-        if (this.props.fastqs) {
-            for (let i = 0; i != this.props.fastqs.length; ++i) {
+        if (this.props.fastqs) 
+        {
+            for (let i = 0; i != this.props.fastqs.length; ++i) 
+            {
 
-                if (this.props.fastqs[i].QCData.summary && this.props.fastqs[i].QCData.summary.length > 0) {
-                    for (let j = 0; j != this.props.fastqs[i].QCData.summary.length; ++j) {
+                if (this.props.fastqs[i].QCData.summary && this.props.fastqs[i].QCData.summary.length > 0) 
+                {
+                    for (let j = 0; j != this.props.fastqs[i].QCData.summary.length; ++j) 
+                    {
                         let status = this.props.fastqs[i].QCData.summary[j].status;
                         console.log(status);
                         if (status == "pass")
@@ -60,8 +66,10 @@ export class QCStatusDoughnut extends React.Component<QCStatusDoughnutProps, {}>
                     numNoData += 5;
             }
 
-            if (this.chartRef.current) {
-                if (!this.chart) {
+            if (this.chartRef.current) 
+            {
+                if (!this.chart) 
+                {
                     this.chart = new Chart(this.chartRef.current.getContext("2d")!, {
                         type: "doughnut",
                         options: {
@@ -99,15 +107,18 @@ export class QCStatusDoughnut extends React.Component<QCStatusDoughnutProps, {}>
         }
     }
 
-    public componentDidUpdate() {
+    public componentDidUpdate() 
+    {
         this.updateChart();
     }
 
-    public componentDidMount() {
+    public componentDidMount() 
+    {
         this.updateChart();
     }
 
-    public render(): JSX.Element {
+    public render(): JSX.Element 
+    {
         return (
             <div style={{
                 position: "relative",
