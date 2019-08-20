@@ -26,6 +26,7 @@
             "debounce",
             "react-event-listener",
             "clsx",
+            "chart.js",
 
             "@material-ui/core/Button",
             "@material-ui/core/Dialog",
