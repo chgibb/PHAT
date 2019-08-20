@@ -20,6 +20,8 @@ import {OutputViewWebView} from "./views/outputViewWebView";
 import {InputViewWebView} from "./views/inputViewWebView";
 import {QCViewWebView} from "./views/QCViewWebView";
 import {AlignViewWebView} from "./views/alignViewWebView";
+import { Badge } from '../../components/badge';
+import { taskBadge } from './styles/taskBadge';
 
 
 export interface ToolBarViewState
@@ -166,11 +168,23 @@ export class ToolBarView extends React.Component<ToolBarViewProps,ToolBarViewSta
                                 </Grid>
                             </Grid>
                         </GridWrapper>
-                        <div style={{height: "2vh"}}>
-                            <Typography
-                                style={{color:"white"}}
-                            >{this.props.runningOpText}</Typography>
-                        </div>
+                        <GridWrapper>
+                            <Grid container spacing={4} justify="flex-start">
+                                <Grid item />
+                                <Grid item>
+                                <Badge badgeContent={this.props.operations ? this.props.operations.length : 0} showZero color="error" classes={{colorError:taskBadge}}>
+                                        <div
+                                        style={{width:"1vh"}}></div>
+                                    </Badge>
+                                </Grid>
+                                <Grid item>
+                                    
+                                    <Typography style={{color: "white"}}>
+                                        {this.props.runningOpText ? this.props.runningOpText : "No Running Tasks"}
+                                        </Typography>
+                                </Grid>
+                            </Grid>
+                        </GridWrapper>
                         <ToolBarTabs
                             onTabDelete={(tab : ToolBarTab<ToolBarViewProps>,i : number) => 
                             {
