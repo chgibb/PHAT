@@ -22,6 +22,7 @@ import {QCViewWebView} from "./views/QCViewWebView";
 import {AlignViewWebView} from "./views/alignViewWebView";
 import { Badge } from '../../components/badge';
 import { taskBadge } from './styles/taskBadge';
+import { LinearProgress } from '../../components/linearProgress';
 
 
 export interface ToolBarViewState
@@ -169,6 +170,7 @@ export class ToolBarView extends React.Component<ToolBarViewProps,ToolBarViewSta
                             </Grid>
                         </GridWrapper>
                         <GridWrapper>
+                            <React.Fragment>
                             <Grid container spacing={4} justify="flex-start">
                                 <Grid item />
                                 <Grid item>
@@ -184,6 +186,8 @@ export class ToolBarView extends React.Component<ToolBarViewProps,ToolBarViewSta
                                         </Typography>
                                 </Grid>
                             </Grid>
+                            <LinearProgress variant="indeterminate" color="secondary"/>
+                            </React.Fragment>
                         </GridWrapper>
                         <ToolBarTabs
                             onTabDelete={(tab : ToolBarTab<ToolBarViewProps>,i : number) => 
