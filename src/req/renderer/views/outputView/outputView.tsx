@@ -16,12 +16,16 @@ import {enQueueOperation} from "../../enQueueOperation";
 import {GridWrapper} from "../../containers/gridWrapper";
 import {Grid} from "../../components/grid";
 import {AlignerDoughnut} from "../../containers/charts/alignerDoughnut";
+import {BLASTRunForm} from "../../containers/forms/BLASTRunForm";
+import { AtomicOperation } from '../../../operations/atomicOperations';
 
 export interface OutputViewState
 {
     currentTable : "reports" | "snps" | "contigs" | "blastRuns";
+    showBLASTForm : true | false;
     clickedRow? : AlignData;
     viewMoreDialogOpen : boolean;
+    shouldAllowTriggeringOps : boolean;
 }
 
 export interface OutputViewProps
@@ -29,6 +33,7 @@ export interface OutputViewProps
     fastqs? : Array<Fastq>;
     fastas? : Array<Fasta>;
     aligns? : Array<AlignData>;
+    operations? : Array<AtomicOperation<any>>;
 }
 
 export class OutputView extends React.Component<OutputViewProps,OutputViewState>
@@ -38,8 +43,33 @@ export class OutputView extends React.Component<OutputViewProps,OutputViewState>
         super(props);
 
         this.state = {
-            currentTable : "reports"
+            currentTable : "reports",
+            showBLASTForm : false,
+            shouldAllowTriggeringOps : true
         } as OutputViewState;
+    }
+
+    public componentDidUpdate() : void
+    {
+        if(!this.props.operations)
+            return;
+        
+        let found = false;
+        for(let i = 0; i != this.props.operations.length; ++i)
+        {
+            if(this.props.operations[i].opName == "BLASTSegment")
+            {
+                found = true;
+                break;
+            }
+        }
+
+        if(this.state.shouldAllowTriggeringOps != !found)
+        {
+            this.setState({
+                shouldAllowTriggeringOps : !found
+            });
+        }
     }
 
     public render() : JSX.Element
@@ -233,19 +263,44 @@ export class OutputView extends React.Component<OutputViewProps,OutputViewState>
                                     />
                                 </div> : this.state.currentTable == "blastRuns" ?
                                     <div>
+                                        <GridWrapper>
+                                            <Grid container spacing={4} justify="flex-start">
+                                                <Grid item>
                                         <Button
                                             label="Go Back"
                                             type="retreat"
                                             onClick={() => 
                                             {
                                                 this.setState({
-                                                    currentTable : "reports"
+                                                    currentTable : "reports",
+                                                    showBLASTForm : false
                                                 });
                                             }}
                                         />
-                                        <BLASTRunsTable
-                                            align={this.state.clickedRow}
+                                        </Grid>
+                                        <Grid item>
+                                        <Button
+                                            label="New BLAST Run"
+                                            type="advance"
+                                            onClick={()=>
+                                            {
+                                                this.setState({
+                                                    showBLASTForm : true
+                                                });
+                                            }}
                                         />
+                                        </Grid>
+                                        </Grid>
+                                        </GridWrapper>
+                                        {this.state.showBLASTForm ? 
+                                            <BLASTRunForm
+                                                align={this.state.clickedRow}
+                                                shouldAllowTriggeringOps={this.state.shouldAllowTriggeringOps !== undefined ? this.state.shouldAllowTriggeringOps : false}
+                                            />    
+                                            : 
+                                            <BLASTRunsTable
+                                                align={this.state.clickedRow}
+                                            />}
                                     </div> : null 
                 }
             </div>

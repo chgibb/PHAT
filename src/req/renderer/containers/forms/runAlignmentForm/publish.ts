@@ -8,6 +8,11 @@ const ipc = electron.ipcRenderer;
 
 export function triggerHisat2Alignment(fasta : Fasta,fastq1 : Fastq,fastq2 : Fastq | undefined) : void
 {
+    enQueueOperation({
+        opName : "indexFastaForVisualization",
+        data : fasta
+    });
+    
     if(!fasta.indexedForHisat2)
     {
         enQueueOperation({
@@ -28,6 +33,11 @@ export function triggerHisat2Alignment(fasta : Fasta,fastq1 : Fastq,fastq2 : Fas
 
 export function triggerBowtie2Alignment(fasta : Fasta,fastq1 : Fastq,fastq2 : Fastq | undefined) : void
 {
+    enQueueOperation({
+        opName : "indexFastaForVisualization",
+        data : fasta
+    });
+
     if(!fasta.indexed)
     {
         enQueueOperation({

@@ -112,6 +112,14 @@ export class RunAlignmentForm
         });
     }
 
+    public onRetreat(step :  number) : Promise<boolean>
+    {
+        return new Promise<boolean>((resolve : (val : boolean) => void) : void => 
+        {
+            return resolve(true);
+        });
+    }
+
     public onFastqSelectionChange(data : Array<Fastq>) : void
     {
         this.setState({

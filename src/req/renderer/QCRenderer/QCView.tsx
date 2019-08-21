@@ -64,7 +64,7 @@ export class QCView extends React.Component<QCViewProps,QCViewState>
                 {!this.state.viewingReport ? 
                     <QCReportsTable
                         data={this.props.fastqs ? this.props.fastqs : []}
-                        shouldAllowTriggeringOps={true}
+                        shouldAllowTriggeringOps={this.state.shouldAllowTriggeringOps}
                         onGenerateClick={(event, data : Fastq) => 
                         {
                             event;

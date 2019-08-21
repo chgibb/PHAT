@@ -19,6 +19,7 @@ export interface FullWidthFormStep
 export interface Form
 {
     onAdvance : (step : number) => Promise<boolean>;
+    onRetreat : (step : number) => Promise<boolean>;
     state : {
         errors : Array<string>;
         currentStep : number;
@@ -30,6 +31,7 @@ export interface FullWidthStepperFormProps
     steps : Array<FullWidthFormStep>;
     form : Form;
     setFormState : (newState : any) => void;
+    disableNavigation? : boolean;
 }
 
 /**
@@ -86,31 +88,36 @@ export function FullWidthStepperForm(props : FullWidthStepperFormProps) : JSX.El
                                         }) : ""}
                                     </Grid>
                                     <Grid item>
-                                        <Button
-                                            type="retreat"
-                                            label="Previous"
-                                            onClick={() => 
-                                            {
-                                                if(value > 0)
-                                                    handleChangeIndex(value - 1);
-                                            }}
-                                            id={`previous${viewIndex}`}
-                                        />
+                                        {!props.disableNavigation ?
+                                            <Button
+                                                type="retreat"
+                                                label="Previous"
+                                                onClick={async () => 
+                                                {
+                                                    if(await props.form.onRetreat(value))
+                                                    {
+                                                        if(value > 0)
+                                                            handleChangeIndex(value - 1);
+                                                    }
+                                                }}
+                                                id={`previous${viewIndex}`}
+                                            /> :""}
                                     </Grid>
                                     <Grid item>
-                                        <Button
-                                            type="advance"
-                                            label="Next"
-                                            onClick={async () => 
-                                            {
-                                                if(await props.form.onAdvance(value))
+                                        {!props.disableNavigation ?
+                                            <Button
+                                                type="advance"
+                                                label="Next"
+                                                onClick={async () => 
                                                 {
-                                                    if(value < props.steps.length - 1)
-                                                        handleChangeIndex(value + 1);
-                                                }
-                                            }}
-                                            id={`next${viewIndex}`}
-                                        />
+                                                    if(await props.form.onAdvance(value))
+                                                    {
+                                                        if(value < props.steps.length - 1)
+                                                            handleChangeIndex(value + 1);
+                                                    }
+                                                }}
+                                                id={`next${viewIndex}`}
+                                            /> :""}
                                     </Grid>
                                     <Grid item />
                                 </Grid>
