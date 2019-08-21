@@ -6,6 +6,9 @@ import {Fastq} from "../../fastq";
 import {AtomicOperation} from "../../operations/atomicOperations";
 import {QCReportsTable} from "../containers/tables/qCReportsTable";
 import {QCReport} from "../containers/qcReport";
+import {QCStatusDoughnut} from "../containers/charts/QCStatusDoughnut";
+import {GridWrapper} from "../containers/gridWrapper";
+import {Grid} from "../components/grid";
 
 import {generateFastQCReport} from "./publish";
 
@@ -61,24 +64,38 @@ export class QCView extends React.Component<QCViewProps,QCViewState>
 
         return (
             <React.Fragment>
-                {!this.state.viewingReport ? 
-                    <QCReportsTable
-                        data={this.props.fastqs ? this.props.fastqs : []}
-                        shouldAllowTriggeringOps={this.state.shouldAllowTriggeringOps}
-                        onGenerateClick={(event, data : Fastq) => 
+                {!this.state.viewingReport ?
+                    <React.Fragment> 
                         {
-                            event;
-                            generateFastQCReport(data);
-                        }}
-                        onViewReportClick={(event,data : Fastq) => 
-                        {
-                            event;
-                            this.setState({
-                                viewUuid : data.uuid,
-                                viewingReport : true
-                            });
-                        }}
-                    />
+                            this.props.fastqs !== undefined && this.props.fastqs.length > 0 ?
+                                <GridWrapper>
+                                    <Grid container spacing={1} justify="center">
+                                        <QCStatusDoughnut
+                                            fastqs={this.props.fastqs}
+                                            height="50%"
+                                            width="50%"
+                                            marginBottom="15vh"
+                                        /> 
+                                    </Grid>
+                                </GridWrapper>: ""}
+                        <QCReportsTable
+                            data={this.props.fastqs ? this.props.fastqs : []}
+                            shouldAllowTriggeringOps={this.state.shouldAllowTriggeringOps}
+                            onGenerateClick={(event, data : Fastq) => 
+                            {
+                                event;
+                                generateFastQCReport(data);
+                            }}
+                            onViewReportClick={(event,data : Fastq) => 
+                            {
+                                event;
+                                this.setState({
+                                    viewUuid : data.uuid,
+                                    viewingReport : true
+                                });
+                            }}
+                        />
+                    </React.Fragment>
                     : ""}
                 {this.state.viewingReport && this.state.viewUuid ? 
                     <QCReport

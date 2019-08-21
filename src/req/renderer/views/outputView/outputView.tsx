@@ -17,7 +17,7 @@ import {GridWrapper} from "../../containers/gridWrapper";
 import {Grid} from "../../components/grid";
 import {AlignerDoughnut} from "../../containers/charts/alignerDoughnut";
 import {BLASTRunForm} from "../../containers/forms/BLASTRunForm";
-import { AtomicOperation } from '../../../operations/atomicOperations';
+import {AtomicOperation} from "../../../operations/atomicOperations";
 
 export interface OutputViewState
 {
@@ -266,31 +266,31 @@ export class OutputView extends React.Component<OutputViewProps,OutputViewState>
                                         <GridWrapper>
                                             <Grid container spacing={4} justify="flex-start">
                                                 <Grid item>
-                                        <Button
-                                            label="Go Back"
-                                            type="retreat"
-                                            onClick={() => 
-                                            {
-                                                this.setState({
-                                                    currentTable : "reports",
-                                                    showBLASTForm : false
-                                                });
-                                            }}
-                                        />
-                                        </Grid>
-                                        <Grid item>
-                                        <Button
-                                            label="New BLAST Run"
-                                            type="advance"
-                                            onClick={()=>
-                                            {
-                                                this.setState({
-                                                    showBLASTForm : true
-                                                });
-                                            }}
-                                        />
-                                        </Grid>
-                                        </Grid>
+                                                    <Button
+                                                        label="Go Back"
+                                                        type="retreat"
+                                                        onClick={() => 
+                                                        {
+                                                            this.setState({
+                                                                currentTable : "reports",
+                                                                showBLASTForm : false
+                                                            });
+                                                        }}
+                                                    />
+                                                </Grid>
+                                                <Grid item>
+                                                    <Button
+                                                        label="New BLAST Run"
+                                                        type="advance"
+                                                        onClick={()=>
+                                                        {
+                                                            this.setState({
+                                                                showBLASTForm : true
+                                                            });
+                                                        }}
+                                                    />
+                                                </Grid>
+                                            </Grid>
                                         </GridWrapper>
                                         {this.state.showBLASTForm ? 
                                             <BLASTRunForm

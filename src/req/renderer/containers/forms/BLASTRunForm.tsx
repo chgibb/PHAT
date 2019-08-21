@@ -4,10 +4,10 @@ import {Form, FullWidthStepperForm, FullWidthFormStep} from "../fullWidthStepper
 import {AlignData, getSam} from "../../../alignData";
 import {ReadWithFragments} from "../../../readWithFragments";
 import {getReadWithFragments} from "../../../getReadWithFragments";
+import {enQueueOperation} from "../../enQueueOperation";
 
 import {step2} from "./BLASTRunForm/step2";
 import {step1} from "./BLASTRunForm/step1";
-import { enQueueOperation } from '../../enQueueOperation';
 
 export interface BLASTRunFormProps
 {
