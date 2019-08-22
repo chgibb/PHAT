@@ -1,4 +1,4 @@
-export function add(
+export function startTrackLabel(
     options : {
         text? : string,
         labelStyle? : string,
@@ -47,7 +47,7 @@ export function add(
     return res;
 }
 
-export function end() : string
+export function endTrackLabel() : string
 {
     return `</tracklabel>`;
 }

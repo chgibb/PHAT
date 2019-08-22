@@ -1,4 +1,4 @@
-export function add(
+export function startPlasmid(
     options? : {
         sequenceLength : string,
         plasmidHeight : number | string,
@@ -34,7 +34,7 @@ export function add(
     return res;
 }
 
-export function end() : string
+export function endPlasmid() : string
 {
     return `</plasmid>`;
 }

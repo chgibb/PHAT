@@ -1,4 +1,4 @@
-export function add(
+export function startPlasmidTrack(
     options? : {
         trackStyle? : string,
         width? : string,
@@ -34,7 +34,7 @@ export function add(
     return res;
 }
 
-export function end() : string
+export function endPlasmidTrack() : string
 {
     return `</plasmidtrack>`;
 }

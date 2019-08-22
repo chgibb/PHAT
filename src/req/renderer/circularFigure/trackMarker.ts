@@ -1,4 +1,4 @@
-export function add(
+export function startTrackMarker(
     options : {
         start? : string,
         end? : string,
@@ -78,7 +78,7 @@ export function add(
     return res;
 }
 
-export function end() : string
+export function endTrackMarker() : string
 {
     return `</trackmarker>`;
 }

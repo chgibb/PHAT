@@ -1,4 +1,4 @@
-export function add(
+export function startMarkerLabel(
     options? : {
         type? : string,
         class? : string,
@@ -59,7 +59,7 @@ export function add(
     return res;
 }
 
-export function end() : string
+export function endMarkerLabel() : string
 {
     return `</markerlabel>`;
 }

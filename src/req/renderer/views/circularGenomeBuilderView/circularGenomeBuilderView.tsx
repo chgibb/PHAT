@@ -7,7 +7,7 @@ import { Toolbar } from '../../components/toolBar';
 import { IconButton } from '../../components/iconButton';
 import { MenuRounded } from '../../components/icons/menuRounded';
 import { white } from '../../styles/colours';
-import { CircularFigure } from '../../circularFigure';
+import { CircularFigure } from '../../circularFigure/circularFigure';
 import { Fasta } from '../../../fasta';
 import { Drawer } from '../../components/drawer';
 import { GridWrapper } from '../../containers/gridWrapper';

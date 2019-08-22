@@ -1,7 +1,7 @@
 import * as fs from "fs";
 
 import * as atomic from "./../operations/atomicOperations";
-import * as cf from "./../renderer/circularFigure";
+import * as cf from "../renderer/circularFigure/circularFigure";
 import * as hpv16Figure from "./hpv16Figure";
 export async function testL6R7HPV16SNPTrackCompilation() : Promise<void>
 {
@@ -9,7 +9,7 @@ export async function testL6R7HPV16SNPTrackCompilation() : Promise<void>
     {
 
         let figure : cf.CircularFigure = hpv16Figure.get();
-        let trackRecord : cf.RenderedSNPTrackRecord = figure.renderedSNPTracks[figure.renderedSNPTracks.length - 1];
+        let trackRecord : cf.SNPTrackLayer = figure.renderedSNPTracks[figure.renderedSNPTracks.length - 1];
         fs.accessSync(cf.getCachedSNPTrackTemplatePath(trackRecord));
         let map : cf.SNPTrackMap = await cf.buildSNPTrackMap(trackRecord,figure);
         cf.cacheSNPTrackSVG(trackRecord,map.renderStart()+map.renderEnd());

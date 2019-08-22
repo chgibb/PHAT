@@ -46,7 +46,7 @@ import {File} from "./../file";
 import {Fastq} from "./../fastq";
 import {Fasta} from "./../fasta";
 import {AlignData} from "./../alignData";
-import {CircularFigure} from "./../renderer/circularFigure";
+import {CircularFigure} from "../renderer/circularFigure/circularFigure";
 import {PIDInfo} from "./../PIDInfo";
 import {finishLoadingProject} from "./finishLoadingProject";
 import {GetKeyEvent,SaveKeyEvent,KeySubEvent} from "./../ipcEvents";

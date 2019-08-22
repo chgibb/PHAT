@@ -1,4 +1,4 @@
-export function add(
+export function startTrackScale(
     options? : {
         interval? : string,
         style? : string,
@@ -66,7 +66,7 @@ export function add(
     return res;
 }
 
-export function end() : string
+export function endTrackScale() : string
 {
     return `</trackscale>`;
 }
