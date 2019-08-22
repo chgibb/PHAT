@@ -312,7 +312,7 @@ export class SNPTrackMap extends TrackMap
 }
 
 /**
- * Contains all structures needed to manipulate a circular figure
+ * 
  * 
  * @export
  * @class CircularFigure
