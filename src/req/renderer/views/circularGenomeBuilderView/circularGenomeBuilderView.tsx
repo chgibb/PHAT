@@ -9,17 +9,16 @@ import { MenuRounded } from '../../components/icons/menuRounded';
 import { white } from '../../styles/colours';
 import { CircularFigure } from '../../circularFigure/circularFigure';
 import { Fasta } from '../../../fasta';
-import { Drawer } from '../../components/drawer';
-import { GridWrapper } from '../../containers/gridWrapper';
-import { Grid } from '../../components/grid';
-import { Typography } from '../../components/typography';
-import { AddBox } from '../../components/icons/addBox';
 import { SaveKeyEvent } from '../../../ipcEvents';
 import { CircularGenome } from './containers/circularGenome/circularGenome';
+import { DonutLargeOutlined } from '../../components/icons/donutLargeOutlined';
+import { WavesOutlined } from '../../components/icons/wavesOutlined';
+import { FigureSelectDrawer } from './containers/drawers/figureSelectDrawer';
+
 
 export interface CircularGenomeBuilderViewState {
     figureSelectDrawerOpen: boolean;
-    selectedFigure : string;
+    selectedFigure: string;
 }
 
 export interface CircularGenomeBuilderViewProps {
@@ -60,91 +59,34 @@ export class CircularGenomeBuilderView extends React.Component<CircularGenomeBui
                             edge="start"
                             color="primary"
                             classes={{ colorPrimary: white }}
+                            onClick={() => {
+                                this.setState({
+                                    figureSelectDrawerOpen: true
+                                });
+                            }}
                         >
-                            <MenuRounded
-                                onClick={() => {
-                                    this.setState({
-                                        figureSelectDrawerOpen: true
-                                    });
-                                }}
-                            />
+                            <MenuRounded />
+                        </IconButton>
+                        <IconButton
+                            edge="start"
+                            color="primary"
+                            classes={{ colorPrimary: white }}
+                        >
+                            <DonutLargeOutlined />
+                        </IconButton>
+                        <IconButton
+                            edge="start"
+                            color="primary"
+                            classes={{ colorPrimary: white }}
+                        >
+                            <WavesOutlined />
                         </IconButton>
                     </Toolbar>
                 </AppBar>
-                <Drawer
-                    anchor="left"
-                    open={this.state.figureSelectDrawerOpen}
-                    onClose={() => {
-                        this.setState({
-                            figureSelectDrawerOpen: false
-                        });
-                    }}
-                >
-                    <div>
-                        <GridWrapper>
-                            <div style={{ marginRight: "1vh", marginLeft: "1vh", marginBottom: "1vh" }}>
-                                <Grid container spacing={4} justify="center">
-                                    <Grid item>
-                                        <Typography variant="h5">Open a Figure</Typography>
-                                    </Grid>
-                                </Grid>
-                            </div>
-                        </GridWrapper>
-                        {
-                            this.props.fastas.map((fasta) => {
-                                return (
-                                    <div>
-                                        <GridWrapper>
-                                            <div style={{ marginLeft: "1vh", marginBottom: "1vh" }}>
-                                                <Grid container direction="row" spacing={1} justify="flex-start">
-                                                    <Grid item>
-                                                        <Typography variant="h6">{fasta.alias}</Typography>
-                                                    </Grid>
-                                                    <Grid item>
-                                                        <IconButton
-                                                            onClick={() => {
-                                                                this.newFigure(fasta);
-                                                            }}
-                                                        >
-                                                            <AddBox />
-                                                        </IconButton>
-                                                    </Grid>
-                                                </Grid>
-                                            </div>
-                                        </GridWrapper>
-                                        {
-                                            this.props.figures.map((figure) => {
-                                                if (fasta.uuid == figure.uuidFasta) {
-                                                    return (
-                                                        <GridWrapper>
-                                                            <div style={{ marginRight: "1vh", marginLeft: "1vh", marginBottom: "1vh" }}>
-                                                                <Grid container spacing={4} justify="center">
-                                                                    <Grid item>
-                                                                        <Typography variant="caption" onClick={()=>{
-                                                                            this.setState({
-                                                                                selectedFigure : figure.uuid
-                                                                            });
-                                                                            alert(figure.uuid);
-                                                                        }}>{figure.name}</Typography>
-                                                                    </Grid>
-                                                                </Grid>
-                                                            </div>
-                                                        </GridWrapper>
-                                                    );
-                                                }
-                                                return null;
-                                            })
-                                        }
-                                    </div>
-                                )
-                            })
-                        }
-                    </div>
-                </Drawer>
+                <FigureSelectDrawer builder={this} />
                 {
                     this.props.figures.map((x) => {
-                        if(x.uuid == this.state.selectedFigure)
-                        {
+                        if (x.uuid == this.state.selectedFigure) {
                             return (
                                 <CircularGenome
                                     figure={x}
