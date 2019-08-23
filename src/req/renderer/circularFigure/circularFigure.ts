@@ -212,7 +212,7 @@ export class CircularFigure implements UniquelyAddressable {
         this.circularFigureBPTrackOptions = new CircularFigureBPTrackOptions();
         this.renderedCoverageTracks = new Array<CoverageTrackLayer>();
         this.renderedSNPTracks = new Array<SNPTrackLayer>();
-        this.visibleLayers = new Array<string>();
+        this.visibleLayers = [this.uuid];
         for (let i = 0; i != this.contigs.length; ++i) {
             initContigForDisplay(this.contigs[i]);
         }
@@ -1059,6 +1059,7 @@ export function renderSVGToCanvas(svg: string, ctx: CanvasRenderingContext2D): P
         img.onload = function () {
             ctx.drawImage(img, 0, 0);
             window.URL.revokeObjectURL(url);
+            console.log("Drew image");
             resolve();
         };
         img.src = url;

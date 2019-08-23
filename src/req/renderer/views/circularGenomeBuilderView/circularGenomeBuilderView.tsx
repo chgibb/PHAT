@@ -15,9 +15,11 @@ import { Grid } from '../../components/grid';
 import { Typography } from '../../components/typography';
 import { AddBox } from '../../components/icons/addBox';
 import { SaveKeyEvent } from '../../../ipcEvents';
+import { CircularGenome } from './containers/circularGenome/circularGenome';
 
 export interface CircularGenomeBuilderViewState {
     figureSelectDrawerOpen: boolean;
+    selectedFigure : string;
 }
 
 export interface CircularGenomeBuilderViewProps {
@@ -118,7 +120,12 @@ export class CircularGenomeBuilderView extends React.Component<CircularGenomeBui
                                                             <div style={{ marginRight: "1vh", marginLeft: "1vh", marginBottom: "1vh" }}>
                                                                 <Grid container spacing={4} justify="center">
                                                                     <Grid item>
-                                                                        <Typography variant="caption">{figure.name}</Typography>
+                                                                        <Typography variant="caption" onClick={()=>{
+                                                                            this.setState({
+                                                                                selectedFigure : figure.uuid
+                                                                            });
+                                                                            alert(figure.uuid);
+                                                                        }}>{figure.name}</Typography>
                                                                     </Grid>
                                                                 </Grid>
                                                             </div>
@@ -134,6 +141,19 @@ export class CircularGenomeBuilderView extends React.Component<CircularGenomeBui
                         }
                     </div>
                 </Drawer>
+                {
+                    this.props.figures.map((x) => {
+                        if(x.uuid == this.state.selectedFigure)
+                        {
+                            return (
+                                <CircularGenome
+                                    figure={x}
+                                />
+                            )
+                        }
+                        return null;
+                    })
+                }
             </React.Fragment>
         );
     }
