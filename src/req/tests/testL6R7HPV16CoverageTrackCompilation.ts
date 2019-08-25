@@ -1,7 +1,8 @@
 import * as fs from "fs";
 
-import * as atomic from "./../operations/atomicOperations";
 import * as cf from "../renderer/circularFigure/circularFigure";
+
+import * as atomic from "./../operations/atomicOperations";
 import * as hpv16Figure from "./hpv16Figure";
 export async function testL6R7HPV16CoverageTrackCompilation() : Promise<void>
 {

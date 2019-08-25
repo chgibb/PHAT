@@ -1,6 +1,7 @@
 
-import * as atomic from "./atomicOperations";
 import * as cf from "../renderer/circularFigure/circularFigure";
+
+import * as atomic from "./atomicOperations";
 import {getReadableAndWritable} from "./../getAppPath";
 
 const uuidv4: () => string = require("uuid/v4");

@@ -1,10 +1,10 @@
 import * as cp from "child_process";
 
+import * as cf from "../renderer/circularFigure/circularFigure";
+
 import * as atomic from "./atomicOperations";
 import {AtomicOperationForkEvent} from "./../atomicOperationsIPC";
-import {getReadable} from "./../getAppPath";
 import {AlignData} from "./../alignData";
-import * as cf from "../renderer/circularFigure/circularFigure";
 
 export interface RenderSNPTrackForContigData
 {

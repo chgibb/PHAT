@@ -1,5 +1,5 @@
 import {rgba, color} from "csx";
-import { style } from 'typestyle';
+import {style} from "typestyle";
 
 export const bgColour = rgba(163,200,255,1);
 

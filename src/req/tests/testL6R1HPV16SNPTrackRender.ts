@@ -1,8 +1,8 @@
 import {addOperation} from "../operations/atomicOperations/addOperation";
+import {CircularFigure} from "../renderer/circularFigure/circularFigure";
 
 import * as atomic from "./../operations/atomicOperations";
 import {RenderSNPTrackForContig} from "./../operations/RenderSNPTrack";
-import {CircularFigure} from "../renderer/circularFigure/circularFigure";
 import * as hpv16Figure from "./hpv16Figure";
 import * as L6R1HPV16Align from "./L6R1HPV16Align";
 export async function testL6R1HPV16SNPTrackRenderer() : Promise<void>

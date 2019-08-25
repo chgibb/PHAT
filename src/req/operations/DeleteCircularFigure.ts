@@ -1,6 +1,7 @@
 
-import * as atomic from "./atomicOperations";
 import * as cf from "../renderer/circularFigure/circularFigure";
+
+import * as atomic from "./atomicOperations";
 import {getReadableAndWritable} from "./../getAppPath";
 
 const fse = require("fs-extra");
