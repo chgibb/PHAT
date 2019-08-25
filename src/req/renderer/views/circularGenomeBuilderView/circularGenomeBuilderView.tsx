@@ -14,6 +14,7 @@ import { CircularGenome } from './containers/circularGenome/circularGenome';
 import { DonutLargeOutlined } from '../../components/icons/donutLargeOutlined';
 import { WavesOutlined } from '../../components/icons/wavesOutlined';
 import { FigureSelectOverlay } from './containers/overlays/figureSelectOverlay';
+import { appBar } from './containers/styles/appBar';
 
 
 export interface CircularGenomeBuilderViewState {
@@ -49,11 +50,10 @@ export class CircularGenomeBuilderView extends React.Component<CircularGenomeBui
 
     }
 
-
     public render(): JSX.Element {
         return (
             <React.Fragment>
-                <AppBar>
+                <AppBar position="fixed" className={appBar}>
                     <Toolbar>
                         <IconButton
                             edge="start"
@@ -61,7 +61,7 @@ export class CircularGenomeBuilderView extends React.Component<CircularGenomeBui
                             classes={{ colorPrimary: white }}
                             onClick={() => {
                                 this.setState({
-                                    figureSelectDrawerOpen: true
+                                    figureSelectDrawerOpen: !this.state.figureSelectDrawerOpen
                                 });
                             }}
                         >

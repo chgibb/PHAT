@@ -17,6 +17,7 @@ import { ArrowUpwardOutlined } from '../../../../components/icons/arrowUpwareOut
 import { ArrowDownwardOutlined } from '../../../../components/icons/arrowDownwardOutlined';
 import { ChevronRight } from '../../../../components/icons/chevronRight';
 import { Close } from '../../../../components/icons/close';
+import { style } from 'typestyle';
 
 
 export interface OverlayProps {
@@ -91,8 +92,12 @@ function IconKindSelect(props: {
                         onClick={props.onClose}
                     >
                         {
-                            props.kind == "drawerLeft" ?
-                                <ChevronLeft /> : props.kind == "drawerTop" ? <ArrowUpwardOutlined /> : props.kind == "drawerBottom" ? <ArrowDownwardOutlined /> : props.kind == "drawerRight" ? <ChevronRight /> : props.kind == "modal" ? <Close /> : ""
+                            props.kind == "drawerLeft" ? <ChevronLeft /> :
+                                props.kind == "drawerTop" ? <ArrowUpwardOutlined /> :
+                                    props.kind == "drawerBottom" ? <ArrowDownwardOutlined /> :
+                                        props.kind == "drawerRight" ? <ChevronRight /> :
+                                            props.kind == "modal" ? <Close /> :
+                                                ""
                         }
                     </IconButton>
                 </Grid>
@@ -101,60 +106,36 @@ function IconKindSelect(props: {
     );
 }
 
+const drawer = style({
+    marginTop: "6.5vh"
+});
+
 export function Overlay(props: OverlayProps): JSX.Element | null {
     let [kind, setKind] = React.useState(props.kind);
 
     switch (kind) {
         case "drawerLeft":
-            return (
-                <Drawer
-                    anchor="left"
-                    variant={props.open ? "permanent" : "temporary"}
-                    open={props.open}
-                >
-                    <React.Fragment>
-                        <IconKindSelect kind={kind} setOverlayKind={setKind} onClose={props.onClose} />
-                        {props.children}
-                    </React.Fragment>
-                </Drawer>
-            );
         case "drawerTop":
-            return (
-                <Drawer
-                    anchor="top"
-                    variant={props.open ? "permanent" : "temporary"}
-                    open={props.open}
-                >
-                    <React.Fragment>
-                        <IconKindSelect kind={kind} setOverlayKind={setKind} onClose={props.onClose} />
-                        {props.children}
-                    </React.Fragment>
-                </Drawer>
-            );
         case "drawerBottom":
-            return (
-                <Drawer
-                    anchor="bottom"
-                    variant={props.open ? "permanent" : "temporary"}
-                    open={props.open}
-                >
-                    <React.Fragment>
-                        <IconKindSelect kind={kind} setOverlayKind={setKind} onClose={props.onClose} />
-                        {props.children}
-                    </React.Fragment>
-                </Drawer>
-            );
         case "drawerRight":
             return (
                 <Drawer
-                    anchor="right"
+                    anchor={
+                        kind == "drawerLeft" ? "left" :
+                            kind == "drawerTop" ? "top" :
+                                kind == "drawerBottom" ? "bottom" :
+                                    kind == "drawerRight" ? "right" :
+                                        "left"
+                    }
                     variant={props.open ? "permanent" : "temporary"}
                     open={props.open}
                 >
-                    <React.Fragment>
-                        <IconKindSelect kind={kind} setOverlayKind={setKind} onClose={props.onClose} />
-                        {props.children}
-                    </React.Fragment>
+                    <div className={drawer}>
+                        <React.Fragment>
+                            <IconKindSelect kind={kind} setOverlayKind={setKind} onClose={props.onClose} />
+                            {props.children}
+                        </React.Fragment>
+                    </div>
                 </Drawer>
             );
         case "modal":
