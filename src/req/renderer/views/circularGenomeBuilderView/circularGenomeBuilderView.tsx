@@ -13,13 +13,13 @@ import {Fasta} from "../../../fasta";
 import {SaveKeyEvent} from "../../../ipcEvents";
 import {DonutLargeOutlined} from "../../components/icons/donutLargeOutlined";
 import {WavesOutlined} from "../../components/icons/wavesOutlined";
+import {SwapVertOutlined} from "../../components/icons/swapVertOutlined";
+import {Typography} from "../../components/typography";
+import {Tooltip} from "../../components/tooltip";
 
 import {CircularGenome} from "./containers/circularGenome/circularGenome";
 import {FigureSelectOverlay} from "./containers/overlays/figureSelectOverlay";
 import {appBar} from "./containers/styles/appBar";
-import { SwapVertOutlined } from '../../components/icons/swapVertOutlined';
-import { Typography } from '../../components/typography';
-import { Tooltip } from '../../components/tooltip';
 
 
 export interface CircularGenomeBuilderViewState {
@@ -76,20 +76,20 @@ export class CircularGenomeBuilderView extends React.Component<CircularGenomeBui
     public reposition()
     {
         this.props.figures.map((x) => 
-                    {
-                        if (x.uuid == this.state.selectedFigure) 
-                        {
-                            this.setState({
-                                figurePosition: {
-                                    width : x.width,
-                                    height : x.height,
-                                    x : (document.documentElement.clientWidth/2) - (x.width/2),
-                                    y : (document.documentElement.clientHeight/2) - (x.height/2)
-                                }
-                            })
-                        }
+        {
+            if (x.uuid == this.state.selectedFigure) 
+            {
+                this.setState({
+                    figurePosition: {
+                        width : x.width,
+                        height : x.height,
+                        x : (document.documentElement.clientWidth/2) - (x.width/2),
+                        y : (document.documentElement.clientHeight/2) - (x.height/2)
                     }
-                );
+                });
+            }
+        }
+        );
     }
 
     public componentDidUpdate(prevProps : CircularGenomeBuilderViewProps,prevState : CircularGenomeBuilderViewState)
@@ -134,55 +134,55 @@ export class CircularGenomeBuilderView extends React.Component<CircularGenomeBui
                             <MenuRounded />
                         </IconButton>
                         <Tooltip title="Change Figure Name">
-                        <Typography
-                        style={{
-                            cursor:"pointer"
-                        }}>
-                            {figure ? figure.name : ""}
-                        </Typography>
+                            <Typography
+                                style={{
+                                    cursor:"pointer"
+                                }}>
+                                {figure ? figure.name : ""}
+                            </Typography>
                         </Tooltip>
                         <div style={{
                             marginLeft:"auto"
                         }}>
                             <Tooltip title="Customize Contigs">
-                        <IconButton
-                            edge="start"
-                            color="primary"
-                            classes={{colorPrimary: white}}
-                        >
-                            <DonutLargeOutlined 
-                                style={{
-                                    transform:"rotate(45deg)"
-                                }}
-                            />
-                        </IconButton>
-                        </Tooltip>
-                        <Tooltip title="Coverage Visualization">
-                        <IconButton
-                            edge="start"
-                            color="primary"
-                            classes={{colorPrimary: white}}
-                        >
-                            <WavesOutlined 
-                                style={{
-                                    transform:"rotate(45deg)"
-                                }}
-                            />
-                        </IconButton>
-                        </Tooltip>
-                        <Tooltip title="Change Radius">
-                        <IconButton
-                            edge="start"
-                            color="primary"
-                            classes={{colorPrimary: white}}
-                        >
-                            <SwapVertOutlined 
-                                style={{
-                                    transform:"rotate(-30deg)"
-                                }}
-                            />
-                        </IconButton>
-                        </Tooltip>
+                                <IconButton
+                                    edge="start"
+                                    color="primary"
+                                    classes={{colorPrimary: white}}
+                                >
+                                    <DonutLargeOutlined 
+                                        style={{
+                                            transform:"rotate(45deg)"
+                                        }}
+                                    />
+                                </IconButton>
+                            </Tooltip>
+                            <Tooltip title="Coverage Visualization">
+                                <IconButton
+                                    edge="start"
+                                    color="primary"
+                                    classes={{colorPrimary: white}}
+                                >
+                                    <WavesOutlined 
+                                        style={{
+                                            transform:"rotate(45deg)"
+                                        }}
+                                    />
+                                </IconButton>
+                            </Tooltip>
+                            <Tooltip title="Change Radius">
+                                <IconButton
+                                    edge="start"
+                                    color="primary"
+                                    classes={{colorPrimary: white}}
+                                >
+                                    <SwapVertOutlined 
+                                        style={{
+                                            transform:"rotate(-30deg)"
+                                        }}
+                                    />
+                                </IconButton>
+                            </Tooltip>
                         </div>
                     </Toolbar>
                 </AppBar>
@@ -190,23 +190,23 @@ export class CircularGenomeBuilderView extends React.Component<CircularGenomeBui
                     builder={this}
                     open={this.state.figureSelectOvelayOpen}
                     onClose={ () => 
-                        {
-                            this.setState({
-                                figureSelectOvelayOpen: false
-                            });
+                    {
+                        this.setState({
+                            figureSelectOvelayOpen: false
+                        });
                     }}
-                 />
+                />
                 {
                     figure ? (
-                                <CircularGenome
-                                    figure={figure}
-                                    width={this.state.figurePosition.width}
-                                    height={this.state.figurePosition.height}
-                                    x={this.state.figurePosition.x}
-                                    y={this.state.figurePosition.y}
-                                />
-                            ) : ""
-                        }
+                        <CircularGenome
+                            figure={figure}
+                            width={this.state.figurePosition.width}
+                            height={this.state.figurePosition.height}
+                            x={this.state.figurePosition.x}
+                            y={this.state.figurePosition.y}
+                        />
+                    ) : ""
+                }
             </React.Fragment>
         );
     }
