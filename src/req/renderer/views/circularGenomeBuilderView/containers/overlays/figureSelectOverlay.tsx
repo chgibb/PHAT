@@ -11,6 +11,8 @@ import {Overlay} from "./overlay";
 
 export interface FigureSelectOverlayProps {
     builder: CircularGenomeBuilderView;
+    onClose : () => void;
+    open : boolean;
 }
 
 export function FigureSelectOverlay(props: FigureSelectOverlayProps): JSX.Element 
@@ -18,13 +20,8 @@ export function FigureSelectOverlay(props: FigureSelectOverlayProps): JSX.Elemen
     return (
         <Overlay
             kind="drawerLeft"
-            onClose ={ () => 
-            {
-                props.builder.setState({
-                    figureSelectDrawerOpen: false
-                });
-            }}
-            open={props.builder.state.figureSelectDrawerOpen}
+            onClose={props.onClose}
+            open={props.open}
         >
             <div>
                 <GridWrapper>
@@ -74,8 +71,9 @@ export function FigureSelectOverlay(props: FigureSelectOverlayProps): JSX.Elemen
                                                                 {
                                                                     props.builder.setState({
                                                                         selectedFigure: figure.uuid,
-                                                                        figureSelectDrawerOpen : false
                                                                     });
+
+                                                                    props.onClose();
                                                                 }}>{figure.name}</Typography>
                                                             </Grid>
                                                         </Grid>

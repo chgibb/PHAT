@@ -18,10 +18,11 @@ import {CircularGenome} from "./containers/circularGenome/circularGenome";
 import {FigureSelectOverlay} from "./containers/overlays/figureSelectOverlay";
 import {appBar} from "./containers/styles/appBar";
 import { SwapVertOutlined } from '../../components/icons/swapVertOutlined';
+import { Typography } from '../../components/typography';
 
 
 export interface CircularGenomeBuilderViewState {
-    figureSelectDrawerOpen: boolean;
+    figureSelectOvelayOpen: boolean;
     selectedFigure: string;
     figurePosition : {
         width : number,
@@ -43,7 +44,7 @@ export class CircularGenomeBuilderView extends React.Component<CircularGenomeBui
         super(props);
 
         this.state = {
-            figureSelectDrawerOpen: false,
+            figureSelectOvelayOpen: false,
             figurePosition : {
                 width : 0,
                 height : 0,
@@ -105,6 +106,15 @@ export class CircularGenomeBuilderView extends React.Component<CircularGenomeBui
 
     public render(): JSX.Element 
     {
+        const figure : CircularFigure | undefined = this.props.figures.find((x) => 
+        {
+            if (x.uuid == this.state.selectedFigure) 
+            {
+                return true;
+            }
+            return false;
+        });
+
         return (
             <React.Fragment>
                 <AppBar position="fixed" className={appBar}>
@@ -116,12 +126,18 @@ export class CircularGenomeBuilderView extends React.Component<CircularGenomeBui
                             onClick={() => 
                             {
                                 this.setState({
-                                    figureSelectDrawerOpen: !this.state.figureSelectDrawerOpen
+                                    figureSelectOvelayOpen: !this.state.figureSelectOvelayOpen
                                 });
                             }}
                         >
                             <MenuRounded />
                         </IconButton>
+                        <Typography
+                        style={{
+                            cursor:"pointer"
+                        }}>
+                            {figure ? figure.name : ""}
+                        </Typography>
                         <div style={{
                             marginLeft:"auto"
                         }}>
@@ -161,25 +177,27 @@ export class CircularGenomeBuilderView extends React.Component<CircularGenomeBui
                         </div>
                     </Toolbar>
                 </AppBar>
-                <FigureSelectOverlay builder={this} />
-                {
-                    this.props.figures.map((x) => 
-                    {
-                        if (x.uuid == this.state.selectedFigure) 
+                <FigureSelectOverlay 
+                    builder={this}
+                    open={this.state.figureSelectOvelayOpen}
+                    onClose={ () => 
                         {
-                            return (
+                            this.setState({
+                                figureSelectOvelayOpen: false
+                            });
+                    }}
+                 />
+                {
+                    figure ? (
                                 <CircularGenome
-                                    figure={x}
+                                    figure={figure}
                                     width={this.state.figurePosition.width}
                                     height={this.state.figurePosition.height}
                                     x={this.state.figurePosition.x}
                                     y={this.state.figurePosition.y}
                                 />
-                            );
+                            ) : ""
                         }
-                        return null;
-                    })
-                }
             </React.Fragment>
         );
     }
