@@ -10,3 +10,8 @@ export const borderColour = color("#000000");
 export const white = style({
     color: "white"
 });
+
+export const blue = style({
+    color : "blue"
+});
+

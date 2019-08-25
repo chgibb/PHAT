@@ -1,27 +1,29 @@
 import * as React from "react";
 
 import { CircularGenomeBuilderView } from '../../circularGenomeBuilderView';
-import { Drawer } from '../../../../components/drawer';
 import { GridWrapper } from '../../../../containers/gridWrapper';
 import { Grid } from '../../../../components/grid';
 import { Typography } from '../../../../components/typography';
 import { IconButton } from '../../../../components/iconButton';
 import { AddBox } from '../../../../components/icons/addBox';
+import { Overlay } from './overlay';
 
-export interface FigureSelectDrawerProps {
+export interface FigureSelectOverlayProps {
     builder: CircularGenomeBuilderView;
 }
 
-export function FigureSelectDrawer(props: FigureSelectDrawerProps): JSX.Element {
+export function FigureSelectOverlay(props: FigureSelectOverlayProps): JSX.Element {
     return (
-        <Drawer
-            anchor="left"
-            open={props.builder.state.figureSelectDrawerOpen}
-            onClose={() => {
+        <Overlay
+        kind="drawerLeft"
+        passThrough={{
+            open : props.builder.state.figureSelectDrawerOpen,
+            onClose : () => {
                 props.builder.setState({
                     figureSelectDrawerOpen: false
                 });
-            }}
+            }
+        }}
         >
             <div>
                 <GridWrapper>
@@ -83,6 +85,6 @@ export function FigureSelectDrawer(props: FigureSelectDrawerProps): JSX.Element 
                     })
                 }
             </div>
-        </Drawer>
+        </Overlay>
     );
 }

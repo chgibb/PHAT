@@ -13,7 +13,7 @@ import { SaveKeyEvent } from '../../../ipcEvents';
 import { CircularGenome } from './containers/circularGenome/circularGenome';
 import { DonutLargeOutlined } from '../../components/icons/donutLargeOutlined';
 import { WavesOutlined } from '../../components/icons/wavesOutlined';
-import { FigureSelectDrawer } from './containers/drawers/figureSelectDrawer';
+import { FigureSelectOverlay } from './containers/overlays/figureSelectOverlay';
 
 
 export interface CircularGenomeBuilderViewState {
@@ -83,7 +83,7 @@ export class CircularGenomeBuilderView extends React.Component<CircularGenomeBui
                         </IconButton>
                     </Toolbar>
                 </AppBar>
-                <FigureSelectDrawer builder={this} />
+                <FigureSelectOverlay builder={this} />
                 {
                     this.props.figures.map((x) => {
                         if (x.uuid == this.state.selectedFigure) {
