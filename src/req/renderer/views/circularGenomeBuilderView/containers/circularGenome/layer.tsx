@@ -1,7 +1,7 @@
 import * as React from "react";
 
-import { CircularFigure, renderSVGToCanvas } from '../../../../circularFigure/circularFigure';
-import { Plasmid } from '../../../../../ngplasmid/lib/plasmid';
+import {CircularFigure, renderSVGToCanvas} from "../../../../circularFigure/circularFigure";
+import {Plasmid} from "../../../../../ngplasmid/lib/plasmid";
 
 export interface LayerProps {
     plasmidCache: Array<{ uuid: string, plasmid: Plasmid }>;
@@ -14,7 +14,8 @@ export class Layer extends React.Component<LayerProps, {}>
 {
     private canvasRef = React.createRef<HTMLDivElement>();
     private canvas = document.createElement("canvas");
-    public constructor(props: LayerProps) {
+    public constructor(props: LayerProps) 
+    {
         super(props);
 
         this.updateCanvas = this.updateCanvas.bind(this);
@@ -23,21 +24,26 @@ export class Layer extends React.Component<LayerProps, {}>
     }
 
 
-    public async updateCanvas() {
-        let plasmid = this.props.plasmidCache.find((x) => {
+    public async updateCanvas() 
+    {
+        let plasmid = this.props.plasmidCache.find((x) => 
+        {
             if (x.uuid == this.props.target)
                 return true;
             return false;
         });
 
-        if (!plasmid) {
+        if (!plasmid) 
+        {
             this.props.loadPlasmid(this.props.target);
         }
 
-        else if (plasmid && this.canvas) {
+        else if (plasmid && this.canvas) 
+        {
             let ctx: CanvasRenderingContext2D | null = this.canvas.getContext("2d");
 
-            if (ctx) {
+            if (ctx) 
+            {
                 this.canvas.width = this.props.figure.width;
                 this.canvas.height = this.props.figure.height;
                 console.log(plasmid.plasmid.renderStart() + plasmid.plasmid.renderEnd());
@@ -46,7 +52,8 @@ export class Layer extends React.Component<LayerProps, {}>
         }
     }
 
-    public componentDidMount() {
+    public componentDidMount() 
+    {
         if(this.canvasRef.current)
         {
             this.canvasRef.current.appendChild(this.canvas);
@@ -54,7 +61,8 @@ export class Layer extends React.Component<LayerProps, {}>
         }
     }
 
-    public componentDidUpdate() {
+    public componentDidUpdate() 
+    {
         this.updateCanvas();
     }
 
@@ -68,7 +76,8 @@ export class Layer extends React.Component<LayerProps, {}>
         return true;
     }
 
-    public render(): JSX.Element {
+    public render(): JSX.Element 
+    {
         console.log("render layer");
         return (
             <React.Fragment>

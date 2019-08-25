@@ -2,19 +2,21 @@ import * as electron from "electron";
 const ipc = electron.ipcRenderer;
 
 import * as React from "react";
-import { AppBar } from '../../components/appBar';
-import { Toolbar } from '../../components/toolBar';
-import { IconButton } from '../../components/iconButton';
-import { MenuRounded } from '../../components/icons/menuRounded';
-import { white } from '../../styles/colours';
-import { CircularFigure } from '../../circularFigure/circularFigure';
-import { Fasta } from '../../../fasta';
-import { SaveKeyEvent } from '../../../ipcEvents';
-import { CircularGenome } from './containers/circularGenome/circularGenome';
-import { DonutLargeOutlined } from '../../components/icons/donutLargeOutlined';
-import { WavesOutlined } from '../../components/icons/wavesOutlined';
-import { FigureSelectOverlay } from './containers/overlays/figureSelectOverlay';
-import { appBar } from './containers/styles/appBar';
+
+import {AppBar} from "../../components/appBar";
+import {Toolbar} from "../../components/toolBar";
+import {IconButton} from "../../components/iconButton";
+import {MenuRounded} from "../../components/icons/menuRounded";
+import {white} from "../../styles/colours";
+import {CircularFigure} from "../../circularFigure/circularFigure";
+import {Fasta} from "../../../fasta";
+import {SaveKeyEvent} from "../../../ipcEvents";
+import {DonutLargeOutlined} from "../../components/icons/donutLargeOutlined";
+import {WavesOutlined} from "../../components/icons/wavesOutlined";
+
+import {CircularGenome} from "./containers/circularGenome/circularGenome";
+import {FigureSelectOverlay} from "./containers/overlays/figureSelectOverlay";
+import {appBar} from "./containers/styles/appBar";
 
 
 export interface CircularGenomeBuilderViewState {
@@ -29,7 +31,8 @@ export interface CircularGenomeBuilderViewProps {
 
 export class CircularGenomeBuilderView extends React.Component<CircularGenomeBuilderViewProps, CircularGenomeBuilderViewState>
 {
-    public constructor(props: CircularGenomeBuilderViewProps) {
+    public constructor(props: CircularGenomeBuilderViewProps) 
+    {
         super(props);
 
         this.state = {
@@ -37,7 +40,8 @@ export class CircularGenomeBuilderView extends React.Component<CircularGenomeBui
         } as CircularGenomeBuilderViewState;
     }
 
-    public newFigure(fasta: Fasta): void {
+    public newFigure(fasta: Fasta): void 
+    {
         ipc.send(
             "saveKey",
             {
@@ -50,7 +54,8 @@ export class CircularGenomeBuilderView extends React.Component<CircularGenomeBui
 
     }
 
-    public render(): JSX.Element {
+    public render(): JSX.Element 
+    {
         return (
             <React.Fragment>
                 <AppBar position="fixed" className={appBar}>
@@ -58,8 +63,9 @@ export class CircularGenomeBuilderView extends React.Component<CircularGenomeBui
                         <IconButton
                             edge="start"
                             color="primary"
-                            classes={{ colorPrimary: white }}
-                            onClick={() => {
+                            classes={{colorPrimary: white}}
+                            onClick={() => 
+                            {
                                 this.setState({
                                     figureSelectDrawerOpen: !this.state.figureSelectDrawerOpen
                                 });
@@ -70,14 +76,14 @@ export class CircularGenomeBuilderView extends React.Component<CircularGenomeBui
                         <IconButton
                             edge="start"
                             color="primary"
-                            classes={{ colorPrimary: white }}
+                            classes={{colorPrimary: white}}
                         >
                             <DonutLargeOutlined />
                         </IconButton>
                         <IconButton
                             edge="start"
                             color="primary"
-                            classes={{ colorPrimary: white }}
+                            classes={{colorPrimary: white}}
                         >
                             <WavesOutlined />
                         </IconButton>
@@ -85,13 +91,15 @@ export class CircularGenomeBuilderView extends React.Component<CircularGenomeBui
                 </AppBar>
                 <FigureSelectOverlay builder={this} />
                 {
-                    this.props.figures.map((x) => {
-                        if (x.uuid == this.state.selectedFigure) {
+                    this.props.figures.map((x) => 
+                    {
+                        if (x.uuid == this.state.selectedFigure) 
+                        {
                             return (
                                 <CircularGenome
                                     figure={x}
                                 />
-                            )
+                            );
                         }
                         return null;
                     })

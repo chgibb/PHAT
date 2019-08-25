@@ -18,7 +18,7 @@ import {OutputViewWebView} from "./views/outputViewWebView";
 import {InputViewWebView} from "./views/inputViewWebView";
 import {QCViewWebView} from "./views/QCViewWebView";
 import {AlignViewWebView} from "./views/alignViewWebView";
-import { CircularGenomeBuilderWebView } from './views/circularGenomeBuilderWebView';
+import {CircularGenomeBuilderWebView} from "./views/circularGenomeBuilderWebView";
 
 
 export interface ToolBarViewState

@@ -2,12 +2,12 @@ import * as electron from "electron";
 const ipc = electron.ipcRenderer;
 import * as React from "react";
 
-import { GetKeyEvent, KeySubEvent } from "./req/ipcEvents";
-import { makeWindowDockable } from "./req/renderer/dock";
+import {GetKeyEvent, KeySubEvent} from "./req/ipcEvents";
+import {makeWindowDockable} from "./req/renderer/dock";
 import "./req/renderer/styles/defaults";
 import "./req/renderer/commonBehaviour";
-import { CircularGenomeBuilderViewProps, CircularGenomeBuilderView } from './req/renderer/views/circularGenomeBuilderView/circularGenomeBuilderView';
-import { renderAppRoot } from './req/renderer/renderAppRoot';
+import {CircularGenomeBuilderViewProps, CircularGenomeBuilderView} from "./req/renderer/views/circularGenomeBuilderView/circularGenomeBuilderView";
+import {renderAppRoot} from "./req/renderer/renderAppRoot";
 
 class CircularGenomeBuilderApp extends React.Component<{},CircularGenomeBuilderViewProps>
 {

@@ -1,9 +1,10 @@
 import * as React from "react";
 
-import { CircularFigure, getBaseFigureTemplateFromCache, assembleCompilableBaseFigureTemplates } from '../../../../circularFigure/circularFigure';
-import { Plasmid } from '../../../../../ngplasmid/lib/plasmid';
-import { Layer } from './layer';
-import { Node, loadFromString } from '../../../../../ngplasmid/lib/html';
+import {CircularFigure, getBaseFigureTemplateFromCache, assembleCompilableBaseFigureTemplates} from "../../../../circularFigure/circularFigure";
+import {Plasmid} from "../../../../../ngplasmid/lib/plasmid";
+import {Node, loadFromString} from "../../../../../ngplasmid/lib/html";
+
+import {Layer} from "./layer";
 
 export interface CircularGenomeState
 {
@@ -89,7 +90,8 @@ export class CircularGenome extends React.Component<CircularGenomeProps,Circular
         return (
             <React.Fragment>
                 {
-                    this.props.figure.visibleLayers.map((layer) => {
+                    this.props.figure.visibleLayers.map((layer) => 
+                    {
                         return (
                             <Layer
                                 plasmidCache={this.state.plasmidCache}
