@@ -19,6 +19,7 @@ import {FigureSelectOverlay} from "./containers/overlays/figureSelectOverlay";
 import {appBar} from "./containers/styles/appBar";
 import { SwapVertOutlined } from '../../components/icons/swapVertOutlined';
 import { Typography } from '../../components/typography';
+import { Tooltip } from '../../components/tooltip';
 
 
 export interface CircularGenomeBuilderViewState {
@@ -132,15 +133,18 @@ export class CircularGenomeBuilderView extends React.Component<CircularGenomeBui
                         >
                             <MenuRounded />
                         </IconButton>
+                        <Tooltip title="Change Figure Name">
                         <Typography
                         style={{
                             cursor:"pointer"
                         }}>
                             {figure ? figure.name : ""}
                         </Typography>
+                        </Tooltip>
                         <div style={{
                             marginLeft:"auto"
                         }}>
+                            <Tooltip title="Customize Contigs">
                         <IconButton
                             edge="start"
                             color="primary"
@@ -152,6 +156,8 @@ export class CircularGenomeBuilderView extends React.Component<CircularGenomeBui
                                 }}
                             />
                         </IconButton>
+                        </Tooltip>
+                        <Tooltip title="Coverage Visualization">
                         <IconButton
                             edge="start"
                             color="primary"
@@ -163,6 +169,8 @@ export class CircularGenomeBuilderView extends React.Component<CircularGenomeBui
                                 }}
                             />
                         </IconButton>
+                        </Tooltip>
+                        <Tooltip title="Change Radius">
                         <IconButton
                             edge="start"
                             color="primary"
@@ -174,6 +182,7 @@ export class CircularGenomeBuilderView extends React.Component<CircularGenomeBui
                                 }}
                             />
                         </IconButton>
+                        </Tooltip>
                         </div>
                     </Toolbar>
                 </AppBar>
