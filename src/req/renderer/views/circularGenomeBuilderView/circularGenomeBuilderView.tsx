@@ -122,6 +122,9 @@ export class CircularGenomeBuilderView extends React.Component<CircularGenomeBui
                         >
                             <MenuRounded />
                         </IconButton>
+                        <div style={{
+                            marginLeft:"auto"
+                        }}>
                         <IconButton
                             edge="start"
                             color="primary"
@@ -155,6 +158,7 @@ export class CircularGenomeBuilderView extends React.Component<CircularGenomeBui
                                 }}
                             />
                         </IconButton>
+                        </div>
                     </Toolbar>
                 </AppBar>
                 <FigureSelectOverlay builder={this} />
