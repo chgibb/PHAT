@@ -17,11 +17,18 @@ import {WavesOutlined} from "../../components/icons/wavesOutlined";
 import {CircularGenome} from "./containers/circularGenome/circularGenome";
 import {FigureSelectOverlay} from "./containers/overlays/figureSelectOverlay";
 import {appBar} from "./containers/styles/appBar";
+import { SwapVertOutlined } from '../../components/icons/swapVertOutlined';
 
 
 export interface CircularGenomeBuilderViewState {
     figureSelectDrawerOpen: boolean;
     selectedFigure: string;
+    figurePosition : {
+        width : number,
+        height : number,
+        x : number,
+        y : number
+    }
 }
 
 export interface CircularGenomeBuilderViewProps {
@@ -37,7 +44,17 @@ export class CircularGenomeBuilderView extends React.Component<CircularGenomeBui
 
         this.state = {
             figureSelectDrawerOpen: false,
+            figurePosition : {
+                width : 0,
+                height : 0,
+                x : 0,
+                y : 0
+            }
         } as CircularGenomeBuilderViewState;
+
+        this.reposition = this.reposition.bind(this);
+
+        window.addEventListener("resize",this.reposition);
     }
 
     public newFigure(fasta: Fasta): void 
@@ -52,6 +69,38 @@ export class CircularGenomeBuilderView extends React.Component<CircularGenomeBui
             } as SaveKeyEvent
         );
 
+    }
+
+    public reposition()
+    {
+        this.props.figures.map((x) => 
+                    {
+                        if (x.uuid == this.state.selectedFigure) 
+                        {
+                            this.setState({
+                                figurePosition: {
+                                    width : x.width,
+                                    height : x.height,
+                                    x : (document.documentElement.clientWidth/2) - (x.width/2),
+                                    y : (document.documentElement.clientHeight/2) - (x.height/2)
+                                }
+                            })
+                        }
+                    }
+                );
+    }
+
+    public componentDidUpdate(prevProps : CircularGenomeBuilderViewProps,prevState : CircularGenomeBuilderViewState)
+    {
+        if(prevState.selectedFigure != this.state.selectedFigure)
+        {
+            this.reposition();
+        }
+    }
+
+    public componentWillUnmount()
+    {
+        window.removeEventListener("resize",this.reposition);
     }
 
     public render(): JSX.Element 
@@ -78,14 +127,33 @@ export class CircularGenomeBuilderView extends React.Component<CircularGenomeBui
                             color="primary"
                             classes={{colorPrimary: white}}
                         >
-                            <DonutLargeOutlined />
+                            <DonutLargeOutlined 
+                                style={{
+                                    transform:"rotate(45deg)"
+                                }}
+                            />
                         </IconButton>
                         <IconButton
                             edge="start"
                             color="primary"
                             classes={{colorPrimary: white}}
                         >
-                            <WavesOutlined />
+                            <WavesOutlined 
+                                style={{
+                                    transform:"rotate(45deg)"
+                                }}
+                            />
+                        </IconButton>
+                        <IconButton
+                            edge="start"
+                            color="primary"
+                            classes={{colorPrimary: white}}
+                        >
+                            <SwapVertOutlined 
+                                style={{
+                                    transform:"rotate(-30deg)"
+                                }}
+                            />
                         </IconButton>
                     </Toolbar>
                 </AppBar>
@@ -98,6 +166,10 @@ export class CircularGenomeBuilderView extends React.Component<CircularGenomeBui
                             return (
                                 <CircularGenome
                                     figure={x}
+                                    width={this.state.figurePosition.width}
+                                    height={this.state.figurePosition.height}
+                                    x={this.state.figurePosition.x}
+                                    y={this.state.figurePosition.y}
                                 />
                             );
                         }

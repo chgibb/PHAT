@@ -8,6 +8,10 @@ export interface LayerProps {
     figure: CircularFigure;
     target: string;
     loadPlasmid: (target: string) => void;
+    width : number;
+    height : number;
+    x : number;
+    y : number;
 }
 
 export class Layer extends React.Component<LayerProps, {}>
@@ -44,9 +48,12 @@ export class Layer extends React.Component<LayerProps, {}>
 
             if (ctx) 
             {
-                this.canvas.width = this.props.figure.width;
-                this.canvas.height = this.props.figure.height;
-                console.log(plasmid.plasmid.renderStart() + plasmid.plasmid.renderEnd());
+                this.canvas.style.position = "absolute";
+                this.canvas.setAttribute("width",`${this.props.width}`);
+                this.canvas.setAttribute("height",`${this.props.height}`);
+                this.canvas.style.left = `${this.props.x}px`;
+                this.canvas.style.top = `${this.props.y}px`;
+                
                 await renderSVGToCanvas(plasmid.plasmid.renderStart() + plasmid.plasmid.renderEnd(), ctx);
             }
         }

@@ -14,6 +14,10 @@ export interface CircularGenomeState
 export interface CircularGenomeProps
 {
     figure : CircularFigure;
+    width : number;
+    height : number;
+    x : number;
+    y : number;
 }
 
 export class CircularGenome extends React.Component<CircularGenomeProps,CircularGenomeState>
@@ -98,6 +102,11 @@ export class CircularGenome extends React.Component<CircularGenomeProps,Circular
                                 figure={this.props.figure}
                                 target={layer}
                                 loadPlasmid={this.loadPlasmid}
+
+                                width={this.props.width}
+                                height={this.props.height}
+                                x={this.props.x}
+                                y={this.props.y}
                             />
                         );
                     })
