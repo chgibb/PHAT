@@ -110,6 +110,7 @@
         "react": "^16.7.0",
         "react-beautiful-dnd": "^11.0.4",
         "react-dom": "^16.7.0",
+        "react-draggable": "^3.3.2",
         "react-swipeable-views": "^0.13.3",
         "request": "^2.85.0",
         "rimraf": "^2.6.1",

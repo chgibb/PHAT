@@ -1,28 +1,43 @@
 import * as React from "react";
+import Draggable from "react-draggable";
 
 import { Drawer } from '../../../../components/drawer';
 import { Grid } from '../../../../components/grid';
 import { BorderLeftOutlined } from '../../../../components/icons/borderLeftOutlined';
 import { IconButton } from '../../../../components/iconButton';
+import { Paper, PaperProps } from "../../../../components/paper";
 import { blue } from '../../../../styles/colours';
 import { BorderTopOutlined } from '../../../../components/icons/borderTopOutlined';
 import { BorderBottomOutlined } from '../../../../components/icons/borderBottomOutlined';
 import { BorderRightOutlined } from '../../../../components/icons/borderRightOutlined';
 import { BorderHorizontalOutlined } from '../../../../components/icons/borderHorizontalOutlined';
 import { Dialog } from '../../../../components/dialog';
+import { ChevronLeft } from '../../../../components/icons/chevronLeft';
+import { ArrowUpwardOutlined } from '../../../../components/icons/arrowUpwareOutlined';
+import { ArrowDownwardOutlined } from '../../../../components/icons/arrowDownwardOutlined';
+import { ChevronRight } from '../../../../components/icons/chevronRight';
+import { Close } from '../../../../components/icons/close';
+
 
 export interface OverlayProps {
     kind: "drawerLeft" | "drawerRight" | "drawerBottom" | "drawerTop" | "modal";
-    passThrough: {
-        open: boolean;
-        onClose: () => void;
-    }
+    onClose: () => void;
+    open: boolean;
     children: JSX.Element;
+}
+
+function DraggablePaper(props: PaperProps) {
+    return (
+        <Draggable cancel={'[class*="MuiDialogContent-root"]'}>
+            <Paper {...props} />
+        </Draggable>
+    );
 }
 
 function IconKindSelect(props: {
     kind: OverlayProps["kind"],
-    setOverlayKind: (newKind: OverlayProps["kind"]) => void
+    setOverlayKind: (newKind: OverlayProps["kind"]) => void,
+    onClose: OverlayProps["onClose"]
 }): JSX.Element {
     return (
         <div
@@ -69,6 +84,17 @@ function IconKindSelect(props: {
                     >
                         <BorderHorizontalOutlined />
                     </IconButton>
+                    <IconButton
+                        edge="start"
+                        color="primary"
+                        classes={{ colorPrimary: blue }}
+                        onClick={props.onClose}
+                    >
+                        {
+                            props.kind == "drawerLeft" ?
+                                <ChevronLeft /> : props.kind == "drawerTop" ? <ArrowUpwardOutlined /> : props.kind == "drawerBottom" ? <ArrowDownwardOutlined /> : props.kind == "drawerRight" ? <ChevronRight /> : props.kind == "modal" ? <Close /> : ""
+                        }
+                    </IconButton>
                 </Grid>
             </Grid>
         </div>
@@ -83,10 +109,11 @@ export function Overlay(props: OverlayProps): JSX.Element | null {
             return (
                 <Drawer
                     anchor="left"
-                    {...props.passThrough}
+                    variant={props.open ? "permanent" : "temporary"}
+                    open={props.open}
                 >
                     <React.Fragment>
-                        <IconKindSelect kind={kind} setOverlayKind={setKind} />
+                        <IconKindSelect kind={kind} setOverlayKind={setKind} onClose={props.onClose} />
                         {props.children}
                     </React.Fragment>
                 </Drawer>
@@ -95,10 +122,11 @@ export function Overlay(props: OverlayProps): JSX.Element | null {
             return (
                 <Drawer
                     anchor="top"
-                    {...props.passThrough}
+                    variant={props.open ? "permanent" : "temporary"}
+                    open={props.open}
                 >
                     <React.Fragment>
-                        <IconKindSelect kind={kind} setOverlayKind={setKind} />
+                        <IconKindSelect kind={kind} setOverlayKind={setKind} onClose={props.onClose} />
                         {props.children}
                     </React.Fragment>
                 </Drawer>
@@ -107,10 +135,11 @@ export function Overlay(props: OverlayProps): JSX.Element | null {
             return (
                 <Drawer
                     anchor="bottom"
-                    {...props.passThrough}
+                    variant={props.open ? "permanent" : "temporary"}
+                    open={props.open}
                 >
                     <React.Fragment>
-                        <IconKindSelect kind={kind} setOverlayKind={setKind} />
+                        <IconKindSelect kind={kind} setOverlayKind={setKind} onClose={props.onClose} />
                         {props.children}
                     </React.Fragment>
                 </Drawer>
@@ -119,10 +148,11 @@ export function Overlay(props: OverlayProps): JSX.Element | null {
             return (
                 <Drawer
                     anchor="right"
-                    {...props.passThrough}
+                    variant={props.open ? "permanent" : "temporary"}
+                    open={props.open}
                 >
                     <React.Fragment>
-                        <IconKindSelect kind={kind} setOverlayKind={setKind} />
+                        <IconKindSelect kind={kind} setOverlayKind={setKind} onClose={props.onClose} />
                         {props.children}
                     </React.Fragment>
                 </Drawer>
@@ -130,10 +160,12 @@ export function Overlay(props: OverlayProps): JSX.Element | null {
         case "modal":
             return (
                 <Dialog
-                    {...props.passThrough}
+                    open={props.open}
+                    PaperComponent={DraggablePaper}
+                    hideBackdrop={true}
                 >
                     <React.Fragment>
-                        <IconKindSelect kind={kind} setOverlayKind={setKind} />
+                        <IconKindSelect kind={kind} setOverlayKind={setKind} onClose={props.onClose} />
                         {props.children}
                     </React.Fragment>
                 </Dialog>

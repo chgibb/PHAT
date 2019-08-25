@@ -16,14 +16,12 @@ export function FigureSelectOverlay(props: FigureSelectOverlayProps): JSX.Elemen
     return (
         <Overlay
         kind="drawerLeft"
-        passThrough={{
-            open : props.builder.state.figureSelectDrawerOpen,
-            onClose : () => {
-                props.builder.setState({
-                    figureSelectDrawerOpen: false
-                });
-            }
+        onClose ={ () => {
+            props.builder.setState({
+                figureSelectDrawerOpen: false
+            });
         }}
+            open={props.builder.state.figureSelectDrawerOpen}
         >
             <div>
                 <GridWrapper>
