@@ -30,13 +30,23 @@ class OutputApp extends React.Component<{},OutputViewProps>
                     {
                         this.setState({fastqs : arg.val});
                     }
+
                     if(arg.key == "fastaInputs" && arg.val !== undefined)
                     {
                         this.setState({fastas : arg.val});
                     }
+
                     if(arg.key == "aligns" && arg.val !== undefined)
                     {
                         this.setState({aligns : arg.val});
+                    }
+
+                    if(arg.key == "operations")
+                    {
+                        if(arg.val !== undefined)
+                        {
+                            this.setState({operations : arg.val});
+                        }
                     }
                 }
             }
@@ -50,6 +60,7 @@ class OutputApp extends React.Component<{},OutputViewProps>
                 fastqs={this.state.fastqs}
                 fastas={this.state.fastas}
                 aligns={this.state.aligns}
+                operations={this.state.operations}
             />
         );
     }
