@@ -58,3 +58,15 @@ export function get2BitPath(fasta : Fasta) : string
 {
     return getReadableAndWritable(`rt/indexes/${fasta.uuid}.2bit`);
 }
+
+export function totalBP(fasta : Fasta) : number
+{
+    let res = 0;
+
+    for(let i = 0; i != fasta.contigs.length; ++i)
+    {
+        res += fasta.contigs[i].bp;
+    }
+
+    return res;
+}

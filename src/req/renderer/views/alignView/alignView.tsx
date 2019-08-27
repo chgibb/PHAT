@@ -5,7 +5,7 @@ import * as React from "react";
 import {Fastq} from "../../../fastq";
 import {Fasta} from "../../../fasta";
 import {AtomicOperation} from "../../../operations/atomicOperations";
-import {RunAlignmentForm} from "../../containers/forms/runAlignment/runAlignmentForm";
+import {RunAlignmentForm} from "../../containers/forms/runAlignmentForm/runAlignmentForm";
 
 export interface AlignViewState
 {
@@ -62,7 +62,7 @@ export class AlignView  extends React.Component<AlignViewProps,AlignViewState>
                 <RunAlignmentForm
                     fastas={this.props.fastas}
                     fastqs={this.props.fastqs}
-                    shouldAllowTriggeringOps={this.state.shouldAllowTriggeringOps ? this.state.shouldAllowTriggeringOps : true}
+                    shouldAllowTriggeringOps={this.state.shouldAllowTriggeringOps !== undefined ? this.state.shouldAllowTriggeringOps : false}
                 />
             </div>
         );
