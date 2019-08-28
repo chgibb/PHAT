@@ -134,12 +134,15 @@ export class CircularGenomeBuilderView extends React.Component<CircularGenomeBui
                             <MenuRounded />
                         </IconButton>
                         <Tooltip title="Change Figure Name">
-                            <Typography
-                                style={{
-                                    cursor:"pointer"
-                                }}>
+                            <IconButton
+                                edge="start"
+                                color="primary"
+                                classes={{colorPrimary: white}}
+                            >
+                            <Typography>
                                 {figure ? figure.name : ""}
                             </Typography>
+                            </IconButton>
                         </Tooltip>
                         <div style={{
                             marginLeft:"auto"
