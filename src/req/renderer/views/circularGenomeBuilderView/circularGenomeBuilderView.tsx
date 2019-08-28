@@ -8,7 +8,7 @@ import {Toolbar} from "../../components/toolBar";
 import {IconButton} from "../../components/iconButton";
 import {MenuRounded} from "../../components/icons/menuRounded";
 import {white} from "../../styles/colours";
-import {CircularFigure} from "../../circularFigure/circularFigure";
+import {CircularFigure, cacheBaseFigureTemplate} from "../../circularFigure/circularFigure";
 import {Fasta} from "../../../fasta";
 import {SaveKeyEvent} from "../../../ipcEvents";
 import {DonutLargeOutlined} from "../../components/icons/donutLargeOutlined";
@@ -20,10 +20,12 @@ import {Tooltip} from "../../components/tooltip";
 import {CircularGenome} from "./containers/circularGenome/circularGenome";
 import {FigureSelectOverlay} from "./containers/overlays/figureSelectOverlay";
 import {appBar} from "./containers/styles/appBar";
+import { EditFigureNameOverlay } from './containers/overlays/editFigureName';
 
 
 export interface CircularGenomeBuilderViewState {
     figureSelectOvelayOpen: boolean;
+    editFigureNameOverlayOpen : boolean;
     selectedFigure: string;
     figurePosition : {
         width : number,
@@ -70,7 +72,19 @@ export class CircularGenomeBuilderView extends React.Component<CircularGenomeBui
                 val: [...this.props.figures, new CircularFigure("New Figure", fasta.uuid, fasta.contigs)]
             } as SaveKeyEvent
         );
+    }
 
+    public saveFigures() : void
+    {
+        ipc.send(
+            "saveKey",
+            {
+                action: "saveKey",
+                channel: "circularGenomeBuilder",
+                key: "circularFigures",
+                val: this.props.figures
+            }
+        );
     }
 
     public reposition()
@@ -92,7 +106,7 @@ export class CircularGenomeBuilderView extends React.Component<CircularGenomeBui
         );
     }
 
-    public componentDidUpdate(prevProps : CircularGenomeBuilderViewProps,prevState : CircularGenomeBuilderViewState)
+    public componentDidUpdate(prevProps : Readonly<CircularGenomeBuilderViewProps>,prevState : Readonly<CircularGenomeBuilderViewState>)
     {
         if(prevState.selectedFigure != this.state.selectedFigure)
         {
@@ -138,6 +152,11 @@ export class CircularGenomeBuilderView extends React.Component<CircularGenomeBui
                                 edge="start"
                                 color="primary"
                                 classes={{colorPrimary: white}}
+                                onClick={()=>{
+                                    this.setState({
+                                        editFigureNameOverlayOpen : true
+                                    });
+                                }}
                             >
                             <Typography>
                                 {figure ? figure.name : ""}
@@ -189,6 +208,25 @@ export class CircularGenomeBuilderView extends React.Component<CircularGenomeBui
                         </div>
                     </Toolbar>
                 </AppBar>
+                {
+                    figure ?
+                    <React.Fragment>
+                        <EditFigureNameOverlay
+                            value={figure.name}
+                            open={this.state.editFigureNameOverlayOpen}
+                            onSave={(value) => {
+                                figure.name = value;
+                                this.saveFigures();
+                                cacheBaseFigureTemplate(figure);
+                            }}
+                            onClose={()=>{
+                                this.setState({
+                                    editFigureNameOverlayOpen : false
+                                })
+                            }}
+                        />
+                        </React.Fragment> : null
+                }
                 <FigureSelectOverlay 
                     builder={this}
                     open={this.state.figureSelectOvelayOpen}

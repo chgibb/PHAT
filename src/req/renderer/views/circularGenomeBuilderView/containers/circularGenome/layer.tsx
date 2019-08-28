@@ -7,7 +7,7 @@ export interface LayerProps {
     plasmidCache: Array<{ uuid: string, plasmid: Plasmid }>;
     figure: CircularFigure;
     target: string;
-    loadPlasmid: (target: string) => void;
+    loadPlasmid: (target: string) => Promise<{uuid : string,plasmid : Plasmid} | undefined>;
     width : number;
     height : number;
     x : number;
@@ -39,10 +39,10 @@ export class Layer extends React.Component<LayerProps, {}>
 
         if (!plasmid) 
         {
-            this.props.loadPlasmid(this.props.target);
+            plasmid = await this.props.loadPlasmid(this.props.target);
         }
 
-        else if (plasmid && this.canvas) 
+        if(plasmid && this.canvas) 
         {
             let ctx: CanvasRenderingContext2D | null = this.canvas.getContext("2d");
 

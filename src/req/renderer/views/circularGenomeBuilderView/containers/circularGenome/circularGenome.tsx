@@ -36,7 +36,7 @@ export class CircularGenome extends React.Component<CircularGenomeProps,Circular
         this.componentDidUpdate = this.componentDidUpdate.bind(this);
     }
 
-    public async loadPlasmid(target : string) : Promise<void>
+    public async loadPlasmid(target : string) : Promise<{uuid : string,plasmid : Plasmid} | undefined>
     {
         let scope = {genome : this.props.figure};
         if(target == this.props.figure.uuid)
@@ -57,8 +57,12 @@ export class CircularGenome extends React.Component<CircularGenomeProps,Circular
                         if(nodes[i].children[k].name == "plasmid")
                         {
                             plasmid.fromNode(nodes[i].children[k]);
+                            return {
+                                uuid : this.props.figure.uuid,
+                                        plasmid : plasmid
+                            };
 
-                            this.setState({
+                            /*this.setState({
                                 plasmidCache : [
                                     ...this.state.plasmidCache,
                                     {
@@ -66,12 +70,14 @@ export class CircularGenome extends React.Component<CircularGenomeProps,Circular
                                         plasmid : plasmid
                                     }
                                 ]
-                            });
+                            });*/
                         }
                     }
                 }
             }
         }
+
+        return undefined;
     }
 
     public updateCanvas()
@@ -84,7 +90,7 @@ export class CircularGenome extends React.Component<CircularGenomeProps,Circular
         this.updateCanvas();
     }
 
-    public componentDidUpdate()
+    public componentDidUpdate(prevProps : Readonly<CircularGenomeProps>,prevState : Readonly<CircularGenomeState>)
     {
         this.updateCanvas();
     }
