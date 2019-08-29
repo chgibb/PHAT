@@ -19,9 +19,12 @@ import {ArrowDownwardOutlined} from "../../../../components/icons/arrowDownwardO
 import {ChevronRight} from "../../../../components/icons/chevronRight";
 import {Close} from "../../../../components/icons/close";
 
+export type OverlayRestriction = "noDrawerLeft" | "noDrawerRight" | "noDrawerBottom" | "noDrawerTop" | "noModal";
+
 
 export interface OverlayProps {
     kind: "drawerLeft" | "drawerRight" | "drawerBottom" | "drawerTop" | "modal";
+    restrictions : Array<OverlayRestriction>;
     onClose: () => void;
     open: boolean;
     children: JSX.Element;
@@ -38,6 +41,7 @@ function DraggablePaper(props: PaperProps)
 
 function IconKindSelect(props: {
     kind: OverlayProps["kind"],
+    restrictions: OverlayProps["restrictions"],
     setOverlayKind: (newKind: OverlayProps["kind"]) => void,
     onClose: OverlayProps["onClose"]
 }): JSX.Element 
@@ -79,6 +83,8 @@ function IconKindSelect(props: {
                     >
                         <BorderRightOutlined />
                     </IconButton>
+                    {
+                        !props.restrictions.find((x) => x == "noModal") ? 
                     <IconButton
                         edge="start"
                         color={props.kind == "modal" ? "primary" : "default"}
@@ -86,7 +92,8 @@ function IconKindSelect(props: {
                         onClick={() => props.setOverlayKind("modal")}
                     >
                         <BorderHorizontalOutlined />
-                    </IconButton>
+                    </IconButton> : null
+                    }
                     <IconButton
                         edge="start"
                         color="primary"
@@ -136,7 +143,7 @@ export function Overlay(props: OverlayProps): JSX.Element | null
             >
                 <div className={drawer}>
                     <React.Fragment>
-                        <IconKindSelect kind={kind} setOverlayKind={setKind} onClose={props.onClose} />
+                        <IconKindSelect kind={kind} restrictions={props.restrictions} setOverlayKind={setKind} onClose={props.onClose} />
                         {props.children}
                     </React.Fragment>
                 </div>
@@ -150,7 +157,7 @@ export function Overlay(props: OverlayProps): JSX.Element | null
                 hideBackdrop={true}
             >
                 <React.Fragment>
-                    <IconKindSelect kind={kind} setOverlayKind={setKind} onClose={props.onClose} />
+                    <IconKindSelect kind={kind} restrictions={props.restrictions} setOverlayKind={setKind} onClose={props.onClose} />
                     {props.children}
                 </React.Fragment>
             </Dialog>

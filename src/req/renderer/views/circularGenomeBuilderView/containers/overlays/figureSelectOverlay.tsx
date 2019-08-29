@@ -20,6 +20,7 @@ export function FigureSelectOverlay(props: FigureSelectOverlayProps): JSX.Elemen
     return (
         <Overlay
             kind="drawerLeft"
+            restrictions={[]}
             onClose={props.onClose}
             open={props.open}
         >
