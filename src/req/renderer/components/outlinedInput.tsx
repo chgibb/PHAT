@@ -57,27 +57,28 @@ export class OutlinedInput extends React.Component<OutlinedInputProps,OutlinedIn
 
     public render() : JSX.Element
     {
-    return (
-        <div style={{
-            display: "flex",
-            flexWrap: "wrap"
-        }}>
-            <FormControl variant="outlined">
-                <InputLabel ref={this.labelRef}>
-                    {this.props.label}
-                </InputLabel>
-                <MuiOutlinedInput
-                    {...this.props.inputProps}
-                    onChange={(event) => {
-                        this.updateLabelWidth();
-                        if(this.props.inputProps.onChange)
-                            this.props.inputProps.onChange(event);
-                    }}
-                    labelWidth={this.state.labelWidth}
-                />
-            </FormControl>
-        </div>
-    );
+        return (
+            <div style={{
+                display: "flex",
+                flexWrap: "wrap"
+            }}>
+                <FormControl variant="outlined">
+                    <InputLabel ref={this.labelRef}>
+                        {this.props.label}
+                    </InputLabel>
+                    <MuiOutlinedInput
+                        {...this.props.inputProps}
+                        onChange={(event) => 
+                        {
+                            this.updateLabelWidth();
+                            if(this.props.inputProps.onChange)
+                                this.props.inputProps.onChange(event);
+                        }}
+                        labelWidth={this.state.labelWidth}
+                    />
+                </FormControl>
+            </div>
+        );
 
     }
 

@@ -1,11 +1,12 @@
 import * as React from "react";
-import { Overlay } from './overlay';
-import { OutlinedInput } from '../../../../components/outlinedInput';
-import { CircularGenomeBuilderView } from '../../circularGenomeBuilderView';
-import { GridWrapper } from '../../../../containers/gridWrapper';
-import { Grid } from '../../../../components/grid';
-import { Typography } from '../../../../components/typography';
-import { Button } from '../../../../components/button';
+
+import {OutlinedInput} from "../../../../components/outlinedInput";
+import {GridWrapper} from "../../../../containers/gridWrapper";
+import {Grid} from "../../../../components/grid";
+import {Typography} from "../../../../components/typography";
+import {Button} from "../../../../components/button";
+
+import {Overlay} from "./overlay";
 
 
 export interface EditFigureNameOverlayProps {
@@ -15,7 +16,8 @@ export interface EditFigureNameOverlayProps {
     value: string;
 }
 
-export function EditFigureNameOverlay(props: EditFigureNameOverlayProps): JSX.Element {
+export function EditFigureNameOverlay(props: EditFigureNameOverlayProps): JSX.Element 
+{
     let enteredValue = "";
 
     return (
@@ -27,20 +29,21 @@ export function EditFigureNameOverlay(props: EditFigureNameOverlayProps): JSX.El
         >
             <React.Fragment>
                 <GridWrapper>
-                    <div style={{ marginRight: "1vh", marginLeft: "1vh", marginBottom: "1vh", marginTop: "2vh" }}>
+                    <div style={{marginRight: "1vh", marginLeft: "1vh", marginBottom: "1vh", marginTop: "2vh"}}>
                         <Grid container spacing={4} justify="center">
                             <Typography variant="h5">Edit Figure Name</Typography>
                         </Grid>
                     </div>
                 </GridWrapper>
                 <GridWrapper>
-                    <div style={{ marginRight: "1vh", marginLeft: "1vh", marginBottom: "1vh", marginTop: "1vh" }}>
+                    <div style={{marginRight: "1vh", marginLeft: "1vh", marginBottom: "1vh", marginTop: "1vh"}}>
                         <Grid container spacing={4} justify="center">
                             <Grid item>
                                 <OutlinedInput
                                     label={props.value}
                                     inputProps={{
-                                        onChange: (event) => {
+                                        onChange: (event) => 
+                                        {
                                             enteredValue = event.target.value;
                                         }
                                     }}
@@ -50,7 +53,7 @@ export function EditFigureNameOverlay(props: EditFigureNameOverlayProps): JSX.El
                     </div>
                 </GridWrapper>
                 <GridWrapper>
-                    <div style={{ marginRight: "1vh", marginLeft: "1vh", marginBottom: "1vh", marginTop: "1vh" }}>
+                    <div style={{marginRight: "1vh", marginLeft: "1vh", marginBottom: "1vh", marginTop: "1vh"}}>
                         <Grid container spacing={4} justify="center">
                             <Grid item>
                                 <Button
@@ -62,7 +65,8 @@ export function EditFigureNameOverlay(props: EditFigureNameOverlayProps): JSX.El
                             <Grid item>
                                 <Button
                                     label="Save"
-                                    onClick={() => {
+                                    onClick={() => 
+                                    {
                                         props.onSave(enteredValue);
                                     }}
                                     type="advance"

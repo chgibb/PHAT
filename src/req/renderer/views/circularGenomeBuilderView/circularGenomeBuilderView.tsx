@@ -20,7 +20,7 @@ import {Tooltip} from "../../components/tooltip";
 import {CircularGenome} from "./containers/circularGenome/circularGenome";
 import {FigureSelectOverlay} from "./containers/overlays/figureSelectOverlay";
 import {appBar} from "./containers/styles/appBar";
-import { EditFigureNameOverlay } from './containers/overlays/editFigureName';
+import {EditFigureNameOverlay} from "./containers/overlays/editFigureName";
 
 
 export interface CircularGenomeBuilderViewState {
@@ -152,15 +152,16 @@ export class CircularGenomeBuilderView extends React.Component<CircularGenomeBui
                                 edge="start"
                                 color="primary"
                                 classes={{colorPrimary: white}}
-                                onClick={()=>{
+                                onClick={()=>
+                                {
                                     this.setState({
                                         editFigureNameOverlayOpen : true
                                     });
                                 }}
                             >
-                            <Typography>
-                                {figure ? figure.name : ""}
-                            </Typography>
+                                <Typography>
+                                    {figure ? figure.name : ""}
+                                </Typography>
                             </IconButton>
                         </Tooltip>
                         <div style={{
@@ -210,21 +211,23 @@ export class CircularGenomeBuilderView extends React.Component<CircularGenomeBui
                 </AppBar>
                 {
                     figure ?
-                    <React.Fragment>
-                        <EditFigureNameOverlay
-                            value={figure.name}
-                            open={this.state.editFigureNameOverlayOpen}
-                            onSave={(value) => {
-                                figure.name = value;
-                                this.saveFigures();
-                                cacheBaseFigureTemplate(figure);
-                            }}
-                            onClose={()=>{
-                                this.setState({
-                                    editFigureNameOverlayOpen : false
-                                })
-                            }}
-                        />
+                        <React.Fragment>
+                            <EditFigureNameOverlay
+                                value={figure.name}
+                                open={this.state.editFigureNameOverlayOpen}
+                                onSave={(value) => 
+                                {
+                                    figure.name = value;
+                                    this.saveFigures();
+                                    cacheBaseFigureTemplate(figure);
+                                }}
+                                onClose={()=>
+                                {
+                                    this.setState({
+                                        editFigureNameOverlayOpen : false
+                                    });
+                                }}
+                            />
                         </React.Fragment> : null
                 }
                 <FigureSelectOverlay 

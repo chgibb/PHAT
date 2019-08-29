@@ -85,14 +85,14 @@ function IconKindSelect(props: {
                     </IconButton>
                     {
                         !props.restrictions.find((x) => x == "noModal") ? 
-                    <IconButton
-                        edge="start"
-                        color={props.kind == "modal" ? "primary" : "default"}
-                        classes={{colorPrimary: blue}}
-                        onClick={() => props.setOverlayKind("modal")}
-                    >
-                        <BorderHorizontalOutlined />
-                    </IconButton> : null
+                            <IconButton
+                                edge="start"
+                                color={props.kind == "modal" ? "primary" : "default"}
+                                classes={{colorPrimary: blue}}
+                                onClick={() => props.setOverlayKind("modal")}
+                            >
+                                <BorderHorizontalOutlined />
+                            </IconButton> : null
                     }
                     <IconButton
                         edge="start"
