@@ -219,7 +219,6 @@ export class CircularGenomeBuilderView extends React.Component<CircularGenomeBui
                                 {
                                     figure.name = value;
                                     this.saveFigures();
-                                    cacheBaseFigureTemplate(figure);
                                 }}
                                 onClose={()=>
                                 {
