@@ -11,6 +11,7 @@ import {blue} from "../../../../styles/colours";
 import {ExpandMore} from "../../../../components/icons/expandMore";
 
 import {Overlay} from "./overlay";
+import { AddBox } from '../../../../components/icons/addBox';
 
 export interface FigureSelectOverlayProps {
     builder: CircularGenomeBuilderView;
@@ -57,12 +58,33 @@ export function FigureSelectOverlay(props: FigureSelectOverlayProps): JSX.Elemen
                                                                 if (fasta.uuid == figure.uuidFasta) 
                                                                 {
                                                                     return (
-                                                                        <TreeItem nodeId={`${fastaIndex}-${figureIndex}`} label={figure.name} />
+                                                                        <TreeItem 
+                                                                            nodeId={`${fastaIndex}-${figureIndex}`} 
+                                                                            label={figure.name}
+                                                                            onClick={()=>{
+                                                                                props.builder.setState({
+                                                                                    selectedFigure : figure.uuid
+                                                                                });
+                                                                            }} 
+                                                                        />
                                                                     );
                                                                 }
                                                                 return null;
                                                             })
                                                     }
+                                                    <TreeItem 
+                                                        nodeId={`${fastaIndex}-new`} 
+                                                        label="Create New Figure" 
+                                                        icon={
+                                                            <AddBox 
+                                                                color="primary" 
+                                                                classes={{colorPrimary:blue}} 
+                                                            />
+                                                        }
+                                                        onClick={()=>{
+                                                            props.builder.newFigure(fasta);
+                                                        }}
+                                                    />
                                                 </TreeItem>
                                             </TreeView>
                                         </Grid>

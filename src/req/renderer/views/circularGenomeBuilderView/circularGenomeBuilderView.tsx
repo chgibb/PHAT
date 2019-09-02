@@ -217,8 +217,11 @@ export class CircularGenomeBuilderView extends React.Component<CircularGenomeBui
                                 open={this.state.editFigureNameOverlayOpen}
                                 onSave={(value) => 
                                 {
-                                    figure.name = value;
-                                    this.saveFigures();
+                                    if(value)
+                                    {
+                                        figure.name = value;
+                                        this.saveFigures();
+                                    }
                                 }}
                                 onClose={()=>
                                 {
