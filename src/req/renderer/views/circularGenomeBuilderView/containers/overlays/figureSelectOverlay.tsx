@@ -8,6 +8,11 @@ import {IconButton} from "../../../../components/iconButton";
 import {AddBox} from "../../../../components/icons/addBox";
 
 import {Overlay} from "./overlay";
+import TreeView from '@material-ui/lab/TreeView';
+import TreeItem from '@material-ui/lab/TreeItem';
+import { ChevronRight } from '../../../../components/icons/chevronRight';
+import { blue } from '../../../../styles/colours';
+import { ExpandMore } from '../../../../components/icons/expandMore';
 
 export interface FigureSelectOverlayProps {
     builder: CircularGenomeBuilderView;
@@ -35,57 +40,37 @@ export function FigureSelectOverlay(props: FigureSelectOverlayProps): JSX.Elemen
                     </div>
                 </GridWrapper>
                 {
-                    props.builder.props.fastas.map((fasta) => 
+                    props.builder.props.fastas.map((fasta,fastaIndex) => 
                     {
                         return (
-                            <div>
-                                <GridWrapper>
+                            <GridWrapper>
                                     <div style={{marginLeft: "1vh", marginBottom: "1vh"}}>
-                                        <Grid container direction="row" spacing={1} justify="flex-start">
+                                        <Grid container direction="row" spacing={1} justify="center">
                                             <Grid item>
-                                                <Typography variant="h6">{fasta.alias}</Typography>
-                                            </Grid>
-                                            <Grid item>
-                                                <IconButton
-                                                    onClick={() => 
-                                                    {
-                                                        props.builder.newFigure(fasta);
-                                                    }}
-                                                >
-                                                    <AddBox />
-                                                </IconButton>
-                                            </Grid>
-                                        </Grid>
-                                    </div>
-                                </GridWrapper>
+                            <TreeView
+                                defaultExpandIcon={<ChevronRight color="primary" classes={{colorPrimary:blue}} />}
+                                defaultCollapseIcon={<ExpandMore color="primary" classes={{colorPrimary:blue}} />}
+                            >
+                                <TreeItem nodeId={`${fastaIndex}`} label={fasta.alias}>
                                 {
-                                    props.builder.props.figures.map((figure) => 
+                                    !props.builder.props.figures.find((x) => fasta.uuid == x.uuidFasta) ? <TreeItem nodeId={`${fastaIndex}-999`} label={"No Figures For This Reference"} /> : 
+                                    props.builder.props.figures.map((figure,figureIndex) => 
                                     {
                                         if (fasta.uuid == figure.uuidFasta) 
                                         {
                                             return (
-                                                <GridWrapper>
-                                                    <div style={{marginRight: "1vh", marginLeft: "1vh", marginBottom: "1vh"}}>
-                                                        <Grid container spacing={4} justify="center">
-                                                            <Grid item>
-                                                                <Typography variant="caption" onClick={() => 
-                                                                {
-                                                                    props.builder.setState({
-                                                                        selectedFigure: figure.uuid,
-                                                                    });
-
-                                                                    props.onClose();
-                                                                }}>{figure.name}</Typography>
-                                                            </Grid>
-                                                        </Grid>
-                                                    </div>
-                                                </GridWrapper>
+                                                <TreeItem nodeId={`${fastaIndex}-${figureIndex}`} label={figure.name} />
                                             );
                                         }
                                         return null;
                                     })
                                 }
+                                </TreeItem>
+                            </TreeView>
+                            </Grid>
+                            </Grid>
                             </div>
+                            </GridWrapper>
                         );
                     })
                 }
