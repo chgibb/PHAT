@@ -9,9 +9,9 @@ import {Typography} from "../../../../components/typography";
 import {ChevronRight} from "../../../../components/icons/chevronRight";
 import {blue} from "../../../../styles/colours";
 import {ExpandMore} from "../../../../components/icons/expandMore";
+import {AddBox} from "../../../../components/icons/addBox";
 
 import {Overlay} from "./overlay";
-import { AddBox } from '../../../../components/icons/addBox';
 
 export interface FigureSelectOverlayProps {
     builder: CircularGenomeBuilderView;
@@ -38,38 +38,39 @@ export function FigureSelectOverlay(props: FigureSelectOverlayProps): JSX.Elemen
                         </Grid>
                     </div>
                 </GridWrapper>
-                            <GridWrapper>
-                                <div style={{marginLeft: "1vh", marginBottom: "1vh"}}>
-                                    <Grid container direction="row" spacing={1} justify="center">
-                                        <Grid item>
-                                            <TreeView
-                                                defaultExpandIcon={<ChevronRight color="primary" classes={{colorPrimary:blue}} />}
-                                                defaultCollapseIcon={<ExpandMore color="primary" classes={{colorPrimary:blue}} />}
-                                            >
-                                                {
-                                                    props.builder.props.fastas.map((fasta,fastaIndex) => 
-                                                    {
-                                                        return (                                             
+                <GridWrapper>
+                    <div style={{marginLeft: "1vh", marginBottom: "1vh"}}>
+                        <Grid container direction="row" spacing={1} justify="center">
+                            <Grid item>
+                                <TreeView
+                                    defaultExpandIcon={<ChevronRight color="primary" classes={{colorPrimary:blue}} />}
+                                    defaultCollapseIcon={<ExpandMore color="primary" classes={{colorPrimary:blue}} />}
+                                >
+                                    {
+                                        props.builder.props.fastas.map((fasta,fastaIndex) => 
+                                        {
+                                            return (                                             
                                                 <TreeItem nodeId={`${fastaIndex}`} label={fasta.alias}>
                                                     {
-                                                            props.builder.props.figures.map((figure,figureIndex) => 
+                                                        props.builder.props.figures.map((figure,figureIndex) => 
+                                                        {
+                                                            if (fasta.uuid == figure.uuidFasta) 
                                                             {
-                                                                if (fasta.uuid == figure.uuidFasta) 
-                                                                {
-                                                                    return (
-                                                                        <TreeItem 
-                                                                            nodeId={`${fastaIndex}-${figureIndex}`} 
-                                                                            label={figure.name}
-                                                                            onClick={()=>{
-                                                                                props.builder.setState({
-                                                                                    selectedFigure : figure.uuid
-                                                                                });
-                                                                            }} 
-                                                                        />
-                                                                    );
-                                                                }
-                                                                return (<TreeItem nodeId="" label="" />);
-                                                            })
+                                                                return (
+                                                                    <TreeItem 
+                                                                        nodeId={`${fastaIndex}-${figureIndex}`} 
+                                                                        label={figure.name}
+                                                                        onClick={()=>
+                                                                        {
+                                                                            props.builder.setState({
+                                                                                selectedFigure : figure.uuid
+                                                                            });
+                                                                        }} 
+                                                                    />
+                                                                );
+                                                            }
+                                                            return (<TreeItem nodeId="" label="" />);
+                                                        })
                                                     }
                                                     <TreeItem 
                                                         nodeId={`${fastaIndex}-new`} 
@@ -80,17 +81,19 @@ export function FigureSelectOverlay(props: FigureSelectOverlayProps): JSX.Elemen
                                                                 classes={{colorPrimary:blue}} 
                                                             />
                                                         }
-                                                        onClick={()=>{
+                                                        onClick={()=>
+                                                        {
                                                             props.builder.newFigure(fasta);
                                                         }}
                                                     /> 
                                                 </TreeItem>
-                                                        )})} 
-                                            </TreeView>
-                                        </Grid>
-                                    </Grid>
-                                </div>
-                            </GridWrapper>
+                                            );
+                                        })} 
+                                </TreeView>
+                            </Grid>
+                        </Grid>
+                    </div>
+                </GridWrapper>
             </div>
         </Overlay>
     );
