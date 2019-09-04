@@ -63,6 +63,8 @@ export class CircularGenomeBuilderView extends React.Component<CircularGenomeBui
 
     public newFigure(fasta: Fasta): void 
     {
+        if(fasta.indexedForVisualization)
+        {
         ipc.send(
             "saveKey",
             {
@@ -72,6 +74,7 @@ export class CircularGenomeBuilderView extends React.Component<CircularGenomeBui
                 val: [...this.props.figures, new CircularFigure("New Figure", fasta.uuid, fasta.contigs)]
             } as SaveKeyEvent
         );
+        }
     }
 
     public saveFigures() : void
