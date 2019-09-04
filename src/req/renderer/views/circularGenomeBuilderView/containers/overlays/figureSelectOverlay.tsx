@@ -38,10 +38,6 @@ export function FigureSelectOverlay(props: FigureSelectOverlayProps): JSX.Elemen
                         </Grid>
                     </div>
                 </GridWrapper>
-                {
-                    props.builder.props.fastas.map((fasta,fastaIndex) => 
-                    {
-                        return (
                             <GridWrapper>
                                 <div style={{marginLeft: "1vh", marginBottom: "1vh"}}>
                                     <Grid container direction="row" spacing={1} justify="center">
@@ -50,9 +46,12 @@ export function FigureSelectOverlay(props: FigureSelectOverlayProps): JSX.Elemen
                                                 defaultExpandIcon={<ChevronRight color="primary" classes={{colorPrimary:blue}} />}
                                                 defaultCollapseIcon={<ExpandMore color="primary" classes={{colorPrimary:blue}} />}
                                             >
+                                                {
+                                                    props.builder.props.fastas.map((fasta,fastaIndex) => 
+                                                    {
+                                                        return (                                             
                                                 <TreeItem nodeId={`${fastaIndex}`} label={fasta.alias}>
                                                     {
-                                                        !props.builder.props.figures.find((x) => fasta.uuid == x.uuidFasta) ? <TreeItem nodeId={`${fastaIndex}-999`} label={"No Figures For This Reference"} /> : 
                                                             props.builder.props.figures.map((figure,figureIndex) => 
                                                             {
                                                                 if (fasta.uuid == figure.uuidFasta) 
@@ -69,7 +68,7 @@ export function FigureSelectOverlay(props: FigureSelectOverlayProps): JSX.Elemen
                                                                         />
                                                                     );
                                                                 }
-                                                                return null;
+                                                                return (<TreeItem nodeId="" label="" />);
                                                             })
                                                     }
                                                     <TreeItem 
@@ -84,16 +83,14 @@ export function FigureSelectOverlay(props: FigureSelectOverlayProps): JSX.Elemen
                                                         onClick={()=>{
                                                             props.builder.newFigure(fasta);
                                                         }}
-                                                    />
+                                                    /> 
                                                 </TreeItem>
+                                                        )})} 
                                             </TreeView>
                                         </Grid>
                                     </Grid>
                                 </div>
                             </GridWrapper>
-                        );
-                    })
-                }
             </div>
         </Overlay>
     );
