@@ -1,8 +1,8 @@
 import * as React from "react";
 
-import {CircularFigure, assembleCompilableTemplates, buildBaseFigureTemplate} from "../../../../circularFigure/circularFigure";
-import {Plasmid} from "../../../../../ngplasmid/lib/plasmid";
-import {Node, loadFromString} from "../../../../../ngplasmid/lib/html";
+import {CircularFigure, assembleCompilableTemplates, buildBaseFigureTemplate} from "../../circularFigure/circularFigure";
+import {Plasmid} from "../../../ngplasmid/lib/plasmid";
+import {Node, loadFromString} from "../../../ngplasmid/lib/html";
 
 import {Layer} from "./layer";
 
@@ -42,6 +42,7 @@ export class CircularGenome extends React.Component<CircularGenomeProps,Circular
         if(target == this.props.figure.uuid)
         {
             console.log("Loading base figure");
+            console.log(this.props.figure.name);
             
             let plasmid : Plasmid = new Plasmid();
             plasmid.$scope = scope;

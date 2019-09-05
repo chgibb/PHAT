@@ -17,11 +17,36 @@ import {SwapVertOutlined} from "../../components/icons/swapVertOutlined";
 import {Typography} from "../../components/typography";
 import {Tooltip} from "../../components/tooltip";
 
-import {CircularGenome} from "./containers/circularGenome/circularGenome";
+import {CircularGenome} from "../../containers/circularGenome";
 import {FigureSelectOverlay} from "./containers/overlays/figureSelectOverlay";
 import {appBar} from "./containers/styles/appBar";
 import {EditFigureNameOverlay} from "./containers/overlays/editFigureName";
 
+export class CircularGenomeEditCache
+{
+    private editStack : Array<string>;
+
+    public pushEdit(figure : CircularFigure)
+    {
+        this.editStack.push(JSON.stringify(figure));
+    }
+
+    public popEdit() : CircularFigure | undefined
+    {
+        let edit = this.editStack.pop();
+
+        if(edit)
+            return JSON.parse(edit);
+        return undefined;
+    }
+
+    public constructor(figure : CircularFigure)
+    {
+        this.editStack = new Array();
+
+        this.pushEdit(figure);
+    }
+}
 
 export interface CircularGenomeBuilderViewState {
     figureSelectOvelayOpen: boolean;
@@ -42,6 +67,7 @@ export interface CircularGenomeBuilderViewProps {
 
 export class CircularGenomeBuilderView extends React.Component<CircularGenomeBuilderViewProps, CircularGenomeBuilderViewState>
 {
+    public editCaches : {[index : string] : CircularGenomeEditCache | undefined} = {};
     public constructor(props: CircularGenomeBuilderViewProps) 
     {
         super(props);
@@ -59,6 +85,25 @@ export class CircularGenomeBuilderView extends React.Component<CircularGenomeBui
         this.reposition = this.reposition.bind(this);
 
         window.addEventListener("resize",this.reposition);
+    }
+
+    public maybePushEdit(figure : CircularFigure) : void
+    {
+        let cache = this.editCaches[figure.uuid];
+        
+        if(cache)
+            cache.pushEdit(figure);
+    }
+
+    public maybePopEdit(figure : CircularFigure) : CircularFigure | undefined
+    {
+        let cache = this.editCaches[figure.uuid];
+        
+        if(cache)
+        {
+            return cache.popEdit();
+        }
+        return undefined;
     }
 
     public newFigure(fasta: Fasta): void 
@@ -117,6 +162,11 @@ export class CircularGenomeBuilderView extends React.Component<CircularGenomeBui
         }
     }
 
+    public shouldComponentUpdate()
+    {
+        return true;
+    }
+
     public componentWillUnmount()
     {
         window.removeEventListener("resize",this.reposition);
@@ -124,7 +174,7 @@ export class CircularGenomeBuilderView extends React.Component<CircularGenomeBui
 
     public render(): JSX.Element 
     {
-        const figure : CircularFigure | undefined = this.props.figures.find((x) => 
+        let figure : CircularFigure | undefined = this.props.figures.find((x) => 
         {
             if (x.uuid == this.state.selectedFigure) 
             {
@@ -132,6 +182,12 @@ export class CircularGenomeBuilderView extends React.Component<CircularGenomeBui
             }
             return false;
         });
+
+        if(figure)
+        {
+            if(!this.editCaches[figure.uuid])
+                this.editCaches[figure.uuid] = new CircularGenomeEditCache(figure);
+        }
 
         return (
             <React.Fragment>
@@ -170,6 +226,27 @@ export class CircularGenomeBuilderView extends React.Component<CircularGenomeBui
                         <div style={{
                             marginLeft:"auto"
                         }}>
+                            <Tooltip title="Undo">
+                                <IconButton
+                                    onClick={()=>{
+                                        if(figure)
+                                        {
+                                            let oldEdit = this.maybePopEdit(figure);
+
+                                            console.log(oldEdit ? oldEdit.name : undefined);
+
+                                            if(oldEdit)
+                                            {
+                                                figure = oldEdit;
+                                                //console.log(figure);
+                                                this.saveFigures();
+                                            }
+                                        }
+                                    }}
+                                >
+                                    <Typography>Undo</Typography>
+                                </IconButton>
+                            </Tooltip>
                             <Tooltip title="Customize Contigs">
                                 <IconButton
                                     edge="start"
@@ -220,8 +297,9 @@ export class CircularGenomeBuilderView extends React.Component<CircularGenomeBui
                                 open={this.state.editFigureNameOverlayOpen}
                                 onSave={(value) => 
                                 {
-                                    if(value)
+                                    if(value && figure)
                                     {
+                                        this.maybePushEdit(figure);
                                         figure.name = value;
                                         this.saveFigures();
                                     }

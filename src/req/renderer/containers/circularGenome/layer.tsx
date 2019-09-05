@@ -1,7 +1,7 @@
 import * as React from "react";
 
-import {CircularFigure, renderSVGToCanvas} from "../../../../circularFigure/circularFigure";
-import {Plasmid} from "../../../../../ngplasmid/lib/plasmid";
+import {CircularFigure, renderSVGToCanvas} from "../../circularFigure/circularFigure";
+import {Plasmid} from "../../../ngplasmid/lib/plasmid";
 
 export interface LayerProps {
     plasmidCache: Array<{ uuid: string, plasmid: Plasmid }>;
