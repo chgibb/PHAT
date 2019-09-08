@@ -22,6 +22,7 @@ import {FigureSelectOverlay} from "./containers/overlays/figureSelectOverlay";
 import {appBar} from "./containers/styles/appBar";
 import {EditFigureNameOverlay} from "./containers/overlays/editFigureName";
 import { CircularGenomeEditCache, CircularGenomeEditOpts, CircularGenomeEditAction } from './editCache/cirularGenomeEditCache';
+import { changeName } from './editCache/changeName';
 
 export interface CircularGenomeBuilderViewState {
     figureSelectOvelayOpen: boolean;
@@ -43,6 +44,8 @@ export interface CircularGenomeBuilderViewProps {
 export class CircularGenomeBuilderView extends React.Component<CircularGenomeBuilderViewProps, CircularGenomeBuilderViewState>
 {
     public editCaches : {[index : string] : CircularGenomeEditCache | undefined} = {};
+
+    private changeName : (figure : CircularFigure,name : string) => void;
     public constructor(props: CircularGenomeBuilderViewProps) 
     {
         super(props);
@@ -58,6 +61,7 @@ export class CircularGenomeBuilderView extends React.Component<CircularGenomeBui
         } as CircularGenomeBuilderViewState;
 
         this.reposition = this.reposition.bind(this);
+        this.changeName = changeName.bind(this);
 
         window.addEventListener("resize",this.reposition);
     }
@@ -269,21 +273,7 @@ export class CircularGenomeBuilderView extends React.Component<CircularGenomeBui
                                 {
                                     if(value && figure)
                                     {
-                                        this.maybePushEdit(
-                                            figure,{
-                                                description : `Change name from ${figure.name} to ${value}`,
-                                                commit : (figure : CircularFigure) => {
-                                                    figure.name = value;
-                                                },
-                                                afterCommit : () => {
-                                                    this.saveFigures();
-                                                },
-                                                rollback : (newFigure : CircularFigure,oldFigure : CircularFigure) => {
-                                                    newFigure.name = oldFigure.name;
-                                                }
-                                            }
-                                        );
-                                        
+                                        this.changeName(figure,value);
                                     }
                                 }}
                                 onClose={()=>
