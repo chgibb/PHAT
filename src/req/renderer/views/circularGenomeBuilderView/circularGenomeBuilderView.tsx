@@ -3,24 +3,12 @@ const ipc = electron.ipcRenderer;
 
 import * as React from "react";
 
-import {AppBar} from "../../components/appBar";
-import {Toolbar} from "../../components/toolBar";
-import {IconButton} from "../../components/iconButton";
-import {MenuRounded} from "../../components/icons/menuRounded";
-import {white} from "../../styles/colours";
 import {CircularFigure} from "../../circularFigure/circularFigure";
 import {Fasta} from "../../../fasta";
 import {SaveKeyEvent} from "../../../ipcEvents";
-import {DonutLargeOutlined} from "../../components/icons/donutLargeOutlined";
-import {WavesOutlined} from "../../components/icons/wavesOutlined";
-import {SwapVertOutlined} from "../../components/icons/swapVertOutlined";
-import {Typography} from "../../components/typography";
-import {Tooltip} from "../../components/tooltip";
-
 import {CircularGenome} from "../../containers/circularGenome";
-import {FigureSelectOverlay} from "./containers/overlays/figureSelectOverlay";
-import {appBar} from "./containers/styles/appBar";
-import {EditFigureNameOverlay} from "./containers/overlays/editFigureName";
+import {GenomeBuilderAppBar} from "./containers/genomeBuilderAppBar";
+import {GenomeBuilderOverlays} from "./containers/genomeBuilderOverlays";
 import { CircularGenomeEditCache, CircularGenomeEditOpts, CircularGenomeEditAction } from './editCache/cirularGenomeEditCache';
 import { changeName } from './editCache/changeName';
 
@@ -45,7 +33,9 @@ export class CircularGenomeBuilderView extends React.Component<CircularGenomeBui
 {
     public editCaches : {[index : string] : CircularGenomeEditCache | undefined} = {};
 
-    private changeName : (figure : CircularFigure,name : string) => void;
+    protected changeName = changeName.bind(this);
+    private GenomeBuilderAppBar = GenomeBuilderAppBar.bind(this);
+    private GenomeBuilderOverlays = GenomeBuilderOverlays.bind(this);
     public constructor(props: CircularGenomeBuilderViewProps) 
     {
         super(props);
@@ -61,7 +51,6 @@ export class CircularGenomeBuilderView extends React.Component<CircularGenomeBui
         } as CircularGenomeBuilderViewState;
 
         this.reposition = this.reposition.bind(this);
-        this.changeName = changeName.bind(this);
 
         window.addEventListener("resize",this.reposition);
     }
@@ -168,133 +157,8 @@ export class CircularGenomeBuilderView extends React.Component<CircularGenomeBui
 
         return (
             <React.Fragment>
-                <AppBar position="fixed" className={appBar}>
-                    <Toolbar>
-                        <IconButton
-                            edge="start"
-                            color="primary"
-                            classes={{colorPrimary: white}}
-                            onClick={() => 
-                            {
-                                this.setState({
-                                    figureSelectOvelayOpen: !this.state.figureSelectOvelayOpen
-                                });
-                            }}
-                        >
-                            <MenuRounded />
-                        </IconButton>
-                        <Tooltip title="Change Figure Name">
-                            <IconButton
-                                edge="start"
-                                color="primary"
-                                classes={{colorPrimary: white}}
-                                onClick={()=>
-                                {
-                                    this.setState({
-                                        editFigureNameOverlayOpen : true
-                                    });
-                                }}
-                            >
-                                <Typography>
-                                    {figure ? figure.name : ""}
-                                </Typography>
-                            </IconButton>
-                        </Tooltip>
-                        <div style={{
-                            marginLeft:"auto"
-                        }}>
-                            <Tooltip title="Undo">
-                                <IconButton
-                                    onClick={()=>{
-                                        if(figure)
-                                        {
-                                            const oldEdit = this.maybePopEdit(figure);
-
-                                            if(oldEdit)
-                                            {
-                                                oldEdit.rollback(figure,JSON.parse(oldEdit.figureStr));
-                                                this.saveFigures();
-                                            }
-                                        }
-                                    }}
-                                >
-                                    <Typography>Undo</Typography>
-                                </IconButton>
-                            </Tooltip>
-                            <Tooltip title="Customize Contigs">
-                                <IconButton
-                                    edge="start"
-                                    color="primary"
-                                    classes={{colorPrimary: white}}
-                                >
-                                    <DonutLargeOutlined 
-                                        style={{
-                                            transform:"rotate(45deg)"
-                                        }}
-                                    />
-                                </IconButton>
-                            </Tooltip>
-                            <Tooltip title="Coverage Visualization">
-                                <IconButton
-                                    edge="start"
-                                    color="primary"
-                                    classes={{colorPrimary: white}}
-                                >
-                                    <WavesOutlined 
-                                        style={{
-                                            transform:"rotate(45deg)"
-                                        }}
-                                    />
-                                </IconButton>
-                            </Tooltip>
-                            <Tooltip title="Change Radius">
-                                <IconButton
-                                    edge="start"
-                                    color="primary"
-                                    classes={{colorPrimary: white}}
-                                >
-                                    <SwapVertOutlined 
-                                        style={{
-                                            transform:"rotate(-30deg)"
-                                        }}
-                                    />
-                                </IconButton>
-                            </Tooltip>
-                        </div>
-                    </Toolbar>
-                </AppBar>
-                {
-                    figure ?
-                        <React.Fragment>
-                            <EditFigureNameOverlay
-                                value={figure.name}
-                                open={this.state.editFigureNameOverlayOpen}
-                                onSave={(value) => 
-                                {
-                                    if(value && figure)
-                                    {
-                                        this.changeName(figure,value);
-                                    }
-                                }}
-                                onClose={()=>
-                                {
-                                    this.setState({
-                                        editFigureNameOverlayOpen : false
-                                    });
-                                }}
-                            />
-                        </React.Fragment> : null
-                }
-                <FigureSelectOverlay 
-                    builder={this}
-                    open={this.state.figureSelectOvelayOpen}
-                    onClose={ () => 
-                    {
-                        this.setState({
-                            figureSelectOvelayOpen: false
-                        });
-                    }}
-                />
+                <this.GenomeBuilderAppBar figure={figure} />
+                <this.GenomeBuilderOverlays figure={figure} />
                 {
                     figure ? (
                         <CircularGenome
