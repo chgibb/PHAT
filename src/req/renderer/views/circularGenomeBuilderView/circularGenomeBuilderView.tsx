@@ -7,10 +7,11 @@ import {CircularFigure} from "../../circularFigure/circularFigure";
 import {Fasta} from "../../../fasta";
 import {SaveKeyEvent} from "../../../ipcEvents";
 import {CircularGenome} from "../../containers/circularGenome";
+
 import {GenomeBuilderAppBar} from "./containers/genomeBuilderAppBar";
 import {GenomeBuilderOverlays} from "./containers/genomeBuilderOverlays";
-import { CircularGenomeEditCache, CircularGenomeEditOpts, CircularGenomeEditAction } from './editCache/cirularGenomeEditCache';
-import { changeName } from './editCache/changeName';
+import {CircularGenomeEditCache, CircularGenomeEditOpts, CircularGenomeEditAction} from "./editCache/cirularGenomeEditCache";
+import {changeName} from "./editCache/changeName";
 
 export interface CircularGenomeBuilderViewState {
     figureSelectOvelayOpen: boolean;

@@ -1,11 +1,12 @@
 import * as React from "react";
 
-import { CircularGenomeBuilderView } from '../circularGenomeBuilderView';
-import { CircularFigure } from '../../../circularFigure/circularFigure';
-import { EditFigureNameOverlay } from './overlays/editFigureName';
-import { FigureSelectOverlay } from './overlays/figureSelectOverlay';
+import {CircularGenomeBuilderView} from "../circularGenomeBuilderView";
+import {CircularFigure} from "../../../circularFigure/circularFigure";
+import {EditFigureNameOverlay} from "./overlays/editFigureName";
+import {FigureSelectOverlay} from "./overlays/figureSelectOverlay";
 
-export function GenomeBuilderOverlays(this: CircularGenomeBuilderView, props: { figure: CircularFigure | undefined }): JSX.Element {
+export function GenomeBuilderOverlays(this: CircularGenomeBuilderView, props: { figure: CircularFigure | undefined }): JSX.Element 
+{
     let figure = props.figure;
     return (
         <React.Fragment>
@@ -15,12 +16,15 @@ export function GenomeBuilderOverlays(this: CircularGenomeBuilderView, props: { 
                         <EditFigureNameOverlay
                             value={figure.name}
                             open={this.state.editFigureNameOverlayOpen}
-                            onSave={(value) => {
-                                if (value && figure) {
+                            onSave={(value) => 
+                            {
+                                if (value && figure) 
+                                {
                                     this.changeName(figure, value);
                                 }
                             }}
-                            onClose={() => {
+                            onClose={() => 
+                            {
                                 this.setState({
                                     editFigureNameOverlayOpen: false
                                 });
@@ -31,7 +35,8 @@ export function GenomeBuilderOverlays(this: CircularGenomeBuilderView, props: { 
             <FigureSelectOverlay
                 builder={this}
                 open={this.state.figureSelectOvelayOpen}
-                onClose={() => {
+                onClose={() => 
+                {
                     this.setState({
                         figureSelectOvelayOpen: false
                     });

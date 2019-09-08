@@ -1,4 +1,4 @@
-import { CircularFigure } from '../../../circularFigure/circularFigure';
+import {CircularFigure} from "../../../circularFigure/circularFigure";
 
 export interface CircularGenomeEditAction
 {
