@@ -8,7 +8,7 @@ import {Toolbar} from "../../components/toolBar";
 import {IconButton} from "../../components/iconButton";
 import {MenuRounded} from "../../components/icons/menuRounded";
 import {white} from "../../styles/colours";
-import {CircularFigure, cacheBaseFigureTemplate} from "../../circularFigure/circularFigure";
+import {CircularFigure} from "../../circularFigure/circularFigure";
 import {Fasta} from "../../../fasta";
 import {SaveKeyEvent} from "../../../ipcEvents";
 import {DonutLargeOutlined} from "../../components/icons/donutLargeOutlined";
@@ -21,32 +21,7 @@ import {CircularGenome} from "../../containers/circularGenome";
 import {FigureSelectOverlay} from "./containers/overlays/figureSelectOverlay";
 import {appBar} from "./containers/styles/appBar";
 import {EditFigureNameOverlay} from "./containers/overlays/editFigureName";
-
-export class CircularGenomeEditCache
-{
-    private editStack : Array<string>;
-
-    public pushEdit(figure : CircularFigure)
-    {
-        this.editStack.push(JSON.stringify(figure));
-    }
-
-    public popEdit() : CircularFigure | undefined
-    {
-        let edit = this.editStack.pop();
-
-        if(edit)
-            return JSON.parse(edit);
-        return undefined;
-    }
-
-    public constructor(figure : CircularFigure)
-    {
-        this.editStack = new Array();
-
-        this.pushEdit(figure);
-    }
-}
+import { CircularGenomeEditCache, CircularGenomeEditOpts, CircularGenomeEditAction } from './editCache/cirularGenomeEditCache';
 
 export interface CircularGenomeBuilderViewState {
     figureSelectOvelayOpen: boolean;
@@ -87,22 +62,20 @@ export class CircularGenomeBuilderView extends React.Component<CircularGenomeBui
         window.addEventListener("resize",this.reposition);
     }
 
-    public maybePushEdit(figure : CircularFigure) : void
+    public maybePushEdit(figure : CircularFigure,opts : CircularGenomeEditOpts) : void
     {
         let cache = this.editCaches[figure.uuid];
         
         if(cache)
-            cache.pushEdit(figure);
+            cache.pushEdit(figure,opts);
     }
 
-    public maybePopEdit(figure : CircularFigure) : CircularFigure | undefined
+    public maybePopEdit(figure : CircularFigure) : CircularGenomeEditAction | undefined
     {
         let cache = this.editCaches[figure.uuid];
         
         if(cache)
-        {
-            return cache.popEdit();
-        }
+            return cache.popEdit(figure);
         return undefined;
     }
 
@@ -186,7 +159,7 @@ export class CircularGenomeBuilderView extends React.Component<CircularGenomeBui
         if(figure)
         {
             if(!this.editCaches[figure.uuid])
-                this.editCaches[figure.uuid] = new CircularGenomeEditCache(figure);
+                this.editCaches[figure.uuid] = new CircularGenomeEditCache();
         }
 
         return (
@@ -231,14 +204,11 @@ export class CircularGenomeBuilderView extends React.Component<CircularGenomeBui
                                     onClick={()=>{
                                         if(figure)
                                         {
-                                            let oldEdit = this.maybePopEdit(figure);
-
-                                            console.log(oldEdit ? oldEdit.name : undefined);
+                                            const oldEdit = this.maybePopEdit(figure);
 
                                             if(oldEdit)
                                             {
-                                                figure = oldEdit;
-                                                //console.log(figure);
+                                                oldEdit.rollback(figure,JSON.parse(oldEdit.figureStr));
                                                 this.saveFigures();
                                             }
                                         }
@@ -299,9 +269,21 @@ export class CircularGenomeBuilderView extends React.Component<CircularGenomeBui
                                 {
                                     if(value && figure)
                                     {
-                                        this.maybePushEdit(figure);
-                                        figure.name = value;
-                                        this.saveFigures();
+                                        this.maybePushEdit(
+                                            figure,{
+                                                description : `Change name from ${figure.name} to ${value}`,
+                                                commit : (figure : CircularFigure) => {
+                                                    figure.name = value;
+                                                },
+                                                afterCommit : () => {
+                                                    this.saveFigures();
+                                                },
+                                                rollback : (newFigure : CircularFigure,oldFigure : CircularFigure) => {
+                                                    newFigure.name = oldFigure.name;
+                                                }
+                                            }
+                                        );
+                                        
                                     }
                                 }}
                                 onClose={()=>
