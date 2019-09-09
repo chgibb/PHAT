@@ -1,18 +1,19 @@
 import * as React from "react";
 
-import { CircularFigure } from '../../../../circularFigure/circularFigure';
-import { Overlay } from './overlay';
-import { GridWrapper } from '../../../../containers/gridWrapper';
-import { Grid } from '../../../../components/grid';
-import { Typography } from '../../../../components/typography';
-import { TreeView } from '../../../../components/treeView';
-import { ChevronRight } from '../../../../components/icons/chevronRight';
-import { ExpandMore } from '../../../../components/icons/expandMore';
-import { blue } from '../../../../styles/colours';
-import { TreeItem } from '../../../../components/treeItem';
-import { AddBox } from '../../../../components/icons/addBox';
-import { getReferenceFromUuid } from '../../../../../uniquelyAddressable';
-import { EditContigOverlay } from "./editContigOverlay";
+import {CircularFigure} from "../../../../circularFigure/circularFigure";
+import {GridWrapper} from "../../../../containers/gridWrapper";
+import {Grid} from "../../../../components/grid";
+import {Typography} from "../../../../components/typography";
+import {TreeView} from "../../../../components/treeView";
+import {ChevronRight} from "../../../../components/icons/chevronRight";
+import {ExpandMore} from "../../../../components/icons/expandMore";
+import {blue} from "../../../../styles/colours";
+import {TreeItem} from "../../../../components/treeItem";
+import {AddBox} from "../../../../components/icons/addBox";
+import {getReferenceFromUuid} from "../../../../../uniquelyAddressable";
+
+import {Overlay} from "./overlay";
+import {EditContigOverlay} from "./editContigOverlay";
 
 export interface EditContigsOverlayProps {
     onClose: () => void;
@@ -26,7 +27,8 @@ export interface EditContigsOverlayState {
 }
 export class EditContigsOverlay extends React.Component<EditContigsOverlayProps, EditContigsOverlayState>
 {
-    public constructor(props: EditContigsOverlayProps) {
+    public constructor(props: EditContigsOverlayProps) 
+    {
         super(props);
 
         this.state = {
@@ -34,7 +36,8 @@ export class EditContigsOverlay extends React.Component<EditContigsOverlayProps,
             allowMovingSelectContig : false
         };
     }
-    public render(): JSX.Element {
+    public render(): JSX.Element 
+    {
         const contig = getReferenceFromUuid(this.props.figure.contigs, this.state.selectedContigUuid);
 
         return (
@@ -47,7 +50,8 @@ export class EditContigsOverlay extends React.Component<EditContigsOverlayProps,
                 <div>
                     {
                         contig ? <EditContigOverlay
-                            onClose={() => {
+                            onClose={() => 
+                            {
                                 this.setState({
                                     selectedContigUuid: ""
                                 });
@@ -58,7 +62,7 @@ export class EditContigsOverlay extends React.Component<EditContigsOverlayProps,
                         /> :
                             <React.Fragment>
                                 <GridWrapper>
-                                    <div style={{ marginRight: "1vh", marginLeft: "1vh", marginBottom: "1vh" }}>
+                                    <div style={{marginRight: "1vh", marginLeft: "1vh", marginBottom: "1vh"}}>
                                         <Grid container spacing={4} justify="center">
                                             <Grid item>
                                                 <Typography variant="h5">Edit Contigs</Typography>
@@ -67,21 +71,23 @@ export class EditContigsOverlay extends React.Component<EditContigsOverlayProps,
                                     </div>
                                 </GridWrapper>
                                 <GridWrapper>
-                                    <div style={{ marginLeft: "1vh", marginBottom: "1vh" }}>
+                                    <div style={{marginLeft: "1vh", marginBottom: "1vh"}}>
                                         <Grid container direction="row" spacing={1} justify="center">
                                             <Grid item>
                                                 <TreeView
-                                                    defaultExpandIcon={<ChevronRight color="primary" classes={{ colorPrimary: blue }} />}
-                                                    defaultCollapseIcon={<ExpandMore color="primary" classes={{ colorPrimary: blue }} />}
+                                                    defaultExpandIcon={<ChevronRight color="primary" classes={{colorPrimary: blue}} />}
+                                                    defaultCollapseIcon={<ExpandMore color="primary" classes={{colorPrimary: blue}} />}
                                                 >
-                                                    <TreeItem nodeId={'0'} label="Reference Contigs">
+                                                    <TreeItem nodeId={"0"} label="Reference Contigs">
                                                         {
-                                                            this.props.figure.contigs.map((contig, i) => {
+                                                            this.props.figure.contigs.map((contig, i) => 
+                                                            {
                                                                 return (
                                                                     <TreeItem
                                                                         nodeId={`0-${i}`}
                                                                         label={contig.name}
-                                                                        onClick={() => {
+                                                                        onClick={() => 
+                                                                        {
                                                                             this.setState({
                                                                                 selectedContigUuid: contig.uuid
                                                                             });
@@ -91,14 +97,14 @@ export class EditContigsOverlay extends React.Component<EditContigsOverlayProps,
                                                             })
                                                         }
                                                     </TreeItem>
-                                                    <TreeItem nodeId={'1'} label="Custom Contigs">
+                                                    <TreeItem nodeId={"1"} label="Custom Contigs">
                                                         <TreeItem
-                                                            nodeId={`1-new`}
+                                                            nodeId={"1-new"}
                                                             label="Create New Custom Contig"
                                                             icon={
                                                                 <AddBox
                                                                     color="primary"
-                                                                    classes={{ colorPrimary: blue }}
+                                                                    classes={{colorPrimary: blue}}
                                                                 />
                                                             }
                                                         />

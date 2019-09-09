@@ -2,9 +2,10 @@ import * as React from "react";
 
 import {CircularGenomeBuilderView} from "../circularGenomeBuilderView";
 import {CircularFigure} from "../../../circularFigure/circularFigure";
+
 import {EditFigureNameOverlay} from "./overlays/editFigureName";
 import {FigureSelectOverlay} from "./overlays/figureSelectOverlay";
-import { EditContigsOverlay } from './overlays/editContigsOverlay';
+import {EditContigsOverlay} from "./overlays/editContigsOverlay";
 
 export function GenomeBuilderOverlays(this: CircularGenomeBuilderView, props: { figure: CircularFigure | undefined }): JSX.Element 
 {
@@ -34,7 +35,8 @@ export function GenomeBuilderOverlays(this: CircularGenomeBuilderView, props: { 
                         <EditContigsOverlay
                             figure={figure}
                             open={this.state.editContigsOverlayOpen}
-                            onClose={() => {
+                            onClose={() => 
+                            {
                                 this.setState({
                                     editContigsOverlayOpen : false
                                 });
