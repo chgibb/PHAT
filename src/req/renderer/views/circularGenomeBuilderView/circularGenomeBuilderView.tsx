@@ -16,6 +16,7 @@ import {changeName} from "./editCache/changeName";
 export interface CircularGenomeBuilderViewState {
     figureSelectOvelayOpen: boolean;
     editFigureNameOverlayOpen : boolean;
+    editContigsOverlayOpen : boolean;
     selectedFigure: string;
     figurePosition : {
         width : number,
