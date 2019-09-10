@@ -42,6 +42,11 @@ export function GenomeBuilderOverlays(this: CircularGenomeBuilderView, props: { 
                                 {
                                     this.changeContigText(figure,opts.contigUuid,opts.newName);
                                 }
+
+                                if(opts.newBodyColour)
+                                {
+                                    this.changeContigBodyColour(figure,opts.contigUuid,opts.newBodyColour);
+                                }
                             }
                             }}
                             onClose={() => 
