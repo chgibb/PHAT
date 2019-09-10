@@ -35,6 +35,15 @@ export function GenomeBuilderOverlays(this: CircularGenomeBuilderView, props: { 
                         <EditContigsOverlay
                             figure={figure}
                             open={this.state.editContigsOverlayOpen}
+                            onSave={(opts) => {
+                                if(figure)
+                                {
+                                if(opts.newName)
+                                {
+                                    this.changeContigText(figure,opts.contigUuid,opts.newName);
+                                }
+                            }
+                            }}
                             onClose={() => 
                             {
                                 this.setState({

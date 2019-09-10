@@ -12,6 +12,7 @@ import {GenomeBuilderAppBar} from "./containers/genomeBuilderAppBar";
 import {GenomeBuilderOverlays} from "./containers/genomeBuilderOverlays";
 import {CircularGenomeEditCache, CircularGenomeEditOpts, CircularGenomeEditAction} from "./editCache/cirularGenomeEditCache";
 import {changeName} from "./editCache/changeName";
+import { changeContigText } from './editCache/changeContigText';
 
 export interface CircularGenomeBuilderViewState {
     figureSelectOvelayOpen: boolean;
@@ -36,6 +37,7 @@ export class CircularGenomeBuilderView extends React.Component<CircularGenomeBui
     public editCaches : {[index : string] : CircularGenomeEditCache | undefined} = {};
 
     protected changeName = changeName.bind(this);
+    protected changeContigText = changeContigText.bind(this);
     private GenomeBuilderAppBar = GenomeBuilderAppBar.bind(this);
     private GenomeBuilderOverlays = GenomeBuilderOverlays.bind(this);
     public constructor(props: CircularGenomeBuilderViewProps) 

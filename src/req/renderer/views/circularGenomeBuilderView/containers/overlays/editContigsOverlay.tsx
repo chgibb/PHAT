@@ -13,10 +13,11 @@ import {AddBox} from "../../../../components/icons/addBox";
 import {getReferenceFromUuid} from "../../../../../uniquelyAddressable";
 
 import {Overlay} from "./overlay";
-import {EditContigOverlay} from "./editContigOverlay";
+import {EditContigOverlay, EditContigOverlayProps} from "./editContigOverlay";
 
 export interface EditContigsOverlayProps {
     onClose: () => void;
+    onSave : EditContigOverlayProps["onSave"];
     open: boolean;
     figure: CircularFigure;
 }
@@ -56,6 +57,7 @@ export class EditContigsOverlay extends React.Component<EditContigsOverlayProps,
                                     selectedContigUuid: ""
                                 });
                             }}
+                            onSave={this.props.onSave}
                             figure={this.props.figure}
                             contig={contig}
                             allowMovingSelectContig={this.state.allowMovingSelectContig}
