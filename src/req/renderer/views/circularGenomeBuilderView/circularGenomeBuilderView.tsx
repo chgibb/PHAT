@@ -12,8 +12,8 @@ import {GenomeBuilderAppBar} from "./containers/genomeBuilderAppBar";
 import {GenomeBuilderOverlays} from "./containers/genomeBuilderOverlays";
 import {CircularGenomeEditCache, CircularGenomeEditOpts, CircularGenomeEditAction} from "./editCache/cirularGenomeEditCache";
 import {changeName} from "./editCache/changeName";
-import { changeContigText } from './editCache/changeContigText';
-import { changeContigBodyColour } from './editCache/changeContigBodyColour';
+import {changeContigText} from "./editCache/changeContigText";
+import {changeContigBodyColour} from "./editCache/changeContigBodyColour";
 
 export interface CircularGenomeBuilderViewState {
     figureSelectOvelayOpen: boolean;

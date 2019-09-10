@@ -35,19 +35,20 @@ export function GenomeBuilderOverlays(this: CircularGenomeBuilderView, props: { 
                         <EditContigsOverlay
                             figure={figure}
                             open={this.state.editContigsOverlayOpen}
-                            onSave={(opts) => {
+                            onSave={(opts) => 
+                            {
                                 if(figure)
                                 {
-                                if(opts.newName)
-                                {
-                                    this.changeContigText(figure,opts.contigUuid,opts.newName);
-                                }
+                                    if(opts.newName)
+                                    {
+                                        this.changeContigText(figure,opts.contigUuid,opts.newName);
+                                    }
 
-                                if(opts.newBodyColour)
-                                {
-                                    this.changeContigBodyColour(figure,opts.contigUuid,opts.newBodyColour);
+                                    if(opts.newBodyColour)
+                                    {
+                                        this.changeContigBodyColour(figure,opts.contigUuid,opts.newBodyColour);
+                                    }
                                 }
-                            }
                             }}
                             onClose={() => 
                             {

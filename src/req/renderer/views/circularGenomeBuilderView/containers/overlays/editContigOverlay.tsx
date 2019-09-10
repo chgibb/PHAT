@@ -1,15 +1,15 @@
 import * as React from "react";
-import { SketchPicker, ColorResult, RGBColor } from "react-color";
+import {SketchPicker, ColorResult, RGBColor} from "react-color";
 
-import { CircularFigure, Contig } from "../../../../circularFigure/circularFigure";
-import { GridWrapper } from "../../../../containers/gridWrapper";
-import { Grid } from "../../../../components/grid";
-import { IconButton } from "../../../../components/iconButton";
-import { blue } from "../../../../styles/colours";
-import { ChevronLeft } from "../../../../components/icons/chevronLeft";
-import { OutlinedInput } from "../../../../components/outlinedInput";
-import { Button } from '../../../../components/button';
-import { Typography } from '../../../../components/typography';
+import {CircularFigure, Contig} from "../../../../circularFigure/circularFigure";
+import {GridWrapper} from "../../../../containers/gridWrapper";
+import {Grid} from "../../../../components/grid";
+import {IconButton} from "../../../../components/iconButton";
+import {blue} from "../../../../styles/colours";
+import {ChevronLeft} from "../../../../components/icons/chevronLeft";
+import {OutlinedInput} from "../../../../components/outlinedInput";
+import {Button} from "../../../../components/button";
+import {Typography} from "../../../../components/typography";
 
 export interface EditContigOverlayProps {
     onClose: () => void;
@@ -28,19 +28,20 @@ export interface EditContigOverlayState {
 
 }
 
-export function EditContigOverlay(props: EditContigOverlayProps): JSX.Element {
+export function EditContigOverlay(props: EditContigOverlayProps): JSX.Element 
+{
     let endteredName = "";
     let enteredTextColour: ColorResult | undefined;
     let enteredBodyColour: ColorResult | undefined;
     return (
         <div>
 
-            <div style={{ marginLeft: "2vh" }}>
+            <div style={{marginLeft: "2vh"}}>
                 <Grid container spacing={4} justify="flex-start">
                     <IconButton
                         edge="start"
                         color="primary"
-                        classes={{ colorPrimary: blue }}
+                        classes={{colorPrimary: blue}}
                         onClick={props.onClose}
                     >
                         <ChevronLeft />
@@ -48,13 +49,13 @@ export function EditContigOverlay(props: EditContigOverlayProps): JSX.Element {
                 </Grid>
             </div>
 
-            <div style={{ marginLeft: "2.5vh" }}>
+            <div style={{marginLeft: "2.5vh"}}>
                 <Grid container spacing={4} justify="flex-start">
                     <Typography>Name in reference:</Typography>
                 </Grid>
             </div>
             <GridWrapper>
-                <div style={{ marginRight: "1vh", marginLeft: "1vh", marginBottom: "1vh", marginTop: "1vh" }}>
+                <div style={{marginRight: "1vh", marginLeft: "1vh", marginBottom: "1vh", marginTop: "1vh"}}>
                     <Grid container spacing={4} justify="center">
                         <Grid item>
                             <Typography>{props.contig.name}</Typography>
@@ -62,19 +63,20 @@ export function EditContigOverlay(props: EditContigOverlayProps): JSX.Element {
                     </Grid>
                 </div>
             </GridWrapper>
-            <div style={{ marginLeft: "2.5vh" }}>
+            <div style={{marginLeft: "2.5vh"}}>
                 <Grid container spacing={4} justify="flex-start">
                     <Typography>Name to display:</Typography>
                 </Grid>
             </div>
             <GridWrapper>
-                <div style={{ marginRight: "1vh", marginLeft: "1vh", marginBottom: "1vh", marginTop: "1vh" }}>
+                <div style={{marginRight: "1vh", marginLeft: "1vh", marginBottom: "1vh", marginTop: "1vh"}}>
                     <Grid container spacing={4} justify="center">
                         <Grid item>
                             <OutlinedInput
                                 label={props.contig.alias}
                                 inputProps={{
-                                    onChange: (event) => {
+                                    onChange: (event) => 
+                                    {
                                         endteredName = event.target.value;
                                     }
                                 }}
@@ -83,25 +85,26 @@ export function EditContigOverlay(props: EditContigOverlayProps): JSX.Element {
                     </Grid>
                 </div>
             </GridWrapper>
-            <div style={{ marginLeft: "2.5vh" }}>
+            <div style={{marginLeft: "2.5vh"}}>
                 <Grid container spacing={4} justify="flex-start">
                     <Typography>Text opacity:</Typography>
                 </Grid>
             </div>
             <GridWrapper>
-                <div style={{ marginRight: "1vh", marginLeft: "1vh", marginBottom: "1vh", marginTop: "1vh" }}>
+                <div style={{marginRight: "1vh", marginLeft: "1vh", marginBottom: "1vh", marginTop: "1vh"}}>
                     <Grid container spacing={4} justify="center">
                         <Grid item>
                             <OutlinedInput
                                 label={props.contig.opacity ? props.contig.opacity.toString() : ""}
                                 inputProps={{
-                                    onChange: (event) => {
+                                    onChange: (event) => 
+                                    {
                                         if(event.target.value)
                                         {
                                             console.log(parseFloat(event.target.value));
                                             if(parseFloat(event.target.value) == NaN)
                                             {
-                                                alert(`Opacity must be a number`);
+                                                alert("Opacity must be a number");
                                             }
                                         }
                                     }
@@ -111,18 +114,19 @@ export function EditContigOverlay(props: EditContigOverlayProps): JSX.Element {
                     </Grid>
                 </div>
             </GridWrapper>
-            <div style={{ marginLeft: "2.5vh" }}>
+            <div style={{marginLeft: "2.5vh"}}>
                 <Grid container spacing={4} justify="flex-start">
                     <Typography>Text colour:</Typography>
                 </Grid>
             </div>
             <GridWrapper>
-                <div style={{ marginRight: "1vh", marginLeft: "1vh", marginBottom: "1vh", marginTop: "1vh" }}>
+                <div style={{marginRight: "1vh", marginLeft: "1vh", marginBottom: "1vh", marginTop: "1vh"}}>
                     <Grid container spacing={4} justify="center">
                         <Grid item>
                             <SketchPicker
                                 color={props.contig.fontFill}
-                                onChange={(color: ColorResult) => {
+                                onChange={(color: ColorResult) => 
+                                {
                                     enteredTextColour = color;
                                 }}
                             />
@@ -130,18 +134,19 @@ export function EditContigOverlay(props: EditContigOverlayProps): JSX.Element {
                     </Grid>
                 </div>
             </GridWrapper>
-            <div style={{ marginLeft: "2.5vh" }}>
+            <div style={{marginLeft: "2.5vh"}}>
                 <Grid container spacing={4} justify="flex-start">
                     <Typography>Body colour:</Typography>
                 </Grid>
             </div>
             <GridWrapper>
-                <div style={{ marginRight: "1vh", marginLeft: "1vh", marginBottom: "1vh", marginTop: "1vh" }}>
+                <div style={{marginRight: "1vh", marginLeft: "1vh", marginBottom: "1vh", marginTop: "1vh"}}>
                     <Grid container spacing={4} justify="center">
                         <Grid item>
                             <SketchPicker
                                 color={props.contig.color}
-                                onChange={(color: ColorResult) => {
+                                onChange={(color: ColorResult) => 
+                                {
                                     enteredBodyColour = color;
                                 }}
                             />
@@ -150,7 +155,7 @@ export function EditContigOverlay(props: EditContigOverlayProps): JSX.Element {
                 </div>
             </GridWrapper>
             <GridWrapper>
-                <div style={{ marginRight: "1vh", marginLeft: "1vh", marginBottom: "1vh", marginTop: "1vh" }}>
+                <div style={{marginRight: "1vh", marginLeft: "1vh", marginBottom: "1vh", marginTop: "1vh"}}>
                     <Grid container spacing={4} justify="center">
                         <Grid item>
                             <Button
@@ -162,11 +167,12 @@ export function EditContigOverlay(props: EditContigOverlayProps): JSX.Element {
                         <Grid item>
                             <Button
                                 label="Save"
-                                onClick={() => {
+                                onClick={() => 
+                                {
                                     props.onSave({
                                         contigUuid: props.contig.uuid,
                                         newName: endteredName,
-                                        newBodyColour: enteredBodyColour ? enteredBodyColour.hex : '', 
+                                        newBodyColour: enteredBodyColour ? enteredBodyColour.hex : "", 
                                         newTextColour : undefined
                                     });
                                 }}
