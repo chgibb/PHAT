@@ -10,6 +10,7 @@ import {ChevronLeft} from "../../../../components/icons/chevronLeft";
 import {OutlinedInput} from "../../../../components/outlinedInput";
 import {Button} from "../../../../components/button";
 import {Typography} from "../../../../components/typography";
+import { ColourPicker } from '../../../../components/colourPicker';
 
 export interface EditContigOverlayProps {
     onClose: () => void;
@@ -114,46 +115,24 @@ export function EditContigOverlay(props: EditContigOverlayProps): JSX.Element
                     </Grid>
                 </div>
             </GridWrapper>
-            <div style={{marginLeft: "2.5vh"}}>
-                <Grid container spacing={4} justify="flex-start">
-                    <Typography>Text colour:</Typography>
-                </Grid>
+            <div style={{marginBottom:"1vh"}}>
+            <ColourPicker
+                label="Text Colour"
+                colour={props.contig.fontFill ? props.contig.fontFill : ""}
+                onChange={(color: ColorResult) => 
+                    {
+                        enteredTextColour = color;
+                    }}
+            />
             </div>
-            <GridWrapper>
-                <div style={{marginRight: "1vh", marginLeft: "1vh", marginBottom: "1vh", marginTop: "1vh"}}>
-                    <Grid container spacing={4} justify="center">
-                        <Grid item>
-                            <SketchPicker
-                                color={props.contig.fontFill}
-                                onChange={(color: ColorResult) => 
-                                {
-                                    enteredTextColour = color;
-                                }}
-                            />
-                        </Grid>
-                    </Grid>
-                </div>
-            </GridWrapper>
-            <div style={{marginLeft: "2.5vh"}}>
-                <Grid container spacing={4} justify="flex-start">
-                    <Typography>Body colour:</Typography>
-                </Grid>
-            </div>
-            <GridWrapper>
-                <div style={{marginRight: "1vh", marginLeft: "1vh", marginBottom: "1vh", marginTop: "1vh"}}>
-                    <Grid container spacing={4} justify="center">
-                        <Grid item>
-                            <SketchPicker
-                                color={props.contig.color}
-                                onChange={(color: ColorResult) => 
-                                {
-                                    enteredBodyColour = color;
-                                }}
-                            />
-                        </Grid>
-                    </Grid>
-                </div>
-            </GridWrapper>
+            <ColourPicker
+                label="Body Colour"
+                colour={props.contig.color ? props.contig.color : ""}
+                onChange={(color: ColorResult) => 
+                    {
+                        enteredBodyColour = color;
+                    }}
+            />
             <GridWrapper>
                 <div style={{marginRight: "1vh", marginLeft: "1vh", marginBottom: "1vh", marginTop: "1vh"}}>
                     <Grid container spacing={4} justify="center">
