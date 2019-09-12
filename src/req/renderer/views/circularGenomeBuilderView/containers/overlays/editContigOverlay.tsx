@@ -173,7 +173,7 @@ export function EditContigOverlay(props: EditContigOverlayProps): JSX.Element
                                         contigUuid: props.contig.uuid,
                                         newName: endteredName,
                                         newBodyColour: enteredBodyColour ? enteredBodyColour.hex : "", 
-                                        newTextColour : undefined
+                                        newTextColour : enteredTextColour ? enteredTextColour.hex : "",
                                     });
                                 }}
                                 type="advance"

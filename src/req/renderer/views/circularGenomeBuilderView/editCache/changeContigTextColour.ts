@@ -1,18 +1,18 @@
 import {CircularGenomeBuilderView} from "../circularGenomeBuilderView";
 import {CircularFigure} from "../../../circularFigure/circularFigure";
 
-export function changeContigBodyColour(this: CircularGenomeBuilderView, figure: CircularFigure, contigUuid: string, colour: string): void 
+export function changeContigTextColour(this: CircularGenomeBuilderView, figure: CircularFigure, contigUuid: string, colour: string): void 
 {
     this.maybePushEdit(
         figure, {
-            description: `Change contig body colour to ${colour}`,
+            description: `Change contig text colour to ${colour}`,
             commit: (figure: CircularFigure) => 
             {
                 let contig = figure.contigs.find(x => x.uuid == contigUuid);
             
                 if (contig) 
                 {
-                    contig.color = colour;
+                    contig.fontFill = colour;
                 }
             },
             afterCommit: () => 
@@ -26,7 +26,7 @@ export function changeContigBodyColour(this: CircularGenomeBuilderView, figure: 
 
                 if (newContig && oldContig) 
                 {
-                    newContig.color = oldContig.color;
+                    newContig.fontFill = oldContig.fontFill;
                 }
             }
         }
