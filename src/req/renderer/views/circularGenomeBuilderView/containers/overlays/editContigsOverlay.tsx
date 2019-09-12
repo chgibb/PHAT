@@ -44,7 +44,7 @@ export class EditContigsOverlay extends React.Component<EditContigsOverlayProps,
         return (
             <Overlay
                 kind="drawerRight"
-                restrictions={["noModal"]}
+                restrictions={["noModal","noDrawerTop","noDrawerBottom"]}
                 open={this.props.open}
                 onClose={this.props.onClose}
             >
