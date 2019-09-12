@@ -63,7 +63,8 @@ export function FigureSelectOverlay(props: FigureSelectOverlayProps): JSX.Elemen
                                                                         onClick={()=>
                                                                         {
                                                                             props.builder.setState({
-                                                                                selectedFigure : figure.uuid
+                                                                                selectedFigure : figure.uuid,
+                                                                                figureSelectOvelayOpen : false
                                                                             });
                                                                         }} 
                                                                     />
