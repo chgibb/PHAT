@@ -1,15 +1,15 @@
 import * as React from "react";
-import { SketchPicker, ColorResult, RGBColor } from "react-color";
-import { Grid } from './grid';
-import { Typography } from './typography';
-import { GridWrapper } from '../containers/gridWrapper';
-import { IconButton } from './iconButton';
-import { ColorLensRounded } from './icons/colorLensRounded';
-import { style } from 'typestyle';
-import { Paper } from './paper';
-import { Close } from './icons/close';
+import {SketchPicker, ColorResult} from "react-color";
+import {style} from "typestyle";
 
-export { ColorResult } from "react-color";
+import {GridWrapper} from "../containers/gridWrapper";
+
+import {Grid} from "./grid";
+import {Typography} from "./typography";
+import {IconButton} from "./iconButton";
+import {ColorLensRounded} from "./icons/colorLensRounded";
+import {Close} from "./icons/close";
+export {ColorResult} from "react-color";
 
 export interface ColourPickerProps {
     label: string;
@@ -25,7 +25,8 @@ export interface ColourPickerState {
 
 export class ColourPicker extends React.Component<ColourPickerProps, ColourPickerState>
 {
-    public constructor(props: ColourPickerProps) {
+    public constructor(props: ColourPickerProps) 
+    {
         super(props);
 
         this.state = {
@@ -33,9 +34,10 @@ export class ColourPicker extends React.Component<ColourPickerProps, ColourPicke
         };
     }
 
-    public render(): JSX.Element {
-        let labelStyle = this.props.labelStyle ? this.props.labelStyle : { marginLeft: "2.5vh" };
-        let colourPickerStyle = this.props.colourPickerStyle ? this.props.colourPickerStyle : { marginRight: "1vh", marginLeft: "1vh", marginBottom: "1vh", marginTop: "1vh" };
+    public render(): JSX.Element 
+    {
+        let labelStyle = this.props.labelStyle ? this.props.labelStyle : {marginLeft: "2.5vh"};
+        let colourPickerStyle = this.props.colourPickerStyle ? this.props.colourPickerStyle : {marginRight: "1vh", marginLeft: "1vh", marginBottom: "1vh", marginTop: "1vh"};
         return (
             <React.Fragment>
                 <div
@@ -45,17 +47,18 @@ export class ColourPicker extends React.Component<ColourPickerProps, ColourPicke
                         <Typography>{this.props.label}</Typography>
                         {
                             !this.state.open ?
-                            <IconButton
-                                onClick={() => {
-                                    this.setState({
-                                        open: true
-                                    });
-                                }}
-                            >
-                                <ColorLensRounded
-                                    color="primary"
-                                    classes={{ colorPrimary: style({ color: this.props.colour }) }}
-                                />
+                                <IconButton
+                                    onClick={() => 
+                                    {
+                                        this.setState({
+                                            open: true
+                                        });
+                                    }}
+                                >
+                                    <ColorLensRounded
+                                        color="primary"
+                                        classes={{colorPrimary: style({color: this.props.colour})}}
+                                    />
                                 </IconButton>
                                 : null
                         }
@@ -73,7 +76,8 @@ export class ColourPicker extends React.Component<ColourPickerProps, ColourPicke
                                             <Grid container spacing={4} justify="flex-end">
                                                 <Grid item>
                                                     <IconButton
-                                                        onClick={() => {
+                                                        onClick={() => 
+                                                        {
                                                             this.setState({
                                                                 open: false
                                                             });
@@ -94,6 +98,6 @@ export class ColourPicker extends React.Component<ColourPickerProps, ColourPicke
                         </GridWrapper> : null
                 }
             </React.Fragment>
-        )
+        );
     }
 }

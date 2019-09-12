@@ -1,5 +1,5 @@
 import * as React from "react";
-import {SketchPicker, ColorResult, RGBColor} from "react-color";
+import {ColorResult} from "react-color";
 
 import {CircularFigure, Contig} from "../../../../circularFigure/circularFigure";
 import {GridWrapper} from "../../../../containers/gridWrapper";
@@ -10,7 +10,7 @@ import {ChevronLeft} from "../../../../components/icons/chevronLeft";
 import {OutlinedInput} from "../../../../components/outlinedInput";
 import {Button} from "../../../../components/button";
 import {Typography} from "../../../../components/typography";
-import { ColourPicker } from '../../../../components/colourPicker';
+import {ColourPicker} from "../../../../components/colourPicker";
 
 export interface EditContigOverlayProps {
     onClose: () => void;
@@ -116,22 +116,22 @@ export function EditContigOverlay(props: EditContigOverlayProps): JSX.Element
                 </div>
             </GridWrapper>
             <div style={{marginBottom:"1vh"}}>
-            <ColourPicker
-                label="Text Colour"
-                colour={props.contig.fontFill ? props.contig.fontFill : ""}
-                onChange={(color: ColorResult) => 
+                <ColourPicker
+                    label="Text Colour"
+                    colour={props.contig.fontFill ? props.contig.fontFill : ""}
+                    onChange={(color: ColorResult) => 
                     {
                         enteredTextColour = color;
                     }}
-            />
+                />
             </div>
             <ColourPicker
                 label="Body Colour"
                 colour={props.contig.color ? props.contig.color : ""}
                 onChange={(color: ColorResult) => 
-                    {
-                        enteredBodyColour = color;
-                    }}
+                {
+                    enteredBodyColour = color;
+                }}
             />
             <GridWrapper>
                 <div style={{marginRight: "1vh", marginLeft: "1vh", marginBottom: "1vh", marginTop: "1vh"}}>
