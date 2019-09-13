@@ -19,6 +19,7 @@ export interface EditContigOverlayProps {
         newName?: string,
         newTextColour?: string,
         newBodyColour?: string,
+        newOpacity? : number;
     }) => void;
     figure: CircularFigure;
     contig: Contig;
@@ -34,6 +35,7 @@ export function EditContigOverlay(props: EditContigOverlayProps): JSX.Element
     let endteredName = "";
     let enteredTextColour: ColorResult | undefined;
     let enteredBodyColour: ColorResult | undefined;
+    let enteredOpacity : number | undefined;
     return (
         <div>
 
@@ -102,11 +104,25 @@ export function EditContigOverlay(props: EditContigOverlayProps): JSX.Element
                                     {
                                         if(event.target.value)
                                         {
-                                            console.log(parseFloat(event.target.value));
-                                            if(parseFloat(event.target.value) == NaN)
+                                            let newOpacity : number | typeof NaN = parseFloat(event.target.value)
+                                            if(isNaN(newOpacity))
                                             {
                                                 alert("Opacity must be a number");
+                                                return;
                                             }
+
+                                            else if(newOpacity < 0)
+                                            {
+                                                alert("Opacity must be greater than 0");
+                                                return;
+                                            }
+
+                                            else if(newOpacity > 1)
+                                            {
+                                                alert("Opacity must be less than 1");
+                                                return;
+                                            }
+                                            enteredOpacity = newOpacity;
                                         }
                                     }
                                 }}
@@ -153,6 +169,7 @@ export function EditContigOverlay(props: EditContigOverlayProps): JSX.Element
                                         newName: endteredName,
                                         newBodyColour: enteredBodyColour ? enteredBodyColour.hex : "", 
                                         newTextColour : enteredTextColour ? enteredTextColour.hex : "",
+                                        newOpacity : enteredOpacity
                                     });
                                 }}
                                 type="advance"
