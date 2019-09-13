@@ -15,7 +15,7 @@ import {changeName} from "./editCache/changeName";
 import {changeContigText} from "./editCache/changeContigText";
 import {changeContigBodyColour} from "./editCache/changeContigBodyColour";
 import {changeContigTextColour} from "./editCache/changeContigTextColour";
-import { changeContigOpacity } from './editCache/changeContigOpacity';
+import {changeContigOpacity} from "./editCache/changeContigOpacity";
 
 export interface CircularGenomeBuilderViewState {
     figureSelectOvelayOpen: boolean;

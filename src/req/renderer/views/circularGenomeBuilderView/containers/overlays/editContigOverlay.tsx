@@ -104,7 +104,7 @@ export function EditContigOverlay(props: EditContigOverlayProps): JSX.Element
                                     {
                                         if(event.target.value)
                                         {
-                                            let newOpacity : number | typeof NaN = parseFloat(event.target.value)
+                                            let newOpacity : number | typeof NaN = parseFloat(event.target.value);
                                             if(isNaN(newOpacity))
                                             {
                                                 alert("Opacity must be a number");
