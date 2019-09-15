@@ -20,6 +20,7 @@ export interface EditContigOverlayProps {
         newTextColour?: string,
         newBodyColour?: string,
         newOpacity? : number;
+        newVadjust? : number;
     }) => void;
     figure: CircularFigure;
     contig: Contig;
@@ -36,6 +37,7 @@ export function EditContigOverlay(props: EditContigOverlayProps): JSX.Element
     let enteredTextColour: ColorResult | undefined;
     let enteredBodyColour: ColorResult | undefined;
     let enteredOpacity : number | undefined;
+    let enteredVadjust : number | undefined;
     return (
         <div>
 
@@ -131,6 +133,38 @@ export function EditContigOverlay(props: EditContigOverlayProps): JSX.Element
                     </Grid>
                 </div>
             </GridWrapper>
+            <div style={{marginLeft: "2.5vh"}}>
+                <Grid container spacing={4} justify="flex-start">
+                    <Typography>Vertical Adjustment:</Typography>
+                </Grid>
+            </div>
+            <GridWrapper>
+                <div style={{marginRight: "1vh", marginLeft: "1vh", marginBottom: "1vh", marginTop: "1vh"}}>
+                    <Grid container spacing={4} justify="center">
+                        <Grid item>
+                            <OutlinedInput
+                                label={props.contig.vAdjust ? props.contig.vAdjust.toString() : "0"}
+                                inputProps={{
+                                    onChange: (event) => 
+                                    {
+                                        if(event.target.value)
+                                        {
+                                            let newVadjust : number | typeof NaN = parseInt(event.target.value);
+                                            if(isNaN(newVadjust))
+                                            {
+                                                alert("Vertical adjustment must be a number");
+                                                return;
+                                            }
+
+                                            enteredVadjust = newVadjust;
+                                        }
+                                    }
+                                }}
+                            />
+                        </Grid>
+                    </Grid>
+                </div>
+            </GridWrapper>
             <div style={{marginBottom:"1vh"}}>
                 <ColourPicker
                     label="Text Colour"
@@ -169,7 +203,8 @@ export function EditContigOverlay(props: EditContigOverlayProps): JSX.Element
                                         newName: endteredName,
                                         newBodyColour: enteredBodyColour ? enteredBodyColour.hex : "", 
                                         newTextColour : enteredTextColour ? enteredTextColour.hex : "",
-                                        newOpacity : enteredOpacity
+                                        newOpacity : enteredOpacity,
+                                        newVadjust : enteredVadjust
                                     });
                                 }}
                                 type="advance"
