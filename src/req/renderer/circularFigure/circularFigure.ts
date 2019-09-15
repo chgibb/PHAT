@@ -228,7 +228,7 @@ export class CircularFigure implements UniquelyAddressable
         this.visibleLayers = [this.uuid];
         for (let i = 0; i != this.contigs.length; ++i) 
         {
-            initContigForDisplay(this.contigs[i]);
+            initContigForDisplay(this.contigs[i],false);
         }
         //Add filler contig at the end of the reference so the figure displays correctly
         if (this.contigs.length == 1) 
