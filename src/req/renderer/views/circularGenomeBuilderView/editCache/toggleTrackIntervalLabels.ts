@@ -5,7 +5,7 @@ export function toggleTrackIntervalLabels(this: CircularGenomeBuilderView, figur
 {
     this.maybePushEdit(
         figure, {
-            description: `Toggle track interval labels`,
+            description: "Toggle track interval labels",
             commit: (figure: CircularFigure) => 
             {
                 figure.circularFigureBPTrackOptions.showLabels = showLabels;

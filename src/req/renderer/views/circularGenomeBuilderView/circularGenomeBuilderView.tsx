@@ -18,10 +18,10 @@ import {changeContigTextColour} from "./editCache/changeContigTextColour";
 import {changeContigOpacity} from "./editCache/changeContigOpacity";
 import {changeContigVadjust} from "./editCache/changeContigVadjust";
 import {newCustomContig} from "./editCache/newCustomContig";
-import { changeContigStart } from './editCache/changeContigStart';
-import { changeContigEnd } from './editCache/changeContigEnd';
-import { changeRadius } from './editCache/changeRadius';
-import { toggleTrackIntervalLabels } from './editCache/toggleTrackIntervalLabels';
+import {changeContigStart} from "./editCache/changeContigStart";
+import {changeContigEnd} from "./editCache/changeContigEnd";
+import {changeRadius} from "./editCache/changeRadius";
+import {toggleTrackIntervalLabels} from "./editCache/toggleTrackIntervalLabels";
 
 export interface CircularGenomeBuilderViewState {
     figureSelectOvelayOpen: boolean;

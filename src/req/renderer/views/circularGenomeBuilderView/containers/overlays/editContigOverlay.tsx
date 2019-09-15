@@ -202,7 +202,7 @@ export function EditContigOverlay(props: EditContigOverlayProps): JSX.Element
                                                             return;
                                                         }
 
-                                                         enteredStart = newStart;
+                                                        enteredStart = newStart;
                                                     }
                                                 }
                                             }}
@@ -240,7 +240,7 @@ export function EditContigOverlay(props: EditContigOverlayProps): JSX.Element
                                                             return;
                                                         }
 
-                                                         enteredEnd = newEnd;
+                                                        enteredEnd = newEnd;
                                                     }
                                                 }
                                             }}

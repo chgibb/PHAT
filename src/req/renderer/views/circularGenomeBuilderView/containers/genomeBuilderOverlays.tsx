@@ -6,7 +6,7 @@ import {CircularFigure} from "../../../circularFigure/circularFigure";
 import {EditFigureNameOverlay} from "./overlays/editFigureName";
 import {FigureSelectOverlay} from "./overlays/figureSelectOverlay";
 import {EditContigsOverlay} from "./overlays/editContigsOverlay";
-import { EditBPTrackOverlay } from './overlays/editBPTrackOverlay';
+import {EditBPTrackOverlay} from "./overlays/editBPTrackOverlay";
 
 export function GenomeBuilderOverlays(this: CircularGenomeBuilderView, props: { figure: CircularFigure | undefined }): JSX.Element 
 {
@@ -93,21 +93,23 @@ export function GenomeBuilderOverlays(this: CircularGenomeBuilderView, props: { 
                         <EditBPTrackOverlay
                             figure={figure}
                             open={this.state.editBPTrackOptionsOverlayOpen}
-                            onSave={(opts)=>{
+                            onSave={(opts)=>
+                            {
                                 if(figure)
                                 {
-                                if(opts.newRadius !== undefined)
-                                {
-                                    this.changeRadius(figure,opts.newRadius);
-                                }
+                                    if(opts.newRadius !== undefined)
+                                    {
+                                        this.changeRadius(figure,opts.newRadius);
+                                    }
 
-                                if(opts.newShowLabels !== undefined)
-                                {
-                                    this.toggleTrackIntervalLabels(figure,opts.newShowLabels);
+                                    if(opts.newShowLabels !== undefined)
+                                    {
+                                        this.toggleTrackIntervalLabels(figure,opts.newShowLabels);
+                                    }
                                 }
-                            }
                             }}
-                            onClose={()=>{
+                            onClose={()=>
+                            {
                                 this.setState({
                                     editBPTrackOptionsOverlayOpen : false
                                 });
