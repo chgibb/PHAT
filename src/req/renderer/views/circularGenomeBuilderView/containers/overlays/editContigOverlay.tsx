@@ -21,6 +21,8 @@ export interface EditContigOverlayProps {
         newBodyColour?: string,
         newOpacity? : number;
         newVadjust? : number;
+        newStart? : number,
+        newEnd? : number
     }) => void;
     figure: CircularFigure;
     contig: Contig;
@@ -190,11 +192,17 @@ export function EditContigOverlay(props: EditContigOverlayProps): JSX.Element
                                                         let newStart : number | typeof NaN = parseInt(event.target.value);
                                                         if(isNaN(newStart))
                                                         {
-                                                            alert("Vertical adjustment must be a number");
+                                                            alert("Start must be a number");
                                                             return;
                                                         }
 
-                                                        // enteredVadjust = newVadjust;
+                                                        if(newStart < 0)
+                                                        {
+                                                            alert("Start must be greater than 0");
+                                                            return;
+                                                        }
+
+                                                         enteredStart = newStart;
                                                     }
                                                 }
                                             }}
@@ -222,11 +230,17 @@ export function EditContigOverlay(props: EditContigOverlayProps): JSX.Element
                                                         let newEnd : number | typeof NaN = parseInt(event.target.value);
                                                         if(isNaN(newEnd))
                                                         {
-                                                            alert("Vertical adjustment must be a number");
+                                                            alert("End must be a number");
                                                             return;
                                                         }
 
-                                                        //  enteredVadjust = newVadjust;
+                                                        if(newEnd < 0)
+                                                        {
+                                                            alert("End must be greater than 0");
+                                                            return;
+                                                        }
+
+                                                         enteredEnd = newEnd;
                                                     }
                                                 }
                                             }}
@@ -276,7 +290,9 @@ export function EditContigOverlay(props: EditContigOverlayProps): JSX.Element
                                         newBodyColour: enteredBodyColour ? enteredBodyColour.hex : "", 
                                         newTextColour : enteredTextColour ? enteredTextColour.hex : "",
                                         newOpacity : enteredOpacity,
-                                        newVadjust : enteredVadjust
+                                        newVadjust : enteredVadjust,
+                                        newStart :  enteredStart ,
+                                        newEnd : enteredEnd 
                                     });
                                 }}
                                 type="advance"

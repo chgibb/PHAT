@@ -70,6 +70,16 @@ export function GenomeBuilderOverlays(this: CircularGenomeBuilderView, props: { 
                                     {
                                         this.changeContigVadjust(figure,opts.contigUuid,opts.newVadjust);
                                     }
+
+                                    if(opts.newStart !== undefined)
+                                    {
+                                        this.changeContigStart(figure,opts.contigUuid,opts.newStart);
+                                    }
+
+                                    if(opts.newEnd !== undefined)
+                                    {
+                                        this.changeContigEnd(figure,opts.contigUuid,opts.newEnd);
+                                    }
                                 }
                             }}
                             onClose={() => 
