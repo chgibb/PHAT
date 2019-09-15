@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import {CircularFigure} from "../../../../circularFigure/circularFigure";
+import {CircularFigure, Contig, initContigForDisplay} from "../../../../circularFigure/circularFigure";
 import {GridWrapper} from "../../../../containers/gridWrapper";
 import {Grid} from "../../../../components/grid";
 import {Typography} from "../../../../components/typography";
@@ -18,6 +18,7 @@ import {EditContigOverlay, EditContigOverlayProps} from "./editContigOverlay";
 export interface EditContigsOverlayProps {
     onClose: () => void;
     onSave : EditContigOverlayProps["onSave"];
+    newContig : () => void;
     open: boolean;
     figure: CircularFigure;
 }
@@ -39,7 +40,12 @@ export class EditContigsOverlay extends React.Component<EditContigsOverlayProps,
     }
     public render(): JSX.Element 
     {
-        const contig = getReferenceFromUuid(this.props.figure.contigs, this.state.selectedContigUuid);
+        let contig : Contig | undefined = getReferenceFromUuid(this.props.figure.contigs, this.state.selectedContigUuid);
+
+        if(!contig)
+        {
+            contig = getReferenceFromUuid(this.props.figure.customContigs, this.state.selectedContigUuid);
+        }
 
         return (
             <Overlay
@@ -100,9 +106,29 @@ export class EditContigsOverlay extends React.Component<EditContigsOverlayProps,
                                                         }
                                                     </TreeItem>
                                                     <TreeItem nodeId={"1"} label="Custom Contigs">
+                                                        {
+                                                            this.props.figure.customContigs.map((contig, i) => 
+                                                            {
+                                                                return (
+                                                                    <TreeItem
+                                                                        nodeId={`1-${i}`}
+                                                                        label={contig.name}
+                                                                        onClick={() => 
+                                                                        {
+                                                                            this.setState({
+                                                                                selectedContigUuid: contig.uuid
+                                                                            });
+                                                                        }}
+                                                                    />
+                                                                );
+                                                            })
+                                                        }
                                                         <TreeItem
                                                             nodeId={"1-new"}
                                                             label="Create New Custom Contig"
+                                                            onClick={() => {
+                                                                this.props.newContig();
+                                                            }}
                                                             icon={
                                                                 <AddBox
                                                                     color="primary"

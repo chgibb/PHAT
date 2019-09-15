@@ -10,6 +10,9 @@ export function changeContigText(this: CircularGenomeBuilderView, figure: Circul
             {
                 let contig = figure.contigs.find(x => x.uuid == contigUuid);
 
+                if(!contig)
+                    contig = figure.customContigs.find(x => x.uuid == contigUuid);
+
                 if (contig) 
                 {
                     contig.alias = text;
@@ -23,6 +26,11 @@ export function changeContigText(this: CircularGenomeBuilderView, figure: Circul
             {
                 let newContig = newFigure.contigs.find(x => x.uuid == contigUuid);
                 let oldContig = oldFigure.contigs.find(x => x.uuid == contigUuid);
+
+                if(!newContig)
+                    newContig = newFigure.customContigs.find(x => x.uuid == contigUuid);
+                if(!oldContig)
+                oldContig = oldFigure.customContigs.find(x => x.uuid == contigUuid);
 
                 if (newContig && oldContig) 
                 {

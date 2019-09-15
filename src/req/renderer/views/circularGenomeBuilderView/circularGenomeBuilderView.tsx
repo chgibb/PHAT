@@ -17,6 +17,7 @@ import {changeContigBodyColour} from "./editCache/changeContigBodyColour";
 import {changeContigTextColour} from "./editCache/changeContigTextColour";
 import {changeContigOpacity} from "./editCache/changeContigOpacity";
 import { changeContigVadjust } from './editCache/changeContigVadjust';
+import { newCustomContig } from './editCache/newCustomContig';
 
 export interface CircularGenomeBuilderViewState {
     figureSelectOvelayOpen: boolean;
@@ -46,6 +47,7 @@ export class CircularGenomeBuilderView extends React.Component<CircularGenomeBui
     protected changeContigTextColour = changeContigTextColour.bind(this);
     protected changeContigOpacity = changeContigOpacity.bind(this);
     protected changeContigVadjust = changeContigVadjust.bind(this);
+    protected newCustomContig = newCustomContig.bind(this);
     private GenomeBuilderAppBar = GenomeBuilderAppBar.bind(this);
     private GenomeBuilderOverlays = GenomeBuilderOverlays.bind(this);
     public constructor(props: CircularGenomeBuilderViewProps) 
