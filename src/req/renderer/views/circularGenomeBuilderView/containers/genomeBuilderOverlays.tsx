@@ -100,6 +100,11 @@ export function GenomeBuilderOverlays(this: CircularGenomeBuilderView, props: { 
                                 {
                                     this.changeRadius(figure,opts.newRadius);
                                 }
+
+                                if(opts.newShowLabels !== undefined)
+                                {
+                                    this.toggleTrackIntervalLabels(figure,opts.newShowLabels);
+                                }
                             }
                             }}
                             onClose={()=>{
