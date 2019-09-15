@@ -307,7 +307,7 @@ export function buildBaseFigureTemplate(figure: CircularFigure): string
     return `
         ${startPlasmidTrack(
         {
-            trackStyle: "fill:#f0f0f0;stroke:#ccc",
+            trackStyle: "fill:#ffffff;stroke:#fff",
             radius: "{{genome.radius}}"
         })}
             ${startTrackLabel(
