@@ -30,7 +30,7 @@ export function changeContigBodyColour(this: CircularGenomeBuilderView, figure: 
                 if(!newContig)
                     newContig = newFigure.customContigs.find(x => x.uuid == contigUuid);
                 if(!oldContig)
-                oldContig = oldFigure.customContigs.find(x => x.uuid == contigUuid);
+                    oldContig = oldFigure.customContigs.find(x => x.uuid == contigUuid);
 
                 if (newContig && oldContig) 
                 {

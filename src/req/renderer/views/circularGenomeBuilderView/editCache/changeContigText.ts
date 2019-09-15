@@ -30,7 +30,7 @@ export function changeContigText(this: CircularGenomeBuilderView, figure: Circul
                 if(!newContig)
                     newContig = newFigure.customContigs.find(x => x.uuid == contigUuid);
                 if(!oldContig)
-                oldContig = oldFigure.customContigs.find(x => x.uuid == contigUuid);
+                    oldContig = oldFigure.customContigs.find(x => x.uuid == contigUuid);
 
                 if (newContig && oldContig) 
                 {

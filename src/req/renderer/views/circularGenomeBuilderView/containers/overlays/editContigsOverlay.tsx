@@ -126,7 +126,8 @@ export class EditContigsOverlay extends React.Component<EditContigsOverlayProps,
                                                         <TreeItem
                                                             nodeId={"1-new"}
                                                             label="Create New Custom Contig"
-                                                            onClick={() => {
+                                                            onClick={() => 
+                                                            {
                                                                 this.props.newContig();
                                                             }}
                                                             icon={

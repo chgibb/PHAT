@@ -172,69 +172,69 @@ export function EditContigOverlay(props: EditContigOverlayProps): JSX.Element
                 props.contig.allowPositionChange ?
                     <React.Fragment>
                         <div style={{marginLeft: "2.5vh"}}>
-                <Grid container spacing={4} justify="flex-start">
-                    <Typography>Start:</Typography>
-                </Grid>
-            </div>
-            <GridWrapper>
-                <div style={{marginRight: "1vh", marginLeft: "1vh", marginBottom: "1vh", marginTop: "1vh"}}>
-                    <Grid container spacing={4} justify="center">
-                        <Grid item>
-                            <OutlinedInput
-                                label={props.contig.start !== undefined ? props.contig.start.toString() : ""}
-                                inputProps={{
-                                    onChange: (event) => 
-                                    {
-                                        if(event.target.value)
-                                        {
-                                            let newStart : number | typeof NaN = parseInt(event.target.value);
-                                            if(isNaN(newStart))
-                                            {
-                                                alert("Vertical adjustment must be a number");
-                                                return;
-                                            }
+                            <Grid container spacing={4} justify="flex-start">
+                                <Typography>Start:</Typography>
+                            </Grid>
+                        </div>
+                        <GridWrapper>
+                            <div style={{marginRight: "1vh", marginLeft: "1vh", marginBottom: "1vh", marginTop: "1vh"}}>
+                                <Grid container spacing={4} justify="center">
+                                    <Grid item>
+                                        <OutlinedInput
+                                            label={props.contig.start !== undefined ? props.contig.start.toString() : ""}
+                                            inputProps={{
+                                                onChange: (event) => 
+                                                {
+                                                    if(event.target.value)
+                                                    {
+                                                        let newStart : number | typeof NaN = parseInt(event.target.value);
+                                                        if(isNaN(newStart))
+                                                        {
+                                                            alert("Vertical adjustment must be a number");
+                                                            return;
+                                                        }
 
-                                           // enteredVadjust = newVadjust;
-                                        }
-                                    }
-                                }}
-                            />
-                        </Grid>
-                    </Grid>
-                </div>
-                </GridWrapper>
-                <div style={{marginLeft: "2.5vh"}}>
-                <Grid container spacing={4} justify="flex-start">
-                    <Typography>End:</Typography>
-                </Grid>
-            </div>
-            <GridWrapper>
-                <div style={{marginRight: "1vh", marginLeft: "1vh", marginBottom: "1vh", marginTop: "1vh"}}>
-                    <Grid container spacing={4} justify="center">
-                        <Grid item>
-                            <OutlinedInput
-                                label={props.contig.end !== undefined ? props.contig.end.toString() : ""}
-                                inputProps={{
-                                    onChange: (event) => 
-                                    {
-                                        if(event.target.value)
-                                        {
-                                            let newEnd : number | typeof NaN = parseInt(event.target.value);
-                                            if(isNaN(newEnd))
-                                            {
-                                                alert("Vertical adjustment must be a number");
-                                                return;
-                                            }
+                                                        // enteredVadjust = newVadjust;
+                                                    }
+                                                }
+                                            }}
+                                        />
+                                    </Grid>
+                                </Grid>
+                            </div>
+                        </GridWrapper>
+                        <div style={{marginLeft: "2.5vh"}}>
+                            <Grid container spacing={4} justify="flex-start">
+                                <Typography>End:</Typography>
+                            </Grid>
+                        </div>
+                        <GridWrapper>
+                            <div style={{marginRight: "1vh", marginLeft: "1vh", marginBottom: "1vh", marginTop: "1vh"}}>
+                                <Grid container spacing={4} justify="center">
+                                    <Grid item>
+                                        <OutlinedInput
+                                            label={props.contig.end !== undefined ? props.contig.end.toString() : ""}
+                                            inputProps={{
+                                                onChange: (event) => 
+                                                {
+                                                    if(event.target.value)
+                                                    {
+                                                        let newEnd : number | typeof NaN = parseInt(event.target.value);
+                                                        if(isNaN(newEnd))
+                                                        {
+                                                            alert("Vertical adjustment must be a number");
+                                                            return;
+                                                        }
 
-                                          //  enteredVadjust = newVadjust;
-                                        }
-                                    }
-                                }}
-                            />
-                        </Grid>
-                    </Grid>
-                </div>
-            </GridWrapper>
+                                                        //  enteredVadjust = newVadjust;
+                                                    }
+                                                }
+                                            }}
+                                        />
+                                    </Grid>
+                                </Grid>
+                            </div>
+                        </GridWrapper>
                     </React.Fragment> : null
             }
             <div style={{marginBottom:"1vh"}}>
