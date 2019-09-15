@@ -20,11 +20,13 @@ import {changeContigVadjust} from "./editCache/changeContigVadjust";
 import {newCustomContig} from "./editCache/newCustomContig";
 import { changeContigStart } from './editCache/changeContigStart';
 import { changeContigEnd } from './editCache/changeContigEnd';
+import { changeRadius } from './editCache/changeRadius';
 
 export interface CircularGenomeBuilderViewState {
     figureSelectOvelayOpen: boolean;
     editFigureNameOverlayOpen : boolean;
     editContigsOverlayOpen : boolean;
+    editBPTrackOptionsOverlayOpen : boolean;
     selectedFigure: string;
     figurePosition : {
         width : number,
@@ -52,6 +54,7 @@ export class CircularGenomeBuilderView extends React.Component<CircularGenomeBui
     protected changeContigStart = changeContigStart.bind(this);
     protected changeContigEnd = changeContigEnd.bind(this);
     protected newCustomContig = newCustomContig.bind(this);
+    protected changeRadius = changeRadius.bind(this);
     private GenomeBuilderAppBar = GenomeBuilderAppBar.bind(this);
     private GenomeBuilderOverlays = GenomeBuilderOverlays.bind(this);
     public constructor(props: CircularGenomeBuilderViewProps) 

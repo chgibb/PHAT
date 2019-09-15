@@ -6,6 +6,7 @@ import {CircularFigure} from "../../../circularFigure/circularFigure";
 import {EditFigureNameOverlay} from "./overlays/editFigureName";
 import {FigureSelectOverlay} from "./overlays/figureSelectOverlay";
 import {EditContigsOverlay} from "./overlays/editContigsOverlay";
+import { EditBPTrackOverlay } from './overlays/editBPTrackOverlay';
 
 export function GenomeBuilderOverlays(this: CircularGenomeBuilderView, props: { figure: CircularFigure | undefined }): JSX.Element 
 {
@@ -86,6 +87,24 @@ export function GenomeBuilderOverlays(this: CircularGenomeBuilderView, props: { 
                             {
                                 this.setState({
                                     editContigsOverlayOpen : false
+                                });
+                            }}
+                        />
+                        <EditBPTrackOverlay
+                            figure={figure}
+                            open={this.state.editBPTrackOptionsOverlayOpen}
+                            onSave={(opts)=>{
+                                if(figure)
+                                {
+                                if(opts.newRadius !== undefined)
+                                {
+                                    this.changeRadius(figure,opts.newRadius);
+                                }
+                            }
+                            }}
+                            onClose={()=>{
+                                this.setState({
+                                    editBPTrackOptionsOverlayOpen : false
                                 });
                             }}
                         />

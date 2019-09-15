@@ -110,6 +110,11 @@ export function GenomeBuilderAppBar(this: CircularGenomeBuilderView, props: { fi
                             edge="start"
                             color="primary"
                             classes={{colorPrimary: white}}
+                            onClick={()=>{
+                                this.setState({
+                                    editBPTrackOptionsOverlayOpen : true
+                                })
+                            }}
                         >
                             <SwapVertOutlined
                                 style={{
