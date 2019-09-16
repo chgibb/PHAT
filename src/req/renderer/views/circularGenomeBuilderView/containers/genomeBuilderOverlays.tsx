@@ -3,7 +3,7 @@ import * as React from "react";
 import {CircularGenomeBuilderView} from "../circularGenomeBuilderView";
 import {CircularFigure} from "../../../circularFigure/circularFigure";
 
-import {EditFigureNameOverlay} from "./overlays/editFigureName";
+import {EditFigureNameOverlay} from "./overlays/editFigureNameOverlay";
 import {FigureSelectOverlay} from "./overlays/figureSelectOverlay";
 import {EditContigsOverlay} from "./overlays/editContigsOverlay";
 import {EditBPTrackOverlay} from "./overlays/editBPTrackOverlay";
