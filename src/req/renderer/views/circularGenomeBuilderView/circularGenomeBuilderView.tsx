@@ -22,8 +22,8 @@ import {changeContigStart} from "./editCache/changeContigStart";
 import {changeContigEnd} from "./editCache/changeContigEnd";
 import {changeRadius} from "./editCache/changeRadius";
 import {toggleTrackIntervalLabels} from "./editCache/toggleTrackIntervalLabels";
-import { changeIntervalLength } from './editCache/changeIntervalLength';
-import { changeIntervalLabelDirection } from './editCache/changeIntervalLabelDirection';
+import {changeIntervalLength} from "./editCache/changeIntervalLength";
+import {changeIntervalLabelDirection} from "./editCache/changeIntervalLabelDirection";
 
 export interface CircularGenomeBuilderViewState {
     figureSelectOvelayOpen: boolean;

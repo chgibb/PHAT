@@ -107,63 +107,63 @@ export function EditBPTrackOverlay(props: EditBPTrackOverlayProps): JSX.Element
                 </GridWrapper>
                 {
                     showLabels ? 
-                    <React.Fragment>
-                        <div style={{marginLeft: "2.5vh"}}>
-                    <Grid container spacing={4} justify="center">
-                        <Typography>Show Interval Labels Outside Base:</Typography>
-                    </Grid>
-                </div>
-                        <GridWrapper>
-                    <div style={{marginRight: "1vh", marginLeft: "1vh", marginBottom: "1vh", marginTop: "1vh"}}>
-                        <Grid container spacing={4} justify="center">
-                            <Grid item>
-                                <FormGroup>
-                                    <FormControlLabel
-                                        control={<Switch
-                                            color="primary"
-                                            checked={direction == "out" ? true : false}
-                                            onChange={(event) => 
-                                            {
-                                                setDirection(event.target.checked ? "out" : "in");
-                                            }}
-                                        />}
-                                        label=""
-                                    />
-                                </FormGroup>
-                            </Grid>
-                        </Grid>
-                    </div>
-                </GridWrapper>
-                    <div style={{marginLeft: "2.5vh"}}>
-                    <Grid container spacing={4} justify="flex-start">
-                        <Typography>Interval Length:</Typography>
-                    </Grid>
-                </div>
-                <GridWrapper>
-                    <div style={{marginRight: "1vh", marginLeft: "1vh", marginBottom: "1vh", marginTop: "1vh"}}>
-                        <Grid container spacing={4} justify="center">
-                            <Grid item>
-                                <OutlinedInput
-                                    label={props.figure.circularFigureBPTrackOptions.interval.toString()}
-                                    inputProps={{
-                                        onChange: (event) => 
-                                        {
-                                            let newInterval: number | typeof NaN = parseFloat(event.target.value);
-                                            if (isNaN(newInterval)) 
-                                            {
-                                                alert("Interval must be a number");
-                                                return;
-                                            }
+                        <React.Fragment>
+                            <div style={{marginLeft: "2.5vh"}}>
+                                <Grid container spacing={4} justify="center">
+                                    <Typography>Show Interval Labels Outside Base:</Typography>
+                                </Grid>
+                            </div>
+                            <GridWrapper>
+                                <div style={{marginRight: "1vh", marginLeft: "1vh", marginBottom: "1vh", marginTop: "1vh"}}>
+                                    <Grid container spacing={4} justify="center">
+                                        <Grid item>
+                                            <FormGroup>
+                                                <FormControlLabel
+                                                    control={<Switch
+                                                        color="primary"
+                                                        checked={direction == "out" ? true : false}
+                                                        onChange={(event) => 
+                                                        {
+                                                            setDirection(event.target.checked ? "out" : "in");
+                                                        }}
+                                                    />}
+                                                    label=""
+                                                />
+                                            </FormGroup>
+                                        </Grid>
+                                    </Grid>
+                                </div>
+                            </GridWrapper>
+                            <div style={{marginLeft: "2.5vh"}}>
+                                <Grid container spacing={4} justify="flex-start">
+                                    <Typography>Interval Length:</Typography>
+                                </Grid>
+                            </div>
+                            <GridWrapper>
+                                <div style={{marginRight: "1vh", marginLeft: "1vh", marginBottom: "1vh", marginTop: "1vh"}}>
+                                    <Grid container spacing={4} justify="center">
+                                        <Grid item>
+                                            <OutlinedInput
+                                                label={props.figure.circularFigureBPTrackOptions.interval.toString()}
+                                                inputProps={{
+                                                    onChange: (event) => 
+                                                    {
+                                                        let newInterval: number | typeof NaN = parseFloat(event.target.value);
+                                                        if (isNaN(newInterval)) 
+                                                        {
+                                                            alert("Interval must be a number");
+                                                            return;
+                                                        }
 
-                                            enteredInterval = newInterval;
-                                        }
-                                    }}
-                                />
-                            </Grid>
-                        </Grid>
-                    </div>
-                </GridWrapper>
-                </React.Fragment> : null
+                                                        enteredInterval = newInterval;
+                                                    }
+                                                }}
+                                            />
+                                        </Grid>
+                                    </Grid>
+                                </div>
+                            </GridWrapper>
+                        </React.Fragment> : null
                 }
                 <GridWrapper>
                     <div style={{marginRight: "1vh", marginLeft: "1vh", marginBottom: "1vh", marginTop: "1vh"}}>
