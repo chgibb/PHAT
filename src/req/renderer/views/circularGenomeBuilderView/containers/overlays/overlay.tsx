@@ -51,6 +51,8 @@ function IconKindSelect(props: {
             style={{marginBottom: "3vh"}}>
             <Grid container spacing={1} justify="flex-start">
                 <Grid item>
+                {
+                        !props.restrictions.find((x) => x == "noDrawerLeft") ?
                     <IconButton
                         edge="start"
                         color={props.kind == "drawerLeft" ? "primary" : "default"}
@@ -58,7 +60,8 @@ function IconKindSelect(props: {
                         onClick={() => props.setOverlayKind("drawerLeft")}
                     >
                         <BorderLeftOutlined />
-                    </IconButton>
+                    </IconButton> : null
+                }
                     {
                         !props.restrictions.find((x) => x == "noDrawerTop") ?
                             <IconButton
@@ -81,6 +84,8 @@ function IconKindSelect(props: {
                                 <BorderBottomOutlined />
                             </IconButton> : null
                     }
+                    {
+                        !props.restrictions.find((x) => x == "noDrawerRight") ?
                     <IconButton
                         edge="start"
                         color={props.kind == "drawerRight" ? "primary" : "default"}
@@ -88,7 +93,8 @@ function IconKindSelect(props: {
                         onClick={() => props.setOverlayKind("drawerRight")}
                     >
                         <BorderRightOutlined />
-                    </IconButton>
+                    </IconButton> : null
+                    }
                     {
                         !props.restrictions.find((x) => x == "noModal") ?
                             <IconButton
