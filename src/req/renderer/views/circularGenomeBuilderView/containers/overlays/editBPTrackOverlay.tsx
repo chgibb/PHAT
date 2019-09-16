@@ -16,7 +16,9 @@ export interface EditBPTrackOverlayProps {
     onClose: () => void;
     onSave: (opts: {
         newRadius?: number,
+        newInterval? : number,
         newShowLabels? : 0 | 1,
+        newDirection? : "in" | "out",
     }) => void;
     open: boolean;
     figure: CircularFigure;
@@ -25,8 +27,10 @@ export interface EditBPTrackOverlayProps {
 export function EditBPTrackOverlay(props: EditBPTrackOverlayProps): JSX.Element 
 {
     let enteredRadius: number | undefined;
+    let enteredInterval : number | undefined;
 
     let [showLabels, setShowLabels] = React.useState(props.figure.circularFigureBPTrackOptions.showLabels);
+    let [direction,setDirection] = React.useState(props.figure.circularFigureBPTrackOptions.direction);
 
     return (
         <Overlay
@@ -74,6 +78,11 @@ export function EditBPTrackOverlay(props: EditBPTrackOverlayProps): JSX.Element
                         </Grid>
                     </div>
                 </GridWrapper>
+                <div style={{marginLeft: "2.5vh"}}>
+                    <Grid container spacing={4} justify="center">
+                        <Typography>Show Interval Labels:</Typography>
+                    </Grid>
+                </div>
                 <GridWrapper>
                     <div style={{marginRight: "1vh", marginLeft: "1vh", marginBottom: "1vh", marginTop: "1vh"}}>
                         <Grid container spacing={4} justify="center">
@@ -89,13 +98,73 @@ export function EditBPTrackOverlay(props: EditBPTrackOverlayProps): JSX.Element
                                             }}
                                         />}
 
-                                        label="Show Interval Labels"
+                                        label=""
                                     />
                                 </FormGroup>
                             </Grid>
                         </Grid>
                     </div>
                 </GridWrapper>
+                {
+                    showLabels ? 
+                    <React.Fragment>
+                        <div style={{marginLeft: "2.5vh"}}>
+                    <Grid container spacing={4} justify="center">
+                        <Typography>Show Interval Labels Outside Base:</Typography>
+                    </Grid>
+                </div>
+                        <GridWrapper>
+                    <div style={{marginRight: "1vh", marginLeft: "1vh", marginBottom: "1vh", marginTop: "1vh"}}>
+                        <Grid container spacing={4} justify="center">
+                            <Grid item>
+                                <FormGroup>
+                                    <FormControlLabel
+                                        control={<Switch
+                                            color="primary"
+                                            checked={direction == "out" ? true : false}
+                                            onChange={(event) => 
+                                            {
+                                                setDirection(event.target.checked ? "out" : "in");
+                                            }}
+                                        />}
+                                        label=""
+                                    />
+                                </FormGroup>
+                            </Grid>
+                        </Grid>
+                    </div>
+                </GridWrapper>
+                    <div style={{marginLeft: "2.5vh"}}>
+                    <Grid container spacing={4} justify="flex-start">
+                        <Typography>Interval Length:</Typography>
+                    </Grid>
+                </div>
+                <GridWrapper>
+                    <div style={{marginRight: "1vh", marginLeft: "1vh", marginBottom: "1vh", marginTop: "1vh"}}>
+                        <Grid container spacing={4} justify="center">
+                            <Grid item>
+                                <OutlinedInput
+                                    label={props.figure.circularFigureBPTrackOptions.interval.toString()}
+                                    inputProps={{
+                                        onChange: (event) => 
+                                        {
+                                            let newInterval: number | typeof NaN = parseFloat(event.target.value);
+                                            if (isNaN(newInterval)) 
+                                            {
+                                                alert("Interval must be a number");
+                                                return;
+                                            }
+
+                                            enteredInterval = newInterval;
+                                        }
+                                    }}
+                                />
+                            </Grid>
+                        </Grid>
+                    </div>
+                </GridWrapper>
+                </React.Fragment> : null
+                }
                 <GridWrapper>
                     <div style={{marginRight: "1vh", marginLeft: "1vh", marginBottom: "1vh", marginTop: "1vh"}}>
                         <Grid container spacing={4} justify="center">
@@ -113,7 +182,9 @@ export function EditBPTrackOverlay(props: EditBPTrackOverlayProps): JSX.Element
                                     {
                                         props.onSave({
                                             newRadius: enteredRadius,
-                                            newShowLabels: showLabels != props.figure.circularFigureBPTrackOptions.showLabels ? showLabels : undefined
+                                            newInterval : enteredInterval,
+                                            newShowLabels: showLabels != props.figure.circularFigureBPTrackOptions.showLabels ? showLabels : undefined,
+                                            newDirection : direction != props.figure.circularFigureBPTrackOptions.direction ? direction : undefined,
                                         });
                                     }}
                                     type="advance"
