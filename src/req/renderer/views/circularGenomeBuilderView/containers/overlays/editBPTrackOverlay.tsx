@@ -17,6 +17,7 @@ export interface EditBPTrackOverlayProps {
     onSave: (opts: {
         newRadius?: number,
         newInterval? : number,
+        newVadjust?: number,
         newShowLabels? : 0 | 1,
         newDirection? : "in" | "out",
     }) => void;
@@ -28,6 +29,7 @@ export function EditBPTrackOverlay(props: EditBPTrackOverlayProps): JSX.Element
 {
     let enteredRadius: number | undefined;
     let enteredInterval : number | undefined;
+    let enteredVadjust : number | undefined;
 
     let [showLabels, setShowLabels] = React.useState(props.figure.circularFigureBPTrackOptions.showLabels);
     let [direction,setDirection] = React.useState(props.figure.circularFigureBPTrackOptions.direction);
@@ -163,6 +165,35 @@ export function EditBPTrackOverlay(props: EditBPTrackOverlayProps): JSX.Element
                                     </Grid>
                                 </div>
                             </GridWrapper>
+                            <div style={{marginLeft: "2.5vh"}}>
+                                <Grid container spacing={4} justify="flex-start">
+                                    <Typography>Interval Label Vertical Adjustment:</Typography>
+                                </Grid>
+                            </div>
+                            <GridWrapper>
+                                <div style={{marginRight: "1vh", marginLeft: "1vh", marginBottom: "1vh", marginTop: "1vh"}}>
+                                    <Grid container spacing={4} justify="center">
+                                        <Grid item>
+                                            <OutlinedInput
+                                                label={props.figure.circularFigureBPTrackOptions.vAdjust.toString()}
+                                                inputProps={{
+                                                    onChange: (event) => 
+                                                    {
+                                                        let newVadjust: number | typeof NaN = parseFloat(event.target.value);
+                                                        if (isNaN(newVadjust)) 
+                                                        {
+                                                            alert("Vertical Adjustment must be a number");
+                                                            return;
+                                                        }
+
+                                                        enteredVadjust = newVadjust;
+                                                    }
+                                                }}
+                                            />
+                                        </Grid>
+                                    </Grid>
+                                </div>
+                            </GridWrapper>
                         </React.Fragment> : null
                 }
                 <GridWrapper>
@@ -183,6 +214,7 @@ export function EditBPTrackOverlay(props: EditBPTrackOverlayProps): JSX.Element
                                         props.onSave({
                                             newRadius: enteredRadius,
                                             newInterval : enteredInterval,
+                                            newVadjust : enteredVadjust,
                                             newShowLabels: showLabels != props.figure.circularFigureBPTrackOptions.showLabels ? showLabels : undefined,
                                             newDirection : direction != props.figure.circularFigureBPTrackOptions.direction ? direction : undefined,
                                         });

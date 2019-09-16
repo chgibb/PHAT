@@ -109,12 +109,17 @@ export function GenomeBuilderOverlays(this: CircularGenomeBuilderView, props: { 
 
                                     if(opts.newInterval !== undefined)
                                     {
-                                        this.changeIntervalLength(figure,opts.newInterval);
+                                        this.changeIntervalLabelLength(figure,opts.newInterval);
                                     }
 
                                     if(opts.newDirection !== undefined)
                                     {
                                         this.changeIntervalLabelDirection(figure,opts.newDirection);
+                                    }
+
+                                    if(opts.newVadjust !== undefined)
+                                    {
+                                        this.changeIntervalLabelVadjust(figure,opts.newVadjust);
                                     }
                                 }
                             }}
