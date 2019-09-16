@@ -1,7 +1,7 @@
 import {CircularFigure} from "../../../circularFigure/circularFigure";
 import {CircularGenomeBuilderView} from "../circularGenomeBuilderView";
 
-export function changeIntervalLength(this: CircularGenomeBuilderView, figure: CircularFigure, interval: number): void 
+export function changeIntervalLabelLength(this: CircularGenomeBuilderView, figure: CircularFigure, interval: number): void 
 {
     this.maybePushEdit(
         figure, {

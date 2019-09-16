@@ -22,7 +22,7 @@ import {changeContigStart} from "./editCache/changeContigStart";
 import {changeContigEnd} from "./editCache/changeContigEnd";
 import {changeRadius} from "./editCache/changeRadius";
 import {toggleTrackIntervalLabels} from "./editCache/toggleTrackIntervalLabels";
-import {changeIntervalLength} from "./editCache/changeIntervalLength";
+import {changeIntervalLabelLength} from "./editCache/changeIntervalLabelLength";
 import {changeIntervalLabelDirection} from "./editCache/changeIntervalLabelDirection";
 
 export interface CircularGenomeBuilderViewState {
@@ -59,7 +59,7 @@ export class CircularGenomeBuilderView extends React.Component<CircularGenomeBui
     protected newCustomContig = newCustomContig.bind(this);
     protected changeRadius = changeRadius.bind(this);
     protected toggleTrackIntervalLabels = toggleTrackIntervalLabels.bind(this);
-    protected changeIntervalLength = changeIntervalLength.bind(this);
+    protected changeIntervalLength = changeIntervalLabelLength.bind(this);
     protected changeIntervalLabelDirection = changeIntervalLabelDirection.bind(this);
     private GenomeBuilderAppBar = GenomeBuilderAppBar.bind(this);
     private GenomeBuilderOverlays = GenomeBuilderOverlays.bind(this);
