@@ -17,6 +17,7 @@ export interface AlignmentsReportTableProps
     fastas?: Array<Fasta>;
     onRowClick : (event: React.MouseEvent | undefined, rowData: AlignData | undefined) => void;
     viewMore : (rowData : AlignData) => void;
+    toolTipText : string;
 }
 
 export class AlignmentsReportTable extends React.Component<AlignmentsReportTableProps, {}>
@@ -231,7 +232,7 @@ export class AlignmentsReportTable extends React.Component<AlignmentsReportTable
                                     <div className={AlignmentsReportTable.viewMoreId(row)}><Search /></div>
                                 );
                             }) as any,
-                            tooltip : "View More",
+                            tooltip : this.props.toolTipText,
                             onClick : () => 
                             {
                                 this.props.viewMore(row);

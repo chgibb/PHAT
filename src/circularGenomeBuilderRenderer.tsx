@@ -35,6 +35,11 @@ class CircularGenomeBuilderApp extends React.Component<{},CircularGenomeBuilderV
                     {
                         this.setState({fastas : arg.val});
                     }
+
+                    if(arg.key == "aligns" && arg.val !== undefined)
+                    {
+                        this.setState({aligns : arg.val});
+                    }
                 }
             });
     }
@@ -45,6 +50,7 @@ class CircularGenomeBuilderApp extends React.Component<{},CircularGenomeBuilderV
             <CircularGenomeBuilderView 
                 figures={this.state.figures ? this.state.figures : []}
                 fastas={this.state.fastas ? this.state.fastas : []}
+                aligns={this.state.aligns ? this.state.aligns : []}
             />
         );
     }

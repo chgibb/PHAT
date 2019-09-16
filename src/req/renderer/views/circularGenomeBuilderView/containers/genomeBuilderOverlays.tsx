@@ -7,6 +7,7 @@ import {EditFigureNameOverlay} from "./overlays/editFigureNameOverlay";
 import {FigureSelectOverlay} from "./overlays/figureSelectOverlay";
 import {EditContigsOverlay} from "./overlays/editContigsOverlay";
 import {EditBPTrackOverlay} from "./overlays/editBPTrackOverlay";
+import { CoverageTrackOverlay } from './overlays/coverageTrackOverlay';
 
 export function GenomeBuilderOverlays(this: CircularGenomeBuilderView, props: { figure: CircularFigure | undefined }): JSX.Element 
 {
@@ -129,6 +130,18 @@ export function GenomeBuilderOverlays(this: CircularGenomeBuilderView, props: { 
                                     editBPTrackOptionsOverlayOpen : false
                                 });
                             }}
+                        />
+                        <CoverageTrackOverlay
+                            onSave={() => null}
+                            onClose={()=> {
+                                this.setState({
+                                    coverageTrackOverlayOpen : false
+                                })
+                            }}
+                            open={this.state.coverageTrackOverlayOpen}
+                            figure={figure}
+                            fastas={this.props.fastas}
+                            aligns={this.props.aligns}
                         />
                     </React.Fragment> : null
             }

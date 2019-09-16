@@ -25,12 +25,14 @@ import {toggleTrackIntervalLabels} from "./editCache/toggleTrackIntervalLabels";
 import {changeIntervalLabelLength} from "./editCache/changeIntervalLabelLength";
 import {changeIntervalLabelDirection} from "./editCache/changeIntervalLabelDirection";
 import { changeIntervalLabelVadjust } from './editCache/changeIntervalLabelVadjust';
+import { AlignData } from '../../../alignData';
 
 export interface CircularGenomeBuilderViewState {
     figureSelectOvelayOpen: boolean;
     editFigureNameOverlayOpen : boolean;
     editContigsOverlayOpen : boolean;
     editBPTrackOptionsOverlayOpen : boolean;
+    coverageTrackOverlayOpen : boolean;
     selectedFigure: string;
     figurePosition : {
         width : number,
@@ -43,6 +45,7 @@ export interface CircularGenomeBuilderViewState {
 export interface CircularGenomeBuilderViewProps {
     figures: Array<CircularFigure>;
     fastas: Array<Fasta>;
+    aligns : Array<AlignData>;
 }
 
 export class CircularGenomeBuilderView extends React.Component<CircularGenomeBuilderViewProps, CircularGenomeBuilderViewState>
