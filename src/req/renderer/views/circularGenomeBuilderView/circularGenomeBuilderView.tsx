@@ -7,6 +7,7 @@ import {CircularFigure} from "../../circularFigure/circularFigure";
 import {Fasta} from "../../../fasta";
 import {SaveKeyEvent} from "../../../ipcEvents";
 import {CircularGenome} from "../../containers/circularGenome";
+import {AlignData} from "../../../alignData";
 
 import {GenomeBuilderAppBar} from "./containers/genomeBuilderAppBar";
 import {GenomeBuilderOverlays} from "./containers/genomeBuilderOverlays";
@@ -24,8 +25,7 @@ import {changeRadius} from "./editCache/changeRadius";
 import {toggleTrackIntervalLabels} from "./editCache/toggleTrackIntervalLabels";
 import {changeIntervalLabelLength} from "./editCache/changeIntervalLabelLength";
 import {changeIntervalLabelDirection} from "./editCache/changeIntervalLabelDirection";
-import { changeIntervalLabelVadjust } from './editCache/changeIntervalLabelVadjust';
-import { AlignData } from '../../../alignData';
+import {changeIntervalLabelVadjust} from "./editCache/changeIntervalLabelVadjust";
 
 export interface CircularGenomeBuilderViewState {
     figureSelectOvelayOpen: boolean;

@@ -1,10 +1,11 @@
 import * as React from "react";
 
-import { CircularFigure } from '../../../../circularFigure/circularFigure';
-import { Fasta } from '../../../../../fasta';
-import { AlignData } from '../../../../../alignData';
-import { Overlay } from './overlay';
-import { AlignmentsReportTable } from '../../../../containers/tables/alignmentsReportTable';
+import {CircularFigure} from "../../../../circularFigure/circularFigure";
+import {Fasta} from "../../../../../fasta";
+import {AlignData} from "../../../../../alignData";
+import {AlignmentsReportTable} from "../../../../containers/tables/alignmentsReportTable";
+
+import {Overlay} from "./overlay";
 
 export interface CoverageTrackOverlayProps
 {
@@ -42,13 +43,15 @@ export class CoverageTrackOverlay extends React.Component<CoverageTrackOverlayPr
                 onClose={this.props.onClose}
             >
                 <AlignmentsReportTable
-                    viewMore={(rowData) => {
+                    viewMore={(rowData) => 
+                    {
                         this.setState({
                             selectedAlignUuid : rowData.uuid
                         });
                     }}
                     toolTipText="View Coverage Tracks For This Alignment"
-                    aligns={this.props.aligns.filter((x) => {
+                    aligns={this.props.aligns.filter((x) => 
+                    {
                         if(x.fasta)
                         {
                             if(x.fasta.uuid == this.props.figure.uuidFasta)
@@ -62,6 +65,6 @@ export class CoverageTrackOverlay extends React.Component<CoverageTrackOverlayPr
                     onRowClick={() => null}
                 />
             </Overlay>
-        )
+        );
     }
 }

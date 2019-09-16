@@ -51,17 +51,17 @@ function IconKindSelect(props: {
             style={{marginBottom: "3vh"}}>
             <Grid container spacing={1} justify="flex-start">
                 <Grid item>
-                {
+                    {
                         !props.restrictions.find((x) => x == "noDrawerLeft") ?
-                    <IconButton
-                        edge="start"
-                        color={props.kind == "drawerLeft" ? "primary" : "default"}
-                        classes={{colorPrimary: blue}}
-                        onClick={() => props.setOverlayKind("drawerLeft")}
-                    >
-                        <BorderLeftOutlined />
-                    </IconButton> : null
-                }
+                            <IconButton
+                                edge="start"
+                                color={props.kind == "drawerLeft" ? "primary" : "default"}
+                                classes={{colorPrimary: blue}}
+                                onClick={() => props.setOverlayKind("drawerLeft")}
+                            >
+                                <BorderLeftOutlined />
+                            </IconButton> : null
+                    }
                     {
                         !props.restrictions.find((x) => x == "noDrawerTop") ?
                             <IconButton
@@ -86,14 +86,14 @@ function IconKindSelect(props: {
                     }
                     {
                         !props.restrictions.find((x) => x == "noDrawerRight") ?
-                    <IconButton
-                        edge="start"
-                        color={props.kind == "drawerRight" ? "primary" : "default"}
-                        classes={{colorPrimary: blue}}
-                        onClick={() => props.setOverlayKind("drawerRight")}
-                    >
-                        <BorderRightOutlined />
-                    </IconButton> : null
+                            <IconButton
+                                edge="start"
+                                color={props.kind == "drawerRight" ? "primary" : "default"}
+                                classes={{colorPrimary: blue}}
+                                onClick={() => props.setOverlayKind("drawerRight")}
+                            >
+                                <BorderRightOutlined />
+                            </IconButton> : null
                     }
                     {
                         !props.restrictions.find((x) => x == "noModal") ?
