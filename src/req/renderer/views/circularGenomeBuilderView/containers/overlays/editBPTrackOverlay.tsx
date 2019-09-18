@@ -34,11 +34,13 @@ export function EditBPTrackOverlay(props: EditBPTrackOverlayProps): JSX.Element
     let [showLabels, setShowLabels] = React.useState(props.figure.circularFigureBPTrackOptions.showLabels);
     let [direction,setDirection] = React.useState(props.figure.circularFigureBPTrackOptions.direction);
 
-    React.useEffect(() => {
+    React.useEffect(() => 
+    {
         setShowLabels(props.figure.circularFigureBPTrackOptions.showLabels);
     },[props.figure.circularFigureBPTrackOptions.showLabels]);
 
-    React.useEffect(()=>{
+    React.useEffect(()=>
+    {
         setDirection(props.figure.circularFigureBPTrackOptions.direction);
     },[props.figure.circularFigureBPTrackOptions.direction]);
 
