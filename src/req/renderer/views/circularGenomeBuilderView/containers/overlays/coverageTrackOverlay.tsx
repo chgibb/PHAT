@@ -49,6 +49,7 @@ export class CoverageTrackOverlay extends React.Component<CoverageTrackOverlayPr
                             selectedAlignUuid : rowData.uuid
                         });
                     }}
+                    clickableCells={false}
                     toolTipText="View Coverage Tracks For This Alignment"
                     aligns={this.props.aligns.filter((x) => 
                     {

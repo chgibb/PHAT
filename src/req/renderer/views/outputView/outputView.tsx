@@ -154,6 +154,7 @@ export class OutputView extends React.Component<OutputViewProps,OutputViewState>
                                         clickedRow : rowData
                                     });
                                 }}
+                                clickableCells={true}
                                 toolTipText="View More"
                                 aligns={this.props.aligns}
                                 fastas={this.props.fastas}
