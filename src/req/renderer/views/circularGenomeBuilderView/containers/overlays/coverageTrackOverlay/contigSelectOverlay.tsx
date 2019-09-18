@@ -12,19 +12,19 @@ import {ExpandMore} from "../../../../../components/icons/expandMore";
 import {ChevronRight} from "../../../../../components/icons/chevronRight";
 import {ContigTree} from "../../../../../containers/contigTree";
 
-export interface AlignmentCoverageTracksOverlayProps {
+export interface ContigSelectProps {
     onClose: () => void;
     align: AlignData;
     figure: CircularFigure;
 }
 
-export interface AlignmentCoverageTrackOverlayState {
+export interface ContigSelectState {
 
 }
 
-export class AlignmentCoverageTrackOverlay extends React.Component<AlignmentCoverageTracksOverlayProps, AlignmentCoverageTrackOverlayState>
+export class ContigSelectOverlay extends React.Component<ContigSelectProps, ContigSelectState>
 {
-    public constructor(props: AlignmentCoverageTracksOverlayProps) 
+    public constructor(props: ContigSelectProps) 
     {
         super(props);
 

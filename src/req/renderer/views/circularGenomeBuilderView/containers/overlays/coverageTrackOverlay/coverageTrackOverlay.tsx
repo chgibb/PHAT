@@ -7,7 +7,7 @@ import {AlignmentsReportTable} from "../../../../../containers/tables/alignments
 import {getReferenceFromUuid} from "../../../../../../uniquelyAddressable";
 
 import {Overlay} from "./../overlay";
-import {AlignmentCoverageTrackOverlay} from "./alignmentCoverageTracksOverlay";
+import {ContigSelectOverlay} from "./contigSelectOverlay";
 
 export interface CoverageTrackOverlayProps
 {
@@ -48,7 +48,7 @@ export class CoverageTrackOverlay extends React.Component<CoverageTrackOverlayPr
             >
                 {
                     selectedAlign ? 
-                        <AlignmentCoverageTrackOverlay
+                        <ContigSelectOverlay
                             onClose={() => 
                             {
                                 this.setState({
