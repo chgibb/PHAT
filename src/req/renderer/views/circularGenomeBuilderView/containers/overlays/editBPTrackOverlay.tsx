@@ -81,7 +81,7 @@ export function EditBPTrackOverlay(props: EditBPTrackOverlayProps): JSX.Element
                     </div>
                 </GridWrapper>
                 <div style={{marginLeft: "2.5vh"}}>
-                    <Grid container spacing={4} justify="center">
+                    <Grid container spacing={4} justify="flex-start">
                         <Typography>Show Interval Labels:</Typography>
                     </Grid>
                 </div>
@@ -111,7 +111,7 @@ export function EditBPTrackOverlay(props: EditBPTrackOverlayProps): JSX.Element
                     showLabels ? 
                         <React.Fragment>
                             <div style={{marginLeft: "2.5vh"}}>
-                                <Grid container spacing={4} justify="center">
+                                <Grid container spacing={4} justify="flex-start">
                                     <Typography>Show Interval Labels Outside Base:</Typography>
                                 </Grid>
                             </div>
