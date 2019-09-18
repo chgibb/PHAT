@@ -153,7 +153,7 @@ export function Overlay(props: OverlayProps): JSX.Element | null
                 variant={props.open ? "permanent" : "temporary"}
                 open={props.open}
             >
-                <div className={drawer}>
+                <div className={drawer} style={{overflowX:"hidden"}}>
                     <React.Fragment>
                         <IconKindSelect kind={kind} restrictions={props.restrictions} setOverlayKind={setKind} onClose={props.onClose} />
                         {props.children}
@@ -168,10 +168,10 @@ export function Overlay(props: OverlayProps): JSX.Element | null
                 PaperComponent={DraggablePaper}
                 hideBackdrop={true}
             >
-                <React.Fragment>
+                <div style={{overflowX:"hidden"}}>
                     <IconKindSelect kind={kind} restrictions={props.restrictions} setOverlayKind={setKind} onClose={props.onClose} />
                     {props.children}
-                </React.Fragment>
+                </div>
             </Dialog>
         );
     }
