@@ -4,10 +4,10 @@ import {CircularFigure} from "../../../../../circularFigure/circularFigure";
 import {Fasta} from "../../../../../../fasta";
 import {AlignData} from "../../../../../../alignData";
 import {AlignmentsReportTable} from "../../../../../containers/tables/alignmentsReportTable";
+import {getReferenceFromUuid} from "../../../../../../uniquelyAddressable";
 
 import {Overlay} from "./../overlay";
-import { getReferenceFromUuid } from '../../../../../../uniquelyAddressable';
-import { AlignmentCoverageTrackOverlay } from './alignmentCoverageTracksOverlay';
+import {AlignmentCoverageTrackOverlay} from "./alignmentCoverageTracksOverlay";
 
 export interface CoverageTrackOverlayProps
 {
@@ -48,38 +48,39 @@ export class CoverageTrackOverlay extends React.Component<CoverageTrackOverlayPr
             >
                 {
                     selectedAlign ? 
-                    <AlignmentCoverageTrackOverlay
-                        onClose={() => {
-                            this.setState({
-                                selectedAlignUuid : ""
-                            });
-                        }}
-                        align={selectedAlign}
-                        figure={this.props.figure}
-                    /> :
-                <AlignmentsReportTable
-                    viewMore={(rowData) => 
-                    {
-                        this.setState({
-                            selectedAlignUuid : rowData.uuid
-                        });
-                    }}
-                    clickableCells={false}
-                    toolTipText="View Coverage Tracks For This Alignment"
-                    aligns={this.props.aligns.filter((x) => 
-                    {
-                        if(x.fasta)
-                        {
-                            if(x.fasta.uuid == this.props.figure.uuidFasta)
+                        <AlignmentCoverageTrackOverlay
+                            onClose={() => 
                             {
-                                return x;
-                            }
-                        }
-                        return undefined;
-                    })}
-                    fastas={this.props.fastas}
-                    onRowClick={() => null}
-                />
+                                this.setState({
+                                    selectedAlignUuid : ""
+                                });
+                            }}
+                            align={selectedAlign}
+                            figure={this.props.figure}
+                        /> :
+                        <AlignmentsReportTable
+                            viewMore={(rowData) => 
+                            {
+                                this.setState({
+                                    selectedAlignUuid : rowData.uuid
+                                });
+                            }}
+                            clickableCells={false}
+                            toolTipText="View Coverage Tracks For This Alignment"
+                            aligns={this.props.aligns.filter((x) => 
+                            {
+                                if(x.fasta)
+                                {
+                                    if(x.fasta.uuid == this.props.figure.uuidFasta)
+                                    {
+                                        return x;
+                                    }
+                                }
+                                return undefined;
+                            })}
+                            fastas={this.props.fastas}
+                            onRowClick={() => null}
+                        />
                 }
             </Overlay>
         );

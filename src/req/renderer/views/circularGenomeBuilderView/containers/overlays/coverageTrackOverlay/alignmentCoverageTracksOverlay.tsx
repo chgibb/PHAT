@@ -1,10 +1,11 @@
 import * as React from "react";
-import { Grid } from '../../../../../components/grid';
-import { IconButton } from '../../../../../components/iconButton';
-import { blue } from '../../../../../styles/colours';
-import { ChevronLeft } from '../../../../../components/icons/chevronLeft';
-import { AlignData } from '../../../../../../alignData';
-import { CircularFigure } from '../../../../../circularFigure/circularFigure';
+
+import {Grid} from "../../../../../components/grid";
+import {IconButton} from "../../../../../components/iconButton";
+import {blue} from "../../../../../styles/colours";
+import {ChevronLeft} from "../../../../../components/icons/chevronLeft";
+import {AlignData} from "../../../../../../alignData";
+import {CircularFigure} from "../../../../../circularFigure/circularFigure";
 
 export interface AlignmentCoverageTracksOverlayProps
 {
