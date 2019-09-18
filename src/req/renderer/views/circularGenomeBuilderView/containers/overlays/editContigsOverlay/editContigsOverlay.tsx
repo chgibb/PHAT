@@ -1,64 +1,61 @@
 import * as React from "react";
 
-import {CircularFigure, Contig, initContigForDisplay} from "../../../../../circularFigure/circularFigure";
-import {GridWrapper} from "../../../../../containers/gridWrapper";
-import {Grid} from "../../../../../components/grid";
-import {Typography} from "../../../../../components/typography";
-import {TreeView} from "../../../../../components/treeView";
-import {ChevronRight} from "../../../../../components/icons/chevronRight";
-import {ExpandMore} from "../../../../../components/icons/expandMore";
-import {blue} from "../../../../../styles/colours";
-import {TreeItem} from "../../../../../components/treeItem";
-import {AddBox} from "../../../../../components/icons/addBox";
-import {getReferenceFromUuid} from "../../../../../../uniquelyAddressable";
+import { CircularFigure, Contig, initContigForDisplay } from "../../../../../circularFigure/circularFigure";
+import { GridWrapper } from "../../../../../containers/gridWrapper";
+import { Grid } from "../../../../../components/grid";
+import { Typography } from "../../../../../components/typography";
+import { TreeView } from "../../../../../components/treeView";
+import { ChevronRight } from "../../../../../components/icons/chevronRight";
+import { ExpandMore } from "../../../../../components/icons/expandMore";
+import { blue } from "../../../../../styles/colours";
+import { TreeItem } from "../../../../../components/treeItem";
+import { AddBox } from "../../../../../components/icons/addBox";
+import { getReferenceFromUuid } from "../../../../../../uniquelyAddressable";
 
-import {Overlay} from "./../overlay";
-import {EditContigOverlay, EditContigOverlayProps} from "./editContigOverlay";
+import { Overlay } from "./../overlay";
+import { EditContigOverlay, EditContigOverlayProps } from "./editContigOverlay";
+import { ContigTree } from '../../../../../containers/contigTree';
 
 export interface EditContigsOverlayProps {
     onClose: () => void;
-    onSave : EditContigOverlayProps["onSave"];
-    newContig : () => void;
+    onSave: EditContigOverlayProps["onSave"];
+    newContig: () => void;
     open: boolean;
     figure: CircularFigure;
 }
 
 export interface EditContigsOverlayState {
     selectedContigUuid: string;
-    allowMovingSelectContig : boolean;
+    allowMovingSelectContig: boolean;
 }
 export class EditContigsOverlay extends React.Component<EditContigsOverlayProps, EditContigsOverlayState>
 {
-    public constructor(props: EditContigsOverlayProps) 
-    {
+    public constructor(props: EditContigsOverlayProps) {
         super(props);
 
         this.state = {
             selectedContigUuid: "",
-            allowMovingSelectContig : false
+            allowMovingSelectContig: false
         };
     }
-    public render(): JSX.Element 
-    {
-        let contig : Contig | undefined = getReferenceFromUuid(this.props.figure.contigs, this.state.selectedContigUuid);
+    public render(): JSX.Element {
+        let contig: Contig | undefined = getReferenceFromUuid(this.props.figure.contigs, this.state.selectedContigUuid);
 
-        if(!contig)
-        {
+        if (!contig) {
             contig = getReferenceFromUuid(this.props.figure.customContigs, this.state.selectedContigUuid);
         }
 
         return (
             <Overlay
                 kind="drawerRight"
-                restrictions={["noModal","noDrawerTop","noDrawerBottom"]}
+                restrictions={["noModal", "noDrawerTop", "noDrawerBottom"]}
                 open={this.props.open}
                 onClose={this.props.onClose}
             >
                 <div>
                     {
                         contig ? <EditContigOverlay
-                            onClose={() => 
-                            {
+                            onClose={() => {
                                 this.setState({
                                     selectedContigUuid: ""
                                 });
@@ -70,7 +67,7 @@ export class EditContigsOverlay extends React.Component<EditContigsOverlayProps,
                         /> :
                             <React.Fragment>
                                 <GridWrapper>
-                                    <div style={{marginRight: "1vh", marginLeft: "1vh", marginBottom: "1vh"}}>
+                                    <div style={{ marginRight: "1vh", marginLeft: "1vh", marginBottom: "1vh" }}>
                                         <Grid container spacing={4} justify="center">
                                             <Grid item>
                                                 <Typography variant="h5">Edit Contigs</Typography>
@@ -79,65 +76,45 @@ export class EditContigsOverlay extends React.Component<EditContigsOverlayProps,
                                     </div>
                                 </GridWrapper>
                                 <GridWrapper>
-                                    <div style={{marginLeft: "1vh", marginBottom: "1vh"}}>
+                                    <div style={{ marginLeft: "1vh", marginBottom: "1vh" }}>
                                         <Grid container direction="row" spacing={1} justify="center">
                                             <Grid item>
                                                 <TreeView
-                                                    defaultExpandIcon={<ChevronRight color="primary" classes={{colorPrimary: blue}} />}
-                                                    defaultCollapseIcon={<ExpandMore color="primary" classes={{colorPrimary: blue}} />}
+                                                    defaultExpandIcon={<ChevronRight color="primary" classes={{ colorPrimary: blue }} />}
+                                                    defaultCollapseIcon={<ExpandMore color="primary" classes={{ colorPrimary: blue }} />}
                                                 >
-                                                    <TreeItem nodeId={"0"} label="Reference Contigs">
-                                                        {
-                                                            this.props.figure.contigs.map((contig, i) => 
-                                                            {
-                                                                return (
-                                                                    <TreeItem
-                                                                        nodeId={`0-${i}`}
-                                                                        label={contig.name}
-                                                                        onClick={() => 
-                                                                        {
-                                                                            this.setState({
-                                                                                selectedContigUuid: contig.uuid
-                                                                            });
-                                                                        }}
-                                                                    />
-                                                                );
-                                                            })
-                                                        }
-                                                    </TreeItem>
-                                                    <TreeItem nodeId={"1"} label="Custom Contigs">
-                                                        {
-                                                            this.props.figure.customContigs.map((contig, i) => 
-                                                            {
-                                                                return (
-                                                                    <TreeItem
-                                                                        nodeId={`1-${i}`}
-                                                                        label={contig.name}
-                                                                        onClick={() => 
-                                                                        {
-                                                                            this.setState({
-                                                                                selectedContigUuid: contig.uuid
-                                                                            });
-                                                                        }}
-                                                                    />
-                                                                );
-                                                            })
-                                                        }
+                                                    <ContigTree
+                                                        label="Reference Contigs"
+                                                        contigs={this.props.figure.contigs}
+                                                        onClick={(contig) => {
+                                                            this.setState({
+                                                                selectedContigUuid: contig.uuid
+                                                            });
+                                                        }}
+                                                    />
+                                                    <ContigTree
+                                                        label="Custom Contigs"
+                                                        contigs={this.props.figure.customContigs}
+                                                        onClick={(contig) => {
+                                                            this.setState({
+                                                                selectedContigUuid: contig.uuid
+                                                            });
+                                                        }}
+                                                    >
                                                         <TreeItem
                                                             nodeId={"1-new"}
                                                             label="Create New Custom Contig"
-                                                            onClick={() => 
-                                                            {
+                                                            onClick={() => {
                                                                 this.props.newContig();
                                                             }}
                                                             icon={
                                                                 <AddBox
                                                                     color="primary"
-                                                                    classes={{colorPrimary: blue}}
+                                                                    classes={{ colorPrimary: blue }}
                                                                 />
                                                             }
                                                         />
-                                                    </TreeItem>
+                                                    </ContigTree>
                                                 </TreeView>
                                             </Grid>
                                         </Grid>
