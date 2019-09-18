@@ -1,16 +1,16 @@
 import * as React from "react";
 import {ColorResult} from "react-color";
 
-import {CircularFigure, Contig} from "../../../../circularFigure/circularFigure";
-import {GridWrapper} from "../../../../containers/gridWrapper";
-import {Grid} from "../../../../components/grid";
-import {IconButton} from "../../../../components/iconButton";
-import {blue} from "../../../../styles/colours";
-import {ChevronLeft} from "../../../../components/icons/chevronLeft";
-import {OutlinedInput} from "../../../../components/outlinedInput";
-import {Button} from "../../../../components/button";
-import {Typography} from "../../../../components/typography";
-import {ColourPicker} from "../../../../components/colourPicker";
+import {CircularFigure, Contig} from "../../../../../circularFigure/circularFigure";
+import {GridWrapper} from "../../../../../containers/gridWrapper";
+import {Grid} from "../../../../../components/grid";
+import {IconButton} from "../../../../../components/iconButton";
+import {blue} from "../../../../../styles/colours";
+import {ChevronLeft} from "../../../../../components/icons/chevronLeft";
+import {OutlinedInput} from "../../../../../components/outlinedInput";
+import {Button} from "../../../../../components/button";
+import {Typography} from "../../../../../components/typography";
+import {ColourPicker} from "../../../../../components/colourPicker";
 
 export interface EditContigOverlayProps {
     onClose: () => void;

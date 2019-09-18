@@ -1,18 +1,18 @@
 import * as React from "react";
 
-import {CircularFigure, Contig, initContigForDisplay} from "../../../../circularFigure/circularFigure";
-import {GridWrapper} from "../../../../containers/gridWrapper";
-import {Grid} from "../../../../components/grid";
-import {Typography} from "../../../../components/typography";
-import {TreeView} from "../../../../components/treeView";
-import {ChevronRight} from "../../../../components/icons/chevronRight";
-import {ExpandMore} from "../../../../components/icons/expandMore";
-import {blue} from "../../../../styles/colours";
-import {TreeItem} from "../../../../components/treeItem";
-import {AddBox} from "../../../../components/icons/addBox";
-import {getReferenceFromUuid} from "../../../../../uniquelyAddressable";
+import {CircularFigure, Contig, initContigForDisplay} from "../../../../../circularFigure/circularFigure";
+import {GridWrapper} from "../../../../../containers/gridWrapper";
+import {Grid} from "../../../../../components/grid";
+import {Typography} from "../../../../../components/typography";
+import {TreeView} from "../../../../../components/treeView";
+import {ChevronRight} from "../../../../../components/icons/chevronRight";
+import {ExpandMore} from "../../../../../components/icons/expandMore";
+import {blue} from "../../../../../styles/colours";
+import {TreeItem} from "../../../../../components/treeItem";
+import {AddBox} from "../../../../../components/icons/addBox";
+import {getReferenceFromUuid} from "../../../../../../uniquelyAddressable";
 
-import {Overlay} from "./overlay";
+import {Overlay} from "./../overlay";
 import {EditContigOverlay, EditContigOverlayProps} from "./editContigOverlay";
 
 export interface EditContigsOverlayProps {

@@ -1,11 +1,13 @@
 import * as React from "react";
 
-import {CircularFigure} from "../../../../circularFigure/circularFigure";
-import {Fasta} from "../../../../../fasta";
-import {AlignData} from "../../../../../alignData";
-import {AlignmentsReportTable} from "../../../../containers/tables/alignmentsReportTable";
+import {CircularFigure} from "../../../../../circularFigure/circularFigure";
+import {Fasta} from "../../../../../../fasta";
+import {AlignData} from "../../../../../../alignData";
+import {AlignmentsReportTable} from "../../../../../containers/tables/alignmentsReportTable";
 
-import {Overlay} from "./overlay";
+import {Overlay} from "./../overlay";
+import { getReferenceFromUuid } from '../../../../../../uniquelyAddressable';
+import { AlignmentCoverageTrackOverlay } from './alignmentCoverageTracksOverlay';
 
 export interface CoverageTrackOverlayProps
 {
@@ -35,6 +37,8 @@ export class CoverageTrackOverlay extends React.Component<CoverageTrackOverlayPr
 
     public render() : JSX.Element
     {
+        let selectedAlign = getReferenceFromUuid(this.props.aligns,this.state.selectedAlignUuid);
+
         return (
             <Overlay
                 kind="drawerTop"
@@ -42,6 +46,17 @@ export class CoverageTrackOverlay extends React.Component<CoverageTrackOverlayPr
                 open={this.props.open}
                 onClose={this.props.onClose}
             >
+                {
+                    selectedAlign ? 
+                    <AlignmentCoverageTrackOverlay
+                        onClose={() => {
+                            this.setState({
+                                selectedAlignUuid : ""
+                            });
+                        }}
+                        align={selectedAlign}
+                        figure={this.props.figure}
+                    /> :
                 <AlignmentsReportTable
                     viewMore={(rowData) => 
                     {
@@ -65,6 +80,7 @@ export class CoverageTrackOverlay extends React.Component<CoverageTrackOverlayPr
                     fastas={this.props.fastas}
                     onRowClick={() => null}
                 />
+                }
             </Overlay>
         );
     }
