@@ -23,7 +23,7 @@ export function EditFigureNameOverlay(props: EditFigureNameOverlayProps): JSX.El
     return (
         <Overlay
             kind="drawerLeft"
-            restrictions={["noModal"]}
+            restrictions={[]}
             onClose={props.onClose}
             open={props.open}
         >
