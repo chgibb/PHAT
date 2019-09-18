@@ -18,6 +18,7 @@ export interface AlignmentsReportTableProps
     viewMore : (rowData : AlignData) => void;
     clickableCells: boolean;
     toolTipText : string;
+    title : string;
 }
 
 export class AlignmentsReportTable extends React.Component<AlignmentsReportTableProps, {}>
@@ -64,7 +65,7 @@ export class AlignmentsReportTable extends React.Component<AlignmentsReportTable
         return (
             <TableCellHover>
                 <Table<AlignData>
-                    title="Alignment Reports"
+                    title={this.props.title}
                     data={this.props.aligns ? this.props.aligns : []}
                     onRowClick={(event,rowData) => 
                     {
