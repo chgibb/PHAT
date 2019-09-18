@@ -38,7 +38,7 @@ export class CoverageTrackOverlay extends React.Component<CoverageTrackOverlayPr
         return (
             <Overlay
                 kind="drawerTop"
-                restrictions={["noModal","noDrawerLeft","noDrawerRight"]}
+                restrictions={["noDrawerLeft","noDrawerRight"]}
                 open={this.props.open}
                 onClose={this.props.onClose}
             >

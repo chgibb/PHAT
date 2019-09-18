@@ -33,7 +33,7 @@ export interface OverlayProps {
 function DraggablePaper(props: PaperProps) 
 {
     return (
-        <Draggable cancel={"[class*=\"MuiDialogContent-root\"]"}>
+        <Draggable enableUserSelectHack={false} cancel={"[class*=\"MuiDialogContent-root\"]"}>
             <Paper {...props} />
         </Draggable>
     );
