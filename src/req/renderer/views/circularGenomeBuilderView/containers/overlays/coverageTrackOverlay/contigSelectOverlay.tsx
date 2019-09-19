@@ -1,5 +1,6 @@
 import * as React from "react";
 
+
 import {Grid} from "../../../../../components/grid";
 import {IconButton} from "../../../../../components/iconButton";
 import {blue} from "../../../../../styles/colours";
@@ -10,8 +11,8 @@ import {GridWrapper} from "../../../../../containers/gridWrapper";
 import {TreeView} from "../../../../../components/treeView";
 import {ExpandMore} from "../../../../../components/icons/expandMore";
 import {ChevronRight} from "../../../../../components/icons/chevronRight";
-import TreeItem from '@material-ui/lab/TreeItem';
-import { AddBox } from '../../../../../components/icons/addBox';
+import {AddBox} from "../../../../../components/icons/addBox";
+import {TreeItem} from "../../../../../components/treeItem";
 
 export interface ContigSelectProps {
     onClose: () => void;
@@ -59,18 +60,20 @@ export class ContigSelectOverlay extends React.Component<ContigSelectProps, Cont
                                     defaultCollapseIcon={<ExpandMore color="primary" classes={{colorPrimary: blue}} />}
                                 >
                                     {
-                                        this.props.figure.contigs.map((contig,i) => {
+                                        this.props.figure.contigs.map((contig,i) => 
+                                        {
                                             return (
                                                 <TreeItem
                                                     nodeId={`${contig.name}-${i}`}
                                                     label={contig.name}
                                                 >
                                                     {
-                                                        this.props.figure.renderedCoverageTracks.map((track,j) => {
+                                                        this.props.figure.renderedCoverageTracks.map((track,j) => 
+                                                        {
                                                             return (
                                                                 <TreeItem
                                                                     nodeId={`${contig.name}-${i}-${j}`}
-                                                                    label={`Scaled by ${track.scaleFactor}${track.log10Scaled ? `, log10 scaled` : ""}`}
+                                                                    label={`Scaled by ${track.scaleFactor}${track.log10Scaled ? ", log10 scaled" : ""}`}
                                                                 />
                                                             );
                                                         })
@@ -80,14 +83,14 @@ export class ContigSelectOverlay extends React.Component<ContigSelectProps, Cont
                                                         label="New Coverage Track"
                                                         icon={
                                                             <React.Fragment>
-                                                            <AddBox 
-                                                                color="primary" 
-                                                                classes={{colorPrimary:blue}} 
-                                                            />
-                                                            <AddBox 
-                                                                color="primary" 
-                                                                classes={{colorPrimary:blue}} 
-                                                            />
+                                                                <AddBox 
+                                                                    color="primary" 
+                                                                    classes={{colorPrimary:blue}} 
+                                                                />
+                                                                <AddBox 
+                                                                    color="primary" 
+                                                                    classes={{colorPrimary:blue}} 
+                                                                />
                                                             </React.Fragment>
                                                         }
                                                     />
