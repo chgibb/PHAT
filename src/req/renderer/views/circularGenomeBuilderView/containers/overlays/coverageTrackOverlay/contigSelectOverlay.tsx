@@ -10,7 +10,8 @@ import {GridWrapper} from "../../../../../containers/gridWrapper";
 import {TreeView} from "../../../../../components/treeView";
 import {ExpandMore} from "../../../../../components/icons/expandMore";
 import {ChevronRight} from "../../../../../components/icons/chevronRight";
-import {ContigTree} from "../../../../../containers/contigTree";
+import TreeItem from '@material-ui/lab/TreeItem';
+import { AddBox } from '../../../../../components/icons/addBox';
 
 export interface ContigSelectProps {
     onClose: () => void;
@@ -57,16 +58,43 @@ export class ContigSelectOverlay extends React.Component<ContigSelectProps, Cont
                                     defaultExpandIcon={<ChevronRight color="primary" classes={{colorPrimary: blue}} />}
                                     defaultCollapseIcon={<ExpandMore color="primary" classes={{colorPrimary: blue}} />}
                                 >
-                                    <ContigTree
-                                        label="Select Contig to View Coverage Tracks For"
-                                        contigs={this.props.figure.contigs}
-                                        onClick={(contig) => 
-                                        {
-                                            this.setState({
-                                                selectedContigUuid: contig.uuid
-                                            });
-                                        }}
-                                    />
+                                    {
+                                        this.props.figure.contigs.map((contig,i) => {
+                                            return (
+                                                <TreeItem
+                                                    nodeId={`${contig.name}-${i}`}
+                                                    label={contig.name}
+                                                >
+                                                    {
+                                                        this.props.figure.renderedCoverageTracks.map((track,j) => {
+                                                            return (
+                                                                <TreeItem
+                                                                    nodeId={`${contig.name}-${i}-${j}`}
+                                                                    label={`Scaled by ${track.scaleFactor}${track.log10Scaled ? `, log10 scaled` : ""}`}
+                                                                />
+                                                            );
+                                                        })
+                                                    }
+                                                    <TreeItem
+                                                        nodeId={`${contig.name}-${i}-new`}
+                                                        label="New Coverage Track"
+                                                        icon={
+                                                            <React.Fragment>
+                                                            <AddBox 
+                                                                color="primary" 
+                                                                classes={{colorPrimary:blue}} 
+                                                            />
+                                                            <AddBox 
+                                                                color="primary" 
+                                                                classes={{colorPrimary:blue}} 
+                                                            />
+                                                            </React.Fragment>
+                                                        }
+                                                    />
+                                                </TreeItem>
+                                            );
+                                        })
+                                    }
                                 </TreeView>
                             </Grid>
                         </Grid>
