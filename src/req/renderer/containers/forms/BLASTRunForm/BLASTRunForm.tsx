@@ -1,13 +1,13 @@
 import * as React from "react";
 
-import {Form, FullWidthStepperForm, FullWidthFormStep} from "../fullWidthStepperForm";
-import {AlignData, getSam} from "../../../alignData";
-import {ReadWithFragments} from "../../../readWithFragments";
-import {getReadWithFragments} from "../../../getReadWithFragments";
-import {enQueueOperation} from "../../enQueueOperation";
+import {Form, FullWidthStepperForm, FullWidthFormStep} from "../../fullWidthStepperForm";
+import {AlignData, getSam} from "../../../../alignData";
+import {ReadWithFragments} from "../../../../readWithFragments";
+import {getReadWithFragments} from "../../../../getReadWithFragments";
+import {enQueueOperation} from "../../../enQueueOperation";
 
-import {step2} from "./BLASTRunForm/step2";
-import {step1} from "./BLASTRunForm/step1";
+import {step2} from "./step2";
+import {step1} from "./step1";
 
 export interface BLASTRunFormProps
 {
