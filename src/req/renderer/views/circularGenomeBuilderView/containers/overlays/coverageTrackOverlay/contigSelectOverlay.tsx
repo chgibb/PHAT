@@ -109,6 +109,7 @@ export class ContigSelectOverlay extends React.Component<ContigSelectProps, Cont
                     <CreateCoverageTrackOverlay
                         figure={this.props.figure}
                         selectedContig={this.state.selectedContig}
+                        align={this.props.align}
                     />
                 </React.Fragment>
                 }
