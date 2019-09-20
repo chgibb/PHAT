@@ -12,7 +12,8 @@ import {ExpandMore} from "../../../../../components/icons/expandMore";
 import {ChevronRight} from "../../../../../components/icons/chevronRight";
 import {AddBox} from "../../../../../components/icons/addBox";
 import {TreeItem} from "../../../../../components/treeItem";
-import { CreateCoverageTrackOverlay } from './createCoverageTrackOverlay';
+
+import {CreateCoverageTrackOverlay} from "./createCoverageTrackOverlay";
 
 export interface ContigSelectProps {
     onClose: () => void;
@@ -53,65 +54,66 @@ export class ContigSelectOverlay extends React.Component<ContigSelectProps, Cont
                 </div>
                 {
                     !this.state.selectedContig ? 
-                <GridWrapper>
-                    <div style={{marginLeft: "1vh", marginBottom: "1vh"}}>
-                        <Grid container direction="row" spacing={1} justify="flex-start">
-                            <Grid item>
-                                <TreeView
-                                    defaultExpandIcon={<ChevronRight color="primary" classes={{colorPrimary: blue}} />}
-                                    defaultCollapseIcon={<ExpandMore color="primary" classes={{colorPrimary: blue}} />}
-                                >
-                                    {
-                                        this.props.figure.contigs.map((contig,i) => 
-                                        {
-                                            return (
-                                                <TreeItem
-                                                    nodeId={`${contig.name}-${i}`}
-                                                    label={contig.name}
-                                                >
-                                                    {
-                                                        this.props.figure.renderedCoverageTracks.map((track,j) => 
-                                                        {
-                                                            return (
-                                                                <TreeItem
-                                                                    nodeId={`${contig.name}-${i}-${j}`}
-                                                                    label={`Scaled by ${track.scaleFactor}${track.log10Scaled ? ", log10 scaled" : ""}`}
-                                                                />
-                                                            );
-                                                        })
-                                                    }
-                                                    <TreeItem
-                                                        nodeId={`${contig.name}-${i}-new`}
-                                                        label="New Coverage Track"
-                                                        icon={
-                                                                <AddBox 
-                                                                    color="primary" 
-                                                                    classes={{colorPrimary:blue}} 
-                                                                />
-                                                        }
-                                                        onClick={()=>{
-                                                            this.setState({
-                                                                selectedContig : contig
-                                                            });
-                                                        }}
-                                                    />
-                                                </TreeItem>
-                                            );
-                                        })
-                                    }
-                                </TreeView>
-                            </Grid>
-                        </Grid>
-                    </div>
-                </GridWrapper> :
+                        <GridWrapper>
+                            <div style={{marginLeft: "1vh", marginBottom: "1vh"}}>
+                                <Grid container direction="row" spacing={1} justify="flex-start">
+                                    <Grid item>
+                                        <TreeView
+                                            defaultExpandIcon={<ChevronRight color="primary" classes={{colorPrimary: blue}} />}
+                                            defaultCollapseIcon={<ExpandMore color="primary" classes={{colorPrimary: blue}} />}
+                                        >
+                                            {
+                                                this.props.figure.contigs.map((contig,i) => 
+                                                {
+                                                    return (
+                                                        <TreeItem
+                                                            nodeId={`${contig.name}-${i}`}
+                                                            label={contig.name}
+                                                        >
+                                                            {
+                                                                this.props.figure.renderedCoverageTracks.map((track,j) => 
+                                                                {
+                                                                    return (
+                                                                        <TreeItem
+                                                                            nodeId={`${contig.name}-${i}-${j}`}
+                                                                            label={`Scaled by ${track.scaleFactor}${track.log10Scaled ? ", log10 scaled" : ""}`}
+                                                                        />
+                                                                    );
+                                                                })
+                                                            }
+                                                            <TreeItem
+                                                                nodeId={`${contig.name}-${i}-new`}
+                                                                label="New Coverage Track"
+                                                                icon={
+                                                                    <AddBox 
+                                                                        color="primary" 
+                                                                        classes={{colorPrimary:blue}} 
+                                                                    />
+                                                                }
+                                                                onClick={()=>
+                                                                {
+                                                                    this.setState({
+                                                                        selectedContig : contig
+                                                                    });
+                                                                }}
+                                                            />
+                                                        </TreeItem>
+                                                    );
+                                                })
+                                            }
+                                        </TreeView>
+                                    </Grid>
+                                </Grid>
+                            </div>
+                        </GridWrapper> :
 
-                <React.Fragment>
-                    <CreateCoverageTrackOverlay
-                        figure={this.props.figure}
-                        selectedContig={this.state.selectedContig}
-                        align={this.props.align}
-                    />
-                </React.Fragment>
+                        <React.Fragment>
+                            <CreateCoverageTrackOverlay
+                                figure={this.props.figure}
+                                selectedContig={this.state.selectedContig}
+                                align={this.props.align}
+                            />
+                        </React.Fragment>
                 }
             </React.Fragment>
         );

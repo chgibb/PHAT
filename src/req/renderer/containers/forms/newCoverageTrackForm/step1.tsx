@@ -1,13 +1,15 @@
 import * as React from "react";
-import { NewCoverageTrackForm } from './newCoverageTrackForm';
-import { FullWidthFormStep } from '../../fullWidthStepperForm';
-import { GridWrapper } from '../../gridWrapper';
-import { Grid } from '../../../components/grid';
-import { Switch } from '../../../components/switch';
-import { FormGroup } from '../../../components/formGroup';
-import { FormControlLabel } from '../../../components/formControlLabel';
-import { OutlinedInput } from '../../../components/outlinedInput';
-import { Typography } from '../../../components/typography';
+
+import {FullWidthFormStep} from "../../fullWidthStepperForm";
+import {GridWrapper} from "../../gridWrapper";
+import {Grid} from "../../../components/grid";
+import {Switch} from "../../../components/switch";
+import {FormGroup} from "../../../components/formGroup";
+import {FormControlLabel} from "../../../components/formControlLabel";
+import {OutlinedInput} from "../../../components/outlinedInput";
+import {Typography} from "../../../components/typography";
+
+import {NewCoverageTrackForm} from "./newCoverageTrackForm";
 
 export function step1(this : NewCoverageTrackForm) : FullWidthFormStep
 {
@@ -39,7 +41,8 @@ export function step1(this : NewCoverageTrackForm) : FullWidthFormStep
                                         <Switch
                                             color="primary"
                                             checked={this.state.log10Scale}
-                                            onChange={(event) => {
+                                            onChange={(event) => 
+                                            {
                                                 this.setState({
                                                     log10Scale : event.target.checked
                                                 });
@@ -51,18 +54,19 @@ export function step1(this : NewCoverageTrackForm) : FullWidthFormStep
                             </FormGroup>
                         </Grid>
                         <Grid item style={{marginTop:".5vh"}}>
-                        <GridWrapper>
-                    <Grid container spacing={4} justify="center">
-                        <Grid item>
-                            <Typography>And then scale by:</Typography>
-                            </Grid>
-                            </Grid>
+                            <GridWrapper>
+                                <Grid container spacing={4} justify="center">
+                                    <Grid item>
+                                        <Typography>And then scale by:</Typography>
+                                    </Grid>
+                                </Grid>
                             </GridWrapper>
                             <OutlinedInput
                                 label={this.state.scaleFactor.toString()}
                                 inputProps={{
                                     type : "number",
-                                    onChange : (event) => {
+                                    onChange : (event) => 
+                                    {
                                         let value = parseFloat(event.target.value);
 
                                         if(!isNaN(value))

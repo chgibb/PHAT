@@ -1,7 +1,9 @@
 import * as React from "react";
-import { CircularFigure, Contig } from '../../../circularFigure/circularFigure';
-import { AlignData } from '../../../../alignData';
-import { Form, FullWidthStepperForm } from '../../fullWidthStepperForm';
+
+import {CircularFigure, Contig} from "../../../circularFigure/circularFigure";
+import {AlignData} from "../../../../alignData";
+import {Form, FullWidthStepperForm} from "../../fullWidthStepperForm";
+
 import {step1} from "./step1";
 
 export interface NewCoverageTrackFormProps
@@ -39,14 +41,16 @@ export class NewCoverageTrackForm extends React.Component<NewCoverageTrackFormPr
 
     public onAdvance(step : number) : Promise<boolean>
     {
-        return new Promise<boolean>((resolve : (val : boolean) => void) : void => {
+        return new Promise<boolean>((resolve : (val : boolean) => void) : void => 
+        {
             return resolve(true);
         });
     }
 
     public onRetreat(step : number) : Promise<boolean>
     {
-        return new Promise<boolean>((resolve : (val : boolean) => void) : void => {
+        return new Promise<boolean>((resolve : (val : boolean) => void) : void => 
+        {
             return resolve(true);
         });
     }
@@ -66,6 +70,6 @@ export class NewCoverageTrackForm extends React.Component<NewCoverageTrackFormPr
                     />
                 </div>
             </div>
-        )
+        );
     }
 }
