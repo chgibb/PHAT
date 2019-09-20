@@ -1,18 +1,18 @@
 import * as React from "react";
 
-
 import {Grid} from "../../../../../components/grid";
 import {IconButton} from "../../../../../components/iconButton";
 import {blue} from "../../../../../styles/colours";
 import {ChevronLeft} from "../../../../../components/icons/chevronLeft";
 import {AlignData} from "../../../../../../alignData";
-import {CircularFigure} from "../../../../../circularFigure/circularFigure";
+import {CircularFigure, Contig} from "../../../../../circularFigure/circularFigure";
 import {GridWrapper} from "../../../../../containers/gridWrapper";
 import {TreeView} from "../../../../../components/treeView";
 import {ExpandMore} from "../../../../../components/icons/expandMore";
 import {ChevronRight} from "../../../../../components/icons/chevronRight";
 import {AddBox} from "../../../../../components/icons/addBox";
 import {TreeItem} from "../../../../../components/treeItem";
+import { CreateCoverageTrackOverlay } from './createCoverageTrackOverlay';
 
 export interface ContigSelectProps {
     onClose: () => void;
@@ -21,7 +21,7 @@ export interface ContigSelectProps {
 }
 
 export interface ContigSelectState {
-
+    selectedContig : Contig | undefined;
 }
 
 export class ContigSelectOverlay extends React.Component<ContigSelectProps, ContigSelectState>
@@ -31,7 +31,7 @@ export class ContigSelectOverlay extends React.Component<ContigSelectProps, Cont
         super(props);
 
         this.state = {
-
+            selectedContig : undefined
         };
     }
 
@@ -51,6 +51,8 @@ export class ContigSelectOverlay extends React.Component<ContigSelectProps, Cont
                         </IconButton>
                     </Grid>
                 </div>
+                {
+                    !this.state.selectedContig ? 
                 <GridWrapper>
                     <div style={{marginLeft: "1vh", marginBottom: "1vh"}}>
                         <Grid container direction="row" spacing={1} justify="flex-start">
@@ -82,17 +84,16 @@ export class ContigSelectOverlay extends React.Component<ContigSelectProps, Cont
                                                         nodeId={`${contig.name}-${i}-new`}
                                                         label="New Coverage Track"
                                                         icon={
-                                                            <React.Fragment>
                                                                 <AddBox 
                                                                     color="primary" 
                                                                     classes={{colorPrimary:blue}} 
                                                                 />
-                                                                <AddBox 
-                                                                    color="primary" 
-                                                                    classes={{colorPrimary:blue}} 
-                                                                />
-                                                            </React.Fragment>
                                                         }
+                                                        onClick={()=>{
+                                                            this.setState({
+                                                                selectedContig : contig
+                                                            });
+                                                        }}
                                                     />
                                                 </TreeItem>
                                             );
@@ -102,7 +103,15 @@ export class ContigSelectOverlay extends React.Component<ContigSelectProps, Cont
                             </Grid>
                         </Grid>
                     </div>
-                </GridWrapper>
+                </GridWrapper> :
+
+                <React.Fragment>
+                    <CreateCoverageTrackOverlay
+                        figure={this.props.figure}
+                        selectedContig={this.state.selectedContig}
+                    />
+                </React.Fragment>
+                }
             </React.Fragment>
         );
     }
