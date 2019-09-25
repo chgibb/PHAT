@@ -18,6 +18,7 @@ export interface NewCoverageTrackFormState
 {
     log10Scale : boolean;
     scaleFactor : number;
+    color : string;
     errors : Array<string>;
     currentStep : number;
 }
@@ -32,6 +33,7 @@ export class NewCoverageTrackForm extends React.Component<NewCoverageTrackFormPr
             log10Scale : false,
             scaleFactor : 1,
             errors : [],
+            color : "#000000",
             currentStep : 0
         };
 

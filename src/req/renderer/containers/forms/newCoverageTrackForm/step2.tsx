@@ -2,6 +2,9 @@ import * as React from "react";
 
 import { NewCoverageTrackForm } from './newCoverageTrackForm';
 import { FullWidthFormStep } from '../../fullWidthStepperForm';
+import { GridWrapper } from '../../gridWrapper';
+import { Grid } from '../../../components/grid';
+import { ColourPicker } from '../../../components/colourPicker';
 
 export function step2(this : NewCoverageTrackForm) : FullWidthFormStep
 {
@@ -9,6 +12,19 @@ export function step2(this : NewCoverageTrackForm) : FullWidthFormStep
         label : "",
         body : (
             <div>
+                 <GridWrapper>
+                    <Grid container spacing={4} justify="center">
+                        <Grid item>
+                            <div style={{marginTop:"3vh"}}>
+                            <ColourPicker label="Track colour:" onChange={(color) => {
+                                this.setState({
+                                    color : `rgb(${color.rgb.r},${color.rgb.g},${color.rgb.b})`
+                                });
+                            }} colour={this.state.color}/>
+                            </div>
+                        </Grid>
+                        </Grid>
+                        </GridWrapper>
             </div>
         )
     };
