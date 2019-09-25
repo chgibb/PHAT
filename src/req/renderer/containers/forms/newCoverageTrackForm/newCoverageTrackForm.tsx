@@ -5,7 +5,7 @@ import {AlignData} from "../../../../alignData";
 import {Form, FullWidthStepperForm} from "../../fullWidthStepperForm";
 
 import {step1} from "./step1";
-import { step2 } from './step2';
+import {step2} from "./step2";
 
 export interface NewCoverageTrackFormProps
 {
