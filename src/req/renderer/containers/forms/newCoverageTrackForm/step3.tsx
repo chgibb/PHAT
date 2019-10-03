@@ -6,10 +6,10 @@ import {GridWrapper} from "../../gridWrapper";
 import {Grid} from "../../../components/grid";
 import {Typography} from "../../../components/typography";
 import {ColorLensRounded} from "../../../components/icons/colorLensRounded";
+import {Button} from "../../../components/button";
+import {enQueueOperation} from "../../../enQueueOperation";
 
 import {NewCoverageTrackForm} from "./newCoverageTrackForm";
-import { Button } from '../../../components/button';
-import { enQueueOperation } from '../../../enQueueOperation';
 
 
 export function step3(this : NewCoverageTrackForm) : FullWidthFormStep
@@ -28,7 +28,7 @@ export function step3(this : NewCoverageTrackForm) : FullWidthFormStep
                                 color="primary"
                                 classes={{colorPrimary: style({color: this.state.color})}}
                             />
-                            </Grid>
+                        </Grid>
                     </Grid>
                 </GridWrapper>
                 <GridWrapper>
@@ -37,7 +37,8 @@ export function step3(this : NewCoverageTrackForm) : FullWidthFormStep
                             <Button 
                                 label="Start"
                                 type="advance"
-                                onClick={()=>{
+                                onClick={()=>
+                                {
                                     enQueueOperation({
                                         opName: "renderCoverageTrackForContig",
                                         alignData: this.props.align,

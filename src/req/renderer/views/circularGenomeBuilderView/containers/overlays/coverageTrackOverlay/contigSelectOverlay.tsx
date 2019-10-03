@@ -1,4 +1,5 @@
 import * as React from "react";
+import {style} from "typestyle";
 
 import {Grid} from "../../../../../components/grid";
 import {IconButton} from "../../../../../components/iconButton";
@@ -12,11 +13,10 @@ import {ExpandMore} from "../../../../../components/icons/expandMore";
 import {ChevronRight} from "../../../../../components/icons/chevronRight";
 import {AddBox} from "../../../../../components/icons/addBox";
 import {TreeItem} from "../../../../../components/treeItem";
+import {PanoramaFishEye} from "../../../../../components/icons/panoramaFishEye";
+import {Lens} from "../../../../../components/icons/lens";
 
 import {CreateCoverageTrackOverlay} from "./createCoverageTrackOverlay";
-import { PanoramaFishEye } from '../../../../../components/icons/panoramaFishEye';
-import { style } from 'typestyle';
-import { Lens } from '../../../../../components/icons/lens';
 
 export interface ContigSelectProps {
     onTrackClick : (track : CoverageTrackLayer) => void;
@@ -88,21 +88,22 @@ export class ContigSelectOverlay extends React.Component<ContigSelectProps, Cont
                                                                                         })
                                                                                     }} 
                                                                                 /> : <PanoramaFishEye 
-                                                                                color="primary" 
-                                                                                classes={{
-                                                                                    colorPrimary:style({
-                                                                                        color:track.colour
-                                                                                    })
-                                                                                }} 
-                                                                            />
+                                                                                    color="primary" 
+                                                                                    classes={{
+                                                                                        colorPrimary:style({
+                                                                                            color:track.colour
+                                                                                        })
+                                                                                    }} 
+                                                                                />
                                                                             }
-                                                                            onClick={()=>{
+                                                                            onClick={()=>
+                                                                            {
                                                                                 this.props.onTrackClick(track);
                                                                             }}
                                                                             nodeId={`${contig.name}-${i}-${j}`}
                                                                             label={`Scaled by ${track.scaleFactor}${track.log10Scaled ? ", log10 scaled" : ""}`}
                                                                         />
-                                                                ) : (<TreeItem nodeId=""/>);
+                                                                    ) : (<TreeItem nodeId=""/>);
                                                                 })
                                                             }
                                                             <TreeItem
@@ -136,7 +137,8 @@ export class ContigSelectOverlay extends React.Component<ContigSelectProps, Cont
                                 figure={this.props.figure}
                                 selectedContig={this.state.selectedContig}
                                 align={this.props.align}
-                                onComplete={()=>{
+                                onComplete={()=>
+                                {
                                     this.setState({
                                         selectedContig : undefined
                                     });

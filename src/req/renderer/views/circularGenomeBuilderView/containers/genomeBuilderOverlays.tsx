@@ -132,7 +132,8 @@ export function GenomeBuilderOverlays(this: CircularGenomeBuilderView, props: { 
                             }}
                         />
                         <CoverageTrackOverlay
-                            onTrackClick={(track : CoverageTrackLayer) => {
+                            onTrackClick={(track : CoverageTrackLayer) => 
+                            {
                                 if(figure)
                                     this.toggleCoverageTrackLayerVisibility(figure,track);
                             }}

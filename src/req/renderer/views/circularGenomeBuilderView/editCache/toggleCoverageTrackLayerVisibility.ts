@@ -1,12 +1,13 @@
-import { CircularGenomeBuilderView } from '../circularGenomeBuilderView';
-import { CircularFigure, CoverageTrackLayer } from '../../../circularFigure/circularFigure';
+import {CircularGenomeBuilderView} from "../circularGenomeBuilderView";
+import {CircularFigure, CoverageTrackLayer} from "../../../circularFigure/circularFigure";
 
 export function toggleCoverageTrackLayerVisibility(this : CircularGenomeBuilderView,figure : CircularFigure,track : CoverageTrackLayer) : void
 {
     this.maybePushEdit(
         figure,{
             description : "Toggle coverage track visibility",
-            commit:(figure:CircularFigure) => {
+            commit:(figure:CircularFigure) => 
+            {
                 let trackIndex = figure.renderedCoverageTracks.findIndex((x) => x.uuid == track.uuid);
 
                 if(trackIndex)
@@ -14,9 +15,12 @@ export function toggleCoverageTrackLayerVisibility(this : CircularGenomeBuilderV
                     figure.renderedCoverageTracks[trackIndex].checked = !track.checked;
                 }
             },
-            afterCommit:()=>{
+            afterCommit:()=>
+            {
                 this.saveFigures();
-            },rollback:(newFigure : CircularFigure,oldFigure:CircularFigure)=>{
+            },
+            rollback:(newFigure : CircularFigure,oldFigure:CircularFigure)=>
+            {
                 let trackIndex = newFigure.renderedCoverageTracks.findIndex((x) => x.uuid == track.uuid);
 
                 if(trackIndex)

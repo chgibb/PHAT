@@ -44,7 +44,8 @@ export class CreateCoverageTrackOverlay extends React.Component<CreateCoverageTr
                     figure={this.props.figure}
                     contig={this.props.selectedContig}
                     align={this.props.align}
-                    onComplete={()=>{
+                    onComplete={()=>
+                    {
                         this.props.onComplete();
                     }}
                 />

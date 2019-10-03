@@ -26,7 +26,7 @@ import {toggleTrackIntervalLabels} from "./editCache/toggleTrackIntervalLabels";
 import {changeIntervalLabelLength} from "./editCache/changeIntervalLabelLength";
 import {changeIntervalLabelDirection} from "./editCache/changeIntervalLabelDirection";
 import {changeIntervalLabelVadjust} from "./editCache/changeIntervalLabelVadjust";
-import { toggleCoverageTrackLayerVisibility } from './editCache/toggleCoverageTrackLayerVisibility';
+import {toggleCoverageTrackLayerVisibility} from "./editCache/toggleCoverageTrackLayerVisibility";
 
 export interface CircularGenomeBuilderViewState {
     figureSelectOvelayOpen: boolean;
