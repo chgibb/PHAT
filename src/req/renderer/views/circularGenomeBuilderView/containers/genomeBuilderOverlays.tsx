@@ -1,7 +1,7 @@
 import * as React from "react";
 
 import {CircularGenomeBuilderView} from "../circularGenomeBuilderView";
-import {CircularFigure} from "../../../circularFigure/circularFigure";
+import {CircularFigure, CoverageTrackLayer} from "../../../circularFigure/circularFigure";
 
 import {EditFigureNameOverlay} from "./overlays/editFigureNameOverlay";
 import {FigureSelectOverlay} from "./overlays/figureSelectOverlay";
@@ -132,7 +132,10 @@ export function GenomeBuilderOverlays(this: CircularGenomeBuilderView, props: { 
                             }}
                         />
                         <CoverageTrackOverlay
-                            onSave={() => null}
+                            onTrackClick={(track : CoverageTrackLayer) => {
+                                if(figure)
+                                    this.toggleCoverageTrackLayerVisibility(figure,track);
+                            }}
                             onClose={()=> 
                             {
                                 this.setState({

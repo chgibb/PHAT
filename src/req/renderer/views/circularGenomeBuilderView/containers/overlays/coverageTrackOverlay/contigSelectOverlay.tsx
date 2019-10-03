@@ -5,7 +5,7 @@ import {IconButton} from "../../../../../components/iconButton";
 import {blue} from "../../../../../styles/colours";
 import {ChevronLeft} from "../../../../../components/icons/chevronLeft";
 import {AlignData} from "../../../../../../alignData";
-import {CircularFigure, Contig} from "../../../../../circularFigure/circularFigure";
+import {CircularFigure, Contig, CoverageTrackLayer} from "../../../../../circularFigure/circularFigure";
 import {GridWrapper} from "../../../../../containers/gridWrapper";
 import {TreeView} from "../../../../../components/treeView";
 import {ExpandMore} from "../../../../../components/icons/expandMore";
@@ -14,8 +14,12 @@ import {AddBox} from "../../../../../components/icons/addBox";
 import {TreeItem} from "../../../../../components/treeItem";
 
 import {CreateCoverageTrackOverlay} from "./createCoverageTrackOverlay";
+import { PanoramaFishEye } from '../../../../../components/icons/panoramaFishEye';
+import { style } from 'typestyle';
+import { Lens } from '../../../../../components/icons/lens';
 
 export interface ContigSelectProps {
+    onTrackClick : (track : CoverageTrackLayer) => void;
     onClose: () => void;
     align: AlignData;
     figure: CircularFigure;
@@ -73,12 +77,32 @@ export class ContigSelectOverlay extends React.Component<ContigSelectProps, Cont
                                                             {
                                                                 this.props.figure.renderedCoverageTracks.map((track,j) => 
                                                                 {
-                                                                    return (
+                                                                    return track.uuidContig == contig.uuid ? (
                                                                         <TreeItem
+                                                                            icon={
+                                                                                track.checked ? <Lens 
+                                                                                    color="primary" 
+                                                                                    classes={{
+                                                                                        colorPrimary:style({
+                                                                                            color:track.colour
+                                                                                        })
+                                                                                    }} 
+                                                                                /> : <PanoramaFishEye 
+                                                                                color="primary" 
+                                                                                classes={{
+                                                                                    colorPrimary:style({
+                                                                                        color:track.colour
+                                                                                    })
+                                                                                }} 
+                                                                            />
+                                                                            }
+                                                                            onClick={()=>{
+                                                                                this.props.onTrackClick(track);
+                                                                            }}
                                                                             nodeId={`${contig.name}-${i}-${j}`}
                                                                             label={`Scaled by ${track.scaleFactor}${track.log10Scaled ? ", log10 scaled" : ""}`}
                                                                         />
-                                                                    );
+                                                                ) : (<TreeItem nodeId=""/>);
                                                                 })
                                                             }
                                                             <TreeItem

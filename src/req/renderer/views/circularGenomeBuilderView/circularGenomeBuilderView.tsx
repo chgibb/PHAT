@@ -26,6 +26,7 @@ import {toggleTrackIntervalLabels} from "./editCache/toggleTrackIntervalLabels";
 import {changeIntervalLabelLength} from "./editCache/changeIntervalLabelLength";
 import {changeIntervalLabelDirection} from "./editCache/changeIntervalLabelDirection";
 import {changeIntervalLabelVadjust} from "./editCache/changeIntervalLabelVadjust";
+import { toggleCoverageTrackLayerVisibility } from './editCache/toggleCoverageTrackLayerVisibility';
 
 export interface CircularGenomeBuilderViewState {
     figureSelectOvelayOpen: boolean;
@@ -66,6 +67,7 @@ export class CircularGenomeBuilderView extends React.Component<CircularGenomeBui
     protected changeIntervalLabelLength = changeIntervalLabelLength.bind(this);
     protected changeIntervalLabelDirection = changeIntervalLabelDirection.bind(this);
     protected changeIntervalLabelVadjust = changeIntervalLabelVadjust.bind(this);
+    protected toggleCoverageTrackLayerVisibility = toggleCoverageTrackLayerVisibility.bind(this);
     private GenomeBuilderAppBar = GenomeBuilderAppBar.bind(this);
     private GenomeBuilderOverlays = GenomeBuilderOverlays.bind(this);
     public constructor(props: CircularGenomeBuilderViewProps) 

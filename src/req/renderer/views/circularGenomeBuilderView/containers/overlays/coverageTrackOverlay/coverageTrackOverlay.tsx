@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import {CircularFigure} from "../../../../../circularFigure/circularFigure";
+import {CircularFigure, CoverageTrackLayer} from "../../../../../circularFigure/circularFigure";
 import {Fasta} from "../../../../../../fasta";
 import {AlignData} from "../../../../../../alignData";
 import {AlignmentsReportTable} from "../../../../../containers/tables/alignmentsReportTable";
@@ -11,8 +11,8 @@ import {ContigSelectOverlay} from "./contigSelectOverlay";
 
 export interface CoverageTrackOverlayProps
 {
+    onTrackClick : (track : CoverageTrackLayer) => void;
     onClose: () => void;
-    onSave: () => void;
     open : boolean;
     figure : CircularFigure;
     fastas : Array<Fasta>;
@@ -49,6 +49,7 @@ export class CoverageTrackOverlay extends React.Component<CoverageTrackOverlayPr
                 {
                     selectedAlign ? 
                         <ContigSelectOverlay
+                            onTrackClick={this.props.onTrackClick}
                             onClose={() => 
                             {
                                 this.setState({
