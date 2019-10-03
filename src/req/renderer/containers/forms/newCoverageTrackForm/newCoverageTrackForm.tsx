@@ -13,6 +13,7 @@ export interface NewCoverageTrackFormProps
     figure : CircularFigure;
     contig : Contig;
     align : AlignData;
+    onComplete : () => void;
 }
 
 export interface NewCoverageTrackFormState

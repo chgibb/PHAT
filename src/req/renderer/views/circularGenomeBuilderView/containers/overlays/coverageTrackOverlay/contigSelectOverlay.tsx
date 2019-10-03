@@ -112,6 +112,11 @@ export class ContigSelectOverlay extends React.Component<ContigSelectProps, Cont
                                 figure={this.props.figure}
                                 selectedContig={this.state.selectedContig}
                                 align={this.props.align}
+                                onComplete={()=>{
+                                    this.setState({
+                                        selectedContig : undefined
+                                    });
+                                }}
                             />
                         </React.Fragment>
                 }

@@ -12,6 +12,7 @@ export interface CreateCoverageTrackOverlayProps
     figure : CircularFigure;
     selectedContig : Contig;
     align : AlignData;
+    onComplete : () => void;
 }
 
 export interface CreateCoverageTrackOverlayState
@@ -43,6 +44,9 @@ export class CreateCoverageTrackOverlay extends React.Component<CreateCoverageTr
                     figure={this.props.figure}
                     contig={this.props.selectedContig}
                     align={this.props.align}
+                    onComplete={()=>{
+                        this.props.onComplete();
+                    }}
                 />
             </React.Fragment>
         );
