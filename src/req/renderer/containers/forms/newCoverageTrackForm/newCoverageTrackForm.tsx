@@ -6,6 +6,7 @@ import {Form, FullWidthStepperForm} from "../../fullWidthStepperForm";
 
 import {step1} from "./step1";
 import {step2} from "./step2";
+import { step3 } from './step3';
 
 export interface NewCoverageTrackFormProps
 {
@@ -42,6 +43,7 @@ export class NewCoverageTrackForm extends React.Component<NewCoverageTrackFormPr
 
     step1 = step1.bind(this);
     step2 = step2.bind(this);
+    step3 = step3.bind(this);
 
     public onAdvance(step : number) : Promise<boolean>
     {
@@ -69,7 +71,8 @@ export class NewCoverageTrackForm extends React.Component<NewCoverageTrackFormPr
                         setFormState={this.setState}
                         steps={[
                             this.step1(),
-                            this.step2()
+                            this.step2(),
+                            this.step3()
                         ]}
                         disableNavigation={false}
                     />

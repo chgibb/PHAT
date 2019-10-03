@@ -10,7 +10,7 @@ import {NewCoverageTrackForm} from "./newCoverageTrackForm";
 export function step2(this : NewCoverageTrackForm) : FullWidthFormStep
 {
     return {
-        label : "",
+        label : "Select Colour",
         body : (
             <div>
                 <GridWrapper>
