@@ -77,10 +77,15 @@ export class ContigSelectOverlay extends React.Component<ContigSelectProps, Cont
                                                             {
                                                                 this.props.figure.renderedCoverageTracks.map((track,j) => 
                                                                 {
+                                                                    let isTrackVisible = false;
+
+                                                                    if(this.props.figure.visibleLayers.find((x) => x == track.uuid))
+                                                                        isTrackVisible = true;
+
                                                                     return track.uuidContig == contig.uuid ? (
                                                                         <TreeItem
                                                                             icon={
-                                                                                track.checked ? <Lens 
+                                                                                isTrackVisible ? <Lens 
                                                                                     color="primary" 
                                                                                     classes={{
                                                                                         colorPrimary:style({

@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import {CircularFigure, assembleCompilableTemplates, buildBaseFigureTemplate} from "../../circularFigure/circularFigure";
+import {CircularFigure, assembleCompilableTemplates, buildBaseFigureTemplate, assembleCompilableCoverageTrack} from "../../circularFigure/circularFigure";
 import {Plasmid} from "../../../ngplasmid/lib/plasmid";
 import {Node, loadFromString} from "../../../ngplasmid/lib/html";
 
@@ -66,19 +66,46 @@ export class CircularGenome extends React.Component<CircularGenomeProps,Circular
                                 uuid : this.props.figure.uuid,
                                 plasmid : plasmid
                             };
-
-                            /*this.setState({
-                                plasmidCache : [
-                                    ...this.state.plasmidCache,
-                                    {
-                                        uuid : this.props.figure.uuid,
-                                        plasmid : plasmid
-                                    }
-                                ]
-                            });*/
                         }
                     }
                 }
+            }
+        }
+
+        else
+        {
+            let coverageTrack = this.props.figure.renderedCoverageTracks.find((x) => x.uuid == target);
+            if(coverageTrack)
+            {
+                console.log("Rendering coverage track "+target);
+
+                let plasmid : Plasmid = new Plasmid();
+            plasmid.$scope = scope;
+
+                let nodes : Array<Node> = await loadFromString(assembleCompilableCoverageTrack(this.props.figure,coverageTrack));
+
+                for(let i = 0; i != nodes.length; ++i)
+            {
+                if(nodes[i].name == "div")
+                {
+                    for(let k = 0; k != nodes[i].children.length; ++k)
+                    {
+                        if(nodes[i].children[k].name == "plasmid")
+                        {
+                            plasmid.fromNode(nodes[i].children[k]);
+                            this.setState({
+                                plasmidCache : [
+                                    ...this.state.plasmidCache,
+                                    {
+                                        uuid : target,
+                                        plasmid : plasmid
+                                    }
+                                ]
+                            });
+                        }
+                    }
+                }
+            }
             }
         }
 

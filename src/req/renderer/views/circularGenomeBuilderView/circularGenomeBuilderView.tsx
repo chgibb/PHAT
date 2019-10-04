@@ -189,6 +189,7 @@ export class CircularGenomeBuilderView extends React.Component<CircularGenomeBui
                 this.editCaches[figure.uuid] = new CircularGenomeEditCache();
         }
 
+
         return (
             <React.Fragment>
                 <this.GenomeBuilderAppBar figure={figure} />

@@ -8,11 +8,16 @@ export function toggleCoverageTrackLayerVisibility(this : CircularGenomeBuilderV
             description : "Toggle coverage track visibility",
             commit:(figure:CircularFigure) => 
             {
-                let trackIndex = figure.renderedCoverageTracks.findIndex((x) => x.uuid == track.uuid);
+                let trackIndex = figure.visibleLayers.findIndex((x) => x == track.uuid);
 
-                if(trackIndex)
+                if(trackIndex >= 0)
                 {
-                    figure.renderedCoverageTracks[trackIndex].checked = !track.checked;
+                    figure.visibleLayers.splice(trackIndex,1);
+                }
+
+                else
+                {
+                    figure.visibleLayers.push(track.uuid);
                 }
             },
             afterCommit:()=>
@@ -21,11 +26,16 @@ export function toggleCoverageTrackLayerVisibility(this : CircularGenomeBuilderV
             },
             rollback:(newFigure : CircularFigure,oldFigure:CircularFigure)=>
             {
-                let trackIndex = newFigure.renderedCoverageTracks.findIndex((x) => x.uuid == track.uuid);
+                let trackIndex = newFigure.visibleLayers.findIndex((x) => x == track.uuid);
 
-                if(trackIndex)
+                if(trackIndex >= 0)
                 {
-                    newFigure.renderedCoverageTracks[trackIndex].checked = !oldFigure.renderedCoverageTracks[trackIndex].checked;
+                    newFigure.visibleLayers.splice(trackIndex,1);
+                }
+
+                else
+                {
+                    newFigure.visibleLayers.push(track.uuid);
                 }
             }
         }
