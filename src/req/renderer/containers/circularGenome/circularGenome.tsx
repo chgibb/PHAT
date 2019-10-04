@@ -80,32 +80,32 @@ export class CircularGenome extends React.Component<CircularGenomeProps,Circular
                 console.log("Rendering coverage track "+target);
 
                 let plasmid : Plasmid = new Plasmid();
-            plasmid.$scope = scope;
+                plasmid.$scope = scope;
 
                 let nodes : Array<Node> = await loadFromString(assembleCompilableCoverageTrack(this.props.figure,coverageTrack));
 
                 for(let i = 0; i != nodes.length; ++i)
-            {
-                if(nodes[i].name == "div")
                 {
-                    for(let k = 0; k != nodes[i].children.length; ++k)
+                    if(nodes[i].name == "div")
                     {
-                        if(nodes[i].children[k].name == "plasmid")
+                        for(let k = 0; k != nodes[i].children.length; ++k)
                         {
-                            plasmid.fromNode(nodes[i].children[k]);
-                            this.setState({
-                                plasmidCache : [
-                                    ...this.state.plasmidCache,
-                                    {
-                                        uuid : target,
-                                        plasmid : plasmid
-                                    }
-                                ]
-                            });
+                            if(nodes[i].children[k].name == "plasmid")
+                            {
+                                plasmid.fromNode(nodes[i].children[k]);
+                                this.setState({
+                                    plasmidCache : [
+                                        ...this.state.plasmidCache,
+                                        {
+                                            uuid : target,
+                                            plasmid : plasmid
+                                        }
+                                    ]
+                                });
+                            }
                         }
                     }
                 }
-            }
             }
         }
 
