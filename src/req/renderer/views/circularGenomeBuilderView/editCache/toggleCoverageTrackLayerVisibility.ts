@@ -26,16 +26,18 @@ export function toggleCoverageTrackLayerVisibility(this : CircularGenomeBuilderV
             },
             rollback:(newFigure : CircularFigure,oldFigure:CircularFigure)=>
             {
-                let trackIndex = newFigure.visibleLayers.findIndex((x) => x == track.uuid);
+                let trackIndex = oldFigure.visibleLayers.findIndex((x) => x == track.uuid);
 
                 if(trackIndex >= 0)
                 {
-                    newFigure.visibleLayers.splice(trackIndex,1);
+                    newFigure.visibleLayers.push(track.uuid);
                 }
 
                 else
                 {
-                    newFigure.visibleLayers.push(track.uuid);
+                    let newTrackIndex = newFigure.visibleLayers.findIndex((x) => x == track.uuid);
+                    if(newTrackIndex >= 0)
+                        newFigure.visibleLayers.splice(newTrackIndex,1);
                 }
             }
         }
