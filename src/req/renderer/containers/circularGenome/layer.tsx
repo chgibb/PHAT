@@ -12,6 +12,7 @@ export interface LayerProps {
     height : number;
     x : number;
     y : number;
+    shouldUpdateCanvas : boolean;
 }
 
 export class Layer extends React.Component<LayerProps, {}>
@@ -70,14 +71,9 @@ export class Layer extends React.Component<LayerProps, {}>
         }
     }
 
-    public componentDidUpdate() 
-    {
-        this.updateCanvas();
-    }
-
     public shouldComponentUpdate() : boolean
     {
-        if(this.canvasRef.current)
+        if(this.canvasRef.current && this.props.shouldUpdateCanvas)
         {
             this.updateCanvas();
             return false;

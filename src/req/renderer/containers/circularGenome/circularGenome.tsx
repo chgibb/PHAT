@@ -9,6 +9,7 @@ import {Layer} from "./layer";
 export interface CircularGenomeState
 {
     plasmidCache : Array<{uuid : string,plasmid : Plasmid}>;
+    shouldUpdateCanvas : boolean;
 }
 
 export interface CircularGenomeProps
@@ -28,7 +29,8 @@ export class CircularGenome extends React.Component<CircularGenomeProps,Circular
         super(props);
 
         this.state = {
-            plasmidCache : []
+            plasmidCache : [],
+            shouldUpdateCanvas : true
         };
 
         this.loadPlasmid = this.loadPlasmid.bind(this);
@@ -127,8 +129,9 @@ export class CircularGenome extends React.Component<CircularGenomeProps,Circular
     {
         this.updateCanvas();
 
-        if(prevProps.height != this.props.height || prevProps.width != this.props.width || prevProps.x != this.props.x || prevProps.y != this.props.y)
-        {
+        let shouldUpdateCanvas = false;
+
+        
             if(this.ref.current)
             {
                 let canvasArr = this.ref.current.getElementsByTagName("canvas");
@@ -138,13 +141,34 @@ export class CircularGenome extends React.Component<CircularGenomeProps,Circular
                     let canvas = canvasArr[i];
 
                     canvas.style.position = "absolute";
-                    canvas.setAttribute("width",`${this.props.width}`);
-                    canvas.setAttribute("height",`${this.props.height}`);
-                    canvas.style.left = `${this.props.x}px`;
-                    canvas.style.top = `${this.props.y}px`;
+
+                    if(prevProps.width != this.props.width)
+                    {
+                        shouldUpdateCanvas = true;
+                        canvas.setAttribute("width",`${this.props.width}`);
+                    }
+
+                    if(prevProps.height != this.props.height)    
+                    {
+                        shouldUpdateCanvas = true;
+                        canvas.setAttribute("height",`${this.props.height}`);
+                    }
+
+                    if(prevProps.x != this.props.x)
+                        canvas.style.left = `${this.props.x}px`;
+
+                    if(prevProps.y != this.props.y)
+                        canvas.style.top = `${this.props.y}px`;
                 }
             }
+
+        if(shouldUpdateCanvas != this.state.shouldUpdateCanvas)
+        {
+            this.setState({
+                shouldUpdateCanvas : shouldUpdateCanvas
+            });
         }
+        
     }
 
     public render() : JSX.Element
@@ -166,6 +190,8 @@ export class CircularGenome extends React.Component<CircularGenomeProps,Circular
                                 height={this.props.height}
                                 x={this.props.x}
                                 y={this.props.y}
+
+                                shouldUpdateCanvas={this.state.shouldUpdateCanvas}
                             />
                         );
                     })
