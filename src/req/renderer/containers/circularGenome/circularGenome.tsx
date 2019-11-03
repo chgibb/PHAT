@@ -22,6 +22,7 @@ export interface CircularGenomeProps
 
 export class CircularGenome extends React.Component<CircularGenomeProps,CircularGenomeState>
 {
+    private ref = React.createRef<HTMLDivElement>();
     public constructor(props : CircularGenomeProps)
     {
         super(props);
@@ -125,12 +126,32 @@ export class CircularGenome extends React.Component<CircularGenomeProps,Circular
     public componentDidUpdate(prevProps : Readonly<CircularGenomeProps>,prevState : Readonly<CircularGenomeState>)
     {
         this.updateCanvas();
+
+        if(prevProps.height != this.props.height || prevProps.width != this.props.width || prevProps.x != this.props.x || prevProps.y != this.props.y)
+        {
+            if(this.ref.current)
+            {
+                let canvasArr = this.ref.current.getElementsByTagName("canvas");
+
+                for(let i = 0; i != canvasArr.length; ++i)
+                {
+                    let canvas = canvasArr[i];
+
+                    canvas.style.position = "absolute";
+                    canvas.setAttribute("width",`${this.props.width}`);
+                    canvas.setAttribute("height",`${this.props.height}`);
+                    canvas.style.left = `${this.props.x}px`;
+                    canvas.style.top = `${this.props.y}px`;
+                }
+            }
+        }
     }
 
     public render() : JSX.Element
     {
         return (
             <React.Fragment>
+                <div ref={this.ref}>
                 {
                     this.props.figure.visibleLayers.map((layer) => 
                     {
@@ -149,6 +170,7 @@ export class CircularGenome extends React.Component<CircularGenomeProps,Circular
                         );
                     })
                 }
+                </div>
             </React.Fragment>
         );
     }
