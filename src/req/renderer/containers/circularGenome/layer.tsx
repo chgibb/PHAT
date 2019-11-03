@@ -53,6 +53,8 @@ export class Layer extends React.Component<LayerProps, {}>
                 this.canvas.setAttribute("height",`${this.props.height}`);
                 this.canvas.style.left = `${this.props.x}px`;
                 this.canvas.style.top = `${this.props.y}px`;
+
+                ctx.clearRect(0,0,this.props.width,this.props.height);
                 
                 await renderSVGToCanvas(plasmid.plasmid.renderStart() + plasmid.plasmid.renderEnd(), ctx);
             }
