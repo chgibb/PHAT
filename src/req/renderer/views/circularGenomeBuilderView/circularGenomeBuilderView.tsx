@@ -47,6 +47,7 @@ export interface CircularGenomeBuilderViewProps {
     figures: Array<CircularFigure>;
     fastas: Array<Fasta>;
     aligns : Array<AlignData>;
+    shouldUpdateCanvas : boolean | undefined;
 }
 
 export class CircularGenomeBuilderView extends React.Component<CircularGenomeBuilderViewProps, CircularGenomeBuilderViewState>
@@ -202,6 +203,7 @@ export class CircularGenomeBuilderView extends React.Component<CircularGenomeBui
                             height={this.state.figurePosition.height}
                             x={this.state.figurePosition.x}
                             y={this.state.figurePosition.y}
+                            shouldUpateCanvas={this.props.shouldUpdateCanvas}
                         />
                     ) : ""
                 }

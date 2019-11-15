@@ -14,6 +14,7 @@ export interface CircularGenomeState
 
 export interface CircularGenomeProps
 {
+    shouldUpateCanvas : boolean | undefined;
     figure : CircularFigure;
     width : number;
     height : number;
@@ -80,8 +81,6 @@ export class CircularGenome extends React.Component<CircularGenomeProps,Circular
             let coverageTrack = this.props.figure.renderedCoverageTracks.find((x) => x.uuid == target);
             if(coverageTrack)
             {
-                console.log("Rendering coverage track "+target);
-
                 let plasmid : Plasmid = new Plasmid();
                 plasmid.$scope = scope;
 
@@ -97,6 +96,7 @@ export class CircularGenome extends React.Component<CircularGenomeProps,Circular
                             {
                                 plasmid.fromNode(nodes[i].children[k]);
                                 this.setState({
+                                    shouldUpdateCanvas : true,  
                                     plasmidCache : [
                                         ...this.state.plasmidCache,
                                         {
@@ -125,12 +125,16 @@ export class CircularGenome extends React.Component<CircularGenomeProps,Circular
         this.updateCanvas();
     }
 
+    public shouldComponentUpdate(prevProps : Readonly<CircularGenomeProps>,prevState : Readonly<CircularGenomeState>) : boolean
+    {
+            return true;
+    }
+
     public componentDidUpdate(prevProps : Readonly<CircularGenomeProps>,prevState : Readonly<CircularGenomeState>)
     {
         this.updateCanvas();
 
-        let shouldUpdateCanvas = false;
-
+        let shouldUpdateCanvasDueToResize = false;
         
             if(this.ref.current)
             {
@@ -144,13 +148,13 @@ export class CircularGenome extends React.Component<CircularGenomeProps,Circular
 
                     if(prevProps.width != this.props.width)
                     {
-                        shouldUpdateCanvas = true;
+                        shouldUpdateCanvasDueToResize = true;
                         canvas.setAttribute("width",`${this.props.width}`);
                     }
 
                     if(prevProps.height != this.props.height)    
                     {
-                        shouldUpdateCanvas = true;
+                        shouldUpdateCanvasDueToResize = true;
                         canvas.setAttribute("height",`${this.props.height}`);
                     }
 
@@ -162,10 +166,20 @@ export class CircularGenome extends React.Component<CircularGenomeProps,Circular
                 }
             }
 
-        if(shouldUpdateCanvas != this.state.shouldUpdateCanvas)
-        {
+                if(this.props.shouldUpateCanvas)
+                    shouldUpdateCanvasDueToResize = true;
+
+        if(shouldUpdateCanvasDueToResize || this.props.shouldUpateCanvas){
+            if(!this.state.shouldUpdateCanvas){
             this.setState({
-                shouldUpdateCanvas : shouldUpdateCanvas
+                shouldUpdateCanvas:true
+            });
+        }
+        }
+
+        else if(!shouldUpdateCanvasDueToResize && !this.props.shouldUpateCanvas && this.state.shouldUpdateCanvas){
+            this.setState({
+                shouldUpdateCanvas:false
             });
         }
         

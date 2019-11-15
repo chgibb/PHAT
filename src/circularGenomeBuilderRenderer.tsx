@@ -28,7 +28,7 @@ class CircularGenomeBuilderApp extends React.Component<{},CircularGenomeBuilderV
                 {
                     if(arg.key == "circularFigures" && arg.val !== undefined)
                     {
-                        this.setState({figures : arg.val});
+                        this.setState({figures : arg.val,shouldUpdateCanvas : true});
                     }
 
                     if(arg.key == "fastaInputs" && arg.val !== undefined)
@@ -44,6 +44,16 @@ class CircularGenomeBuilderApp extends React.Component<{},CircularGenomeBuilderV
             });
     }
 
+    public componentDidUpdate()
+    {
+        if(this.state.shouldUpdateCanvas)
+        {
+            this.setState({
+                shouldUpdateCanvas : false
+            });
+        }
+    }
+
     public render() : JSX.Element
     {
         return (
@@ -51,6 +61,7 @@ class CircularGenomeBuilderApp extends React.Component<{},CircularGenomeBuilderV
                 figures={this.state.figures ? this.state.figures : []}
                 fastas={this.state.fastas ? this.state.fastas : []}
                 aligns={this.state.aligns ? this.state.aligns : []}
+                shouldUpdateCanvas={this.state.shouldUpdateCanvas}
             />
         );
     }

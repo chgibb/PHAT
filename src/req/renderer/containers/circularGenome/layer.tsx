@@ -25,7 +25,6 @@ export class Layer extends React.Component<LayerProps, {}>
 
         this.updateCanvas = this.updateCanvas.bind(this);
         this.componentDidMount = this.componentDidMount.bind(this);
-        this.componentDidUpdate = this.componentDidUpdate.bind(this);
     }
 
 
@@ -56,6 +55,9 @@ export class Layer extends React.Component<LayerProps, {}>
                 this.canvas.style.top = `${this.props.y}px`;
 
                 ctx.clearRect(0,0,this.props.width,this.props.height);
+
+                let scope = {genome : this.props.figure};
+                plasmid.plasmid.$scope =scope;
                 
                 await renderSVGToCanvas(plasmid.plasmid.renderStart() + plasmid.plasmid.renderEnd(), ctx);
             }
