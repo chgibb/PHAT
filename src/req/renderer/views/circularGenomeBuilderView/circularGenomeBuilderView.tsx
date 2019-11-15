@@ -198,6 +198,7 @@ export class CircularGenomeBuilderView extends React.Component<CircularGenomeBui
                 {
                     figure ? (
                         <CircularGenome
+                            key={figure.uuid}
                             figure={figure}
                             width={this.state.figurePosition.width}
                             height={this.state.figurePosition.height}
