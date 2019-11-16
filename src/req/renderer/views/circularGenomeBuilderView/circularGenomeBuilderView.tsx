@@ -27,6 +27,11 @@ import {changeIntervalLabelLength} from "./editCache/changeIntervalLabelLength";
 import {changeIntervalLabelDirection} from "./editCache/changeIntervalLabelDirection";
 import {changeIntervalLabelVadjust} from "./editCache/changeIntervalLabelVadjust";
 import {toggleCoverageTrackLayerVisibility} from "./editCache/toggleCoverageTrackLayerVisibility";
+import { Dialog } from '../../components/dialog';
+import { DialogTitle } from '../../components/dialogTitle';
+import { DialogActions } from '../../components/dialogActions';
+import { Button } from '../../components/button';
+import { enQueueOperation } from '../../enQueueOperation';
 
 export interface CircularGenomeBuilderViewState {
     figureSelectOvelayOpen: boolean;
@@ -34,6 +39,7 @@ export interface CircularGenomeBuilderViewState {
     editContigsOverlayOpen : boolean;
     editBPTrackOptionsOverlayOpen : boolean;
     coverageTrackOverlayOpen : boolean;
+    copyFigureDialogOpen : boolean;
     selectedFigure: string;
     figurePosition : {
         width : number,
@@ -208,6 +214,37 @@ export class CircularGenomeBuilderView extends React.Component<CircularGenomeBui
                         />
                     ) : ""
                 }
+                <Dialog
+                    open={this.state.copyFigureDialogOpen}
+                    onClose={()=>{this.setState({copyFigureDialogOpen:false});}}
+                >
+                    <DialogTitle>{"Copy Figure?"}</DialogTitle>
+                    <DialogActions>
+                        <Button
+                            onClick={()=>{this.setState({copyFigureDialogOpen:false});}}
+                            type="retreat"
+                            label="Cancel"
+                        />
+
+                        <Button
+                            onClick={()=>{
+                                    this.setState({
+                                        copyFigureDialogOpen:false
+                                    });
+                                    
+                                    if(figure)
+                                    {
+                                        enQueueOperation({
+                                            opName: "copyCircularFigure",
+                                            data : figure
+                                        });
+                                    }
+                                }}
+                            type="advance"
+                            label="Copy"
+                        />
+                    </DialogActions>
+                </Dialog>
             </React.Fragment>
         );
     }

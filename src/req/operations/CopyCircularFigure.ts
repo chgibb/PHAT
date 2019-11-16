@@ -31,6 +31,16 @@ export class CopyCircularFigure extends atomic.AtomicOperation<CopyCircularFigur
         {
             Object.assign(this.newFigure, this.origFigure);
             this.newFigure.uuid = uuidv4();
+
+            if(this.origFigure)
+            {
+                for(let i = 0; i != this.origFigure.visibleLayers.length; ++i){
+                    if(this.origFigure.visibleLayers[i] == this.origFigure.uuid){
+                        this.origFigure.visibleLayers[i] = this.newFigure.uuid;
+                    }
+                }
+            }
+
             let self = this;
             fse.copy(
                 getReadableAndWritable(`rt/circularFigures/${this.origFigure!.uuid}`),

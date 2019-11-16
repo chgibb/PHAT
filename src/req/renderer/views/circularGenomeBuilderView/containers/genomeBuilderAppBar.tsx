@@ -14,6 +14,7 @@ import {Typography} from "../../../components/typography";
 import {MenuRounded} from "../../../components/icons/menuRounded";
 
 import {appBar} from "./styles/appBar";
+import { FileCopyOutlined } from '../../../components/icons/fileCopyOutlined';
 
 export function GenomeBuilderAppBar(this: CircularGenomeBuilderView, props: { figure: CircularFigure | undefined }): JSX.Element 
 {
@@ -71,6 +72,23 @@ export function GenomeBuilderAppBar(this: CircularGenomeBuilderView, props: { fi
                             }}
                         >
                             <Typography style={{color:"white"}}>Undo</Typography>
+                        </IconButton>
+                    </Tooltip>
+                    <Tooltip title="Copy Figure">
+                        <IconButton
+                            edge="start"
+                            color="primary"
+                            classes={{colorPrimary: white}}
+                            onClick={()=>
+                            {
+                                if(figure){
+                                    this.setState({
+                                        copyFigureDialogOpen : true
+                                    });
+                                }
+                            }}
+                        >
+                            <FileCopyOutlined />
                         </IconButton>
                     </Tooltip>
                     <Tooltip title="Customize Contigs">
