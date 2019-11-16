@@ -1,15 +1,12 @@
 import * as React from "react";
 
-import {CircularFigure, assembleCompilableTemplates, buildBaseFigureTemplate, assembleCompilableCoverageTrack} from "../../circularFigure/circularFigure";
+import {CircularFigure, assembleCompilableTemplates, buildBaseFigureTemplate, assembleCompilableCoverageTrack, renderSVGToCanvas} from "../../circularFigure/circularFigure";
 import {Plasmid} from "../../../ngplasmid/lib/plasmid";
 import {Node, loadFromString} from "../../../ngplasmid/lib/html";
 
-import {Layer} from "./layer";
-
 export interface CircularGenomeState
 {
-    plasmidCache : Array<{uuid : string,plasmid : Plasmid}>;
-    shouldUpdateCanvas : boolean;
+    
 }
 
 export interface CircularGenomeProps
@@ -25,14 +22,16 @@ export interface CircularGenomeProps
 export class CircularGenome extends React.Component<CircularGenomeProps,CircularGenomeState>
 {
     private ref = React.createRef<HTMLDivElement>();
+    private plasmidCache : Array<{uuid : string,plasmid : Plasmid}>;
     public constructor(props : CircularGenomeProps)
     {
         super(props);
 
         this.state = {
-            plasmidCache : [],
-            shouldUpdateCanvas : true
+
         };
+
+        this.plasmidCache = [];
 
         this.loadPlasmid = this.loadPlasmid.bind(this);
         this.updateCanvas = this.updateCanvas.bind(this);
@@ -95,16 +94,15 @@ export class CircularGenome extends React.Component<CircularGenomeProps,Circular
                             if(nodes[i].children[k].name == "plasmid")
                             {
                                 plasmid.fromNode(nodes[i].children[k]);
-                                this.setState({
-                                    shouldUpdateCanvas : true,  
-                                    plasmidCache : [
-                                        ...this.state.plasmidCache,
-                                        {
-                                            uuid : target,
-                                            plasmid : plasmid
-                                        }
-                                    ]
-                                });
+                                this.plasmidCache = [
+                                    ...this.plasmidCache,
+                                    {
+                                        uuid : target,
+                                        plasmid : plasmid
+                                    }
+                                ];
+
+                                return {uuid:target,plasmid:plasmid};
                             }
                         }
                     }
@@ -115,9 +113,50 @@ export class CircularGenome extends React.Component<CircularGenomeProps,Circular
         return undefined;
     }
 
-    public updateCanvas()
-    {
+    public async updateCanvas() {
+        for (let i = 0; i != this.props.figure.visibleLayers.length; ++i) {
+            let layer = this.props.figure.visibleLayers[i];
+            if (this.ref.current) {
+                let canvasArr = this.ref.current.getElementsByTagName("canvas");
 
+                while (canvasArr.length < this.props.figure.visibleLayers.length) {
+                    this.ref.current.appendChild(document.createElement("canvas"));
+                }
+
+                canvasArr = this.ref.current.getElementsByTagName("canvas");
+
+                let canvas = canvasArr[i];
+
+                let plasmid = this.plasmidCache.find((x) => {
+                    if (x.uuid == layer)
+                        return true;
+                    return false;
+                });
+
+                if (!plasmid) {
+                    plasmid = await this.loadPlasmid(layer);
+                }
+
+                if (plasmid && canvas) {
+                    let ctx: CanvasRenderingContext2D | null = canvas.getContext("2d");
+
+                    if (ctx) {
+                        canvas.style.position = "absolute";
+                        canvas.setAttribute("width", `${this.props.width}`);
+                        canvas.setAttribute("height", `${this.props.height}`);
+                        canvas.style.left = `${this.props.x}px`;
+                        canvas.style.top = `${this.props.y}px`;
+
+                        ctx.clearRect(0, 0, this.props.width, this.props.height);
+
+                        let scope = { genome: this.props.figure };
+                        plasmid.plasmid.$scope = scope;
+
+                        await renderSVGToCanvas(plasmid.plasmid.renderStart() + plasmid.plasmid.renderEnd(), ctx);
+                    }
+                }
+            }
+        }
     }
 
     public componentDidMount()
@@ -130,9 +169,9 @@ export class CircularGenome extends React.Component<CircularGenomeProps,Circular
             return true;
     }
 
-    public componentDidUpdate(prevProps : Readonly<CircularGenomeProps>,prevState : Readonly<CircularGenomeState>)
+    public async componentDidUpdate(prevProps : Readonly<CircularGenomeProps>,prevState : Readonly<CircularGenomeState>)
     {
-        this.updateCanvas();
+       // this.updateCanvas();
 
         let shouldUpdateCanvasDueToResize = false;
         
@@ -170,17 +209,7 @@ export class CircularGenome extends React.Component<CircularGenomeProps,Circular
                     shouldUpdateCanvasDueToResize = true;
 
         if(shouldUpdateCanvasDueToResize || this.props.shouldUpateCanvas){
-            if(!this.state.shouldUpdateCanvas){
-            this.setState({
-                shouldUpdateCanvas:true
-            });
-        }
-        }
-
-        else if(!shouldUpdateCanvasDueToResize && !this.props.shouldUpateCanvas && this.state.shouldUpdateCanvas){
-            this.setState({
-                shouldUpdateCanvas:false
-            });
+            await this.updateCanvas();
         }
         
     }
@@ -190,26 +219,7 @@ export class CircularGenome extends React.Component<CircularGenomeProps,Circular
         return (
             <React.Fragment>
                 <div ref={this.ref}>
-                {
-                    this.props.figure.visibleLayers.map((layer) => 
-                    {
-                        return (
-                            <Layer
-                                plasmidCache={this.state.plasmidCache}
-                                figure={this.props.figure}
-                                target={layer}
-                                loadPlasmid={this.loadPlasmid}
 
-                                width={this.props.width}
-                                height={this.props.height}
-                                x={this.props.x}
-                                y={this.props.y}
-
-                                shouldUpdateCanvas={this.state.shouldUpdateCanvas}
-                            />
-                        );
-                    })
-                }
                 </div>
             </React.Fragment>
         );
