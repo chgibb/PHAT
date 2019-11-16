@@ -3,18 +3,18 @@ import * as dataMgr from "./../../../req/main/dataMgr";
 import {Fasta} from "./../../../req/fasta";
 
 /**
- * Creates a new circular figure for HPV16 ref genomes
+ * Expands HPV16 figure list
  * 
  * @export
  * @returns {Promise<void>} 
  */
-export async function createHPV16Figure() : Promise<void>
+export async function expandHPV16FigureList() : Promise<void>
 {
     return new Promise<void>((resolve,reject) => 
     {
         setTimeout(function()
         {
-            console.log("creating new figure for hpv16 ref");
+            console.log("expanding figure list for hpv16");
             
             let genomeBuilder = winMgr.getFreeWebContents();
             if(!genomeBuilder || genomeBuilder.length == 0)
@@ -30,7 +30,7 @@ export async function createHPV16Figure() : Promise<void>
                 if(fastas[i].alias == "HPV16ref_genomes.fasta")
                 {
                     genomeBuilder[0].executeJavaScript(`
-                        document.getElementById("${fastas[i].uuid}NewFigure").children[0].click();
+                        document.getElementById("${fastas[i].uuid}ExpandTree").children[0].click();
                     `);
                     return resolve();
                 }

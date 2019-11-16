@@ -50,7 +50,7 @@ export function FigureSelectOverlay(props: FigureSelectOverlayProps): JSX.Elemen
                                         props.builder.props.fastas.map((fasta,fastaIndex) => 
                                         {
                                             return (                                             
-                                                <TreeItem nodeId={`${fastaIndex}`} label={fasta.alias}>
+                                                <TreeItem nodeId={`${fastaIndex}`} label={fasta.alias} id={`${fasta.uuid}ExpandTree`}>
                                                     {
                                                         props.builder.props.figures.map((figure,figureIndex) => 
                                                         {
@@ -74,6 +74,7 @@ export function FigureSelectOverlay(props: FigureSelectOverlayProps): JSX.Elemen
                                                         })
                                                     }
                                                     <TreeItem 
+                                                        id={`${fasta.uuid}NewFigure`}
                                                         nodeId={`${fastaIndex}-new`} 
                                                         label="Create New Figure" 
                                                         icon={

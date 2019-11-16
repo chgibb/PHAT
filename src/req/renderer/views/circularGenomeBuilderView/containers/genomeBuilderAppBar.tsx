@@ -26,6 +26,7 @@ export function GenomeBuilderAppBar(this: CircularGenomeBuilderView, props: { fi
                 <IconButton
                     edge="start"
                     color="primary"
+                    id="figuresOverlayToggle"
                     classes={{colorPrimary: white}}
                     onClick={() => 
                     {

@@ -6,13 +6,13 @@ import * as winMgr from "./../../../req/main/winMgr";
  * @export
  * @returns {Promise<void>} 
  */
-export async function toggleFiguresDropdown() : Promise<void>
+export async function toggleFiguresOverlay() : Promise<void>
 {
     return new Promise<void>((resolve,reject) => 
     {
         setTimeout(function()
         {
-            console.log("toggling figures dropdown");
+            console.log("toggling figures overlay");
             let genomeBuilder = winMgr.getFreeWebContents();
            
             if(!genomeBuilder || genomeBuilder.length == 0)
@@ -22,7 +22,7 @@ export async function toggleFiguresDropdown() : Promise<void>
             }
 
             genomeBuilder[0].executeJavaScript(`
-               document.getElementById("figuresDropdownToggle").click();
+               document.getElementById("figuresOverlayToggle").click();
            `);
             resolve();
         },500); 
