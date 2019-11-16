@@ -15,6 +15,7 @@ import {MenuRounded} from "../../../components/icons/menuRounded";
 
 import {appBar} from "./styles/appBar";
 import { FileCopyOutlined } from '../../../components/icons/fileCopyOutlined';
+import { DeleteForeverOutlined } from '../../../components/icons/deleteForeverOutlined';
 
 export function GenomeBuilderAppBar(this: CircularGenomeBuilderView, props: { figure: CircularFigure | undefined }): JSX.Element 
 {
@@ -89,6 +90,23 @@ export function GenomeBuilderAppBar(this: CircularGenomeBuilderView, props: { fi
                             }}
                         >
                             <FileCopyOutlined />
+                        </IconButton>
+                    </Tooltip>
+                    <Tooltip title="Delete Figure">
+                        <IconButton
+                            edge="start"
+                            color="primary"
+                            classes={{colorPrimary: white}}
+                            onClick={()=>
+                            {
+                                if(figure){
+                                    this.setState({
+                                        deleteFigureDialogOpen : true
+                                    });
+                                }
+                            }}
+                        >
+                            <DeleteForeverOutlined />
                         </IconButton>
                     </Tooltip>
                     <Tooltip title="Customize Contigs">

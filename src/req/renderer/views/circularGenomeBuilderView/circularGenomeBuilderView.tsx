@@ -32,6 +32,8 @@ import { DialogTitle } from '../../components/dialogTitle';
 import { DialogActions } from '../../components/dialogActions';
 import { Button } from '../../components/button';
 import { enQueueOperation } from '../../enQueueOperation';
+import { CopyFigureDialog } from './containers/copyFigureDialog';
+import { DeleteFigureDialog } from './containers/deleteFigureDialog';
 
 export interface CircularGenomeBuilderViewState {
     figureSelectOvelayOpen: boolean;
@@ -40,6 +42,7 @@ export interface CircularGenomeBuilderViewState {
     editBPTrackOptionsOverlayOpen : boolean;
     coverageTrackOverlayOpen : boolean;
     copyFigureDialogOpen : boolean;
+    deleteFigureDialogOpen : boolean;
     selectedFigure: string;
     figurePosition : {
         width : number,
@@ -77,6 +80,8 @@ export class CircularGenomeBuilderView extends React.Component<CircularGenomeBui
     protected toggleCoverageTrackLayerVisibility = toggleCoverageTrackLayerVisibility.bind(this);
     private GenomeBuilderAppBar = GenomeBuilderAppBar.bind(this);
     private GenomeBuilderOverlays = GenomeBuilderOverlays.bind(this);
+    private CopyFigureDialog = CopyFigureDialog.bind(this);
+    private DeleteFigureDialog = DeleteFigureDialog.bind(this);
     public constructor(props: CircularGenomeBuilderViewProps) 
     {
         super(props);
@@ -214,37 +219,8 @@ export class CircularGenomeBuilderView extends React.Component<CircularGenomeBui
                         />
                     ) : ""
                 }
-                <Dialog
-                    open={this.state.copyFigureDialogOpen}
-                    onClose={()=>{this.setState({copyFigureDialogOpen:false});}}
-                >
-                    <DialogTitle>{"Copy Figure?"}</DialogTitle>
-                    <DialogActions>
-                        <Button
-                            onClick={()=>{this.setState({copyFigureDialogOpen:false});}}
-                            type="retreat"
-                            label="Cancel"
-                        />
-
-                        <Button
-                            onClick={()=>{
-                                    this.setState({
-                                        copyFigureDialogOpen:false
-                                    });
-                                    
-                                    if(figure)
-                                    {
-                                        enQueueOperation({
-                                            opName: "copyCircularFigure",
-                                            data : figure
-                                        });
-                                    }
-                                }}
-                            type="advance"
-                            label="Copy"
-                        />
-                    </DialogActions>
-                </Dialog>
+                <this.CopyFigureDialog figure={figure} />
+                <this.DeleteFigureDialog figure={figure} />
             </React.Fragment>
         );
     }
