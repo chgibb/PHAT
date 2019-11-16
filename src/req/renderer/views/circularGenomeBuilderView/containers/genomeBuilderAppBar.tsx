@@ -70,7 +70,7 @@ export function GenomeBuilderAppBar(this: CircularGenomeBuilderView, props: { fi
                                 }
                             }}
                         >
-                            <Typography>Undo</Typography>
+                            <Typography style={{color:"white"}}>Undo</Typography>
                         </IconButton>
                     </Tooltip>
                     <Tooltip title="Customize Contigs">
