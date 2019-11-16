@@ -12,10 +12,10 @@ import {WavesOutlined} from "../../../components/icons/wavesOutlined";
 import {SwapVertOutlined} from "../../../components/icons/swapVertOutlined";
 import {Typography} from "../../../components/typography";
 import {MenuRounded} from "../../../components/icons/menuRounded";
+import {FileCopyOutlined} from "../../../components/icons/fileCopyOutlined";
+import {DeleteForeverOutlined} from "../../../components/icons/deleteForeverOutlined";
 
 import {appBar} from "./styles/appBar";
-import { FileCopyOutlined } from '../../../components/icons/fileCopyOutlined';
-import { DeleteForeverOutlined } from '../../../components/icons/deleteForeverOutlined';
 
 export function GenomeBuilderAppBar(this: CircularGenomeBuilderView, props: { figure: CircularFigure | undefined }): JSX.Element 
 {
@@ -82,7 +82,8 @@ export function GenomeBuilderAppBar(this: CircularGenomeBuilderView, props: { fi
                             classes={{colorPrimary: white}}
                             onClick={()=>
                             {
-                                if(figure){
+                                if(figure)
+                                {
                                     this.setState({
                                         copyFigureDialogOpen : true
                                     });
@@ -99,7 +100,8 @@ export function GenomeBuilderAppBar(this: CircularGenomeBuilderView, props: { fi
                             classes={{colorPrimary: white}}
                             onClick={()=>
                             {
-                                if(figure){
+                                if(figure)
+                                {
                                     this.setState({
                                         deleteFigureDialogOpen : true
                                     });

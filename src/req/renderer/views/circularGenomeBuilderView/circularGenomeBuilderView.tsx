@@ -27,8 +27,8 @@ import {changeIntervalLabelLength} from "./editCache/changeIntervalLabelLength";
 import {changeIntervalLabelDirection} from "./editCache/changeIntervalLabelDirection";
 import {changeIntervalLabelVadjust} from "./editCache/changeIntervalLabelVadjust";
 import {toggleCoverageTrackLayerVisibility} from "./editCache/toggleCoverageTrackLayerVisibility";
-import { CopyFigureDialog } from './containers/copyFigureDialog';
-import { DeleteFigureDialog } from './containers/deleteFigureDialog';
+import {CopyFigureDialog} from "./containers/copyFigureDialog";
+import {DeleteFigureDialog} from "./containers/deleteFigureDialog";
 
 export interface CircularGenomeBuilderViewState {
     figureSelectOvelayOpen: boolean;
