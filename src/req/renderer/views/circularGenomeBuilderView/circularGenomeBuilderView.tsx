@@ -27,11 +27,6 @@ import {changeIntervalLabelLength} from "./editCache/changeIntervalLabelLength";
 import {changeIntervalLabelDirection} from "./editCache/changeIntervalLabelDirection";
 import {changeIntervalLabelVadjust} from "./editCache/changeIntervalLabelVadjust";
 import {toggleCoverageTrackLayerVisibility} from "./editCache/toggleCoverageTrackLayerVisibility";
-import { Dialog } from '../../components/dialog';
-import { DialogTitle } from '../../components/dialogTitle';
-import { DialogActions } from '../../components/dialogActions';
-import { Button } from '../../components/button';
-import { enQueueOperation } from '../../enQueueOperation';
 import { CopyFigureDialog } from './containers/copyFigureDialog';
 import { DeleteFigureDialog } from './containers/deleteFigureDialog';
 
