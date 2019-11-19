@@ -18,6 +18,7 @@ import {IndexFastaForBowtie2Alignment} from "../operations/indexFastaForBowtie2A
 import {IndexFastaForHisat2Alignment} from "../operations/indexFastaForHisat2Alignment";
 import {RunBowtie2Alignment} from "../operations/RunBowtie2Alignment";
 import {BLASTSegmentResult} from "../BLASTSegmentResult";
+import {CircularFigure} from "../renderer/circularFigure/circularFigure";
 
 import {getReadableAndWritable} from "./../getAppPath";
 import {getEdition} from "./../getEdition";
@@ -46,7 +47,6 @@ import {File} from "./../file";
 import {Fastq} from "./../fastq";
 import {Fasta} from "./../fasta";
 import {AlignData} from "./../alignData";
-import {CircularFigure} from "./../renderer/circularFigure";
 import {PIDInfo} from "./../PIDInfo";
 import {finishLoadingProject} from "./finishLoadingProject";
 import {GetKeyEvent,SaveKeyEvent,KeySubEvent} from "./../ipcEvents";
