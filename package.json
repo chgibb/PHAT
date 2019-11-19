@@ -69,7 +69,7 @@
         "babel-plugin-minify-type-constructors": "^0.4.3",
         "babel-plugin-search-and-replace": "^1.0.0",
         "babel-plugin-transform-node-env-inline": "^0.4.3",
-        "bootstrap": "4.1.2",
+        "bootstrap": "4.3.1",
         "browserify": "^13.1.0",
         "builtin-modules": "^3.1.0",
         "bundle-collapser": "^1.2.1",
