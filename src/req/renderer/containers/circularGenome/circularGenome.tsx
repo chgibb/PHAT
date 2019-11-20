@@ -1,8 +1,8 @@
 import * as React from "react";
 
-import {CircularFigure, assembleCompilableTemplates, buildBaseFigureTemplate, assembleCompilableCoverageTrack, renderSVGToCanvas} from "../../circularFigure/circularFigure";
+import {CircularFigure, renderSVGToCanvas} from "../../circularFigure/circularFigure";
 import {Plasmid} from "../../../ngplasmid/lib/plasmid";
-import {Node, loadFromString} from "../../../ngplasmid/lib/html";
+import { loadPlasmid } from './cachedPlasmid';
 
 export interface CircularGenomeState
 {
@@ -33,84 +33,9 @@ export class CircularGenome extends React.Component<CircularGenomeProps,Circular
 
         this.plasmidCache = [];
 
-        this.loadPlasmid = this.loadPlasmid.bind(this);
         this.updateCanvas = this.updateCanvas.bind(this);
         this.componentDidMount = this.componentDidMount.bind(this);
         this.componentDidUpdate = this.componentDidUpdate.bind(this);
-    }
-
-    public async loadPlasmid(target : string) : Promise<{uuid : string,plasmid : Plasmid} | undefined>
-    {
-        let scope = {genome : this.props.figure};
-        if(target == this.props.figure.uuid)
-        {
-            console.log("Loading base figure");
-            console.log(this.props.figure.name);
-            
-            let plasmid : Plasmid = new Plasmid();
-            plasmid.$scope = scope;
-
-            let nodes : Array<Node> = await loadFromString(
-                assembleCompilableTemplates(this.props.figure,
-                    buildBaseFigureTemplate(this.props.figure)
-                )
-            );
-
-            for(let i = 0; i != nodes.length; ++i)
-            {
-                if(nodes[i].name == "div")
-                {
-                    for(let k = 0; k != nodes[i].children.length; ++k)
-                    {
-                        if(nodes[i].children[k].name == "plasmid")
-                        {
-                            plasmid.fromNode(nodes[i].children[k]);
-                            return {
-                                uuid : this.props.figure.uuid,
-                                plasmid : plasmid
-                            };
-                        }
-                    }
-                }
-            }
-        }
-
-        else
-        {
-            let coverageTrack = this.props.figure.renderedCoverageTracks.find((x) => x.uuid == target);
-            if(coverageTrack)
-            {
-                let plasmid : Plasmid = new Plasmid();
-                plasmid.$scope = scope;
-
-                let nodes : Array<Node> = await loadFromString(assembleCompilableCoverageTrack(this.props.figure,coverageTrack));
-
-                for(let i = 0; i != nodes.length; ++i)
-                {
-                    if(nodes[i].name == "div")
-                    {
-                        for(let k = 0; k != nodes[i].children.length; ++k)
-                        {
-                            if(nodes[i].children[k].name == "plasmid")
-                            {
-                                plasmid.fromNode(nodes[i].children[k]);
-                                this.plasmidCache = [
-                                    ...this.plasmidCache,
-                                    {
-                                        uuid : target,
-                                        plasmid : plasmid
-                                    }
-                                ];
-
-                                return {uuid:target,plasmid:plasmid};
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        return undefined;
     }
 
     public async updateCanvas() 
@@ -140,7 +65,7 @@ export class CircularGenome extends React.Component<CircularGenomeProps,Circular
 
                 if (!plasmid) 
                 {
-                    plasmid = await this.loadPlasmid(layer);
+                    plasmid = await loadPlasmid(layer,this.props.figure);
                 }
 
                 if (plasmid && canvas) 
@@ -209,15 +134,25 @@ export class CircularGenome extends React.Component<CircularGenomeProps,Circular
                 if(prevProps.y != this.props.y)
                     canvas.style.top = `${this.props.y}px`;
             }
-        }
-
-        if(this.props.shouldUpateCanvas)
+            if(this.props.shouldUpateCanvas)
+        {
             shouldUpdateCanvasDueToResize = true;
+
+            while(canvasArr.length > this.props.figure.visibleLayers.length){
+                if(this.ref.current.lastChild){
+                    this.ref.current.lastChild.remove();
+                }
+                canvasArr = this.ref.current.getElementsByTagName("canvas");
+            }
+        }
 
         if(shouldUpdateCanvasDueToResize || this.props.shouldUpateCanvas)
         {
             await this.updateCanvas();
         }
+        }
+
+        
         
     }
 
