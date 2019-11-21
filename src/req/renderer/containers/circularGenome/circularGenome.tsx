@@ -1,54 +1,44 @@
 import * as React from "react";
 
-import {CircularFigure, renderSVGToCanvas} from "../../circularFigure/circularFigure";
-import {Plasmid} from "../../../ngplasmid/lib/plasmid";
-import { loadPlasmid } from './cachedPlasmid';
+import { CircularFigure, renderSVGToCanvas, CoverageTrackLayer, SNPTrackLayer, MapScope } from "../../circularFigure/circularFigure";
+import { Plasmid } from "../../../ngplasmid/lib/plasmid";
+import { loadPlasmid, findPlasmidInCache, prunePlasmidCache } from './cachedPlasmid';
 
-export interface CircularGenomeState
-{
-    
+export interface CircularGenomeState {
+
 }
 
-export interface CircularGenomeProps
-{
-    shouldUpateCanvas : boolean | undefined;
-    figure : CircularFigure;
-    width : number;
-    height : number;
-    x : number;
-    y : number;
+export interface CircularGenomeProps {
+    shouldUpateCanvas: boolean | undefined;
+    figure: CircularFigure;
+    width: number;
+    height: number;
+    x: number;
+    y: number;
 }
 
-export class CircularGenome extends React.Component<CircularGenomeProps,CircularGenomeState>
+export class CircularGenome extends React.Component<CircularGenomeProps, CircularGenomeState>
 {
     private ref = React.createRef<HTMLDivElement>();
-    private plasmidCache : Array<{uuid : string,plasmid : Plasmid}>;
-    public constructor(props : CircularGenomeProps)
-    {
+    public constructor(props: CircularGenomeProps) {
         super(props);
 
         this.state = {
 
         };
 
-        this.plasmidCache = [];
-
         this.updateCanvas = this.updateCanvas.bind(this);
         this.componentDidMount = this.componentDidMount.bind(this);
         this.componentDidUpdate = this.componentDidUpdate.bind(this);
     }
 
-    public async updateCanvas() 
-    {
-        for (let i = 0; i != this.props.figure.visibleLayers.length; ++i) 
-        {
+    public async updateCanvas() {
+        for (let i = 0; i != this.props.figure.visibleLayers.length; ++i) {
             let layer = this.props.figure.visibleLayers[i];
-            if (this.ref.current) 
-            {
+            if (this.ref.current) {
                 let canvasArr = this.ref.current.getElementsByTagName("canvas");
 
-                while (canvasArr.length < this.props.figure.visibleLayers.length) 
-                {
+                while (canvasArr.length < this.props.figure.visibleLayers.length) {
                     this.ref.current.appendChild(document.createElement("canvas"));
                 }
 
@@ -56,108 +46,130 @@ export class CircularGenome extends React.Component<CircularGenomeProps,Circular
 
                 let canvas = canvasArr[i];
 
-                let plasmid = this.plasmidCache.find((x) => 
-                {
-                    if (x.uuid == layer)
-                        return true;
-                    return false;
-                });
+                let cachedPlasmid = findPlasmidInCache(layer,this.props.figure);
 
-                if (!plasmid) 
-                {
-                    plasmid = await loadPlasmid(layer,this.props.figure);
+                let layerType: CoverageTrackLayer | SNPTrackLayer | undefined;
+
+                layerType = this.props.figure.renderedSNPTracks.find((x) => x.uuid == layer);
+                if (!layerType) {
+                    layerType = this.props.figure.renderedCoverageTracks.find((x) => x.uuid == layer);
                 }
 
-                if (plasmid && canvas) 
-                {
-                    let ctx: CanvasRenderingContext2D | null = canvas.getContext("2d");
+                let hasScopeChanged = false;
 
-                    if (ctx) 
-                    {
-                        canvas.style.position = "absolute";
-                        canvas.setAttribute("width", `${this.props.width}`);
-                        canvas.setAttribute("height", `${this.props.height}`);
-                        canvas.style.left = `${this.props.x}px`;
-                        canvas.style.top = `${this.props.y}px`;
+                if (layerType && cachedPlasmid) {
+                    let oldScope: MapScope = JSON.parse(cachedPlasmid.oldStrScope);
 
-                        ctx.clearRect(0, 0, this.props.width, this.props.height);
+                    if (oldScope.genome) {
+                        switch (layerType.type) {
+                            case "coverageTrackLayer":
 
-                        let scope = {genome: this.props.figure};
-                        plasmid.plasmid.$scope = scope;
+                                console.log(`${oldScope.genome!.radius} ${this.props.figure.radius}`);
+                                if (oldScope.genome.radius != this.props.figure.radius) {
+                                    hasScopeChanged = true;
+                                    break;
+                                }
+                            break;
+                        }
+                        
+                        if(oldScope.genome.visibleLayers.length != this.props.figure.visibleLayers.length){
+                            hasScopeChanged = true;
+                        }
+                    }
 
-                        await renderSVGToCanvas(plasmid.plasmid.renderStart() + plasmid.plasmid.renderEnd(), ctx);
+
+                } else {
+                    hasScopeChanged = true;
+                }
+
+                if (hasScopeChanged) {
+                    if (!cachedPlasmid) {
+                        cachedPlasmid = await loadPlasmid(layer, this.props.figure);
+                    }
+
+
+
+                    if (cachedPlasmid && cachedPlasmid.plasmid && canvas) {
+                        let ctx: CanvasRenderingContext2D | null = canvas.getContext("2d");
+
+                        if (ctx) {
+                            canvas.style.position = "absolute";
+                            canvas.setAttribute("width", `${this.props.width}`);
+                            canvas.setAttribute("height", `${this.props.height}`);
+                            canvas.style.left = `${this.props.x}px`;
+                            canvas.style.top = `${this.props.y}px`;
+
+                            ctx.clearRect(0, 0, this.props.width, this.props.height);
+
+                            let scope = { genome: this.props.figure };
+                            cachedPlasmid.plasmid.$scope = scope;
+
+                            await renderSVGToCanvas(cachedPlasmid.plasmid.renderStart() + cachedPlasmid.plasmid.renderEnd(), ctx);
+                        }
                     }
                 }
             }
         }
     }
 
-    public componentDidMount()
-    {
+    public componentDidMount() {
         this.updateCanvas();
     }
 
-    public shouldComponentUpdate(prevProps : Readonly<CircularGenomeProps>,prevState : Readonly<CircularGenomeState>) : boolean
-    {
+    public shouldComponentUpdate(prevProps: Readonly<CircularGenomeProps>, prevState: Readonly<CircularGenomeState>): boolean {
         return true;
     }
 
-    public async componentDidUpdate(prevProps : Readonly<CircularGenomeProps>,prevState : Readonly<CircularGenomeState>)
-    {
+    public async componentDidUpdate(prevProps: Readonly<CircularGenomeProps>, prevState: Readonly<CircularGenomeState>) {
         let shouldUpdateCanvasDueToResize = false;
-        
-        if(this.ref.current)
-        {
+
+        prunePlasmidCache(this.props.figure);
+
+        if (this.ref.current) {
             let canvasArr = this.ref.current.getElementsByTagName("canvas");
 
-            for(let i = 0; i != canvasArr.length; ++i)
-            {
+            for (let i = 0; i != canvasArr.length; ++i) {
                 let canvas = canvasArr[i];
 
                 canvas.style.position = "absolute";
 
-                if(prevProps.width != this.props.width)
-                {
+                if (prevProps.width != this.props.width) {
                     shouldUpdateCanvasDueToResize = true;
-                    canvas.setAttribute("width",`${this.props.width}`);
+                    canvas.setAttribute("width", `${this.props.width}`);
                 }
 
-                if(prevProps.height != this.props.height)    
-                {
+                if (prevProps.height != this.props.height) {
                     shouldUpdateCanvasDueToResize = true;
-                    canvas.setAttribute("height",`${this.props.height}`);
+                    canvas.setAttribute("height", `${this.props.height}`);
                 }
 
-                if(prevProps.x != this.props.x)
+                if (prevProps.x != this.props.x)
                     canvas.style.left = `${this.props.x}px`;
 
-                if(prevProps.y != this.props.y)
+                if (prevProps.y != this.props.y)
                     canvas.style.top = `${this.props.y}px`;
             }
-            if(this.props.shouldUpateCanvas)
-        {
-            shouldUpdateCanvasDueToResize = true;
+            if (this.props.shouldUpateCanvas) {
+                shouldUpdateCanvasDueToResize = true;
 
-            while(canvasArr.length > this.props.figure.visibleLayers.length){
-                if(this.ref.current.lastChild){
-                    this.ref.current.lastChild.remove();
+                while (canvasArr.length > this.props.figure.visibleLayers.length) {
+                    if (this.ref.current.lastChild) {
+                        this.ref.current.lastChild.remove();
+                    }
+                    canvasArr = this.ref.current.getElementsByTagName("canvas");
                 }
-                canvasArr = this.ref.current.getElementsByTagName("canvas");
+            }
+
+            if (shouldUpdateCanvasDueToResize || this.props.shouldUpateCanvas) {
+                await this.updateCanvas();
             }
         }
 
-        if(shouldUpdateCanvasDueToResize || this.props.shouldUpateCanvas)
-        {
-            await this.updateCanvas();
-        }
-        }
 
-        
-        
+
     }
 
-    public render() : JSX.Element
-    {
+    public render(): JSX.Element {
         return (
             <React.Fragment>
                 <div ref={this.ref}>
