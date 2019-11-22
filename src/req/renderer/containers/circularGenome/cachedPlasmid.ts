@@ -43,7 +43,6 @@ export function findPlasmidInCache(target: string, figure: CircularFigure): Cach
 }
 
 export async function loadPlasmid(target: string, figure: CircularFigure): Promise<CachedPlasmid | undefined> {
-
     if (plasmidCaches[figure.uuid]) {
         let scope = { genome: figure };
 

@@ -38,19 +38,14 @@ export class CircularGenome extends React.Component<CircularGenomeProps, Circula
             if (this.ref.current) {
                 let canvasArr = this.ref.current.getElementsByTagName("canvas");
 
-                while (canvasArr.length < this.props.figure.visibleLayers.length) {
-                    this.ref.current.appendChild(document.createElement("canvas"));
-                }
-
-                canvasArr = this.ref.current.getElementsByTagName("canvas");
-
                 let canvas = canvasArr[i];
 
-                let cachedPlasmid = findPlasmidInCache(layer,this.props.figure);
+                let cachedPlasmid = findPlasmidInCache(layer, this.props.figure);
 
                 let layerType: CoverageTrackLayer | SNPTrackLayer | undefined;
 
                 layerType = this.props.figure.renderedSNPTracks.find((x) => x.uuid == layer);
+
                 if (!layerType) {
                     layerType = this.props.figure.renderedCoverageTracks.find((x) => x.uuid == layer);
                 }
@@ -69,10 +64,10 @@ export class CircularGenome extends React.Component<CircularGenomeProps, Circula
                                     hasScopeChanged = true;
                                     break;
                                 }
-                            break;
+                                break;
                         }
-                        
-                        if(oldScope.genome.visibleLayers.length != this.props.figure.visibleLayers.length){
+
+                        if (oldScope.genome.visibleLayers.length != this.props.figure.visibleLayers.length) {
                             hasScopeChanged = true;
                         }
                     }
@@ -82,12 +77,8 @@ export class CircularGenome extends React.Component<CircularGenomeProps, Circula
                     hasScopeChanged = true;
                 }
 
-                if (hasScopeChanged) {
-                    if (!cachedPlasmid) {
-                        cachedPlasmid = await loadPlasmid(layer, this.props.figure);
-                    }
-
-
+                if (hasScopeChanged || !cachedPlasmid) {
+                    cachedPlasmid = await loadPlasmid(layer, this.props.figure);
 
                     if (cachedPlasmid && cachedPlasmid.plasmid && canvas) {
                         let ctx: CanvasRenderingContext2D | null = canvas.getContext("2d");
@@ -105,6 +96,7 @@ export class CircularGenome extends React.Component<CircularGenomeProps, Circula
                             cachedPlasmid.plasmid.$scope = scope;
 
                             await renderSVGToCanvas(cachedPlasmid.plasmid.renderStart() + cachedPlasmid.plasmid.renderEnd(), ctx);
+                            console.log(`Drew ${layer}`);
                         }
                     }
                 }
@@ -128,36 +120,44 @@ export class CircularGenome extends React.Component<CircularGenomeProps, Circula
         if (this.ref.current) {
             let canvasArr = this.ref.current.getElementsByTagName("canvas");
 
+            while (canvasArr.length < this.props.figure.visibleLayers.length) {
+                this.ref.current.appendChild(document.createElement("canvas"));
+            }
+
+            while (canvasArr.length > this.props.figure.visibleLayers.length) {
+                if (this.ref.current.lastChild) {
+                    this.ref.current.lastChild.remove();
+                }
+                canvasArr = this.ref.current.getElementsByTagName("canvas");
+            }
+
+            canvasArr = this.ref.current.getElementsByTagName("canvas");
+
             for (let i = 0; i != canvasArr.length; ++i) {
                 let canvas = canvasArr[i];
 
                 canvas.style.position = "absolute";
 
-                if (prevProps.width != this.props.width) {
+                console.log(`${canvas.width},${canvas.height}`);
+
+                if (prevProps.width != this.props.width || canvas.width != this.props.width) {
                     shouldUpdateCanvasDueToResize = true;
                     canvas.setAttribute("width", `${this.props.width}`);
                 }
 
-                if (prevProps.height != this.props.height) {
+                if (prevProps.height != this.props.height || canvas.height != this.props.height) {
                     shouldUpdateCanvasDueToResize = true;
                     canvas.setAttribute("height", `${this.props.height}`);
                 }
 
-                if (prevProps.x != this.props.x)
+                if (prevProps.x != this.props.x ||  canvas.style.left != `${this.props.x}px`)
                     canvas.style.left = `${this.props.x}px`;
 
-                if (prevProps.y != this.props.y)
+                if (prevProps.y != this.props.y ||  canvas.style.top != `${this.props.y}px`)
                     canvas.style.top = `${this.props.y}px`;
             }
             if (this.props.shouldUpateCanvas) {
                 shouldUpdateCanvasDueToResize = true;
-
-                while (canvasArr.length > this.props.figure.visibleLayers.length) {
-                    if (this.ref.current.lastChild) {
-                        this.ref.current.lastChild.remove();
-                    }
-                    canvasArr = this.ref.current.getElementsByTagName("canvas");
-                }
             }
 
             if (shouldUpdateCanvasDueToResize || this.props.shouldUpateCanvas) {
@@ -172,7 +172,7 @@ export class CircularGenome extends React.Component<CircularGenomeProps, Circula
     public render(): JSX.Element {
         return (
             <React.Fragment>
-                <div ref={this.ref}>
+                <div ref={this.ref} key={this.props.figure.uuid}>
 
                 </div>
             </React.Fragment>
