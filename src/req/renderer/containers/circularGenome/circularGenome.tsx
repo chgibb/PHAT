@@ -45,7 +45,7 @@ export class CircularGenome extends React.Component<CircularGenomeProps, Circula
 
                 let canvas = canvasArr[i];
 
-                let cachedPlasmid = this.plasmidCache.findPlasmidInCache(layer, this.props.figure);
+                let cachedPlasmid = this.plasmidCache.findPlasmidInCache(layer);
 
                 let layerType: CoverageTrackLayer | SNPTrackLayer | undefined;
 
