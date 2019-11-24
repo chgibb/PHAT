@@ -1179,7 +1179,6 @@ export function renderSVGToCanvas(svg: string, ctx: CanvasRenderingContext2D): P
         {
             ctx.drawImage(img, 0, 0);
             window.URL.revokeObjectURL(url);
-            console.log("Drew image");
             resolve();
         };
         img.src = url;

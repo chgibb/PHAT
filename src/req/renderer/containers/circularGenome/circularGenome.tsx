@@ -1,8 +1,7 @@
 import * as React from "react";
 
 import { CircularFigure, renderSVGToCanvas, CoverageTrackLayer, SNPTrackLayer, MapScope } from "../../circularFigure/circularFigure";
-import { Plasmid } from "../../../ngplasmid/lib/plasmid";
-import { loadPlasmid, findPlasmidInCache, prunePlasmidCache } from './cachedPlasmid';
+import { PlasmidCacheMgr } from './cachedPlasmid';
 
 export interface CircularGenomeState {
 
@@ -20,6 +19,7 @@ export interface CircularGenomeProps {
 export class CircularGenome extends React.Component<CircularGenomeProps, CircularGenomeState>
 {
     private ref = React.createRef<HTMLDivElement>();
+    private plasmidCache : PlasmidCacheMgr = new PlasmidCacheMgr();
     public constructor(props: CircularGenomeProps) {
         super(props);
 
@@ -40,7 +40,7 @@ export class CircularGenome extends React.Component<CircularGenomeProps, Circula
 
                 let canvas = canvasArr[i];
 
-                let cachedPlasmid = findPlasmidInCache(layer, this.props.figure);
+                let cachedPlasmid = this.plasmidCache.findPlasmidInCache(layer, this.props.figure);
 
                 let layerType: CoverageTrackLayer | SNPTrackLayer | undefined;
 
@@ -51,11 +51,11 @@ export class CircularGenome extends React.Component<CircularGenomeProps, Circula
                 }
 
                 let hasScopeChanged = false;
+                let oldScope: MapScope | undefined;
 
                 if (layerType && cachedPlasmid) {
-                    let oldScope: MapScope = JSON.parse(cachedPlasmid.oldStrScope);
-
-                    if (oldScope.genome) {
+                    oldScope = JSON.parse(cachedPlasmid.oldStrScope);
+                    if (oldScope && oldScope.genome) {
                         switch (layerType.type) {
                             case "coverageTrackLayer":
 
@@ -68,6 +68,7 @@ export class CircularGenome extends React.Component<CircularGenomeProps, Circula
                         }
 
                         if (oldScope.genome.visibleLayers.length != this.props.figure.visibleLayers.length) {
+                            console.log("visible layers changed");
                             hasScopeChanged = true;
                         }
                     }
@@ -78,7 +79,7 @@ export class CircularGenome extends React.Component<CircularGenomeProps, Circula
                 }
 
                 if (hasScopeChanged || !cachedPlasmid) {
-                    cachedPlasmid = await loadPlasmid(layer, this.props.figure);
+                    cachedPlasmid = await this.plasmidCache.loadPlasmidCacheEntry(layer, this.props.figure);
 
                     if (cachedPlasmid && cachedPlasmid.plasmid && canvas) {
                         let ctx: CanvasRenderingContext2D | null = canvas.getContext("2d");
@@ -94,6 +95,8 @@ export class CircularGenome extends React.Component<CircularGenomeProps, Circula
 
                             let scope = { genome: this.props.figure };
                             cachedPlasmid.plasmid.$scope = scope;
+
+                            this.plasmidCache.setOldScope(cachedPlasmid.uuid,this.props.figure);
 
                             await renderSVGToCanvas(cachedPlasmid.plasmid.renderStart() + cachedPlasmid.plasmid.renderEnd(), ctx);
                             console.log(`Drew ${layer}`);
@@ -115,7 +118,7 @@ export class CircularGenome extends React.Component<CircularGenomeProps, Circula
     public async componentDidUpdate(prevProps: Readonly<CircularGenomeProps>, prevState: Readonly<CircularGenomeState>) {
         let shouldUpdateCanvasDueToResize = false;
 
-        prunePlasmidCache(this.props.figure);
+        this.plasmidCache.prunePlasmidCache(this.props.figure);
 
         if (this.ref.current) {
             let canvasArr = this.ref.current.getElementsByTagName("canvas");
@@ -138,8 +141,6 @@ export class CircularGenome extends React.Component<CircularGenomeProps, Circula
 
                 canvas.style.position = "absolute";
 
-                console.log(`${canvas.width},${canvas.height}`);
-
                 if (prevProps.width != this.props.width || canvas.width != this.props.width) {
                     shouldUpdateCanvasDueToResize = true;
                     canvas.setAttribute("width", `${this.props.width}`);
@@ -150,10 +151,10 @@ export class CircularGenome extends React.Component<CircularGenomeProps, Circula
                     canvas.setAttribute("height", `${this.props.height}`);
                 }
 
-                if (prevProps.x != this.props.x ||  canvas.style.left != `${this.props.x}px`)
+                if (prevProps.x != this.props.x || canvas.style.left != `${this.props.x}px`)
                     canvas.style.left = `${this.props.x}px`;
 
-                if (prevProps.y != this.props.y ||  canvas.style.top != `${this.props.y}px`)
+                if (prevProps.y != this.props.y || canvas.style.top != `${this.props.y}px`)
                     canvas.style.top = `${this.props.y}px`;
             }
             if (this.props.shouldUpateCanvas) {
