@@ -185,7 +185,9 @@ export class ToolBarView extends React.Component<ToolBarViewProps,ToolBarViewSta
                                         </Typography>
                                 </Grid>
                             </Grid>
-                            <LinearProgress variant="indeterminate" color="secondary"/>
+                            <div hidden={this.props.operations === undefined || this.props.operations.length == 0}>
+                                <LinearProgress variant="indeterminate" color="secondary"/>
+                            </div>
                             </React.Fragment>
                         </GridWrapper>
                         <ToolBarTabs
