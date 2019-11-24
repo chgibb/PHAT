@@ -1,8 +1,8 @@
 import * as atomic from "./req/operations/atomicOperations";
 import {AtomicOperationForkEvent,CompletionFlags} from "./req/atomicOperationsIPC";
 import {AlignData} from "./req/alignData";
-import * as cf from "./req/renderer/circularFigure";
-import {buildCoverageTrackMap} from "./req/renderer/circularFigure";
+import * as cf from "./req/renderer/circularFigure/circularFigure";
+import {buildCoverageTrackMap} from "./req/renderer/circularFigure/circularFigure";
 
 let align : AlignData;
 let contiguuid : string;
@@ -30,7 +30,7 @@ process.on(
         if(ev.run == true)
         {
             await cf.cacheCoverageTrackTemplate(circularFigure,contiguuid,align,colour,scaleFactor,log10Scale);
-            let trackRecord : cf.RenderedCoverageTrackRecord = circularFigure.renderedCoverageTracks[circularFigure.renderedCoverageTracks.length - 1];
+            let trackRecord : cf.CoverageTrackLayer = circularFigure.renderedCoverageTracks[circularFigure.renderedCoverageTracks.length - 1];
             let map : cf.CoverageTrackMap = await buildCoverageTrackMap(trackRecord,circularFigure);
             cf.cacheCoverageTrackPB(trackRecord,map);
             flags.done = true;

@@ -27,6 +27,8 @@
             "react-event-listener",
             "clsx",
             "chart.js",
+            "react-draggable",
+            "react-color",
 
             "@material-ui/core/Button",
             "@material-ui/core/Dialog",

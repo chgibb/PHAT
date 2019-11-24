@@ -1,4 +1,3 @@
-import * as electron from "electron";
 import * as React from "react";
 
 
@@ -12,7 +11,6 @@ import {Fastq} from "../../../fastq";
 import {Fasta} from "../../../fasta";
 import {AlignData} from "../../../alignData";
 import {PHATView} from "../../phatView";
-import {CircularGenomeBuilderView} from "../circularGenomeBuilderView/circularGenomeBuilderView";
 
 import {ToolBarTab, ToolBarTabs} from "./containers/toolBarTabs/toolBarTabs";
 import {tabInfo} from "./tabInfo";
@@ -23,6 +21,7 @@ import {AlignViewWebView} from "./views/alignViewWebView";
 import { Badge } from '../../components/badge';
 import { taskBadge } from './styles/taskBadge';
 import { LinearProgress } from '../../components/linearProgress';
+import {CircularGenomeBuilderWebView} from "./views/circularGenomeBuilderWebView";
 
 
 export interface ToolBarViewState
@@ -159,7 +158,7 @@ export class ToolBarView extends React.Component<ToolBarViewProps,ToolBarViewSta
                                                         label : "Genome Builder",
                                                         refKey : "Genome Builder",
                                                         body : () => (
-                                                            <CircularGenomeBuilderView />
+                                                            <CircularGenomeBuilderWebView />
                                                         )
                                                     }
                                                 ])

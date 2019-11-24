@@ -78,12 +78,17 @@ process.on("message",async function(ev : AtomicOperationForkEvent)
             {}
         );
 
+        logger.logObject({message: `Found ${readsWithFragments.length} reads`});
+
         let readsBLASTed = 0;
 
         for(let i = 0; i != readsWithFragments.length; ++i)
         {
             if(readsWithFragments[i].read.SEQ.length < BLASTLENGTHCUTOFF)
+            {
+                logger.logObject({message: `Read ${i} is too small`});
                 continue;
+            }
 
             let hasLargeFragment = false;
             for(let j = 0; j != readsWithFragments[i].fragments.length; ++ j)
@@ -95,7 +100,10 @@ process.on("message",async function(ev : AtomicOperationForkEvent)
                 }
             }
             if(!hasLargeFragment)
+            {
+                logger.logObject({message: `Read ${i} does not have an unmapped fragment of sufficient size`});
                 continue;
+            }
 
             //BLAST identified reads
             let repeatedSearching = 0;

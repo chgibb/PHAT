@@ -4,8 +4,6 @@ import {BLASTRunForm} from "../BLASTRunForm";
 import {FullWidthFormStep} from "../../fullWidthStepperForm";
 import {GridWrapper} from "../../gridWrapper";
 import {Grid} from "../../../components/grid";
-import {FormControl} from "../../../components/formControl";
-import {InputLabel} from "../../../components/inputLabel";
 import {OutlinedInput} from "../../../components/outlinedInput";
 
 export function step1(form: BLASTRunForm): FullWidthFormStep 

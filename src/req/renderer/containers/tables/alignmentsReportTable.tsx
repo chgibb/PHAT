@@ -5,7 +5,6 @@ import {AlignData} from "../../../alignData";
 import {Table} from "../../components/table";
 import {sweepToBottom} from "../../styles/sweepToBottom";
 import {Fasta} from "../../../fasta";
-import {AtomicOperationIPC} from "../../../atomicOperationsIPC";
 import {TableCellHover} from "../tableCellHover";
 import {Search} from "../../components/icons/search";
 
@@ -17,6 +16,9 @@ export interface AlignmentsReportTableProps
     fastas?: Array<Fasta>;
     onRowClick : (event: React.MouseEvent | undefined, rowData: AlignData | undefined) => void;
     viewMore : (rowData : AlignData) => void;
+    clickableCells: boolean;
+    toolTipText : string;
+    title : string;
 }
 
 export class AlignmentsReportTable extends React.Component<AlignmentsReportTableProps, {}>
@@ -63,7 +65,7 @@ export class AlignmentsReportTable extends React.Component<AlignmentsReportTable
         return (
             <TableCellHover>
                 <Table<AlignData>
-                    title="Alignment Reports"
+                    title={this.props.title}
                     data={this.props.aligns ? this.props.aligns : []}
                     onRowClick={(event,rowData) => 
                     {
@@ -74,7 +76,7 @@ export class AlignmentsReportTable extends React.Component<AlignmentsReportTable
                             title: "Alias",
                             render: (row: AlignData) => 
                             {
-                                return (<div id={AlignmentsReportTable.aliasCellId(row)} className={TableCellHover.cellHoverClass}>{row.alias}</div>);
+                                return (<div id={AlignmentsReportTable.aliasCellId(row)} className={this.props.clickableCells ? TableCellHover.cellHoverClass : ""}>{row.alias}</div>);
                             },
                             searchable : true,
                             field : "alias",
@@ -186,7 +188,7 @@ export class AlignmentsReportTable extends React.Component<AlignmentsReportTable
                             cellStyle: sweepToBottom as any,
                             render: (row: AlignData) => 
                             {
-                                return row.varScanSNPSummary ? (<div id={AlignmentsReportTable.SNPCellId(row)} className={TableCellHover.cellHoverClass}>{row.varScanSNPSummary.SNPsReported}</div>) : "Unknown";
+                                return row.varScanSNPSummary ? (<div id={AlignmentsReportTable.SNPCellId(row)} className={this.props.clickableCells ? TableCellHover.cellHoverClass : ""}>{row.varScanSNPSummary.SNPsReported}</div>) : "Unknown";
                             },
                             searchable : true,
                             field : "",
@@ -206,7 +208,7 @@ export class AlignmentsReportTable extends React.Component<AlignmentsReportTable
                             title: "BLAST Runs",
                             render: (row: AlignData) => 
                             {
-                                return row.BLASTSegmentResults ? (<div id={AlignmentsReportTable.BLASTRunsCellId(row)} className={TableCellHover.cellHoverClass}>{row.BLASTSegmentResults.length}</div>) : 0;
+                                return row.BLASTSegmentResults ? (<div id={AlignmentsReportTable.BLASTRunsCellId(row)} className={this.props.clickableCells ? TableCellHover.cellHoverClass : ""}>{row.BLASTSegmentResults.length}</div>) : 0;
                             },
                             searchable : true,
                             field : "",
@@ -231,7 +233,7 @@ export class AlignmentsReportTable extends React.Component<AlignmentsReportTable
                                     <div className={AlignmentsReportTable.viewMoreId(row)}><Search /></div>
                                 );
                             }) as any,
-                            tooltip : "View More",
+                            tooltip : this.props.toolTipText,
                             onClick : () => 
                             {
                                 this.props.viewMore(row);

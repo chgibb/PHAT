@@ -1,7 +1,7 @@
 import * as atomic from "./req/operations/atomicOperations";
 import {AtomicOperationForkEvent,CompletionFlags} from "./req/atomicOperationsIPC";
 import {AlignData} from "./req/alignData";
-import * as cf from "./req/renderer/circularFigure";
+import * as cf from "./req/renderer/circularFigure/circularFigure";
 
 let align : AlignData;
 let contiguuid : string;

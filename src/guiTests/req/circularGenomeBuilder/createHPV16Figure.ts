@@ -30,7 +30,7 @@ export async function createHPV16Figure() : Promise<void>
                 if(fastas[i].alias == "HPV16ref_genomes.fasta")
                 {
                     genomeBuilder[0].executeJavaScript(`
-                        document.getElementById("${fastas[i].uuid}NewFigure").click();
+                        document.getElementById("${fastas[i].uuid}NewFigure").children[0].click();
                     `);
                     return resolve();
                 }
