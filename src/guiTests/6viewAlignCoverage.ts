@@ -8,7 +8,7 @@ import {openCircularGenomeBuilderWindow} from "./req/circularGenomeBuilder/openC
 import {toggleFiguresOverlay} from "./req/circularGenomeBuilder/toggleFiguresOverlay";
 import {createHPV16Figure} from "./req/circularGenomeBuilder/createHPV16Figure";
 import {closeToolBar} from "./req/closeToolBar";
-import { expandHPV16FigureList } from './req/circularGenomeBuilder/expandHPV16FigureList';
+import {expandHPV16FigureList} from "./req/circularGenomeBuilder/expandHPV16FigureList";
 
 async function runTest() : Promise<void>
 {
