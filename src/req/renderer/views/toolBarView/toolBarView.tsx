@@ -11,6 +11,8 @@ import {Fastq} from "../../../fastq";
 import {Fasta} from "../../../fasta";
 import {AlignData} from "../../../alignData";
 import {PHATView} from "../../phatView";
+import {Badge} from "../../components/badge";
+import {LinearProgress} from "../../components/linearProgress";
 
 import {ToolBarTab, ToolBarTabs} from "./containers/toolBarTabs/toolBarTabs";
 import {tabInfo} from "./tabInfo";
@@ -18,9 +20,7 @@ import {OutputViewWebView} from "./views/outputViewWebView";
 import {InputViewWebView} from "./views/inputViewWebView";
 import {QCViewWebView} from "./views/QCViewWebView";
 import {AlignViewWebView} from "./views/alignViewWebView";
-import { Badge } from '../../components/badge';
-import { taskBadge } from './styles/taskBadge';
-import { LinearProgress } from '../../components/linearProgress';
+import {taskBadge} from "./styles/taskBadge";
 import {CircularGenomeBuilderWebView} from "./views/circularGenomeBuilderWebView";
 
 
@@ -170,24 +170,24 @@ export class ToolBarView extends React.Component<ToolBarViewProps,ToolBarViewSta
                         </GridWrapper>
                         <GridWrapper>
                             <React.Fragment>
-                            <Grid container spacing={4} justify="flex-start">
-                                <Grid item />
-                                <Grid item>
-                                <Badge badgeContent={this.props.operations ? this.props.operations.length : 0} showZero color="error" classes={{colorError:taskBadge}}>
-                                        <div
-                                        style={{width:"1vh"}}></div>
-                                    </Badge>
-                                </Grid>
-                                <Grid item>
+                                <Grid container spacing={4} justify="flex-start">
+                                    <Grid item />
+                                    <Grid item>
+                                        <Badge badgeContent={this.props.operations ? this.props.operations.length : 0} showZero color="error" classes={{colorError:taskBadge}}>
+                                            <div
+                                                style={{width:"1vh"}}></div>
+                                        </Badge>
+                                    </Grid>
+                                    <Grid item>
                                     
-                                    <Typography style={{color: "white"}}>
-                                        {this.props.runningOpText ? this.props.runningOpText : "No Running Tasks"}
+                                        <Typography style={{color: "white"}}>
+                                            {this.props.runningOpText ? this.props.runningOpText : "No Running Tasks"}
                                         </Typography>
+                                    </Grid>
                                 </Grid>
-                            </Grid>
-                            <div hidden={this.props.operations === undefined || this.props.operations.length == 0}>
-                                <LinearProgress variant="indeterminate" color="secondary"/>
-                            </div>
+                                <div hidden={this.props.operations === undefined || this.props.operations.length == 0}>
+                                    <LinearProgress variant="indeterminate" color="secondary"/>
+                                </div>
                             </React.Fragment>
                         </GridWrapper>
                         <ToolBarTabs
