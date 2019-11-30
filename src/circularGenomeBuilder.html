@@ -1,125 +1,37 @@
 <!DOCTYPE html>
 <html>
-	<link rel="stylesheet" type="text/css" href="bootstrap.min.css">
-	<head>
-		<script>
-			var startUp = performance.now();
-		</script>
-		
-		<meta charset="UTF-8">
-		<title>Circular Genome Builder</title>
-	
-        <link rel="stylesheet" type="text/css" href="styles/circularGenomeBuilder.css">
-		<link rel="stylesheet" type="text/css" href="styles/jquery.minicolors.css">
-		<link rel="stylesheet" type="text/css" href="styles/spinner.css">
-		<link rel="stylesheet" type="text/css" href="styles/three-quarters.css">
-		
 
-  	</head>
-	  <!-- Modal -->
-		<div class="modal" id="modal" tabindex="-1" role="dialog" aria-labelledby="modalTitle" aria-hidden="true" style="width:100%;height:100%;">
-  			<div class="modal-dialog modal-lg" role="document">
-    			<div class="modal-content">
-      				<div class="modal-header">
-        				<h5 class="modal-title" id="modalTitle">Modal title</h5>
-        					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          						<span aria-hidden="true">&times;</span>
-        					</button>
-      				</div>
-      				<div id="modalBody" class="modal-body" style="width: 100%;">
-						
-      				</div>
-      				<div id="modalFooter" class="modal-footer">
-        				
-      				</div>
-    			</div>
-  			</div>
-		</div>
-	<body>
+<head>
+	<script>
+		var startUp = performance.now();
+	</script>
+	<link rel="stylesheet" type="text/css" href="styles/large-spinner.css">
+	<meta charset="UTF-8">
+	<title>Input</title>
+</head>
 
-		<script>
+<body>
+	<div id="app">
+		<section class="wrapper">
+			<div class="spinner">
+				<i></i>
+				<i></i>
+				<i></i>
+				<i></i>
+				<i></i>
+				<i></i>
+				<i></i>
+			</div>
+		</section>
+	</div>
+	<script defer>
+		setTimeout(() => {
 			require("./circularGenomeBuilder");
-		</script>
+		}, 100);
+	</script>
+	<script>
+		console.log("Start up took " + (performance.now() - startUp + "ms"));
+	</script>
+</body>
 
-		
-
-		<nav class="navbar navbar-default navbar-fixed-top">
-  			<div class="container-fluid standardBGColour">
-    			<div class="navbar-header standardBGColour">
-      				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-        				<span class="sr-only">Toggle navigation</span>
-        				<span class="icon-bar"></span>
-        				<span class="icon-bar"></span>
-        				<span class="icon-bar"></span>
-      				</button>
-    			</div>
-
-    			<div class="collapse navbar-collapse standardBGColour" id="bs-example-navbar-collapse-1">
-      				<ul class="nav navbar-nav">
-        				
-        				<li class="dropdown">
-          					<a href="#" id="figuresDropdownToggle" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Figures</a>
-          					<ul class="dropdown-menu" id="figures">
-          					</ul>
-        				</li>
-						<li class="dropdown">
-          					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Figure Actions</a>
-          					<ul class="dropdown-menu">
-								<li><a href="#" id="selectSequence">Select Sequence</a></li>
-            					<li><a href="#" id="exportToSVG">Export to SVG</a></li>
-            					<li><a href="#" id="copyFigure">Create Copy of Figure</a></li>
-            					<li role="separator" class="divider"></li>
-            					<li><a href="#" id="deleteFigure">Delete Figure</a></li>
-          					</ul>
-						</li>
-						<li class="dropdown">
-							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Figure Options</a>
-							<ul class="dropdown-menu" id="figureOptions">
-							</ul>
-					  </li>
-						<li><div id="navBarLoadingSpinner"></div></li>
-      				</ul>
-					
-
-      				<ul class="nav navbar-nav navbar-right">
-						  <form class="navbar-form navbar-right">
-							  <div class="form-group">
-									<div class="input-group">
-										<span class="input-group-addon" id="basic-addon3">Radius</span>
-										<input type="number" min="1" class="form-control" id="figureRadiusInput" style="width: 70px;">
-									</div>
-
-									<div class="input-group">
-										<span class="input-group-addon" id="basic-addon3">BP Interval</span>
-										<input type="number" min="1" class="form-control" id="figureBPIntervalInput" style="width: 70px;">
-										<span class="input-group-addon">
-											<input type="checkbox" aria-label="Show" id="showBPIntervalCheckBox">
-										</span>
-									</div>
-								  
-							  </div>
-
-							  <button type="submit" id="updateNavBarButton" class="btn btn-default">Update</button>
-						</form>
-        				
-        				
-
-						<li><a href="#" id="openModalAligns">Data Visualization</a></li>
-						<li><a href="#" id="openContigCreator">Add Contig</a></li>
-						
-      				</ul>
-    			</div>
-  			</div>
-		</nav>
-
-		
-
-		<div id="view">
-		</div>
-		<div id="genomeView">
-		</div>
-		<script>
-			console.log("Start up took "+(performance.now()-startUp+"ms"));
-		</script>
-    </body>
 </html>

@@ -1,4 +1,5 @@
-import {CircularFigure} from "./../renderer/circularFigure";
+import {CircularFigure} from "../renderer/circularFigure/circularFigure";
+
 import * as hpv16Ref from "./hpv16Ref";
 let hpv16Figure : CircularFigure;
 

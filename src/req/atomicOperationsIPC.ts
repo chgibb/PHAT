@@ -3,7 +3,7 @@ import {Fasta} from "./fasta";
 import {Fastq} from "./fastq";
 import {AlignData} from "./alignData";
 import {BLASTSegmentResult} from "./BLASTSegmentResult";
-import {CircularFigure} from "./renderer/circularFigure";
+import {CircularFigure} from "./renderer/circularFigure/circularFigure";
 import {CompletionFlags,LogRecord} from "./operations/atomicOperations";
 export {CompletionFlags} from "./operations/atomicOperations";
 

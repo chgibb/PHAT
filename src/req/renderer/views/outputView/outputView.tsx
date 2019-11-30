@@ -154,6 +154,9 @@ export class OutputView extends React.Component<OutputViewProps,OutputViewState>
                                         clickedRow : rowData
                                     });
                                 }}
+                                title="Alignment Reports"
+                                clickableCells={true}
+                                toolTipText="View More"
                                 aligns={this.props.aligns}
                                 fastas={this.props.fastas}
                                 onRowClick={(event: React.MouseEvent | undefined, rowData: AlignData | undefined) => 
