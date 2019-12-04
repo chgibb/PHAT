@@ -12,6 +12,7 @@ cp package.json dist
 #copy images into dist
 mkdir dist/img
 cp img/*.* dist/img
+cp -r img/gwf dist/img
 
 #copy icons into dist
 mkdir dist/icons

@@ -19,6 +19,7 @@ import {InputViewWebView} from "./views/inputViewWebView";
 import {QCViewWebView} from "./views/QCViewWebView";
 import {AlignViewWebView} from "./views/alignViewWebView";
 import {CircularGenomeBuilderWebView} from "./views/circularGenomeBuilderWebView";
+import {GuidedWorkflowGallery} from "./containers/guidedWorkflowGallery";
 
 
 export interface ToolBarViewState
@@ -170,7 +171,7 @@ export class ToolBarView extends React.Component<ToolBarViewProps,ToolBarViewSta
                                 style={{color:"white"}}
                             >{this.props.runningOpText}</Typography>
                         </div>
-                        <ToolBarTabs
+                        {this.state.views && this.state.views.length > 0 ? <ToolBarTabs
                             onTabDelete={(tab : ToolBarTab<ToolBarViewProps>,i : number) => 
                             {
                                 if(!this.state.views)
@@ -181,7 +182,7 @@ export class ToolBarView extends React.Component<ToolBarViewProps,ToolBarViewSta
                             }}
                             tabs={this.state.views ? this.state.views : []}
                             propPack={this.props}
-                        />
+                        /> : <GuidedWorkflowGallery />}
                     </div>
                 )}
 
