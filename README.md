@@ -8,6 +8,8 @@
 
 ![PHAT BLAST Run](https://chgibb.github.io/PHATDocs/docs/latest/alignBLASTRuns4.png)
 
+![PHAT BLAST Form](https://chgibb.github.io/PHATDocs/docs/latest/blastForm1.png)
+
 ![PHAT Action Shot 1](https://chgibb.github.io//PHATDocs/docs/latest/actionShot1.png)
 
 ### [Latest Stable Release: PHAT@0.11.0](https://chgibb.github.io/PHATDocs/releases/0.11.0/index)
