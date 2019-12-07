@@ -1,8 +1,8 @@
-![PHAT Input Reads Success](https://chgibb.github.io//PHATDocs/docs/releases/0.7.6-beta.1/InputReadsIn.png)
+![PHAT Input Reads Success](https://chgibb.github.io//PHATDocs/docs/latest/InputReadsIn.png)
 
-![PHAT Output Align](https://chgibb.github.io//PHATDocs/docs/releases/0.7.6-beta.1/OutputAlign.png)
+![PHAT Output Align](https://chgibb.github.io//PHATDocs/docs/latest/OutputAlign.png)
 
-![PHAT Edited Contig](https://chgibb.github.io//PHATDocs/docs/releases/0.7.6-beta.1/EditedContig.png)![PHAT Add Contig](https://chgibb.github.io//PHATDocs/docs/releases/0.7.6-beta.1/AddContig.png)
+![PHAT Edited Contig](https://chgibb.github.io//PHATDocs/docs/latest/EditedContig.png)![PHAT Add Contig](https://chgibb.github.io//PHATDocs/docs/latest/AddContig.png)
 
 ![PHAT Tool Bar](https://chgibb.github.io//PHATDocs/docs/releases/0.1.0-beta.1/covHPV16white.png)
 
