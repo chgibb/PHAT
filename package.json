@@ -80,7 +80,7 @@
         "delete-empty": "^1.0.1",
         "dialogs": "^1.1.19",
         "dragula": "^3.7.2",
-        "electron": "^3.1.13",
+        "electron": "4.2.12",
         "electron-builder": "^19.8.0",
         "electron-ipc-stream": "^0.2.0",
         "electron-packager": "8.7.2",
