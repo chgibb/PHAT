@@ -73,7 +73,7 @@
         "browserify": "^13.1.0",
         "builtin-modules": "^3.1.0",
         "bundle-collapser": "^1.2.1",
-        "chart.js": "2.8.0",
+        "chart.js": "2.9.4",
         "chartjs-plugin-annotation": "^0.5.7",
         "clooneyjs": "^0.7.0",
         "csx": "^9.0.0",
