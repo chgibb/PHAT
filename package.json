@@ -93,7 +93,7 @@
         "fs-extra": "^2.0.0",
         "github-api": "^3.0.0",
         "github-releases": "^0.3.2",
-        "grunt": "^1.0.1",
+        "grunt": "^1.5.2",
         "gunzip-maybe": "^1.4.0",
         "htmlparser2": "^3.9.2",
         "jest": "^22.4.3",
