@@ -106,7 +106,7 @@
         "optimize-js": "^1.0.3",
         "pidusage": "^1.1.6",
         "popper.js": "1.14.4",
-        "protobufjs": "^6.8.3",
+        "protobufjs": "^6.11.3",
         "ps-node": "^0.1.6",
         "randomcolor": "^0.5.4",
         "react": "^16.7.0",
