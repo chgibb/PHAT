@@ -92,7 +92,7 @@
         "fs-backwards-stream": "0.0.0",
         "fs-extra": "^2.0.0",
         "github-api": "^3.0.0",
-        "github-releases": "^0.3.2",
+        "github-releases": "^0.4.2",
         "grunt": "^1.0.1",
         "gunzip-maybe": "^1.4.0",
         "htmlparser2": "^3.9.2",
